@@ -1,4 +1,4 @@
 # [C++] Planet - Programming LANguage ET. al
-> **Work In Progress**
+> **WORK IN PROGRESS**
 
-This project will start around the second half of 2024 ...
+Something will appear here soon (come back during the 2nd half of 2024 ...)
