@@ -6,6 +6,5 @@ __pycache__/
 perf.data
 *.swp
 
-/bin/driver.sh
 /test/tests/
 /test/tmp/
