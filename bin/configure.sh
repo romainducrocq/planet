@@ -5,4 +5,4 @@ export EXTERN_PACKAGE_NAME="planet"
 
 cd ${BACKEND_PATH}/bin/
 ./configure.sh
-exit ${?}
+if [ ${?} -ne 0 ]; then exit 1; fi
