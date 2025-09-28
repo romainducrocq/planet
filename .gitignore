@@ -1,0 +1,11 @@
+.idea/
+__pycache__/
+.ipynb_checkpoints
+~/
+.vscode
+perf.data
+*.swp
+
+/bin/driver.sh
+/test/tests/
+/test/tmp/
