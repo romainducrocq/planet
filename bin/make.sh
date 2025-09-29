@@ -3,6 +3,12 @@
 BACKEND_PATH="$(readlink -f $(cat backend_path.txt))"
 export EXTERN_FRONTEND_PARSER_DIR="$(readlink -f ../frontend/parser)"
 # export EXTERN_FRONTEND_INTERM_DIR="$(readlink -f ../frontend/intermediate)"
+if [ -d "${BACKEND_PATH}/src/frontend/parser/" ]; then
+    mv ${BACKEND_PATH}/src/frontend/parser/ ${BACKEND_PATH}/src/frontend/parser.bak/
+fi
+# if [ -d "${BACKEND_PATH}/src/frontend/intermediate/" ]; then
+#     mv ${BACKEND_PATH}/src/frontend/intermediate/ ${BACKEND_PATH}/src/frontend/intermediate.bak/
+# fi
 
 cd ${BACKEND_PATH}/bin/
 ./make.sh ${1}
