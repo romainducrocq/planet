@@ -7,3 +7,5 @@ export EXTERN_EXT_IN="plx"
 
 ${BACKEND_PATH}/bin/driver.sh ${@}
 if [ ${?} -ne 0 ]; then exit 1; fi
+
+exit 0

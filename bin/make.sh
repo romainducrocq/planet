@@ -7,3 +7,5 @@ export EXTERN_FRONTEND_PARSER_DIR="$(readlink -f ../frontend/parser)"
 cd ${BACKEND_PATH}/bin/
 ./make.sh ${1}
 if [ ${?} -ne 0 ]; then exit 1; fi
+
+exit 0
