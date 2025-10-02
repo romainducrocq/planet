@@ -2,7 +2,7 @@
 
 BACKEND_PATH="$(readlink -f $(cat ../bin/backend_path.txt))"
 export EXTERN_EXT_IN="plx"
-export EXTERN_SRC_DIR="${PWD}/tests/compiler"
+export EXTERN_TEST_DIR="${PWD}/tests/compiler"
 
 cd ${BACKEND_PATH}/test/
 ./test-compiler.sh ${@}
