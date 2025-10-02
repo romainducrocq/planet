@@ -7,4 +7,5 @@ perf.data
 *.swp
 
 /test/tests/
+/test/test_results/
 /test/tmp/
