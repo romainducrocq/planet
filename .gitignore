@@ -6,6 +6,9 @@ __pycache__/
 perf.data
 *.swp
 
+/bin/driver.sh
+/bin/make.sh
+/bin/install.sh
 /test/tests/
 /test/test_results/
 /test/tmp/

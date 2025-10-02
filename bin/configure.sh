@@ -5,6 +5,15 @@ FILENAME_EXT="plx"
 PACKAGE_NAME="planet"
 PACKAGE_PATH="$(readlink -f ..)"
 
+find . -type l -delete
+if [ ${?} -ne 0 ]; then exit 1; fi
+ln -s ${BACKEND_PATH}/bin/driver.sh ./driver.sh
+if [ ${?} -ne 0 ]; then exit 1; fi
+ln -s ${BACKEND_PATH}/bin/make.sh ./make.sh
+if [ ${?} -ne 0 ]; then exit 1; fi
+ln -s ${BACKEND_PATH}/bin/install.sh ./install.sh
+if [ ${?} -ne 0 ]; then exit 1; fi
+
 cp -v ../frontend/parser/* ${BACKEND_PATH}/src/frontend/parser/
 if [ ${?} -ne 0 ]; then exit 1; fi
 # cp -v ../frontend/intermediate/* ${BACKEND_PATH}/src/frontend/intermediate/
