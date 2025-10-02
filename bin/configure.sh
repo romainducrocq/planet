@@ -23,7 +23,7 @@ fi
 # TODO preprocess with m4 in wheelcc/bin/driver.sh
 # TODO link with build/build_lib in wheelcc/bin/driver.sh
 
-EXTERN_PACKAGE_NAME="planet" # TODO rm
+export EXTERN_PACKAGE_NAME="planet" # TODO rm
 ./configure.sh "${PACKAGE_NAME}"
 if [ ${?} -ne 0 ]; then exit 1; fi
 
