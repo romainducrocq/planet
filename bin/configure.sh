@@ -31,7 +31,7 @@ function config_backend () {
     if [ ${?} -ne 0 ]; then return 1; fi
     ln -s ${BACKEND_PATH}/test/test-memory.sh ../test/test-memory.sh
     if [ ${?} -ne 0 ]; then return 1; fi
-    cp ../test/print_errors.in ${BACKEND_PATH}/test/tools/
+    cp ../test/tools/print_errors.in ${BACKEND_PATH}/test/tools/
     if [ ${?} -ne 0 ]; then return 1; fi
 
     # frontend
