@@ -55,10 +55,9 @@ if [ ${?} -ne 0 ]; then
     exit 1
 fi
 
-# TODO for includes use .etc
-# TODO install m4 as preprocessor
-# TODO preprocess with m4 in wheelcc/bin/driver.sh
-# TODO link with build/build_lib in wheelcc/bin/driver.sh
+# TODO use `<filename>.etc` for headers
+# TODO install m4 preprocessor in configure.sh
+# TODO link with build/build_lib/* in wheelcc/bin/driver.sh
 # TODO compile std in wheelcc/bin/make.sh if build/build_lib.sh exist
 # TODO install std in wheelcc/bin/install.sh if build/build_lib/ exist
 
