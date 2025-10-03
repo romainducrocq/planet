@@ -41,9 +41,9 @@ function config_backend () {
     # if [ ${?} -ne 0 ]; then return 1; fi
 
     # config
-    echo -n "${FILENAME_EXT}" > ${BACKEND_PATH}/bin/filename_ext.txt
+    echo -n "${PACKAGE_PATH}" > ${BACKEND_PATH}/bin/pkgpath.cfg
     if [ ${?} -ne 0 ]; then return 1; fi
-    echo -n "${PACKAGE_PATH}" > ${BACKEND_PATH}/bin/package_path.txt
+    echo -n "${FILENAME_EXT}" > ${BACKEND_PATH}/bin/fileext.cfg
     if [ ${?} -ne 0 ]; then return 1; fi
 
     return 0
