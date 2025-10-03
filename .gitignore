@@ -9,6 +9,12 @@ perf.data
 /bin/driver.sh
 /bin/make.sh
 /bin/install.sh
+/test/build.sh
+/test/get-dependencies.sh
+/test/test-all.sh
+/test/test-compiler.sh
+/test/test-errors.sh
+/test/test-memory.sh
 /test/tests/
 /test/test_results/
 /test/tmp/

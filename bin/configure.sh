@@ -19,6 +19,20 @@ function config_backend () {
     # test
     find ../test/ -type l -delete
     if [ ${?} -ne 0 ]; then return 1; fi
+    ln -s ${BACKEND_PATH}/test/build.sh ../test/build.sh
+    if [ ${?} -ne 0 ]; then return 1; fi
+    ln -s ${BACKEND_PATH}/test/get-dependencies.sh ../test/get-dependencies.sh
+    if [ ${?} -ne 0 ]; then return 1; fi
+    ln -s ${BACKEND_PATH}/test/test-all.sh ../test/test-all.sh
+    if [ ${?} -ne 0 ]; then return 1; fi
+    ln -s ${BACKEND_PATH}/test/test-compiler.sh ../test/test-compiler.sh
+    if [ ${?} -ne 0 ]; then return 1; fi
+    ln -s ${BACKEND_PATH}/test/test-errors.sh ../test/test-errors.sh
+    if [ ${?} -ne 0 ]; then return 1; fi
+    ln -s ${BACKEND_PATH}/test/test-memory.sh ../test/test-memory.sh
+    if [ ${?} -ne 0 ]; then return 1; fi
+    cp ../test/print_errors.in ${BACKEND_PATH}/test/tools/
+    if [ ${?} -ne 0 ]; then return 1; fi
 
     # frontend
     cp ../frontend/parser/* ${BACKEND_PATH}/src/frontend/parser/
