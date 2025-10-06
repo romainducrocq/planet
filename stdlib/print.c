@@ -1,3 +1,4 @@
+// TODO fix for macOS
 #include "print.h"
 
 int printc(char c) { return putchar(c); }

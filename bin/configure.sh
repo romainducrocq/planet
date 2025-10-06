@@ -40,15 +40,16 @@ function config_backend () {
     # cp ../frontend/intermediate/* ${BACKEND_PATH}/src/frontend/intermediate/
     # if [ ${?} -ne 0 ]; then return 1; fi
 
-    # stdlib
-    if [ ! -d "${BACKEND_PATH}/bin/libc/" ]; then
-        mkdir -p ${BACKEND_PATH}/bin/libc/
-        if [ ${?} -ne 0 ]; then return 1; fi
-    fi
-    cp -r ../stdlib/* ${BACKEND_PATH}/bin/libc/
-    if [ ${?} -ne 0 ]; then return 1; fi
-    cp build_libc.sh ${BACKEND_PATH}/build/
-    if [ ${?} -ne 0 ]; then return 1; fi
+    # TODO
+    # # stdlib
+    # if [ ! -d "${BACKEND_PATH}/bin/libc/" ]; then
+    #     mkdir -p ${BACKEND_PATH}/bin/libc/
+    #     if [ ${?} -ne 0 ]; then return 1; fi
+    # fi
+    # cp -r ../stdlib/* ${BACKEND_PATH}/bin/libc/
+    # if [ ${?} -ne 0 ]; then return 1; fi
+    # cp build_libc.sh ${BACKEND_PATH}/build/
+    # if [ ${?} -ne 0 ]; then return 1; fi
 
     # config
     echo -n "${PACKAGE_PATH}" > ${BACKEND_PATH}/bin/pkgpath.cfg
