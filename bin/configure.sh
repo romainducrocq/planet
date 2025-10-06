@@ -41,7 +41,7 @@ function config_backend () {
     # if [ ${?} -ne 0 ]; then return 1; fi
 
     # stdlib
-    if [ ! -d "${BACKEND_PATH}/bin/libc/" ]
+    if [ ! -d "${BACKEND_PATH}/bin/libc/" ]; then
         mkdir -p ${BACKEND_PATH}/bin/libc/
         if [ ${?} -ne 0 ]; then return 1; fi
     fi
