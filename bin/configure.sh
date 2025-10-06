@@ -40,6 +40,16 @@ function config_backend () {
     # cp ../frontend/intermediate/* ${BACKEND_PATH}/src/frontend/intermediate/
     # if [ ${?} -ne 0 ]; then return 1; fi
 
+    # stdlib
+    if [ ! -d "${BACKEND_PATH}/bin/libc/" ]
+        mkdir -p ${BACKEND_PATH}/bin/libc/
+        if [ ${?} -ne 0 ]; then return 1; fi
+    fi
+    cp -r ../stdlib/* ${BACKEND_PATH}/bin/libc/
+    if [ ${?} -ne 0 ]; then return 1; fi
+    cp build_libc.sh ${BACKEND_PATH}/build/
+    if [ ${?} -ne 0 ]; then return 1; fi
+
     # config
     echo -n "${PACKAGE_PATH}" > ${BACKEND_PATH}/bin/pkgpath.cfg
     if [ ${?} -ne 0 ]; then return 1; fi
@@ -57,9 +67,6 @@ fi
 
 # TODO use `<filename>.etc` for headers
 # TODO install m4 preprocessor in configure.sh
-# TODO link with build/build_lib/* in wheelcc/bin/driver.sh
-# TODO compile std in wheelcc/bin/make.sh if build/build_lib.sh exist
-# TODO install std in wheelcc/bin/install.sh if build/build_lib/ exist
 
 ${BACKEND_PATH}/bin/configure.sh "${PACKAGE_NAME}"
 if [ ${?} -ne 0 ]; then exit 1; fi
