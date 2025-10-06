@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO
+
 PACKAGE_BUILD="$(dirname $(readlink -f ${0}))"
 PACKAGE_DIR="$(dirname ${PACKAGE_BUILD})/bin"
 PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
@@ -21,5 +23,6 @@ function build_so () {
 echo "-- Build libc ..."
 build_so "print"
 echo "OK"
+echo "-- Created lib ${PACKAGE_LIBC}/"
 
 exit 0
