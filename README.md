@@ -4,8 +4,16 @@
 
 Something will appear here soon ...
 
+```
+git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
+```
+
 ****
 
 ### About the name
 
 Naming is arguably the hardest open problem in Computer Science after P=NP, but there is no doubt that a great name is the key to a successful project. `planet` (acronym) stands for  _‘**p**rogramming **lan**guage **et**c.’_, as it is in fact a programming language that does stuff. It was also developed on a planet! And really, it just sounds good.
+
+****
+
+@romainducrocq
