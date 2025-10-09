@@ -18,3 +18,4 @@ perf.data
 /test/tests/
 /test/test_results/
 /test/tmp/
+/wheelcc/

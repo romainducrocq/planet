@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ROOT="${PWD}/../.."
-BACKEND_PATH="$(readlink -f ../../../wheelcc)"
+BACKEND_PATH="$(readlink -f ../../wheelcc)"
 
 cd ${BACKEND_PATH}/test/tools/
 for FILE in $(find ${ROOT}/frontend/ -type f); do

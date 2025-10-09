@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BACKEND_PATH="$(readlink -f ../../wheelcc)"
+BACKEND_PATH="$(readlink -f ../wheelcc)"
 PACKAGE_PATH="$(readlink -f ..)"
 PACKAGE_NAME="planet"
 FILENAME_EXT="plx"
