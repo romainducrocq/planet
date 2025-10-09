@@ -1,5 +1,9 @@
 // TODO fix for macOS
+#ifdef __APPLE__
+#include <stdio.h>
+#else
 #include "print.h"
+#endif
 
 int printc(char c) { return putchar(c); }
 
@@ -58,7 +62,9 @@ int printu64(unsigned long n) { return printu(n, 20); }
 
 int printi64(long n) { return printi(n, 19); }
 
+#ifndef __APPLE__
 void* memcpy(void* dest, void* src, unsigned long n);
+#endif
 static int isnegzero(double n) {
     if (n != 0.0) {
         return 0;
