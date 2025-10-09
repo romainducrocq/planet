@@ -62,9 +62,7 @@ int printu64(unsigned long n) { return printu(n, 20); }
 
 int printi64(long n) { return printi(n, 19); }
 
-#ifndef __APPLE__
 void* memcpy(void* dest, void* src, unsigned long n);
-#endif
 static int isnegzero(double n) {
     if (n != 0.0) {
         return 0;
