@@ -1,4 +1,4 @@
 [submodule "wheelcc"]
     path = wheelcc
     url = https://github.com/romainducrocq/wheelcc
-    branch = 0.2.2/develop
+    branch = 0.2.2-rc1
