@@ -26,7 +26,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
 <declarator> ::= <identifier> ":" <type-name>
 <declarator-list> ::= "(" <declarator> { "," <declarator> } ")"
-<type-name> ::= "*" <type-name> | "[" <const> "]" <type-name> | <type-specifier>
+<type-name> ::= ( "*" | "[" <const> "]" ) <type-name> | <type-specifier>
 <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "char" | "string"
                    | "*" "any" | <datatype-specifier>
 <datatype-specifier> ::= ( "struc" | "union" ) <identifier>
