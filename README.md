@@ -46,7 +46,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 <primary-exp> ::= <const> | <identifier> | "(" <exp> ")" | { <string> }+
                 | <identifier> "(" [ <exp> { "," <exp> } ] ")"
 <postfix-op> ::= "[" [ <exp> ] "]" | "." <identifier> | "++" | "--"
-<unop> ::= "-" | "~" | "not" | "*" | "@" | "++" | "--"
+<unop> ::= "-" | "~" | "not" | "@" | "++" | "--"
 <binop> ::= "-" | "+" | "*" | "/" | "%" | "&" | "|" | "^" | "<<" | ">>" | "and" | "or" | "=="
           | "~=" | "<" | "<=" | ">" | ">=" | "=" | "-=" | "+=" | "*=" | "/=" | "%=" | "&="
           | "|=" | "^=" | "<<=" | ">>="
