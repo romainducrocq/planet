@@ -65,34 +65,37 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 
 ### Progress
 
-[ ] return 32 bit integer constants
-[ ] unary arithmetic operators
-[ ] binary arithmetic operators
-[ ] bitwise arithmetic operators
-[ ] logical and relational operators
-[ ] local variables, assignments
-[ ] compound assignments, increment operators
-[ ] if statements, conditional expressions
-[ ] jump statements, labels
-[ ] if-elif-else compound statements
-[ ] loop-while, continue, break statements
-[ ] match, ->, otherwise statements
-[ ] functions, pub storage
-[ ] top-level variables, extrn, data storage
-
-[ ] 32 bit and 64 bit integers
-[ ] Signed and unsigned integers
-[ ] 64 bit floating-point numbers, nan
-[ ] pointers
-[ ] fixed-sized arrays, pointer arithmetic
-[ ] characters, strings literals, ascii
-[ ] any, support dynamic memory allocation
-[ ] structures
-[ ] unions
-
-[ ] process import, use, comments
-[ ] support m4 preprocessor
-[ ] glibc standard library bindings
+- Language features
+- [ ] return 32 bit integer constants
+- [ ] unary arithmetic operators
+- [ ] binary arithmetic operators
+- [ ] bitwise arithmetic operators
+- [ ] logical and relational operators
+- [ ] local variables, assignments
+- [ ] compound assignments, increment operators
+- [ ] if statements, conditional expressions
+- [ ] jump statements, labels
+- [ ] if-elif-else compound statements
+- [ ] loop-while, continue, break statements
+- [ ] match, ->, otherwise statements
+- [ ] functions, pub storage
+- [ ] top-level variables, extrn, data storage
+  
+- Types
+- [ ] 32 bit and 64 bit integers
+- [ ] Signed and unsigned integers
+- [ ] 64 bit floating-point numbers, nan
+- [ ] pointers
+- [ ] fixed-sized arrays, pointer arithmetic
+- [ ] characters, strings literals, ascii
+- [ ] any, support dynamic memory allocation
+- [ ] structures
+- [ ] unions
+  
+- Tooling
+- [ ] process import, use, comments
+- [ ] support m4 preprocessor
+- [ ] glibc standard library bindings
 
 ****
 
