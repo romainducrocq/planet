@@ -65,7 +65,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 
 ### Progress
 
-- Language features
+> Language features
 - [ ] return 32 bit integer constants
 - [ ] unary arithmetic operators
 - [ ] binary arithmetic operators
@@ -80,10 +80,9 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [ ] match, ->, otherwise statements
 - [ ] functions, pub storage
 - [ ] top-level variables, extrn, data storage
-  
-- Types
+> Types
 - [ ] 32 bit and 64 bit integers
-- [ ] Signed and unsigned integers
+- [ ] signed and unsigned integers
 - [ ] 64 bit floating-point numbers, nan
 - [ ] pointers
 - [ ] fixed-sized arrays, pointer arithmetic
@@ -91,8 +90,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [ ] any, support dynamic memory allocation
 - [ ] structures
 - [ ] unions
-  
-- Tooling
+> Tooling
 - [ ] process import, use, comments
 - [ ] support m4 preprocessor
 - [ ] glibc standard library bindings
