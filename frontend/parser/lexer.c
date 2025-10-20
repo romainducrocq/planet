@@ -233,7 +233,7 @@ static TOKEN_KIND match_error(Ctx ctx) {
 static TOKEN_KIND match_const_end(Ctx ctx, TOKEN_KIND tok_kind) {
     switch (get_char(ctx)) {
         case LEX_WORD:
-        case '.':
+        // case '.':
             return match_error(ctx);
         default:
             return tok_kind;
@@ -552,9 +552,9 @@ static TOKEN_KIND match_token(Ctx ctx) {
             if (match_char(ctx, '/')) {
                 return TOK_comment_line;
             }
-            // else if (match_char(ctx, '*')) {
-            //     return TOK_comment_start;
-            // }
+            else if (match_char(ctx, '*')) {
+                return TOK_comment_start;
+            }
             // else if (match_char(ctx, '=')) {
             //     return TOK_assign_divide;
             // }
@@ -660,21 +660,21 @@ static TOKEN_KIND match_token(Ctx ctx) {
     }
 }
 
-// static TOKEN_KIND match_comment_end(Ctx ctx) {
-//     ctx->match_size = 1;
-//     switch (ctx->line[ctx->match_at]) {
-//         case '*': {
-//             if (match_char(ctx, '/')) {
-//                 return TOK_comment_end;
-//             }
-//             else {
-//                 return TOK_skip;
-//             }
-//             default:
-//                 return TOK_skip;
-//         }
-//     }
-// }
+static TOKEN_KIND match_comment_end(Ctx ctx) {
+    ctx->match_size = 1;
+    switch (ctx->line[ctx->match_at]) {
+        case '*': {
+            if (match_char(ctx, '/')) {
+                return TOK_comment_end;
+            }
+            else {
+                return TOK_skip;
+            }
+            default:
+                return TOK_skip;
+        }
+    }
+}
 
 static string_t get_match(Ctx ctx, size_t match_at, size_t match_size) {
     string_t match = str_new("");
@@ -696,12 +696,12 @@ static size_t push_token_info(Ctx ctx) {
 static error_t tokenize_file(Ctx ctx) {
     string_t match = str_new(NULL);
     CATCH_ENTER;
-    // bool is_comment = false;
+    bool is_comment = false;
     for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
 
         for (ctx->match_at = 0; ctx->match_at < ctx->line_size; ctx->match_at += ctx->match_size) {
-            TOKEN_KIND match_kind = /*is_comment ? match_comment_end(ctx) :*/ match_token(ctx);
+            TOKEN_KIND match_kind = is_comment ? match_comment_end(ctx) : match_token(ctx);
             TIdentifier match_tok = 0;
             switch (match_kind) {
                 case TOK_comment_line:
@@ -709,14 +709,14 @@ static error_t tokenize_file(Ctx ctx) {
                     goto Lbreak;
                 case TOK_skip:
                     goto Lcontinue;
-                // case TOK_comment_start: {
-                //     is_comment = true;
-                //     goto Lcontinue;
-                // }
-                // case TOK_comment_end: {
-                //     is_comment = false;
-                //     goto Lcontinue;
-                // }
+                case TOK_comment_start: {
+                    is_comment = true;
+                    goto Lcontinue;
+                }
+                case TOK_comment_end: {
+                    is_comment = false;
+                    goto Lcontinue;
+                }
                 // case TOK_include_preproc:
                 //     TRY(tokenize_include(ctx, linenum));
                 //     goto Lcontinue;
