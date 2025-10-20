@@ -721,13 +721,14 @@ static error_t tokenize_file(Ctx ctx) {
                 //     TRY(tokenize_include(ctx, linenum));
                 //     goto Lcontinue;
                 case TOK_identifier:
-                case TOK_string_literal:
-                case TOK_char_const:
+                // case TOK_string_literal:
+                // case TOK_char_const:
                 case TOK_int_const:
-                case TOK_long_const:
-                case TOK_uint_const:
-                case TOK_ulong_const:
-                case TOK_dbl_const: {
+                // case TOK_long_const:
+                // case TOK_uint_const:
+                // case TOK_ulong_const:
+                // case TOK_dbl_const: 
+                {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
                     match_tok = make_string_identifier(ctx->identifiers, &match);
                     goto Lpass;

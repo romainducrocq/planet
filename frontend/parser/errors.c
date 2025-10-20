@@ -154,20 +154,20 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "extern";
         case TOK_identifier:
             return "identifier";
-        case TOK_string_literal:
-            return "string literal";
-        case TOK_char_const:
-            return "const char";
+        // case TOK_string_literal:
+        //     return "string literal";
+        // case TOK_char_const:
+        //     return "const char";
         case TOK_int_const:
             return "const int";
-        case TOK_long_const:
-            return "const long";
-        case TOK_uint_const:
-            return "const unsigned int";
-        case TOK_ulong_const:
-            return "const unsigned long";
-        case TOK_dbl_const:
-            return "const double";
+        // case TOK_long_const:
+        //     return "const long";
+        // case TOK_uint_const:
+        //     return "const unsigned int";
+        // case TOK_ulong_const:
+        //     return "const unsigned long";
+        // case TOK_dbl_const:
+        //     return "const double";
         default:
             THROW_ABORT;
     }
@@ -176,13 +176,13 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
 const char* get_tok_fmt(IdentifierContext* ctx, const Token* token) {
     switch (token->tok_kind) {
         case TOK_identifier:
-        case TOK_string_literal:
-        case TOK_char_const:
+        // case TOK_string_literal:
+        // case TOK_char_const:
         case TOK_int_const:
-        case TOK_long_const:
-        case TOK_uint_const:
-        case TOK_ulong_const:
-        case TOK_dbl_const:
+        // case TOK_long_const:
+        // case TOK_uint_const:
+        // case TOK_ulong_const:
+        // case TOK_dbl_const:
             return map_get(ctx->hash_table, token->tok);
         default:
             return get_tok_kind_fmt(token->tok_kind);
