@@ -1680,42 +1680,43 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             case TOK_identifier:
             case TOK_close_paren:
                 goto Lbreak;
-            case TOK_key_char:
+            // case TOK_key_char:
             case TOK_key_int:
-            case TOK_key_long:
-            case TOK_key_double:
-            case TOK_key_unsigned:
-            case TOK_key_signed:
-            case TOK_key_void: {
+            // case TOK_key_long:
+            // case TOK_key_double:
+            // case TOK_key_unsigned:
+            // case TOK_key_signed:
+            // case TOK_key_void:
+            {
                 TRY(pop_next_i(ctx, i));
                 type_tok_kinds[type_tok_kinds_size] = ctx->next_tok_i->tok_kind;
                 type_tok_kinds_size++;
                 break;
             }
-            case TOK_key_struct:
-            case TOK_key_union: {
-                TRY(pop_next_i(ctx, i));
-                type_tok_kinds[type_tok_kinds_size] = ctx->next_tok_i->tok_kind;
-                type_tok_kinds_size++;
-                TRY(peek_next_i(ctx, i));
-                TRY(expect_next(ctx, ctx->peek_tok_i, TOK_identifier));
-                break;
-            }
-            case TOK_key_static:
-            case TOK_key_extern:
-            case TOK_binop_multiply:
-            case TOK_open_paren:
-                i++;
-                break;
-            case TOK_open_bracket: {
-                do {
-                    i++;
-                    TRY(peek_next_i(ctx, i));
-                }
-                while (ctx->peek_tok_i->tok_kind != TOK_close_bracket);
-                i++;
-                break;
-            }
+            // case TOK_key_struct:
+            // case TOK_key_union: {
+            //     TRY(pop_next_i(ctx, i));
+            //     type_tok_kinds[type_tok_kinds_size] = ctx->next_tok_i->tok_kind;
+            //     type_tok_kinds_size++;
+            //     TRY(peek_next_i(ctx, i));
+            //     TRY(expect_next(ctx, ctx->peek_tok_i, TOK_identifier));
+            //     break;
+            // }
+            // case TOK_key_static:
+            // case TOK_key_extern:
+            // case TOK_binop_multiply:
+            // case TOK_open_paren:
+            //     i++;
+            //     break;
+            // case TOK_open_bracket: {
+            //     do {
+            //         i++;
+            //         TRY(peek_next_i(ctx, i));
+            //     }
+            //     while (ctx->peek_tok_i->tok_kind != TOK_close_bracket);
+            //     i++;
+            //     break;
+            // }
             default:
                 THROW_AT_TOKEN(
                     ctx->peek_tok_i->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->peek_tok_i)));
@@ -1725,105 +1726,105 @@ Lbreak:
     switch (type_tok_kinds_size) {
         case 1: {
             switch (type_tok_kinds[0]) {
-                case TOK_key_char: {
-                    *type_specifier = make_Char();
-                    EARLY_EXIT;
-                }
+                // case TOK_key_char: {
+                //     *type_specifier = make_Char();
+                //     EARLY_EXIT;
+                // }
                 case TOK_key_int: {
                     *type_specifier = make_Int();
                     EARLY_EXIT;
                 }
-                case TOK_key_long: {
-                    *type_specifier = make_Long();
-                    EARLY_EXIT;
-                }
-                case TOK_key_double: {
-                    *type_specifier = make_Double();
-                    EARLY_EXIT;
-                }
-                case TOK_key_unsigned: {
-                    *type_specifier = make_UInt();
-                    EARLY_EXIT;
-                }
-                case TOK_key_signed: {
-                    *type_specifier = make_Int();
-                    EARLY_EXIT;
-                }
-                case TOK_key_void: {
-                    *type_specifier = make_Void();
-                    EARLY_EXIT;
-                }
-                case TOK_key_struct: {
-                    TIdentifier tag;
-                    TRY(parse_identifier(ctx, i, &tag));
-                    *type_specifier = make_Structure(tag, false);
-                    EARLY_EXIT;
-                }
-                case TOK_key_union: {
-                    TIdentifier tag;
-                    TRY(parse_identifier(ctx, i, &tag));
-                    *type_specifier = make_Structure(tag, true);
-                    EARLY_EXIT;
-                }
+                // case TOK_key_long: {
+                //     *type_specifier = make_Long();
+                //     EARLY_EXIT;
+                // }
+                // case TOK_key_double: {
+                //     *type_specifier = make_Double();
+                //     EARLY_EXIT;
+                // }
+                // case TOK_key_unsigned: {
+                //     *type_specifier = make_UInt();
+                //     EARLY_EXIT;
+                // }
+                // case TOK_key_signed: {
+                //     *type_specifier = make_Int();
+                //     EARLY_EXIT;
+                // }
+                // case TOK_key_void: {
+                //     *type_specifier = make_Void();
+                //     EARLY_EXIT;
+                // }
+                // case TOK_key_struct: {
+                //     TIdentifier tag;
+                //     TRY(parse_identifier(ctx, i, &tag));
+                //     *type_specifier = make_Structure(tag, false);
+                //     EARLY_EXIT;
+                // }
+                // case TOK_key_union: {
+                //     TIdentifier tag;
+                //     TRY(parse_identifier(ctx, i, &tag));
+                //     *type_specifier = make_Structure(tag, true);
+                //     EARLY_EXIT;
+                // }
                 default:
                     break;
             }
             break;
         }
-        case 2: {
-            if (type_tok_kinds[0] == TOK_key_unsigned || type_tok_kinds[1] == TOK_key_unsigned) {
-                if (type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int) {
-                    *type_specifier = make_UInt();
-                    EARLY_EXIT;
-                }
-                else if (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long) {
-                    *type_specifier = make_ULong();
-                    EARLY_EXIT;
-                }
-                else if (type_tok_kinds[0] == TOK_key_char || type_tok_kinds[1] == TOK_key_char) {
-                    *type_specifier = make_UChar();
-                    EARLY_EXIT;
-                }
-            }
-            else if (type_tok_kinds[0] == TOK_key_signed || type_tok_kinds[1] == TOK_key_signed) {
-                if (type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int) {
-                    *type_specifier = make_Int();
-                    EARLY_EXIT;
-                }
-                else if (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long) {
-                    *type_specifier = make_Long();
-                    EARLY_EXIT;
-                }
-                else if (type_tok_kinds[0] == TOK_key_char || type_tok_kinds[1] == TOK_key_char) {
-                    *type_specifier = make_SChar();
-                    EARLY_EXIT;
-                }
-            }
-            else if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int)
-                     && (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long)) {
-                *type_specifier = make_Long();
-                EARLY_EXIT;
-            }
-            break;
-        }
-        case 3: {
-            if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int
-                    || type_tok_kinds[2] == TOK_key_int)
-                && (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long
-                    || type_tok_kinds[2] == TOK_key_long)) {
-                if (type_tok_kinds[0] == TOK_key_unsigned || type_tok_kinds[1] == TOK_key_unsigned
-                    || type_tok_kinds[2] == TOK_key_unsigned) {
-                    *type_specifier = make_ULong();
-                    EARLY_EXIT;
-                }
-                else if (type_tok_kinds[0] == TOK_key_signed || type_tok_kinds[1] == TOK_key_signed
-                         || type_tok_kinds[2] == TOK_key_signed) {
-                    *type_specifier = make_Long();
-                    EARLY_EXIT;
-                }
-            }
-            break;
-        }
+        // case 2: {
+        //     if (type_tok_kinds[0] == TOK_key_unsigned || type_tok_kinds[1] == TOK_key_unsigned) {
+        //         if (type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int) {
+        //             *type_specifier = make_UInt();
+        //             EARLY_EXIT;
+        //         }
+        //         else if (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long) {
+        //             *type_specifier = make_ULong();
+        //             EARLY_EXIT;
+        //         }
+        //         else if (type_tok_kinds[0] == TOK_key_char || type_tok_kinds[1] == TOK_key_char) {
+        //             *type_specifier = make_UChar();
+        //             EARLY_EXIT;
+        //         }
+        //     }
+        //     else if (type_tok_kinds[0] == TOK_key_signed || type_tok_kinds[1] == TOK_key_signed) {
+        //         if (type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int) {
+        //             *type_specifier = make_Int();
+        //             EARLY_EXIT;
+        //         }
+        //         else if (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long) {
+        //             *type_specifier = make_Long();
+        //             EARLY_EXIT;
+        //         }
+        //         else if (type_tok_kinds[0] == TOK_key_char || type_tok_kinds[1] == TOK_key_char) {
+        //             *type_specifier = make_SChar();
+        //             EARLY_EXIT;
+        //         }
+        //     }
+        //     else if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int)
+        //              && (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long)) {
+        //         *type_specifier = make_Long();
+        //         EARLY_EXIT;
+        //     }
+        //     break;
+        // }
+        // case 3: {
+        //     if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int
+        //             || type_tok_kinds[2] == TOK_key_int)
+        //         && (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long
+        //             || type_tok_kinds[2] == TOK_key_long)) {
+        //         if (type_tok_kinds[0] == TOK_key_unsigned || type_tok_kinds[1] == TOK_key_unsigned
+        //             || type_tok_kinds[2] == TOK_key_unsigned) {
+        //             *type_specifier = make_ULong();
+        //             EARLY_EXIT;
+        //         }
+        //         else if (type_tok_kinds[0] == TOK_key_signed || type_tok_kinds[1] == TOK_key_signed
+        //                  || type_tok_kinds[2] == TOK_key_signed) {
+        //             *type_specifier = make_Long();
+        //             EARLY_EXIT;
+        //         }
+        //     }
+        //     break;
+        // }
         default:
             break;
     }
