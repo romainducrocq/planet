@@ -14,48 +14,48 @@
 
 const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
     switch (tok_kind) {
-        case TOK_assign_shiftleft:
-            return "<<=";
-        case TOK_assign_shiftright:
-            return ">>=";
-        case TOK_unop_incr:
-            return "++";
-        case TOK_unop_decr:
-            return "--";
-        case TOK_binop_shiftleft:
-            return "<<";
-        case TOK_binop_shiftright:
-            return ">>";
-        case TOK_binop_and:
-            return "&&";
-        case TOK_binop_or:
-            return "||";
-        case TOK_binop_eq:
-            return "==";
-        case TOK_binop_ne:
-            return "!=";
-        case TOK_binop_le:
-            return "<=";
-        case TOK_binop_ge:
-            return ">=";
-        case TOK_assign_add:
-            return "+=";
-        case TOK_assign_subtract:
-            return "-=";
-        case TOK_assign_multiply:
-            return "*=";
-        case TOK_assign_divide:
-            return "/=";
-        case TOK_assign_remainder:
-            return "%=";
-        case TOK_assign_bitand:
-            return "&=";
-        case TOK_assign_bitor:
-            return "|=";
-        case TOK_assign_xor:
-            return "^=";
-        case TOK_structop_ptr:
-            return "->";
+        // case TOK_assign_shiftleft:
+        //     return "<<=";
+        // case TOK_assign_shiftright:
+        //     return ">>=";
+        // case TOK_unop_incr:
+        //     return "++";
+        // case TOK_unop_decr:
+        //     return "--";
+        // case TOK_binop_shiftleft:
+        //     return "<<";
+        // case TOK_binop_shiftright:
+        //     return ">>";
+        // case TOK_binop_and:
+        //     return "&&";
+        // case TOK_binop_or:
+        //     return "||";
+        // case TOK_binop_eq:
+        //     return "==";
+        // case TOK_binop_ne:
+        //     return "!=";
+        // case TOK_binop_le:
+        //     return "<=";
+        // case TOK_binop_ge:
+        //     return ">=";
+        // case TOK_assign_add:
+        //     return "+=";
+        // case TOK_assign_subtract:
+        //     return "-=";
+        // case TOK_assign_multiply:
+        //     return "*=";
+        // case TOK_assign_divide:
+        //     return "/=";
+        // case TOK_assign_remainder:
+        //     return "%=";
+        // case TOK_assign_bitand:
+        //     return "&=";
+        // case TOK_assign_bitor:
+        //     return "|=";
+        // case TOK_assign_xor:
+        //     return "^=";
+        // case TOK_structop_ptr:
+        //     return "->";
         case TOK_open_paren:
             return "(";
         case TOK_close_paren:
@@ -64,94 +64,94 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "{";
         case TOK_close_brace:
             return "}";
-        case TOK_open_bracket:
-            return "[";
-        case TOK_close_bracket:
-            return "]";
+        // case TOK_open_bracket:
+        //     return "[";
+        // case TOK_close_bracket:
+        //     return "]";
         case TOK_semicolon:
             return ";";
-        case TOK_unop_complement:
-            return "~";
-        case TOK_unop_neg:
-            return "-";
-        case TOK_unop_not:
-            return "!";
-        case TOK_binop_add:
-            return "+";
-        case TOK_binop_multiply:
-            return "*";
-        case TOK_binop_divide:
-            return "/";
-        case TOK_binop_remainder:
-            return "%";
-        case TOK_binop_bitand:
-            return "&";
-        case TOK_binop_bitor:
-            return "|";
-        case TOK_binop_xor:
-            return "^";
-        case TOK_binop_lt:
-            return "<";
-        case TOK_binop_gt:
-            return ">";
-        case TOK_assign:
-            return "=";
-        case TOK_ternary_if:
-            return "?";
-        case TOK_ternary_else:
-            return ":";
-        case TOK_comma_separator:
-            return ",";
-        case TOK_structop_member:
-            return ".";
-        case TOK_key_char:
-            return "char";
+        // case TOK_unop_complement:
+        //     return "~";
+        // case TOK_unop_neg:
+        //     return "-";
+        // case TOK_unop_not:
+        //     return "!";
+        // case TOK_binop_add:
+        //     return "+";
+        // case TOK_binop_multiply:
+        //     return "*";
+        // case TOK_binop_divide:
+        //     return "/";
+        // case TOK_binop_remainder:
+        //     return "%";
+        // case TOK_binop_bitand:
+        //     return "&";
+        // case TOK_binop_bitor:
+        //     return "|";
+        // case TOK_binop_xor:
+        //     return "^";
+        // case TOK_binop_lt:
+        //     return "<";
+        // case TOK_binop_gt:
+        //     return ">";
+        // case TOK_assign:
+        //     return "=";
+        // case TOK_ternary_if:
+        //     return "?";
+        // case TOK_ternary_else:
+        //     return ":";
+        // case TOK_comma_separator:
+        //     return ",";
+        // case TOK_structop_member:
+        //     return ".";
+        // case TOK_key_char:
+        //     return "char";
         case TOK_key_int:
             return "int";
-        case TOK_key_long:
-            return "long";
-        case TOK_key_double:
-            return "double";
-        case TOK_key_signed:
-            return "signed";
-        case TOK_key_unsigned:
-            return "unsigned";
+        // case TOK_key_long:
+        //     return "long";
+        // case TOK_key_double:
+        //     return "double";
+        // case TOK_key_signed:
+        //     return "signed";
+        // case TOK_key_unsigned:
+        //     return "unsigned";
         case TOK_key_void:
             return "void";
-        case TOK_key_struct:
-            return "struct";
-        case TOK_key_union:
-            return "union";
-        case TOK_key_sizeof:
-            return "sizeof";
+        // case TOK_key_struct:
+        //     return "struct";
+        // case TOK_key_union:
+        //     return "union";
+        // case TOK_key_sizeof:
+        //     return "sizeof";
         case TOK_key_return:
             return "return";
-        case TOK_key_if:
-            return "if";
-        case TOK_key_else:
-            return "else";
-        case TOK_key_goto:
-            return "goto";
-        case TOK_key_do:
-            return "do";
-        case TOK_key_while:
-            return "while";
-        case TOK_key_for:
-            return "for";
-        case TOK_key_switch:
-            return "switch";
-        case TOK_key_case:
-            return "case";
-        case TOK_key_default:
-            return "default";
-        case TOK_key_break:
-            return "break";
-        case TOK_key_continue:
-            return "continue";
-        case TOK_key_static:
-            return "static";
-        case TOK_key_extern:
-            return "extern";
+        // case TOK_key_if:
+        //     return "if";
+        // case TOK_key_else:
+        //     return "else";
+        // case TOK_key_goto:
+        //     return "goto";
+        // case TOK_key_do:
+        //     return "do";
+        // case TOK_key_while:
+        //     return "while";
+        // case TOK_key_for:
+        //     return "for";
+        // case TOK_key_switch:
+        //     return "switch";
+        // case TOK_key_case:
+        //     return "case";
+        // case TOK_key_default:
+        //     return "default";
+        // case TOK_key_break:
+        //     return "break";
+        // case TOK_key_continue:
+        //     return "continue";
+        // case TOK_key_static:
+        //     return "static";
+        // case TOK_key_extern:
+        //     return "extern";
         case TOK_identifier:
             return "identifier";
         case TOK_string_literal:
