@@ -11,6 +11,7 @@
 #include "frontend/parser/parser.h"
 
 #include "frontend/intermediate/idents.h"
+#include "parser/transpiler.h"
 
 // typedef struct AbstractDeclarator {
 //     shared_ptr_t(Type) derived_type;
@@ -2442,6 +2443,7 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
+    // transpiler.Hello();
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;

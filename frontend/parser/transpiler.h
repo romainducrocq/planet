@@ -12,8 +12,8 @@ class Transpiler {
         void Hello();
 };
 
-extern Transpiler transpiler;
-
 }
+
+extern cc::Transpiler transpiler;
 
 #endif
