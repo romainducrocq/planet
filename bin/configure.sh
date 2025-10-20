@@ -2,7 +2,7 @@
 
 BACKEND_PATH="$(readlink -f ../wheelcc)"
 PACKAGE_PATH="$(readlink -f ..)"
-PACKAGE_NAME="planet"
+PACKAGE_NAME="transpiler-planet"
 FILENAME_EXT="plx"
 
 function config_backend () {
