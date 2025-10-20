@@ -2177,7 +2177,8 @@ static error_t parse_direct_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor
         //     TRY(parse_arr_decltor_suffix(ctx, decltor));
         //     break;
         default:
-            break;
+            TRY(1); // TODO
+            // break;
     }
     FINALLY;
     CATCH_EXIT;
