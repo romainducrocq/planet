@@ -1,4 +1,4 @@
-int main(void) {
-    // test case w/ multi-digit constant
-    return 100;
+pub main(none) i32 {
+    #  test case w/ multi-digit constant
+    return 100
 }

@@ -1,10 +1,7 @@
-int
-main
-(
-void
-)
+pub main(none) i32 
+
+
+
 {
-return
-0
-;
+    return     0    
 }
