@@ -4,6 +4,12 @@
 #include <string>
 #include <vector>
 
+#if 1
+#define TRANSPILE(X) transpiler.X
+#else
+#define TRANSPILE(X)
+#endif
+
 struct Token;
 struct ErrorsContext;
 struct IdentifierContext;

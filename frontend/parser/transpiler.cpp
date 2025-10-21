@@ -123,5 +123,5 @@ void cc::Transpiler::print_lines() {
         }
         std::cout << line.buf << line.end;
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
 }

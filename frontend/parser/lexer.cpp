@@ -702,27 +702,27 @@ static error_t tokenize_file(Ctx ctx) {
     for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
 
-        transpiler.add_line();
+        TRANSPILE(add_line());
 
         for (ctx->match_at = 0; ctx->match_at < ctx->line_size; ctx->match_at += ctx->match_size) {
             TOKEN_KIND match_kind = is_comment ? match_comment_end(ctx) : match_token(ctx);
             TIdentifier match_tok = 0;
             switch (match_kind) {
                 case TOK_comment_line:
-                    transpiler.comment_line(ctx->line, ctx->match_at, ctx->line_size);
+                    TRANSPILE(comment_line(ctx->line, ctx->match_at, ctx->line_size));
                     goto Lbreak;
                 // case TOK_strip_preproc:
                     goto Lbreak;
                 case TOK_skip:
-                    transpiler.skip(is_comment, ctx->line, ctx->match_at, ctx->match_size);
+                    TRANSPILE(skip(is_comment, ctx->line, ctx->match_at, ctx->match_size));
                     goto Lcontinue;
                 case TOK_comment_start: {
-                    transpiler.comment_start();
+                    TRANSPILE(comment_start());
                     is_comment = true;
                     goto Lcontinue;
                 }
                 case TOK_comment_end: {
-                    transpiler.comment_end();
+                    TRANSPILE(comment_end());
                     is_comment = false;
                     goto Lcontinue;
                 }
