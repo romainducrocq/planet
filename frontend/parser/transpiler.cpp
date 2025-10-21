@@ -2,9 +2,16 @@
 #include "frontend/parser/lexer.h"
 #include "util/throw.h"
 #include "ast/ast.h"
+#include "ast/front_ast.h"
 
 #include <exception>
 #include <iostream>
+
+typedef struct Declarator {
+    TIdentifier name;
+    shared_ptr_t(Type) derived_type;
+    vector_t(TIdentifier) params;
+} Declarator;
 
 cc::Transpiler transpiler;
 
@@ -23,6 +30,11 @@ void cc::Transpiler::set_identifiers_ctx(IdentifierContext* identifiers) {
 void cc::Transpiler::set_linenum(const Token* tok) {
     linenum = errors->token_infos[tok->info_at].total_linenum;
 }
+
+// void cc::Transpiler::new_token(const Token* tok, std::string buf) {
+//     set_linenum(tok);
+//     append_buf(buf);
+// }
 
 void cc::Transpiler::keep_token(const Token* tok) {
     set_linenum(tok);
@@ -62,6 +74,25 @@ void cc::Transpiler::append_buf(const std::string& buf) {
 
 void cc::Transpiler::append_end(const std::string& end) {
     lines.back().end += end;
+}
+
+void cc::Transpiler::fun_decltor(const Declarator* decltor) {
+    append_identifier(decltor->name);
+    append_buf("(");
+    if (vec_empty(decltor->params)) {
+        append_buf("none");
+    }
+    else {
+        // TODO
+    }
+    append_buf(") ");
+}
+
+void cc::Transpiler::storage_class(const CStorageClass* storage_class) {
+    // TODO
+    if (storage_class->type == AST_CStorageClass_t) {
+        append_buf("pub ");
+    }
 }
 
 void cc::Transpiler::comment(const char* line, size_t match_at, size_t match_size) {

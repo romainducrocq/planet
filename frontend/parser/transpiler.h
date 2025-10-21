@@ -11,6 +11,8 @@
 #endif
 
 struct Token;
+struct Declarator;
+struct CStorageClass;
 struct ErrorsContext;
 struct IdentifierContext;
 
@@ -38,16 +40,19 @@ class Transpiler {
 
         void add_line();
         void break_line();
+        void set_linenum(const Token* tok);
+        // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
         void print_lines();
 
+        void fun_decltor(const Declarator* decltor);
+        void storage_class(const CStorageClass* storage_class);
         void comment_start();
         void comment_end();
         void comment_line(const char* line, size_t match_at, size_t line_size);
         void skip(bool is_comment, const char* line, size_t match_at, size_t match_size);
 
     private:
-        void set_linenum(const Token* tok);
         void incr_indent();
         void decr_indent();
         void append_buf(const std::string& buf);

@@ -2226,6 +2226,7 @@ static error_t parse_fun_declaration(
     unique_ptr_t(CBlock) body = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
+    TRANSPILE(fun_decltor(decltor));
     TRY(peek_next(ctx));
     // if (ctx->peek_tok->tok_kind == TOK_semicolon) {
     //     TRY(pop_next(ctx));
@@ -2385,8 +2386,8 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
     Declarator decltor = {0, sptr_new(), vec_new()};
     CATCH_ENTER;
     CStorageClass storage_class = init_CStorageClass();
-    // TRY(peek_next(ctx));
-    // switch (ctx->peek_tok->tok_kind) {
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
     //     case TOK_key_struct:
     //     case TOK_key_union: {
     //         TRY(peek_next_i(ctx, 2));
@@ -2399,10 +2400,12 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
     //                 break;
     //         }
     //     }
-    //     default:
-    //         break;
-    // }
+        default:
+            TRANSPILE(set_linenum(ctx->peek_tok));
+            break;
+    }
     TRY(parse_decltor_decl(ctx, &decltor, &storage_class));
+    TRANSPILE(storage_class(&storage_class));
     if (decltor.derived_type->type == AST_FunType_t) {
         TRY(parse_fun_decl(ctx, &storage_class, &decltor, declaration));
     }
