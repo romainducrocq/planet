@@ -22,6 +22,36 @@ void cc::Transpiler::append_end(const std::string& end) {
     lines.back().end += end;
 }
 
+void cc::Transpiler::comment(const char* line, size_t match_at, size_t match_size) {
+    append_end(std::string(line).substr(match_at, match_size));
+}
+
+void cc::Transpiler::comment_start() {
+    append_end("# ");
+}
+
+void cc::Transpiler::comment_end() {
+    append_end("\n");
+}
+
+void cc::Transpiler::comment_line(const char* line, size_t match_at, size_t line_size) {
+    comment_start();
+    comment(line, match_at + 2, line_size);
+}
+
+void cc::Transpiler::skip(bool is_comment, const char* line, size_t match_at, size_t match_size) {
+    if (is_comment) {
+        for (char c: lines.back().end) {
+            if (c == '#') {
+                goto Lelse;
+            }
+        }
+        comment_start();
+        Lelse:
+        comment(line, match_at, match_size);
+    }
+}
+
 void cc::Transpiler::break_line() {
     lines.back().buf += "\n";
     for (int i = 0; i < indent; ++i) {

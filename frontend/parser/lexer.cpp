@@ -709,22 +709,20 @@ static error_t tokenize_file(Ctx ctx) {
             TIdentifier match_tok = 0;
             switch (match_kind) {
                 case TOK_comment_line:
-                    transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->line_size));
+                    transpiler.comment_line(ctx->line, ctx->match_at, ctx->line_size);
                     goto Lbreak;
                 // case TOK_strip_preproc:
                     goto Lbreak;
                 case TOK_skip:
-                    if (is_comment) {
-                        transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->match_size));
-                    }
+                    transpiler.skip(is_comment, ctx->line, ctx->match_at, ctx->match_size);
                     goto Lcontinue;
                 case TOK_comment_start: {
-                    transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->match_size));
+                    transpiler.comment_start();
                     is_comment = true;
                     goto Lcontinue;
                 }
                 case TOK_comment_end: {
-                    transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->match_size) + "\n");
+                    transpiler.comment_end();
                     is_comment = false;
                     goto Lcontinue;
                 }
