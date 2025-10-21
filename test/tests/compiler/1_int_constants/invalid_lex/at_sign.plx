@@ -1,5 +1,5 @@
-/* The @ symbol doesn't appear in any C tokens,
-   except inside string or character literals. */
-int main(void) {
-    return 0@1;
+# The ` symbol doesn't appear in any tokens,
+#   except inside string or character literals.
+pub main(none) i32 {
+    return 0`1
 }

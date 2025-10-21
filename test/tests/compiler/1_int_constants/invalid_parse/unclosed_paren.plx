@@ -1,3 +1,3 @@
-int main( {
-    return 0;
+pub main( {
+    return 0
 }

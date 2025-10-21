@@ -1,3 +1,3 @@
-int main(void) {
-    RETURN 0;
+pub main(none) i32 {
+    RETURN 0
 }
