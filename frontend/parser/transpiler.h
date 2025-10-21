@@ -11,6 +11,7 @@
 #endif
 
 struct Token;
+struct Type;
 struct Declarator;
 struct CStorageClass;
 struct ErrorsContext;
@@ -45,6 +46,7 @@ class Transpiler {
         void keep_token(const Token* tok);
         void print_lines();
 
+        void derived_type(const Type* derived_type);
         void fun_decltor(const Declarator* decltor);
         void storage_class(const CStorageClass* storage_class);
         void comment_start();

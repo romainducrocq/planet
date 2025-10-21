@@ -76,6 +76,17 @@ void cc::Transpiler::append_end(const std::string& end) {
     lines.back().end += end;
 }
 
+void cc::Transpiler::derived_type(const Type* derived_type) {
+    // TODO
+    switch (derived_type->type) {
+        case AST_Int_t:
+            append_buf("i32");
+            break;
+        default:
+            throw std::runtime_error("invalid type");
+    }
+}
+
 void cc::Transpiler::fun_decltor(const Declarator* decltor) {
     append_identifier(decltor->name);
     append_buf("(");
@@ -86,6 +97,9 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor) {
         // TODO
     }
     append_buf(") ");
+    // TODO
+    derived_type(decltor->derived_type->get._FunType.ret_type);
+    append_buf(" ");
 }
 
 void cc::Transpiler::storage_class(const CStorageClass* storage_class) {
