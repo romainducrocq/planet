@@ -864,6 +864,7 @@ error_t lex_c_code(const string_t filename, vector_t(const char*) * includedirs,
         ctx.total_linenum = 0;
     }
     CATCH_ENTER;
+    TRANSPILE(set_filename(filename));
     TRY(open_fread(ctx.fileio, filename));
     {
         FileOpenLine fopen_line = {1, 1, str_new(NULL)};

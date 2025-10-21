@@ -29,6 +29,8 @@ class Transpiler {
         int indent = 0;
         size_t linenum = 1;
         std::vector<Line> lines = {};
+
+        std::string filename = "";
         const ErrorsContext* errors = nullptr;
         IdentifierContext* identifiers = nullptr;
 
@@ -36,6 +38,7 @@ class Transpiler {
         Transpiler() = default;
         ~Transpiler() = default;
 
+        void set_filename(const char* filename);
         void set_errors_ctx(const ErrorsContext* errrors);
         void set_identifiers_ctx(IdentifierContext* identifiers);
 
@@ -45,6 +48,7 @@ class Transpiler {
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
         void print_lines();
+        void write_lines();
 
         void derived_type(const Type* derived_type);
         void fun_decltor(const Declarator* decltor);
@@ -61,6 +65,7 @@ class Transpiler {
         void append_end(const std::string& end);
         void append_identifier(size_t identifier);
         void comment(const char* line, size_t match_at, size_t match_size);
+        void format_line(Line& line, size_t i);
     };
 }
 

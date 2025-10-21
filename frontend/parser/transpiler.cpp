@@ -6,6 +6,7 @@
 
 #include <exception>
 #include <iostream>
+#include <fstream>
 
 typedef struct Declarator {
     TIdentifier name;
@@ -17,6 +18,10 @@ cc::Transpiler transpiler;
 
 void cc::Transpiler::add_line() {
     lines.push_back({"", ""});
+}
+
+void cc::Transpiler::set_filename(const char* filename) {
+    this->filename = std::string(filename) + ".transpile";
 }
 
 void cc::Transpiler::set_errors_ctx(const ErrorsContext* errors) {
@@ -155,41 +160,56 @@ void cc::Transpiler::decr_indent() {
     indent--;
 }
 
+void cc::Transpiler::format_line(Line& line, size_t i) {
+    if (line.buf.empty()) {
+        if (line.end.empty()) {
+            line.buf +=  "\n";
+        }
+        else {
+            // this just is to align the comments
+            // ok to remove if buggy
+            int indent_end = 0;
+            for (size_t j = i + 1; j < lines.size(); ++j) {
+                const auto& next_line = lines[j];
+                if (!next_line.buf.empty()) {
+                    int blank_end = 0;
+                    while (blank_end < next_line.buf.size() &&
+                        next_line.buf[blank_end] == ' ') {
+                        blank_end++;
+                    }
+                    if (next_line.buf[blank_end] != '\n'
+                        && blank_end % 4 == 0) {
+                        indent_end = blank_end / 4;
+                        break;
+                    }
+                }
+            }
+            for (size_t j = 0; j < indent_end; ++j) {
+                line.buf += "    ";
+            }
+        }
+    }
+    else if (!line.end.empty() && line.buf.back() == '\n') {
+        line.buf.back() = ' ';
+    }   
+}
+
 void cc::Transpiler::print_lines() {
     for (size_t i = 0; i < lines.size(); ++i) {
         auto& line = lines[i];
-        if (line.buf.empty()) {
-            if (line.end.empty()) {
-                line.buf +=  "\n";
-            }
-            else {
-                // this just is to align the comments
-                // ok to remove if buggy
-                int indent_end = 0;
-                for (size_t j = i + 1; j < lines.size(); ++j) {
-                    const auto& next_line = lines[j];
-                    if (!next_line.buf.empty()) {
-                        int blank_end = 0;
-                        while (blank_end < next_line.buf.size() &&
-                            next_line.buf[blank_end] == ' ') {
-                            blank_end++;
-                        }
-                        if (next_line.buf[blank_end] != '\n'
-                            && blank_end % 4 == 0) {
-                            indent_end = blank_end / 4;
-                            break;
-                        }
-                    }
-                }
-                for (size_t j = 0; j < indent_end; ++j) {
-                    line.buf += "    ";
-                }
-            }
-        }
-        else if (!line.end.empty() && line.buf.back() == '\n') {
-            line.buf.back() = ' ';
-        }
+        format_line(line, i);
         std::cout << line.buf << line.end;
     }
+    // std::cout << std::endl;
+}
+
+void cc::Transpiler::write_lines() {
+    std::ofstream out(filename);
+    for (size_t i = 0; i < lines.size(); ++i) {
+        auto& line = lines[i];
+        format_line(line, i);
+        out << line.buf << line.end;
+    }
+    out.close();
     // std::cout << std::endl;
 }
