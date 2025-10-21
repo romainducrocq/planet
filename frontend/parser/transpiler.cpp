@@ -158,13 +158,36 @@ void cc::Transpiler::decr_indent() {
 void cc::Transpiler::print_lines() {
     for (size_t i = 0; i < lines.size(); ++i) {
         auto& line = lines[i];
-        if (line.buf.empty() && line.end.empty()) {
-            line.buf +=  "\n";
-        }
-        else if (!line.buf.empty() && !line.end.empty()) {
-            if (line.buf.back() == '\n') {
-                line.buf.back() = ' ';
+        if (line.buf.empty()) {
+            if (line.end.empty()) {
+                line.buf +=  "\n";
             }
+            else {
+                // this just is to align the comments
+                // ok to remove if buggy
+                int indent_end = 0;
+                for (size_t j = i + 1; j < lines.size(); ++j) {
+                    const auto& next_line = lines[j];
+                    if (!next_line.buf.empty()) {
+                        int blank_end = 0;
+                        while (blank_end < next_line.buf.size() &&
+                            next_line.buf[blank_end] == ' ') {
+                            blank_end++;
+                        }
+                        if (next_line.buf[blank_end] != '\n'
+                            && blank_end % 4 == 0) {
+                            indent_end = blank_end / 4;
+                            break;
+                        }
+                    }
+                }
+                for (size_t j = 0; j < indent_end; ++j) {
+                    line.buf += "    ";
+                }
+            }
+        }
+        else if (!line.end.empty() && line.buf.back() == '\n') {
+            line.buf.back() = ' ';
         }
         std::cout << line.buf << line.end;
     }
