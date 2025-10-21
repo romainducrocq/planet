@@ -1,4 +1,7 @@
-pub main(none) i32 {
+pub main(
+    none
+
+) i32 {
  
 
         
