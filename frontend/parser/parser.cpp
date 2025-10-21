@@ -2443,7 +2443,7 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // transpiler.Hello();
+    transpiler.print_lines();
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;

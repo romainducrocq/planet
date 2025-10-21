@@ -7,6 +7,8 @@
 #include "frontend/parser/errors.h"
 #include "frontend/parser/lexer.h"
 
+#include "parser/transpiler.h"
+
 ElementKey(hash_t);
 
 typedef struct LexerContext {
@@ -700,20 +702,29 @@ static error_t tokenize_file(Ctx ctx) {
     for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
 
+        transpiler.append_line();
+
         for (ctx->match_at = 0; ctx->match_at < ctx->line_size; ctx->match_at += ctx->match_size) {
             TOKEN_KIND match_kind = is_comment ? match_comment_end(ctx) : match_token(ctx);
             TIdentifier match_tok = 0;
             switch (match_kind) {
                 case TOK_comment_line:
+                    transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->line_size));
+                    goto Lbreak;
                 // case TOK_strip_preproc:
                     goto Lbreak;
                 case TOK_skip:
+                    if (is_comment) {
+                        transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->match_size));
+                    }
                     goto Lcontinue;
                 case TOK_comment_start: {
+                    transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->match_size));
                     is_comment = true;
                     goto Lcontinue;
                 }
                 case TOK_comment_end: {
+                    transpiler.append_end(std::string(ctx->line).substr(ctx->match_at, ctx->match_size) + "\n");
                     is_comment = false;
                     goto Lcontinue;
                 }

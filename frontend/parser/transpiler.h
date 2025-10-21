@@ -2,22 +2,34 @@
 #define _TRANSPILER_H_
 
 #include <string>
-#include <unordered_map>
 #include <vector>
+
+struct Token;
 
 namespace cc {
 
 class Transpiler {
+    struct Line {
+        std::string buf;
+        std::string end;
+    };
+
     private:
-        std::unordered_map<size_t, std::string> buffer_lines;
-        std::vector<std::string> lines;
+        int indent = 0;
+        std::vector<Line> lines = {};
 
     public:
         Transpiler() = default;
         ~Transpiler() = default;
 
-        void add_buffer_line(size_t at, const std::string& line);
-        void append_text(const std::string& text);
+        void append_line();
+        void append_tok(const Token& tok);
+        void append_buf(const std::string& buf);
+        void append_end(const std::string& end);
+        void break_line();
+        void incr_indent();
+        void decr_indent();
+        void print_lines();
 };
 
 }
