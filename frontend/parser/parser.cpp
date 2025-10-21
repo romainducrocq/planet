@@ -208,6 +208,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     // }
     if (ctx->next_tok->tok_kind == TOK_int_const && value <= 2147483647l) {
         *constant = parse_int_const(value);
+        transpiler.keep_token(ctx->next_tok);
     }
     // else {
     //     *constant = parse_long_const(value);
@@ -1182,6 +1183,7 @@ static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    transpiler.keep_token(ctx->next_tok);
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind != TOK_semicolon) {
         TRY(parse_exp(ctx, 0, &exp));
@@ -1641,6 +1643,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
         TRY(parse_block_item(ctx, &block_item));
         vec_move_back(block_items, block_item);
         TRY(peek_next(ctx));
+        transpiler.break_line();
     }
     *block = make_CB(&block_items);
     FINALLY;
@@ -1657,9 +1660,13 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    transpiler.keep_token(ctx->next_tok);
+    transpiler.break_line();
     TRY(parse_b_block(ctx, block));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace));
+    transpiler.keep_token(ctx->next_tok);
+    transpiler.break_line();
     FINALLY;
     CATCH_EXIT;
 }
@@ -2439,6 +2446,8 @@ error_t parse_tokens(
         ctx.p_toks = tokens;
     }
     CATCH_ENTER;
+    transpiler.set_errors_ctx(errors);
+    transpiler.set_identifiers_ctx(identifiers);
     TRY(parse_program(&ctx, c_ast));
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 

@@ -1,21 +1,63 @@
 #include "parser/transpiler.h"
-#include "parser/tokens.h"
+#include "frontend/parser/lexer.h"
+#include "util/throw.h"
+#include "ast/ast.h"
 
 #include <exception>
 #include <iostream>
 
 cc::Transpiler transpiler;
 
-void cc::Transpiler::append_line() {
+void cc::Transpiler::add_line() {
     lines.push_back({"", ""});
 }
 
-void cc::Transpiler::append_tok(const Token& tok) {
+void cc::Transpiler::set_errors_ctx(const ErrorsContext* errors) {
+    this->errors = errors;
+}
 
+void cc::Transpiler::set_identifiers_ctx(IdentifierContext* identifiers) {
+    this->identifiers = identifiers;
+}
+
+void cc::Transpiler::set_linenum(const Token* tok) {
+    linenum = errors->token_infos[tok->info_at].total_linenum;
+}
+
+void cc::Transpiler::keep_token(const Token* tok) {
+    set_linenum(tok);
+    switch (tok->tok_kind) {
+        case TOK_open_brace:
+            append_buf("{");
+            incr_indent();
+            break;
+        case TOK_close_brace:
+            decr_indent();
+            append_buf("}");
+            break;
+        case TOK_key_return:
+            append_buf("return ");
+            break;
+        case TOK_int_const:
+            append_identifier(tok->tok);
+            break;
+        default:
+            break;
+    }
+}
+
+void cc::Transpiler::append_identifier(size_t identifier) {
+    append_buf(map_get(identifiers->hash_table, identifier));
 }
 
 void cc::Transpiler::append_buf(const std::string& buf) {
-    lines.back().buf += buf;
+    if (lines[linenum - 1].buf.empty() || lines[linenum - 1].buf.back() == '\n') {
+        for (int i = 0; i < indent; ++i) {
+            lines[linenum - 1].buf += "    ";
+        }
+    }
+
+    lines[linenum - 1].buf += buf;
 }
 
 void cc::Transpiler::append_end(const std::string& end) {
@@ -53,10 +95,7 @@ void cc::Transpiler::skip(bool is_comment, const char* line, size_t match_at, si
 }
 
 void cc::Transpiler::break_line() {
-    lines.back().buf += "\n";
-    for (int i = 0; i < indent; ++i) {
-        lines.back().buf += "    ";
-    }
+    append_buf("\n");
 }
 
 void cc::Transpiler::incr_indent() {
@@ -78,7 +117,9 @@ void cc::Transpiler::print_lines() {
             line.buf +=  "\n";
         }
         else if (!line.buf.empty() && !line.end.empty()) {
-            line.buf += " ";
+            if (line.buf.back() == '\n') {
+                line.buf.back() = ' ';
+            }
         }
         std::cout << line.buf << line.end;
     }

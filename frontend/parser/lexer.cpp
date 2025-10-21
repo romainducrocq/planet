@@ -702,7 +702,7 @@ static error_t tokenize_file(Ctx ctx) {
     for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
 
-        transpiler.append_line();
+        transpiler.add_line();
 
         for (ctx->match_at = 0; ctx->match_at < ctx->line_size; ctx->match_at += ctx->match_size) {
             TOKEN_KIND match_kind = is_comment ? match_comment_end(ctx) : match_token(ctx);
