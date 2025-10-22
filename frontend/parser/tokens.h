@@ -31,10 +31,7 @@ typedef enum TOKEN_KIND {
     // TOK_assign_xor,
     // TOK_structop_ptr,
 
-    TOK_comment_line,
-    TOK_comment_start,
-    TOK_comment_end,
-
+    TOK_line_break,
     TOK_open_paren,
     TOK_close_paren,
     TOK_open_brace,
@@ -95,7 +92,6 @@ typedef enum TOKEN_KIND {
     TOK_dbl_const,
 
     // TOK_include_preproc,
-    // TOK_strip_preproc,
 
     TOK_error
 } TOKEN_KIND;

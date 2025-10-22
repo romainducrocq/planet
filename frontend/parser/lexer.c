@@ -41,7 +41,7 @@ static char get_char(Ctx ctx) {
     }
 }
 
-#define LEX_SPACE ' ' : case '\n' : case '\r' : case '\t'
+#define LEX_SPACE ' ' : case '\t'
 
 #define LEX_DIGIT '0' : case '1' : case '2' : case '3' : case '4' : case '5' : case '6' : case '7' : case '8' : case '9'
 
@@ -548,21 +548,14 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //         return TOK_binop_multiply;
         //     }
         // }
-        case '/': {
-            if (match_char(ctx, '/')) {
-                return TOK_comment_line;
-            }
-            else if (match_char(ctx, '*')) {
-                return TOK_comment_start;
-            }
-            // else if (match_char(ctx, '=')) {
-            //     return TOK_assign_divide;
-            // }
-            // else {
-            //     return TOK_binop_divide;
-            // }
-            return TOK_error; // TODO
-        }
+        // case '/': {
+        //     if (match_char(ctx, '=')) {
+        //         return TOK_assign_divide;
+        //     }
+        //     else {
+        //         return TOK_binop_divide;
+        //     }
+        // }
         // case '%': {
         //     if (match_char(ctx, '=')) {
         //         return TOK_assign_remainder;
@@ -641,8 +634,6 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //             return TOK_structop_member;
         //     }
         // }
-        // case '#':
-        //     return match_preproc(ctx);
         // case '\'':
         //     return match_char_const(ctx, false);
         // case '"':
@@ -651,28 +642,16 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return match_const(ctx);
         case LEX_LETTER:
             return match_identifier(ctx);
+        case '#':
+        case '\n':
+        case '\r':
+            return TOK_line_break;
         case LEX_SPACE:
         case '\f':
         case '\v':
             return TOK_skip;
         default:
             return TOK_error;
-    }
-}
-
-static TOKEN_KIND match_comment_end(Ctx ctx) {
-    ctx->match_size = 1;
-    switch (ctx->line[ctx->match_at]) {
-        case '*': {
-            if (match_char(ctx, '/')) {
-                return TOK_comment_end;
-            }
-            else {
-                return TOK_skip;
-            }
-            default:
-                return TOK_skip;
-        }
     }
 }
 
@@ -696,27 +675,18 @@ static size_t push_token_info(Ctx ctx) {
 static error_t tokenize_file(Ctx ctx) {
     string_t match = str_new(NULL);
     CATCH_ENTER;
-    bool is_comment = false;
     for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
 
         for (ctx->match_at = 0; ctx->match_at < ctx->line_size; ctx->match_at += ctx->match_size) {
-            TOKEN_KIND match_kind = is_comment ? match_comment_end(ctx) : match_token(ctx);
+            TOKEN_KIND match_kind = match_token(ctx);
             TIdentifier match_tok = 0;
             switch (match_kind) {
-                case TOK_comment_line:
-                // case TOK_strip_preproc:
-                    goto Lbreak;
+                // case TOK_line_break:
+                //     // if in parens
+                //     goto Lbreak;
                 case TOK_skip:
                     goto Lcontinue;
-                case TOK_comment_start: {
-                    is_comment = true;
-                    goto Lcontinue;
-                }
-                case TOK_comment_end: {
-                    is_comment = false;
-                    goto Lcontinue;
-                }
                 // case TOK_include_preproc:
                 //     TRY(tokenize_include(ctx, linenum));
                 //     goto Lcontinue;
@@ -749,6 +719,9 @@ static error_t tokenize_file(Ctx ctx) {
             size_t info_at = push_token_info(ctx);
             Token token = {match_kind, match_tok, info_at};
             vec_push_back(*ctx->p_toks, token);
+            if (match_kind == TOK_line_break) {
+                break;
+            }
         }
     }
     FINALLY;
