@@ -66,6 +66,7 @@ typedef enum TOKEN_KIND {
     // TOK_key_unsigned,
     TOK_key_void, // TODO rm
     TOK_key_none,
+    TOK_key_fn,
     // TOK_key_struct,
     // TOK_key_union,
     // TOK_key_sizeof,
