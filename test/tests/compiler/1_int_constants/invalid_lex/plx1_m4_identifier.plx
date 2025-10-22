@@ -1,3 +1,3 @@
-pub m4_main(none) i32 {
+pub fn m4_main(none) i32 {
     return 0
 }

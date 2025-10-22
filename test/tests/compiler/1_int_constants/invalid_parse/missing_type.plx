@@ -2,6 +2,6 @@
 # and return type would default to 'int'
 # GCC/Clang will compile it (with a warning)
 # for backwards compatibility
-pub main(none) {
+pub fn main(none) {
     return 0
 }

@@ -1,4 +1,4 @@
 pub 
-main(none) i32 {
+fn main(none) i32 {
     return 0
 }
