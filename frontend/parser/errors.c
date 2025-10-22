@@ -120,6 +120,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "unsigned";
         case TOK_key_none:
             return "none";
+        case TOK_key_fn:
+            return "fn";
         // case TOK_key_struct:
         //     return "struct";
         // case TOK_key_union:

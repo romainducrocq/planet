@@ -371,12 +371,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
-        // case 'f': {
-        //     if (match_chars(ctx, "or", 2) && !match_word(ctx)) {
-        //         return TOK_key_for;
-        //     }
-        //     break;
-        // }
+        case 'f': {
+            if (match_chars(ctx, "n", 1) && !match_word(ctx)) {
+                return TOK_key_fn;
+            }
+            break;
+        }
         // case 'g': {
         //     if (match_chars(ctx, "oto", 3) && !match_word(ctx)) {
         //         return TOK_key_goto;
