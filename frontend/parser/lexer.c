@@ -22,6 +22,7 @@ typedef struct LexerContext {
     vector_t(const char*) * p_includedirs;
     vector_t(const char*) * p_stdlibdirs;
     vector_t(Token) * p_toks;
+    size_t paren_depth;
     size_t total_linenum;
 } LexerContext;
 
@@ -682,14 +683,28 @@ static error_t tokenize_file(Ctx ctx) {
             TOKEN_KIND match_kind = match_token(ctx);
             TIdentifier match_tok = 0;
             switch (match_kind) {
-                // case TOK_line_break:
-                //     // if in parens
-                //     goto Lbreak;
                 case TOK_skip:
                     goto Lcontinue;
                 // case TOK_include_preproc:
                 //     TRY(tokenize_include(ctx, linenum));
                 //     goto Lcontinue;
+                case TOK_line_break: {
+                    if (ctx->paren_depth > 0) {
+                        goto Lbreak;
+                    }
+                    goto Lpass;
+                }
+                case TOK_open_paren: {
+                    ctx->paren_depth++;
+                    goto Lpass;
+                }
+                case TOK_close_paren: {
+                    if (ctx->paren_depth == 0) {
+                        THROW_ABORT; // TODO
+                    }
+                    ctx->paren_depth--;
+                    goto Lpass;
+                }
                 case TOK_identifier:
                 // case TOK_string_literal:
                 // case TOK_char_const:
@@ -825,6 +840,7 @@ error_t lex_c_code(const string_t filename, vector_t(const char*) * includedirs,
 //         vec_push_back(*ctx.p_stdlibdirs, "/usr/local/include/");
 // #endif
         ctx.p_toks = tokens;
+        ctx.paren_depth = 0;
         ctx.total_linenum = 0;
     }
     CATCH_ENTER;
