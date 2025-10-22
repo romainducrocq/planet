@@ -58,12 +58,14 @@ typedef enum TOKEN_KIND {
     // TOK_structop_member,
 
     // TOK_key_char,
-    TOK_key_int,
+    TOK_key_int, // TODO rm
+    TOK_key_i32,
     // TOK_key_long,
     // TOK_key_double,
     // TOK_key_signed,
     // TOK_key_unsigned,
-    TOK_key_void,
+    TOK_key_void, // TODO rm
+    TOK_key_none,
     // TOK_key_struct,
     // TOK_key_union,
     // TOK_key_sizeof,
@@ -79,6 +81,7 @@ typedef enum TOKEN_KIND {
     // TOK_key_default,
     // TOK_key_break,
     // TOK_key_continue,
+    TOK_key_pub,
     // TOK_key_static,
     // TOK_key_extern,
 

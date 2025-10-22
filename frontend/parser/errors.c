@@ -56,6 +56,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "^=";
         // case TOK_structop_ptr:
         //     return "->";
+        case TOK_line_break:
+            return "line break";
         case TOK_open_paren:
             return "(";
         case TOK_close_paren:
@@ -106,8 +108,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return ".";
         // case TOK_key_char:
         //     return "char";
-        case TOK_key_int:
-            return "int";
+        case TOK_key_i32:
+            return "i32";
         // case TOK_key_long:
         //     return "long";
         // case TOK_key_double:
@@ -116,8 +118,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "signed";
         // case TOK_key_unsigned:
         //     return "unsigned";
-        case TOK_key_void:
-            return "void";
+        case TOK_key_none:
+            return "none";
         // case TOK_key_struct:
         //     return "struct";
         // case TOK_key_union:
@@ -148,6 +150,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "break";
         // case TOK_key_continue:
         //     return "continue";
+        case TOK_key_pub:
+            return "pub";
         // case TOK_key_static:
         //     return "static";
         // case TOK_key_extern:

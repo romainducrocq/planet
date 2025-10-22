@@ -390,8 +390,8 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             //     }
             // }
             // else 
-            if (match_chars(ctx, "nt", 2) && !match_word(ctx)) {
-                return TOK_key_int;
+            if (match_chars(ctx, "32", 2) && !match_word(ctx)) {
+                return TOK_key_i32;
             }
             break;
         }
@@ -401,6 +401,18 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
+        case 'n': {
+            if (match_chars(ctx, "one", 3) && !match_word(ctx)) {
+                return TOK_key_none;
+            }
+            break;
+        }
+        case 'p': {
+            if (match_chars(ctx, "ub", 2) && !match_word(ctx)) {
+                return TOK_key_pub;
+            }
+            break;
+        }
         case 'r': {
             if (match_chars(ctx, "eturn", 5) && !match_word(ctx)) {
                 return TOK_key_return;
@@ -450,12 +462,6 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
-        case 'v': {
-            if (match_chars(ctx, "oid", 3) && !match_word(ctx)) {
-                return TOK_key_void;
-            }
-            break;
-        }
         // case 'w': {
         //     if (match_chars(ctx, "hile", 4) && !match_word(ctx)) {
         //         return TOK_key_while;
