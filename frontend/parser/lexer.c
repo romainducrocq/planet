@@ -401,6 +401,14 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
+        case 'm': {
+            if (match_chars(ctx, "4_", 2)) {
+                while (match_word(ctx)) {
+                }
+                return TOK_m4_prefix;
+            }
+            break;
+        }
         case 'n': {
             if (match_chars(ctx, "one", 3) && !match_word(ctx)) {
                 return TOK_key_none;
@@ -724,6 +732,11 @@ static error_t tokenize_file(Ctx ctx) {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
                     match_tok = make_string_identifier(ctx->identifiers, &match);
                     goto Lpass;
+                }
+                case TOK_m4_prefix: {
+                    match = get_match(ctx, ctx->match_at, ctx->match_size);
+                    size_t info_at = push_token_info(ctx);
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_invalid_tok, match));
                 }
                 case TOK_error: {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);

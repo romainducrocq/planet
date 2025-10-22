@@ -94,6 +94,7 @@ typedef enum TOKEN_KIND {
     TOK_ulong_const,
     TOK_dbl_const,
 
+    TOK_m4_prefix,
     // TOK_include_preproc,
 
     TOK_error
