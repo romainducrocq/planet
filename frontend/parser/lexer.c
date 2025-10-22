@@ -684,6 +684,7 @@ static error_t tokenize_file(Ctx ctx) {
     CATCH_ENTER;
     for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
+        bool is_empty = true;
 
         for (ctx->match_at = 0; ctx->match_at < ctx->line_size; ctx->match_at += ctx->match_size) {
             TOKEN_KIND match_kind = match_token(ctx);
@@ -695,7 +696,7 @@ static error_t tokenize_file(Ctx ctx) {
                 //     TRY(tokenize_include(ctx, linenum));
                 //     goto Lcontinue;
                 case TOK_line_break: {
-                    if (ctx->paren_depth > 0) {
+                    if (is_empty || ctx->paren_depth > 0) {
                         goto Lbreak;
                     }
                     goto Lpass;
@@ -743,6 +744,7 @@ static error_t tokenize_file(Ctx ctx) {
             if (match_kind == TOK_line_break) {
                 break;
             }
+            is_empty = false;
         }
     }
     FINALLY;
