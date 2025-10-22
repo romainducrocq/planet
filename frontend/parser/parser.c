@@ -16,11 +16,11 @@
 //     shared_ptr_t(Type) derived_type;
 // } AbstractDeclarator;
 
-typedef struct Declarator {
-    TIdentifier name;
-    shared_ptr_t(Type) derived_type;
-    vector_t(TIdentifier) params;
-} Declarator;
+// typedef struct Declarator {
+//     TIdentifier name;
+//     shared_ptr_t(Type) derived_type;
+//     vector_t(TIdentifier) params;
+// } Declarator;
 
 typedef struct ParserContext {
     ErrorsContext* errors;
@@ -96,21 +96,21 @@ static error_t peek_next(Ctx ctx) {
     CATCH_EXIT;
 }
 
-static error_t peek_next_i(Ctx ctx, size_t i) {
-    CATCH_ENTER;
-    if (i == 0) {
-        TRY(peek_next(ctx));
-        ctx->peek_tok_i = ctx->peek_tok;
-        EARLY_EXIT;
-    }
-    if (ctx->pop_idx + i >= vec_size(*ctx->p_toks)) {
-        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG_0(MSG_reached_eof));
-    }
+// static error_t peek_next_i(Ctx ctx, size_t i) {
+//     CATCH_ENTER;
+//     if (i == 0) {
+//         TRY(peek_next(ctx));
+//         ctx->peek_tok_i = ctx->peek_tok;
+//         EARLY_EXIT;
+//     }
+//     if (ctx->pop_idx + i >= vec_size(*ctx->p_toks)) {
+//         THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG_0(MSG_reached_eof));
+//     }
 
-    ctx->peek_tok_i = &(*ctx->p_toks)[ctx->pop_idx + i];
-    FINALLY;
-    CATCH_EXIT;
-}
+//     ctx->peek_tok_i = &(*ctx->p_toks)[ctx->pop_idx + i];
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
 // <identifier> ::= ? An identifier token ? => [a-zA-Z_]\w*
 static error_t parse_identifier(Ctx ctx, size_t i, TIdentifier* identifier) {
@@ -1941,8 +1941,8 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
 //     CATCH_EXIT;
 // }
 
-static error_t parse_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor);
-static error_t proc_decltor(Ctx ctx, const CDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor);
+// static error_t parse_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor);
+// static error_t proc_decltor(Ctx ctx, const CDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor);
 
 // static void proc_ident_decltor(const CIdent* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
 //     decltor->name = node->name;
@@ -1989,67 +1989,67 @@ static error_t proc_decltor(Ctx ctx, const CDeclarator* node, shared_ptr_t(Type)
 //     CATCH_EXIT;
 // }
 
-static error_t proc_fun_decltor(
-    Ctx ctx, const CFunDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
-    shared_ptr_t(Type) derived_type = sptr_new();
-    vector_t(TIdentifier) params = vec_new();
-    vector_t(shared_ptr_t(Type)) param_types = vec_new();
-    CATCH_ENTER;
-    if (node->decltor->type != AST_CIdent_t) {
-        THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG_0(MSG_derived_fun_decl));
-    }
+// static error_t proc_fun_decltor(
+//     Ctx ctx, const CFunDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
+//     shared_ptr_t(Type) derived_type = sptr_new();
+//     vector_t(TIdentifier) params = vec_new();
+//     vector_t(shared_ptr_t(Type)) param_types = vec_new();
+//     CATCH_ENTER;
+//     if (node->decltor->type != AST_CIdent_t) {
+//         THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG_0(MSG_derived_fun_decl));
+//     }
 
-    TIdentifier name;
-    vec_reserve(params, vec_size(node->param_list));
-    vec_reserve(param_types, vec_size(node->param_list));
-    // for (size_t i = 0; i < vec_size(node->param_list); ++i) {
-    //     TRY(proc_param_decltor(ctx, node->param_list[i], &params, &param_types));
-    // }
-    name = node->decltor->get._CIdent.name;
-    derived_type = make_FunType(&param_types, base_type);
-    decltor->name = name;
-    sptr_move(Type, derived_type, decltor->derived_type);
-    vec_move(params, decltor->params);
-    FINALLY;
-    vec_delete(params);
-    free_Type(&derived_type);
-    for (size_t i = 0; i < vec_size(param_types); ++i) {
-        free_Type(&param_types[i]);
-    }
-    vec_delete(param_types);
-    CATCH_EXIT;
-}
+//     TIdentifier name;
+//     vec_reserve(params, vec_size(node->param_list));
+//     vec_reserve(param_types, vec_size(node->param_list));
+//     // for (size_t i = 0; i < vec_size(node->param_list); ++i) {
+//     //     TRY(proc_param_decltor(ctx, node->param_list[i], &params, &param_types));
+//     // }
+//     name = node->decltor->get._CIdent.name;
+//     derived_type = make_FunType(&param_types, base_type);
+//     decltor->name = name;
+//     sptr_move(Type, derived_type, decltor->derived_type);
+//     vec_move(params, decltor->params);
+//     FINALLY;
+//     vec_delete(params);
+//     free_Type(&derived_type);
+//     for (size_t i = 0; i < vec_size(param_types); ++i) {
+//         free_Type(&param_types[i]);
+//     }
+//     vec_delete(param_types);
+//     CATCH_EXIT;
+// }
 
-static error_t proc_decltor(Ctx ctx, const CDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
-    CATCH_ENTER;
-    switch (node->type) {
-        // case AST_CIdent_t:
-        //     proc_ident_decltor(&node->get._CIdent, base_type, decltor);
-        //     break;
-        // case AST_CPointerDeclarator_t:
-        //     TRY(proc_ptr_decltor(ctx, &node->get._CPointerDeclarator, base_type, decltor));
-        //     break;
-        // case AST_CArrayDeclarator_t:
-        //     TRY(proc_arr_decltor(ctx, &node->get._CArrayDeclarator, base_type, decltor));
-        //     break;
-        case AST_CFunDeclarator_t:
-            TRY(proc_fun_decltor(ctx, &node->get._CFunDeclarator, base_type, decltor));
-            break;
-        default:
-            THROW_ABORT;
-    }
-    FINALLY;
-    CATCH_EXIT;
-}
+// static error_t proc_decltor(Ctx ctx, const CDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
+//     CATCH_ENTER;
+//     switch (node->type) {
+//         // case AST_CIdent_t:
+//         //     proc_ident_decltor(&node->get._CIdent, base_type, decltor);
+//         //     break;
+//         // case AST_CPointerDeclarator_t:
+//         //     TRY(proc_ptr_decltor(ctx, &node->get._CPointerDeclarator, base_type, decltor));
+//         //     break;
+//         // case AST_CArrayDeclarator_t:
+//         //     TRY(proc_arr_decltor(ctx, &node->get._CArrayDeclarator, base_type, decltor));
+//         //     break;
+//         case AST_CFunDeclarator_t:
+//             TRY(proc_fun_decltor(ctx, &node->get._CFunDeclarator, base_type, decltor));
+//             break;
+//         default:
+//             THROW_ABORT;
+//     }
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
-static error_t parse_ident_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
-    CATCH_ENTER;
-    TIdentifier name;
-    TRY(parse_identifier(ctx, 0, &name));
-    *decltor = make_CIdent(name);
-    FINALLY;
-    CATCH_EXIT;
-}
+// static error_t parse_ident_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+//     CATCH_ENTER;
+//     TIdentifier name;
+//     TRY(parse_identifier(ctx, 0, &name));
+//     *decltor = make_CIdent(name);
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
 // static error_t parse_simple_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
 //     CATCH_ENTER;
@@ -2062,23 +2062,23 @@ static error_t parse_ident_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor)
 // }
 
 // <simple-declarator> ::= <identifier> | "(" <declarator> ")"
-static error_t parse_simple_decltor_decl(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
-    CATCH_ENTER;
-    TRY(peek_next(ctx));
-    switch (ctx->peek_tok->tok_kind) {
-        case TOK_identifier:
-            TRY(parse_ident_decltor(ctx, decltor));
-            break;
-        // case TOK_open_paren:
-        //     TRY(parse_simple_decltor(ctx, decltor));
-        //     break;
-        default:
-            THROW_AT_TOKEN(
-                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_simple_decltor, str_fmt_tok(ctx->peek_tok)));
-    }
-    FINALLY;
-    CATCH_EXIT;
-}
+// static error_t parse_simple_decltor_decl(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+//     CATCH_ENTER;
+//     TRY(peek_next(ctx));
+//     switch (ctx->peek_tok->tok_kind) {
+//         case TOK_identifier:
+//             TRY(parse_ident_decltor(ctx, decltor));
+//             break;
+//         // case TOK_open_paren:
+//         //     TRY(parse_simple_decltor(ctx, decltor));
+//         //     break;
+//         default:
+//             THROW_AT_TOKEN(
+//                 ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_simple_decltor, str_fmt_tok(ctx->peek_tok)));
+//     }
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
 // <param> ::= { <type-specifier> }+ <declarator>
 // param_info = Param(type, declarator)
@@ -2095,12 +2095,12 @@ static error_t parse_simple_decltor_decl(Ctx ctx, unique_ptr_t(CDeclarator) * de
 //     CATCH_EXIT;
 // }
 
-static error_t parse_empty_param_list(Ctx ctx) {
-    CATCH_ENTER;
-    TRY(pop_next(ctx));
-    FINALLY;
-    CATCH_EXIT;
-}
+// static error_t parse_empty_param_list(Ctx ctx) {
+//     CATCH_ENTER;
+//     TRY(pop_next(ctx));
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
 // static error_t parse_non_empty_param_list(Ctx ctx, vector_t(unique_ptr_t(CParam)) * param_list) {
 //     unique_ptr_t(CParam) param = uptr_new();
@@ -2120,53 +2120,53 @@ static error_t parse_empty_param_list(Ctx ctx) {
 // }
 
 // <param-list> ::= "(" "void" ")" | "(" <param> { "," <param> } ")"
-static error_t parse_param_list(Ctx ctx, vector_t(unique_ptr_t(CParam)) * param_list) {
-    CATCH_ENTER;
-    TRY(pop_next(ctx));
-    TRY(peek_next(ctx));
-    switch (ctx->peek_tok->tok_kind) {
-        case TOK_key_void: {
-            TRY(peek_next_i(ctx, 1));
-            if (ctx->peek_tok_i->tok_kind == TOK_close_paren) {
-                TRY(parse_empty_param_list(ctx));
-            }
-            // else {
-            //     TRY(parse_non_empty_param_list(ctx, param_list));
-            // }
-            break;
-        }
-        // case TOK_key_char:
-        // case TOK_key_int:
-        // case TOK_key_long:
-        // case TOK_key_double:
-        // case TOK_key_unsigned:
-        // case TOK_key_signed:
-        // case TOK_key_struct:
-        // case TOK_key_union:
-        //     TRY(parse_non_empty_param_list(ctx, param_list));
-        //     break;
-        default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_param_list, str_fmt_tok(ctx->peek_tok)));
-    }
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-    FINALLY;
-    CATCH_EXIT;
-}
+// static error_t parse_param_list(Ctx ctx, vector_t(unique_ptr_t(CParam)) * param_list) {
+//     CATCH_ENTER;
+//     TRY(pop_next(ctx));
+//     TRY(peek_next(ctx));
+//     switch (ctx->peek_tok->tok_kind) {
+//         case TOK_key_void: {
+//             TRY(peek_next_i(ctx, 1));
+//             if (ctx->peek_tok_i->tok_kind == TOK_close_paren) {
+//                 TRY(parse_empty_param_list(ctx));
+//             }
+//             // else {
+//             //     TRY(parse_non_empty_param_list(ctx, param_list));
+//             // }
+//             break;
+//         }
+//         // case TOK_key_char:
+//         // case TOK_key_int:
+//         // case TOK_key_long:
+//         // case TOK_key_double:
+//         // case TOK_key_unsigned:
+//         // case TOK_key_signed:
+//         // case TOK_key_struct:
+//         // case TOK_key_union:
+//         //     TRY(parse_non_empty_param_list(ctx, param_list));
+//         //     break;
+//         default:
+//             THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_param_list, str_fmt_tok(ctx->peek_tok)));
+//     }
+//     TRY(pop_next(ctx));
+//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
-// (function) <declarator-suffix> ::= <param-list>
-static error_t parse_fun_decltor_suffix(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
-    vector_t(unique_ptr_t(CParam)) param_list = vec_new();
-    CATCH_ENTER;
-    TRY(parse_param_list(ctx, &param_list));
-    *decltor = make_CFunDeclarator(&param_list, decltor);
-    FINALLY;
-    for (size_t i = 0; i < vec_size(param_list); ++i) {
-        free_CParam(&param_list[i]);
-    }
-    vec_delete(param_list);
-    CATCH_EXIT;
-}
+// // (function) <declarator-suffix> ::= <param-list>
+// static error_t parse_fun_decltor_suffix(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+//     vector_t(unique_ptr_t(CParam)) param_list = vec_new();
+//     CATCH_ENTER;
+//     TRY(parse_param_list(ctx, &param_list));
+//     *decltor = make_CFunDeclarator(&param_list, decltor);
+//     FINALLY;
+//     for (size_t i = 0; i < vec_size(param_list); ++i) {
+//         free_CParam(&param_list[i]);
+//     }
+//     vec_delete(param_list);
+//     CATCH_EXIT;
+// }
 
 // (array) <declarator-suffix> ::= { "[" <const> "]" }+
 // static error_t parse_arr_decltor_suffix(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
@@ -2183,24 +2183,24 @@ static error_t parse_fun_decltor_suffix(Ctx ctx, unique_ptr_t(CDeclarator) * dec
 // }
 
 // <direct-declarator> ::= <simple-declarator> [ <declarator-suffix> ]
-static error_t parse_direct_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
-    CATCH_ENTER;
-    TRY(parse_simple_decltor_decl(ctx, decltor));
-    TRY(peek_next(ctx));
-    switch (ctx->peek_tok->tok_kind) {
-        case TOK_open_paren:
-            TRY(parse_fun_decltor_suffix(ctx, decltor));
-            break;
-        // case TOK_open_bracket:
-        //     TRY(parse_arr_decltor_suffix(ctx, decltor));
-        //     break;
-        default:
-            TRY(1); // TODO
-            // break;
-    }
-    FINALLY;
-    CATCH_EXIT;
-}
+// static error_t parse_direct_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+//     CATCH_ENTER;
+//     TRY(parse_simple_decltor_decl(ctx, decltor));
+//     TRY(peek_next(ctx));
+//     switch (ctx->peek_tok->tok_kind) {
+//         case TOK_open_paren:
+//             TRY(parse_fun_decltor_suffix(ctx, decltor));
+//             break;
+//         // case TOK_open_bracket:
+//         //     TRY(parse_arr_decltor_suffix(ctx, decltor));
+//         //     break;
+//         default:
+//             TRY(1); // TODO
+//             // break;
+//     }
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
 // static error_t parse_ptr_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
 //     CATCH_ENTER;
@@ -2214,15 +2214,45 @@ static error_t parse_direct_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor
 // <declarator> ::= "*" <declarator> | <direct-declarator>
 // declarator = Ident(identifier) | PointerDeclarator(declarator) | ArrayDeclarator(int, declarator)
 //            | FunDeclarator(param_info*, declarator)
-static error_t parse_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+// static error_t parse_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+//     CATCH_ENTER;
+//     TRY(peek_next(ctx));
+//     // if (ctx->peek_tok->tok_kind == TOK_binop_multiply) {
+//     //     TRY(parse_ptr_decltor(ctx, decltor));
+//     // }
+//     // else {
+//         TRY(parse_direct_decltor(ctx, decltor));
+//     // }
+//     FINALLY;
+//     CATCH_EXIT;
+// }
+
+// <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
+static error_t parse_fun_declarator(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vector_t(TIdentifier) * params,*/
+    vector_t(shared_ptr_t(Type)) * param_types) {
     CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(peek_next(ctx));
-    // if (ctx->peek_tok->tok_kind == TOK_binop_multiply) {
-    //     TRY(parse_ptr_decltor(ctx, decltor));
-    // }
-    // else {
-        TRY(parse_direct_decltor(ctx, decltor));
-    // }
+    if (ctx->peek_tok->tok_kind == TOK_key_none) {
+        TRY(pop_next(ctx));
+        TRY(pop_next(ctx));
+        TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));    
+    }
+    else {
+        // TODO
+        // parse_param_list -> params, param_types
+    }
+    if (ctx->peek_tok->tok_kind == TOK_key_none) {
+        TRY(pop_next(ctx));
+        *fun_type = make_Void();
+        TRY(1); // TODO rm    
+    }
+    else {
+        // TODO should be parse_type_name
+        TRY(parse_type_specifier(ctx, fun_type));
+    }
+    *fun_type = make_FunType(param_types, fun_type);
     FINALLY;
     CATCH_EXIT;
 }
@@ -2230,11 +2260,20 @@ static error_t parse_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
 // <function-declaration> ::= { <specifier> }+ <declarator> ( <block> | ";" )
 // function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
 static error_t parse_fun_declaration(
-    Ctx ctx, const CStorageClass* storage_class, Declarator* decltor, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
+    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
     unique_ptr_t(CBlock) body = uptr_new();
+    shared_ptr_t(Type) fun_type = sptr_new();
+    vector_t(TIdentifier) params = vec_new();
+    vector_t(shared_ptr_t(Type)) param_types = vec_new();
     CATCH_ENTER;
-    size_t info_at = ctx->next_tok->info_at;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
     TRY(peek_next(ctx));
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TIdentifier name;
+    TRY(parse_identifier(ctx, 0, &name));
+    TRY(parse_fun_declarator(ctx, &fun_type, /*&params,*/ &param_types));
+    // TRY(peek_next(ctx));
     // if (ctx->peek_tok->tok_kind == TOK_semicolon) {
     //     TRY(pop_next(ctx));
     // }
@@ -2242,10 +2281,15 @@ static error_t parse_fun_declaration(
         TRY(expect_next(ctx, ctx->peek_tok, TOK_open_brace));
         TRY(parse_block(ctx, &body));
     // }
-    *fun_decl = make_CFunctionDeclaration(
-        decltor->name, &decltor->params, &body, &decltor->derived_type, storage_class, info_at);
+    *fun_decl = make_CFunctionDeclaration(name, &params, &body, &fun_type, storage_class, info_at);
     FINALLY;
     free_CBlock(&body);
+    free_Type(&fun_type);
+    vec_delete(params);
+    for (size_t i = 0; i < vec_size(param_types); ++i) {
+        free_Type(&param_types[i]);
+    }
+    vec_delete(param_types);
     CATCH_EXIT;
 }
 
@@ -2333,10 +2377,10 @@ static error_t parse_fun_declaration(
 // }
 
 static error_t parse_fun_decl(
-    Ctx ctx, const CStorageClass* storage_class, Declarator* decltor, unique_ptr_t(CDeclaration) * declaration) {
+    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     unique_ptr_t(CFunctionDeclaration) fun_decl = uptr_new();
     CATCH_ENTER;
-    TRY(parse_fun_declaration(ctx, storage_class, decltor, &fun_decl));
+    TRY(parse_fun_declaration(ctx, storage_class, &fun_decl));
     *declaration = make_CFunDecl(&fun_decl);
     FINALLY;
     free_CFunctionDeclaration(&fun_decl);
@@ -2390,7 +2434,7 @@ static error_t parse_fun_decl(
 // <declaration> ::= <variable-declaration> | <function-declaration> | <struct-declaration>
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
 static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration) {
-    Declarator decltor = {0, sptr_new(), vec_new()};
+    // Declarator decltor = {0, sptr_new(), vec_new()};
     CATCH_ENTER;
     // TODO get storage class at top-level or block-level
     CStorageClass storage_class = init_CStorageClass();
@@ -2409,7 +2453,7 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
         //     }
         // }
         case TOK_key_fn:
-            TRY(parse_fun_decl(ctx, &storage_class, &decltor, declaration));
+            TRY(parse_fun_decl(ctx, &storage_class, declaration));
             break;
         default:
             // TRY(parse_var_decl(ctx, &storage_class, &decltor, declaration));
@@ -2424,8 +2468,8 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
     //     TRY(parse_var_decl(ctx, &storage_class, &decltor, declaration));
     // }
     FINALLY;
-    free_Type(&decltor.derived_type);
-    vec_delete(decltor.params);
+    // free_Type(&decltor.derived_type);
+    // vec_delete(decltor.params);
     CATCH_EXIT;
 }
 
