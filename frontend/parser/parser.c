@@ -519,7 +519,22 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 //     CATCH_EXIT;
 // }
 
-static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier);
+// <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "char" | "string"
+//                    | "*" "any" | <datatype-specifier>
+static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_key_i32: {
+            *type_specifier = make_Int();
+            EARLY_EXIT;
+        }
+        default:
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp);
 static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp);
@@ -1636,10 +1651,21 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     vector_t(unique_ptr_t(CBlockItem)) block_items = vec_new();
     CATCH_ENTER;
     TRY(peek_next(ctx));
-    while (ctx->peek_tok->tok_kind != TOK_close_brace) {
+    TRY(parse_block_item(ctx, &block_item));
+    vec_move_back(block_items, block_item);
+    while (true) {
+        TRY(pop_next(ctx));
+        if (ctx->next_tok->tok_kind == TOK_close_brace) {
+            break;
+        }
+        TRY(expect_next(ctx, ctx->next_tok, TOK_line_break));
+        TRY(peek_next(ctx));
+        if (ctx->peek_tok->tok_kind == TOK_close_brace) {
+            TRY(pop_next(ctx));
+            break;
+        }
         TRY(parse_block_item(ctx, &block_item));
         vec_move_back(block_items, block_item);
-        TRY(peek_next(ctx));
     }
     *block = make_CB(&block_items);
     FINALLY;
@@ -1656,6 +1682,14 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_line_break) {
+        TRY(pop_next(ctx));
+        TRY(peek_next(ctx));
+    }
+    if (ctx->peek_tok->tok_kind == TOK_close_brace) {
+        THROW_ABORT; // TODO need at least one block_item
+    }
     TRY(parse_b_block(ctx, block));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace));
@@ -1843,23 +1877,6 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 //     str_delete(type_tok_kinds_fmt);
 //     CATCH_EXIT;
 // }
-
-// <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "char" | "string"
-//                    | "*" "any" | <datatype-specifier>
-static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
-    CATCH_ENTER;
-    TRY(pop_next(ctx));
-    switch (ctx->next_tok->tok_kind) {
-        case TOK_key_i32: {
-            *type_specifier = make_Int();
-            EARLY_EXIT;
-        }
-        default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
-    }
-    FINALLY;
-    CATCH_EXIT;
-}
 
 // <specifier> ::= <type-specifier> | "static" | "extern"
 // storage_class = Static | Extern
@@ -2273,6 +2290,9 @@ static error_t parse_fun_declaration(
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
     TRY(parse_fun_declarator(ctx, &fun_type, /*&params,*/ &param_types));
+
+    // TODO this is all a parse_block
+
     // TRY(peek_next(ctx));
     // if (ctx->peek_tok->tok_kind == TOK_semicolon) {
     //     TRY(pop_next(ctx));
@@ -2437,6 +2457,8 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
     // Declarator decltor = {0, sptr_new(), vec_new()};
     CATCH_ENTER;
     // TODO get storage class at top-level or block-level
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_key_pub));
     CStorageClass storage_class = init_CStorageClass();
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
@@ -2482,6 +2504,8 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     while (ctx->pop_idx < vec_size(*ctx->p_toks)) {
         TRY(parse_declaration(ctx, &declaration));
         vec_move_back(declarations, declaration);
+        TRY(pop_next(ctx));
+        TRY(expect_next(ctx, ctx->next_tok, TOK_line_break));
     }
     *c_ast = make_CProgram(&declarations);
     FINALLY;
