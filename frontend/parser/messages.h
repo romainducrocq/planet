@@ -8,7 +8,9 @@
 typedef enum MESSAGE_LEXER {
     MSG_unhandled_lexer_error = 300,
     MSG_invalid_tok,
-    MSG_failed_include
+    MSG_failed_include,
+    MSG_preproc_macro,
+    MSG_unmatched_close
 } MESSAGE_LEXER;
 
 typedef enum MESSAGE_PARSER {

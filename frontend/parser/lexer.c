@@ -715,7 +715,9 @@ static error_t tokenize_file(Ctx ctx) {
                 }
                 case TOK_close_paren: {
                     if (ctx->paren_depth == 0) {
-                        THROW_ABORT; // TODO
+                        match = get_match(ctx, ctx->match_at, ctx->match_size);
+                        size_t info_at = push_token_info(ctx);
+                        THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_unmatched_close, match));
                     }
                     ctx->paren_depth--;
                     goto Lpass;
@@ -736,7 +738,7 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_m4_prefix: {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
                     size_t info_at = push_token_info(ctx);
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_invalid_tok, match));
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_preproc_macro, match));
                 }
                 case TOK_error: {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);

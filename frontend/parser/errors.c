@@ -567,6 +567,10 @@ const char* get_lexer_msg(MESSAGE_LEXER msg) {
             RET_ERRNO "found invalid token " EM_VARG;
         case MSG_failed_include:
             RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("include") " directive search";
+        case MSG_preproc_macro:
+            RET_ERRNO "found m4 macro " EM_VARG ", preprocess with " EM_CSTR("-E") " or see " EM_CSTR("--help");
+        case MSG_unmatched_close:
+            RET_ERRNO "found unmatched bracket " EM_VARG;
         default:
             THROW_ABORT;
     }
