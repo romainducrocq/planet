@@ -527,7 +527,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
     switch (ctx->next_tok->tok_kind) {
         case TOK_key_i32: {
             *type_specifier = make_Int();
-            EARLY_EXIT;
+            break;
         }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
@@ -1651,6 +1651,13 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     vector_t(unique_ptr_t(CBlockItem)) block_items = vec_new();
     CATCH_ENTER;
     TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_line_break) {
+        TRY(pop_next(ctx));
+        TRY(peek_next(ctx));
+    }
+    if (ctx->peek_tok->tok_kind == TOK_close_brace) {
+        THROW_ABORT; // TODO need at least one block_item
+    }
     TRY(parse_block_item(ctx, &block_item));
     vec_move_back(block_items, block_item);
     while (true) {
@@ -1667,6 +1674,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
         TRY(parse_block_item(ctx, &block_item));
         vec_move_back(block_items, block_item);
     }
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace));
     *block = make_CB(&block_items);
     FINALLY;
     free_CBlockItem(&block_item);
@@ -1682,17 +1690,17 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
-    TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind == TOK_line_break) {
-        TRY(pop_next(ctx));
-        TRY(peek_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_semicolon:
+            TRY(1); // TODO rm
+            break;
+        case TOK_open_brace:
+            TRY(parse_b_block(ctx, block));
+            break;
+        default:
+            THROW_ABORT; // TODO
+            // THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_block, str_fmt_tok(ctx->next_tok)));
     }
-    if (ctx->peek_tok->tok_kind == TOK_close_brace) {
-        THROW_ABORT; // TODO need at least one block_item
-    }
-    TRY(parse_b_block(ctx, block));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace));
     FINALLY;
     CATCH_EXIT;
 }
@@ -2290,17 +2298,7 @@ static error_t parse_fun_declaration(
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
     TRY(parse_fun_declarator(ctx, &fun_type, /*&params,*/ &param_types));
-
-    // TODO this is all a parse_block
-
-    // TRY(peek_next(ctx));
-    // if (ctx->peek_tok->tok_kind == TOK_semicolon) {
-    //     TRY(pop_next(ctx));
-    // }
-    // else {
-        TRY(expect_next(ctx, ctx->peek_tok, TOK_open_brace));
-        TRY(parse_block(ctx, &body));
-    // }
+    TRY(parse_block(ctx, &body));
     *fun_decl = make_CFunctionDeclaration(name, &params, &body, &fun_type, storage_class, info_at);
     FINALLY;
     free_CBlock(&body);
@@ -2459,6 +2457,7 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
     // TODO get storage class at top-level or block-level
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_key_pub));
+    //
     CStorageClass storage_class = init_CStorageClass();
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
