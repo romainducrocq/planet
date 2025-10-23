@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PACKAGE_NAME="$(cat ../../wheelcc/bin/pkgname.cfg)"
-
 TEST_DIR_CC="${PWD}/../../wheelcc/test/tests/compiler"
 TEST_DIR="${PWD}/../tests/compiler"
 TEST_SRCS=()
