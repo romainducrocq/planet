@@ -2268,9 +2268,10 @@ static error_t parse_fun_declarator(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*v
         TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));    
     }
     else {
-        // TODO
+        TRY(1); // TODO rm
         // parse_param_list -> params, param_types
     }
+    TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_key_none) {
         TRY(pop_next(ctx));
         *fun_type = make_Void();
