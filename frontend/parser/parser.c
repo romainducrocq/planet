@@ -1197,11 +1197,14 @@ static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind != TOK_semicolon) {
-        TRY(parse_exp(ctx, 0, &exp));
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_line_break:
+        case TOK_close_brace:
+            break;
+        default:
+            TRY(parse_exp(ctx, 0, &exp));
+            break;
     }
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
     *statement = make_CReturn(&exp, info_at);
     FINALLY;
     free_CExp(&exp);
