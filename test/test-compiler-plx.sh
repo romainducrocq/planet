@@ -72,7 +72,7 @@ function check_test () {
     FILE=$(file ${1})
 
     let TOTAL+=1
-    planet ${OPTIM} ${LIBS} ${FILE}.plx > /dev/null 2>&1
+    planet ${OPTIM} ${FILE}.plx > /dev/null 2>&1
     RETURN_PASS=${?}
 
     if [[ "${FILE}" == *"invalid"* ]]; then
@@ -95,10 +95,8 @@ function test_all () {
     done
 }
 
-LIBS=""
 PASS=0
 TOTAL=0
-RETURN=0
 
 ARG=${1}
 
