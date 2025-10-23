@@ -2256,7 +2256,7 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 // }
 
 // <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
-static error_t parse_fun_declarator(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vector_t(TIdentifier) * params,*/
+static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vector_t(TIdentifier) * params,*/
     vector_t(shared_ptr_t(Type)) * param_types) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -2301,7 +2301,7 @@ static error_t parse_fun_declaration(
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
-    TRY(parse_fun_declarator(ctx, &fun_type, /*&params,*/ &param_types));
+    TRY(parse_fun_decltor(ctx, &fun_type, /*&params,*/ &param_types));
     TRY(parse_block(ctx, &body));
     *fun_decl = make_CFunctionDeclaration(name, &params, &body, &fun_type, storage_class, info_at);
     FINALLY;
