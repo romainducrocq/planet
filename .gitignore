@@ -12,7 +12,7 @@ perf.data
 /test/build.sh
 /test/get-dependencies.sh
 /test/test-all.sh
-/test/test-compiler.sh
+/test/test-compiler-cc.sh
 /test/test-errors.sh
 /test/test-memory.sh
 /test/tests/

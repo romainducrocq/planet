@@ -25,7 +25,7 @@ function config_backend () {
     if [ ${?} -ne 0 ]; then return 1; fi
     ln -s ${BACKEND_PATH}/test/test-all.sh ../test/test-all.sh
     if [ ${?} -ne 0 ]; then return 1; fi
-    ln -s ${BACKEND_PATH}/test/test-compiler.sh ../test/test-compiler.sh
+    ln -s ${BACKEND_PATH}/test/test-compiler.sh ../test/test-compiler-cc.sh
     if [ ${?} -ne 0 ]; then return 1; fi
     ln -s ${BACKEND_PATH}/test/test-errors.sh ../test/test-errors.sh
     if [ ${?} -ne 0 ]; then return 1; fi

@@ -97,6 +97,11 @@ function test_all () {
 
 PASS=0
 TOTAL=0
+if [ ! -z "${TOTAL_CC}" ]; then
+    PASS=${TOTAL_CC}
+    TOTAL=${TOTAL_CC}
+    echo ""
+fi
 
 ARG=${1}
 
