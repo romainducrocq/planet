@@ -1659,7 +1659,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
         TRY(peek_next(ctx));
     }
     if (ctx->peek_tok->tok_kind == TOK_close_brace) {
-        THROW_ABORT; // TODO need at least one block_item
+        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_block));
     }
     TRY(parse_block_item(ctx, &block_item));
     vec_move_back(block_items, block_item);
@@ -1701,8 +1701,7 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
             TRY(parse_b_block(ctx, block));
             break;
         default:
-            THROW_ABORT; // TODO
-            // THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_block, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_block, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -2279,6 +2278,7 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vect
     }
     else {
         // TODO should be parse_type_name
+        // error message expects none?
         TRY(parse_type_specifier(ctx, fun_type));
     }
     *fun_type = make_FunType(param_types, fun_type);
