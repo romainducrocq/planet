@@ -93,6 +93,7 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
 }
 
 void cc::Transpiler::fun_decltor(const Declarator* decltor) {
+    append_buf("fn ");
     append_identifier(decltor->name);
     append_buf("(");
     if (vec_empty(decltor->params)) {
