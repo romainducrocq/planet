@@ -22,10 +22,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "++";
         // case TOK_unop_decr:
         //     return "--";
-        // case TOK_binop_shiftleft:
-        //     return "<<";
-        // case TOK_binop_shiftright:
-        //     return ">>";
+        case TOK_binop_shiftleft:
+            return "<<";
+        case TOK_binop_shiftright:
+            return ">>";
         // case TOK_binop_and:
         //     return "&&";
         // case TOK_binop_or:

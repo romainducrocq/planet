@@ -594,38 +594,40 @@ static TOKEN_KIND match_token(Ctx ctx) {
                 return TOK_binop_bitor;
         //     }
         }
-        // case '<': {
-        //     if (match_char(ctx, '<')) {
+        case '<': {
+            if (match_char(ctx, '<')) {
         //         if (match_char(ctx, '=')) {
         //             return TOK_assign_shiftleft;
         //         }
         //         else {
-        //             return TOK_binop_shiftleft;
+                    return TOK_binop_shiftleft;
         //         }
-        //     }
+            }
         //     else if (match_char(ctx, '=')) {
         //         return TOK_binop_le;
         //     }
         //     else {
         //         return TOK_binop_lt;
         //     }
-        // }
-        // case '>': {
-        //     if (match_char(ctx, '>')) {
+            return TOK_error; // TODO 
+        }
+        case '>': {
+            if (match_char(ctx, '>')) {
         //         if (match_char(ctx, '=')) {
         //             return TOK_assign_shiftright;
         //         }
         //         else {
-        //             return TOK_binop_shiftright;
+                    return TOK_binop_shiftright;
         //         }
-        //     }
+            }
         //     else if (match_char(ctx, '=')) {
         //         return TOK_binop_ge;
         //     }
         //     else {
         //         return TOK_binop_gt;
         //     }
-        // }
+            return TOK_error; // TODO 
+        }
         case '^': {
         //     if (match_char(ctx, '=')) {
         //         return TOK_assign_xor;

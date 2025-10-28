@@ -13,8 +13,8 @@ typedef enum TOKEN_KIND {
 
     // TOK_unop_incr,
     // TOK_unop_decr,
-    // TOK_binop_shiftleft,
-    // TOK_binop_shiftright,
+    TOK_binop_shiftleft,
+    TOK_binop_shiftright,
     // TOK_binop_and,
     // TOK_binop_or,
     // TOK_binop_eq,
