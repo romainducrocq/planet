@@ -72,10 +72,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "]";
         case TOK_semicolon:
             return ";";
-        // case TOK_unop_complement:
-        //     return "~";
-        // case TOK_unop_neg:
-        //     return "-";
+        case TOK_unop_complement:
+            return "~";
+        case TOK_unop_neg:
+            return "-";
         // case TOK_unop_not:
         //     return "!";
         // case TOK_binop_add:
