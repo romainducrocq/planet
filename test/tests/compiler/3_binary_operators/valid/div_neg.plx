@@ -1,3 +1,3 @@
-int main(void) {
-    return (-12) / 5;
+pub fn main(none) i32 {
+    return (-12) / 5
 }

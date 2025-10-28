@@ -1,3 +1,3 @@
-int main(void) {
-    return 33 >> 2 << 1;
+pub fn main(none) i32 {
+    return 33 >> 2 << 1
 }

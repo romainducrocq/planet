@@ -1,3 +1,3 @@
-int main(void) {
-    return 2 + 3 * 4;
+pub fn main(none) i32 {
+    return 2 + 3 * 4
 }

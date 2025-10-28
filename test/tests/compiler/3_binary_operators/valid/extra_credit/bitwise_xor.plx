@@ -1,3 +1,3 @@
-int main(void) {
-    return 7 ^ 1;
+pub fn main(none) i32 {
+    return 7 ^ 1
 }
