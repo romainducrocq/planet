@@ -95,7 +95,7 @@ typedef enum TOKEN_KIND {
     TOK_dbl_const,
 
     // TOK_include_preproc,
-    // TOK_strip_preproc,
+    TOK_strip_preproc,
 
     TOK_error
 } TOKEN_KIND;

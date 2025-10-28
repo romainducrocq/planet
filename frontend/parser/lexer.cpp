@@ -89,16 +89,16 @@ static bool match_chars(Ctx ctx, const char* cs, size_t n) {
 //     }
 // }
 
-// static bool match_space(Ctx ctx) {
-//     switch (get_char(ctx)) {
-//         case LEX_SPACE: {
-//             ctx->match_size++;
-//             return true;
-//         }
-//         default:
-//             return false;
-//     }
-// }
+static bool match_space(Ctx ctx) {
+    switch (get_char(ctx)) {
+        case LEX_SPACE: {
+            ctx->match_size++;
+            return true;
+        }
+        default:
+            return false;
+    }
+}
 
 static bool match_digit(Ctx ctx) {
     switch (get_char(ctx)) {
@@ -127,18 +127,18 @@ static TOKEN_KIND match_error(Ctx ctx) {
     return TOK_error;
 }
 
-// static TOKEN_KIND match_preproc(Ctx ctx) {
-//     while (match_space(ctx)) {
-//     }
+static TOKEN_KIND match_preproc(Ctx ctx) {
+    while (match_space(ctx)) {
+    }
 
-//     switch (get_char(ctx)) {
-//         case LEX_LETTER:
-//             break;
-//         default:
-//             return match_error(ctx);
-//     }
+    switch (get_char(ctx)) {
+        case LEX_LETTER:
+            break;
+        default:
+            return match_error(ctx);
+    }
 
-//     if (match_chars(ctx, "include", 7)) {
+    if (match_chars(ctx, "include", 7)) {
 //         while (match_space(ctx)) {
 //         }
 
@@ -164,15 +164,15 @@ static TOKEN_KIND match_error(Ctx ctx) {
 //                 return TOK_include_preproc;
 //             }
 //         }
-//         return match_error(ctx);
-//     }
-//     else {
-//         while (match_word(ctx)) {
-//         }
+        return match_error(ctx);
+    }
+    else {
+        while (match_word(ctx)) {
+        }
 
-//         return TOK_strip_preproc;
-//     }
-// }
+        return TOK_strip_preproc;
+    }
+}
 
 // static TOKEN_KIND match_char_const(Ctx ctx, bool is_str) {
 //     switch (get_char(ctx)) {
@@ -712,7 +712,7 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_comment_line:
                     TRANSPILE(comment_line(ctx->line, ctx->match_at, ctx->line_size));
                     goto Lbreak;
-                // case TOK_strip_preproc:
+                case TOK_strip_preproc:
                     goto Lbreak;
                 case TOK_skip:
                     TRANSPILE(skip(is_comment, ctx->line, ctx->match_at, ctx->match_size));
