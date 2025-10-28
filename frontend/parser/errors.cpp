@@ -76,20 +76,20 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "-";
         // case TOK_unop_not:
         //     return "!";
-        // case TOK_binop_add:
-        //     return "+";
-        // case TOK_binop_multiply:
-        //     return "*";
-        // case TOK_binop_divide:
-        //     return "/";
-        // case TOK_binop_remainder:
-        //     return "%";
-        // case TOK_binop_bitand:
-        //     return "&";
-        // case TOK_binop_bitor:
-        //     return "|";
-        // case TOK_binop_xor:
-        //     return "^";
+        case TOK_binop_add:
+            return "+";
+        case TOK_binop_multiply:
+            return "*";
+        case TOK_binop_divide:
+            return "/";
+        case TOK_binop_remainder:
+            return "%";
+        case TOK_binop_bitand:
+            return "&";
+        case TOK_binop_bitor:
+            return "|";
+        case TOK_binop_xor:
+            return "^";
         // case TOK_binop_lt:
         //     return "<";
         // case TOK_binop_gt:

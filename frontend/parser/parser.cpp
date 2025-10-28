@@ -2460,7 +2460,7 @@ error_t parse_tokens(
 
     THROW_ABORT_IF(!*c_ast);
     // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
