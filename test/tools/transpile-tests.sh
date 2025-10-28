@@ -3,7 +3,7 @@
 TEST_DIR_CC="${PWD}/../../wheelcc/test/tests/compiler"
 TEST_DIR="${PWD}/../tests/compiler"
 TEST_SRCS=()
-for i in $(seq 1 1); do
+for i in $(seq 1 20); do
     TEST_SRCS+=("$(basename $(find ${TEST_DIR} -maxdepth 1 -name "${i}_*" -type d))")
 done
 
@@ -36,7 +36,7 @@ cd ${TEST_DIR_CC}
 if [ ! -z "${ARG}" ]; then
     transpile_src ${TEST_SRCS["$((${ARG} - 1))"]}
 else
-    transpile_all
+    : #transpile_all
 fi
 
 exit 0
