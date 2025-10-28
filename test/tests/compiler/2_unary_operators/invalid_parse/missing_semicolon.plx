@@ -1,3 +1,4 @@
-int main(void) {
-    return -5
+pub fn main(none) i32 {
+    return -
+    5
 }
