@@ -322,100 +322,110 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
 // binary_operator = Add | Subtract | Multiply | Divide | Remainder | BitAnd | BitOr | BitXor | BitShiftLeft
 //                 | BitShiftRight | BitShrArithmetic | And | Or | Equal | NotEqual | LessThan | LessOrEqual
 //                 | GreaterThan | GreaterOrEqual
-// static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     switch (ctx->next_tok->tok_kind) {
-//         case TOK_binop_add:
-//         case TOK_assign_add:
-//         case TOK_unop_incr: {
-//             *binop = init_CAdd();
-//             break;
-//         }
-//         case TOK_unop_neg:
-//         case TOK_assign_subtract:
-//         case TOK_unop_decr: {
-//             *binop = init_CSubtract();
-//             break;
-//         }
-//         case TOK_binop_multiply:
-//         case TOK_assign_multiply: {
-//             *binop = init_CMultiply();
-//             break;
-//         }
-//         case TOK_binop_divide:
-//         case TOK_assign_divide: {
-//             *binop = init_CDivide();
-//             break;
-//         }
-//         case TOK_binop_remainder:
-//         case TOK_assign_remainder: {
-//             *binop = init_CRemainder();
-//             break;
-//         }
-//         case TOK_binop_bitand:
-//         case TOK_assign_bitand: {
-//             *binop = init_CBitAnd();
-//             break;
-//         }
-//         case TOK_binop_bitor:
-//         case TOK_assign_bitor: {
-//             *binop = init_CBitOr();
-//             break;
-//         }
-//         case TOK_binop_xor:
-//         case TOK_assign_xor: {
-//             *binop = init_CBitXor();
-//             break;
-//         }
-//         case TOK_binop_shiftleft:
-//         case TOK_assign_shiftleft: {
-//             *binop = init_CBitShiftLeft();
-//             break;
-//         }
-//         case TOK_binop_shiftright:
-//         case TOK_assign_shiftright: {
-//             *binop = init_CBitShiftRight();
-//             break;
-//         }
-//         case TOK_binop_and: {
-//             *binop = init_CAnd();
-//             break;
-//         }
-//         case TOK_binop_or: {
-//             *binop = init_COr();
-//             break;
-//         }
-//         case TOK_binop_eq: {
-//             *binop = init_CEqual();
-//             break;
-//         }
-//         case TOK_binop_ne: {
-//             *binop = init_CNotEqual();
-//             break;
-//         }
-//         case TOK_binop_lt: {
-//             *binop = init_CLessThan();
-//             break;
-//         }
-//         case TOK_binop_le: {
-//             *binop = init_CLessOrEqual();
-//             break;
-//         }
-//         case TOK_binop_gt: {
-//             *binop = init_CGreaterThan();
-//             break;
-//         }
-//         case TOK_binop_ge: {
-//             *binop = init_CGreaterOrEqual();
-//             break;
-//         }
-//         default:
-//             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->next_tok)));
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_binop_add:
+        // case TOK_assign_add:
+        // case TOK_unop_incr:
+        {
+            *binop = init_CAdd();
+            break;
+        }
+        case TOK_unop_neg:
+        // case TOK_assign_subtract:
+        // case TOK_unop_decr:
+        {
+            *binop = init_CSubtract();
+            break;
+        }
+        case TOK_binop_multiply:
+        // case TOK_assign_multiply:
+        {
+            *binop = init_CMultiply();
+            break;
+        }
+        case TOK_binop_divide:
+        // case TOK_assign_divide:
+        {
+            *binop = init_CDivide();
+            break;
+        }
+        case TOK_binop_remainder:
+        // case TOK_assign_remainder: 
+        {
+            *binop = init_CRemainder();
+            break;
+        }
+        case TOK_binop_bitand:
+        // case TOK_assign_bitand: 
+        {
+            *binop = init_CBitAnd();
+            break;
+        }
+        case TOK_binop_bitor:
+        // case TOK_assign_bitor: 
+        {
+            *binop = init_CBitOr();
+            break;
+        }
+        case TOK_binop_xor:
+        // case TOK_assign_xor: 
+        {
+            *binop = init_CBitXor();
+            break;
+        }
+        case TOK_binop_shiftleft:
+        // case TOK_assign_shiftleft: 
+        {
+            *binop = init_CBitShiftLeft();
+            break;
+        }
+        case TOK_binop_shiftright:
+        // case TOK_assign_shiftright: 
+        {
+            *binop = init_CBitShiftRight();
+            break;
+        }
+        // case TOK_binop_and: {
+        //     *binop = init_CAnd();
+        //     break;
+        // }
+        // case TOK_binop_or: {
+        //     *binop = init_COr();
+        //     break;
+        // }
+        // case TOK_binop_eq: {
+        //     *binop = init_CEqual();
+        //     break;
+        // }
+        // case TOK_binop_ne: {
+        //     *binop = init_CNotEqual();
+        //     break;
+        // }
+        // case TOK_binop_lt: {
+        //     *binop = init_CLessThan();
+        //     break;
+        // }
+        // case TOK_binop_le: {
+        //     *binop = init_CLessOrEqual();
+        //     break;
+        // }
+        // case TOK_binop_gt: {
+        //     *binop = init_CGreaterThan();
+        //     break;
+        // }
+        // case TOK_binop_ge: {
+        //     *binop = init_CGreaterOrEqual();
+        //     break;
+        // }
+        default:
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->next_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static void proc_abstract_decltor(
 //     const CAbstractDeclarator* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor);
@@ -1055,18 +1065,18 @@ static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_binary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
-//     unique_ptr_t(CExp) exp_right = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     CBinaryOp binop = init_CBinaryOp();
-//     TRY(parse_binop(ctx, &binop));
-//     TRY(parse_exp(ctx, precedence + 1, &exp_right));
-//     *exp_left = make_CBinary(&binop, exp_left, &exp_right, info_at);
-//     FINALLY;
-//     free_CExp(&exp_right);
-//     CATCH_EXIT;
-// }
+static error_t parse_binary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
+    unique_ptr_t(CExp) exp_right = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    CBinaryOp binop = init_CBinaryOp();
+    TRY(parse_binop(ctx, &binop));
+    TRY(parse_exp(ctx, precedence + 1, &exp_right));
+    *exp_left = make_CBinary(&binop, exp_left, &exp_right, info_at);
+    FINALLY;
+    free_CExp(&exp_right);
+    CATCH_EXIT;
+}
 
 // static error_t parse_ternary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
 //     unique_ptr_t(CExp) exp_middle = uptr_new();
@@ -1087,16 +1097,16 @@ static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 
 static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
     switch (tok_kind) {
-        // case TOK_binop_multiply:
-        // case TOK_binop_divide:
-        // case TOK_binop_remainder:
-        //     return 50;
-        // case TOK_unop_neg:
-        // case TOK_binop_add:
-        //     return 45;
-        // case TOK_binop_shiftleft:
-        // case TOK_binop_shiftright:
-        //     return 40;
+        case TOK_binop_multiply:
+        case TOK_binop_divide:
+        case TOK_binop_remainder:
+            return 50;
+        case TOK_unop_neg:
+        case TOK_binop_add:
+            return 45;
+        case TOK_binop_shiftleft:
+        case TOK_binop_shiftright:
+            return 40;
         // case TOK_binop_lt:
         // case TOK_binop_le:
         // case TOK_binop_gt:
@@ -1105,12 +1115,12 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
         // case TOK_binop_eq:
         // case TOK_binop_ne:
         //     return 30;
-        // case TOK_binop_bitand:
-        //     return 25;
-        // case TOK_binop_xor:
-        //     return 20;
-        // case TOK_binop_bitor:
-        //     return 15;
+        case TOK_binop_bitand:
+            return 25;
+        case TOK_binop_xor:
+            return 20;
+        case TOK_binop_bitor:
+            return 15;
         // case TOK_binop_and:
         //     return 10;
         // case TOK_binop_or:
@@ -1151,26 +1161,26 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
             break;
         }
         switch (ctx->peek_tok->tok_kind) {
-        //     case TOK_binop_add:
-        //     case TOK_unop_neg:
-        //     case TOK_binop_multiply:
-        //     case TOK_binop_divide:
-        //     case TOK_binop_remainder:
-        //     case TOK_binop_bitand:
-        //     case TOK_binop_bitor:
-        //     case TOK_binop_xor:
-        //     case TOK_binop_shiftleft:
-        //     case TOK_binop_shiftright:
-        //     case TOK_binop_lt:
-        //     case TOK_binop_le:
-        //     case TOK_binop_gt:
-        //     case TOK_binop_ge:
-        //     case TOK_binop_eq:
-        //     case TOK_binop_ne:
-        //     case TOK_binop_and:
-        //     case TOK_binop_or:
-        //         TRY(parse_binary_exp(ctx, precedence, exp));
-        //         break;
+            case TOK_binop_add:
+            case TOK_unop_neg:
+            case TOK_binop_multiply:
+            case TOK_binop_divide:
+            case TOK_binop_remainder:
+            case TOK_binop_bitand:
+            case TOK_binop_bitor:
+            case TOK_binop_xor:
+            case TOK_binop_shiftleft:
+            case TOK_binop_shiftright:
+            // case TOK_binop_lt:
+            // case TOK_binop_le:
+            // case TOK_binop_gt:
+            // case TOK_binop_ge:
+            // case TOK_binop_eq:
+            // case TOK_binop_ne:
+            // case TOK_binop_and:
+            // case TOK_binop_or:
+                TRY(parse_binary_exp(ctx, precedence, exp));
+                break;
         //     case TOK_assign:
         //         TRY(parse_assign_exp(ctx, precedence, exp));
         //         break;
