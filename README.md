@@ -68,8 +68,8 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 > Language features
 - [x] return 32 bit integer constants
 - [x] unary arithmetic operators
-- [ ] binary arithmetic operators
-- [ ] bitwise arithmetic operators
+- [x] binary arithmetic operators
+- [x] bitwise arithmetic operators
 - [ ] logical and relational operators
 - [ ] local variables, assignments
 - [ ] compound assignments, increment operators
