@@ -41,6 +41,20 @@ void cc::Transpiler::set_linenum(const Token* tok) {
 //     append_buf(buf);
 // }
 
+void cc::Transpiler::unary_op(const Token* tok) {
+    set_linenum(tok);
+    switch (tok->tok_kind) {
+        case TOK_unop_complement:
+            append_buf("~");
+            break;
+        case TOK_unop_neg:
+            append_buf("-");
+            break;
+        default:
+            throw std::runtime_error("invalid unary_op");
+    }
+}
+
 void cc::Transpiler::keep_token(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {
@@ -52,14 +66,24 @@ void cc::Transpiler::keep_token(const Token* tok) {
             decr_indent();
             append_buf("}");
             break;
+        case TOK_open_paren:
+            append_buf("(");
+            incr_paren();
+            break;
+        case TOK_close_paren:
+            decr_paren();
+            append_buf(")");
+            break;
         case TOK_key_return:
             append_buf("return ");
             break;
         case TOK_int_const:
             append_identifier(tok->tok);
             break;
-        default:
+        case TOK_semicolon:
             break;
+        default:
+            throw std::runtime_error("invalid token");
     }
 }
 
@@ -159,6 +183,18 @@ void cc::Transpiler::decr_indent() {
     }
 
     indent--;
+}
+
+void cc::Transpiler::incr_paren() {
+    paren++;
+}
+
+void cc::Transpiler::decr_paren() {
+    if (paren <= 0) {
+        throw std::runtime_error("invalid paren");
+    }
+
+    paren--;
 }
 
 void cc::Transpiler::format_line(Line& line, size_t i) {

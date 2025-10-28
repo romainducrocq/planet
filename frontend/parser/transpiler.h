@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 0
+#if 1
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)
@@ -27,6 +27,7 @@ class Transpiler {
 
     private:
         int indent = 0;
+        int paren = 0;
         size_t linenum = 1;
         std::vector<Line> lines = {};
 
@@ -47,6 +48,7 @@ class Transpiler {
         void set_linenum(const Token* tok);
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
+        void unary_op(const Token* tok);
         void print_lines();
         void write_lines();
 
@@ -61,6 +63,8 @@ class Transpiler {
     private:
         void incr_indent();
         void decr_indent();
+        void incr_paren();
+        void decr_paren();
         void append_buf(const std::string& buf);
         void append_end(const std::string& end);
         void append_identifier(size_t identifier);

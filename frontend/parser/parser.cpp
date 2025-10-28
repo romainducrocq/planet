@@ -307,6 +307,7 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_unop, str_fmt_tok(ctx->next_tok)));
     }
+    TRANSPILE(unary_op(ctx->next_tok));
     FINALLY;
     CATCH_EXIT;
 }
@@ -645,9 +646,11 @@ static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_exp(ctx, 0, exp));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    TRANSPILE(keep_token(ctx->next_tok));
     FINALLY;
     CATCH_EXIT;
 }
@@ -2456,8 +2459,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
