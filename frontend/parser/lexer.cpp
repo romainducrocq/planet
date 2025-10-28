@@ -644,8 +644,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //             return TOK_structop_member;
         //     }
         // }
-        // case '#':
-        //     return match_preproc(ctx);
+        case '#':
+            return match_preproc(ctx);
         // case '\'':
         //     return match_char_const(ctx, false);
         // case '"':
