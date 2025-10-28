@@ -286,28 +286,28 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 
 // <unop> ::= "-" | "~" | "!" | "*" | "&" | "++" | "--"
 // unary_operator = Complement | Negate | Not | Prefix | Postfix
-// static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     switch (ctx->next_tok->tok_kind) {
-//         case TOK_unop_complement: {
-//             *unop = init_CComplement();
-//             break;
-//         }
-//         case TOK_unop_neg: {
-//             *unop = init_CNegate();
-//             break;
-//         }
-//         case TOK_unop_not: {
-//             *unop = init_CNot();
-//             break;
-//         }
-//         default:
-//             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_unop, str_fmt_tok(ctx->next_tok)));
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_unop_complement: {
+            *unop = init_CComplement();
+            break;
+        }
+        case TOK_unop_neg: {
+            *unop = init_CNegate();
+            break;
+        }
+        // case TOK_unop_not: {
+        //     *unop = init_CNot();
+        //     break;
+        // }
+        default:
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_unop, str_fmt_tok(ctx->next_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <binop> ::= "-" | "+" | "*" | "/" | "%" | "&" | "|" | "^" | "<<" | ">>" | "&&" | "||" | "==" | "!=" | "<"
 //           | "<=" | ">" | ">=" | "=" | "-=" | "+=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
@@ -655,15 +655,15 @@ static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(parse_exp(ctx, 0, exp));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, exp));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static error_t parse_subscript_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     unique_ptr_t(CExp) subscript_exp = uptr_new();
@@ -726,18 +726,18 @@ static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) cast_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     CUnaryOp unop = init_CUnaryOp();
-//     TRY(parse_unop(ctx, &unop));
-//     TRY(parse_cast_exp_factor(ctx, &cast_exp));
-//     *exp = make_CUnary(&unop, &cast_exp, info_at);
-//     FINALLY;
-//     free_CExp(&cast_exp);
-//     CATCH_EXIT;
-// }
+static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) cast_exp = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    CUnaryOp unop = init_CUnaryOp();
+    TRY(parse_unop(ctx, &unop));
+    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    *exp = make_CUnary(&unop, &cast_exp, info_at);
+    FINALLY;
+    free_CExp(&cast_exp);
+    CATCH_EXIT;
+}
 
 // static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     unique_ptr_t(CExp) exp_left = uptr_new();
@@ -901,9 +901,9 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         // case TOK_string_literal:
         //     TRY(parse_string_literal_factor(ctx, exp));
         //     break;
-        // case TOK_open_paren:
-        //     TRY(parse_inner_exp_factor(ctx, exp));
-        //     break;
+        case TOK_open_paren:
+            TRY(parse_inner_exp_factor(ctx, exp));
+            break;
         default:
             THROW_AT_TOKEN(
                 ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_primary_exp_factor, str_fmt_tok(ctx->peek_tok)));
@@ -963,11 +963,11 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
-        // case TOK_unop_complement:
-        // case TOK_unop_neg:
+        case TOK_unop_complement:
+        case TOK_unop_neg:
         // case TOK_unop_not:
-        //     TRY(parse_unary_factor(ctx, exp));
-        //     break;
+            TRY(parse_unary_factor(ctx, exp));
+            break;
         // case TOK_unop_incr:
         // case TOK_unop_decr:
         //     TRY(parse_incr_unary_factor(ctx, exp));
