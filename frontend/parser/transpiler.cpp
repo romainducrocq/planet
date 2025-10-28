@@ -62,6 +62,46 @@ void cc::Transpiler::unary_op(const Token* tok) {
     }
 }
 
+void cc::Transpiler::binary_op(const Token* tok) {
+    set_linenum(tok);
+    append_buf(" ");
+    switch (tok->tok_kind) {
+        case TOK_binop_add:
+            append_buf("+");
+            break;
+        case TOK_unop_neg:
+            append_buf("-");
+            break;
+        case TOK_binop_multiply:
+            append_buf("*");
+            break;
+        case TOK_binop_divide:
+            append_buf("/");
+            break;
+        case TOK_binop_remainder:
+            append_buf("%");
+            break;
+        case TOK_binop_bitand:
+            append_buf("&");
+            break;
+        case TOK_binop_bitor:
+            append_buf("|");
+            break;
+        case TOK_binop_xor:
+            append_buf("^");
+            break;
+        case TOK_binop_shiftleft:
+            append_buf("<<");
+            break;
+        case TOK_binop_shiftright:
+            append_buf(">>");
+            break;
+        default:
+            throw std::runtime_error("invalid binary_op");
+    }
+    append_buf(" ");
+}
+
 void cc::Transpiler::keep_token(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 0
+#if 1
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)
@@ -49,6 +49,7 @@ class Transpiler {
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
         void unary_op(const Token* tok);
+        void binary_op(const Token* tok);
         void print_lines();
         void write_lines();
 

@@ -418,6 +418,7 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->next_tok)));
     }
+    TRANSPILE(binary_op(ctx->next_tok));
     FINALLY;
     CATCH_EXIT;
 }
@@ -2469,7 +2470,7 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
+    TRANSPILE(print_lines());
     // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
