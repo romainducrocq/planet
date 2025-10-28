@@ -490,8 +490,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //     return TOK_close_bracket;
         case ';':
             return TOK_semicolon;
-        // case '~':
-        //     return TOK_unop_complement;
+        case '~':
+            return TOK_unop_complement;
         // case '?':
         //     return TOK_ternary_if;
         // case ':':
@@ -514,7 +514,7 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //         return TOK_unop_not;
         //     }
         // }
-        // case '-': {
+        case '-': {
         //     if (match_char(ctx, '>')) {
         //         return TOK_structop_ptr;
         //     }
@@ -525,9 +525,9 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //         return TOK_assign_subtract;
         //     }
         //     else {
-        //         return TOK_unop_neg;
+                return TOK_unop_neg;
         //     }
-        // }
+        }
         // case '+': {
         //     if (match_char(ctx, '+')) {
         //         return TOK_unop_incr;
