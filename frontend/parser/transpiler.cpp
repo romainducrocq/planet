@@ -78,8 +78,8 @@ void cc::Transpiler::keep_token(const Token* tok) {
             incr_paren();
             break;
         case TOK_close_paren:
-            decr_paren();
             append_buf(")");
+            decr_paren();
             break;
         case TOK_key_return:
             append_buf("return ");
@@ -123,6 +123,9 @@ void cc::Transpiler::append_buf(const std::string& buf) {
         for (int i = 0; i < indent; ++i) {
             lines[linenum - 1].buf += "    ";
         }
+        if (paren > 0) {
+            lines[linenum - 1].buf += "    ";
+        }
     }
 
     lines[linenum - 1].buf += buf;
@@ -154,8 +157,8 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor) {
     else {
         // TODO
     }
-    decr_paren();
     append_buf(") ");
+    decr_paren();
     // TODO
     derived_type(decltor->derived_type->get._FunType.ret_type);
     append_buf(" ");
