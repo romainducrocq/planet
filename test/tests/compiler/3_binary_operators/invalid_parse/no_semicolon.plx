@@ -1,3 +1,2 @@
-int main(void) {
-    return 2*2
-}
+pub fn main(none) i32 {
+    return 2* }
