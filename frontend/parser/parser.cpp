@@ -1647,7 +1647,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
         TRY(parse_block_item(ctx, &block_item));
         vec_move_back(block_items, block_item);
         TRY(peek_next(ctx));
-        TRANSPILE(break_line());
+        TRANSPILE(break_line(ctx->peek_tok->tok_kind == TOK_close_brace));
     }
     *block = make_CB(&block_items);
     FINALLY;
@@ -1665,12 +1665,12 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
     TRANSPILE(keep_token(ctx->next_tok));
-    TRANSPILE(break_line());
+    TRANSPILE(break_line(true));
     TRY(parse_b_block(ctx, block));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace));
     TRANSPILE(keep_token(ctx->next_tok));
-    TRANSPILE(break_line());
+    TRANSPILE(break_line(false));
     FINALLY;
     CATCH_EXIT;
 }

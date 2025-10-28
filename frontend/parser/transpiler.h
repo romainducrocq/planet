@@ -44,7 +44,7 @@ class Transpiler {
         void set_identifiers_ctx(IdentifierContext* identifiers);
 
         void add_line();
-        void break_line();
+        void break_line(bool maybe);
         void set_linenum(const Token* tok);
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);

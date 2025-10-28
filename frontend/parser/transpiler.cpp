@@ -117,7 +117,7 @@ bool cc::Transpiler::with_prob(unsigned int x) {
 
 void cc::Transpiler::append_buf(const std::string& buf) {
     if (paren > 0 && with_prob(20)) {
-        break_line();
+        break_line(false);
     }
     if (lines[linenum - 1].buf.empty() || lines[linenum - 1].buf.back() == '\n') {
         for (int i = 0; i < indent; ++i) {
@@ -201,8 +201,13 @@ void cc::Transpiler::skip(bool is_comment, const char* line, size_t match_at, si
     }
 }
 
-void cc::Transpiler::break_line() {
-    append_buf("\n");
+void cc::Transpiler::break_line(bool maybe) {
+    if (maybe && with_prob(20)) {
+        append_buf(" ");
+    }
+    else {
+        append_buf("\n");
+    }
 }
 
 void cc::Transpiler::incr_indent() {
