@@ -188,7 +188,15 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     intmax_t value;
     const char* strto_value;
     TRY(pop_next(ctx));
-    // switch (ctx->next_tok->tok_kind) {
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_key_true: {
+            *constant = make_CConstInt(1);
+            EARLY_EXIT;
+        }
+        case TOK_key_false: {
+            *constant = make_CConstInt(0);
+            EARLY_EXIT;
+        }
     //     case TOK_char_const: {
     //         *constant = parse_char_const(ctx);
     //         EARLY_EXIT;
@@ -196,9 +204,9 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     //     case TOK_dbl_const:
     //         TRY(parse_dbl_const(ctx, constant));
     //         EARLY_EXIT;
-    //     default:
-    //         break;
-    // }
+        default:
+            break;
+    }
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
     TRY(string_to_intmax(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
@@ -878,6 +886,8 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_true:
+        case TOK_key_false:
         case TOK_int_const:
         // case TOK_long_const:
         // case TOK_char_const:
