@@ -67,6 +67,7 @@ class Transpiler {
         void decr_paren();
         void append_buf(const std::string& buf);
         void append_end(const std::string& end);
+        void append_const(size_t identifier);
         void append_identifier(size_t identifier);
         void comment(const char* line, size_t match_at, size_t match_size);
         void format_line(Line& line, size_t i);

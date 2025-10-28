@@ -85,12 +85,25 @@ void cc::Transpiler::keep_token(const Token* tok) {
             append_buf("return ");
             break;
         case TOK_int_const:
-            append_identifier(tok->tok);
+            append_const(tok->tok);
             break;
         case TOK_semicolon:
             break;
         default:
             throw std::runtime_error("invalid token");
+    }
+}
+
+void cc::Transpiler::append_const(size_t identifier) {
+    std::string const_buf = map_get(identifiers->hash_table, identifier);
+    if (const_buf.compare("0") == 0 && with_prob(20)) {
+        append_buf("false");
+    }
+    else if (const_buf.compare("1") == 0 && with_prob(20)) {
+        append_buf("true");
+    }
+    else {
+        append_buf(const_buf);
     }
 }
 
