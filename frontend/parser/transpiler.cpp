@@ -67,39 +67,39 @@ void cc::Transpiler::binary_op(const Token* tok) {
     append_buf(" ");
     switch (tok->tok_kind) {
         case TOK_binop_add:
-            append_buf("+");
+            append_buf("+ ");
             break;
         case TOK_unop_neg:
-            append_buf("-");
+            append_buf("- ");
             break;
         case TOK_binop_multiply:
-            append_buf("*");
+            append_buf("* ");
             break;
         case TOK_binop_divide:
-            append_buf("/");
+            append_buf("/ ");
             break;
         case TOK_binop_remainder:
-            append_buf("%");
+            append_buf("% ");
             break;
         case TOK_binop_bitand:
-            append_buf("&");
+            append_buf("& ");
             break;
         case TOK_binop_bitor:
-            append_buf("|");
+            append_buf("| ");
             break;
         case TOK_binop_xor:
-            append_buf("^");
+            append_buf("^ ");
             break;
         case TOK_binop_shiftleft:
-            append_buf("<<");
+            append_buf("<< ");
             break;
         case TOK_binop_shiftright:
-            append_buf(">>");
+            append_buf(">> ");
             break;
         default:
             throw std::runtime_error("invalid binary_op");
     }
-    append_buf(" ");
+    // append_buf(" ");
 }
 
 void cc::Transpiler::keep_token(const Token* tok) {
@@ -156,7 +156,7 @@ bool cc::Transpiler::with_prob(unsigned int x) {
 }
 
 void cc::Transpiler::append_buf(const std::string& buf) {
-    if (paren > 0 && with_prob(20)) {
+    if (paren > 0 && with_prob(3)) {
         break_line(false);
     }
     if (lines[linenum - 1].buf.empty() || lines[linenum - 1].buf.back() == '\n') {
