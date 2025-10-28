@@ -85,6 +85,8 @@ typedef enum TOKEN_KIND {
     TOK_key_pub,
     // TOK_key_static,
     // TOK_key_extern,
+    TOK_key_true,
+    TOK_key_false,
 
     TOK_identifier,
     TOK_string_literal,

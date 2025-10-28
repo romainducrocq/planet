@@ -375,6 +375,9 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             if (match_chars(ctx, "n", 1) && !match_word(ctx)) {
                 return TOK_key_fn;
             }
+            else if (match_chars(ctx, "alse", 4) && !match_word(ctx)) {
+                return TOK_key_false;
+            }
             break;
         }
         // case 'g': {
@@ -457,6 +460,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
+        case 't': {
+            if (match_chars(ctx, "rue", 3) && !match_word(ctx)) {
+                return TOK_key_true;
+            }
+            break;
+        }
         // case 'u': {
         //     if (match_char(ctx, 'n')) {
         //         if (match_char(ctx, 'i')) {
