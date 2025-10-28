@@ -8,13 +8,20 @@
 #include <iostream>
 #include <fstream>
 
+#include <stdio.h>
+#include <stdlib.h>
+// #include <time.h>
+
 typedef struct Declarator {
     TIdentifier name;
     shared_ptr_t(Type) derived_type;
     vector_t(TIdentifier) params;
 } Declarator;
 
-cc::Transpiler transpiler;
+cc::Transpiler transpiler = []() -> cc::Transpiler {
+    srand (42);
+    return {};
+}();
 
 void cc::Transpiler::add_line() {
     lines.push_back({"", ""});
@@ -91,7 +98,14 @@ void cc::Transpiler::append_identifier(size_t identifier) {
     append_buf(map_get(identifiers->hash_table, identifier));
 }
 
+bool cc::Transpiler::with_prob(unsigned int x) {
+    return rand() % 101 < x;
+}
+
 void cc::Transpiler::append_buf(const std::string& buf) {
+    if (paren > 0 && with_prob(20)) {
+        break_line();
+    }
     if (lines[linenum - 1].buf.empty() || lines[linenum - 1].buf.back() == '\n') {
         for (int i = 0; i < indent; ++i) {
             lines[linenum - 1].buf += "    ";
@@ -120,12 +134,14 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor) {
     append_buf("fn ");
     append_identifier(decltor->name);
     append_buf("(");
+    incr_paren();
     if (vec_empty(decltor->params)) {
         append_buf("none");
     }
     else {
         // TODO
     }
+    decr_paren();
     append_buf(") ");
     // TODO
     derived_type(decltor->derived_type->get._FunType.ret_type);
