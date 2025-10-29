@@ -1,3 +1,3 @@
 pub fn main(none) i32 {
-    a: i32 = return 0
+    i32 a = 2
 }

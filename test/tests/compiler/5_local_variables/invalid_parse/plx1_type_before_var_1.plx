@@ -1,3 +1,4 @@
 pub fn main(none) i32 {
-    a: i32 = return 0
+    a: i32;
+    i32: b;
 }

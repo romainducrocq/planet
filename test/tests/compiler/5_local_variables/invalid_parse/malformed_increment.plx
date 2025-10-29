@@ -1,8 +1,8 @@
-// This is primarily a test for the increment/decrement extra credit feature,
-// but the compiler should throw a parse error for this program whether it
-// supports that feature or not.
-int main(void) {
-    int a = 0;
-    a + +;
-    return a;
+# This is primarily a test for the increment/decrement extra credit feature,
+# but the compiler should throw a parse error for this program whether it
+# supports that feature or not.
+pub fn main(none) i32 {
+    a: i32 = 0
+    a + +
+    return a
 }

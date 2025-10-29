@@ -1,6 +1,4 @@
 pub fn main(none) i32 {
-    a: i32
-    a = 2
-    a = a + 4
+    a: i32 = 10;
     return a
 }
