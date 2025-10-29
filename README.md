@@ -70,7 +70,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] unary arithmetic operators
 - [x] binary arithmetic operators
 - [x] bitwise arithmetic operators
-- [ ] logical and relational operators
+- [x] logical and relational operators
 - [ ] local variables, assignments
 - [ ] compound assignments, increment operators
 - [ ] if statements, conditional expressions
