@@ -1,3 +1,3 @@
-int main(void) {
-    return a < 5;
+pub fn main(none) i32 {
+    return a < 5
 }

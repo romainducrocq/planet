@@ -1,5 +1,5 @@
-int main(void) {
-    int a = 1;
-    int b = 2;
-    a = 3 * b = a;
+pub fn main(none) i32 {
+    a: i32 = 1
+    b: i32 = 2
+    a = 3 * b = a
 }
