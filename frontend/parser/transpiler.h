@@ -26,6 +26,7 @@ class Transpiler {
     };
 
     private:
+        bool top_level = true;
         int indent = 0;
         int paren = 0;
         size_t linenum = 1;
@@ -46,6 +47,7 @@ class Transpiler {
         void add_line();
         void break_line(bool maybe);
         void set_linenum(const Token* tok);
+        void set_top_level(bool top_level);
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
         void unary_op(const Token* tok);

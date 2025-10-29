@@ -1614,6 +1614,7 @@ static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item
 static error_t parse_d_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CDeclaration) declaration = uptr_new();
     CATCH_ENTER;
+    TRANSPILE(set_top_level(false));
     TRY(parse_declaration(ctx, &declaration));
     *block_item = make_CD(&declaration);
     FINALLY;
@@ -2436,6 +2437,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     vector_t(unique_ptr_t(CDeclaration)) declarations = vec_new();
     CATCH_ENTER;
     while (ctx->pop_idx < vec_size(*ctx->p_toks)) {
+        TRANSPILE(set_top_level(true));
         TRY(parse_declaration(ctx, &declaration));
         vec_move_back(declarations, declaration);
     }

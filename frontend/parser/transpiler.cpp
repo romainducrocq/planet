@@ -43,6 +43,10 @@ void cc::Transpiler::set_linenum(const Token* tok) {
     linenum = errors->token_infos[tok->info_at].total_linenum;
 }
 
+void cc::Transpiler::set_top_level(bool top_level) {
+    this->top_level = top_level;
+}
+
 // void cc::Transpiler::new_token(const Token* tok, std::string buf) {
 //     set_linenum(tok);
 //     append_buf(buf);
