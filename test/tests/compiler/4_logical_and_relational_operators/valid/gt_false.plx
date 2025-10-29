@@ -1,3 +1,4 @@
-int main(void) {
-    return (1 > 2) + (1 > 1);
+pub fn main(none) i32 {
+    return (1 > 2) + (true > 1
+        )
 }

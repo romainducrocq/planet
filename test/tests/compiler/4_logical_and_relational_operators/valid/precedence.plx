@@ -1,12 +1,12 @@
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wconstant-logical-operand"
-#pragma clang diagnostic ignored "-Wlogical-op-parentheses"
-#else
-#pragma GCC diagnostic ignored "-Wparentheses"
-#endif
-#endif
 
-int main(void) {
-    return 1 || 0 && 2;
+
+
+
+
+
+
+
+
+pub fn main(none) i32 {
+    return 1 or 0 and 2
 }

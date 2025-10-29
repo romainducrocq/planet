@@ -1,8 +1,10 @@
-#ifdef SUPPRESS_WARNINGS
-#ifndef __clang__
-#pragma GCC diagnostic ignored "-Wparentheses"
-#endif
-#endif
-int main(void) {
-    return (0 == 0 && 3 == 2 + 1 > 1) + 1;
+
+
+
+
+
+pub fn main(none) i32 {
+    return (0 == 0 and 3 == 2
+         + 1 > 
+        1) + 1
 }

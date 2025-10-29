@@ -1,3 +1,3 @@
-int main(void) {
-    return !(4-4);
+pub fn main(none) i32 {
+    return not (4 - 4)
 }

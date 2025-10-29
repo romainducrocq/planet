@@ -1,9 +1,9 @@
-#ifdef SUPPRESS_WARNINGS
-#ifndef __clang__
-#pragma GCC diagnostic ignored "-Wparentheses"
-#endif
-#endif
 
-int main(void) {
-    return 3 == 1 != 2;
+
+
+
+
+
+pub fn main(none) i32 {
+    return 3 == 1 ~= 2
 }
