@@ -1,4 +1,2 @@
-int main(void)
-{
-    return !10
-}
+pub fn main(none) i32 {
+    return not }

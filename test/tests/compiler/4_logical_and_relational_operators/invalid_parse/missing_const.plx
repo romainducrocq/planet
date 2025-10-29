@@ -1,4 +1,3 @@
-int main(void)
-{
-    10 <= !;
+pub fn main(none) i32 {
+    10 <= not
 }
