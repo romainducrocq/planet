@@ -109,7 +109,7 @@ void cc::Transpiler::binary_op(const Token* tok) {
             append_buf("== ");
             break;
         case TOK_binop_ne:
-            append_buf("!= ");
+            append_buf("~= ");
             break;
         case TOK_binop_lt:
             append_buf("< ");
