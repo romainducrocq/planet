@@ -57,6 +57,9 @@ void cc::Transpiler::unary_op(const Token* tok) {
         case TOK_unop_neg:
             append_buf("-");
             break;
+        case TOK_unop_not:
+            append_buf("not ");
+            break;
         default:
             throw std::runtime_error("invalid unary_op");
     }
@@ -95,6 +98,30 @@ void cc::Transpiler::binary_op(const Token* tok) {
             break;
         case TOK_binop_shiftright:
             append_buf(">> ");
+            break;
+        case TOK_binop_and:
+            append_buf("and ");
+            break;
+        case TOK_binop_or:
+            append_buf("or ");
+            break;
+        case TOK_binop_eq:
+            append_buf("== ");
+            break;
+        case TOK_binop_ne:
+            append_buf("!= ");
+            break;
+        case TOK_binop_lt:
+            append_buf("< ");
+            break;
+        case TOK_binop_le:
+            append_buf("<= ");
+            break;
+        case TOK_binop_gt:
+            append_buf("> ");
+            break;
+        case TOK_binop_ge:
+            append_buf(">= ");
             break;
         default:
             throw std::runtime_error("invalid binary_op");
