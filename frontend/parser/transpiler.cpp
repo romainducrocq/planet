@@ -127,6 +127,9 @@ void cc::Transpiler::binary_op(const Token* tok) {
         case TOK_binop_ge:
             append_buf(">= ");
             break;
+        case TOK_assign:
+            append_buf("= ");
+            break;
         default:
             throw std::runtime_error("invalid binary_op");
     }
@@ -136,6 +139,9 @@ void cc::Transpiler::binary_op(const Token* tok) {
 void cc::Transpiler::keep_token(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {
+        case TOK_identifier:
+            append_identifier(tok->tok);
+            break;
         case TOK_open_brace:
             append_buf("{");
             incr_indent();
@@ -217,6 +223,19 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
     }
 }
 
+void cc::Transpiler::do_nothing(const Token* tok, int tok_kind) {
+    set_linenum(tok);
+    if (tok_kind == (int)tok->tok_kind) {
+        append_buf(";");
+    }
+}
+
+void cc::Transpiler::var_decltor(const Declarator* decltor) {
+    append_identifier(decltor->name);
+    append_buf(": ");
+    derived_type(decltor->derived_type);
+}
+
 void cc::Transpiler::fun_decltor(const Declarator* decltor) {
     append_buf("fn ");
     append_identifier(decltor->name);
@@ -237,7 +256,7 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor) {
 
 void cc::Transpiler::storage_class(const CStorageClass* storage_class) {
     // TODO
-    if (storage_class->type == AST_CStorageClass_t) {
+    if (top_level && storage_class->type == AST_CStorageClass_t) {
         append_buf("pub ");
     }
 }

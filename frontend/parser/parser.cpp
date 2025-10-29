@@ -625,6 +625,7 @@ static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
+    TRANSPILE(keep_token(ctx->peek_tok));
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
     *exp = make_CVar(name, info_at);
@@ -1021,6 +1022,7 @@ static error_t parse_assign_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) 
     size_t info_at = ctx->peek_tok->info_at;
     CUnaryOp unop = init_CUnaryOp();
     TRY(pop_next(ctx));
+    TRANSPILE(binary_op(ctx->next_tok));
     TRY(parse_exp(ctx, precedence, &exp_right));
     *exp_left = make_CAssignment(&unop, exp_left, &exp_right, info_at);
     FINALLY;
@@ -2261,9 +2263,12 @@ static error_t parse_var_declaration(
     unique_ptr_t(CInitializer) initializer = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
+    TRANSPILE(var_decltor(decltor));
     TRY(peek_next(ctx));
+    TRANSPILE(do_nothing(ctx->peek_tok, (int)TOK_assign));
     if (ctx->peek_tok->tok_kind == TOK_assign) {
         TRY(pop_next(ctx));
+        TRANSPILE(binary_op(ctx->peek_tok));
         TRY(parse_initializer(ctx, &initializer));
     }
     TRY(pop_next(ctx));

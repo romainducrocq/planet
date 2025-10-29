@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 0
+#if 1
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)
@@ -56,6 +56,8 @@ class Transpiler {
         void write_lines();
 
         void derived_type(const Type* derived_type);
+        void do_nothing(const Token* tok, int tok_kind);
+        void var_decltor(const Declarator* decltor);
         void fun_decltor(const Declarator* decltor);
         void storage_class(const CStorageClass* storage_class);
         void comment_start();
