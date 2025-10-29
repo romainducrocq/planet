@@ -35,7 +35,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 <block-item> ::= <statement> | <declaration>
 <initializer> ::= <exp> | "$" "(" <initializer> { "," <initializer> } ")"
 <loop-init> ::= [ <variable-declaration> | <exp> ] [ "while" <exp> ] [ ".." <exp> ]
-<statement> ::=  <exp> | "return" [ <exp> ] | "jump" <identifier> | "label" <identifier>
+<statement> ::=  <exp> | "return" ( <exp> | ";" ) | "jump" <identifier> | "label" <identifier>
               | <block> | "if" <exp> <block> { "\n" "elif" <block> } [ "\n" "else" <block> ]
               | "loop" ( <loop-init> | ".." while <exp> ) <block> | "continue" | "break"
               | "match" <exp> <block> | "->" <const> <block> | "otherwise" <block>
