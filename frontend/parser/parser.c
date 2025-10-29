@@ -306,10 +306,10 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
             *unop = init_CNegate();
             break;
         }
-        // case TOK_unop_not: {
-        //     *unop = init_CNot();
-        //     break;
-        // }
+        case TOK_unop_not: {
+            *unop = init_CNot();
+            break;
+        }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_unop, str_fmt_tok(ctx->next_tok)));
     }
@@ -388,38 +388,38 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
             *binop = init_CBitShiftRight();
             break;
         }
-        // case TOK_binop_and: {
-        //     *binop = init_CAnd();
-        //     break;
-        // }
-        // case TOK_binop_or: {
-        //     *binop = init_COr();
-        //     break;
-        // }
-        // case TOK_binop_eq: {
-        //     *binop = init_CEqual();
-        //     break;
-        // }
-        // case TOK_binop_ne: {
-        //     *binop = init_CNotEqual();
-        //     break;
-        // }
-        // case TOK_binop_lt: {
-        //     *binop = init_CLessThan();
-        //     break;
-        // }
-        // case TOK_binop_le: {
-        //     *binop = init_CLessOrEqual();
-        //     break;
-        // }
-        // case TOK_binop_gt: {
-        //     *binop = init_CGreaterThan();
-        //     break;
-        // }
-        // case TOK_binop_ge: {
-        //     *binop = init_CGreaterOrEqual();
-        //     break;
-        // }
+        case TOK_binop_and: {
+            *binop = init_CAnd();
+            break;
+        }
+        case TOK_binop_or: {
+            *binop = init_COr();
+            break;
+        }
+        case TOK_binop_eq: {
+            *binop = init_CEqual();
+            break;
+        }
+        case TOK_binop_ne: {
+            *binop = init_CNotEqual();
+            break;
+        }
+        case TOK_binop_lt: {
+            *binop = init_CLessThan();
+            break;
+        }
+        case TOK_binop_le: {
+            *binop = init_CLessOrEqual();
+            break;
+        }
+        case TOK_binop_gt: {
+            *binop = init_CGreaterThan();
+            break;
+        }
+        case TOK_binop_ge: {
+            *binop = init_CGreaterOrEqual();
+            break;
+        }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->next_tok)));
     }
@@ -985,7 +985,7 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     switch (ctx->peek_tok->tok_kind) {
         case TOK_unop_complement:
         case TOK_unop_neg:
-        // case TOK_unop_not:
+        case TOK_unop_not:
             TRY(parse_unary_factor(ctx, exp));
             break;
         // case TOK_unop_incr:
@@ -1107,24 +1107,24 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
         case TOK_binop_shiftleft:
         case TOK_binop_shiftright:
             return 40;
-        // case TOK_binop_lt:
-        // case TOK_binop_le:
-        // case TOK_binop_gt:
-        // case TOK_binop_ge:
-        //     return 35;
-        // case TOK_binop_eq:
-        // case TOK_binop_ne:
-        //     return 30;
+        case TOK_binop_lt:
+        case TOK_binop_le:
+        case TOK_binop_gt:
+        case TOK_binop_ge:
+            return 35;
+        case TOK_binop_eq:
+        case TOK_binop_ne:
+            return 30;
         case TOK_binop_bitand:
             return 25;
         case TOK_binop_xor:
             return 20;
         case TOK_binop_bitor:
             return 15;
-        // case TOK_binop_and:
-        //     return 10;
-        // case TOK_binop_or:
-        //     return 5;
+        case TOK_binop_and:
+            return 10;
+        case TOK_binop_or:
+            return 5;
         // case TOK_ternary_if:
         //     return 3;
         // case TOK_assign:
@@ -1171,14 +1171,14 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
             case TOK_binop_xor:
             case TOK_binop_shiftleft:
             case TOK_binop_shiftright:
-            // case TOK_binop_lt:
-            // case TOK_binop_le:
-            // case TOK_binop_gt:
-            // case TOK_binop_ge:
-            // case TOK_binop_eq:
-            // case TOK_binop_ne:
-            // case TOK_binop_and:
-            // case TOK_binop_or:
+            case TOK_binop_lt:
+            case TOK_binop_le:
+            case TOK_binop_gt:
+            case TOK_binop_ge:
+            case TOK_binop_eq:
+            case TOK_binop_ne:
+            case TOK_binop_and:
+            case TOK_binop_or:
                 TRY(parse_binary_exp(ctx, precedence, exp));
                 break;
         //     case TOK_assign:
