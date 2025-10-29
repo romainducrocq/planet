@@ -1,7 +1,7 @@
-int main(void) {
+pub fn main(none) i32 {
 
-    int a = 1;
-    int b = 2;
-    return a = b = 4;
+    a: i32 = 1
+    b: i32 = 2
+    return a = b = 4
 }
 

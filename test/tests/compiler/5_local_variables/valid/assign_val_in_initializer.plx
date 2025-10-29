@@ -1,4 +1,4 @@
-int main(void) {
-    int a = a = 5;
-    return a;
+pub fn main(none) i32 {
+    a: i32 = a = 5
+    return a
 }

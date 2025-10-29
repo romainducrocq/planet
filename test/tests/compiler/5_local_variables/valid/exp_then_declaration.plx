@@ -1,6 +1,6 @@
-int main(void) {
-    int a = -2593;
-    a = a % 3;
-    int b = -a;
-    return b;
+pub fn main(none) i32 {
+    a: i32 = -2593
+    a = a % 3
+    b: i32 = -a
+    return b
 }
