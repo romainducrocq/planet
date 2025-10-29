@@ -1217,13 +1217,12 @@ static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
-    switch (ctx->peek_tok->tok_kind) {
-        case TOK_line_break:
-        case TOK_close_brace:
-            break;
-        default:
-            TRY(parse_exp(ctx, 0, &exp));
-            break;
+    if (ctx->peek_tok->tok_kind == TOK_semicolon) {
+        TRY(pop_next(ctx));
+        TRY(1); // TODO
+    }
+    else {
+        TRY(parse_exp(ctx, 0, &exp));
     }
     *statement = make_CReturn(&exp, info_at);
     FINALLY;
