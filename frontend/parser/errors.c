@@ -26,18 +26,18 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "<<";
         case TOK_binop_shiftright:
             return ">>";
-        // case TOK_binop_and:
-        //     return "&&";
-        // case TOK_binop_or:
-        //     return "||";
-        // case TOK_binop_eq:
-        //     return "==";
-        // case TOK_binop_ne:
-        //     return "!=";
-        // case TOK_binop_le:
-        //     return "<=";
-        // case TOK_binop_ge:
-        //     return ">=";
+        case TOK_binop_and:
+            return "and";
+        case TOK_binop_or:
+            return "or";
+        case TOK_binop_eq:
+            return "==";
+        case TOK_binop_ne:
+            return "~=";
+        case TOK_binop_le:
+            return "<=";
+        case TOK_binop_ge:
+            return ">=";
         // case TOK_assign_add:
         //     return "+=";
         // case TOK_assign_subtract:
@@ -76,8 +76,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "~";
         case TOK_unop_neg:
             return "-";
-        // case TOK_unop_not:
-        //     return "!";
+        case TOK_unop_not:
+            return "not";
         case TOK_binop_add:
             return "+";
         case TOK_binop_multiply:
@@ -92,10 +92,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "|";
         case TOK_binop_xor:
             return "^";
-        // case TOK_binop_lt:
-        //     return "<";
-        // case TOK_binop_gt:
-        //     return ">";
+        case TOK_binop_lt:
+            return "<";
+        case TOK_binop_gt:
+            return ">";
         // case TOK_assign:
         //     return "=";
         // case TOK_ternary_if:
