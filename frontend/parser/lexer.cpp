@@ -502,10 +502,9 @@ static TOKEN_KIND match_token(Ctx ctx) {
             if (match_char(ctx, '=')) {
                 return TOK_binop_eq;
             }
-            // else {
-            //     return TOK_assign;
-            // }
-            return TOK_error; // TODO
+            else {
+                return TOK_assign;
+            }
         }
         case '!': {
             if (match_char(ctx, '=')) {

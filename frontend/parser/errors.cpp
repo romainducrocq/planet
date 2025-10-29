@@ -94,8 +94,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "<";
         case TOK_binop_gt:
             return ">";
-        // case TOK_assign:
-        //     return "=";
+        case TOK_assign:
+            return "=";
         // case TOK_ternary_if:
         //     return "?";
         // case TOK_ternary_else:
