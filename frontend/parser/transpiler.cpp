@@ -225,7 +225,7 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
 
 void cc::Transpiler::do_nothing(const Token* tok, int tok_kind) {
     set_linenum(tok);
-    if (tok_kind == (int)tok->tok_kind) {
+    if (tok_kind != (int)tok->tok_kind) {
         append_buf(";");
     }
 }
