@@ -163,10 +163,10 @@ void cc::Transpiler::keep_token(const Token* tok) {
 
 void cc::Transpiler::append_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
-    if (const_buf.compare("0") == 0 && with_prob(20)) {
+    if (const_buf.compare("0") == 0 && with_prob(10)) {
         append_buf("false");
     }
-    else if (const_buf.compare("1") == 0 && with_prob(20)) {
+    else if (const_buf.compare("1") == 0 && with_prob(10)) {
         append_buf("true");
     }
     else {
@@ -269,7 +269,7 @@ void cc::Transpiler::skip(bool is_comment, const char* line, size_t match_at, si
 }
 
 void cc::Transpiler::break_line(bool maybe) {
-    if (maybe && with_prob(20)) {
+    if (maybe && with_prob(3)) {
         append_buf(" ");
     }
     else {
