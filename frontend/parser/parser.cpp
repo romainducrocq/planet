@@ -1462,6 +1462,7 @@ static error_t parse_exp_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
 static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRANSPILE(do_nothing(ctx->next_tok, int(TOK_error)));
     *statement = make_CNull();
     FINALLY;
     CATCH_EXIT;
