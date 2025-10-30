@@ -1618,7 +1618,7 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     CATCH_EXIT;
 // }
 
-static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration);
+static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration, bool is_toplvl);
 
 static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CStatement) statement = uptr_new();
@@ -1633,7 +1633,7 @@ static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item
 static error_t parse_d_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CDeclaration) declaration = uptr_new();
     CATCH_ENTER;
-    TRY(parse_declaration(ctx, &declaration));
+    TRY(parse_declaration(ctx, &declaration, false));
     *block_item = make_CD(&declaration);
     FINALLY;
     free_CDeclaration(&declaration);
@@ -1646,7 +1646,7 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
     CATCH_ENTER;
     switch (ctx->peek_tok->tok_kind) {
         // case TOK_key_char:
-        case TOK_key_int:
+        // case TOK_key_int:
         // case TOK_key_long:
         // case TOK_key_double:
         // case TOK_key_unsigned:
@@ -1656,12 +1656,21 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_union:
         // case TOK_key_static:
         // case TOK_key_extern:
+        case TOK_key_pub:
             TRY(parse_d_block_item(ctx, block_item));
+            TRY(1); // TODO rm
             break;
+        case TOK_identifier: {
+            TRY(peek_next_i(ctx, 1));
+            if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
+                TRY(parse_d_block_item(ctx, block_item));
+            }
+            break;
+        }
         default:
-            TRY(parse_s_block_item(ctx, block_item));
             break;
     }
+    TRY(parse_s_block_item(ctx, block_item));
     FINALLY;
     CATCH_EXIT;
 }
@@ -1712,7 +1721,7 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_semicolon:
-            TRY(1); // TODO rm
+            TRY(1); // TODO rm is null here ? 
             break;
         case TOK_open_brace:
             TRY(parse_b_block(ctx, block));
@@ -2335,20 +2344,33 @@ static error_t parse_fun_declaration(
 // <variable-declaration> ::= { <specifier> }+ <declarator> [ "=" <initializer> ] ";"
 // variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
 static error_t parse_var_declaration(
-    Ctx ctx, const CStorageClass* storage_class,/* Declarator* decltor,*/ unique_ptr_t(CVariableDeclaration) * var_decl) {
+    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl) {
     unique_ptr_t(CInitializer) initializer = uptr_new();
+    shared_ptr_t(Type) var_type = sptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
-    TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind == TOK_assign) {
-        TRY(pop_next(ctx));
-        TRY(parse_initializer(ctx, &initializer));
-    }
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TIdentifier name;
+    TRY(parse_identifier(ctx, 0, &name));
     TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-    // *var_decl = make_CVariableDeclaration(decltor->name, &initializer, &decltor->derived_type, storage_class, info_at);
+    TRY(expect_next(ctx, ctx->next_tok, TOK_assign_type));
+    // TODO should be parse_type_name
+    TRY(parse_type_specifier(ctx, &var_type));
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_assign:
+            TRY(parse_initializer(ctx, &initializer));
+            break;
+        case TOK_semicolon:
+            break;
+        default:
+            TRY(1); // TODO message
+            break;
+    }
+    *var_decl = make_CVariableDeclaration(name, &initializer, &var_type, storage_class, info_at);
     FINALLY;
     free_CInitializer(&initializer);
+    free_Type(&var_type);
     CATCH_EXIT;
 }
 
@@ -2427,10 +2449,10 @@ static error_t parse_fun_decl(
 }
 
 static error_t parse_var_decl(
-    Ctx ctx, const CStorageClass* storage_class,/*, Declarator* decltor*/ unique_ptr_t(CDeclaration) * declaration) {
+    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     unique_ptr_t(CVariableDeclaration) var_decl = uptr_new();
     CATCH_ENTER;
-    TRY(parse_var_declaration(ctx, storage_class,/*decltor,*/ &var_decl));
+    TRY(parse_var_declaration(ctx, storage_class, &var_decl));
     *declaration = make_CVarDecl(&var_decl);
     FINALLY;
     free_CVariableDeclaration(&var_decl);
@@ -2472,14 +2494,16 @@ static error_t parse_var_decl(
 
 // <declaration> ::= <variable-declaration> | <function-declaration> | <struct-declaration>
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
-static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration) {
+static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration, bool is_toplvl) {
     // Declarator decltor = {0, sptr_new(), vec_new()};
     CATCH_ENTER;
     // TODO get storage class at top-level or block-level
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_key_pub));
-    //
     CStorageClass storage_class = init_CStorageClass();
+    if (is_toplvl) {
+        TRY(pop_next(ctx));
+        TRY(expect_next(ctx, ctx->next_tok, TOK_key_pub));
+    }
+    //
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
         // case TOK_key_struct:
@@ -2498,7 +2522,7 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
             TRY(parse_fun_decl(ctx, &storage_class, declaration));
             break;
         default:
-            TRY(parse_var_decl(ctx, &storage_class,/*&decltor,*/ declaration));
+            TRY(parse_var_decl(ctx, &storage_class, declaration));
             break;
     }
     // TRY(parse_decltor_decl(ctx, &decltor, &storage_class));
@@ -2521,7 +2545,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     vector_t(unique_ptr_t(CDeclaration)) declarations = vec_new();
     CATCH_ENTER;
     while (ctx->pop_idx < vec_size(*ctx->p_toks)) {
-        TRY(parse_declaration(ctx, &declaration));
+        TRY(parse_declaration(ctx, &declaration, true));
         vec_move_back(declarations, declaration);
         TRY(pop_next(ctx));
         TRY(expect_next(ctx, ctx->next_tok, TOK_line_break));
