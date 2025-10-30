@@ -1474,13 +1474,13 @@ static error_t parse_exp_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     *statement = make_CNull();
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    *statement = make_CNull();
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <statement> ::= ";" | <block> | <exp> ";" | "return" [ <exp> ] ";" | "goto" <identifier> ";"
 //               | <identifier> ":" | "if" "(" <exp> ")" <statement> [ "else" <statement> ]
@@ -1541,7 +1541,8 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         //     TRY(parse_continue_statement(ctx, statement));
         //     EARLY_EXIT;
         case TOK_semicolon:
-            TRY(parse_block(ctx, NULL));
+            // TRY(parse_block(ctx, NULL)); // TODO
+            TRY(parse_null_statement(ctx, statement));
             EARLY_EXIT;
         default:
             break;
