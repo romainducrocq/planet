@@ -518,37 +518,38 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //     if (match_char(ctx, '>')) {
         //         return TOK_structop_ptr;
         //     }
-        //     else if (match_char(ctx, '-')) {
-        //         return TOK_unop_decr;
-        //     }
-        //     else if (match_char(ctx, '=')) {
-        //         return TOK_assign_subtract;
-        //     }
-        //     else {
+        //     else 
+            if (match_char(ctx, '-')) {
+                return TOK_unop_decr;
+            }
+            else if (match_char(ctx, '=')) {
+                return TOK_assign_subtract;
+            }
+            else {
                 return TOK_unop_neg;
-        //     }
+            }
         }
         case '+': {
-        //     if (match_char(ctx, '+')) {
-        //         return TOK_unop_incr;
-        //     }
-        //     else if (match_char(ctx, '=')) {
-        //         return TOK_assign_add;
-        //     }
-        //     else {
+            if (match_char(ctx, '+')) {
+                return TOK_unop_incr;
+            }
+            else if (match_char(ctx, '=')) {
+                return TOK_assign_add;
+            }
+            else {
                 return TOK_binop_add;
-        //     }
+            }
         }
         case '*': {
-        //     if (match_char(ctx, '/')) {
-        //         return TOK_error;
-        //     }
-        //     else if (match_char(ctx, '=')) {
-        //         return TOK_assign_multiply;
-        //     }
-        //     else {
+            if (match_char(ctx, '/')) {
+                return TOK_error;
+            }
+            else if (match_char(ctx, '=')) {
+                return TOK_assign_multiply;
+            }
+            else {
                 return TOK_binop_multiply;
-        //     }
+            }
         }
         case '/': {
             if (match_char(ctx, '/')) {
@@ -557,28 +558,28 @@ static TOKEN_KIND match_token(Ctx ctx) {
             else if (match_char(ctx, '*')) {
                 return TOK_comment_start;
             }
-            // else if (match_char(ctx, '=')) {
-            //     return TOK_assign_divide;
-            // }
+            else if (match_char(ctx, '=')) {
+                return TOK_assign_divide;
+            }
             else {
                 return TOK_binop_divide;
             }
         }
         case '%': {
-        //     if (match_char(ctx, '=')) {
-        //         return TOK_assign_remainder;
-        //     }
-        //     else {
+            if (match_char(ctx, '=')) {
+                return TOK_assign_remainder;
+            }
+            else {
                 return TOK_binop_remainder;
-        //     }
+            }
         }
         case '&': {
             if (match_char(ctx, '&')) {
                 return TOK_binop_and;
             }
-        //     else if (match_char(ctx, '=')) {
-        //         return TOK_assign_bitand;
-        //     }
+            else if (match_char(ctx, '=')) {
+                return TOK_assign_bitand;
+            }
             else {
                 return TOK_binop_bitand;
             }
@@ -587,21 +588,21 @@ static TOKEN_KIND match_token(Ctx ctx) {
             if (match_char(ctx, '|')) {
                 return TOK_binop_or;
             }
-        //     else if (match_char(ctx, '=')) {
-        //         return TOK_assign_bitor;
-        //     }
+            else if (match_char(ctx, '=')) {
+                return TOK_assign_bitor;
+            }
             else {
                 return TOK_binop_bitor;
             }
         }
         case '<': {
             if (match_char(ctx, '<')) {
-        //         if (match_char(ctx, '=')) {
-        //             return TOK_assign_shiftleft;
-        //         }
-        //         else {
+                if (match_char(ctx, '=')) {
+                    return TOK_assign_shiftleft;
+                }
+                else {
                     return TOK_binop_shiftleft;
-        //         }
+                }
             }
             else if (match_char(ctx, '=')) {
                 return TOK_binop_le;
@@ -612,12 +613,12 @@ static TOKEN_KIND match_token(Ctx ctx) {
         }
         case '>': {
             if (match_char(ctx, '>')) {
-        //         if (match_char(ctx, '=')) {
-        //             return TOK_assign_shiftright;
-        //         }
-        //         else {
+                if (match_char(ctx, '=')) {
+                    return TOK_assign_shiftright;
+                }
+                else {
                     return TOK_binop_shiftright;
-        //         }
+                }
             }
             else if (match_char(ctx, '=')) {
                 return TOK_binop_ge;
@@ -627,12 +628,12 @@ static TOKEN_KIND match_token(Ctx ctx) {
             }
         }
         case '^': {
-        //     if (match_char(ctx, '=')) {
-        //         return TOK_assign_xor;
-        //     }
-        //     else {
+            if (match_char(ctx, '=')) {
+                return TOK_assign_xor;
+            }
+            else {
                 return TOK_binop_xor;
-        //     }
+            }
         }
         // case '.': {
         //     switch (get_char(ctx)) {
