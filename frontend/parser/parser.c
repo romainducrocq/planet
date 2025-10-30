@@ -1501,53 +1501,52 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
             EARLY_EXIT;
         // case TOK_key_if:
         //     TRY(parse_if_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_goto:
         //     TRY(parse_goto_statement(ctx, statement));
-        //     EARLY_EXIT;
-        case TOK_identifier: {
-        //     TRY(peek_next_i(ctx, 1));
-        //     if (ctx->peek_tok_i->tok_kind == TOK_ternary_else) {
-        //         TRY(parse_label_statement(ctx, statement));
-        //         EARLY_EXIT;
-        //     }
-            break;
-        }
+        //     break;
+        // case TOK_identifier: {
+        // //     TRY(peek_next_i(ctx, 1));
+        // //     if (ctx->peek_tok_i->tok_kind == TOK_ternary_else) {
+        // //         TRY(parse_label_statement(ctx, statement));
+        // //         break;
+        // //     }
+        //     break;
+        // }
         // case TOK_open_brace:
         //     TRY(parse_compound_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_while:
         //     TRY(parse_while_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_do:
         //     TRY(parse_do_while_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_for:
         //     TRY(parse_for_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_switch:
         //     TRY(parse_switch_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_case:
         //     TRY(parse_case_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_default:
         //     TRY(parse_default_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_break:
         //     TRY(parse_break_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         // case TOK_key_continue:
         //     TRY(parse_continue_statement(ctx, statement));
-        //     EARLY_EXIT;
+        //     break;
         case TOK_semicolon:
-            // TRY(parse_block(ctx, NULL)); // TODO
             TRY(parse_null_statement(ctx, statement));
-            EARLY_EXIT;
+            break;
         default:
+            TRY(parse_exp_statement(ctx, statement));
             break;
     }
-    TRY(parse_exp_statement(ctx, statement));
     FINALLY;
     CATCH_EXIT;
 }
