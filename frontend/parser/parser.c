@@ -1234,8 +1234,6 @@ static error_t parse_exp_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     unique_ptr_t(CExp) exp = uptr_new();
     CATCH_ENTER;
     TRY(parse_exp(ctx, 0, &exp));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
     *statement = make_CExpression(&exp);
     FINALLY;
     free_CExp(&exp);
@@ -1542,9 +1540,9 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         // case TOK_key_continue:
         //     TRY(parse_continue_statement(ctx, statement));
         //     EARLY_EXIT;
-        // case TOK_semicolon:
-        //     TRY(parse_null_statement(ctx, statement));
-        //     EARLY_EXIT;
+        case TOK_semicolon:
+            TRY(parse_block(ctx, NULL));
+            EARLY_EXIT;
         default:
             break;
     }
@@ -1722,7 +1720,6 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_semicolon:
-            TRY(1); // TODO rm is null here ? 
             break;
         case TOK_open_brace:
             TRY(parse_b_block(ctx, block));
