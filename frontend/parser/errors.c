@@ -14,14 +14,14 @@
 
 const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
     switch (tok_kind) {
-        // case TOK_assign_shiftleft:
-        //     return "<<=";
-        // case TOK_assign_shiftright:
-        //     return ">>=";
-        // case TOK_unop_incr:
-        //     return "++";
-        // case TOK_unop_decr:
-        //     return "--";
+        case TOK_assign_shiftleft:
+            return "<<=";
+        case TOK_assign_shiftright:
+            return ">>=";
+        case TOK_unop_incr:
+            return "++";
+        case TOK_unop_decr:
+            return "--";
         case TOK_binop_shiftleft:
             return "<<";
         case TOK_binop_shiftright:
@@ -38,22 +38,22 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "<=";
         case TOK_binop_ge:
             return ">=";
-        // case TOK_assign_add:
-        //     return "+=";
-        // case TOK_assign_subtract:
-        //     return "-=";
-        // case TOK_assign_multiply:
-        //     return "*=";
-        // case TOK_assign_divide:
-        //     return "/=";
-        // case TOK_assign_remainder:
-        //     return "%=";
-        // case TOK_assign_bitand:
-        //     return "&=";
-        // case TOK_assign_bitor:
-        //     return "|=";
-        // case TOK_assign_xor:
-        //     return "^=";
+        case TOK_assign_add:
+            return "+=";
+        case TOK_assign_subtract:
+            return "-=";
+        case TOK_assign_multiply:
+            return "*=";
+        case TOK_assign_divide:
+            return "/=";
+        case TOK_assign_remainder:
+            return "%=";
+        case TOK_assign_bitand:
+            return "&=";
+        case TOK_assign_bitor:
+            return "|=";
+        case TOK_assign_xor:
+            return "^=";
         // case TOK_structop_ptr:
         //     return "->";
         case TOK_line_break:
