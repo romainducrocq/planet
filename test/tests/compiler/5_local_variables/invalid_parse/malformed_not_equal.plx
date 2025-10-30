@@ -2,5 +2,5 @@ pub fn main(none) i32 {
     # make sure we lex ! and = as two separate tokens
     # this really tests the lexing logic from previous chapter,
     # but the lexer didn't recognize = yet
-    return 1 not = 0
+    return 1 ~ = 0
 }
