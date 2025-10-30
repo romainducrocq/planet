@@ -327,64 +327,54 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_binop_add:
-        // case TOK_assign_add:
-        // case TOK_unop_incr:
-        {
+        case TOK_assign_add:
+        case TOK_unop_incr: {
             *binop = init_CAdd();
             break;
         }
         case TOK_unop_neg:
-        // case TOK_assign_subtract:
-        // case TOK_unop_decr:
-        {
+        case TOK_assign_subtract:
+        case TOK_unop_decr: {
             *binop = init_CSubtract();
             break;
         }
         case TOK_binop_multiply:
-        // case TOK_assign_multiply:
-        {
+        case TOK_assign_multiply: {
             *binop = init_CMultiply();
             break;
         }
         case TOK_binop_divide:
-        // case TOK_assign_divide:
-        {
+        case TOK_assign_divide: {
             *binop = init_CDivide();
             break;
         }
         case TOK_binop_remainder:
-        // case TOK_assign_remainder: 
-        {
+        case TOK_assign_remainder: {
             *binop = init_CRemainder();
             break;
         }
         case TOK_binop_bitand:
-        // case TOK_assign_bitand: 
-        {
+        case TOK_assign_bitand: {
             *binop = init_CBitAnd();
             break;
         }
         case TOK_binop_bitor:
-        // case TOK_assign_bitor: 
-        {
+        case TOK_assign_bitor: {
             *binop = init_CBitOr();
             break;
         }
         case TOK_binop_xor:
-        // case TOK_assign_xor: 
-        {
+        case TOK_assign_xor: {
             *binop = init_CBitXor();
             break;
         }
         case TOK_binop_shiftleft:
-        // case TOK_assign_shiftleft: 
-        {
+        case TOK_assign_shiftleft: {
             *binop = init_CBitShiftLeft();
             break;
         }
         case TOK_binop_shiftright:
-        // case TOK_assign_shiftright: 
-        {
+        case TOK_assign_shiftright: {
             *binop = init_CBitShiftRight();
             break;
         }
@@ -723,26 +713,26 @@ static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_postfix_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) exp_right = uptr_new();
-//     unique_ptr_t(CExp) exp_right_1 = uptr_new();
-//     shared_ptr_t(CConst) constant = sptr_new();
-//     CATCH_ENTER;
-//     unique_ptr_t(CExp) exp_null = uptr_new();
-//     size_t info_at = ctx->peek_tok->info_at;
-//     CUnaryOp unop = init_CPostfix();
-//     CBinaryOp binop = init_CBinaryOp();
-//     TRY(parse_binop(ctx, &binop));
-//     constant = make_CConstInt(1);
-//     exp_right = make_CConstant(&constant, info_at);
-//     exp_right_1 = make_CBinary(&binop, exp, &exp_right, info_at);
-//     *exp = make_CAssignment(&unop, &exp_null, &exp_right_1, info_at);
-//     FINALLY;
-//     free_CExp(&exp_right);
-//     free_CExp(&exp_right_1);
-//     free_CConst(&constant);
-//     CATCH_EXIT;
-// }
+static error_t parse_postfix_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) exp_right = uptr_new();
+    unique_ptr_t(CExp) exp_right_1 = uptr_new();
+    shared_ptr_t(CConst) constant = sptr_new();
+    CATCH_ENTER;
+    unique_ptr_t(CExp) exp_null = uptr_new();
+    size_t info_at = ctx->peek_tok->info_at;
+    CUnaryOp unop = init_CPostfix();
+    CBinaryOp binop = init_CBinaryOp();
+    TRY(parse_binop(ctx, &binop));
+    constant = make_CConstInt(1);
+    exp_right = make_CConstant(&constant, info_at);
+    exp_right_1 = make_CBinary(&binop, exp, &exp_right, info_at);
+    *exp = make_CAssignment(&unop, &exp_null, &exp_right_1, info_at);
+    FINALLY;
+    free_CExp(&exp_right);
+    free_CExp(&exp_right_1);
+    free_CConst(&constant);
+    CATCH_EXIT;
+}
 
 static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
@@ -757,30 +747,30 @@ static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) exp_left = uptr_new();
-//     unique_ptr_t(CExp) exp_right = uptr_new();
-//     unique_ptr_t(CExp) exp_left_1 = uptr_new();
-//     unique_ptr_t(CExp) exp_right_1 = uptr_new();
-//     shared_ptr_t(CConst) constant = sptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     CUnaryOp unop = init_CPrefix();
-//     CBinaryOp binop = init_CBinaryOp();
-//     TRY(parse_binop(ctx, &binop));
-//     TRY(parse_cast_exp_factor(ctx, &exp_left));
-//     constant = make_CConstInt(1);
-//     exp_right = make_CConstant(&constant, info_at);
-//     exp_right_1 = make_CBinary(&binop, &exp_left, &exp_right, info_at);
-//     *exp = make_CAssignment(&unop, &exp_left_1, &exp_right_1, info_at);
-//     FINALLY;
-//     free_CExp(&exp_left);
-//     free_CExp(&exp_right);
-//     free_CExp(&exp_left_1);
-//     free_CExp(&exp_right_1);
-//     free_CConst(&constant);
-//     CATCH_EXIT;
-// }
+static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) exp_left = uptr_new();
+    unique_ptr_t(CExp) exp_right = uptr_new();
+    unique_ptr_t(CExp) exp_left_1 = uptr_new();
+    unique_ptr_t(CExp) exp_right_1 = uptr_new();
+    shared_ptr_t(CConst) constant = sptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    CUnaryOp unop = init_CPrefix();
+    CBinaryOp binop = init_CBinaryOp();
+    TRY(parse_binop(ctx, &binop));
+    TRY(parse_cast_exp_factor(ctx, &exp_left));
+    constant = make_CConstInt(1);
+    exp_right = make_CConstant(&constant, info_at);
+    exp_right_1 = make_CBinary(&binop, &exp_left, &exp_right, info_at);
+    *exp = make_CAssignment(&unop, &exp_left_1, &exp_right_1, info_at);
+    FINALLY;
+    free_CExp(&exp_left);
+    free_CExp(&exp_right);
+    free_CExp(&exp_left_1);
+    free_CExp(&exp_right_1);
+    free_CConst(&constant);
+    CATCH_EXIT;
+}
 
 // static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     unique_ptr_t(CExp) cast_exp = uptr_new();
@@ -933,47 +923,47 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 }
 
 // <postfix-op> ::= "[" <exp> "]" | "." <identifier> | "->" <identifier> | "++" | "--"
-// static error_t parse_postfix_op_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     CATCH_ENTER;
-//     TRY(peek_next(ctx));
-//     switch (ctx->peek_tok->tok_kind) {
-//         case TOK_open_bracket:
-//             TRY(parse_subscript_factor(ctx, exp));
-//             break;
-//         case TOK_structop_member:
-//             TRY(parse_dot_factor(ctx, exp));
-//             break;
-//         case TOK_structop_ptr:
-//             TRY(parse_arrow_factor(ctx, exp));
-//             break;
-//         case TOK_unop_incr:
-//         case TOK_unop_decr:
-//             TRY(parse_postfix_incr_factor(ctx, exp));
-//             break;
-//         default:
-//             EARLY_EXIT;
-//     }
-//     TRY(parse_postfix_op_exp_factor(ctx, exp));
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_postfix_op_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
+        // case TOK_open_bracket:
+        //     TRY(parse_subscript_factor(ctx, exp));
+        //     break;
+        // case TOK_structop_member:
+        //     TRY(parse_dot_factor(ctx, exp));
+        //     break;
+        // case TOK_structop_ptr:
+        //     TRY(parse_arrow_factor(ctx, exp));
+        //     break;
+        case TOK_unop_incr:
+        case TOK_unop_decr:
+            TRY(parse_postfix_incr_factor(ctx, exp));
+            break;
+        default:
+            EARLY_EXIT;
+    }
+    TRY(parse_postfix_op_exp_factor(ctx, exp));
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <postfix-exp> ::= <primary-exp> { <postfix-op> }
 static error_t parse_postfix_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(parse_primary_exp_factor(ctx, exp));
-    // TRY(peek_next(ctx));
-    // switch (ctx->peek_tok->tok_kind) {
-    //     case TOK_open_bracket:
-    //     case TOK_structop_member:
-    //     case TOK_structop_ptr:
-    //     case TOK_unop_incr:
-    //     case TOK_unop_decr:
-    //         TRY(parse_postfix_op_exp_factor(ctx, exp));
-    //         break;
-    //     default:
-    //         break;
-    // }
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
+        // case TOK_open_bracket:
+        // case TOK_structop_member:
+        // case TOK_structop_ptr:
+        case TOK_unop_incr:
+        case TOK_unop_decr:
+            TRY(parse_postfix_op_exp_factor(ctx, exp));
+            break;
+        default:
+            break;
+    }
     FINALLY;
     CATCH_EXIT;
 }
@@ -988,10 +978,10 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_unop_not:
             TRY(parse_unary_factor(ctx, exp));
             break;
-        // case TOK_unop_incr:
-        // case TOK_unop_decr:
-        //     TRY(parse_incr_unary_factor(ctx, exp));
-        //     break;
+        case TOK_unop_incr:
+        case TOK_unop_decr:
+            TRY(parse_incr_unary_factor(ctx, exp));
+            break;
         // case TOK_binop_multiply:
         // case TOK_binop_bitand:
         //     TRY(parse_ptr_unary_factor(ctx, exp));
@@ -1047,23 +1037,23 @@ static error_t parse_assign_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) 
     CATCH_EXIT;
 }
 
-// static error_t parse_assign_compound_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
-//     unique_ptr_t(CExp) exp_right = uptr_new();
-//     unique_ptr_t(CExp) exp_right_1 = uptr_new();
-//     CATCH_ENTER;
-//     unique_ptr_t(CExp) exp_null = uptr_new();
-//     size_t info_at = ctx->peek_tok->info_at;
-//     CUnaryOp unop = init_CUnaryOp();
-//     CBinaryOp binop = init_CBinaryOp();
-//     TRY(parse_binop(ctx, &binop));
-//     TRY(parse_exp(ctx, precedence, &exp_right));
-//     exp_right_1 = make_CBinary(&binop, exp_left, &exp_right, info_at);
-//     *exp_left = make_CAssignment(&unop, &exp_null, &exp_right_1, info_at);
-//     FINALLY;
-//     free_CExp(&exp_right);
-//     free_CExp(&exp_right_1);
-//     CATCH_EXIT;
-// }
+static error_t parse_assign_compound_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
+    unique_ptr_t(CExp) exp_right = uptr_new();
+    unique_ptr_t(CExp) exp_right_1 = uptr_new();
+    CATCH_ENTER;
+    unique_ptr_t(CExp) exp_null = uptr_new();
+    size_t info_at = ctx->peek_tok->info_at;
+    CUnaryOp unop = init_CUnaryOp();
+    CBinaryOp binop = init_CBinaryOp();
+    TRY(parse_binop(ctx, &binop));
+    TRY(parse_exp(ctx, precedence, &exp_right));
+    exp_right_1 = make_CBinary(&binop, exp_left, &exp_right, info_at);
+    *exp_left = make_CAssignment(&unop, &exp_null, &exp_right_1, info_at);
+    FINALLY;
+    free_CExp(&exp_right);
+    free_CExp(&exp_right_1);
+    CATCH_EXIT;
+}
 
 static error_t parse_binary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
     unique_ptr_t(CExp) exp_right = uptr_new();
@@ -1128,16 +1118,16 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
         // case TOK_ternary_if:
         //     return 3;
         case TOK_assign:
-        // case TOK_assign_add:
-        // case TOK_assign_subtract:
-        // case TOK_assign_multiply:
-        // case TOK_assign_divide:
-        // case TOK_assign_remainder:
-        // case TOK_assign_bitand:
-        // case TOK_assign_bitor:
-        // case TOK_assign_xor:
-        // case TOK_assign_shiftleft:
-        // case TOK_assign_shiftright:
+        case TOK_assign_add:
+        case TOK_assign_subtract:
+        case TOK_assign_multiply:
+        case TOK_assign_divide:
+        case TOK_assign_remainder:
+        case TOK_assign_bitand:
+        case TOK_assign_bitor:
+        case TOK_assign_xor:
+        case TOK_assign_shiftleft:
+        case TOK_assign_shiftright:
             return 1;
         default:
             return -1;
@@ -1184,18 +1174,18 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
             case TOK_assign:
                 TRY(parse_assign_exp(ctx, precedence, exp));
                 break;
-        //     case TOK_assign_add:
-        //     case TOK_assign_subtract:
-        //     case TOK_assign_multiply:
-        //     case TOK_assign_divide:
-        //     case TOK_assign_remainder:
-        //     case TOK_assign_bitand:
-        //     case TOK_assign_bitor:
-        //     case TOK_assign_xor:
-        //     case TOK_assign_shiftleft:
-        //     case TOK_assign_shiftright:
-        //         TRY(parse_assign_compound_exp(ctx, precedence, exp));
-        //         break;
+            case TOK_assign_add:
+            case TOK_assign_subtract:
+            case TOK_assign_multiply:
+            case TOK_assign_divide:
+            case TOK_assign_remainder:
+            case TOK_assign_bitand:
+            case TOK_assign_bitor:
+            case TOK_assign_xor:
+            case TOK_assign_shiftleft:
+            case TOK_assign_shiftright:
+                TRY(parse_assign_compound_exp(ctx, precedence, exp));
+                break;
         //     case TOK_ternary_if:
         //         TRY(parse_ternary_exp(ctx, precedence, exp));
         //         break;
