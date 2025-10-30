@@ -651,6 +651,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "data structure type declared with member " EM_VARG " with " EM_VARG " storage class";
         case MSG_member_decl_as_fun:
             RET_ERRNO "data structure type declared with member " EM_VARG " as a function";
+        case MSG_expect_assign:
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("=") " or " EM_CSTR(";") " next";
         case MSG_expect_block:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("{") " or " EM_CSTR(";") " next";
         case MSG_empty_block:

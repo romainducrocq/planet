@@ -2356,14 +2356,13 @@ static error_t parse_var_declaration(
     TRY(parse_type_specifier(ctx, &var_type));
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
+        case TOK_semicolon:
+            break;
         case TOK_assign:
             TRY(parse_initializer(ctx, &initializer));
             break;
-        case TOK_semicolon:
-            break;
         default:
-            TRY(1); // TODO message
-            break;
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_assign, str_fmt_tok(ctx->next_tok)));
     }
     *var_decl = make_CVariableDeclaration(name, &initializer, &var_type, storage_class, info_at);
     FINALLY;
