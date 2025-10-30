@@ -1,4 +1,4 @@
-int main(void) {
-    int a = 0;
-    (a = 4)++;
+pub fn main(none) i32 {
+    a: i32 = 0
+    (a = 4)++
 }

@@ -1,4 +1,4 @@
-int main(void) {
-    a--;
-    return 0;
+pub fn main(none) i32 {
+    a--
+    return 0
 }
