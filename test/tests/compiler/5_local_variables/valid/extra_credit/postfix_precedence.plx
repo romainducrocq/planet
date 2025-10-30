@@ -1,7 +1,7 @@
-/* Postfix operators have higher precedence than prefix */
+#  Postfix operators have higher precedence than prefix 
 
-int main(void) {
-    int a = 1;
-    int b = !a++;
-    return (a == 2 && b == 0);
+pub fn main(none) i32 {
+    a: i32 = 1
+    b: i32 = not a++
+    return (a == 2 and b == 0)
 }

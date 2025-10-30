@@ -1,5 +1,5 @@
-int main(void) {
-    int a = 15;
-    int b = a ^ 5;  // 10
-    return 1 | b;   // 11
+pub fn main(none) i32 {
+    a: i32 = 15
+    b: i32 = a ^ 5 #  10
+    return 1 | b #  11
 }

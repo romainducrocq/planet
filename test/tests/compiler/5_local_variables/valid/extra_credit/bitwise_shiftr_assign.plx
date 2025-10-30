@@ -1,6 +1,6 @@
-int main(void) {
-    int var_to_shift = 1234;
-    int x = 0;
-    x = var_to_shift >> 4;
-    return x;
+pub fn main(none) i32 {
+    var_to_shift: i32 = 1234
+    x: i32 = 0
+    x = var_to_shift >> 4
+    return x
 }

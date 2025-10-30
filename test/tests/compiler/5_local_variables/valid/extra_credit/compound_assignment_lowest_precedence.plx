@@ -1,13 +1,13 @@
-int main(void) {
-    int a = 10;
-    int b = 12;
-    a += 0 || b;  // a = 11
-    b *= a && 0;  // b = 0
+pub fn main(none) i32 {
+    a: i32 = 10
+    b: i32 = 12
+    a += 0 or b #  a = 11
+    b *= a and 0 #  b = 0
 
-    int c = 14;
-    c -= a || b;  // c = 13
+    c: i32 = 14
+    c -= a or b #  c = 13
 
-    int d = 16;
-    d /= c || d; // d = 16
-    return (a == 11 && b == 0 && c == 13 && d == 16);
-}
+    d: i32 = 16
+    d /= c or d #  d = 16
+    return (a == 11 and b == 0 and c
+         == 13 and d == 16) }

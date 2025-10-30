@@ -1,7 +1,7 @@
-int main(void) {
-    int a = 1;
-    int b = 2;
-    int c = ++a;
-    int d = --b;
-    return (a == 2 && b == 1 && c == 2 && d == 1);
-}
+pub fn main(none) i32 {
+    a: i32 = 1
+    b: i32 = 2
+    c: i32 = ++a
+    d: i32 = --b
+    return (a == 2 and b == 1 and c == 
+        2 and d == 1) }
