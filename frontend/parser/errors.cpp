@@ -128,8 +128,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "return";
         case TOK_key_if:
             return "if";
-        // case TOK_key_else:
-        //     return "else";
+        case TOK_key_else:
+            return "else";
         // case TOK_key_goto:
         //     return "goto";
         // case TOK_key_do:

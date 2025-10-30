@@ -361,17 +361,17 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
-        // case 'e': {
-        //     if (match_char(ctx, 'l')) {
-        //         if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
-        //             return TOK_key_else;
-        //         }
-        //     }
+        case 'e': {
+            if (match_char(ctx, 'l')) {
+                if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
+                    return TOK_key_else;
+                }
+            }
         //     else if (match_chars(ctx, "xtern", 5) && !match_word(ctx)) {
         //         return TOK_key_extern;
         //     }
-        //     break;
-        // }
+            break;
+        }
         // case 'f': {
         //     if (match_chars(ctx, "or", 2) && !match_word(ctx)) {
         //         return TOK_key_for;

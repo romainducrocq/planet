@@ -1051,22 +1051,22 @@ static error_t parse_binary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) 
     CATCH_EXIT;
 }
 
-// static error_t parse_ternary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
-//     unique_ptr_t(CExp) exp_middle = uptr_new();
-//     unique_ptr_t(CExp) exp_right = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(parse_exp(ctx, 0, &exp_middle));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
-//     TRY(parse_exp(ctx, precedence, &exp_right));
-//     *exp_left = make_CConditional(exp_left, &exp_middle, &exp_right, info_at);
-//     FINALLY;
-//     free_CExp(&exp_middle);
-//     free_CExp(&exp_right);
-//     CATCH_EXIT;
-// }
+static error_t parse_ternary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
+    unique_ptr_t(CExp) exp_middle = uptr_new();
+    unique_ptr_t(CExp) exp_right = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, &exp_middle));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
+    TRY(parse_exp(ctx, precedence, &exp_right));
+    *exp_left = make_CConditional(exp_left, &exp_middle, &exp_right, info_at);
+    FINALLY;
+    free_CExp(&exp_middle);
+    free_CExp(&exp_right);
+    CATCH_EXIT;
+}
 
 static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
     switch (tok_kind) {
@@ -1098,8 +1098,8 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
             return 10;
         case TOK_binop_or:
             return 5;
-        // case TOK_ternary_if:
-        //     return 3;
+        case TOK_ternary_if:
+            return 3;
         case TOK_assign:
         case TOK_assign_add:
         case TOK_assign_subtract:
@@ -1169,9 +1169,9 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
             case TOK_assign_shiftright:
                 TRY(parse_assign_compound_exp(ctx, precedence, exp));
                 break;
-        //     case TOK_ternary_if:
-        //         TRY(parse_ternary_exp(ctx, precedence, exp));
-        //         break;
+            case TOK_ternary_if:
+                TRY(parse_ternary_exp(ctx, precedence, exp));
+                break;
             default:
                 THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_exp, str_fmt_tok(ctx->peek_tok)));
         }
@@ -1215,32 +1215,32 @@ static error_t parse_exp_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     CATCH_EXIT;
 }
 
-// static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CExp) condition = uptr_new();
-//     unique_ptr_t(CStatement) then = uptr_new();
-//     unique_ptr_t(CStatement) else_fi = uptr_new();
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
-//     TRY(parse_exp(ctx, 0, &condition));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &then));
-//     TRY(peek_next(ctx));
-//     if (ctx->peek_tok->tok_kind == TOK_key_else) {
-//         TRY(pop_next(ctx));
-//         TRY(peek_next(ctx));
-//         TRY(parse_statement(ctx, &else_fi));
-//     }
-//     *statement = make_CIf(&condition, &then, &else_fi);
-//     FINALLY;
-//     free_CExp(&condition);
-//     free_CStatement(&then);
-//     free_CStatement(&else_fi);
-//     CATCH_EXIT;
-// }
+static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CExp) condition = uptr_new();
+    unique_ptr_t(CStatement) then = uptr_new();
+    unique_ptr_t(CStatement) else_fi = uptr_new();
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
+    TRY(parse_exp(ctx, 0, &condition));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    TRY(peek_next(ctx));
+    TRY(parse_statement(ctx, &then));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_key_else) {
+        TRY(pop_next(ctx));
+        TRY(peek_next(ctx));
+        TRY(parse_statement(ctx, &else_fi));
+    }
+    *statement = make_CIf(&condition, &then, &else_fi);
+    FINALLY;
+    free_CExp(&condition);
+    free_CStatement(&then);
+    free_CStatement(&else_fi);
+    CATCH_EXIT;
+}
 
 // static error_t parse_goto_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     CATCH_ENTER;
@@ -1475,9 +1475,9 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         case TOK_key_return:
             TRY(parse_ret_statement(ctx, statement));
             EARLY_EXIT;
-        // case TOK_key_if:
-        //     TRY(parse_if_statement(ctx, statement));
-        //     EARLY_EXIT;
+        case TOK_key_if:
+            TRY(parse_if_statement(ctx, statement));
+            EARLY_EXIT;
         // case TOK_key_goto:
         //     TRY(parse_goto_statement(ctx, statement));
         //     EARLY_EXIT;
