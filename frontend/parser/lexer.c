@@ -533,19 +533,19 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_semicolon;
         // case '!':
         //     return TODO;
+        case ':':
+            return TOK_assign_type;
         // case '?':
         //     return TOK_ternary_if;
-        // case ':':
-        //     return TOK_ternary_else;
         // case ',':
         //     return TOK_comma_separator;
         case '=': {
             if (match_char(ctx, '=')) {
                 return TOK_binop_eq;
             }
-            // else {
-            //     return TOK_assign;
-            // }
+            else {
+                return TOK_assign;
+            }
             return TOK_error; // TODO
         }
         case '~': {

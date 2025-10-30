@@ -51,9 +51,9 @@ typedef enum TOKEN_KIND {
     TOK_binop_xor,
     TOK_binop_lt,
     TOK_binop_gt,
-    // TOK_assign,
+    TOK_assign,
+    TOK_assign_type,
     // TOK_ternary_if,
-    // TOK_ternary_else,
     // TOK_comma_separator,
     // TOK_structop_member,
 

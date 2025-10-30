@@ -96,12 +96,12 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "<";
         case TOK_binop_gt:
             return ">";
-        // case TOK_assign:
-        //     return "=";
+        case TOK_assign:
+            return "=";
+        case TOK_assign_type:
+            return ":";
         // case TOK_ternary_if:
         //     return "?";
-        // case TOK_ternary_else:
-        //     return ":";
         // case TOK_comma_separator:
         //     return ",";
         // case TOK_structop_member:
