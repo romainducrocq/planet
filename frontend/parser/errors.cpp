@@ -96,10 +96,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return ">";
         case TOK_assign:
             return "=";
-        // case TOK_ternary_if:
-        //     return "?";
-        // case TOK_ternary_else:
-        //     return ":";
+        case TOK_ternary_if:
+            return "?";
+        case TOK_ternary_else:
+            return ":";
         // case TOK_comma_separator:
         //     return ",";
         // case TOK_structop_member:
@@ -126,8 +126,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "sizeof";
         case TOK_key_return:
             return "return";
-        // case TOK_key_if:
-        //     return "if";
+        case TOK_key_if:
+            return "if";
         // case TOK_key_else:
         //     return "else";
         // case TOK_key_goto:

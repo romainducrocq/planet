@@ -385,13 +385,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     break;
         // }
         case 'i': {
-            // if (match_char(ctx, 'f')) {
-            //     if (!match_word(ctx)) {
-            //         return TOK_key_if;
-            //     }
-            // }
-            // else 
-            if (match_chars(ctx, "nt", 2) && !match_word(ctx)) {
+            if (match_char(ctx, 'f')) {
+                if (!match_word(ctx)) {
+                    return TOK_key_if;
+                }
+            }
+            else if (match_chars(ctx, "nt", 2) && !match_word(ctx)) {
                 return TOK_key_int;
             }
             break;
@@ -492,10 +491,10 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_semicolon;
         case '~':
             return TOK_unop_complement;
-        // case '?':
-        //     return TOK_ternary_if;
-        // case ':':
-        //     return TOK_ternary_else;
+        case '?':
+            return TOK_ternary_if;
+        case ':':
+            return TOK_ternary_else;
         // case ',':
         //     return TOK_comma_separator;
         case '=': {
