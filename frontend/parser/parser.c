@@ -1659,11 +1659,12 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         case TOK_key_pub:
             TRY(parse_d_block_item(ctx, block_item));
             TRY(1); // TODO rm
-            break;
+            EARLY_EXIT;
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
             if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
                 TRY(parse_d_block_item(ctx, block_item));
+                EARLY_EXIT;
             }
             break;
         }
