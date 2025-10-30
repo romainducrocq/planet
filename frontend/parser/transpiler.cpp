@@ -71,64 +71,99 @@ void cc::Transpiler::unary_op(const Token* tok) {
 
 void cc::Transpiler::binary_op(const Token* tok) {
     set_linenum(tok);
-    append_buf(" ");
     switch (tok->tok_kind) {
         case TOK_binop_add:
-            append_buf("+ ");
+            append_buf(" + ");
             break;
         case TOK_unop_neg:
-            append_buf("- ");
+            append_buf(" - ");
             break;
         case TOK_binop_multiply:
-            append_buf("* ");
+            append_buf(" * ");
             break;
         case TOK_binop_divide:
-            append_buf("/ ");
+            append_buf(" / ");
             break;
         case TOK_binop_remainder:
-            append_buf("% ");
+            append_buf(" % ");
             break;
         case TOK_binop_bitand:
-            append_buf("& ");
+            append_buf(" & ");
             break;
         case TOK_binop_bitor:
-            append_buf("| ");
+            append_buf(" | ");
             break;
         case TOK_binop_xor:
-            append_buf("^ ");
+            append_buf(" ^ ");
             break;
         case TOK_binop_shiftleft:
-            append_buf("<< ");
+            append_buf(" << ");
             break;
         case TOK_binop_shiftright:
-            append_buf(">> ");
+            append_buf(" >> ");
             break;
         case TOK_binop_and:
-            append_buf("and ");
+            append_buf(" and ");
             break;
         case TOK_binop_or:
-            append_buf("or ");
+            append_buf(" or ");
             break;
         case TOK_binop_eq:
-            append_buf("== ");
+            append_buf(" == ");
             break;
         case TOK_binop_ne:
-            append_buf("~= ");
+            append_buf(" ~= ");
             break;
         case TOK_binop_lt:
-            append_buf("< ");
+            append_buf(" < ");
             break;
         case TOK_binop_le:
-            append_buf("<= ");
+            append_buf(" <= ");
             break;
         case TOK_binop_gt:
-            append_buf("> ");
+            append_buf(" > ");
             break;
         case TOK_binop_ge:
-            append_buf(">= ");
+            append_buf(" >= ");
             break;
         case TOK_assign:
-            append_buf("= ");
+            append_buf(" = ");
+            break;
+        case TOK_assign_add:
+            append_buf(" += ");
+            break;
+        case TOK_assign_subtract:
+            append_buf(" -= ");
+            break;
+        case TOK_assign_multiply:
+            append_buf(" *= ");
+            break;
+        case TOK_assign_divide:
+            append_buf(" /= ");
+            break;
+        case TOK_assign_remainder:
+            append_buf(" %= ");
+            break;
+        case TOK_assign_bitand:
+            append_buf(" &= ");
+            break;
+        case TOK_assign_bitor:
+            append_buf(" |= ");
+            break;
+        case TOK_assign_xor:
+            append_buf(" ^= ");
+            break;
+        case TOK_assign_shiftleft:
+            append_buf(" <<= ");
+            break;
+        case TOK_assign_shiftright:
+            append_buf(" >>= ");
+            break;
+        case TOK_unop_incr:
+            append_buf("++");
+            break;
+        case TOK_unop_decr:
+            append_buf("--");
             break;
         default:
             throw std::runtime_error("invalid binary_op");
