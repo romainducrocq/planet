@@ -1,5 +1,6 @@
-int main(void) {
-    if (1)
-        return c;
-    int c = 0;
+pub fn main(none) i32 {
+    if 1 {
+        return c
+    }
+    c: i32 = 0
 }
