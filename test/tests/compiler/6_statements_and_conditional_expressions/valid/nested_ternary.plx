@@ -1,7 +1,7 @@
-int main(void) {
-    int a = 1;
-    int b = 2;
-    int flag = 0;
+pub fn main(none) i32 {
+    a: i32 = 1
+    b: i32 = 2
+    flag: i32 = 0
 
-    return a > b ? 5 : flag ? 6 : 7;
+    return ? a > b then 5 else ? flag then 6 else 7
 }

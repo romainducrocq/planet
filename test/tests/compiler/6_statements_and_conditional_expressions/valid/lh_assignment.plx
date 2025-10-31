@@ -1,6 +1,7 @@
-int main(void) {
-    int x = 10;
-    int y = 0;
-    y = (x = 5) ? x : 2;
-    return (x == 5 && y == 5);
+pub fn main(none) i32 {
+    x: i32 = 10
+    y: i32 = 0
+    y = ? (x = 5) then x else 2
+    return (x == 5 and y == 5
+        )
 }

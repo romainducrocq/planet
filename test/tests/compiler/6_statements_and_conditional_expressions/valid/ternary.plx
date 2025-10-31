@@ -1,4 +1,4 @@
-int main(void) {
-    int a = 0;
-    return a > -1 ? 4 : 5;
+pub fn main(none) i32 {
+    a: i32 = 0
+    return ? a > -1 then 4 else 5
 }

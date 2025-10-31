@@ -1,6 +1,6 @@
-int main(void) {
-    int a = 0;
-    int b = 0;
-    a ? (b = 1) : (b = 2);
-    return b;
+pub fn main(none) i32 {
+    a: i32 = 0
+    b: i32 = 0
+    ? a then (b = 1) else (b = 2)
+    return b
 }

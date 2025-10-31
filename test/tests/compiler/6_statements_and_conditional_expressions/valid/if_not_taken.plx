@@ -1,7 +1,8 @@
-int main(void) {
-    int a = 0;
-    int b = 0;
-    if (a)
-        b = 1;
-    return b;
+pub fn main(none) i32 {
+    a: i32 = 0
+    b: i32 = 0
+    if a {
+        b = 1
+    }
+    return b
 }
