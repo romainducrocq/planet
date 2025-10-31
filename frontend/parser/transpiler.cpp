@@ -47,6 +47,10 @@ void cc::Transpiler::set_top_level(bool top_level) {
     this->top_level = top_level;
 }
 
+void cc::Transpiler::set_is_elif(bool is_elif) {
+    this->is_elif = is_elif;
+}
+
 // void cc::Transpiler::new_token(const Token* tok, std::string buf) {
 //     set_linenum(tok);
 //     append_buf(buf);
@@ -169,6 +173,69 @@ void cc::Transpiler::binary_op(const Token* tok) {
             throw std::runtime_error("invalid binary_op");
     }
     // append_buf(" ");
+}
+
+void cc::Transpiler::if_statement(const Token* tok) {
+    if (lines[linenum - 1].buf.back() == '}') {
+        break_line(false);
+    }
+    set_linenum(tok);
+    switch (tok->tok_kind) {
+        case TOK_key_if: {
+            if (is_elif) {
+                append_buf("elif ");
+            }
+            else {
+                append_buf("if ");
+            }
+            is_elif = false;
+            break;
+        }
+        case TOK_key_else:
+            if (!is_elif) {
+                append_buf("else");
+            }
+            break;
+        default:
+            throw std::runtime_error("invalid if statement");
+    }
+}
+
+void cc::Transpiler::open_block(const Token* tok) {
+    open_blocks.push_back(false);
+    switch (tok->tok_kind) {
+        case TOK_open_brace:
+            break;
+        default: {
+            if (tok->tok_kind == TOK_key_if && is_elif) {
+                break;
+            }
+            if (lines[linenum - 1].buf.back() != ' ') {
+                append_buf(" ");
+            }
+            append_buf("{");
+            incr_indent();
+            break_line(true);
+            open_blocks.back() = true;
+            break;
+        }
+    }
+}
+
+void cc::Transpiler::close_block(bool br_line) {
+    if (open_blocks.empty()) {
+        throw std::runtime_error("open_blocks empty");
+    }
+    
+    if (open_blocks.back()) {
+        decr_indent();
+        break_line(true);
+        append_buf("}");
+        if (br_line) {
+            break_line(false);
+        }
+    }
+    open_blocks.pop_back();
 }
 
 void cc::Transpiler::keep_token(const Token* tok) {

@@ -27,11 +27,13 @@ class Transpiler {
 
     private:
         bool top_level = true;
+        bool is_elif = false;
         int indent = 0;
         int paren = 0;
         size_t linenum = 1;
         std::vector<Line> lines = {};
-
+        std::vector<bool> open_blocks = {};
+        
         std::string filename = "";
         const ErrorsContext* errors = nullptr;
         IdentifierContext* identifiers = nullptr;
@@ -48,10 +50,14 @@ class Transpiler {
         void break_line(bool maybe);
         void set_linenum(const Token* tok);
         void set_top_level(bool top_level);
+        void set_is_elif(bool is_elif);
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
         void unary_op(const Token* tok);
         void binary_op(const Token* tok);
+        void if_statement(const Token* tok);
+        void open_block(const Token* tok);
+        void close_block(bool br_line);
         void print_lines();
         void write_lines();
 
