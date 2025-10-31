@@ -1128,6 +1128,7 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
 //     | Arrow(exp, identifier, type)
 static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
+    TRANSPILE(push_conditional(min_precedence));
     TRY(parse_cast_exp_factor(ctx, exp));
     while (true) {
         TRY(peek_next(ctx));
@@ -1178,6 +1179,7 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
                 THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_exp, str_fmt_tok(ctx->peek_tok)));
         }
     }
+    TRANSPILE(pop_conditional(min_precedence));
     FINALLY;
     CATCH_EXIT;
 }

@@ -25,6 +25,11 @@ class Transpiler {
         std::string end;
     };
 
+    struct LineBuf {
+        size_t pos;
+        size_t linenum;
+    };
+
     private:
         bool top_level = true;
         bool is_elif = false;
@@ -33,6 +38,7 @@ class Transpiler {
         size_t linenum = 1;
         std::vector<Line> lines = {};
         std::vector<bool> open_blocks = {};
+        std::vector<LineBuf> cond_buf = {};
         
         std::string filename = "";
         const ErrorsContext* errors = nullptr;
@@ -58,6 +64,8 @@ class Transpiler {
         void if_statement(const Token* tok);
         void open_block(const Token* tok);
         void close_block(bool br_line);
+        void push_conditional(size_t min_precedence);
+        void pop_conditional(size_t min_precedence);
         void print_lines();
         void write_lines();
 
@@ -76,6 +84,7 @@ class Transpiler {
         void decr_indent();
         void incr_paren();
         void decr_paren();
+        void concat_buf(const LineBuf& line_buf, const std::string& buf);
         void append_buf(const std::string& buf);
         void append_end(const std::string& end);
         void append_const(size_t identifier);

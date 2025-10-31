@@ -238,6 +238,26 @@ void cc::Transpiler::close_block(bool br_line) {
     open_blocks.pop_back();
 }
 
+void cc::Transpiler::push_conditional(size_t min_precedence) {
+    if (min_precedence > 3) {
+        return;
+    }
+    cond_buf.push_back({0, 0});
+    cond_buf.back().pos = lines[linenum - 1].buf.size();
+    cond_buf.back().linenum = linenum;
+}
+
+void cc::Transpiler::pop_conditional(size_t min_precedence) {
+    if (min_precedence > 3) {
+        return;
+    }
+
+    if (cond_buf.empty()) {
+        throw std::runtime_error("invalid pop conditional");
+    }
+    cond_buf.pop_back();
+}
+
 void cc::Transpiler::keep_token(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {
@@ -264,6 +284,10 @@ void cc::Transpiler::keep_token(const Token* tok) {
             append_buf("return ");
             break;
         case TOK_ternary_if:
+            if (cond_buf.empty()) {
+                throw std::runtime_error("invalid pop conditional");
+            }
+            concat_buf(cond_buf.back(), "? ");
             append_buf(" then ");
             break;
         case TOK_ternary_else:
@@ -298,6 +322,19 @@ void cc::Transpiler::append_identifier(size_t identifier) {
 
 bool cc::Transpiler::with_prob(unsigned int x) {
     return rand() % 101 < x;
+}
+
+void cc::Transpiler::concat_buf(const LineBuf& line_buf, const std::string& buf) {
+    size_t linenum_temp = linenum;
+    linenum = line_buf.linenum;
+
+    std::string buf_temp = lines[linenum - 1].buf;
+    lines[linenum - 1].buf = buf_temp.substr(0, line_buf.pos);
+
+    append_buf(buf);
+
+    lines[linenum - 1].buf += buf_temp.substr(line_buf.pos, buf_temp.size());
+    linenum = linenum_temp;
 }
 
 void cc::Transpiler::append_buf(const std::string& buf) {
