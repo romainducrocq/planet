@@ -263,6 +263,12 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_key_return:
             append_buf("return ");
             break;
+        case TOK_ternary_if:
+            append_buf(" then ");
+            break;
+        case TOK_ternary_else:
+            append_buf(" else ");
+            break;
         case TOK_int_const:
             append_const(tok->tok);
             break;

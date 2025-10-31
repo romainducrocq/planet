@@ -1057,9 +1057,11 @@ static error_t parse_ternary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp)
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_exp(ctx, 0, &exp_middle));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_exp(ctx, precedence, &exp_right));
     *exp_left = make_CConditional(exp_left, &exp_middle, &exp_right, info_at);
     FINALLY;
