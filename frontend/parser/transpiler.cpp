@@ -333,7 +333,17 @@ void cc::Transpiler::concat_buf(const LineBuf& line_buf, const std::string& buf)
 
     append_buf(buf);
 
-    lines[linenum - 1].buf += buf_temp.substr(line_buf.pos, buf_temp.size());
+    buf_temp = buf_temp.substr(line_buf.pos, buf_temp.size());
+    if (buf_temp.empty()) {
+        buf_temp = lines[linenum].buf;
+        while (buf_temp[0] == ' ') {
+            buf_temp = buf_temp.substr(1, buf_temp.size());
+        }
+        lines[linenum].buf = buf_temp;
+    }
+    else {
+        lines[linenum - 1].buf += buf_temp;
+    }
     linenum = linenum_temp;
 }
 
