@@ -1260,6 +1260,7 @@ static error_t parse_goto_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TRANSPILE(goto_statement(ctx->peek_tok));
     TIdentifier target;
     TRY(parse_identifier(ctx, 0, &target));
     TRY(pop_next(ctx));
@@ -1273,6 +1274,7 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
     unique_ptr_t(CStatement) jump_to = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
+    TRANSPILE(label_statement(ctx->peek_tok));
     TIdentifier target;
     TRY(parse_identifier(ctx, 0, &target));
     TRY(pop_next(ctx));

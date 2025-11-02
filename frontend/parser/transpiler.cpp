@@ -201,6 +201,33 @@ void cc::Transpiler::if_statement(const Token* tok) {
     }
 }
 
+void cc::Transpiler::goto_statement(const Token* tok) {
+    set_linenum(tok);
+    switch (tok->tok_kind) {
+        case TOK_identifier: {
+            append_buf("jump ");
+            append_identifier(tok->tok);
+            break;
+        }
+        default:
+            throw std::runtime_error("invalid goto statement");
+    }
+}
+
+void cc::Transpiler::label_statement(const Token* tok) {
+    set_linenum(tok);
+    switch (tok->tok_kind) {
+        case TOK_identifier: {
+            append_buf("label ");
+            append_identifier(tok->tok);
+            break_line(false);
+            break;
+        }
+        default:
+            throw std::runtime_error("invalid label statement");
+    }
+}
+
 void cc::Transpiler::open_block(const Token* tok) {
     open_blocks.push_back(false);
     switch (tok->tok_kind) {
