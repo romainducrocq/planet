@@ -1,5 +1,5 @@
-int main(void) {
-    int a;
-    goto a;
-    return 0;
+pub fn main(none) i32 {
+    a: i32;
+    jump a
+    return 0
 }

@@ -1,4 +1,4 @@
-int main(void) {
-    goto label;
-    return 0;
+pub fn main(none) i32 {
+    jump label
+    return 0
 }
