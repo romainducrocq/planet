@@ -1,8 +1,8 @@
 pub fn main(none) i32 {
     if 0 {
-        label label
+        label _label
         return 5
     }
-    jump label
+    jump _label
     return 0
 }
