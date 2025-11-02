@@ -130,8 +130,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "if";
         case TOK_key_else:
             return "else";
-        // case TOK_key_goto:
-        //     return "goto";
+        case TOK_key_goto:
+            return "goto";
         // case TOK_key_do:
         //     return "do";
         // case TOK_key_while:

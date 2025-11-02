@@ -378,12 +378,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
-        // case 'g': {
-        //     if (match_chars(ctx, "oto", 3) && !match_word(ctx)) {
-        //         return TOK_key_goto;
-        //     }
-        //     break;
-        // }
+        case 'g': {
+            if (match_chars(ctx, "oto", 3) && !match_word(ctx)) {
+                return TOK_key_goto;
+            }
+            break;
+        }
         case 'i': {
             if (match_char(ctx, 'f')) {
                 if (!match_word(ctx)) {
