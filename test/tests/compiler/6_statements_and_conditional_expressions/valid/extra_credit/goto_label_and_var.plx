@@ -1,8 +1,8 @@
-int main(void) {
-    // it's valid to use the same identifier as a variable and label
-    int ident = 5;
-    goto ident;
-    return 0;
-ident:
-    return ident;
+pub fn main(none) i32 {
+    #  it's valid to use the same identifier as a variable and label
+    ident: i32 = 5
+    jump ident
+    return 0
+    label ident
+    return ident
 }

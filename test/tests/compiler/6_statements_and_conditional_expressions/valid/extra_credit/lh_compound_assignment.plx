@@ -1,5 +1,5 @@
-int main(void) {
-    int x = 10;
-    (x -= 1) ? (x /= 2) : 0;
-    return x == 4;
+pub fn main(none) i32 {
+    x: i32 = 10
+    ? (x -= 1) then (x /= 2) else false
+    return x == 4
 }

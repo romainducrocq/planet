@@ -1,9 +1,9 @@
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wunused-label"
-#endif
-int main(void) {
-    goto _main;
-    return 0;
-    _main:
-        return 1;
+
+
+
+pub fn main(none) i32 {
+    jump _main
+    return 0
+    label _main
+    return 1
 }

@@ -1,8 +1,8 @@
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wunused-label"
-#endif
 
-int main(void) {
-unused:
-    return 0;
+
+
+
+pub fn main(none) i32 {
+    label unused
+    return 0
 }
