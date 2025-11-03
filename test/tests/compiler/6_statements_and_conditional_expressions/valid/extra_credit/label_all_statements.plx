@@ -24,7 +24,6 @@ pub fn main(none) i32 {
     return a
 
     label label_empty
-    ;
     a = 100
     jump label_goto
 }
