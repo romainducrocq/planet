@@ -1273,35 +1273,34 @@ static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement)
     CATCH_EXIT;
 }
 
-// static error_t parse_goto_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-//     TIdentifier target;
-//     TRY(parse_identifier(ctx, 0, &target));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-//     *statement = make_CGoto(target, info_at);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_jump_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TIdentifier target;
+    TRY(parse_identifier(ctx, 0, &target));
+    *statement = make_CGoto(target, info_at);
+    FINALLY;
+    CATCH_EXIT;
+}
 
-// static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CStatement) jump_to = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TIdentifier target;
-//     TRY(parse_identifier(ctx, 0, &target));
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &jump_to));
-//     *statement = make_CLabel(target, &jump_to, info_at);
-//     FINALLY;
-//     free_CStatement(&jump_to);
-//     CATCH_EXIT;
-// }
+static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CStatement) jump_to = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TIdentifier target;
+    TRY(parse_identifier(ctx, 0, &target));
+    jump_to = make_CNull();
+    *statement = make_CLabel(target, &jump_to, info_at);
+    FINALLY;
+    free_CStatement(&jump_to);
+    CATCH_EXIT;
+}
 
 // static error_t parse_while_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     unique_ptr_t(CExp) condition = uptr_new();
@@ -1498,9 +1497,12 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         case TOK_key_if:
             TRY(parse_if_statement(ctx, statement));
             break;
-        // case TOK_key_goto:
-        //     TRY(parse_goto_statement(ctx, statement));
-        //     break;
+        case TOK_key_jump:
+            TRY(parse_jump_statement(ctx, statement));
+            break;
+        case TOK_key_label:
+            TRY(parse_label_statement(ctx, statement));
+            break;
         // case TOK_identifier: {
         // //     TRY(peek_next_i(ctx, 1));
         // //     if (ctx->peek_tok_i->tok_kind == TOK_ternary_else) {
