@@ -1,3 +1,4 @@
-int main(void) {
-    return: return 0;
+pub fn main(none) i32 {
+    label return
+    return 0
 }

@@ -1,5 +1,5 @@
-int main(void) {
-    goto;
-lbl:
-    return 0;
+pub fn main(none) i32 {
+    jump
+    label lbl
+    return 0
 }

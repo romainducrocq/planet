@@ -1,3 +1,4 @@
-int main(void) {
-    1 && label: 2;
+pub fn main(none) i32 {
+    1 and label label1
+    2
 }

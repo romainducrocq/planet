@@ -1,5 +1,4 @@
-label:
-int main(void) {
-    return 0;
+label lbl
+pub fn main(none) i32 {
+    return 0
 }
-
