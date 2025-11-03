@@ -1245,7 +1245,12 @@ static error_t parse_compound_statement(Ctx ctx, unique_ptr_t(CStatement) * stat
     unique_ptr_t(CBlock) block = uptr_new();
     CATCH_ENTER;
     TRY(parse_block(ctx, &block));
-    *statement = make_CCompound(&block);
+    if (block) {
+        *statement = make_CCompound(&block);
+    }
+    else {
+        *statement = make_CNull();
+    }
     FINALLY;
     free_CBlock(&block);
     CATCH_EXIT;
