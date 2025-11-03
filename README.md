@@ -62,6 +62,8 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
            => (([0-9]*\.[0-9]+|[0-9]+\.?)e[+\-]?[0-9]+|[0-9]*\.[0-9]+|[0-9]+\.)
 <header-file> ::= ? Path to a ".etc" header file without extension ?
 ```
+  
+> TODO: add `return none` and `bool` to grammar
 
 ### Progress
 
@@ -73,8 +75,8 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] logical and relational operators
 - [x] local variables, assignments
 - [x] compound assignments, increment operators
-- [ ] if statements, conditional expressions
-- [ ] jump statements, labels
+- [x] if statements, conditional expressions
+- [x] jump statements, labels
 - [ ] if-elif-else compound statements
 - [ ] loop-while, continue, break statements
 - [ ] match, ->, otherwise statements
