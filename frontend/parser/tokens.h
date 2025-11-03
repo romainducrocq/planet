@@ -74,7 +74,9 @@ typedef enum TOKEN_KIND {
     TOK_key_if,
     TOK_key_elif,
     TOK_key_else,
-    // TOK_key_goto,
+    TOK_key_goto, // TODO rm
+    TOK_key_jump,
+    TOK_key_label,
     // TOK_key_do,
     // TOK_key_while,
     // TOK_key_for,

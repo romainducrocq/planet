@@ -408,6 +408,18 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             }
             break;
         }
+        case 'j': {
+            if (match_chars(ctx, "ump", 3) && !match_word(ctx)) {
+                return TOK_key_jump;
+            }
+            break;
+        }
+        case 'l': {
+            if (match_chars(ctx, "abel", 4) && !match_word(ctx)) {
+                return TOK_key_label;
+            }
+            break;
+        }
         // case 'l': {
         //     if (match_chars(ctx, "ong", 3) && !match_word(ctx)) {
         //         return TOK_key_long;

@@ -136,8 +136,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "elif";
         case TOK_key_else:
             return "else";
-        // case TOK_key_goto:
-        //     return "goto";
+        case TOK_key_jump:
+            return "jump";
+        case TOK_key_label:
+            return "label";
         // case TOK_key_do:
         //     return "do";
         // case TOK_key_while:
