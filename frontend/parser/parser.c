@@ -1000,7 +1000,7 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 // <cast-exp> ::= "(" <type-name> ")" <cast-exp> | <unary-exp>
 static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
-    TRY(peek_next(ctx));
+    // TRY(peek_next(ctx));
     // if (ctx->peek_tok->tok_kind == TOK_open_paren) {
     //     TRY(peek_next_i(ctx, 1));
     //     switch (ctx->peek_tok_i->tok_kind) {
@@ -1068,22 +1068,27 @@ static error_t parse_binary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) 
     CATCH_EXIT;
 }
 
-// static error_t parse_ternary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
-//     unique_ptr_t(CExp) exp_middle = uptr_new();
-//     unique_ptr_t(CExp) exp_right = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(parse_exp(ctx, 0, &exp_middle));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
-//     TRY(parse_exp(ctx, precedence, &exp_right));
-//     *exp_left = make_CConditional(exp_left, &exp_middle, &exp_right, info_at);
-//     FINALLY;
-//     free_CExp(&exp_middle);
-//     free_CExp(&exp_right);
-//     CATCH_EXIT;
-// }
+static error_t parse_ternary_exp(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) exp_left = uptr_new();
+    unique_ptr_t(CExp) exp_middle = uptr_new();
+    unique_ptr_t(CExp) exp_right = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, &exp_left));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_key_then));
+    TRY(parse_exp(ctx, 0, &exp_middle));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_key_else));
+    TRY(parse_exp(ctx, 0, &exp_right));
+    *exp = make_CConditional(&exp_left, &exp_middle, &exp_right, info_at);
+    FINALLY;
+    free_CExp(&exp_left);
+    free_CExp(&exp_middle);
+    free_CExp(&exp_right);
+    CATCH_EXIT;
+}
 
 static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
     switch (tok_kind) {
@@ -1143,7 +1148,13 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
 //     | Arrow(exp, identifier, type)
 static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
-    TRY(parse_cast_exp_factor(ctx, exp));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_ternary_if) {
+        TRY(parse_ternary_exp(ctx, exp));
+    }
+    else {
+        TRY(parse_cast_exp_factor(ctx, exp));
+    }
     while (true) {
         TRY(peek_next(ctx));
         int32_t precedence = get_tok_precedence(ctx->peek_tok->tok_kind);
