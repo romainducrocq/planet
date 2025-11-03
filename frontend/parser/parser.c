@@ -1230,32 +1230,48 @@ static error_t parse_exp_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     CATCH_EXIT;
 }
 
-// static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CExp) condition = uptr_new();
-//     unique_ptr_t(CStatement) then = uptr_new();
-//     unique_ptr_t(CStatement) else_fi = uptr_new();
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
-//     TRY(parse_exp(ctx, 0, &condition));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &then));
-//     TRY(peek_next(ctx));
-//     if (ctx->peek_tok->tok_kind == TOK_key_else) {
-//         TRY(pop_next(ctx));
-//         TRY(peek_next(ctx));
-//         TRY(parse_statement(ctx, &else_fi));
-//     }
-//     *statement = make_CIf(&condition, &then, &else_fi);
-//     FINALLY;
-//     free_CExp(&condition);
-//     free_CStatement(&then);
-//     free_CStatement(&else_fi);
-//     CATCH_EXIT;
-// }
+static error_t parse_compound_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CBlock) block = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_block(ctx, &block));
+    *statement = make_CCompound(&block);
+    FINALLY;
+    free_CBlock(&block);
+    CATCH_EXIT;
+}
+
+static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CExp) condition = uptr_new();
+    unique_ptr_t(CStatement) then = uptr_new();
+    unique_ptr_t(CStatement) else_fi = uptr_new();
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, &condition));
+    TRY(parse_compound_statement(ctx, &then));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_line_break) {
+        TRY(peek_next_i(ctx, 1));
+        switch (ctx->peek_tok_i->tok_kind) {
+            case TOK_key_elif:
+                TRY(pop_next(ctx));
+                TRY(parse_if_statement(ctx, &else_fi));
+                break;
+            case TOK_key_else:
+                TRY(pop_next(ctx));
+                TRY(pop_next(ctx));
+                TRY(parse_compound_statement(ctx, &else_fi));
+                break;
+            default:
+                break;
+        }
+    }
+    *statement = make_CIf(&condition, &then, &else_fi);
+    FINALLY;
+    free_CExp(&condition);
+    free_CStatement(&then);
+    free_CStatement(&else_fi);
+    CATCH_EXIT;
+}
 
 // static error_t parse_goto_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     CATCH_ENTER;
@@ -1284,16 +1300,6 @@ static error_t parse_exp_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
 //     *statement = make_CLabel(target, &jump_to, info_at);
 //     FINALLY;
 //     free_CStatement(&jump_to);
-//     CATCH_EXIT;
-// }
-
-// static error_t parse_compound_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CBlock) block = uptr_new();
-//     CATCH_ENTER;
-//     TRY(parse_block(ctx, &block));
-//     *statement = make_CCompound(&block);
-//     FINALLY;
-//     free_CBlock(&block);
 //     CATCH_EXIT;
 // }
 
@@ -1489,9 +1495,9 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         case TOK_key_return:
             TRY(parse_ret_statement(ctx, statement));
             EARLY_EXIT;
-        // case TOK_key_if:
-        //     TRY(parse_if_statement(ctx, statement));
-        //     break;
+        case TOK_key_if:
+            TRY(parse_if_statement(ctx, statement));
+            break;
         // case TOK_key_goto:
         //     TRY(parse_goto_statement(ctx, statement));
         //     break;
