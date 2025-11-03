@@ -1286,15 +1286,15 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
     CATCH_EXIT;
 }
 
-// static error_t parse_compound_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CBlock) block = uptr_new();
-//     CATCH_ENTER;
-//     TRY(parse_block(ctx, &block));
-//     *statement = make_CCompound(&block);
-//     FINALLY;
-//     free_CBlock(&block);
-//     CATCH_EXIT;
-// }
+static error_t parse_compound_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CBlock) block = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_block(ctx, &block));
+    *statement = make_CCompound(&block);
+    FINALLY;
+    free_CBlock(&block);
+    CATCH_EXIT;
+}
 
 // static error_t parse_while_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     unique_ptr_t(CExp) condition = uptr_new();
@@ -1503,9 +1503,9 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
             }
             break;
         }
-        // case TOK_open_brace:
-        //     TRY(parse_compound_statement(ctx, statement));
-        //     EARLY_EXIT;
+        case TOK_open_brace:
+            TRY(parse_compound_statement(ctx, statement));
+            EARLY_EXIT;
         // case TOK_key_while:
         //     TRY(parse_while_statement(ctx, statement));
         //     EARLY_EXIT;
@@ -2479,8 +2479,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
