@@ -496,7 +496,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     break;
         // }
         case 't': {
-            if (match_chars(ctx, "rue", 3) && !match_word(ctx)) {
+            if (match_char(ctx, 'h')) {
+                if(match_chars(ctx, "en", 2) && !match_word(ctx)) {
+                    return TOK_key_then;
+                }
+            }
+            else if (match_chars(ctx, "rue", 3) && !match_word(ctx)) {
                 return TOK_key_true;
             }
             break;
@@ -551,8 +556,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
         //     return TODO;
         case ':':
             return TOK_assign_type;
-        // case '?':
-        //     return TOK_ternary_if;
+        case '?':
+            return TOK_ternary_if;
         // case ',':
         //     return TOK_comma_separator;
         case '=': {
