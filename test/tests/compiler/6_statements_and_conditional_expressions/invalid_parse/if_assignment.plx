@@ -1,8 +1,10 @@
-int main(void) {
-    int flag = 0;
-    int a = if (flag)
-                2;
-            else
-                3;
-    return a;
+pub fn main(none) i32 {
+    flag: i32 = 0
+    a: i32 = if flag {
+        2
+    }
+    else {
+        3
+    }
+    return a
 }

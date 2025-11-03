@@ -1,4 +1,3 @@
-int main(void) {
-    if (5)
-        int i = 0;
+pub fn main(none) i32 {
+    if i: i32 = 0
 }

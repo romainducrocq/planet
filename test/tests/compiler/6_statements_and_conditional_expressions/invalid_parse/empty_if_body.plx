@@ -1,3 +1,8 @@
-int main(void) {
-    if (0) else return 0;
+pub fn main(none) i32 {
+    if 0 {
+
+    }
+    else {
+        return 0
+    }
 }
