@@ -366,17 +366,22 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
-        // case 'e': {
-        //     if (match_char(ctx, 'l')) {
-        //         if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
-        //             return TOK_key_else;
-        //         }
-        //     }
+        case 'e': {
+            if (match_char(ctx, 'l')) {
+                if (match_char(ctx, 'i')) {
+                    if(match_char(ctx, 'f') && !match_word(ctx)) {
+                        return TOK_key_elif;
+                    }
+                }
+                else if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
+                    return TOK_key_else;
+                }
+            }
         //     else if (match_chars(ctx, "xtern", 5) && !match_word(ctx)) {
         //         return TOK_key_extern;
         //     }
-        //     break;
-        // }
+            break;
+        }
         case 'f': {
             if (match_char(ctx, 'n') && !match_word(ctx)) {
                 return TOK_key_fn;
@@ -393,13 +398,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     break;
         // }
         case 'i': {
-            // if (match_char(ctx, 'f')) {
-            //     if (!match_word(ctx)) {
-            //         return TOK_key_if;
-            //     }
-            // }
-            // else 
-            if (match_chars(ctx, "32", 2) && !match_word(ctx)) {
+            if (match_char(ctx, 'f')) {
+                if (!match_word(ctx)) {
+                    return TOK_key_if;
+                }
+            }
+            else if (match_chars(ctx, "32", 2) && !match_word(ctx)) {
                 return TOK_key_i32;
             }
             break;
