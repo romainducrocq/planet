@@ -34,7 +34,7 @@ pub fn main(none) i32 {
     }
     else { return 3 }
 
-    if x ~= 9 { x = 0 }
+    if x ~= 8 { x = 0 }
     elif false;
     elif true { x = x + 2 }
     else;
