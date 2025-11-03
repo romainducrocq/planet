@@ -1,4 +1,4 @@
 pub fn main(none) i32 {
-    jump label
+    jump lbl
     return 0
 }
