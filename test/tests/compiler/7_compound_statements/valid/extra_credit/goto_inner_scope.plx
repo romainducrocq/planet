@@ -1,13 +1,13 @@
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
-int main(void) {
-    int x = 5;
-    goto inner;
+
+
+
+pub fn main(none) i32 {
+    x: i32 = 5
+    jump inner
     {
-        int x = 0;
-        inner:
-        x = 1;
-        return x;
+        x: i32 = 0
+        label inner
+        x = 1
+        return x
     }
 }

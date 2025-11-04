@@ -1,12 +1,12 @@
-int main(void) {
-    int a = 0;
+pub fn main(none) i32 {
+    a: i32 = 0
     {
-        int b = 4;
-        a = b;
+        b: i32 = 4
+        a = b
     }
     {
-        int b = 2;
-        a = a - b;
+        b: i32 = 2
+        a = a - b
     }
-    return a;
+    return a
 }

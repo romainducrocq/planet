@@ -1,10 +1,10 @@
-int main(void) {
-    int a = 2;
-    int b;
+pub fn main(none) i32 {
+    a: i32 = 2
+    b: i32;
     {
-        a = -4;
-        int a = 7;
-        b = a + 1;
+        a = -4
+        a: i32 = 7
+        b = a + 1
     }
-    return b == 8 && a == -4;
+    return b == 8 and a == -4
 }

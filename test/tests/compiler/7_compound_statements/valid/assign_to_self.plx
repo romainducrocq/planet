@@ -1,10 +1,10 @@
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
-int main(void) {
-    int a = 3;
+
+
+
+pub fn main(none) i32 {
+    a: i32 = 3
     {
-        int a = a = 4;
-        return a;
+        a: i32 = a = 4
+        return a
     }
 }
