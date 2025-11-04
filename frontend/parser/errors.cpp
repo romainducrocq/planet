@@ -132,22 +132,22 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "else";
         case TOK_key_goto:
             return "goto";
-        // case TOK_key_do:
-        //     return "do";
-        // case TOK_key_while:
-        //     return "while";
-        // case TOK_key_for:
-        //     return "for";
-        // case TOK_key_switch:
-        //     return "switch";
-        // case TOK_key_case:
-        //     return "case";
-        // case TOK_key_default:
-        //     return "default";
-        // case TOK_key_break:
-        //     return "break";
-        // case TOK_key_continue:
-        //     return "continue";
+        case TOK_key_do:
+            return "do";
+        case TOK_key_while:
+            return "while";
+        case TOK_key_for:
+            return "for";
+        case TOK_key_switch:
+            return "switch";
+        case TOK_key_case:
+            return "case";
+        case TOK_key_default:
+            return "default";
+        case TOK_key_break:
+            return "break";
+        case TOK_key_continue:
+            return "continue";
         // case TOK_key_static:
         //     return "static";
         // case TOK_key_extern:
