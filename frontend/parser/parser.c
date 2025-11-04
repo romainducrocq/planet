@@ -1527,9 +1527,9 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         // //     }
         //     break;
         // }
-        // case TOK_open_brace:
-        //     TRY(parse_compound_statement(ctx, statement));
-        //     break;
+        case TOK_open_brace:
+            TRY(parse_compound_statement(ctx, statement));
+            break;
         // case TOK_key_while:
         //     TRY(parse_while_statement(ctx, statement));
         //     break;
