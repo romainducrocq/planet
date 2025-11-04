@@ -1687,7 +1687,7 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace));
     TRANSPILE(keep_token(ctx->next_tok));
-    TRANSPILE(break_line(false));
+    // TRANSPILE(break_line(false));
     FINALLY;
     CATCH_EXIT;
 }
@@ -2253,6 +2253,7 @@ static error_t parse_fun_declaration(
     // else {
         TRY(expect_next(ctx, ctx->peek_tok, TOK_open_brace));
         TRY(parse_block(ctx, &body));
+        TRANSPILE(break_line(false));
     // }
     *fun_decl = make_CFunctionDeclaration(
         decltor->name, &decltor->params, &body, &decltor->derived_type, storage_class, info_at);

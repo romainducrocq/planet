@@ -292,6 +292,10 @@ void cc::Transpiler::keep_token(const Token* tok) {
             append_identifier(tok->tok);
             break;
         case TOK_open_brace:
+            if (!lines[linenum - 1].buf.empty() && 
+                lines[linenum - 1].buf.back() != ' ') {
+                append_buf(" ");
+            }
             append_buf("{");
             incr_indent();
             break;
