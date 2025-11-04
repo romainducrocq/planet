@@ -1,4 +1,7 @@
-int main(void) {
-    int a;
-    return 1 ? { a = 2 } : a = 4;
+pub fn main(none) i32 {
+    a: i32;
+    return ? 1 then { 
+        a = 2
+    }
+    else a = 4
 }
