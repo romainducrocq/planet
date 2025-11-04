@@ -2,8 +2,8 @@
 
 > **THIS LANGUAGE IS A WORK IN PROGRESS! ANYTHING CAN CHANGE AT ANY MOMENT WITHOUT ANY NOTICE! USE THIS LANGUAGE AT YOUR OWN RISK!**
 
-Not much to see around here for now ... Maybe check again after some time ...  
 Development is still at a very early stage, see below for progress updates ...  
+Not much to see around here for now ... Maybe check again after some time ...  
 
 ```
 git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
