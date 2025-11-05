@@ -1,9 +1,9 @@
-/* Test case from Listing 8-3:
- * A variable declared in a loop body is out of scope in the controlling expression
- */
+#  Test case from Listing 8-3:
+#  * A variable declared in a loop body is out of scope in the controlling expression
+#  
 
-int main(void) {
-    do {
-        int a = a + 1;
-    } while (a < 100);
+pub fn main(none) i32 {
+    loop .. while a < 100 {
+        a: i32 = a + 1
+    }
 }

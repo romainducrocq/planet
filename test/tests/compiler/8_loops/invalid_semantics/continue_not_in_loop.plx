@@ -1,7 +1,7 @@
-int main(void) {
+pub fn main(none) i32 {
     {
-        int a;
-        continue;
+        a: i32;
+        continue
     }
-    return 0;
+    return 0
 }
