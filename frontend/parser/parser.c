@@ -1337,28 +1337,19 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_do_while_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CStatement) body = uptr_new();
-//     unique_ptr_t(CExp) condition = uptr_new();
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &body));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_key_while));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
-//     TRY(parse_exp(ctx, 0, &condition));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-//     *statement = make_CDoWhile(&condition, &body);
-//     FINALLY;
-//     free_CStatement(&body);
-//     free_CExp(&condition);
-//     CATCH_EXIT;
-// }
+static error_t parse_post_while_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CExp) condition = uptr_new();
+    unique_ptr_t(CStatement) body = uptr_new();
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, &condition));
+    TRY(parse_compound_statement(ctx, &body));
+    *statement = make_CDoWhile(&condition, &body);
+    FINALLY;
+    free_CExp(&condition);
+    free_CStatement(&body);
+    CATCH_EXIT;
+}
 
 // static error_t parse_for_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     unique_ptr_t(CForInit) for_init = uptr_new();
@@ -1392,6 +1383,28 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
 //     free_CStatement(&body);
 //     CATCH_EXIT;
 // }
+
+static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_loop_post) {
+        TRY(pop_next(ctx));
+        TRY(peek_next(ctx));
+        if (ctx->peek_tok->tok_kind == TOK_key_while) {
+            TRY(parse_post_while_statement(ctx, statement));
+        }
+        else {
+            TRY(1); // TODO
+            // TRY(parse_post_loop_statement(ctx, NULL, NULL, statement));
+        }
+    }
+    else {
+        TRY(1); // TODO
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static error_t parse_switch_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     unique_ptr_t(CExp) match = uptr_new();
@@ -1529,6 +1542,9 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         // }
         case TOK_open_brace:
             TRY(parse_compound_statement(ctx, statement));
+            break;
+        case TOK_key_loop:
+            TRY(parse_loop_statement(ctx, statement));
             break;
         // case TOK_key_while:
         //     TRY(parse_while_statement(ctx, statement));
