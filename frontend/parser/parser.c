@@ -1379,6 +1379,8 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
+        case TOK_open_brace:
+            break;
         case TOK_semicolon:
             TRY(1); // TODO throw error
             break;
@@ -1426,6 +1428,10 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
             }
             break;
         }
+    }
+    if (!for_init) {
+        unique_ptr_t(CExp) exp_null = uptr_new();
+        for_init = make_CInitExp(&exp_null);
     }
     TRY(parse_compound_statement(ctx, &body));
     *statement = make_CFor(&for_init, &condition, &post, &body);
