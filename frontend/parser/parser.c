@@ -1413,7 +1413,7 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
             break;
         }
         default: {
-            // TRY(parse_loop_init(ctx, &for_init));
+            // TRY(parse_loop_init(ctx, &for_init)); // TODO
             TRY(peek_next(ctx));
             if (ctx->peek_tok->tok_kind == TOK_key_while) {
                 TRY(pop_next(ctx));
