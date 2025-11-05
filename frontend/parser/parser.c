@@ -1546,6 +1546,7 @@ static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
 //           | Default(identifier, statement) | Break(identifier) | Continue(identifier) | Null
 static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
+    // TODO can peek here instead of in caller, because we use parse_compound_statement everywhere else
     switch (ctx->peek_tok->tok_kind) {
         case TOK_key_return:
             TRY(parse_ret_statement(ctx, statement));
