@@ -1,10 +1,11 @@
-int main(void) {
-    int a = 12345;
-    int i;
+pub fn main(none) i32 {
+    a: i32 = 12345
+    i: i32;
 
-    for (i = 5; i >= 0; i = i - 1)
-        a = a / 3;
+    loop i = 5 while i >= 0 .. i = i - 1 {
+        a = a / 3
+    }
 
-    return a;
+    return a
 }
 

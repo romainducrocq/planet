@@ -1,15 +1,15 @@
-int main(void) {
-    int acc = 0;
-    int x = 100;
-    while (x) {
-        int y = 10;
-        x = x - y;
-        while (y) {
-            acc = acc + 1;
-            y = y - 1;
+pub fn main(none) i32 {
+    acc: i32 = 0
+    x: i32 = 100
+    loop while x {
+        y: i32 = 10
+        x = x - y
+        loop while y {
+            acc = acc + 1
+            y = y - 1
         }
     }
-    return acc == 100 && x == 0;
+    return acc == 100 and x == 0
 
 }
 

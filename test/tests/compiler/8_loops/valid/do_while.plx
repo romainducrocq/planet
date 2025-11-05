@@ -1,9 +1,9 @@
-int main(void) {
-    int a = 1;
-    do {
-        a = a * 2;
-    } while(a < 11);
+pub fn main(none) i32 {
+    a: i32 = 1
+    loop .. while a < 11 {
+        a = a * 2
+    }
 
-    return a;
+    return a
 }
 

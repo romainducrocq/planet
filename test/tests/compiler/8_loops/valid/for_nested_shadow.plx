@@ -1,13 +1,13 @@
-int main(void) {
-    int i = 0;
-    int j = 0;
-    int k = 1;
-    for (int i = 100; i > 0; i = i - 1) {
-        int i = 1;
-        int j = i + k;
-        k = j;
+pub fn main(none) i32 {
+    i: i32 = 0
+    j: i32 = 0
+    k: i32 = 1
+    loop i: i32 = 100 while i > 0 .. i = i - 1 {
+        i: i32 = true
+        j: i32 = i + k
+        k = j
     }
 
-    return k == 101 && i == 0 && j == 0;
+    return k == 101 and i == 0 and j == false
 }
 

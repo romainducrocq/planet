@@ -1,12 +1,13 @@
-int main(void) {
-    int a = 10;
-    int b = 20;
-    for (b = -20; b < 0; b = b + 1) {
-        a = a - 1;
-        if (a <= 0)
-            break;
+pub fn main(none) i32 {
+    a: i32 = 10
+    b: i32 = 20
+    loop b = -20 while b < 0 .. b = b + 1 {
+        a = a - 1
+        if a <= 0 {
+            break
+        }
     }
 
-    return a == 0 && b == -11;
+    return a == 0 and b == -11
 }
 

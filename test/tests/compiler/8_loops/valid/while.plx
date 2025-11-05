@@ -1,9 +1,10 @@
-int main(void) {
-    int a = 0;
+pub fn main(none) i32 {
+    a: i32 = 0
 
-    while (a < 5)
-        a = a + 2;
+    loop while a < 5 {
+        a = a + 2
+    }
 
-    return a;
+    return a
 }
 
