@@ -415,7 +415,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 'l': {
-            if (match_chars(ctx, "abel", 4) && !match_word(ctx)) {
+            if (match_char(ctx, 'o')) {
+                if(match_chars(ctx, "op", 2) && !match_word(ctx)) {
+                    return TOK_key_loop;
+                }
+            }
+            else if (match_chars(ctx, "abel", 4) && !match_word(ctx)) {
                 return TOK_key_label;
             }
             break;
@@ -519,12 +524,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
-        // case 'w': {
-        //     if (match_chars(ctx, "hile", 4) && !match_word(ctx)) {
-        //         return TOK_key_while;
-        //     }
-        //     break;
-        // }
+        case 'w': {
+            if (match_chars(ctx, "hile", 4) && !match_word(ctx)) {
+                return TOK_key_while;
+            }
+            break;
+        }
         default:
             break;
     }
@@ -683,14 +688,19 @@ static TOKEN_KIND match_token(Ctx ctx) {
                 return TOK_binop_xor;
             }
         }
-        // case '.': {
-        //     switch (get_char(ctx)) {
-        //         case LEX_DIGIT:
-        //             return match_dbl_fraction(ctx);
-        //         default:
-        //             return TOK_structop_member;
-        //     }
-        // }
+        case '.': {
+            switch (get_char(ctx)) {
+                // case LEX_DIGIT:
+                //     return match_dbl_fraction(ctx);
+                case '.': {
+                    ctx->match_size++;
+                    return TOK_loop_post;
+                }
+                default:
+                    // return TOK_structop_member;
+                    return TOK_error; // TODO rm
+            }
+        }
         // case '\'':
         //     return match_char_const(ctx, false);
         // case '"':
