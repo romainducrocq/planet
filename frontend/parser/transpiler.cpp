@@ -201,6 +201,19 @@ void cc::Transpiler::if_statement(const Token* tok) {
     }
 }
 
+void cc::Transpiler::for_partial(int i) {
+    switch (i) {
+        case 1:
+            append_buf(" while ");
+            break;
+        case 2:
+            append_buf(" .. ");
+            break;
+        default:
+            throw std::runtime_error("invalid for partial");
+    }
+}
+
 void cc::Transpiler::goto_statement(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {
@@ -319,6 +332,12 @@ void cc::Transpiler::keep_token(const Token* tok) {
             break;
         case TOK_key_continue:
             append_buf("continue");
+            break;
+        case TOK_key_for:
+            append_buf("loop ");
+            break;
+        case TOK_key_do:
+            append_buf("loop .. while ");
             break;
         case TOK_key_while:
             append_buf("loop while ");

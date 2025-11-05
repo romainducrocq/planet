@@ -62,6 +62,7 @@ class Transpiler {
         void unary_op(const Token* tok);
         void binary_op(const Token* tok);
         void if_statement(const Token* tok);
+        void for_partial(int i);
         void goto_statement(const Token* tok);
         void label_statement(const Token* tok);
         void open_block(const Token* tok);

@@ -1323,6 +1323,7 @@ static error_t parse_do_while_statement(Ctx ctx, unique_ptr_t(CStatement) * stat
     unique_ptr_t(CExp) condition = uptr_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     TRY(parse_statement(ctx, &body));
     TRY(pop_next(ctx));
@@ -1348,23 +1349,28 @@ static error_t parse_for_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     unique_ptr_t(CStatement) body = uptr_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(parse_for_init(ctx, &for_init));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind != TOK_semicolon) {
+        TRANSPILE(for_partial(1));
         TRY(parse_exp(ctx, 0, &condition));
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind != TOK_close_paren) {
+        TRANSPILE(for_partial(2));
         TRY(parse_exp(ctx, 0, &post));
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     TRY(peek_next(ctx));
+    TRANSPILE(open_block(ctx->peek_tok));
     TRY(parse_statement(ctx, &body));
+    TRANSPILE(close_block(false));
     *statement = make_CFor(&for_init, &condition, &post, &body);
     FINALLY;
     free_CForInit(&for_init);
