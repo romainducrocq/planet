@@ -636,7 +636,7 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 EM_CSTR("%=") ", " EM_CSTR("&=") ", " EM_CSTR("|=") ", " EM_CSTR("^=") ", " EM_CSTR("<<=") ", "      //
                 EM_CSTR(">>=") " or " EM_CSTR("?") " next";
         case MSG_for_init_decl_as_fun:
-            RET_ERRNO "function " EM_VARG " declared in " EM_CSTR("for") " loop initial declaration";
+            RET_ERRNO "function declared in " EM_CSTR("for") " loop initial declaration"; // TODO
         case MSG_expect_specifier:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR(")") ", " //
                 EM_CSTR("char") ", " EM_CSTR("int") ", " EM_CSTR("long") ", " EM_CSTR("double") ", "        //

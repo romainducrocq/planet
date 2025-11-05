@@ -1208,7 +1208,7 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
     CATCH_EXIT;
 }
 
-// static error_t parse_for_init(Ctx ctx, unique_ptr_t(CForInit) * for_init);
+static error_t parse_loop_init(Ctx ctx, unique_ptr_t(CForInit) * for_init);
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block);
 static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement);
 
@@ -1415,7 +1415,7 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
             break;
         }
         default: {
-            // TRY(parse_loop_init(ctx, &for_init)); // TODO
+            TRY(parse_loop_init(ctx, &for_init)); // TODO
             TRY(peek_next(ctx));
             if (ctx->peek_tok->tok_kind == TOK_key_while) {
                 TRY(pop_next(ctx));
@@ -1638,47 +1638,52 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_for_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
-//     unique_ptr_t(CExp) init = uptr_new();
-//     CATCH_ENTER;
-//     TRY(peek_next(ctx));
-//     if (ctx->peek_tok->tok_kind != TOK_semicolon) {
-//         TRY(parse_exp(ctx, 0, &init));
-//     }
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-//     *for_init = make_CInitExp(&init);
-//     FINALLY;
-//     free_CExp(&init);
-//     CATCH_EXIT;
-// }
+static error_t parse_loop_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
+    unique_ptr_t(CExp) init = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_exp(ctx, 0, &init));
+    *for_init = make_CInitExp(&init);
+    FINALLY;
+    free_CExp(&init);
+    CATCH_EXIT;
+}
 
 // <for-init> ::= <variable-declaration> | [ <exp> ] ";"
 // for_init = InitDecl(variable_declaration) | InitExp(exp?)
-// static error_t parse_for_init(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
-//     CATCH_ENTER;
-//     TRY(peek_next(ctx));
-//     switch (ctx->peek_tok->tok_kind) {
-//         case TOK_key_char:
-//         case TOK_key_int:
-//         case TOK_key_long:
-//         case TOK_key_double:
-//         case TOK_key_unsigned:
-//         case TOK_key_signed:
-//         case TOK_key_void:
-//         case TOK_key_struct:
-//         case TOK_key_union:
-//         case TOK_key_static:
-//         case TOK_key_extern:
-//             TRY(parse_for_init_decl(ctx, for_init));
-//             break;
-//         default:
-//             TRY(parse_for_init_exp(ctx, for_init));
-//             break;
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_loop_init(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
+    CATCH_ENTER;
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_fn:
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_for_init_decl_as_fun));
+        // case TOK_key_char:
+        // case TOK_key_int:
+        // case TOK_key_long:
+        // case TOK_key_double:
+        // case TOK_key_unsigned:
+        // case TOK_key_signed:
+        // case TOK_key_void:
+        // case TOK_key_struct:
+        // case TOK_key_union:
+        // case TOK_key_static:
+        // case TOK_key_extern:
+        case TOK_key_pub:
+            TRY(1); // TODO add error message
+            break;
+        case TOK_identifier: {
+            TRY(peek_next_i(ctx, 1));
+            if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
+            //     TRY(parse_for_init_decl(ctx, for_init));
+                EARLY_EXIT;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    TRY(parse_loop_init_exp(ctx, for_init));
+    FINALLY;
+    CATCH_EXIT;
+}
 
 static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration, bool is_toplvl);
 
@@ -2410,7 +2415,7 @@ static error_t parse_var_declaration(
     unique_ptr_t(CInitializer) initializer = uptr_new();
     shared_ptr_t(Type) var_type = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->next_tok->info_at;
+    size_t info_at = ctx->peek_tok->info_at;
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
