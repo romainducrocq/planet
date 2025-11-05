@@ -39,6 +39,7 @@ class Transpiler {
         std::vector<Line> lines = {};
         std::vector<bool> open_blocks = {};
         std::vector<LineBuf> cond_buf = {};
+        std::vector<LineBuf> do_while_buf = {};
         
         std::string filename = "";
         const ErrorsContext* errors = nullptr;
@@ -69,6 +70,8 @@ class Transpiler {
         void close_block(bool br_line);
         void push_conditional(size_t min_precedence);
         void pop_conditional(size_t min_precedence);
+        void push_do_while();
+        void pop_do_while();
         void print_lines();
         void write_lines();
 

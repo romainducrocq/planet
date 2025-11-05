@@ -1324,13 +1324,17 @@ static error_t parse_do_while_statement(Ctx ctx, unique_ptr_t(CStatement) * stat
     CATCH_ENTER;
     TRY(pop_next(ctx));
     TRANSPILE(keep_token(ctx->next_tok));
+    TRANSPILE(push_do_while());
     TRY(peek_next(ctx));
+    TRANSPILE(open_block(ctx->peek_tok));
     TRY(parse_statement(ctx, &body));
+    TRANSPILE(close_block(false));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_key_while));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(parse_exp(ctx, 0, &condition));
+    TRANSPILE(pop_do_while());
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     TRY(pop_next(ctx));

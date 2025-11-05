@@ -298,6 +298,37 @@ void cc::Transpiler::pop_conditional(size_t min_precedence) {
     cond_buf.pop_back();
 }
 
+void cc::Transpiler::push_do_while() {
+    do_while_buf.push_back({0, 0});
+    do_while_buf.back().pos = lines[linenum - 1].buf.size();
+    do_while_buf.back().linenum = linenum;
+}
+
+void cc::Transpiler::pop_do_while() {
+    if (do_while_buf.empty()) {
+        throw std::runtime_error("invalid pop do while");
+    }
+
+    std::string buf = "";
+    for (size_t i = linenum; i-- > 0;) {
+        std::string& line_buf = lines[i].buf;
+        for (size_t j = line_buf.size(); j-- > 0;) {
+            if (line_buf.back() == '}') {
+                goto Lbreak;
+            }
+            buf = std::string{line_buf.back()} + buf;
+            line_buf.pop_back();
+        }
+    }
+    Lbreak:;
+    if (buf[0] != ' ') {
+        buf = std::string {' '} + buf;
+    }
+    concat_buf(do_while_buf.back(), buf);
+
+    do_while_buf.pop_back();
+}
+
 void cc::Transpiler::keep_token(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {
@@ -337,7 +368,7 @@ void cc::Transpiler::keep_token(const Token* tok) {
             append_buf("loop ");
             break;
         case TOK_key_do:
-            append_buf("loop .. while ");
+            append_buf("loop .. while");
             break;
         case TOK_key_while:
             append_buf("loop while ");
