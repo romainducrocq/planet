@@ -321,9 +321,10 @@ void cc::Transpiler::pop_do_while() {
         }
     }
     Lbreak:;
-    if (buf[0] != ' ') {
-        buf = std::string {' '} + buf;
+    while (buf[0] == ' ') {
+        buf = buf.substr(1, buf.size());
     }
+    buf = std::string{' '} + buf;
     concat_buf(do_while_buf.back(), buf);
 
     do_while_buf.pop_back();
