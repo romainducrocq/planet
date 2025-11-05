@@ -1337,20 +1337,6 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
 //     CATCH_EXIT;
 // }
 
-static error_t parse_post_while_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-    unique_ptr_t(CExp) condition = uptr_new();
-    unique_ptr_t(CStatement) body = uptr_new();
-    CATCH_ENTER;
-    TRY(pop_next(ctx));
-    TRY(parse_exp(ctx, 0, &condition));
-    TRY(parse_compound_statement(ctx, &body));
-    *statement = make_CDoWhile(&condition, &body);
-    FINALLY;
-    free_CExp(&condition);
-    free_CStatement(&body);
-    CATCH_EXIT;
-}
-
 // static error_t parse_for_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     unique_ptr_t(CForInit) for_init = uptr_new();
 //     unique_ptr_t(CExp) condition = uptr_new();
@@ -1385,24 +1371,69 @@ static error_t parse_post_while_statement(Ctx ctx, unique_ptr_t(CStatement) * st
 // }
 
 static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CForInit) for_init = uptr_new();
+    unique_ptr_t(CExp) condition = uptr_new();
+    unique_ptr_t(CExp) post = uptr_new();
+    unique_ptr_t(CStatement) body = uptr_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind == TOK_loop_post) {
-        TRY(pop_next(ctx));
-        TRY(peek_next(ctx));
-        if (ctx->peek_tok->tok_kind == TOK_key_while) {
-            TRY(parse_post_while_statement(ctx, statement));
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_semicolon:
+            TRY(1); // TODO throw error
+            break;
+        case TOK_loop_post: {
+            TRY(pop_next(ctx));
+            TRY(peek_next(ctx));
+            if (ctx->peek_tok->tok_kind == TOK_key_while) {
+                TRY(pop_next(ctx));
+                TRY(parse_exp(ctx, 0, &condition));
+                TRY(parse_compound_statement(ctx, &body));
+                *statement = make_CDoWhile(&condition, &body);
+                EARLY_EXIT;
+            }
+            else {
+                TRY(parse_exp(ctx, 0, &post));
+            }
+            break;
         }
-        else {
-            TRY(1); // TODO
-            // TRY(parse_post_loop_statement(ctx, NULL, NULL, statement));
+        case TOK_key_while: {
+            TRY(pop_next(ctx));
+            TRY(parse_exp(ctx, 0, &condition));
+            TRY(peek_next(ctx));
+            if (ctx->peek_tok->tok_kind == TOK_loop_post) {
+                TRY(pop_next(ctx));
+                TRY(parse_exp(ctx, 0, &post));
+            }
+            else {
+                TRY(parse_compound_statement(ctx, &body));
+                *statement = make_CWhile(&condition, &body);
+                EARLY_EXIT;
+            }
+            break;
+        }
+        default: {
+            // TRY(parse_loop_init(ctx, &for_init));
+            TRY(peek_next(ctx));
+            if (ctx->peek_tok->tok_kind == TOK_key_while) {
+                TRY(pop_next(ctx));
+                TRY(parse_exp(ctx, 0, &condition));
+                TRY(peek_next(ctx));
+            }
+            if (ctx->peek_tok->tok_kind == TOK_loop_post) {
+                TRY(pop_next(ctx));
+                TRY(parse_exp(ctx, 0, &post));
+            }
+            break;
         }
     }
-    else {
-        TRY(1); // TODO
-    }
+    TRY(parse_compound_statement(ctx, &body));
+    *statement = make_CFor(&for_init, &condition, &post, &body);
     FINALLY;
+    free_CForInit(&for_init);
+    free_CExp(&condition);
+    free_CExp(&post);
+    free_CStatement(&body);
     CATCH_EXIT;
 }
 
