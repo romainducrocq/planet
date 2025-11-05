@@ -1507,27 +1507,23 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_break_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-//     *statement = make_CBreak(info_at);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_break_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    *statement = make_CBreak(info_at);
+    FINALLY;
+    CATCH_EXIT;
+}
 
-// static error_t parse_continue_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-//     *statement = make_CContinue(info_at);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_continue_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    *statement = make_CContinue(info_at);
+    FINALLY;
+    CATCH_EXIT;
+}
 
 static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
@@ -1595,12 +1591,12 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         // case TOK_key_default:
         //     TRY(parse_default_statement(ctx, statement));
         //     break;
-        // case TOK_key_break:
-        //     TRY(parse_break_statement(ctx, statement));
-        //     break;
-        // case TOK_key_continue:
-        //     TRY(parse_continue_statement(ctx, statement));
-        //     break;
+        case TOK_key_break:
+            TRY(parse_break_statement(ctx, statement));
+            break;
+        case TOK_key_continue:
+            TRY(parse_continue_statement(ctx, statement));
+            break;
         case TOK_semicolon:
             TRY(parse_null_statement(ctx, statement));
             break;
