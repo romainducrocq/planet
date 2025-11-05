@@ -30,6 +30,7 @@ typedef enum TOKEN_KIND {
     TOK_assign_bitor,
     TOK_assign_xor,
     // TOK_structop_ptr,
+    TOK_loop_post,
 
     TOK_line_break,
     TOK_open_paren,
@@ -78,9 +79,10 @@ typedef enum TOKEN_KIND {
     TOK_key_goto, // TODO rm
     TOK_key_jump,
     TOK_key_label,
-    // TOK_key_do,
-    // TOK_key_while,
-    // TOK_key_for,
+    TOK_key_do, // TODO rm
+    TOK_key_loop,
+    TOK_key_while,
+    TOK_key_for, // TODO rm
     // TOK_key_switch,
     // TOK_key_case,
     // TOK_key_default,

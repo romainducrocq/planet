@@ -56,6 +56,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "^=";
         // case TOK_structop_ptr:
         //     return "->";
+        case TOK_loop_post:
+            return "..";
         case TOK_line_break:
             return "line break";
         case TOK_open_paren:
@@ -144,8 +146,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "label";
         // case TOK_key_do:
         //     return "do";
-        // case TOK_key_while:
-        //     return "while";
+        case TOK_key_loop:
+            return "loop";
+        case TOK_key_while:
+            return "while";
         // case TOK_key_for:
         //     return "for";
         // case TOK_key_switch:
