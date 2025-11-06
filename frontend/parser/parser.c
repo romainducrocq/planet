@@ -1427,75 +1427,66 @@ Lbreak:
     CATCH_EXIT;
 }
 
-// static error_t parse_switch_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CExp) match = uptr_new();
-//     unique_ptr_t(CStatement) body = uptr_new();
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
-//     TRY(parse_exp(ctx, 0, &match));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &body));
-//     *statement = make_CSwitch(&match, &body);
-//     FINALLY;
-//     free_CExp(&match);
-//     free_CStatement(&body);
-//     CATCH_EXIT;
-// }
+static error_t parse_match_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CExp) match = uptr_new();
+    unique_ptr_t(CStatement) body = uptr_new();
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, &match));
+    TRY(parse_compound_statement(ctx, &body));
+    *statement = make_CSwitch(&match, &body);
+    FINALLY;
+    free_CExp(&match);
+    free_CStatement(&body);
+    CATCH_EXIT;
+}
 
-// static error_t parse_case_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CExp) value = uptr_new();
-//     unique_ptr_t(CStatement) jump_to = uptr_new();
-//     shared_ptr_t(CConst) constant = sptr_new();
-//     CATCH_ENTER;
-//     size_t info_at;
-//     TRY(pop_next(ctx));
-//     info_at = ctx->peek_tok->info_at;
-//     TRY(peek_next(ctx));
-//     switch (ctx->peek_tok->tok_kind) {
-//         case TOK_int_const:
-//         case TOK_long_const:
-//         case TOK_char_const:
-//             TRY(parse_const(ctx, &constant));
-//             break;
-//         case TOK_uint_const:
-//         case TOK_ulong_const:
-//             TRY(parse_unsigned_const(ctx, &constant));
-//             break;
-//         default:
-//             THROW_AT_TOKEN(
-//                 ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx->peek_tok)));
-//     }
-//     value = make_CConstant(&constant, info_at);
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &jump_to));
-//     *statement = make_CCase(&value, &jump_to);
-//     FINALLY;
-//     free_CExp(&value);
-//     free_CStatement(&jump_to);
-//     free_CConst(&constant);
-//     CATCH_EXIT;
-// }
+static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CExp) value = uptr_new();
+    unique_ptr_t(CStatement) jump_to = uptr_new();
+    shared_ptr_t(CConst) constant = sptr_new();
+    CATCH_ENTER;
+    size_t info_at;
+    TRY(pop_next(ctx));
+    info_at = ctx->peek_tok->info_at;
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_true:
+        case TOK_key_false:
+        case TOK_int_const:
+        // case TOK_long_const:
+        // case TOK_char_const:
+            TRY(parse_const(ctx, &constant));
+            break;
+        // case TOK_uint_const:
+        // case TOK_ulong_const:
+        //     TRY(parse_unsigned_const(ctx, &constant));
+        //     break;
+        default:
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx->peek_tok)));
+    }
+    value = make_CConstant(&constant, info_at);
+    TRY(parse_compound_statement(ctx, &jump_to));
+    *statement = make_CCase(&value, &jump_to);
+    FINALLY;
+    free_CExp(&value);
+    free_CStatement(&jump_to);
+    free_CConst(&constant);
+    CATCH_EXIT;
+}
 
-// static error_t parse_default_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-//     unique_ptr_t(CStatement) jump_to = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
-//     TRY(peek_next(ctx));
-//     TRY(parse_statement(ctx, &jump_to));
-//     *statement = make_CDefault(&jump_to, info_at);
-//     FINALLY;
-//     free_CStatement(&jump_to);
-//     CATCH_EXIT;
-// }
+static error_t parse_otherwise_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
+    unique_ptr_t(CStatement) jump_to = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_compound_statement(ctx, &jump_to));
+    *statement = make_CDefault(&jump_to, info_at);
+    FINALLY;
+    free_CStatement(&jump_to);
+    CATCH_EXIT;
+}
 
 static error_t parse_break_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
@@ -1555,15 +1546,15 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
         case TOK_key_loop:
             TRY(parse_loop_statement(ctx, statement));
             break;
-        // case TOK_key_switch:
-        //     TRY(parse_switch_statement(ctx, statement));
-        //     break;
-        // case TOK_key_case:
-        //     TRY(parse_case_statement(ctx, statement));
-        //     break;
-        // case TOK_key_default:
-        //     TRY(parse_default_statement(ctx, statement));
-        //     break;
+        case TOK_key_match:
+            TRY(parse_match_statement(ctx, statement));
+            break;
+        case TOK_match_with:
+            TRY(parse_with_statement(ctx, statement));
+            break;
+        case TOK_key_otherwise:
+            TRY(parse_otherwise_statement(ctx, statement));
+            break;
         case TOK_key_break:
             TRY(parse_break_statement(ctx, statement));
             break;
