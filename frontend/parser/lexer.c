@@ -583,7 +583,6 @@ static TOKEN_KIND match_token(Ctx ctx) {
             else {
                 return TOK_assign;
             }
-            return TOK_error; // TODO
         }
         case '~': {
             if (match_char(ctx, '=')) {
