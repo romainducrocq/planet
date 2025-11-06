@@ -31,6 +31,7 @@ typedef enum TOKEN_KIND {
     TOK_assign_xor,
     // TOK_structop_ptr,
     TOK_loop_post,
+    TOK_match_with,
 
     TOK_line_break,
     TOK_open_paren,
@@ -76,16 +77,12 @@ typedef enum TOKEN_KIND {
     TOK_key_elif,
     TOK_key_else,
     TOK_key_then,
-    TOK_key_goto, // TODO rm
     TOK_key_jump,
     TOK_key_label,
-    TOK_key_do, // TODO rm
     TOK_key_loop,
     TOK_key_while,
-    TOK_key_for, // TODO rm
-    // TOK_key_switch,
-    // TOK_key_case,
-    // TOK_key_default,
+    TOK_key_match,
+    TOK_key_otherwise,
     TOK_key_break,
     TOK_key_continue,
     TOK_key_pub,

@@ -58,6 +58,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "->";
         case TOK_loop_post:
             return "..";
+        case TOK_match_with:
+            return "->";
         case TOK_line_break:
             return "line break";
         case TOK_open_paren:
@@ -144,20 +146,14 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "jump";
         case TOK_key_label:
             return "label";
-        // case TOK_key_do:
-        //     return "do";
         case TOK_key_loop:
             return "loop";
         case TOK_key_while:
             return "while";
-        // case TOK_key_for:
-        //     return "for";
-        // case TOK_key_switch:
-        //     return "switch";
-        // case TOK_key_case:
-        //     return "case";
-        // case TOK_key_default:
-        //     return "default";
+        case TOK_key_match:
+            return "match";
+        case TOK_key_otherwise:
+            return "otherwise";
         case TOK_key_break:
             return "break";
         case TOK_key_continue:
