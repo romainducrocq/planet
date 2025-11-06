@@ -11,7 +11,7 @@ pub fn main(none) i32 {
         x = 20
     }
 
-    match 0 {
+    match false {
         -> 1;
         -> 2;
         -> 3;
@@ -33,7 +33,7 @@ pub fn main(none) i32 {
     }
 
     match 3 {
-        -> 1;
+        -> true;
         -> 2;
         otherwise { break }
         -> 3 { x = x * 3 }
