@@ -1411,6 +1411,12 @@ Lbreak:
         unique_ptr_t(CExp) exp_null = uptr_new();
         for_init = make_CInitExp(&exp_null);
     }
+    if (!condition) {
+        TRY(peek_next(ctx));
+        if (ctx->peek_tok->tok_kind == TOK_semicolon) {
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_infinite_loop));
+        }
+    }
     TRY(parse_compound_statement(ctx, &body));
     *statement = make_CFor(&for_init, &condition, &post, &body);
     FINALLY;
