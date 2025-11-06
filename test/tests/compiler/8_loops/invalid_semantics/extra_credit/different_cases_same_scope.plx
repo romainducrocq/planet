@@ -1,20 +1,25 @@
-// make sure we don't treat different cases as different scopes
+#  make sure we don't treat different cases as different scopes
 
-int main(void) {
-    int a = 1;
-    switch (a) {
-        case 1:;
-            int b = 10;
-            break;
+pub fn main(none) i32 {
+    a: i32 = 1
+    match a {
+        -> 1 {
+            ;
+        }
+        b: i32 = 10
+        break
 
-        case 2:;
-            // invalid redefinition, because we're in the same scope
-            // as declaration of b above
-            int b = 11;
-            break;
+        -> 2 {
+            ;
+        }
+        #  invalid redefinition, because we're in the same scope
+        #  as declaration of b above
+        b: i32 = 11
+        break
 
-        default:
-            break;
+        otherwise {
+            break
+        }
     }
-    return 0;
+    return 0
 }

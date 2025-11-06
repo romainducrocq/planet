@@ -1,14 +1,16 @@
-// test that we perform usual variable resolution/validation within case
-// statements
-int main(void) {
-    int a = 10;
-    switch (a) {
-        case 1:
-            return b;
-            break;
+#  test that we perform usual variable resolution/validation within case
+#  statements
+pub fn main(none) i32 {
+    a: i32 = 10
+    match a {
+        -> 1 {
+            return b
+        }
+        break
 
-        default:
-            break;
+        otherwise {
+            break
+        }
     }
-    return 0;
+    return 0
 }

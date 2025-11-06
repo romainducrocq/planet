@@ -1,15 +1,17 @@
-/* Make sure our validation of goto/label also traverses default statements */
+#  Make sure our validation of goto/label also traverses default statements 
 
-int main(void) {
-        int a = 1;
-label:
+pub fn main(none) i32 {
+    a: i32 = 1
+    label label
 
-    switch (a) {
-        case 1:
-            return 0;
-        default:
-        label:
-            return 1;
+    match a {
+        -> 1 {
+            return 0
+        }
+        otherwise {
+            label label
+            return 1
+        }
     }
-    return 0;
+    return 0
 }

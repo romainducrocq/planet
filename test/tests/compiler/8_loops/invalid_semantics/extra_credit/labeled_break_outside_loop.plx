@@ -1,5 +1,6 @@
-int main(void) {
-    // make sure our usual analysis of break/continue labels also traverses labeled statements
-    label: break;
-    return 0;
+pub fn main(none) i32 {
+    #  make sure our usual analysis of break/continue labels also traverses labeled statements
+    label label
+    break
+    return 0
 }

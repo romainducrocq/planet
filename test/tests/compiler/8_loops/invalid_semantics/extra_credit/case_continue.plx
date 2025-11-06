@@ -1,10 +1,13 @@
-int main(void) {
-    int a = 3;
-    switch(a + 1) {
-        case 0:
-            // continue can only break out of loops, not switch statements
-            continue;
-        default: a = 1;
+pub fn main(none) i32 {
+    a: i32 = 3
+    match a + 1 {
+        -> 0 {
+            #  continue can only break out of loops, not switch statements
+            continue
+        }
+        otherwise {
+            a = true
+        }
     }
-    return a;
+    return a
 }

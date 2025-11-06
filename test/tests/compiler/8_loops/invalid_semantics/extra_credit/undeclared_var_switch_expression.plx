@@ -1,9 +1,13 @@
-int main(void) {
-    // test that variable resolution traverse the controlling epxression
-    // in switch statements
-    switch(a) {
-        case 1: return 0;
-        case 2: return 1;
+pub fn main(none) i32 {
+    #  test that variable resolution traverse the controlling epxression
+    #  in switch statements
+    match a {
+        -> 1 {
+            return 0
+        }
+        -> 2 {
+            return true
+        }
     }
-    return 0;
+    return false
 }

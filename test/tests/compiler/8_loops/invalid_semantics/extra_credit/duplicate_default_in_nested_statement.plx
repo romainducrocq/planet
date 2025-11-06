@@ -1,16 +1,21 @@
-// Can't have two default statements in same enclosing switch, even in different scopes
-int main(void) {
-    int a = 10;
-    switch (a) {
-        case 1:
-        for (int i = 0; i < 10; i = i + 1) {
-            continue;
-            while(1)
-            default:;
+#  Can't have two default statements in same enclosing switch, even in different scopes
+pub fn main(none) i32 {
+    a: i32 = 10
+    match a {
+        -> 1 {
+            loop i: i32 = 0 while i < 10 .. i = i + 1 {
+                continue
+                loop while true {
+                    otherwise {
+                        ;
+                    }
+                }
+            } }
+        -> 2 {
+            return 0
         }
-        case 2:
-        return 0;
-        default:;
+        otherwise {
+            ;
+        }
     }
-    return 0;
-}
+    return 0 }
