@@ -1,5 +1,5 @@
-int main(void) {
-    switch 3 {
-        case 3: return 0;
+pub fn main(none) i32 {
+    match 3;
+        -> 3 { return 0 }
     }
 }

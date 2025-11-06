@@ -1,6 +1,6 @@
-int main(void) {
-    for (int i = 0; label: i < 10; i = i + 1) {
+pub fn main(none) i32 {
+    loop i: i32 = 0 while label i < 10 .. i = i + 1 {
         ;
     }
-    return 0;
+    return 0
 }
