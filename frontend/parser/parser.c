@@ -1208,9 +1208,11 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
     CATCH_EXIT;
 }
 
-static error_t parse_loop_init(Ctx ctx, unique_ptr_t(CForInit) * for_init);
+// static error_t parse_loop_init(Ctx ctx, unique_ptr_t(CForInit) * for_init);
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block);
 static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement);
+static error_t parse_var_declaration(
+    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl);
 
 static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CExp) exp = uptr_new();
@@ -1370,6 +1372,27 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
 //     CATCH_EXIT;
 // }
 
+static error_t parse_loop_init_decl(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
+    unique_ptr_t(CVariableDeclaration) var_decl = uptr_new();
+    CATCH_ENTER;
+    CStorageClass storage_class = init_CStorageClass();
+    TRY(parse_var_declaration(ctx, &storage_class, &var_decl));
+    *for_init = make_CInitDecl(&var_decl);
+    FINALLY;
+    free_CVariableDeclaration(&var_decl);
+    CATCH_EXIT;
+}
+
+static error_t parse_loop_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
+    unique_ptr_t(CExp) init = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_exp(ctx, 0, &init));
+    *for_init = make_CInitExp(&init);
+    FINALLY;
+    free_CExp(&init);
+    CATCH_EXIT;
+}
+
 static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CForInit) for_init = uptr_new();
     unique_ptr_t(CExp) condition = uptr_new();
@@ -1380,10 +1403,9 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
         case TOK_open_brace:
-            break;
+            goto Lbreak;
         case TOK_semicolon:
-            TRY(1); // TODO throw error
-            break;
+            THROW_ABORT; // TODO throw error
         case TOK_loop_post: {
             TRY(pop_next(ctx));
             TRY(peek_next(ctx));
@@ -1396,8 +1418,8 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
             }
             else {
                 TRY(parse_exp(ctx, 0, &post));
+                goto Lbreak;
             }
-            break;
         }
         case TOK_key_while: {
             TRY(pop_next(ctx));
@@ -1406,29 +1428,39 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
             if (ctx->peek_tok->tok_kind == TOK_loop_post) {
                 TRY(pop_next(ctx));
                 TRY(parse_exp(ctx, 0, &post));
+                goto Lbreak;
             }
             else {
                 TRY(parse_compound_statement(ctx, &body));
                 *statement = make_CWhile(&condition, &body);
                 EARLY_EXIT;
             }
-            break;
         }
-        default: {
-            TRY(parse_loop_init(ctx, &for_init)); // TODO
-            TRY(peek_next(ctx));
-            if (ctx->peek_tok->tok_kind == TOK_key_while) {
-                TRY(pop_next(ctx));
-                TRY(parse_exp(ctx, 0, &condition));
-                TRY(peek_next(ctx));
+        case TOK_identifier: {
+            TRY(peek_next_i(ctx, 1));
+            if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
+                TRY(parse_loop_init_decl(ctx, &for_init));
             }
-            if (ctx->peek_tok->tok_kind == TOK_loop_post) {
-                TRY(pop_next(ctx));
-                TRY(parse_exp(ctx, 0, &post));
+            else {
+                TRY(parse_loop_init_exp(ctx, &for_init));
             }
             break;
         }
+        default:
+            TRY(parse_loop_init_exp(ctx, &for_init));
+            break;
     }
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_key_while) {
+        TRY(pop_next(ctx));
+        TRY(parse_exp(ctx, 0, &condition));
+        TRY(peek_next(ctx));
+    }
+    if (ctx->peek_tok->tok_kind == TOK_loop_post) {
+        TRY(pop_next(ctx));
+        TRY(parse_exp(ctx, 0, &post));
+    }
+Lbreak:
     if (!for_init) {
         unique_ptr_t(CExp) exp_null = uptr_new();
         for_init = make_CInitExp(&exp_null);
@@ -1638,52 +1670,54 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 //     CATCH_EXIT;
 // }
 
-static error_t parse_loop_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
-    unique_ptr_t(CExp) init = uptr_new();
-    CATCH_ENTER;
-    TRY(parse_exp(ctx, 0, &init));
-    *for_init = make_CInitExp(&init);
-    FINALLY;
-    free_CExp(&init);
-    CATCH_EXIT;
-}
+// static error_t parse_loop_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
+//     unique_ptr_t(CExp) init = uptr_new();
+//     CATCH_ENTER;
+//     TRY(parse_exp(ctx, 0, &init));
+//     *for_init = make_CInitExp(&init);
+//     FINALLY;
+//     free_CExp(&init);
+//     CATCH_EXIT;
+// }
 
-// <for-init> ::= <variable-declaration> | [ <exp> ] ";"
-// for_init = InitDecl(variable_declaration) | InitExp(exp?)
-static error_t parse_loop_init(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
-    CATCH_ENTER;
-    switch (ctx->peek_tok->tok_kind) {
-        case TOK_key_fn:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_for_init_decl_as_fun));
-        // case TOK_key_char:
-        // case TOK_key_int:
-        // case TOK_key_long:
-        // case TOK_key_double:
-        // case TOK_key_unsigned:
-        // case TOK_key_signed:
-        // case TOK_key_void:
-        // case TOK_key_struct:
-        // case TOK_key_union:
-        // case TOK_key_static:
-        // case TOK_key_extern:
-        case TOK_key_pub:
-            TRY(1); // TODO add error message
-            break;
-        case TOK_identifier: {
-            TRY(peek_next_i(ctx, 1));
-            if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
-            //     TRY(parse_for_init_decl(ctx, for_init));
-                EARLY_EXIT;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-    TRY(parse_loop_init_exp(ctx, for_init));
-    FINALLY;
-    CATCH_EXIT;
-}
+// // <for-init> ::= <variable-declaration> | [ <exp> ] ";"
+// // for_init = InitDecl(variable_declaration) | InitExp(exp?)
+// static error_t parse_loop_init(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
+//     CATCH_ENTER;
+//     // switch (ctx->peek_tok->tok_kind) {
+//     //     case TOK_key_fn:
+//     //         THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_for_init_decl_as_fun));
+//     //     // case TOK_key_char:
+//     //     // case TOK_key_int:
+//     //     // case TOK_key_long:
+//     //     // case TOK_key_double:
+//     //     // case TOK_key_unsigned:
+//     //     // case TOK_key_signed:
+//     //     // case TOK_key_void:
+//     //     // case TOK_key_struct:
+//     //     // case TOK_key_union:
+//     //     // case TOK_key_static:
+//     //     // case TOK_key_extern:
+//     //     case TOK_key_pub:
+//     //         TRY(1); // TODO add error message
+//     //         break;
+//     //     case TOK_identifier: {
+//     if (ctx->peek_tok->tok_kind == TOK_identifier) {
+//         TRY(peek_next_i(ctx, 1));
+//         if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
+//         //     TRY(parse_for_init_decl(ctx, for_init));
+//             EARLY_EXIT;
+//         }
+//     }
+//     //         break;
+//     //     }
+//     //     default:
+//     //         break;
+//     // }
+//     TRY(parse_loop_init_exp(ctx, for_init));
+//     FINALLY;
+//     CATCH_EXIT;
+// }
 
 static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration, bool is_toplvl);
 
