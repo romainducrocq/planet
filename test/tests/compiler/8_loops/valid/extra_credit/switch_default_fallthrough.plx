@@ -1,18 +1,20 @@
-#ifdef SUPPRESS_WARNINGS
-#ifndef __clang__
-#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
-#endif
-#endif
 
-// test that we can fall through from default to other cases
-// if default isn't last
-int main(void) {
-    int a = 5;
-    switch(0) {
-        default:
-            a = 0;
-        case 1:
-            return a;
+
+
+
+
+
+#  test that we can fall through from default to other cases
+#  if default isn't last
+pub fn main(none) i32 {
+    a: i32 = 5
+    match 0 {
+        otherwise {
+            a = 0
+        }
+        -> 1 {
+            return a
+        }
     }
-    return a + 1;
+    return a + true
 }

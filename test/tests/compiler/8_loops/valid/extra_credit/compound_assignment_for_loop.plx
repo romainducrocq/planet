@@ -1,6 +1,7 @@
-int main(void) {
-    int i = 1;
-    for (i *= -1; i >= -100; i -=3)
+pub fn main(none) i32 {
+    i: i32 = 1
+    loop i *= -1 while i >= -100 .. i -= 3 {
         ;
-    return (i == -103);
+    }
+    return (i == -103)
 }

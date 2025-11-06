@@ -1,14 +1,20 @@
-// a switch statement cannot jump to cases in a nested switch statement
-int main(void) {
-    int a = 0;
-    // outer switch will execute default, not nested 'case 0'
-    switch(a) {
-        case 1:
-            switch(a) {
-                case 0: return 0;
-                default: return 0;
-            }
-        default: a = 2;
+#  a switch statement cannot jump to cases in a nested switch statement
+pub fn main(none) i32 {
+    a: i32 = 0
+    #  outer switch will execute default, not nested 'case 0'
+    match a {
+        -> 1 {
+            match a {
+                -> 0 {
+                    return 0
+                }
+                otherwise {
+                    return 0
+                }             }
+        }
+        otherwise {
+            a = 2
+        }
     }
-    return a;
+    return a
 }

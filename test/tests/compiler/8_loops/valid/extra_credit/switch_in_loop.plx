@@ -1,24 +1,26 @@
-int main(void) {
-    int acc = 0;
-    int ctr = 0;
-    for (int i = 0; i < 10; i = i + 1)  {
-        // make sure break statements here break out of switch but not loop
-        switch(i) {
-            case 0:
-                acc = 2;
-                break;
-            case 1:
-                acc = acc * 3;
-                break;
-            case 2:
-                acc = acc * 4;
-                break;
-            default:
-                acc = acc + 1;
+pub fn main(none) i32 {
+    acc: i32 = 0
+    ctr: i32 = 0
+    loop i: i32 = 0 while i < 10 .. i = i + 1 {
+        #  make sure break statements here break out of switch but not loop
+        match i {
+            -> false {
+                acc = 2
+            }
+            break
+            -> true {
+                acc = acc * 3
+            }
+            break
+            -> 2 {                 acc = acc * 4
+            }
+            break
+            otherwise {
+                acc = acc + 1
+            }
         }
-        ctr = ctr + 1;
+        ctr = ctr + 1
     }
 
-    return ctr == 10 && acc == 31;
-}
+    return ctr == 10 and acc == 31 }
 

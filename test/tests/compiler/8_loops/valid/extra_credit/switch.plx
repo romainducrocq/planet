@@ -1,9 +1,16 @@
-// very simple test of switch statements
-int main(void) {
-    switch(3) {
-        case 0: return 0;
-        case 1: return 1;
-        case 3: return 3;
-        case 5: return 5;
+#  very simple test of switch statements
+pub fn main(none) i32 {
+    match 3 {
+        -> 0 {
+            return 0
+        }
+        -> 1 {
+            return 1
+        }
+        -> 3 {
+            return 3
+        }
+        -> 5 {
+            return 5 }
     }
 }

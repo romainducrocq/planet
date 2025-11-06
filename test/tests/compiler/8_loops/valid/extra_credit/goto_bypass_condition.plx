@@ -1,14 +1,15 @@
-// if goto jumps past the controlling condition in a loop,
-// the condition isn't evaluated
+#  if goto jumps past the controlling condition in a loop,
+#  the condition isn't evaluated
 
-int main(void) {
-    int i = 1;
-    do {
-    while_start:
-        i = i + 1;
-        if (i < 10)
-            goto while_start;
+pub fn main(none) i32 {
+    i: i32 = 1
+    loop .. while false {
+        label while_start
+        i = i + 1
+        if i < 10 {
+            jump while_start
+        }
 
-    } while (0);
-    return i;
+    }
+    return i
 }
