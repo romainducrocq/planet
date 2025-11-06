@@ -433,7 +433,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     break;
         // }
         case 'm': {
-            if (match_chars(ctx, "4_", 2)) {
+            if (match_char(ctx, 'a')) {
+                if(match_chars(ctx, "tch", 3) && !match_word(ctx)) {
+                    return TOK_key_match;
+                }
+            }
+            else if (match_chars(ctx, "4_", 2)) {
                 while (match_word(ctx)) {
                 }
                 return TOK_m4_prefix;
@@ -454,8 +459,13 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 'o': {
-            if (match_char(ctx, 'r') && !match_word(ctx)) {
-                return TOK_binop_or;
+            if (match_char(ctx, 'r')) {
+                if(!match_word(ctx)) {
+                    return TOK_binop_or;
+                }
+            }
+            else if (match_chars(ctx, "therwise", 8) && !match_word(ctx)) {
+                return TOK_key_otherwise;
             }
             break;
         }
@@ -584,11 +594,10 @@ static TOKEN_KIND match_token(Ctx ctx) {
             }
         }
         case '-': {
-        //     if (match_char(ctx, '>')) {
-        //         return TOK_structop_ptr;
-        //     }
-        //     else 
-            if (match_char(ctx, '-')) {
+            if (match_char(ctx, '>')) {
+                return TOK_match_with;
+            }
+            else if (match_char(ctx, '-')) {
                 return TOK_unop_decr;
             }
             else if (match_char(ctx, '=')) {
