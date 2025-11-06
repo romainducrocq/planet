@@ -667,6 +667,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("{") " or " EM_CSTR(";") " next";
         case MSG_empty_block:
             RET_ERRNO "empty block requires at least one item, or use " EM_CSTR(";") " instead";
+        case MSG_infinite_loop:
+            RET_ERRNO "cannot exit this loop, infinite loop requires at least one statement";
         default:
             THROW_ABORT;
     }

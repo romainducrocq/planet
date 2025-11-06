@@ -1351,7 +1351,7 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
         case TOK_open_brace:
             goto Lbreak;
         case TOK_semicolon:
-            THROW_ABORT; // TODO throw error
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_infinite_loop));
         case TOK_loop_post: {
             TRY(pop_next(ctx));
             TRY(peek_next(ctx));

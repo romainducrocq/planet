@@ -39,7 +39,8 @@ typedef enum MESSAGE_PARSER {
     MSG_member_decl_as_fun,
     MSG_expect_assign,
     MSG_expect_block,
-    MSG_empty_block
+    MSG_empty_block,
+    MSG_infinite_loop
 } MESSAGE_PARSER;
 
 #endif
