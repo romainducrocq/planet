@@ -374,6 +374,15 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_key_while:
             append_buf("loop while ");
             break;
+        case TOK_key_switch:
+            append_buf("match ");
+            break;
+        case TOK_key_case:
+            append_buf("-> ");
+            break;
+        case TOK_key_default:
+            append_buf("otherwise ");
+            break;
         case TOK_ternary_if:
             if (cond_buf.empty()) {
                 throw std::runtime_error("invalid pop conditional");

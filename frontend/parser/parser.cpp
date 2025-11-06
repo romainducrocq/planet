@@ -1389,13 +1389,16 @@ static error_t parse_switch_statement(Ctx ctx, unique_ptr_t(CStatement) * statem
     unique_ptr_t(CStatement) body = uptr_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(parse_exp(ctx, 0, &match));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     TRY(peek_next(ctx));
+    TRANSPILE(open_block(ctx->peek_tok));
     TRY(parse_statement(ctx, &body));
+    TRANSPILE(close_block(false));
     *statement = make_CSwitch(&match, &body);
     FINALLY;
     free_CExp(&match);
@@ -1410,6 +1413,7 @@ static error_t parse_case_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     CATCH_ENTER;
     size_t info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     info_at = ctx->peek_tok->info_at;
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
@@ -1430,7 +1434,9 @@ static error_t parse_case_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
     TRY(peek_next(ctx));
+    TRANSPILE(open_block(ctx->peek_tok));
     TRY(parse_statement(ctx, &jump_to));
+    TRANSPILE(close_block(false));
     *statement = make_CCase(&value, &jump_to);
     FINALLY;
     free_CExp(&value);
@@ -1444,10 +1450,13 @@ static error_t parse_default_statement(Ctx ctx, unique_ptr_t(CStatement) * state
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_ternary_else));
     TRY(peek_next(ctx));
+    TRANSPILE(open_block(ctx->peek_tok));
     TRY(parse_statement(ctx, &jump_to));
+    TRANSPILE(close_block(false));
     *statement = make_CDefault(&jump_to, info_at);
     FINALLY;
     free_CStatement(&jump_to);
@@ -2495,8 +2504,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
