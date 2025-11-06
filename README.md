@@ -78,7 +78,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] jump statements, labels [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/6_statements_and_conditional_expressions/valid/extra_credit)
 - [x] if-elif-else compound statements [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/7_compound_statements)
 - [x] loop-while, continue, break statements [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/8_loops)
-- [ ] match, ->, otherwise statements
+- [x] match, ->, otherwise statements [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/8_loops/valid/extra_credit)
 - [ ] functions, pub storage
 - [ ] top-level variables, extrn, data storage
 > Types
