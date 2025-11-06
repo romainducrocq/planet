@@ -57,7 +57,7 @@ typedef enum TOKEN_KIND {
     TOK_assign,
     TOK_ternary_if,
     TOK_ternary_else,
-    // TOK_comma_separator,
+    TOK_comma_separator,
     // TOK_structop_member,
 
     // TOK_key_char,

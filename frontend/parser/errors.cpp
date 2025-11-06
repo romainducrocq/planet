@@ -100,8 +100,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "?";
         case TOK_ternary_else:
             return ":";
-        // case TOK_comma_separator:
-        //     return ",";
+        case TOK_comma_separator:
+            return ",";
         // case TOK_structop_member:
         //     return ".";
         // case TOK_key_char:
