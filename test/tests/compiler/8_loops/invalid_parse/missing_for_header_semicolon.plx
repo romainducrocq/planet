@@ -1,6 +1,6 @@
-int main(void) {
-    for (int i = 0; i < 10)
+pub fn main(none) i32 {
+    loop i: i32 = 0 while i < 10 .. {
         ;
-    return 0;
+    }
+    return 0
 }
-
