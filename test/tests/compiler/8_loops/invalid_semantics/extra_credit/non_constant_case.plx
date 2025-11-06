@@ -1,8 +1,8 @@
-int main(void) {
-    int a = 3;
-    switch(a + 1) {
-        case 0: return 0;
-        case a: return 1; // case statement values must be constant
-        case 1: return 2;
+pub fn main(none) i32 {
+    a: i32 = 3
+    match a + 1 {
+        -> 0 { return 0 }
+        -> a { return 1 } # case statement values must be constant
+        -> 1 { return 2 }
     }
 }

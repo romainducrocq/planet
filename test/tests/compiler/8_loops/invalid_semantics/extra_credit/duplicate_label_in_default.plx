@@ -2,14 +2,14 @@
 
 pub fn main(none) i32 {
     a: i32 = 1
-    label label
+    label lbl
 
     match a {
         -> 1 {
             return 0
         }
         otherwise {
-            label label
+            label lbl
             return 1
         }
     }
