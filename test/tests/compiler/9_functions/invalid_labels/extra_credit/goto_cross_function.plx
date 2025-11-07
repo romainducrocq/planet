@@ -1,10 +1,10 @@
-int foo(void) {
-    label:
-        return 0;
+pub fn foo(none) i32 {
+    label label
+    return 0
 }
 
-int main(void) {
-    /* You can't goto a label in another function */
-    goto label;
-    return 1;
+pub fn main(none) i32 {
+    #  You can't goto a label in another function 
+    jump label
+    return true
 }

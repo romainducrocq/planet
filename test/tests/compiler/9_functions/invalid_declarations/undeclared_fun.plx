@@ -1,8 +1,8 @@
-int main(void) {
-    /* You must declare a function before using it */
-    return foo(3);
+pub fn main(none) i32 {
+    #  You must declare a function before using it 
+    return foo(3)
 }
 
-int foo(int a) {
-    return 1;
+pub fn foo(a: i32) i32 {
+    return true
 }

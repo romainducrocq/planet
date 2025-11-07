@@ -1,11 +1,11 @@
-/* Duplicate parameter names are illegal in function declarations
-   as well as definitions */
-int foo(int a, int a);
+#  Duplicate parameter names are illegal in function declarations
+#    as well as definitions 
+pub fn foo(a: i32, a: i32) i32;
 
-int main(void) {
-    return foo(1, 2);
+pub fn main(none) i32 {
+    return foo(true, 2)
 }
 
-int foo(int a, int b) {
-    return a + b;
+pub fn foo(a: i32, b: i32) i32 {
+    return a + b
 }

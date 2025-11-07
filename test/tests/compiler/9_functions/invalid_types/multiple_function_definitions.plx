@@ -1,12 +1,12 @@
-/* Function 'foo' is defined twice */
-int foo(void){
-    return 3;
+#  Function 'foo' is defined twice 
+pub fn foo(none) i32 {
+    return 3
 }
 
-int main(void) {
-    return foo();
+pub fn main(none) i32 {
+    return foo()
 }
 
-int foo(void){
-    return 4;
+pub fn foo(none) i32 {
+    return 4
 }

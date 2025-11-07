@@ -1,6 +1,6 @@
-int x(void);
+pub fn x(none) i32;
 
-int main(void) {
-    // a function call is not an lvalue, so we can't decrement it
-    x()--;
+pub fn main(none) i32 {
+    #  a function call is not an lvalue, so we can't decrement it
+    x()--
 }

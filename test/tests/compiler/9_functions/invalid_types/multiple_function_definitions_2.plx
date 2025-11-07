@@ -1,15 +1,15 @@
-/* Function 'foo' is defined twice */
-int foo(void){
-    return 3;
+#  Function 'foo' is defined twice 
+pub fn foo(none) i32 {
+    return 3
 }
 
-int main(void) {
-    // after seeing this declaration, we should still remember that
-    // foo was defined earlier
-    int foo(void);
-    return foo();
+pub fn main(none) i32 {
+    #  after seeing this declaration, we should still remember that
+    #  foo was defined earlier
+    fn foo(none) i32;
+    return foo()
 }
 
-int foo(void){
-    return 4;
+pub fn foo(none) i32 {
+    return 4
 }

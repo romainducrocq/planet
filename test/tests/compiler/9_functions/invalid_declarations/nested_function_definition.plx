@@ -1,7 +1,8 @@
-int main(void) {
-    /* Nested function definitions are not permitted */
-    int foo(void) {
-        return 1;
+pub fn main(none) i32 {
+    #  Nested function definitions are not permitted 
+    fn foo(none) i32 {
+        return 1
     }
-    return foo();
+    
+    return foo()
 }

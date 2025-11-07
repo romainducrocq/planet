@@ -1,8 +1,8 @@
-int foo(int a) {
-    return a + 1;
+pub fn foo(a: i32) i32 {
+    return a + 1
 }
 
-int main(void) {
-    /* foo is called with too many arguments */
-    return foo(1, 2);
+pub fn main(none) i32 {
+    #  foo is called with too many arguments 
+    return foo(true, 2)
 }

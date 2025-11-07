@@ -1,8 +1,8 @@
-/* It's illegal for multiple parameters to a function to have the same name */
-int foo(int a, int a) {
-    return a;
+#  It's illegal for multiple parameters to a function to have the same name 
+pub fn foo(a: i32, a: i32) i32 {
+    return a
 }
 
-int main(void) {
-    return foo(1, 2);
+pub fn main(none) i32 {
+    return foo(1, 2)
 }

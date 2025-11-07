@@ -1,6 +1,6 @@
-int x(void);
+pub fn x(none) i32;
 
-int main(void) {
-    x++;
-    return 0;
+pub fn main(none) i32 {
+    x++
+    return 0
 }
