@@ -580,22 +580,22 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
 // }
 
 // <argument-list> ::= <exp> { "," <exp> }
-// static error_t parse_arg_list(Ctx ctx, vector_t(unique_ptr_t(CExp)) * args) {
-//     unique_ptr_t(CExp) arg = uptr_new();
-//     CATCH_ENTER;
-//     TRY(parse_exp(ctx, 0, &arg));
-//     vec_move_back(*args, arg);
-//     TRY(peek_next(ctx));
-//     while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
-//         TRY(pop_next(ctx));
-//         TRY(parse_exp(ctx, 0, &arg));
-//         vec_move_back(*args, arg);
-//         TRY(peek_next(ctx));
-//     }
-//     FINALLY;
-//     free_CExp(&arg);
-//     CATCH_EXIT;
-// }
+static error_t parse_arg_list(Ctx ctx, vector_t(unique_ptr_t(CExp)) * args) {
+    unique_ptr_t(CExp) arg = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_exp(ctx, 0, &arg));
+    vec_move_back(*args, arg);
+    TRY(peek_next(ctx));
+    while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
+        TRY(pop_next(ctx));
+        TRY(parse_exp(ctx, 0, &arg));
+        vec_move_back(*args, arg);
+        TRY(peek_next(ctx));
+    }
+    FINALLY;
+    free_CExp(&arg);
+    CATCH_EXIT;
+}
 
 static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(CConst) constant = sptr_new();
@@ -641,27 +641,27 @@ static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     vector_t(unique_ptr_t(CExp)) args = vec_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TIdentifier name;
-//     TRY(parse_identifier(ctx, 0, &name));
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     if (ctx->peek_tok->tok_kind != TOK_close_paren) {
-//         TRY(parse_arg_list(ctx, &args));
-//     }
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     *exp = make_CFunctionCall(name, &args, info_at);
-//     FINALLY;
-//     for (size_t i = 0; i < vec_size(args); ++i) {
-//         free_CExp(&args[i]);
-//     }
-//     vec_delete(args);
-//     CATCH_EXIT;
-// }
+static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    vector_t(unique_ptr_t(CExp)) args = vec_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TIdentifier name;
+    TRY(parse_identifier(ctx, 0, &name));
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind != TOK_close_paren) {
+        TRY(parse_arg_list(ctx, &args));
+    }
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    *exp = make_CFunctionCall(name, &args, info_at);
+    FINALLY;
+    for (size_t i = 0; i < vec_size(args); ++i) {
+        free_CExp(&args[i]);
+    }
+    vec_delete(args);
+    CATCH_EXIT;
+}
 
 static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
@@ -900,12 +900,12 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         //     break;
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
-        //     if (ctx->peek_tok_i->tok_kind == TOK_open_paren) {
-        //         TRY(parse_call_factor(ctx, exp));
-        //     }
-        //     else {
+            if (ctx->peek_tok_i->tok_kind == TOK_open_paren) {
+                TRY(parse_call_factor(ctx, exp));
+            }
+            else {
                 TRY(parse_var_factor(ctx, exp));
-        //     }
+            }
             break;
         }
         // case TOK_string_literal:
