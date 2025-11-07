@@ -2258,6 +2258,7 @@ static error_t parse_decltor_list(Ctx ctx, vector_t(TIdentifier) * params,
     TRY(peek_next(ctx));
     while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
         TRY(pop_next(ctx));
+        TRY(peek_next(ctx));
         TRY(parse_decltor(ctx, &param, &param_type));
         vec_push_back(*params, param);
         vec_move_back(*param_types, param_type);
