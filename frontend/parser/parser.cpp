@@ -569,6 +569,7 @@ static error_t parse_arg_list(Ctx ctx, vector_t(unique_ptr_t(CExp)) * args) {
     TRY(peek_next(ctx));
     while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
         TRY(pop_next(ctx));
+        TRANSPILE(keep_token(ctx->next_tok));
         TRY(parse_exp(ctx, 0, &arg));
         vec_move_back(*args, arg);
         TRY(peek_next(ctx));
@@ -627,14 +628,17 @@ static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     vector_t(unique_ptr_t(CExp)) args = vec_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
+    TRANSPILE(keep_token(ctx->peek_tok));
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind != TOK_close_paren) {
         TRY(parse_arg_list(ctx, &args));
     }
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *exp = make_CFunctionCall(name, &args, info_at);
     FINALLY;

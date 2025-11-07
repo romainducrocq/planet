@@ -19,7 +19,7 @@ typedef struct Declarator {
 } Declarator;
 
 cc::Transpiler transpiler = []() -> cc::Transpiler {
-    srand (42);
+    srand (10000);
     return {};
 }();
 
@@ -382,6 +382,9 @@ void cc::Transpiler::keep_token(const Token* tok) {
             break;
         case TOK_key_default:
             append_buf("otherwise ");
+            break;
+        case TOK_comma_separator:
+            append_buf(", ");
             break;
         case TOK_ternary_if:
             if (cond_buf.empty()) {
