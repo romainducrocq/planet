@@ -1612,9 +1612,8 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_union:
         // case TOK_key_static:
         // case TOK_key_extern:
-        case TOK_key_pub:
+        case TOK_key_fn:
             TRY(parse_d_block_item(ctx, block_item));
-            TRY(1); // TODO rm
             EARLY_EXIT;
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
