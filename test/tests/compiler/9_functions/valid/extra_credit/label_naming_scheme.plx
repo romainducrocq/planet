@@ -24,11 +24,11 @@ pub fn main(none) i32 {
 }
 
 pub fn main_(none) i32 {
-    label label
+    label lbl
     return false
 }
 
 pub fn _main(none) i32 {
-    label label
+    label lbl
     return 0
 }
