@@ -2236,6 +2236,18 @@ static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializ
 //     CATCH_EXIT;
 // }
 
+static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * derived_type) {
+    CATCH_ENTER;
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TRY(parse_identifier(ctx, 0, name));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_assign_type));
+    // TODO should be parse_type_name
+    TRY(parse_type_specifier(ctx, derived_type));
+    FINALLY;
+    CATCH_EXIT;
+}
+
 // <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
 static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vector_t(TIdentifier) * params,*/
     vector_t(shared_ptr_t(Type)) * param_types) {
@@ -2305,13 +2317,8 @@ static error_t parse_var_declaration(
     shared_ptr_t(Type) var_type = sptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
-    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier name;
-    TRY(parse_identifier(ctx, 0, &name));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_assign_type));
-    // TODO should be parse_type_name
-    TRY(parse_type_specifier(ctx, &var_type));
+    TRY(parse_decltor(ctx, &name, &var_type));
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_semicolon:
