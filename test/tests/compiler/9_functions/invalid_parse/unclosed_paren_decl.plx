@@ -1,7 +1,7 @@
-int foo(int a, int b {
-    return 0;
+pub fn foo(a: i32, b: i32 i32 {
+    return 0
 }
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

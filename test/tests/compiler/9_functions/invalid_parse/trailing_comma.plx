@@ -1,8 +1,8 @@
-int foo(int a, int b, int c) {
-    return a + b + c;
+pub fn foo(a: i32, b: i32, c: i32) i32 {
+    return a + b + c
 }
 
-int main(void) {
-    /* Trailing commas aren't permitted in argument lists */
-    return foo(1, 2, 3,);
+pub fn main(none) i32 {
+    # Trailing commas aren't permitted in argument lists
+    return foo(1, 2, 3, )
 }

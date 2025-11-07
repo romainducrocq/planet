@@ -1,8 +1,8 @@
-/* Variable initializers aren't permitted in parameter lists */
-int bad_params(int a = 3) {
-    return 1;
+# Variable initializers aren't permitted in parameter lists
+pub fn bad_params(a: i32 = 3) {
+    return 1
 }
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

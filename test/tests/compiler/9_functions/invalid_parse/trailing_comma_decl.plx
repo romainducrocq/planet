@@ -1,8 +1,8 @@
-/* Trailing commas aren't permitted in parameter lists */
-int foo(int a,) {
-    return a + 1;
+# Trailing commas aren't permitted in parameter lists
+pub fn foo(a: i32, ) i32 {
+    return a + 1
 }
 
-int main(void) {
-    return foo(4);
+pub fn main(none) i32 {
+    return foo(4)
 }
