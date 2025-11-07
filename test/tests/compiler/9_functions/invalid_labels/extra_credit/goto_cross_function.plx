@@ -1,10 +1,10 @@
 pub fn foo(none) i32 {
-    label label
+    label lbl
     return 0
 }
 
 pub fn main(none) i32 {
     #  You can't goto a label in another function 
-    jump label
+    jump lbl
     return true
 }
