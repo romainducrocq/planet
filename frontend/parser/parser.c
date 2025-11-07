@@ -2248,22 +2248,42 @@ static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * de
     CATCH_EXIT;
 }
 
-// <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
-static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vector_t(TIdentifier) * params,*/
+static error_t parse_decltor_list(Ctx ctx, vector_t(TIdentifier) * params,
     vector_t(shared_ptr_t(Type)) * param_types) {
+    shared_ptr_t(Type) param_type = sptr_new();
+    CATCH_ENTER;
+    TIdentifier param;
+    TRY(parse_decltor(ctx, &param, &param_type));
+    vec_push_back(*params, param);
+    vec_move_back(*param_types, param_type);
+    TRY(peek_next(ctx));
+    while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
+        TRY(pop_next(ctx));
+        TRY(parse_decltor(ctx, &param, &param_type));
+        vec_push_back(*params, param);
+        vec_move_back(*param_types, param_type);
+        TRY(peek_next(ctx));
+    }
+    FINALLY;
+    free_Type(&param_type);
+    CATCH_EXIT;
+}
+
+// <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
+static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, vector_t(TIdentifier) * params) {
+    vector_t(shared_ptr_t(Type)) param_types = vec_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_key_none) {
         TRY(pop_next(ctx));
-        TRY(pop_next(ctx));
-        TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));    
     }
     else {
-        TRY(1); // TODO rm
-        // parse_param_list -> params, param_types
+        TRY(parse_decltor_list(ctx, params, &param_types));
     }
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_key_none) {
         TRY(pop_next(ctx));
@@ -2275,8 +2295,12 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, /*vect
         // error message expects none?
         TRY(parse_type_specifier(ctx, fun_type));
     }
-    *fun_type = make_FunType(param_types, fun_type);
+    *fun_type = make_FunType(&param_types, fun_type);
     FINALLY;
+    for (size_t i = 0; i < vec_size(param_types); ++i) {
+        free_Type(&param_types[i]);
+    }
+    vec_delete(param_types);
     CATCH_EXIT;
 }
 
@@ -2287,7 +2311,6 @@ static error_t parse_fun_declaration(
     unique_ptr_t(CBlock) body = uptr_new();
     shared_ptr_t(Type) fun_type = sptr_new();
     vector_t(TIdentifier) params = vec_new();
-    vector_t(shared_ptr_t(Type)) param_types = vec_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
@@ -2295,17 +2318,13 @@ static error_t parse_fun_declaration(
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier name;
     TRY(parse_identifier(ctx, 0, &name));
-    TRY(parse_fun_decltor(ctx, &fun_type, /*&params,*/ &param_types));
+    TRY(parse_fun_decltor(ctx, &fun_type, &params));
     TRY(parse_block(ctx, &body));
     *fun_decl = make_CFunctionDeclaration(name, &params, &body, &fun_type, storage_class, info_at);
     FINALLY;
     free_CBlock(&body);
     free_Type(&fun_type);
     vec_delete(params);
-    for (size_t i = 0; i < vec_size(param_types); ++i) {
-        free_Type(&param_types[i]);
-    }
-    vec_delete(param_types);
     CATCH_EXIT;
 }
 
