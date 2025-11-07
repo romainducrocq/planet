@@ -78,7 +78,7 @@ class Transpiler {
         void derived_type(const Type* derived_type);
         void do_nothing(const Token* tok, int tok_kind);
         void var_decltor(const Declarator* decltor);
-        void fun_decltor(const Declarator* decltor);
+        void fun_decltor(const Declarator* decltor, const Token* tok);
         void storage_class(const CStorageClass* storage_class);
         void comment_start();
         void comment_end();

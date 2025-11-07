@@ -2269,16 +2269,16 @@ static error_t parse_fun_declaration(
     unique_ptr_t(CBlock) body = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
-    TRANSPILE(fun_decltor(decltor));
     TRY(peek_next(ctx));
+    TRANSPILE(fun_decltor(decltor, ctx->peek_tok));
     if (ctx->peek_tok->tok_kind == TOK_semicolon) {
         TRY(pop_next(ctx));
     }
     else {
         TRY(expect_next(ctx, ctx->peek_tok, TOK_open_brace));
         TRY(parse_block(ctx, &body));
+        TRANSPILE(break_line(false));
     }
-    TRANSPILE(break_line(false));
     *fun_decl = make_CFunctionDeclaration(
         decltor->name, &decltor->params, &body, &decltor->derived_type, storage_class, info_at);
     FINALLY;

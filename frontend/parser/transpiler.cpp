@@ -421,7 +421,7 @@ void cc::Transpiler::append_identifier(size_t identifier) {
 }
 
 bool cc::Transpiler::with_prob(unsigned int x) {
-    return rand() % 101 < x;
+    return (rand() % 100) < x;
 }
 
 void cc::Transpiler::concat_buf(const LineBuf& line_buf, const std::string& buf) {
@@ -448,7 +448,7 @@ void cc::Transpiler::concat_buf(const LineBuf& line_buf, const std::string& buf)
 }
 
 void cc::Transpiler::append_buf(const std::string& buf) {
-    if (paren > 0 && with_prob(3)) {
+    if (paren > 0 && with_prob(2)) {
         break_line(false);
     }
     if (lines[linenum - 1].buf.empty() || lines[linenum - 1].buf.back() == '\n') {
@@ -495,7 +495,7 @@ void cc::Transpiler::var_decltor(const Declarator* decltor) {
     type_decl(decltor->name, decltor->derived_type);
 }
 
-void cc::Transpiler::fun_decltor(const Declarator* decltor) {
+void cc::Transpiler::fun_decltor(const Declarator* decltor, const Token* tok) {
     append_buf("fn ");
     append_identifier(decltor->name);
     append_buf("(");
@@ -516,7 +516,15 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor) {
     decr_paren();
     // TODO
     derived_type(decltor->derived_type->get._FunType.ret_type);
-    append_buf(" ");
+    if (tok->tok_kind == TOK_semicolon) {
+        append_buf(";");
+        if (indent == 0) {
+            break_line(false);
+        }
+    }
+    else {
+        append_buf(" ");
+    }
 }
 
 void cc::Transpiler::storage_class(const CStorageClass* storage_class) {
@@ -557,7 +565,7 @@ void cc::Transpiler::skip(bool is_comment, const char* line, size_t match_at, si
 }
 
 void cc::Transpiler::break_line(bool maybe) {
-    if (maybe && with_prob(3)) {
+    if (maybe && with_prob(2)) {
         append_buf(" ");
     }
     else {
