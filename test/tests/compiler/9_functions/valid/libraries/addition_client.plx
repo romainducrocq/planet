@@ -1,5 +1,5 @@
-int add(int x, int y);
+pub fn add(x: i32, y: i32) i32;
 
-int main(void) {
-    return add(1, 2);
+pub fn main(none) i32 {
+    return add(true, 2)
 }

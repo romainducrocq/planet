@@ -1,12 +1,13 @@
-int fib(int n) {
-    if (n == 0 || n == 1) {
-        return n;
-    } else {
-        return fib(n - 1) + fib(n - 2);
+pub fn fib(n: i32) i32 {
+    if n == 0 or n == 1 {
+        return n
+    }
+    else {
+        return fib(n - 1) + fib(n - 2)
     }
 }
 
-int main(void) {
-    int n = 6;
-    return fib(n);
+pub fn main(none) i32 {
+    n: i32 = 6
+    return fib(n)
 }

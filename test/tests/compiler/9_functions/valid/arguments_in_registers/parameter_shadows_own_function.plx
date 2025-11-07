@@ -1,7 +1,7 @@
-int a(int a) {
-    return a * 2;
+pub fn a(a: i32) i32 {
+    return a * 2
 }
 
-int main(void) {
-    return a(1);
+pub fn main(none) i32 {
+    return a(1)
 }

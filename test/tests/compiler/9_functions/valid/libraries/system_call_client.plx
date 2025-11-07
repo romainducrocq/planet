@@ -1,6 +1,6 @@
-int incr_and_print(int c);
+pub fn incr_and_print(c: i32) i32;
 
-int main(void) {
-    incr_and_print(70);
-    return 0;
+pub fn main(none) i32 {
+    incr_and_print(70)
+    return 0
 }

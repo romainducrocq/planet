@@ -1,11 +1,11 @@
-/* Make sure we don't clobber argument passed in EDX register by
- * performing a division operation that uses that register */
+#  Make sure we don't clobber argument passed in EDX register by
+#  * performing a division operation that uses that register 
 
-int x(int a, int b, int c, int d, int e, int f) {
-    return a == 1 && b == 2 && c == 3 && d == 4 && e == 5 && f == 6;
+pub fn x(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32) i32 {
+    return a == 1 and b == 2 and c == 3 and d == 4 and e == 5 and f == 6
 }
 
-int main(void) {
-    int a = 4;
-    return x(1, 2, 3, 4, 5, 24 / a);
+pub fn main(none) i32 {
+    a: i32 = 4
+    return x(1, 2, 3, 4, 5, 24 / a)
 }

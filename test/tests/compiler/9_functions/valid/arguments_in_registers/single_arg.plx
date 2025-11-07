@@ -1,8 +1,8 @@
-int twice(int x){
-    return 2 * x;
+pub fn twice(x: i32) i32 {
+    return 2 * x
 }
 
-int main(void) {
-    return twice(3);
+pub fn main(none) i32 {
+    return twice(3)
 }
 

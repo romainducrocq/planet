@@ -1,5 +1,5 @@
-int f(int a, int b, int c, int d);
+pub fn f(a: i32, b: i32, c: i32, d: i32) i32;
 
-int main(void) {
-    return f(10, 2, 100, 4);
+pub fn main(none) i32 {
+    return f(10, 2, 100, 4)
 }

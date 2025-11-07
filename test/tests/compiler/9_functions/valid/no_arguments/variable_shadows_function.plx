@@ -1,14 +1,14 @@
-int main(void) {
-    int foo(void);
+pub fn main(none) i32 {
+    fn foo(none) i32;
 
-    int x = foo();
-    if (x > 0) {
-        int foo  = 3;
-        x = x + foo;
+    x: i32 = foo()
+    if x > 0 {
+        foo: i32 = 3
+        x = x + foo
     }
-    return x;
+    return x
 }
 
-int foo(void) {
-    return 4;
+pub fn foo(none) i32 {
+    return 4
 }

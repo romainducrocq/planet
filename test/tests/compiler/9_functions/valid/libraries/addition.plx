@@ -1,3 +1,3 @@
-int add(int x, int y) {
-    return x + y;
+pub fn add(x: i32, y: i32) i32 {
+    return x + y
 }

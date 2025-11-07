@@ -1,10 +1,10 @@
-int three(void) {
-    return 3;
+pub fn three(none) i32 {
+    return 3
 }
 
-int main(void) {
-    /* The function call operator () is higher precedence
-     * than unary prefix operators
-     */
-    return !three();
+pub fn main(none) i32 {
+    #  The function call operator () is higher precedence
+    #      * than unary prefix operators
+    #      
+    return not three()
 }

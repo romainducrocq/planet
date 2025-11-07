@@ -1,9 +1,9 @@
-int main(void) {
-    int f(void);
-    int f(void);
-    return f();
+pub fn main(none) i32 {
+    fn f(none) i32;
+    fn f(none) i32;
+    return f()
 }
 
-int f(void) {
-    return 3;
+pub fn f(none) i32 {
+    return 3
 }

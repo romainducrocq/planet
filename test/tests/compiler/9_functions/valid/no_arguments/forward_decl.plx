@@ -1,9 +1,9 @@
-int foo(void);
+pub fn foo(none) i32;
 
-int main(void) {
-    return foo();
+pub fn main(none) i32 {
+    return foo()
 }
 
-int foo(void) {
-    return 3;
+pub fn foo(none) i32 {
+    return 3
 }
