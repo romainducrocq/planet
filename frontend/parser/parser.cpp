@@ -2277,8 +2277,8 @@ static error_t parse_fun_declaration(
     else {
         TRY(expect_next(ctx, ctx->peek_tok, TOK_open_brace));
         TRY(parse_block(ctx, &body));
-        TRANSPILE(break_line(false));
     }
+    TRANSPILE(break_line(false));
     *fun_decl = make_CFunctionDeclaration(
         decltor->name, &decltor->params, &body, &decltor->derived_type, storage_class, info_at);
     FINALLY;
@@ -2504,7 +2504,7 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
+    TRANSPILE(print_lines());
     // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);

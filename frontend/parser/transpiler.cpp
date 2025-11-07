@@ -485,10 +485,14 @@ void cc::Transpiler::do_nothing(const Token* tok, int tok_kind) {
     }
 }
 
-void cc::Transpiler::var_decltor(const Declarator* decltor) {
-    append_identifier(decltor->name);
+void cc::Transpiler::type_decl(size_t name, const Type* type_t) {
+    append_identifier(name);
     append_buf(": ");
-    derived_type(decltor->derived_type);
+    derived_type(type_t);
+}
+
+void cc::Transpiler::var_decltor(const Declarator* decltor) {
+    type_decl(decltor->name, decltor->derived_type);
 }
 
 void cc::Transpiler::fun_decltor(const Declarator* decltor) {
@@ -500,7 +504,13 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor) {
         append_buf("none");
     }
     else {
-        // TODO
+        type_decl(decltor->params[0], 
+            decltor->derived_type->get._FunType.param_types[0]);
+        for (size_t i = 1; i < vec_size(decltor->params); ++i) {
+            append_buf(", ");
+            type_decl(decltor->params[i], 
+                decltor->derived_type->get._FunType.param_types[i]);
+        }
     }
     append_buf(") ");
     decr_paren();

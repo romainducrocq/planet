@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 0
+#if 1
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)
@@ -95,6 +95,7 @@ class Transpiler {
         void append_end(const std::string& end);
         void append_const(size_t identifier);
         void append_identifier(size_t identifier);
+        void type_decl(size_t name, const Type* type_t);
         void comment(const char* line, size_t match_at, size_t match_size);
         void format_line(Line& line, size_t i);
         bool with_prob(unsigned int x);
