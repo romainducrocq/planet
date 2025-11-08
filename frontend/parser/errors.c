@@ -160,10 +160,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "continue";
         case TOK_key_pub:
             return "pub";
-        // case TOK_key_static:
-        //     return "static";
-        // case TOK_key_extern:
-        //     return "extern";
+        case TOK_key_data:
+            return "data";
+        case TOK_key_extrn:
+            return "extrn";
         case TOK_key_true:
             return "true";
         case TOK_key_false:

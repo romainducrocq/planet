@@ -367,6 +367,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //     }
         //     break;
         // }
+        case 'd': {
+            if (match_chars(ctx, "ata", 3) && !match_word(ctx)) {
+                return TOK_key_data;
+            }
+            break;
+        }
         case 'e': {
             if (match_char(ctx, 'l')) {
                 if (match_char(ctx, 'i')) {
@@ -378,9 +384,9 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                     return TOK_key_else;
                 }
             }
-        //     else if (match_chars(ctx, "xtern", 5) && !match_word(ctx)) {
-        //         return TOK_key_extern;
-        //     }
+            else if (match_chars(ctx, "xtrn", 5) && !match_word(ctx)) {
+                return TOK_key_extrn;
+            }
             break;
         }
         case 'f': {
