@@ -1,16 +1,16 @@
-/* A variable with internal linkage may be tentatively defined
- * and declared multiple times, but defined only once
- */
+#  A variable with internal linkage may be tentatively defined
+#  * and declared multiple times, but defined only once
+#  
 
-/* A tentative definition */
-static int foo;
+#  A tentative definition 
+foo: i32;
 
-int main(void) {
-    return foo;
+pub fn main(none) i32 {
+    return foo
 }
 
-/* A declaration */
-extern int foo;
+#  A declaration 
+extrn foo: i32;
 
-/* A non-tentative definition */
-static int foo = 4;
+#  A non-tentative definition 
+foo: i32 = 4

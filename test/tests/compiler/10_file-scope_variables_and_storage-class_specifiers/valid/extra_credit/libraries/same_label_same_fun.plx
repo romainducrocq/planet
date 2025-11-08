@@ -1,10 +1,10 @@
-static int f(void) {
-    goto x;
-    return 0;
-    x:
-    return 2;
+fn f(none) i32 {
+    jump x
+    return 0
+    label x
+    return 2
 }
 
-int f_caller(void) {
-    return f();
+pub fn f_caller(none) i32 {
+    return f()
 }

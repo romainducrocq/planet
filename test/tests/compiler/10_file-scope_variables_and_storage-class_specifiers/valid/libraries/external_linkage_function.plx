@@ -1,11 +1,11 @@
-/* you can redeclare a function multiple times,
- * but only define it once
- */
-extern int sum(int a, int b);
+#  you can redeclare a function multiple times,
+#  * but only define it once
+#  
+extrn fn sum(a: i32, b: i32) i32;
 
-int sum(int i, int j) {
-    return i + j;
+pub fn sum(i: i32, j: i32) i32 {
+    return i + j
 }
 
-int sum(int x, int y);
+pub fn sum(x: i32, y: i32) i32;
 

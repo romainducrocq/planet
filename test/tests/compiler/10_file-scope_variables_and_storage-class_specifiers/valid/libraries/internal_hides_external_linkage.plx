@@ -1,5 +1,5 @@
-int x = 10;
+pub x: i32 = 10
 
-int read_x(void){
-    return x;
+pub fn read_x(none) i32 {
+    return x
 }

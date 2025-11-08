@@ -1,21 +1,23 @@
-/* Read and write a variable with external linkage
- * that is declared in this file and tentatively defined
- * in another file.
- */
-int read_x(void);
+#  Read and write a variable with external linkage
+#  * that is declared in this file and tentatively defined
+#  * in another file.
+#  
+pub fn read_x(none) i32;
 
-int main(void) {
-    // This brings x into scope
-    extern int x;
-    if (x != 0)
-        // x is initialized to zero in external_tentative_var.c
-        return 1;
+pub fn main(none) i32 {
+    #  This brings x into scope
+    extrn x: i32;
+    if x ~= 0 {
+        #  x is initialized to zero in external_tentative_var.c
+        return 1
+    }
 
-    // update x
-    x = 3;
-    // make sure update is visible to code in external_tentative_var.c
-    if (read_x() != 3)
-        return 1;
+    #  update x
+    x = 3
+    #  make sure update is visible to code in external_tentative_var.c
+    if read_x() ~= 3 {
+        return true
+    }
 
-    return 0;
+    return 0
 }

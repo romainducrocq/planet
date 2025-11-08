@@ -1,6 +1,6 @@
-/* Tentatively define a variable, and make sure it's initialized to 0. */
-int x;
+#  Tentatively define a variable, and make sure it's initialized to 0. 
+pub x: i32;
 
-int read_x(void) {
-    return x;
+pub fn read_x(none) i32 {
+    return x
 }
