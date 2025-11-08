@@ -591,6 +591,12 @@ void cc::Transpiler::break_line(bool maybe) {
     }
 }
 
+void cc::Transpiler::break_line_var() {
+    if (indent == 0) {
+        break_line(false);
+    }
+}
+
 void cc::Transpiler::incr_indent() {
     indent++;
 }

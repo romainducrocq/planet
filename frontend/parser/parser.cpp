@@ -2304,9 +2304,11 @@ static error_t parse_var_declaration(
         TRY(pop_next(ctx));
         TRANSPILE(binary_op(ctx->peek_tok));
         TRY(parse_initializer(ctx, &initializer));
+        TRANSPILE(break_line_var());
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
+
     *var_decl = make_CVariableDeclaration(decltor->name, &initializer, &decltor->derived_type, storage_class, info_at);
     FINALLY;
     free_CInitializer(&initializer);
@@ -2508,8 +2510,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;

@@ -55,6 +55,7 @@ class Transpiler {
 
         void add_line();
         void break_line(bool maybe);
+        void break_line_var();
         void set_linenum(const Token* tok);
         void set_top_level(bool top_level);
         void set_is_elif(bool is_elif);
