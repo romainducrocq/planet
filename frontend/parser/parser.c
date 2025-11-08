@@ -1618,7 +1618,7 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_union:
         case TOK_key_pub:
         // case TOK_key_type:
-            THROW_ABORT; // TODO
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_pub_in_block));
         case TOK_key_data:
         case TOK_key_extrn:
         case TOK_key_fn:
@@ -2494,7 +2494,6 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
 static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     CATCH_ENTER;
-    // TODO check `type` here
     TRY(parse_storage_class(ctx, storage_class));
     switch (ctx->peek_tok->tok_kind) {
         // case TOK_key_struct:
@@ -2531,7 +2530,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
         CStorageClass storage_class = init_CStatic();
         TRY(peek_next(ctx));
         if (ctx->peek_tok->tok_kind == TOK_key_data) {
-            THROW_ABORT; // TODO
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_data_at_toplvl));
         }
         TRY(parse_declaration(ctx, &storage_class, &declaration));
         vec_move_back(declarations, declaration);

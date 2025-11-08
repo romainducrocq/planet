@@ -41,6 +41,9 @@ typedef enum MESSAGE_PARSER {
     MSG_expect_block,
     MSG_empty_block,
     MSG_infinite_loop,
+    MSG_data_at_toplvl,
+    MSG_pub_in_block,
+    MSG_list_decl_not_auto,
     MSG_loop_decl_not_auto
 } MESSAGE_PARSER;
 

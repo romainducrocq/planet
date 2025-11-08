@@ -665,6 +665,12 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "empty block requires at least one item, or use " EM_CSTR(";") " instead";
         case MSG_infinite_loop:
             RET_ERRNO "cannot exit this loop, infinite loop requires at least one statement";
+        case MSG_data_at_toplvl:
+            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level";
+        case MSG_pub_in_block:
+            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block"; 
+        case MSG_list_decl_not_auto:
+            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in list declaration";
         case MSG_loop_decl_not_auto:
             RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in loop initialization";
         default:
