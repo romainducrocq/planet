@@ -80,7 +80,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] loop-while, continue, break statements [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/8_loops)
 - [x] match, ->, otherwise statements [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/8_loops/valid/extra_credit)
 - [x] functions, pub storage [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/9_functions)
-- [ ] top-level variables, extrn, data storage
+- [x] top-level variables, extrn, data storage [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/10_file-scope_variables_and_storage-class_specifiers)
 > Types
 - [ ] 32 bit and 64 bit integers
 - [ ] signed and unsigned integers
