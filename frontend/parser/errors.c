@@ -665,6 +665,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "empty block requires at least one item, or use " EM_CSTR(";") " instead";
         case MSG_infinite_loop:
             RET_ERRNO "cannot exit this loop, infinite loop requires at least one statement";
+        case MSG_loop_decl_not_auto:
+            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in loop initialization";
         default:
             THROW_ABORT;
     }
