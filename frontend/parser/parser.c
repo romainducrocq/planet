@@ -2234,19 +2234,35 @@ static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * de
     CATCH_EXIT;
 }
 
+static error_t parse_item_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * derived_type) {
+    CATCH_ENTER;
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_pub:
+        case TOK_key_data:
+        case TOK_key_extrn:
+            THROW_AT_TOKEN(ctx->peek_tok->info_at,
+                GET_PARSER_MSG(MSG_list_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
+        default:
+            break;
+    }
+    TRY(parse_decltor(ctx, name, derived_type));
+    FINALLY;
+    CATCH_EXIT;
+}
+
 static error_t parse_decltor_list(Ctx ctx, vector_t(TIdentifier) * params,
     vector_t(shared_ptr_t(Type)) * param_types) {
     shared_ptr_t(Type) param_type = sptr_new();
     CATCH_ENTER;
     TIdentifier param;
-    TRY(parse_decltor(ctx, &param, &param_type));
+    TRY(parse_item_decltor(ctx, &param, &param_type));
     vec_push_back(*params, param);
     vec_move_back(*param_types, param_type);
     TRY(peek_next(ctx));
     while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
         TRY(pop_next(ctx));
         TRY(peek_next(ctx));
-        TRY(parse_decltor(ctx, &param, &param_type));
+        TRY(parse_item_decltor(ctx, &param, &param_type));
         vec_push_back(*params, param);
         vec_move_back(*param_types, param_type);
         TRY(peek_next(ctx));
