@@ -1578,6 +1578,7 @@ static error_t parse_for_init_decl(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
     unique_ptr_t(CVariableDeclaration) var_decl = uptr_new();
     CATCH_ENTER;
     CStorageClass storage_class = init_CStorageClass();
+    TRANSPILE(set_top_level(false));
     TRY(parse_decltor_decl(ctx, &decltor, &storage_class));
     if (decltor.derived_type->type == AST_FunType_t) {
         THROW_AT_TOKEN(ctx->next_tok->info_at,
@@ -2304,10 +2305,10 @@ static error_t parse_var_declaration(
         TRY(pop_next(ctx));
         TRANSPILE(binary_op(ctx->peek_tok));
         TRY(parse_initializer(ctx, &initializer));
-        TRANSPILE(break_line_var());
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
+    TRANSPILE(break_line_var());
 
     *var_decl = make_CVariableDeclaration(decltor->name, &initializer, &decltor->derived_type, storage_class, info_at);
     FINALLY;
