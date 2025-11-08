@@ -1,5 +1,5 @@
-int main(void) {
-    /* An extern variable cannot have an initializer */
-    extern int i = 0;
-    return i;
+pub fn main(none) i32 {
+    #  An extern variable cannot have an initializer 
+    extrn i: i32 = 0
+    return i
 }

@@ -1,7 +1,7 @@
-int x = 10;
+pub x: i32 = 10
 
-int main(void) {
-    /* goto statements can only target labels, not variables. */
-    goto x;
-    return 0;
+pub fn main(none) i32 {
+    #  goto statements can only target labels, not variables. 
+    jump x
+    return 0
 }

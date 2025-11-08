@@ -1,12 +1,12 @@
-int main(void) {
+pub fn main(none) i32 {
     {
-        /* This declares a variable 'a'
-         * with external linkage
-         */
-        extern int a;
+        #  This declares a variable 'a'
+        #          * with external linkage
+        #          
+        extrn a: i32;
     }
-    /* a is no longer in scope after the end of the block */
-    return a;
+    #  a is no longer in scope after the end of the block 
+    return a
 }
 
-int a = 1;
+pub a: i32 = 1

@@ -1,15 +1,15 @@
-/* a function declared without the 'static'
- * keyword always has external linkage
- */
-int foo(void);
+#  a function declared without the 'static'
+#  * keyword always has external linkage
+#  
+pub fn foo(none) i32;
 
-int main(void) {
-    return foo();
+pub fn main(none) i32 {
+    return foo()
 }
 
-/* Can't define a symbol with external linkage,
- * then redefine it with internal linkage
- */
-static int foo(void) {
-    return 0;
+#  Can't define a symbol with external linkage,
+#  * then redefine it with internal linkage
+#  
+fn foo(none) i32 {
+    return false
 }

@@ -1,13 +1,13 @@
-int i = 10;
+pub i: i32 = 10
 
-int main(void) {
-    /* This declaration has external linkage,
-     * so it refers to the static global variable
-     * defined above. */
-    extern int i;
-    /* This declaraiton has no linkage,
-     * so it conflicts with the previous one.
-     */
-    int i;
-    return i;
+pub fn main(none) i32 {
+    #  This declaration has external linkage,
+    #      * so it refers to the static global variable
+    #      * defined above. 
+    extrn i: i32;
+    #  This declaraiton has no linkage,
+    #      * so it conflicts with the previous one.
+    #      
+    i: i32;
+    return i
 }

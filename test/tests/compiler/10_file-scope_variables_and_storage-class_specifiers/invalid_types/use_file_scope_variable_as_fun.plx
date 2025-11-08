@@ -1,7 +1,7 @@
-/* This declares a global variable */
-extern int foo;
+#  This declares a global variable 
+extrn foo: i32;
 
-int main(void) {
-    /* Treating a variable as a function is a type error. */
-    return foo();
+pub fn main(none) i32 {
+    #  Treating a variable as a function is a type error. 
+    return foo()
 }

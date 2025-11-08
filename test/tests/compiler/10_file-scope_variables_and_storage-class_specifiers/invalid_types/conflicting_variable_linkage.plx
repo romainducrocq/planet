@@ -1,11 +1,11 @@
-/* This declares foo with internal linkage */
-static int foo;
+#  This declares foo with internal linkage 
+foo: i32;
 
-int main(void) {
-    return foo;
+pub fn main(none) i32 {
+    return foo
 }
 
-/* This declares foo with external linkage,
- * which conflicts with the previous declaration
- */
-int foo = 3;
+#  This declares foo with external linkage,
+#  * which conflicts with the previous declaration
+#  
+pub foo: i32 = 3

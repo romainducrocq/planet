@@ -1,11 +1,11 @@
-int main(void) {
-    /* Can't have static storage class
-     * on block-scope function declarations
-     */
-    static int foo(void);
-    return foo();
+pub fn main(none) i32 {
+    #  Can't have static storage class
+    #      * on block-scope function declarations
+    #      
+    data fn foo(none) i32;
+    return foo()
 }
 
-static int foo(void) {
-    return 0;
+fn foo(none) i32 {
+    return false
 }

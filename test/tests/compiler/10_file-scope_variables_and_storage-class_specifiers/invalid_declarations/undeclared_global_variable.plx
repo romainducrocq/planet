@@ -1,7 +1,7 @@
-int main(void) {
-    return x;
+pub fn main(none) i32 {
+    return x
 }
 
-/* you must declare a file-scope variable before using it */
-int x = 0;
+#  you must declare a file-scope variable before using it 
+pub x: i32 = 0
 

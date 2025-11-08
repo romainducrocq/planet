@@ -1,9 +1,9 @@
-int foo(void);
+pub fn foo(none) i32;
 
-/* this conflict with the previous declaration of foo as a function */
-int foo;
+#  this conflict with the previous declaration of foo as a function 
+pub foo: i32;
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }
 
