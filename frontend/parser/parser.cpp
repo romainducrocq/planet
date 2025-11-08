@@ -1622,8 +1622,8 @@ static error_t parse_for_init(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
         case TOK_key_void:
         // case TOK_key_struct:
         // case TOK_key_union:
-        // case TOK_key_static:
-        // case TOK_key_extern:
+        case TOK_key_static:
+        case TOK_key_extern:
             TRY(parse_for_init_decl(ctx, for_init));
             break;
         default:
@@ -1671,8 +1671,8 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_void:
         // case TOK_key_struct:
         // case TOK_key_union:
-        // case TOK_key_static:
-        // case TOK_key_extern:
+        case TOK_key_static:
+        case TOK_key_extern:
             TRY(parse_d_block_item(ctx, block_item));
             break;
         default:
@@ -1759,12 +1759,12 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             //     TRY(expect_next(ctx, ctx->peek_tok_i, TOK_identifier));
             //     break;
             // }
-            // case TOK_key_static:
-            // case TOK_key_extern:
+            case TOK_key_static:
+            case TOK_key_extern:
             // case TOK_binop_multiply:
             // case TOK_open_paren:
-            //     i++;
-            //     break;
+                i++;
+                break;
             // case TOK_open_bracket: {
             //     do {
             //         i++;
@@ -1903,25 +1903,25 @@ Lbreak:
 
 // <specifier> ::= <type-specifier> | "static" | "extern"
 // storage_class = Static | Extern
-// static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     switch (ctx->next_tok->tok_kind) {
-//         case TOK_key_static: {
-//             *storage_class = init_CStatic();
-//             break;
-//         }
-//         case TOK_key_extern: {
-//             *storage_class = init_CExtern();
-//             break;
-//         }
-//         default:
-//             THROW_AT_TOKEN(
-//                 ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx->next_tok)));
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_key_static: {
+            *storage_class = init_CStatic();
+            break;
+        }
+        case TOK_key_extern: {
+            *storage_class = init_CExtern();
+            break;
+        }
+        default:
+            THROW_AT_TOKEN(
+                ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx->next_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializer);
 
@@ -2419,9 +2419,9 @@ static error_t parse_decltor_decl(Ctx ctx, Declarator* decltor, CStorageClass* s
         // case TOK_binop_multiply:
         // case TOK_open_paren:
             break;
-    //     default:
-    //         TRY(parse_storage_class(ctx, storage_class));
-    //         break;
+        default:
+            TRY(parse_storage_class(ctx, storage_class));
+            break;
     }
     TRY(parse_decltor(ctx, &decltor_1));
     TRY(proc_decltor(ctx, decltor_1, &type_specifier, decltor));
