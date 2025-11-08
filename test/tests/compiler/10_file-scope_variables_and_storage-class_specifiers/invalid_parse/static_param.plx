@@ -1,8 +1,8 @@
-/* A function parameter cannot have a storage class */
-int f(static int i) {
-    return i;
+# A function parameter cannot have a storage class
+pub fn f(data i: i32) {
+    return i
 }
 
-int main(void) {
-    return f(1);
+pub fn main(none) i32 {
+    return f(1)
 }

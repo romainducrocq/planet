@@ -1,5 +1,5 @@
-int main(void) {
-    /* a variable can't have more than one storage class */
-    static extern int foo = 0;
-    return foo;
+pub fn main(none) i32 {
+    # a variable can't have more than one storage class
+    data extrn foo: i32 = 0
+    return foo
 }

@@ -1,6 +1,6 @@
-// The extern specifier cannot be applied to labels
+# The extern specifier cannot be applied to labels
 
-int main(void) {
-    extern a:
-    return 1;
+pub fn main(none) i32 {
+    extrn label a
+    return 1
 }

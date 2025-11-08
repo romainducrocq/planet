@@ -1,6 +1,6 @@
-// The static specifier cannot be applied to labels
+# The static specifier cannot be applied to labels
 
-int main(void) {
-    static a:
-    return 1;
+pub fn main(none) i32 {
+    data label a
+    return 1
 }
