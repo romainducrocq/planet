@@ -1574,7 +1574,7 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
 
 // static error_t parse_decltor_decl(Ctx ctx, Declarator* decltor, CStorageClass* storage_class);
 
-static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration, bool is_toplvl);
+static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration);
 
 static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CStatement) statement = uptr_new();
@@ -1589,7 +1589,8 @@ static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item
 static error_t parse_d_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CDeclaration) declaration = uptr_new();
     CATCH_ENTER;
-    TRY(parse_declaration(ctx, &declaration, false));
+    CStorageClass storage_class = init_CStorageClass();
+    TRY(parse_declaration(ctx, &storage_class, &declaration));
     *block_item = make_CD(&declaration);
     FINALLY;
     free_CDeclaration(&declaration);
@@ -1610,8 +1611,11 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_void:
         // case TOK_key_struct:
         // case TOK_key_union:
-        // case TOK_key_static:
-        // case TOK_key_extern:
+        case TOK_key_pub:
+        // case TOK_key_type:
+            THROW_ABORT; // TODO
+        case TOK_key_data:
+        case TOK_key_extrn:
         case TOK_key_fn:
             TRY(parse_d_block_item(ctx, block_item));
             EARLY_EXIT;
@@ -1866,28 +1870,6 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 //     THROW_AT_TOKEN(info_at, GET_PARSER_MSG(MSG_expect_specifier_list, type_tok_kinds_fmt));
 //     FINALLY;
 //     str_delete(type_tok_kinds_fmt);
-//     CATCH_EXIT;
-// }
-
-// <specifier> ::= <type-specifier> | "static" | "extern"
-// storage_class = Static | Extern
-// static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     switch (ctx->next_tok->tok_kind) {
-//         case TOK_key_static: {
-//             *storage_class = init_CStatic();
-//             break;
-//         }
-//         case TOK_key_extern: {
-//             *storage_class = init_CExtern();
-//             break;
-//         }
-//         default:
-//             THROW_AT_TOKEN(
-//                 ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx->next_tok)));
-//     }
-//     FINALLY;
 //     CATCH_EXIT;
 // }
 
@@ -2473,19 +2455,42 @@ static error_t parse_var_decl(
 //     CATCH_EXIT;
 // }
 
+// <specifier> ::= <type-specifier> | "static" | "extern"
+// storage_class = Static | Extern
+static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
+    CATCH_ENTER;
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_pub: {
+            *storage_class = init_CStorageClass();
+            break;
+        }
+        case TOK_key_data: {
+            *storage_class = init_CStatic();
+            break;
+        }
+        case TOK_key_extrn: {
+            *storage_class = init_CExtern();
+            break;
+        }
+        case TOK_key_fn:
+        // case TOK_key_type:
+        case TOK_identifier:
+            EARLY_EXIT;
+        default:
+            THROW_ABORT; // TODO
+    }
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    FINALLY;
+    CATCH_EXIT;
+}
+
 // <declaration> ::= <variable-declaration> | <function-declaration> | <struct-declaration>
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
-static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declaration, bool is_toplvl) {
-    // Declarator decltor = {0, sptr_new(), vec_new()};
+static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     CATCH_ENTER;
-    // TODO get storage class at top-level or block-level
-    CStorageClass storage_class = init_CStorageClass();
-    if (is_toplvl) {
-        TRY(pop_next(ctx));
-        TRY(expect_next(ctx, ctx->next_tok, TOK_key_pub));
-    }
-    //
-    TRY(peek_next(ctx));
+    // TODO check `type` here
+    TRY(parse_storage_class(ctx, storage_class));
     switch (ctx->peek_tok->tok_kind) {
         // case TOK_key_struct:
         // case TOK_key_union: {
@@ -2500,22 +2505,14 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
         //     }
         // }
         case TOK_key_fn:
-            TRY(parse_fun_decl(ctx, &storage_class, declaration));
+            TRY(parse_fun_decl(ctx, storage_class, declaration));
             break;
+        // case TOK_identifier: // TODO
         default:
-            TRY(parse_var_decl(ctx, &storage_class, declaration));
+            TRY(parse_var_decl(ctx, storage_class, declaration));
             break;
     }
-    // TRY(parse_decltor_decl(ctx, &decltor, &storage_class));
-    // if (decltor.derived_type->type == AST_FunType_t) {
-        // TRY(parse_fun_decl(ctx, &storage_class, &decltor, declaration));
-    // }
-    // else {
-    //     TRY(parse_var_decl(ctx, &storage_class, &decltor, declaration));
-    // }
     FINALLY;
-    // free_Type(&decltor.derived_type);
-    // vec_delete(decltor.params);
     CATCH_EXIT;
 }
 
@@ -2526,7 +2523,12 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     vector_t(unique_ptr_t(CDeclaration)) declarations = vec_new();
     CATCH_ENTER;
     while (ctx->pop_idx < vec_size(*ctx->p_toks)) {
-        TRY(parse_declaration(ctx, &declaration, true));
+        CStorageClass storage_class = init_CStatic();
+        TRY(peek_next(ctx));
+        if (ctx->next_tok->tok_kind == TOK_key_data) {
+            THROW_ABORT; // TODO
+        }
+        TRY(parse_declaration(ctx, &storage_class, &declaration));
         vec_move_back(declarations, declaration);
         TRY(pop_next(ctx));
         TRY(expect_next(ctx, ctx->next_tok, TOK_line_break));
