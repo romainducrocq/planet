@@ -1,9 +1,7 @@
 pub a: i32 = 3
 pub fn main(none) i32 {
     match a {
-        -> 1 {
-            ;
-        }
+        -> 1;
         #  Since x is static, it's initialized at program startup,
         #              * so its value will be 10 even though we jump over this declaration
         #              
