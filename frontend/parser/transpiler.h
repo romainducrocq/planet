@@ -79,7 +79,7 @@ class Transpiler {
         void do_nothing(const Token* tok, int tok_kind);
         void var_decltor(const Declarator* decltor);
         void fun_decltor(const Declarator* decltor, const Token* tok);
-        void storage_class(const CStorageClass* storage_class);
+        void storage_class(const Token* tok, const CStorageClass* clss);
         void comment_start();
         void comment_end();
         void comment_line(const char* line, size_t match_at, size_t line_size);

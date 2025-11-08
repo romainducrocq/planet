@@ -530,10 +530,25 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor, const Token* tok) {
     }
 }
 
-void cc::Transpiler::storage_class(const CStorageClass* storage_class) {
-    // TODO
-    if (top_level && storage_class->type == AST_CStorageClass_t) {
-        append_buf("pub ");
+void cc::Transpiler::storage_class(const Token* tok, const CStorageClass* clss) {
+    set_linenum(tok);
+    switch (clss->type) {
+        case AST_CStorageClass_t:
+            if (top_level) {
+                append_buf("pub ");
+            }
+            break;
+        case AST_CStatic_t: {
+            if (!top_level) {
+                append_buf("data ");
+            }
+            break;
+        }
+        case AST_CExtern_t:
+            append_buf("extrn ");
+            break;
+        default:
+            throw std::runtime_error("invalid storage class");
     }
 }
 

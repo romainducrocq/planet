@@ -2423,6 +2423,7 @@ static error_t parse_decltor_decl(Ctx ctx, Declarator* decltor, CStorageClass* s
             TRY(parse_storage_class(ctx, storage_class));
             break;
     }
+    TRANSPILE(storage_class(ctx->peek_tok, storage_class));
     TRY(parse_decltor(ctx, &decltor_1));
     TRY(proc_decltor(ctx, decltor_1, &type_specifier, decltor));
     FINALLY;
@@ -2456,7 +2457,6 @@ static error_t parse_declaration(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
             break;
     }
     TRY(parse_decltor_decl(ctx, &decltor, &storage_class));
-    TRANSPILE(storage_class(&storage_class));
     if (decltor.derived_type->type == AST_FunType_t) {
         TRY(parse_fun_decl(ctx, &storage_class, &decltor, declaration));
     }
