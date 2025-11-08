@@ -2498,7 +2498,8 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
         case TOK_identifier:
             EARLY_EXIT;
         default:
-            THROW_ABORT; // TODO
+            THROW_AT_TOKEN(ctx->peek_tok->info_at,
+                GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx->peek_tok)));
     }
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
@@ -2527,10 +2528,12 @@ static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_p
         case TOK_key_fn:
             TRY(parse_fun_decl(ctx, storage_class, declaration));
             break;
-        // case TOK_identifier: // TODO
-        default:
+        case TOK_identifier:
             TRY(parse_var_decl(ctx, storage_class, declaration));
             break;
+        default:
+            THROW_AT_TOKEN(ctx->peek_tok->info_at,
+                GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;

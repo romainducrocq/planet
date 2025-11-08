@@ -642,7 +642,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_expect_specifier_list:
             RET_ERRNO "found tokens " EM_VARG ", but expected valid list of unique type specifiers next";
         case MSG_expect_storage_class:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("static") " or " EM_CSTR("extern") " next";
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") ", " //
+                EM_CSTR("type") ", " EM_CSTR("pub") ", " EM_CSTR("data") " or " EM_CSTR("extrn") " next";
         case MSG_empty_compound_init:
             RET_ERRNO "empty compound initializer requires at least one initializer";
         case MSG_derived_fun_decl:
@@ -657,6 +658,9 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "data structure type declared with member " EM_VARG " with " EM_VARG " storage class";
         case MSG_member_decl_as_fun:
             RET_ERRNO "data structure type declared with member " EM_VARG " as a function";
+        case MSG_expect_declaration:
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " //
+                EM_CSTR("type") " next";
         case MSG_expect_assign:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("=") " or " EM_CSTR(";") " next";
         case MSG_expect_block:
