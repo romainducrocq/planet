@@ -384,7 +384,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                     return TOK_key_else;
                 }
             }
-            else if (match_chars(ctx, "xtrn", 5) && !match_word(ctx)) {
+            else if (match_chars(ctx, "xtrn", 4) && !match_word(ctx)) {
                 return TOK_key_extrn;
             }
             break;

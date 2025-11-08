@@ -2525,7 +2525,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     while (ctx->pop_idx < vec_size(*ctx->p_toks)) {
         CStorageClass storage_class = init_CStatic();
         TRY(peek_next(ctx));
-        if (ctx->next_tok->tok_kind == TOK_key_data) {
+        if (ctx->peek_tok->tok_kind == TOK_key_data) {
             THROW_ABORT; // TODO
         }
         TRY(parse_declaration(ctx, &storage_class, &declaration));
