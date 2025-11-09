@@ -182,6 +182,11 @@ void cc::Transpiler::cast_op(const Type* target_type) {
     incr_paren();
 }
 
+void cc::Transpiler::cast_end() {
+    append_buf(")");
+    decr_paren();        
+}
+
 void cc::Transpiler::if_statement(const Token* tok) {
     if (lines[linenum - 1].buf.back() == '}') {
         break_line(false);

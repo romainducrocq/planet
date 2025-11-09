@@ -864,8 +864,8 @@ static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRANSPILE(cast_op(target_type));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    TRANSPILE(cast_end());
     *exp = make_CCast(&cast_exp, &target_type, info_at);
     FINALLY;
     free_CExp(&cast_exp);
