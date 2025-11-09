@@ -281,19 +281,19 @@ static TOKEN_KIND match_const(Ctx ctx) {
     }
 
     switch (get_char(ctx)) {
-        // case 'l':
-        // case 'L': {
-        //     ctx->match_size++;
-        //     switch (get_char(ctx)) {
+        case 'l':
+        case 'L': {
+            ctx->match_size++;
+            switch (get_char(ctx)) {
         //         case 'u':
         //         case 'U': {
         //             ctx->match_size++;
         //             return match_const_end(ctx, TOK_ulong_const);
         //         }
-        //         default:
-        //             return match_const_end(ctx, TOK_long_const);
-        //     }
-        // }
+                default:
+                    return match_const_end(ctx, TOK_long_const);
+            }
+        }
         // case 'u':
         // case 'U': {
         //     ctx->match_size++;
@@ -396,12 +396,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             }
             break;
         }
-        // case 'l': {
-        //     if (match_chars(ctx, "ong", 3) && !match_word(ctx)) {
-        //         return TOK_key_long;
-        //     }
-        //     break;
-        // }
+        case 'l': {
+            if (match_chars(ctx, "ong", 3) && !match_word(ctx)) {
+                return TOK_key_long;
+            }
+            break;
+        }
         case 'r': {
             if (match_chars(ctx, "eturn", 5) && !match_word(ctx)) {
                 return TOK_key_return;

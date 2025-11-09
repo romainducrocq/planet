@@ -62,7 +62,7 @@ typedef enum TOKEN_KIND {
 
     // TOK_key_char,
     TOK_key_int,
-    // TOK_key_long,
+    TOK_key_long,
     // TOK_key_double,
     // TOK_key_signed,
     // TOK_key_unsigned,
