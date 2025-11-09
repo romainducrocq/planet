@@ -495,7 +495,12 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
     // TODO
     switch (derived_type->type) {
         case AST_Int_t:
-            append_buf("i32");
+            if (with_prob(5)) {
+                append_buf("bool");
+            }
+            else {
+                append_buf("i32");
+            }
             break;
         case AST_Long_t:
             append_buf("i64");
