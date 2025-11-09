@@ -212,6 +212,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     }
     else {
         *constant = parse_long_const(value);
+        TRANSPILE(keep_token(ctx->next_tok));
     }
     FINALLY;
     CATCH_EXIT;

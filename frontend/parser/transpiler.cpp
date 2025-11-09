@@ -399,6 +399,9 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_int_const:
             append_const(tok->tok);
             break;
+        case TOK_long_const:
+            append_long_const(tok->tok);
+            break;
         case TOK_semicolon:
             break;
         default:
@@ -417,6 +420,12 @@ void cc::Transpiler::append_const(size_t identifier) {
     else {
         append_buf(const_buf);
     }
+}
+
+void cc::Transpiler::append_long_const(size_t identifier) {
+    std::string const_buf = map_get(identifiers->hash_table, identifier);
+    const_buf.back() = 'l';
+    append_buf(const_buf);
 }
 
 void cc::Transpiler::append_identifier(size_t identifier) {
@@ -475,6 +484,9 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
     switch (derived_type->type) {
         case AST_Int_t:
             append_buf("i32");
+            break;
+        case AST_Long_t:
+            append_buf("i64");
             break;
         default:
             throw std::runtime_error("invalid type");
