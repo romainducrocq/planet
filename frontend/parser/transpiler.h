@@ -63,6 +63,7 @@ class Transpiler {
         void keep_token(const Token* tok);
         void unary_op(const Token* tok);
         void binary_op(const Token* tok);
+        void cast_op(const Type* target_type);
         void if_statement(const Token* tok);
         void for_partial(int i);
         void goto_statement(const Token* tok);

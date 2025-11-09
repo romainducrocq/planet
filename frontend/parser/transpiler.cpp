@@ -175,6 +175,13 @@ void cc::Transpiler::binary_op(const Token* tok) {
     // append_buf(" ");
 }
 
+void cc::Transpiler::cast_op(const Type* target_type) {
+    append_buf("cast<");
+    derived_type(target_type);
+    append_buf(">(");
+    incr_paren();
+}
+
 void cc::Transpiler::if_statement(const Token* tok) {
     if (lines[linenum - 1].buf.back() == '}') {
         break_line(false);

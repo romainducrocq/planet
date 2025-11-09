@@ -858,10 +858,13 @@ static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(Type) target_type = sptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
+    TRANSPILE(set_linenum(ctx->peek_tok));
     TRY(pop_next(ctx));
     TRY(parse_type_name(ctx, &target_type));
+    TRANSPILE(cast_op(target_type));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_cast_exp_factor(ctx, &cast_exp));
     *exp = make_CCast(&cast_exp, &target_type, info_at);
     FINALLY;
