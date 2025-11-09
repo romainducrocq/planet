@@ -1829,7 +1829,7 @@ Lbreak:
             }
             break;
         }
-        // case 2: {
+        case 2: {
         //     if (type_tok_kinds[0] == TOK_key_unsigned || type_tok_kinds[1] == TOK_key_unsigned) {
         //         if (type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int) {
         //             *type_specifier = make_UInt();
@@ -1858,13 +1858,14 @@ Lbreak:
         //             EARLY_EXIT;
         //         }
         //     }
-        //     else if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int)
-        //              && (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long)) {
-        //         *type_specifier = make_Long();
-        //         EARLY_EXIT;
-        //     }
-        //     break;
-        // }
+        //     else 
+            if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int)
+                     && (type_tok_kinds[0] == TOK_key_long || type_tok_kinds[1] == TOK_key_long)) {
+                *type_specifier = make_Long();
+                EARLY_EXIT;
+            }
+            break;
+        }
         // case 3: {
         //     if ((type_tok_kinds[0] == TOK_key_int || type_tok_kinds[1] == TOK_key_int
         //             || type_tok_kinds[2] == TOK_key_int)
