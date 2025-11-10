@@ -1,18 +1,20 @@
-/* Test initializing and updating unsigned global variables */
-static unsigned long x = 9223372036854775803ul; // 2^63 - 5
+#  Test initializing and updating unsigned global variables 
+x: u64 = 9223372036854775803ul #  2^63 - 5
 
-// make sure these are initialized to zero
-unsigned long zero_long;
-unsigned zero_int;
+#  make sure these are initialized to zero
+pub zero_long: u64;
+pub zero_int: u32;
 
-int main(void)
-{
-    if (x != 9223372036854775803ul)
-        return 0;
-    x = x + 10;
-    if (x != 9223372036854775813ul)
-        return 0;
-    if (zero_long || zero_int)
-        return 0;
-    return 1;
+pub fn main(none) i32 {
+    if x ~= 9223372036854775803ul {
+        return 0
+    }
+    x = x + 10
+    if x ~= 9223372036854775813ul {
+        return false
+    }
+    if zero_long or zero_int {
+        return false
+    }
+    return 1
 }
