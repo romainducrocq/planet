@@ -280,9 +280,10 @@ static TOKEN_KIND match_const(Ctx ctx) {
     }
 
     switch (get_char(ctx)) {
-        // case 'l':
-        // case 'L': {
-        //     ctx->match_size++;
+        case 'l':
+        // case 'L': 
+        {
+            ctx->match_size++;
         //     switch (get_char(ctx)) {
         //         case 'u':
         //         case 'U': {
@@ -290,9 +291,9 @@ static TOKEN_KIND match_const(Ctx ctx) {
         //             return match_const_end(ctx, TOK_ulong_const);
         //         }
         //         default:
-        //             return match_const_end(ctx, TOK_long_const);
+                    return match_const_end(ctx, TOK_long_const);
         //     }
-        // }
+        }
         // case 'u':
         // case 'U': {
         //     ctx->match_size++;
