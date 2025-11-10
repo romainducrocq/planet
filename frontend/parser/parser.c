@@ -152,10 +152,10 @@ static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
 // }
 
 // <long> ::= ? An int or long token ? => [0-9]+[lL]
-// static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
-//     TLong value = intmax_to_int64(intmax);
-//     return make_CConstLong(value);
-// }
+static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
+    TLong value = intmax_to_int64(intmax);
+    return make_CConstLong(value);
+}
 
 // <double> ::= ? A floating-point constant token ?
 //            => (([0-9]*\.[0-9]+|[0-9]+\.?)[Ee][+\-]?[0-9]+|[0-9]*\.[0-9]+|[0-9]+\.)
@@ -210,15 +210,15 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
     TRY(string_to_intmax(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
-    // if (value > 9223372036854775807ll) {
-    //     THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_overflow_long_const, strto_value));
-    // }
+    if (value > 9223372036854775807ll) {
+        THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_overflow_long_const, strto_value));
+    }
     if (ctx->next_tok->tok_kind == TOK_int_const && value <= 2147483647l) {
         *constant = parse_int_const(value);
     }
-    // else {
-    //     *constant = parse_long_const(value);
-    // }
+    else {
+        *constant = parse_long_const(value);
+    }
     FINALLY;
     CATCH_EXIT;
 }
@@ -536,6 +536,10 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
         case TOK_key_i32: {
             *type_specifier = make_Int();
             break;
+        }
+        case TOK_key_i64: {
+            *type_specifier = make_Long();
+            EARLY_EXIT;
         }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
@@ -913,7 +917,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_key_true:
         case TOK_key_false:
         case TOK_int_const:
-        // case TOK_long_const:
+        case TOK_long_const:
         // case TOK_char_const:
         // case TOK_dbl_const:
             TRY(parse_const_factor(ctx, exp));
@@ -1486,7 +1490,7 @@ static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
         case TOK_key_true:
         case TOK_key_false:
         case TOK_int_const:
-        // case TOK_long_const:
+        case TOK_long_const:
         // case TOK_char_const:
             TRY(parse_const(ctx, &constant));
             break;

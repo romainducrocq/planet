@@ -803,7 +803,7 @@ static error_t tokenize_file(Ctx ctx) {
                 // case TOK_string_literal:
                 // case TOK_char_const:
                 case TOK_int_const:
-                // case TOK_long_const:
+                case TOK_long_const:
                 // case TOK_uint_const:
                 // case TOK_ulong_const:
                 // case TOK_dbl_const: 
