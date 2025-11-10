@@ -1,10 +1,10 @@
-/* Can't declare the same function with two return types: unsignd int and unsigned long */
-unsigned int foo(void);
+#  Can't declare the same function with two return types: unsignd int and unsigned long 
+pub fn foo(none) u32;
 
-unsigned long foo(void) {
-    return 0;
+pub fn foo(none) u64 {
+    return 0
 }
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return false
 }

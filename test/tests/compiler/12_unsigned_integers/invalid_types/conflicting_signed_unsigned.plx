@@ -1,9 +1,9 @@
-/* Cannot declare x as both signed int and unsigned int */
+#  Cannot declare x as both signed int and unsigned int 
 
-unsigned x;
+pub x: u32;
 
-int x;
+pub x: i32;
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }
