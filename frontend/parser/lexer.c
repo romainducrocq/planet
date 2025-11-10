@@ -410,8 +410,13 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                     return TOK_key_if;
                 }
             }
-            else if (match_chars(ctx, "32", 2) && !match_word(ctx)) {
-                return TOK_key_i32;
+            else if (match_char(ctx, '3')) {
+                if (match_char(ctx, '2') && !match_word(ctx)) {
+                    return TOK_key_i32;
+                }
+            }
+            else if (match_chars(ctx, "64", 2) && !match_word(ctx)) {
+                return TOK_key_i64;
             }
             break;
         }
