@@ -2,7 +2,7 @@
 #  * Almost identical to chapter 11 logical.c, but with unsigned ints
 #  
 
-pub fn not(ul: u64) i32 {
+pub fn f_not(ul: u64) i32 {
     return not ul
 }
 
@@ -13,11 +13,11 @@ pub fn if_cond(u: u32) i32 {
     return 0
 }
 
-pub fn and(ul: u64, i: i32) i32 {
+pub fn f_and(ul: u64, i: i32) i32 {
     return ul and i
 }
 
-pub fn or(i: i32, u: u32) i32 {
+pub fn f_or(i: i32, u: u32) i32 {
     return i or u
 }
 
@@ -26,10 +26,10 @@ pub fn main(none) i32 {
     ul: u64 = 1152921504606846976ul #  2^60
     u: u32 = 2147483648u #  2^31
     zero: u64 = 0l
-    if not(
+    if f_not(
         ul) {
         return 1     }
-    if not not(zero) {
+    if not f_not(zero) {
         return 2
     }
     if not if_cond(u) {         return 3
@@ -38,11 +38,11 @@ pub fn main(none) i32 {
         return 4
     }
 
-    if and(zero, 1) {
+    if f_and(zero, 1) {
         return 5
     }
 
-    if not or(1, u) {
+    if not f_or(1, u) {
         return 6
     }
 
