@@ -414,6 +414,12 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_long_const:
             append_long_const(tok->tok);
             break;
+        case TOK_uint_const:
+            append_unsigned_const(tok->tok);
+            break;
+        case TOK_ulong_const:
+            append_long_unsigned_const(tok->tok);
+            break;
         case TOK_semicolon:
             break;
         default:
@@ -437,6 +443,20 @@ void cc::Transpiler::append_const(size_t identifier) {
 void cc::Transpiler::append_long_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
     const_buf.back() = 'l';
+    append_buf(const_buf);
+}
+
+void cc::Transpiler::append_unsigned_const(size_t identifier) {
+    std::string const_buf = map_get(identifiers->hash_table, identifier);
+    const_buf.back() = 'u';
+    append_buf(const_buf);
+}
+
+void cc::Transpiler::append_long_unsigned_const(size_t identifier) {
+    std::string const_buf = map_get(identifiers->hash_table, identifier);
+    const_buf.pop_back();
+    const_buf.back() = 'u';
+    const_buf.push_back('l');
     append_buf(const_buf);
 }
 
@@ -504,6 +524,12 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
             break;
         case AST_Long_t:
             append_buf("i64");
+            break;
+        case AST_UInt_t:
+            append_buf("u32");
+            break;
+        case AST_ULong_t:
+            append_buf("u64");
             break;
         default:
             throw std::runtime_error("invalid type");

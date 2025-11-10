@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 1
+#if 0
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)
@@ -98,6 +98,8 @@ class Transpiler {
         void append_end(const std::string& end);
         void append_const(size_t identifier);
         void append_long_const(size_t identifier);
+        void append_unsigned_const(size_t identifier);
+        void append_long_unsigned_const(size_t identifier);
         void append_identifier(size_t identifier);
         void type_decl(size_t name, const Type* type_t);
         void comment(const char* line, size_t match_at, size_t match_size);

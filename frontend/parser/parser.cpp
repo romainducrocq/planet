@@ -233,9 +233,11 @@ static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     }
     if (ctx->next_tok->tok_kind == TOK_uint_const && value <= 4294967295ul) {
         *constant = parse_uint_const(value);
+        TRANSPILE(keep_token(ctx->next_tok));
     }
     else {
         *constant = parse_ulong_const(value);
+        TRANSPILE(keep_token(ctx->next_tok));
     }
     FINALLY;
     CATCH_EXIT;
@@ -2515,8 +2517,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
