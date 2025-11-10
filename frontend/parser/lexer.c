@@ -330,8 +330,13 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 'b': {
-            if (match_chars(ctx, "reak", 4) && !match_word(ctx)) {
-                return TOK_key_break;
+            if (match_char(ctx, 'r')) {
+                if(match_chars(ctx, "eak", 3) && !match_word(ctx)) {
+                    return TOK_key_break;
+                }
+            }
+            else if (match_chars(ctx, "ool", 3) && !match_word(ctx)) {
+                return TOK_key_i32;
             }
             break;
         }
