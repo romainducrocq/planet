@@ -1,3 +1,3 @@
-long add_variables(long x, long y, int z){
-    return x + y + z;
+pub fn add_variables(x: i64, y: i64, z: bool) i64 {
+    return x + y + z
 }

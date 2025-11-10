@@ -1,34 +1,34 @@
-// Test compound bit shift operators with mix of types
+#  Test compound bit shift operators with mix of types
 
-int main(void) {
+pub fn main(none) i32 {
 
-    // shift int using long shift count
-    int x = 100;
-    x <<= 22l;
-    if (x != 419430400) {
-        return 1; // fail
+    #  shift int using long shift count
+    x: i32 = 100
+    x <<= 22l
+    if x ~= 419430400 {
+        return 1 #  fail
     }
 
-    // try right shift; validate result of expression
-    if ((x >>= 4l) != 26214400) {
-        return 2; // fail
+    #  try right shift; validate result of expression
+    if (x >>= 4l) ~= 26214400 {
+        return 2 #  fail
     }
 
-    // also validate side effect of updating variable
-    if (x != 26214400) {
-        return 3;
+    #  also validate side effect of updating variable
+    if x ~= 26214400 {
+        return 3
     }
 
-    // now try shifting a long with an int shift count
-    long l = 12345l;
-    if ((l <<= 33) != 106042742538240l) {
-        return 4;
+    #  now try shifting a long with an int shift count
+    l: i64 = 12345l
+    if (l <<= 33) ~= 106042742538240l {
+        return 4
     }
 
-    l = -l;
-    if ((l >>= 10) != -103557365760l) {
-        return 5;
+    l = -l
+    if (l >>= 10) ~= -103557365760l {
+        return 5
     }
 
-    return 0; // success
+    return 0 #  success
 }
