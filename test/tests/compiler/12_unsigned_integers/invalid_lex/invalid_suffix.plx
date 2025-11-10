@@ -1,4 +1,4 @@
-int main(void) {
-    /* An unsigned constant suffix should only have one 'u' */
-    return 0uu;
+pub fn main(none) i32 {
+    # An unsigned constant suffix should only have one 'u'
+    return 0uu
 }

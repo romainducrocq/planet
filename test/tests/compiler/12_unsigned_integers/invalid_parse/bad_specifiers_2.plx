@@ -1,5 +1,5 @@
-int main(void) {
-    /* Can't include the same specifier twice */
-    unsigned long unsigned i = 0;
-    return 0;
+pub fn main(none) i32 {
+    # Can't include the same specifier twice
+    i: u64 u64 = 0
+    return 0
 }

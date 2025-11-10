@@ -1,4 +1,4 @@
-int main(void) {
-    /* lul is not a valid suffix for integer constants */
-    return 0lul;
+pub fn main(none) i32 {
+    # lul is not a valid suffix for integer constants
+    return 0lul
 }
