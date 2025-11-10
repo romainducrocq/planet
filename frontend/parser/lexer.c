@@ -335,18 +335,17 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 'c': {
-        //     if (match_char(ctx, 'a')) {
-        //         if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
-        //             return TOK_key_case;
-        //         }
-        //     }
+            if (match_char(ctx, 'a')) {
+                if (match_chars(ctx, "st", 2) && !match_word(ctx)) {
+                    return TOK_key_cast;
+                }
+            }
         //     else if (match_char(ctx, 'h')) {
         //         if (match_chars(ctx, "ar", 2) && !match_word(ctx)) {
         //             return TOK_key_char;
         //         }
-        //     }
-        //     else 
-            if (match_chars(ctx, "ontinue", 7) && !match_word(ctx)) {
+        //     } 
+            else if (match_chars(ctx, "ontinue", 7) && !match_word(ctx)) {
                 return TOK_key_continue;
             }
             break;

@@ -114,8 +114,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "char";
         case TOK_key_i32:
             return "i32";
-        // case TOK_key_long:
-        //     return "long";
+        case TOK_key_i64:
+            return "i64";
         // case TOK_key_double:
         //     return "double";
         // case TOK_key_signed:
@@ -134,6 +134,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "sizeof";
         case TOK_key_return:
             return "return";
+        case TOK_key_cast:
+            return "cast";
         case TOK_key_if:
             return "if";
         case TOK_key_elif:
