@@ -112,10 +112,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "long";
         // case TOK_key_double:
         //     return "double";
-        // case TOK_key_signed:
-        //     return "signed";
-        // case TOK_key_unsigned:
-        //     return "unsigned";
+        case TOK_key_signed:
+            return "signed";
+        case TOK_key_unsigned:
+            return "unsigned";
         case TOK_key_void:
             return "void";
         // case TOK_key_struct:

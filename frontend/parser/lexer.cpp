@@ -285,28 +285,28 @@ static TOKEN_KIND match_const(Ctx ctx) {
         case 'L': {
             ctx->match_size++;
             switch (get_char(ctx)) {
-        //         case 'u':
-        //         case 'U': {
-        //             ctx->match_size++;
-        //             return match_const_end(ctx, TOK_ulong_const);
-        //         }
+                case 'u':
+                case 'U': {
+                    ctx->match_size++;
+                    return match_const_end(ctx, TOK_ulong_const);
+                }
                 default:
                     return match_const_end(ctx, TOK_long_const);
             }
         }
-        // case 'u':
-        // case 'U': {
-        //     ctx->match_size++;
-        //     switch (get_char(ctx)) {
-        //         case 'l':
-        //         case 'L': {
-        //             ctx->match_size++;
-        //             return match_const_end(ctx, TOK_ulong_const);
-        //         }
-        //         default:
-        //             return match_const_end(ctx, TOK_uint_const);
-        //     }
-        // }
+        case 'u':
+        case 'U': {
+            ctx->match_size++;
+            switch (get_char(ctx)) {
+                case 'l':
+                case 'L': {
+                    ctx->match_size++;
+                    return match_const_end(ctx, TOK_ulong_const);
+                }
+                default:
+                    return match_const_end(ctx, TOK_uint_const);
+            }
+        }
         // case 'e':
         // case 'E': {
         //     ctx->match_size++;
@@ -409,20 +409,19 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 's': {
-        //     if (match_char(ctx, 'i')) {
-        //         if (match_char(ctx, 'g')) {
-        //             if (match_chars(ctx, "ned", 3) && !match_word(ctx)) {
-        //                 return TOK_key_signed;
-        //             }
-        //         }
+            if (match_char(ctx, 'i')) {
+                if (match_char(ctx, 'g')) {
+                    if (match_chars(ctx, "ned", 3) && !match_word(ctx)) {
+                        return TOK_key_signed;
+                    }
+                }
         //         else if (match_char(ctx, 'z')) {
         //             if (match_chars(ctx, "eof", 3) && !match_word(ctx)) {
         //                 return TOK_key_sizeof;
         //             }
         //         }
-        //     }
-        //     else 
-            if (match_char(ctx, 't')) {
+            }
+            else if (match_char(ctx, 't')) {
                 if (match_char(ctx, 'a')) {
                     if (match_chars(ctx, "tic", 3) && !match_word(ctx)) {
                         return TOK_key_static;
@@ -439,19 +438,20 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             }
             break;
         }
-        // case 'u': {
-        //     if (match_char(ctx, 'n')) {
+        case 'u': {
+            if (match_char(ctx, 'n')) {
         //         if (match_char(ctx, 'i')) {
         //             if (match_chars(ctx, "on", 2) && !match_word(ctx)) {
         //                 return TOK_key_union;
         //             }
         //         }
-        //         else if (match_chars(ctx, "signed", 6) && !match_word(ctx)) {
-        //             return TOK_key_unsigned;
-        //         }
-        //     }
-        //     break;
-        // }
+        //         else 
+            if (match_chars(ctx, "signed", 6) && !match_word(ctx)) {
+                    return TOK_key_unsigned;
+                }
+            }
+            break;
+        }
         case 'v': {
             if (match_chars(ctx, "oid", 3) && !match_word(ctx)) {
                 return TOK_key_void;
@@ -735,8 +735,8 @@ static error_t tokenize_file(Ctx ctx) {
                 // case TOK_char_const:
                 case TOK_int_const:
                 case TOK_long_const:
-                // case TOK_uint_const:
-                // case TOK_ulong_const:
+                case TOK_uint_const:
+                case TOK_ulong_const:
                 // case TOK_dbl_const: 
                 {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
