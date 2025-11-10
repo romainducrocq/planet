@@ -1,6 +1,6 @@
 pub fn main(none) bool {
-    x: bool = false
-    y: bool = true
+    a: bool = false
+    b: bool = true
 
-    return false and true
+    return a and b
 }
