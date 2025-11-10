@@ -280,33 +280,19 @@ static TOKEN_KIND match_const(Ctx ctx) {
     }
 
     switch (get_char(ctx)) {
-        case 'l':
-        // case 'L': 
-        {
+        case 'l': {
             ctx->match_size++;
-        //     switch (get_char(ctx)) {
-        //         case 'u':
-        //         case 'U': {
-        //             ctx->match_size++;
-        //             return match_const_end(ctx, TOK_ulong_const);
-        //         }
-        //         default:
-                    return match_const_end(ctx, TOK_long_const);
-        //     }
+            return match_const_end(ctx, TOK_long_const);
         }
-        // case 'u':
-        // case 'U': {
-        //     ctx->match_size++;
-        //     switch (get_char(ctx)) {
-        //         case 'l':
-        //         case 'L': {
-        //             ctx->match_size++;
-        //             return match_const_end(ctx, TOK_ulong_const);
-        //         }
-        //         default:
-        //             return match_const_end(ctx, TOK_uint_const);
-        //     }
-        // }
+        case 'u': {
+            ctx->match_size++;
+            if (match_char(ctx, 'l')) {
+                return match_const_end(ctx, TOK_ulong_const);
+            }
+            else {
+                return match_const_end(ctx, TOK_uint_const);
+            }
+        }
         // case 'e':
         // case 'E': {
         //     ctx->match_size++;
@@ -538,7 +524,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             }
             break;
         }
-        // case 'u': {
+        case 'u': {
         //     if (match_char(ctx, 'n')) {
         //         if (match_char(ctx, 'i')) {
         //             if (match_chars(ctx, "on", 2) && !match_word(ctx)) {
@@ -549,8 +535,16 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //             return TOK_key_unsigned;
         //         }
         //     }
-        //     break;
-        // }
+            if (match_char(ctx, '3')) {
+                if (match_char(ctx, '2') && !match_word(ctx)) {
+                    return TOK_key_u32;
+                }
+            }
+            else if (match_chars(ctx, "64", 2) && !match_word(ctx)) {
+                return TOK_key_u64;
+            }
+            break;
+        }
         case 'w': {
             if (match_chars(ctx, "hile", 4) && !match_word(ctx)) {
                 return TOK_key_while;
@@ -804,8 +798,8 @@ static error_t tokenize_file(Ctx ctx) {
                 // case TOK_char_const:
                 case TOK_int_const:
                 case TOK_long_const:
-                // case TOK_uint_const:
-                // case TOK_ulong_const:
+                case TOK_uint_const:
+                case TOK_ulong_const:
                 // case TOK_dbl_const: 
                 {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);

@@ -118,10 +118,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "i64";
         // case TOK_key_double:
         //     return "double";
-        // case TOK_key_signed:
-        //     return "signed";
-        // case TOK_key_unsigned:
-        //     return "unsigned";
+        case TOK_key_u32:
+            return "u32";
+        case TOK_key_u64:
+            return "u64";
         case TOK_key_none:
             return "none";
         case TOK_key_fn:
