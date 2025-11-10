@@ -812,6 +812,30 @@ static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
+static error_t parse_cast_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) cast_exp = uptr_new();
+    shared_ptr_t(Type) target_type = sptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt));
+    // TODO should be parse_type_name
+    TRY(parse_type_specifier(ctx, &target_type));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
+    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    *exp = make_CCast(&cast_exp, &target_type, info_at);
+    FINALLY;
+    free_CExp(&cast_exp);
+    free_Type(&target_type);
+    CATCH_EXIT;
+}
+
 // static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     shared_ptr_t(Type) target_type = sptr_new();
 //     CATCH_ENTER;
@@ -986,6 +1010,9 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         // case TOK_binop_bitand:
         //     TRY(parse_ptr_unary_factor(ctx, exp));
         //     break;
+        case TOK_key_cast:
+            TRY(parse_cast_unary_factor(ctx, exp));
+            break;
         // case TOK_key_sizeof:
         //     TRY(parse_sizeof_unary_factor(ctx, exp));
         //     break;
