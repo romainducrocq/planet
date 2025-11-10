@@ -1,7 +1,7 @@
-/* The result of a cast expression is not an lvalue */
+#  The result of a cast expression is not an lvalue 
 
-int main(void) {
-    int i = 0;
-    i = (long) i = 10;
-    return 0;
+pub fn main(none) i32 {
+    i: i32 = 0
+    i = cast<i64>(i) = 10
+    return false
 }

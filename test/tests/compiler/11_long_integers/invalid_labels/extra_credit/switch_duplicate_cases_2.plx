@@ -1,15 +1,21 @@
-int switch_statement(int i) {
-    switch((long) i) {
-        case 100l: return 0;
-        /* Even though 100l and 100 have different types, they have the same
-         * value once converted to the type of the switch expression (long)
-         * so they conflict
-         */
-        case 100: return 0;
-        default: return 1;
+pub fn switch_statement(i: i32) i32 {
+    match cast<i64>(i) {
+        -> 100l {
+            return false
+        }
+        #  Even though 100l and 100 have different types, they have the same
+        #          * value once converted to the type of the switch expression (long)
+        #          * so they conflict
+        #          
+        -> 100 {
+            return 0
+        }
+        otherwise {
+            return 1
+        }
     }
 }
 
-int main(void) {
-    return switch_statement(100);
+pub fn main(none) i32 {
+    return switch_statement(100)
 }

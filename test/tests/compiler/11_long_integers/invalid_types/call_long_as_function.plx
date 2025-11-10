@@ -1,7 +1,7 @@
-long x(void);
+pub fn x(none) i64;
 
-int main(void) {
-    long x = 0;
-    /* x isn't a function, so you can't call it */
-    return x();
+pub fn main(none) i32 {
+    x: i64 = 0
+    #  x isn't a function, so you can't call it 
+    return x()
 }

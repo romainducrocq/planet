@@ -1,9 +1,9 @@
-/* It's illegal to declare a function multiple times with different parameter types */
+#  It's illegal to declare a function multiple times with different parameter types 
 
-int foo(int a);
+pub fn foo(a: i32) i32;
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return false
 }
 
-int foo(long a);
+pub fn foo(a: i64) i32;

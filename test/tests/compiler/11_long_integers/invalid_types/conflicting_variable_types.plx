@@ -1,9 +1,9 @@
-long a;
+pub a: i64;
 
-int main(void) {
-    /* This declaration refers to the global 'a' variable,
-     * but has a conflicting type.
-     */
-    extern int a;
-    return 0;
+pub fn main(none) i32 {
+    #  This declaration refers to the global 'a' variable,
+    #      * but has a conflicting type.
+    #      
+    extrn a: i32;
+    return 0
 }
