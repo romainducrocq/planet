@@ -1,4 +1,4 @@
-int main(void) {
-    /* A cast expression must include at least one type specifier */
-    return () 0;
+pub fn main(none) i32 {
+    # A cast expression must include at least one type specifier
+    return cast<>(0)
 }
