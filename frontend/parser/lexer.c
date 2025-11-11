@@ -234,46 +234,43 @@ static TOKEN_KIND match_error(Ctx ctx) {
 static TOKEN_KIND match_const_end(Ctx ctx, TOKEN_KIND tok_kind) {
     switch (get_char(ctx)) {
         case LEX_WORD:
-        // case '.':
+        case '.':
             return match_error(ctx);
         default:
             return tok_kind;
     }
 }
 
-// static TOKEN_KIND match_dbl_exponent(Ctx ctx) {
-//     switch (get_char(ctx)) {
-//         case '+':
-//         case '-': {
-//             ctx->match_size++;
-//             break;
-//         }
-//         default:
-//             break;
-//     }
+static TOKEN_KIND match_dbl_exponent(Ctx ctx) {
+    switch (get_char(ctx)) {
+        case '+':
+        case '-': {
+            ctx->match_size++;
+            break;
+        }
+        default:
+            break;
+    }
 
-//     if (!match_digit(ctx)) {
-//         return TOK_error;
-//     }
-//     while (match_digit(ctx)) {
-//     }
-//     return match_const_end(ctx, TOK_dbl_const);
-// }
+    if (!match_digit(ctx)) {
+        return TOK_error;
+    }
+    while (match_digit(ctx)) {
+    }
+    return match_const_end(ctx, TOK_dbl_const);
+}
 
-// static TOKEN_KIND match_dbl_fraction(Ctx ctx) {
-//     while (match_digit(ctx)) {
-//     }
+static TOKEN_KIND match_dbl_fraction(Ctx ctx) {
+    while (match_digit(ctx)) {
+    }
 
-//     switch (get_char(ctx)) {
-//         case 'e':
-//         case 'E': {
-//             ctx->match_size++;
-//             return match_dbl_exponent(ctx);
-//         }
-//         default:
-//             return match_const_end(ctx, TOK_dbl_const);
-//     }
-// }
+    if (match_char(ctx, 'e')) {
+        return match_dbl_exponent(ctx);
+    }
+    else {
+        return match_const_end(ctx, TOK_dbl_const);
+    }
+}
 
 static TOKEN_KIND match_const(Ctx ctx) {
     while (match_digit(ctx)) {
@@ -293,15 +290,14 @@ static TOKEN_KIND match_const(Ctx ctx) {
                 return match_const_end(ctx, TOK_uint_const);
             }
         }
-        // case 'e':
-        // case 'E': {
-        //     ctx->match_size++;
-        //     return match_dbl_exponent(ctx);
-        // }
-        // case '.': {
-        //     ctx->match_size++;
-        //     return match_dbl_fraction(ctx);
-        // }
+        case 'e': {
+            ctx->match_size++;
+            return match_dbl_exponent(ctx);
+        }
+        case '.': {
+            ctx->match_size++;
+            return match_dbl_fraction(ctx);
+        }
         default:
             return match_const_end(ctx, TOK_int_const);
     }
@@ -381,8 +377,15 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 'f': {
-            if (match_char(ctx, 'n') && !match_word(ctx)) {
-                return TOK_key_fn;
+            if (match_char(ctx, 'n')) {
+                if (!match_word(ctx)) {
+                    return TOK_key_fn;
+                }
+            }
+            else if (match_char(ctx, '6')) {
+                if (match_char(ctx, '4') && !match_word(ctx)) {
+                    return TOK_key_f64;
+                }
             }
             else if (match_chars(ctx, "alse", 4) && !match_word(ctx)) {
                 return TOK_key_false;
@@ -709,8 +712,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
         }
         case '.': {
             switch (get_char(ctx)) {
-                // case LEX_DIGIT:
-                //     return match_dbl_fraction(ctx);
+                case LEX_DIGIT:
+                    return match_dbl_fraction(ctx);
                 case '.': {
                     ctx->match_size++;
                     return TOK_loop_post;
@@ -800,8 +803,7 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_long_const:
                 case TOK_uint_const:
                 case TOK_ulong_const:
-                // case TOK_dbl_const: 
-                {
+                case TOK_dbl_const: {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
                     match_tok = make_string_identifier(ctx->identifiers, &match);
                     goto Lpass;

@@ -64,7 +64,8 @@ typedef enum TOKEN_KIND {
     TOK_key_i32,
     TOK_key_long, // TODO rm
     TOK_key_i64,
-    // TOK_key_double,
+    TOK_key_double, // TODO rm
+    TOK_key_f64,
     TOK_key_signed, // TODO rm
     TOK_key_u32,
     TOK_key_unsigned, // TODO rm
