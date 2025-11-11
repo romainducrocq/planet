@@ -1,4 +1,4 @@
-int main(void) {
-    /* It's illegal to use a double as the right operand of << or >>. */
-    return 1 << 2.0;
+pub fn main(none) i32 {
+    #  It's illegal to use a double as the right operand of << or >>. 
+    return 1 << 2.0
 }

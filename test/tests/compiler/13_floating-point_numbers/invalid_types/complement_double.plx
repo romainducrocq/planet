@@ -1,5 +1,5 @@
-int main(void) {
-    /* You can't take the bitwise complement of a double */
-    double d = ~10.0;
-    return 0;
+pub fn main(none) i32 {
+    #  You can't take the bitwise complement of a double 
+    d: f64 = ~10.0
+    return 0
 }
