@@ -34,7 +34,7 @@ pub fn main(none) i32 {
         return 7
     }
 
-    if not double_isnan(-nan) {         return 8
+    if not double_isnan(-nan) { return 8
     }
 
     #  NaN should always evaluate to nonzero
@@ -43,17 +43,16 @@ pub fn main(none) i32 {
         return 9
     }
 
-    if nan {
-    }
-    else {         return 10
-    }
+    if nan;
+    else { return 10 }
 
     nan_is_nonzero: i32;
     loop nan_is_nonzero = 0 while nan {
         nan_is_nonzero = 1
         break
     }
-    if not nan_is_nonzero {         return 11
+    if not nan_is_nonzero {
+        return 11
     }
 
     nan_is_nonzero = 0

@@ -27,9 +27,7 @@ pub fn main(none) i32 {
         return 2
     }
 
-    if non_zero {
-    #  no-op; should take this one
-    }
+    if non_zero; #  no-op; should take this one
     else {
         return 3
     }
