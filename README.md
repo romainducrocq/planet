@@ -84,7 +84,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 > Types
 - [x] 32 bit and 64 bit integers [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/11_long_integers)
 - [x] signed and unsigned integers [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/12_unsigned_integers)
-- [ ] 64 bit floating-point numbers, nan
+- [x] 64 bit floating-point numbers, nan [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/13_floating-point_numbers)
 - [ ] pointers
 - [ ] fixed-sized arrays, pointer arithmetic
 - [ ] characters, strings literals, ascii
