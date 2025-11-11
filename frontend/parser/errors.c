@@ -178,14 +178,14 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "const char";
         case TOK_int_const:
             return "const int";
-        // case TOK_long_const:
-        //     return "const long";
-        // case TOK_uint_const:
-        //     return "const unsigned int";
-        // case TOK_ulong_const:
-        //     return "const unsigned long";
-        // case TOK_dbl_const:
-        //     return "const double";
+        case TOK_long_const:
+            return "const long";
+        case TOK_uint_const:
+            return "const unsigned int";
+        case TOK_ulong_const:
+            return "const unsigned long";
+        case TOK_dbl_const:
+            return "const double";
         default:
             THROW_ABORT;
     }
