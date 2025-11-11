@@ -160,15 +160,15 @@ static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
 
 // <double> ::= ? A floating-point constant token ?
 //            => (([0-9]*\.[0-9]+|[0-9]+\.?)[Ee][+\-]?[0-9]+|[0-9]*\.[0-9]+|[0-9]+\.)
-// static error_t parse_dbl_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
-//     CATCH_ENTER;
-//     TDouble value;
-//     TRY(string_to_dbl(
-//         ctx->errors, map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), ctx->next_tok->info_at, &value));
-//     *constant = make_CConstDouble(value);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_dbl_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
+    CATCH_ENTER;
+    TDouble value;
+    TRY(string_to_dbl(
+        ctx->errors, map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), ctx->next_tok->info_at, &value));
+    *constant = make_CConstDouble(value);
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <uint> ::= ? An unsigned int token ? => [0-9]+[uU]
 static shared_ptr_t(CConst) parse_uint_const(uintmax_t uintmax) {
@@ -189,17 +189,17 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     intmax_t value;
     const char* strto_value;
     TRY(pop_next(ctx));
-    // switch (ctx->next_tok->tok_kind) {
+    switch (ctx->next_tok->tok_kind) {
     //     case TOK_char_const: {
     //         *constant = parse_char_const(ctx);
     //         EARLY_EXIT;
     //     }
-    //     case TOK_dbl_const:
-    //         TRY(parse_dbl_const(ctx, constant));
-    //         EARLY_EXIT;
-    //     default:
-    //         break;
-    // }
+        case TOK_dbl_const:
+            TRY(parse_dbl_const(ctx, constant));
+            EARLY_EXIT;
+        default:
+            break;
+    }
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
     TRY(string_to_intmax(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
@@ -883,7 +883,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_int_const:
         case TOK_long_const:
         // case TOK_char_const:
-        // case TOK_dbl_const:
+        case TOK_dbl_const:
             TRY(parse_const_factor(ctx, exp));
             break;
         case TOK_uint_const:
@@ -999,7 +999,7 @@ static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             // case TOK_key_char:
             case TOK_key_int:
             case TOK_key_long:
-            // case TOK_key_double:
+            case TOK_key_double:
             case TOK_key_unsigned:
             case TOK_key_signed:
             // case TOK_key_void:
@@ -1623,7 +1623,7 @@ static error_t parse_for_init(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
         // case TOK_key_char:
         case TOK_key_int:
         case TOK_key_long:
-        // case TOK_key_double:
+        case TOK_key_double:
         case TOK_key_unsigned:
         case TOK_key_signed:
         case TOK_key_void:
@@ -1672,7 +1672,7 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_char:
         case TOK_key_int:
         case TOK_key_long:
-        // case TOK_key_double:
+        case TOK_key_double:
         case TOK_key_unsigned:
         case TOK_key_signed:
         // case TOK_key_void:
@@ -1747,7 +1747,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             // case TOK_key_char:
             case TOK_key_int:
             case TOK_key_long:
-            // case TOK_key_double:
+            case TOK_key_double:
             case TOK_key_unsigned:
             case TOK_key_signed:
             // case TOK_key_void:
@@ -1802,10 +1802,10 @@ Lbreak:
                     *type_specifier = make_Long();
                     EARLY_EXIT;
                 }
-                // case TOK_key_double: {
-                //     *type_specifier = make_Double();
-                //     EARLY_EXIT;
-                // }
+                case TOK_key_double: {
+                    *type_specifier = make_Double();
+                    EARLY_EXIT;
+                }
                 case TOK_key_unsigned: {
                     *type_specifier = make_UInt();
                     EARLY_EXIT;
@@ -2185,7 +2185,7 @@ static error_t parse_param_list(Ctx ctx, vector_t(unique_ptr_t(CParam)) * param_
         // case TOK_key_char:
         case TOK_key_int:
         case TOK_key_long:
-        // case TOK_key_double:
+        case TOK_key_double:
         case TOK_key_unsigned:
         case TOK_key_signed:
         // case TOK_key_struct:
