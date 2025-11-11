@@ -1,26 +1,26 @@
-// Test reading and writing a local static double
+#  Test reading and writing a local static double
 
-// Return old value, then increment by one
-double return_static_variable(void) {
-    static double d = 0.5;
-    double ret = d;
-    d = d + 1.0;
-    return ret;
+#  Return old value, then increment by one
+pub fn return_static_variable(none) f64 {
+    data d: f64 = 0.5
+    ret: f64 = d
+    d = d + 1.0
+    return ret
 }
 
-int main(void) {
-    double d1 = return_static_variable();
-    double d2 = return_static_variable();
-    double d3 = return_static_variable();
-    if (d1 != 0.5) {
-        return 1;
+pub fn main(none) i32 {
+    d1: f64 = return_static_variable()
+    d2: f64 = return_static_variable()
+    d3: f64 = return_static_variable()
+    if d1 ~= 0.5 {
+        return 1
     }
-    if (d2 != 1.5) {
-        return 2;
+    if d2 ~= 1.5 {
+        return 2
     }
-    if (d3 != 2.5) {
-        return 3;
+    if d3 ~= 2.5 {
+        return 3
     }
-    return 0;
+    return 0
 }
 

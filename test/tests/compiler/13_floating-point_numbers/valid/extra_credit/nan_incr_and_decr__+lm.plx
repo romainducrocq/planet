@@ -1,27 +1,27 @@
-// Test that we handle NaN correctly for increments and decrements
-// All increments and decrements on NaN are also NaN
+#  Test that we handle NaN correctly for increments and decrements
+#  All increments and decrements on NaN are also NaN
 
-int double_isnan(double d); // defined in tests/chapter_13/helper_libs/nan.c
+pub fn double_isnan(d: f64) i32; #  defined in tests/chapter_13/helper_libs/nan.c
 
-int main(void) {
-    static double zero = 0.0;
-    double nan = 0.0 / zero; // make this constant-folding proof
+pub fn main(none) i32 {
+    data zero: f64 = 0.0
+    nan: f64 = 0.0 / zero #  make this constant-folding proof
 
-    if (!double_isnan(++nan)) {
-        return 1;
+    if not double_isnan(++nan) {
+        return 1
     }
 
-    if (!double_isnan(--nan)) {
-        return 2;
+    if not double_isnan(--nan) {
+        return 2
     }
 
-    if (!double_isnan(nan++)) {
-        return 3;
+    if not double_isnan(nan++) {
+        return 3
     }
 
-    if (!double_isnan(nan--)) {
-        return 4;
+    if not double_isnan(nan--) {
+        return 4
     }
 
-    return 0;
+    return 0
 }

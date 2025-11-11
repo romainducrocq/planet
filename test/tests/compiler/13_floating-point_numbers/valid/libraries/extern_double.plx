@@ -1,1 +1,1 @@
-double d = 1e20;
+pub d: f64 = 1e20

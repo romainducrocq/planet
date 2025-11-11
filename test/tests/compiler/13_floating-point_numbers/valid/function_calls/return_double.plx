@@ -1,9 +1,9 @@
-/* Test that we follow the calling convention for a double return type */
-double d(void) {
-    return 1234.e75;
+#  Test that we follow the calling convention for a double return type 
+pub fn d(none) f64 {
+    return 1234.e75
 }
 
-int main(void) {
-    double retval = d();
-    return retval == 1234.e75;
+pub fn main(none) i32 {
+    retval: f64 = d()
+    return retval == 1234.e75
 }

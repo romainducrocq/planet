@@ -1,6 +1,6 @@
-/* Test linking against a double defined in another file */
-extern double d;
+#  Test linking against a double defined in another file 
+extrn d: f64;
 
-int main(void) {
-    return d == 1e20;
+pub fn main(none) i32 {
+    return d == 1e20
 }

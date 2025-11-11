@@ -1,52 +1,51 @@
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma GCC diagnostic ignored "-Wimplicit-const-int-float-conversion"
-#pragma GCC diagnostic ignored "-Wliteral-conversion"
-#endif
-#endif
-/* Test that we correctly perform conversion as if by assignment */
 
-int check_args(long l, double d) {
-    return l == 2 && d == -6.0;
+
+
+
+
+
+#  Test that we correctly perform conversion as if by assignment 
+
+pub fn check_args(l: i64, d: f64) i32 {
+    return l == 2 and d == -6.0
 }
 
-double return_double(void) {
-    /* Implicitly convert this integer to the nearest double,
-     * which is 18446744073709551616.0
-     */
-    return 18446744073709551586ul;
+pub fn return_double(none) f64 {
+    #  Implicitly convert this integer to the nearest double,
+    #      * which is 18446744073709551616.0
+    #      
+    return 18446744073709551586ul
 }
 
-int check_assignment(double arg) {
-    // arg = 4.9
-    int i = 0;
-    /* truncate arg to 4 */
-    i = arg;
-    return i == 4;
+pub fn check_assignment(arg: f64) i32 {
+    #  arg = 4.9
+    i: i32 = 0
+    #  truncate arg to 4 
+    i = arg
+    return i == 4
 }
-int main(void) {
+pub fn main(none) i32 {
 
-    /* function arguments: 2.4 should be truncated to 2, -6 should be converted to -6.0 */
-    if (!check_args(2.4, -6)) {
-        return 1;
+    #  function arguments: 2.4 should be truncated to 2, -6 should be converted to -6.0 
+    if not check_args(2.4, -6) {
+        return 1
     }
 
-    /* return values */
-    if (return_double() != 18446744073709551616.0) {
-        return 2;
+    #  return values 
+    if return_double() ~= 18446744073709551616.0 {
+        return 2
     }
 
-    /* assignment statement */
-    if (!check_assignment(4.9)) {
-        return 3;
+    #  assignment statement 
+    if not check_assignment(4.9) {
+        return 3
     }
 
-    /* initializer */
-    double d = 18446744073709551586ul; // implicitly convert constant to nearest double
+    #  initializer 
+    d: f64 = 18446744073709551586ul #  implicitly convert constant to nearest double
 
-    if (d != 18446744073709551616.) {
-        return 4;
+    if d ~= 18446744073709551616. {
+        return 4
     }
 
-    return 0;
-}
+    return 0 }

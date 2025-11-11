@@ -1,84 +1,85 @@
-// Test that we handle NaN correctly
+#  Test that we handle NaN correctly
 
-int double_isnan(double d); // defined in tests/chapter_13/helper_libs/nan.c
+pub fn double_isnan(d: f64) i32; #  defined in tests/chapter_13/helper_libs/nan.c
 
-// This should return zero, because all comparisons with NaN are false
-int main(void) {
-    static double zero = 0.0;
-    double nan = 0.0 / zero; // make this constant-folding proof
-    if (nan < 0.0 || nan == 0.0 || nan > 0.0 || nan <= 0.0 || nan >= 0.0)
-        return 1;
-
-    if (1 < nan || 1 == nan || 1 > nan || 1 <= nan || 1 >= nan)
-        return 2;
-
-    if (nan == nan)
-        return 3;
-
-    if (!(nan != nan)) { // != should evaluate to true
-        return 4;
+#  This should return zero, because all comparisons with NaN are false
+pub fn main(none) i32 {
+    data zero: f64 = 0.0
+    nan: f64 = 0.0 / zero #  make this constant-folding proof
+    if nan < 0.0 or nan == 0.0 or nan > 0.0 or nan <= 0.0 or nan >= 0.0 {
+        return true
     }
 
-    if (!double_isnan(nan)) {
-        return 5;
+    if 1 < nan or 1 == nan or 1 > nan or 1 <= nan or 1 >= nan {
+        return 2
     }
 
-    if (!double_isnan(4 * nan)) {
-        return 6;
+    if nan == nan {
+        return 3
     }
 
-    if (!double_isnan(22e2 / nan)) {
-        return 7;
+    if not (nan ~= nan) { #  != should evaluate to true
+        return 4
     }
 
-    if (!double_isnan(-nan)) {
-        return 8;
+    if not double_isnan(nan) {
+        return 5
     }
 
-    // NaN should always evaluate to nonzero
-
-    if (!nan) {
-        return 9;
+    if not double_isnan(4 * nan) {
+        return 6
     }
 
-    if (nan) {
-    } else {
-        return 10;
+    if not double_isnan(22e2 / nan) {
+        return 7
     }
 
-    int nan_is_nonzero;
-    for (nan_is_nonzero = 0; nan;) {
-        nan_is_nonzero = 1;
-        break;
-    }
-    if (!nan_is_nonzero) {
-        return 11;
+    if not double_isnan(-nan) {         return 8
     }
 
-    nan_is_nonzero = 0;
-    while (nan) {
-        nan_is_nonzero = 1;
-        break;
-    }
-    if (!nan_is_nonzero) {
-        return 12;
+    #  NaN should always evaluate to nonzero
+
+    if not nan {
+        return 9
     }
 
-    nan_is_nonzero = -1;
-    do {
-        nan_is_nonzero = nan_is_nonzero + 1;
-        if (nan_is_nonzero) {
-            break;
+    if nan {
+    }
+    else {         return 10
+    }
+
+    nan_is_nonzero: i32;
+    loop nan_is_nonzero = 0 while nan {
+        nan_is_nonzero = 1
+        break
+    }
+    if not nan_is_nonzero {         return 11
+    }
+
+    nan_is_nonzero = 0
+    loop while nan {
+        nan_is_nonzero = 1
+        break
+    }
+    if not nan_is_nonzero {
+        return 12
+    }
+
+    nan_is_nonzero = -1
+    loop .. while nan {
+        nan_is_nonzero = nan_is_nonzero + 1
+        if nan_is_nonzero {
+            break
         }
-    } while (nan);
-    if (!nan_is_nonzero) {
-        return 13;
+    }
+    if not nan_is_nonzero {
+        return 13
     }
 
-    nan_is_nonzero = nan ? 1 : 0;
-    if (!nan_is_nonzero) {
-        return 14;
+    nan_is_nonzero = ? nan then 1 else false
+    if not nan_is_nonzero {
+        return 14
     }
 
-    return 0;
+    return 0
 }
