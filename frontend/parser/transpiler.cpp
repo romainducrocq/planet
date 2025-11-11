@@ -414,6 +414,9 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_long_const:
             append_long_const(tok->tok);
             break;
+        case TOK_dbl_const:
+            append_double_const(tok->tok);
+            break;
         case TOK_uint_const:
             append_unsigned_const(tok->tok);
             break;
@@ -443,6 +446,16 @@ void cc::Transpiler::append_const(size_t identifier) {
 void cc::Transpiler::append_long_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
     const_buf.back() = 'l';
+    append_buf(const_buf);
+}
+
+void cc::Transpiler::append_double_const(size_t identifier) {
+    std::string const_buf = map_get(identifiers->hash_table, identifier);
+    for (size_t i = 0; i < const_buf.size(); ++i) {
+        if (const_buf[i] == 'E') {
+            const_buf[i] = 'e';
+        }
+    }
     append_buf(const_buf);
 }
 
@@ -524,6 +537,9 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
             break;
         case AST_Long_t:
             append_buf("i64");
+            break;
+        case AST_Double_t:
+            append_buf("f64");
             break;
         case AST_UInt_t:
             append_buf("u32");

@@ -98,6 +98,7 @@ class Transpiler {
         void append_end(const std::string& end);
         void append_const(size_t identifier);
         void append_long_const(size_t identifier);
+        void append_double_const(size_t identifier);
         void append_unsigned_const(size_t identifier);
         void append_long_unsigned_const(size_t identifier);
         void append_identifier(size_t identifier);
