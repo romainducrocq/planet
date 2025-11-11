@@ -196,6 +196,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     //     }
         case TOK_dbl_const:
             TRY(parse_dbl_const(ctx, constant));
+            TRANSPILE(keep_token(ctx->next_tok));
             EARLY_EXIT;
         default:
             break;
