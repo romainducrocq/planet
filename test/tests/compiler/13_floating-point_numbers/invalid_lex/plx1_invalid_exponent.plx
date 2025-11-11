@@ -1,3 +1,3 @@
 pub fn main(none) i32 {
-    return 1.e-10x
+    return 42.4E+3
 }

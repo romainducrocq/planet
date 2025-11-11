@@ -1,4 +1,3 @@
-int main(void)
-{
-    double foo = 1E2x;
+pub fn main(none) i32 {
+    foo: f64 = 1e2x
 }
