@@ -1,9 +1,9 @@
-/* The result of the & operator is not an lvalue,
- * so it's illegal to take its address
- */
-int main(void) {
-    int x = 0;
-    int *y = &x;
-    int **z = &(&x);
-    return 0;
+#  The result of the & operator is not an lvalue,
+#  * so it's illegal to take its address
+#  
+pub fn main(none) i32 {
+    x: i32 = 0
+    y: *i32 = @x
+    z: **i32 = @(@x)
+    return 0
 }

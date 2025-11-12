@@ -1,8 +1,7 @@
-/* It's illegal to multiply, divide, or take the modulo of pointers */
-int main(void)
-{
-    int x = 10;
-    int *y = &x;
-    (y / 8);
-    return 0;
+#  It's illegal to multiply, divide, or take the modulo of pointers 
+pub fn main(none) i32 {
+    x: i32 = 10
+    y: *i32 = @x
+    (y / 8)
+    return nil
 }

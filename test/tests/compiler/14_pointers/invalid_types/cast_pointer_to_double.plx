@@ -1,7 +1,7 @@
-/* It's illegal to cast a pointer to a double */
+#  It's illegal to cast a pointer to a double 
 
-int main(void) {
-    int *x;
-    double d = (double) x;
-    return 0;
+pub fn main(none) i32 {
+    x: *i32;
+    d: f64 = cast<f64>(x)
+    return false
 }

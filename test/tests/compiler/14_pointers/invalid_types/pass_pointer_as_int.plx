@@ -1,12 +1,12 @@
-/* It's illegal to pass a pointer as a function argument
- * where an integer is expected, beause you can't implicitly
- * convert a pointer to an integer type
- */
-int f(int i) {
-    return i;
+#  It's illegal to pass a pointer as a function argument
+#  * where an integer is expected, beause you can't implicitly
+#  * convert a pointer to an integer type
+#  
+pub fn f(i: i32) i32 {
+    return i
 }
 
-int main(void) {
-    int x;
-    return f(&x);
+pub fn main(none) bool {
+    x: i32;
+    return f(@x)
 }

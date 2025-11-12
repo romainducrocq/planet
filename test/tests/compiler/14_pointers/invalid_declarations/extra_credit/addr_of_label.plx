@@ -1,12 +1,12 @@
-// It's illegal to take the address of a label
-int main(void) {
-    int x = 0;
-    lbl:
-    x = 1;
-    if (&lbl == 0) {
-        return 1;
+#  It's illegal to take the address of a label
+pub fn main(none) i32 {
+    x: i32 = 0
+    label lbl
+    x = 1
+    if @lbl == nil {
+        return true
     }
-    goto lbl;
-    return 0;
+    jump lbl
+    return 0
 
 }

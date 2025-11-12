@@ -1,11 +1,11 @@
-/* The result of a ternary expression is not
- * an lvalue, even if the second and third operands
- * are both variables, so it's illegal to take its address.
- */
-int main(void) {
-    int x = 1;
-    int y = 2;
-    int z = 3;
-    int *ptr = &(x ? y : z);
-    return 0;
+#  The result of a ternary expression is not
+#  * an lvalue, even if the second and third operands
+#  * are both variables, so it's illegal to take its address.
+#  
+pub fn main(none) i32 {
+    x: i32 = 1
+    y: i32 = 2
+    z: i32 = 3
+    ptr: *i32 = @(? x then y else z)
+    return 0
 }

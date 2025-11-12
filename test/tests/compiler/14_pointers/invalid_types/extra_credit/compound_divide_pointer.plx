@@ -1,9 +1,9 @@
-/* A pointer can't appear as the left or right operand
- * of the *=, /=, or %= operator
- */
-int main(void) {
-    int *x = 0;
-    int *y = 0;
-    x /= y;
-    return 0;
+#  A pointer can't appear as the left or right operand
+#  * of the *=, /=, or %= operator
+#  
+pub fn main(none) i32 {
+    x: *i32 = 0
+    y: *i32 = nil
+    x /= y
+    return false
 }

@@ -1,7 +1,7 @@
-// It's illegal to use pointer as right operand in bitshift
-int main(void) {
-    int *ptr = 0;
-    int i = 1000;
-    i >> ptr;
-    return 0;
+#  It's illegal to use pointer as right operand in bitshift
+pub fn main(none) i32 {
+    ptr: *i32 = 0
+    i: i32 = 1000
+    i >> ptr
+    return nil
 }
