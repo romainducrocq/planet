@@ -235,7 +235,7 @@ static TOKEN_KIND match_preproc(Ctx ctx) {
 static TOKEN_KIND match_const_end(Ctx ctx, TOKEN_KIND tok_kind) {
     switch (get_char(ctx)) {
         case LEX_WORD:
-        // case '.':
+        case '.':
             return match_error(ctx);
         default:
             return tok_kind;
