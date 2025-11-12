@@ -1,5 +1,4 @@
-int main(void)
-{
-    // can only cast to declarator types, not abstract declarators
-    return (int **a)(10);
+pub fn main(none) i32 {
+    # can only cast to declarator types, not abstract declarators
+    return cast<a[][]>(10)
 }
