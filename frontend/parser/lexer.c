@@ -461,6 +461,9 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                     return TOK_unop_not;
                 }
             }
+            else if (match_chars(ctx, "il", 2) && !match_word(ctx)) {
+                return TOK_key_false;
+            }
             break;
         }
         case 'o': {
@@ -575,12 +578,14 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_open_brace;
         case '}':
             return TOK_close_brace;
-        // case '[':
-        //     return TOK_open_bracket;
-        // case ']':
-        //     return TOK_close_bracket;
+        case '[':
+            return TOK_open_bracket;
+        case ']':
+            return TOK_close_bracket;
         case ';':
             return TOK_semicolon;
+        case '@':
+            return TOK_unop_deref;
         // case '!':
         //     return TODO;
         case ':':
