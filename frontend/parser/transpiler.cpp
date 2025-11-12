@@ -440,6 +440,9 @@ void cc::Transpiler::keep_token(const Token* tok) {
 void cc::Transpiler::append_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
     if (const_buf.compare("0") == 0 && with_prob(10)) {
+        append_buf("nil");
+    }
+    else if (const_buf.compare("0") == 0 && with_prob(10)) {
         append_buf("false");
     }
     else if (const_buf.compare("1") == 0 && with_prob(10)) {
