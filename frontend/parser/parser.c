@@ -799,16 +799,17 @@ static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) cast_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->next_tok->info_at;
-//     TRY(parse_cast_exp_factor(ctx, &cast_exp));
-//     *exp = make_CAddrOf(&cast_exp, info_at);
-//     FINALLY;
-//     free_CExp(&cast_exp);
-//     CATCH_EXIT;
-// }
+static error_t parse_addrof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) cast_exp = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    *exp = make_CAddrOf(&cast_exp, info_at);
+    FINALLY;
+    free_CExp(&cast_exp);
+    CATCH_EXIT;
+}
 
 // static error_t parse_ptr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_ENTER;
@@ -1022,10 +1023,9 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_unop_decr:
             TRY(parse_incr_unary_factor(ctx, exp));
             break;
-        // case TOK_binop_multiply:
-        // case TOK_binop_bitand:
-        //     TRY(parse_ptr_unary_factor(ctx, exp));
-        //     break;
+        case TOK_unop_addrof:
+            TRY(parse_addrof_unary_factor(ctx, exp));
+            break;
         case TOK_key_cast:
             TRY(parse_cast_unary_factor(ctx, exp));
             break;
