@@ -574,7 +574,7 @@ static error_t parse_ptr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
-    switch (ctx->next_tok->tok_kind) {
+    switch (ctx->peek_tok->tok_kind) {
         case TOK_binop_multiply:
             TRY(parse_ptr_specifier(ctx, type_name));
             break;
