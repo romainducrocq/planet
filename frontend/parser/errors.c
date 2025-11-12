@@ -70,10 +70,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "{";
         case TOK_close_brace:
             return "}";
-        // case TOK_open_bracket:
-        //     return "[";
-        // case TOK_close_bracket:
-        //     return "]";
+        case TOK_open_bracket:
+            return "[";
+        case TOK_close_bracket:
+            return "]";
         case TOK_semicolon:
             return ";";
         case TOK_unop_complement:
@@ -82,6 +82,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "-";
         case TOK_unop_not:
             return "not";
+        case TOK_unop_deref:
+            return "@";
         case TOK_binop_add:
             return "+";
         case TOK_binop_multiply:
@@ -197,10 +199,10 @@ const char* get_tok_fmt(IdentifierContext* ctx, const Token* token) {
         // case TOK_string_literal:
         // case TOK_char_const:
         case TOK_int_const:
-        // case TOK_long_const:
-        // case TOK_uint_const:
-        // case TOK_ulong_const:
-        // case TOK_dbl_const:
+        case TOK_long_const:
+        case TOK_uint_const:
+        case TOK_ulong_const:
+        case TOK_dbl_const:
             return map_get(ctx->hash_table, token->tok);
         default:
             return get_tok_kind_fmt(token->tok_kind);
