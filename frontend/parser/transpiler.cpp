@@ -198,6 +198,25 @@ void cc::Transpiler::cast_end() {
     decr_paren();        
 }
 
+void cc::Transpiler::compound_init(const Token* tok) {
+    set_linenum(tok);
+    switch (tok->tok_kind) {
+        case TOK_comma_separator:
+            append_buf(", ");
+            break;
+        case TOK_open_brace:
+            append_buf("$(");
+            incr_paren();
+            break;
+        case TOK_close_brace:
+            append_buf(")");
+            decr_paren();
+            break;
+        default:
+            throw std::runtime_error("invalid compound_init");
+    }
+}
+
 void cc::Transpiler::if_statement(const Token* tok) {
     if (lines[linenum - 1].buf.back() == '}') {
         break_line(false);

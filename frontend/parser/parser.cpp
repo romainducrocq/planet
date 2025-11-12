@@ -1958,6 +1958,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
         if (ctx->peek_tok->tok_kind == TOK_close_brace) {
             break;
         }
+        TRANSPILE(compound_init(ctx->next_tok));
         TRY(parse_initializer(ctx, initializer));
         vec_move_back(initializers, *initializer);
         TRY(peek_next(ctx));
@@ -1971,6 +1972,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
         THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_compound_init));
     }
     TRY(pop_next(ctx));
+    TRANSPILE(compound_init(ctx->next_tok));
     *initializer = make_CCompoundInit(&initializers);
     FINALLY;
     for (size_t i = 0; i < vec_size(initializers); ++i) {

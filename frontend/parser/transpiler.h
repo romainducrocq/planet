@@ -69,6 +69,7 @@ class Transpiler {
         void deref_ptr();
         void cast_op(const Type* target_type);
         void cast_end();
+        void compound_init(const Token* tok);
         void if_statement(const Token* tok);
         void for_partial(int i);
         void goto_statement(const Token* tok);
