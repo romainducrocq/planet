@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 1
+#if 0
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)

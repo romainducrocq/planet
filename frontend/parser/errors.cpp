@@ -64,10 +64,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "{";
         case TOK_close_brace:
             return "}";
-        // case TOK_open_bracket:
-        //     return "[";
-        // case TOK_close_bracket:
-        //     return "]";
+        case TOK_open_bracket:
+            return "[";
+        case TOK_close_bracket:
+            return "]";
         case TOK_semicolon:
             return ";";
         case TOK_unop_complement:
