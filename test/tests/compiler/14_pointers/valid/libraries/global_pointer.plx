@@ -1,6 +1,6 @@
-double *d_ptr;
+pub d_ptr: *f64;
 
-int update_thru_ptr(double new_val) {
-    *d_ptr = new_val;
-    return 0;
+pub fn update_thru_ptr(new_val: f64) i32 {
+    d_ptr[] = new_val
+    return 0
 }

@@ -1,7 +1,7 @@
-/* A basic dereferencing test case */
+#  A basic dereferencing test case 
 
-int main(void) {
-    int x = 3;
-    int *ptr = &x;
-    return *ptr;
+pub fn main(none) i32 {
+    x: i32 = 3
+    ptr: *i32 = @x
+    return ptr[]
 }

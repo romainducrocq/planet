@@ -1,19 +1,24 @@
-long l = 4294967300l;
+pub l: i64 = 4294967300l
 
-long *get_ptr(void) {
-    return &l;
+pub fn get_ptr(none) *i64 {
+    return @l
 }
-int main(void) {
-    switch (*get_ptr()) {
-        case 1:
-            return 1;
-        case 4: // l % 2^32
-            return 2;
-        case 4294967300l:
-            return 0; // success
-        case 18446744073709551600UL:
-            return 3;
-        default:
-            return 4;
+pub fn main(none) i32 {
+    match get_ptr()[] {
+        -> true {
+            return 1
+        }
+        -> 4 { #  l % 2^32
+            return 2
+        }
+        -> 4294967300l {
+            return 0
+        } #  success
+        -> 18446744073709551600ul {
+            return 3
+        }
+        otherwise {
+            return 4
+        }
     }
 }
