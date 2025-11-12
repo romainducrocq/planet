@@ -527,6 +527,8 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
 //     CATCH_EXIT;
 // }
 
+static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name);
+
 // <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "char" | "string"
 //                    | "*" "any" | <datatype-specifier>
 static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
@@ -539,11 +541,11 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
         }
         case TOK_key_i64: {
             *type_specifier = make_Long();
-            EARLY_EXIT;
+            break;
         }
         case TOK_key_f64: {
             *type_specifier = make_Double();
-            EARLY_EXIT;
+            break;
         }
         case TOK_key_u32: {
             *type_specifier = make_UInt();
@@ -551,10 +553,34 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
         }
         case TOK_key_u64: {
             *type_specifier = make_ULong();
-            EARLY_EXIT;
+            break;
         }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
+
+static error_t parse_ptr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_type_name(ctx, type_specifier));
+    *type_specifier = make_Pointer(type_specifier);
+    FINALLY;
+    CATCH_EXIT;
+}
+
+static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
+    CATCH_ENTER;
+    TRY(peek_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_binop_multiply:
+            TRY(parse_ptr_specifier(ctx, type_name));
+            break;
+        default:
+            TRY(parse_type_specifier(ctx, type_name));
+            break;
     }
     FINALLY;
     CATCH_EXIT;
