@@ -379,6 +379,12 @@ void cc::Transpiler::keep_token(const Token* tok) {
             append_buf(")");
             decr_paren();
             break;
+        case TOK_open_bracket:
+            append_buf("[");
+            break;
+        case TOK_close_bracket:
+            append_buf("]");
+            break;
         case TOK_key_return:
             append_buf("return ");
             break;
