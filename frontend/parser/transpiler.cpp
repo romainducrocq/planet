@@ -68,9 +68,16 @@ void cc::Transpiler::unary_op(const Token* tok) {
         case TOK_unop_not:
             append_buf("not ");
             break;
+        case TOK_binop_bitand:
+            append_buf("@");
+            break;
         default:
             throw std::runtime_error("invalid unary_op");
     }
+}
+
+void cc::Transpiler::deref_ptr() {
+    append_buf("[]");
 }
 
 void cc::Transpiler::binary_op(const Token* tok) {
@@ -524,9 +531,9 @@ void cc::Transpiler::append_end(const std::string& end) {
     lines.back().end += end;
 }
 
-void cc::Transpiler::derived_type(const Type* derived_type) {
+void cc::Transpiler::derived_type(const Type* _derived_type) {
     // TODO
-    switch (derived_type->type) {
+    switch (_derived_type->type) {
         case AST_Int_t:
             if (with_prob(5)) {
                 append_buf("bool");
@@ -546,6 +553,10 @@ void cc::Transpiler::derived_type(const Type* derived_type) {
             break;
         case AST_ULong_t:
             append_buf("u64");
+            break;
+        case AST_Pointer_t:
+            append_buf("*");
+            derived_type(_derived_type->get._Pointer.ref_type);
             break;
         default:
             throw std::runtime_error("invalid type");

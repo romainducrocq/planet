@@ -769,6 +769,7 @@ static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
     TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    TRANSPILE(deref_ptr());
     *exp = make_CDereference(&cast_exp, info_at);
     FINALLY;
     free_CExp(&cast_exp);
@@ -779,6 +780,7 @@ static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
+    TRANSPILE(unary_op(ctx->next_tok));
     TRY(parse_cast_exp_factor(ctx, &cast_exp));
     *exp = make_CAddrOf(&cast_exp, info_at);
     FINALLY;
