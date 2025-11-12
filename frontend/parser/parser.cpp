@@ -13,9 +13,9 @@
 #include "frontend/intermediate/idents.h"
 #include "parser/transpiler.h"
 
-// typedef struct AbstractDeclarator {
-//     shared_ptr_t(Type) derived_type;
-// } AbstractDeclarator;
+typedef struct AbstractDeclarator {
+    shared_ptr_t(Type) derived_type;
+} AbstractDeclarator;
 
 typedef struct Declarator {
     TIdentifier name;
@@ -417,14 +417,14 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
     CATCH_EXIT;
 }
 
-// static void proc_abstract_decltor(
-//     const CAbstractDeclarator* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor);
+static void proc_abstract_decltor(
+    const CAbstractDeclarator* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor);
 
-// static void proc_ptr_abstract_decltor(
-//     const CAbstractPointer* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
-//     shared_ptr_t(Type) derived_type = make_Pointer(base_type);
-//     proc_abstract_decltor(node->abstract_decltor, &derived_type, abstract_decltor);
-// }
+static void proc_ptr_abstract_decltor(
+    const CAbstractPointer* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
+    shared_ptr_t(Type) derived_type = make_Pointer(base_type);
+    proc_abstract_decltor(node->abstract_decltor, &derived_type, abstract_decltor);
+}
 
 // static void proc_arr_abstract_decltor(
 //     const CAbstractArray* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
@@ -433,28 +433,28 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
 //     proc_abstract_decltor(node->abstract_decltor, &derived_type, abstract_decltor);
 // }
 
-// static void proc_base_abstract_decltor(shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
-//     sptr_move(Type, *base_type, abstract_decltor->derived_type);
-// }
+static void proc_base_abstract_decltor(shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
+    sptr_move(Type, *base_type, abstract_decltor->derived_type);
+}
 
-// static void proc_abstract_decltor(
-//     const CAbstractDeclarator* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
-//     switch (node->type) {
-//         case AST_CAbstractPointer_t:
-//             proc_ptr_abstract_decltor(&node->get._CAbstractPointer, base_type, abstract_decltor);
-//             break;
-//         case AST_CAbstractArray_t:
-//             proc_arr_abstract_decltor(&node->get._CAbstractArray, base_type, abstract_decltor);
-//             break;
-//         case AST_CAbstractBase_t:
-//             proc_base_abstract_decltor(base_type, abstract_decltor);
-//             break;
-//         default:
-//             THROW_ABORT;
-//     }
-// }
+static void proc_abstract_decltor(
+    const CAbstractDeclarator* node, shared_ptr_t(Type) * base_type, AbstractDeclarator* abstract_decltor) {
+    switch (node->type) {
+        case AST_CAbstractPointer_t:
+            proc_ptr_abstract_decltor(&node->get._CAbstractPointer, base_type, abstract_decltor);
+            break;
+        // case AST_CAbstractArray_t:
+        //     proc_arr_abstract_decltor(&node->get._CAbstractArray, base_type, abstract_decltor);
+            // break;
+        case AST_CAbstractBase_t:
+            proc_base_abstract_decltor(base_type, abstract_decltor);
+            break;
+        default:
+            THROW_ABORT;
+    }
+}
 
-// static error_t parse_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor);
+static error_t parse_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor);
 
 // (array) <direct-abstract-declarator> ::= { "[" <const> "]" }+
 // static error_t parse_arr_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
@@ -472,60 +472,60 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
 // }
 
 // (direct) <direct-abstract-declarator> ::= "(" <abstract-declarator> ")" { "[" <const> "]" }
-// static error_t parse_direct_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(parse_abstract_decltor(ctx, abstract_decltor));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     TRY(peek_next(ctx));
-//     while (ctx->peek_tok->tok_kind == TOK_open_bracket) {
-//         TLong size;
-//         TRY(parse_arr_size(ctx, &size));
-//         *abstract_decltor = make_CAbstractArray(size, abstract_decltor);
-//         TRY(peek_next(ctx));
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_direct_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_abstract_decltor(ctx, abstract_decltor));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    TRY(peek_next(ctx));
+    // while (ctx->peek_tok->tok_kind == TOK_open_bracket) {
+    //     TLong size;
+    //     TRY(parse_arr_size(ctx, &size));
+    //     *abstract_decltor = make_CAbstractArray(size, abstract_decltor);
+    //     TRY(peek_next(ctx));
+    // }
+    FINALLY;
+    CATCH_EXIT;
+}
 
-// static error_t parse_ptr_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     if (ctx->peek_tok->tok_kind == TOK_close_paren) {
-//         *abstract_decltor = make_CAbstractBase();
-//     }
-//     else {
-//         TRY(parse_abstract_decltor(ctx, abstract_decltor));
-//     }
-//     *abstract_decltor = make_CAbstractPointer(abstract_decltor);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_ptr_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_close_paren) {
+        *abstract_decltor = make_CAbstractBase();
+    }
+    else {
+        TRY(parse_abstract_decltor(ctx, abstract_decltor));
+    }
+    *abstract_decltor = make_CAbstractPointer(abstract_decltor);
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <abstract-declarator> ::= "*" [ <abstract-declarator> ] | <direct-abstract-declarator>
 // abstract_declarator = AbstractPointer(abstract_declarator) | AbstractArray(int, abstract_declarator) | AbstractBase
-// static error_t parse_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
-//     CATCH_ENTER;
-//     TRY(peek_next(ctx));
-//     switch (ctx->peek_tok->tok_kind) {
-//         case TOK_binop_multiply:
-//             TRY(parse_ptr_abstract_decltor(ctx, abstract_decltor));
-//             break;
-//         case TOK_open_paren:
-//             TRY(parse_direct_abstract_decltor(ctx, abstract_decltor));
-//             break;
-//         case TOK_open_bracket:
-//             TRY(parse_arr_abstract_decltor(ctx, abstract_decltor));
-//             break;
-//         default:
-//             THROW_AT_TOKEN(
-//                 ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_abstract_decltor, str_fmt_tok(ctx->peek_tok)));
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_abstract_decltor(Ctx ctx, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
+    CATCH_ENTER;
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_binop_multiply:
+            TRY(parse_ptr_abstract_decltor(ctx, abstract_decltor));
+            break;
+        case TOK_open_paren:
+            TRY(parse_direct_abstract_decltor(ctx, abstract_decltor));
+            break;
+        // case TOK_open_bracket:
+        //     TRY(parse_arr_abstract_decltor(ctx, abstract_decltor));
+        //     break;
+        default:
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_abstract_decltor, str_fmt_tok(ctx->peek_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier);
 
@@ -533,33 +533,33 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp);
 static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp);
 static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * exp);
 
-// static error_t parse_decltor_cast_factor(Ctx ctx, shared_ptr_t(Type) * target_type) {
-//     AbstractDeclarator abstract_decltor = {sptr_new()};
-//     unique_ptr_t(CAbstractDeclarator) abstract_decltor_1 = uptr_new();
-//     CATCH_ENTER;
-//     TRY(parse_abstract_decltor(ctx, &abstract_decltor_1));
-//     proc_abstract_decltor(abstract_decltor_1, target_type, &abstract_decltor);
-//     sptr_move(Type, abstract_decltor.derived_type, *target_type);
-//     FINALLY;
-//     free_Type(&abstract_decltor.derived_type);
-//     free_CAbstractDeclarator(&abstract_decltor_1);
-//     CATCH_EXIT;
-// }
+static error_t parse_decltor_cast_factor(Ctx ctx, shared_ptr_t(Type) * target_type) {
+    AbstractDeclarator abstract_decltor = {sptr_new()};
+    unique_ptr_t(CAbstractDeclarator) abstract_decltor_1 = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_abstract_decltor(ctx, &abstract_decltor_1));
+    proc_abstract_decltor(abstract_decltor_1, target_type, &abstract_decltor);
+    sptr_move(Type, abstract_decltor.derived_type, *target_type);
+    FINALLY;
+    free_Type(&abstract_decltor.derived_type);
+    free_CAbstractDeclarator(&abstract_decltor_1);
+    CATCH_EXIT;
+}
 
 // <type-name> ::= { <type-specifier> }+ [ <abstract-declarator> ]
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * target_type) {
     CATCH_ENTER;
     TRY(parse_type_specifier(ctx, target_type));
     TRY(peek_next(ctx));
-    // switch (ctx->peek_tok->tok_kind) {
-    //     case TOK_binop_multiply:
-    //     case TOK_open_paren:
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_binop_multiply:
+        case TOK_open_paren:
     //     case TOK_open_bracket:
-    //         TRY(parse_decltor_cast_factor(ctx, target_type));
-    //         break;
-    //     default:
-    //         break;
-    // }
+            TRY(parse_decltor_cast_factor(ctx, target_type));
+            break;
+        default:
+            break;
+    }
     FINALLY;
     CATCH_EXIT;
 }
@@ -764,45 +764,45 @@ static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) cast_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->next_tok->info_at;
-//     TRY(parse_cast_exp_factor(ctx, &cast_exp));
-//     *exp = make_CDereference(&cast_exp, info_at);
-//     FINALLY;
-//     free_CExp(&cast_exp);
-//     CATCH_EXIT;
-// }
+static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) cast_exp = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->next_tok->info_at;
+    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    *exp = make_CDereference(&cast_exp, info_at);
+    FINALLY;
+    free_CExp(&cast_exp);
+    CATCH_EXIT;
+}
 
-// static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) cast_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->next_tok->info_at;
-//     TRY(parse_cast_exp_factor(ctx, &cast_exp));
-//     *exp = make_CAddrOf(&cast_exp, info_at);
-//     FINALLY;
-//     free_CExp(&cast_exp);
-//     CATCH_EXIT;
-// }
+static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) cast_exp = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->next_tok->info_at;
+    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    *exp = make_CAddrOf(&cast_exp, info_at);
+    FINALLY;
+    free_CExp(&cast_exp);
+    CATCH_EXIT;
+}
 
-// static error_t parse_ptr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     switch (ctx->next_tok->tok_kind) {
-//         case TOK_binop_multiply:
-//             TRY(parse_deref_factor(ctx, exp));
-//             break;
-//         case TOK_binop_bitand:
-//             TRY(parse_addrof_factor(ctx, exp));
-//             break;
-//         default:
-//             THROW_AT_TOKEN(
-//                 ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_ptr_unary_factor, str_fmt_tok(ctx->next_tok)));
-//     }
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_ptr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_binop_multiply:
+            TRY(parse_deref_factor(ctx, exp));
+            break;
+        case TOK_binop_bitand:
+            TRY(parse_addrof_factor(ctx, exp));
+            break;
+        default:
+            THROW_AT_TOKEN(
+                ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_ptr_unary_factor, str_fmt_tok(ctx->next_tok)));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     shared_ptr_t(Type) target_type = sptr_new();
@@ -975,10 +975,10 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_unop_decr:
             TRY(parse_incr_unary_factor(ctx, exp));
             break;
-        // case TOK_binop_multiply:
-        // case TOK_binop_bitand:
-        //     TRY(parse_ptr_unary_factor(ctx, exp));
-        //     break;
+        case TOK_binop_multiply:
+        case TOK_binop_bitand:
+            TRY(parse_ptr_unary_factor(ctx, exp));
+            break;
         // case TOK_key_sizeof:
         //     TRY(parse_sizeof_unary_factor(ctx, exp));
         //     break;
@@ -1769,8 +1769,8 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             // }
             case TOK_key_static:
             case TOK_key_extern:
-            // case TOK_binop_multiply:
-            // case TOK_open_paren:
+            case TOK_binop_multiply:
+            case TOK_open_paren:
                 i++;
                 break;
             // case TOK_open_bracket: {
@@ -1997,16 +1997,16 @@ static void proc_ident_decltor(const CIdent* node, shared_ptr_t(Type) * base_typ
     sptr_move(Type, *base_type, decltor->derived_type);
 }
 
-// static error_t proc_ptr_decltor(
-//     Ctx ctx, const CPointerDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
-//     shared_ptr_t(Type) derived_type = sptr_new();
-//     CATCH_ENTER;
-//     derived_type = make_Pointer(base_type);
-//     TRY(proc_decltor(ctx, node->decltor, &derived_type, decltor));
-//     FINALLY;
-//     free_Type(&derived_type);
-//     CATCH_EXIT;
-// }
+static error_t proc_ptr_decltor(
+    Ctx ctx, const CPointerDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
+    shared_ptr_t(Type) derived_type = sptr_new();
+    CATCH_ENTER;
+    derived_type = make_Pointer(base_type);
+    TRY(proc_decltor(ctx, node->decltor, &derived_type, decltor));
+    FINALLY;
+    free_Type(&derived_type);
+    CATCH_EXIT;
+}
 
 // static error_t proc_arr_decltor(
 //     Ctx ctx, const CArrayDeclarator* node, shared_ptr_t(Type) * base_type, Declarator* decltor) {
@@ -2074,9 +2074,9 @@ static error_t proc_decltor(Ctx ctx, const CDeclarator* node, shared_ptr_t(Type)
         case AST_CIdent_t:
             proc_ident_decltor(&node->get._CIdent, base_type, decltor);
             break;
-        // case AST_CPointerDeclarator_t:
-        //     TRY(proc_ptr_decltor(ctx, &node->get._CPointerDeclarator, base_type, decltor));
-        //     break;
+        case AST_CPointerDeclarator_t:
+            TRY(proc_ptr_decltor(ctx, &node->get._CPointerDeclarator, base_type, decltor));
+            break;
         // case AST_CArrayDeclarator_t:
         //     TRY(proc_arr_decltor(ctx, &node->get._CArrayDeclarator, base_type, decltor));
         //     break;
@@ -2099,15 +2099,15 @@ static error_t parse_ident_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor)
     CATCH_EXIT;
 }
 
-// static error_t parse_simple_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(parse_decltor(ctx, decltor));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_simple_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_decltor(ctx, decltor));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <simple-declarator> ::= <identifier> | "(" <declarator> ")"
 static error_t parse_simple_decltor_decl(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
@@ -2117,9 +2117,9 @@ static error_t parse_simple_decltor_decl(Ctx ctx, unique_ptr_t(CDeclarator) * de
         case TOK_identifier:
             TRY(parse_ident_decltor(ctx, decltor));
             break;
-        // case TOK_open_paren:
-        //     TRY(parse_simple_decltor(ctx, decltor));
-        //     break;
+        case TOK_open_paren:
+            TRY(parse_simple_decltor(ctx, decltor));
+            break;
         default:
             THROW_AT_TOKEN(
                 ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_simple_decltor, str_fmt_tok(ctx->peek_tok)));
@@ -2249,14 +2249,14 @@ static error_t parse_direct_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor
     CATCH_EXIT;
 }
 
-// static error_t parse_ptr_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(parse_decltor(ctx, decltor));
-//     *decltor = make_CPointerDeclarator(decltor);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_ptr_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(parse_decltor(ctx, decltor));
+    *decltor = make_CPointerDeclarator(decltor);
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // <declarator> ::= "*" <declarator> | <direct-declarator>
 // declarator = Ident(identifier) | PointerDeclarator(declarator) | ArrayDeclarator(int, declarator)
@@ -2264,12 +2264,12 @@ static error_t parse_direct_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor
 static error_t parse_decltor(Ctx ctx, unique_ptr_t(CDeclarator) * decltor) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
-    // if (ctx->peek_tok->tok_kind == TOK_binop_multiply) {
-    //     TRY(parse_ptr_decltor(ctx, decltor));
-    // }
-    // else {
+    if (ctx->peek_tok->tok_kind == TOK_binop_multiply) {
+        TRY(parse_ptr_decltor(ctx, decltor));
+    }
+    else {
         TRY(parse_direct_decltor(ctx, decltor));
-    // }
+    }
     FINALLY;
     CATCH_EXIT;
 }
@@ -2426,8 +2426,8 @@ static error_t parse_decltor_decl(Ctx ctx, Declarator* decltor, CStorageClass* s
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
         case TOK_identifier:
-        // case TOK_binop_multiply:
-        // case TOK_open_paren:
+        case TOK_binop_multiply:
+        case TOK_open_paren:
             break;
         default:
             TRY(parse_storage_class(ctx, storage_class));
@@ -2518,8 +2518,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
