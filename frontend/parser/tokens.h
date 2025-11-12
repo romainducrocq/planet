@@ -44,7 +44,7 @@ typedef enum TOKEN_KIND {
     TOK_unop_complement,
     TOK_unop_neg,
     TOK_unop_not,
-    TOK_unop_deref,
+    TOK_unop_addrof,
     TOK_binop_add,
     TOK_binop_multiply,
     TOK_binop_divide,

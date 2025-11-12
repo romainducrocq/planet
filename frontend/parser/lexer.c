@@ -585,7 +585,7 @@ static TOKEN_KIND match_token(Ctx ctx) {
         case ';':
             return TOK_semicolon;
         case '@':
-            return TOK_unop_deref;
+            return TOK_unop_addrof;
         // case '!':
         //     return TODO;
         case ':':

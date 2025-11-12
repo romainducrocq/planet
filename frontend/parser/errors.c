@@ -82,7 +82,7 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "-";
         case TOK_unop_not:
             return "not";
-        case TOK_unop_deref:
+        case TOK_unop_addrof:
             return "@";
         case TOK_binop_add:
             return "+";
