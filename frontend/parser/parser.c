@@ -689,6 +689,16 @@ static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
+static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    *exp = make_CDereference(exp, info_at);
+    FINALLY;
+    CATCH_EXIT;
+
+}
+
 // static error_t parse_subscript_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     unique_ptr_t(CExp) subscript_exp = uptr_new();
 //     CATCH_ENTER;
@@ -702,6 +712,21 @@ static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     free_CExp(&subscript_exp);
 //     CATCH_EXIT;
 // }
+
+static error_t parse_arr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_close_bracket) {
+        TRY(parse_deref_factor(ctx, exp));
+    }
+    else {
+        TRY(1); // TODO
+        // TRY(parse_subscript_factor(ctx, exp));
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_ENTER;
@@ -787,17 +812,6 @@ static error_t parse_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     free_CConst(&constant);
     CATCH_EXIT;
 }
-
-// static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) cast_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->next_tok->info_at;
-//     TRY(parse_cast_exp_factor(ctx, &cast_exp));
-//     *exp = make_CDereference(&cast_exp, info_at);
-//     FINALLY;
-//     free_CExp(&cast_exp);
-//     CATCH_EXIT;
-// }
 
 static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
@@ -968,9 +982,9 @@ static error_t parse_postfix_op_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
-        // case TOK_open_bracket:
-        //     TRY(parse_subscript_factor(ctx, exp));
-        //     break;
+        case TOK_open_bracket:
+            TRY(parse_arr_unary_factor(ctx, exp));
+            break;
         // case TOK_structop_member:
         //     TRY(parse_dot_factor(ctx, exp));
         //     break;
@@ -995,7 +1009,7 @@ static error_t parse_postfix_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(parse_primary_exp_factor(ctx, exp));
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
-        // case TOK_open_bracket:
+        case TOK_open_bracket:
         // case TOK_structop_member:
         // case TOK_structop_ptr:
         case TOK_unop_incr:
