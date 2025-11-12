@@ -877,8 +877,7 @@ static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt));
-    // TODO should be parse_type_name
-    TRY(parse_type_specifier(ctx, &target_type));
+    TRY(parse_type_name(ctx, &target_type));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
     TRY(pop_next(ctx));
@@ -2311,8 +2310,7 @@ static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * de
     TRY(parse_identifier(ctx, 0, name));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_assign_type));
-    // TODO should be parse_type_name
-    TRY(parse_type_specifier(ctx, derived_type));
+    TRY(parse_type_name(ctx, derived_type));
     FINALLY;
     CATCH_EXIT;
 }
@@ -2377,9 +2375,8 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, vector
         TRY(1); // TODO rm    
     }
     else {
-        // TODO should be parse_type_name
         // error message expects none?
-        TRY(parse_type_specifier(ctx, fun_type));
+        TRY(parse_type_name(ctx, fun_type));
     }
     *fun_type = make_FunType(&param_types, fun_type);
     FINALLY;
