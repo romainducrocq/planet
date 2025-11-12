@@ -249,6 +249,7 @@ static error_t parse_arr_size(Ctx ctx, TLong* size) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
+    TRANSPILE(set_is_arr_size(true));
     switch (ctx->peek_tok->tok_kind) {
         case TOK_int_const:
         case TOK_long_const:
@@ -263,6 +264,7 @@ static error_t parse_arr_size(Ctx ctx, TLong* size) {
             THROW_AT_TOKEN(
                 ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx->peek_tok)));
     }
+    TRANSPILE(set_is_arr_size(false));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
     switch (constant->type) {

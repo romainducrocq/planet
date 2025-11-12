@@ -51,6 +51,10 @@ void cc::Transpiler::set_is_elif(bool is_elif) {
     this->is_elif = is_elif;
 }
 
+void cc::Transpiler::set_is_arr_size(bool is_arr_size) {
+    this->is_arr_size = is_arr_size;
+}
+
 // void cc::Transpiler::new_token(const Token* tok, std::string buf) {
 //     set_linenum(tok);
 //     append_buf(buf);
@@ -437,26 +441,35 @@ void cc::Transpiler::keep_token(const Token* tok) {
     }
 }
 
+void cc::Transpiler::append_const_buf(const std::string& buf) {
+    if (is_arr_size) {
+        arr_sizes.insert(arr_sizes.begin(), buf);
+    }
+    else {
+        append_buf(buf);
+    }
+}
+
 void cc::Transpiler::append_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
     if (const_buf.compare("0") == 0 && with_prob(10)) {
-        append_buf("nil");
+        append_const_buf("nil");
     }
     else if (const_buf.compare("0") == 0 && with_prob(10)) {
-        append_buf("false");
+        append_const_buf("false");
     }
     else if (const_buf.compare("1") == 0 && with_prob(10)) {
-        append_buf("true");
+        append_const_buf("true");
     }
     else {
-        append_buf(const_buf);
+        append_const_buf(const_buf);
     }
 }
 
 void cc::Transpiler::append_long_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
     const_buf.back() = 'l';
-    append_buf(const_buf);
+    append_const_buf(const_buf);
 }
 
 void cc::Transpiler::append_double_const(size_t identifier) {
@@ -466,13 +479,16 @@ void cc::Transpiler::append_double_const(size_t identifier) {
             const_buf[i] = 'e';
         }
     }
+    if (is_arr_size) {
+        throw std::runtime_error("invalid arr_size");
+    }
     append_buf(const_buf);
 }
 
 void cc::Transpiler::append_unsigned_const(size_t identifier) {
     std::string const_buf = map_get(identifiers->hash_table, identifier);
     const_buf.back() = 'u';
-    append_buf(const_buf);
+    append_const_buf(const_buf);
 }
 
 void cc::Transpiler::append_long_unsigned_const(size_t identifier) {
@@ -480,7 +496,7 @@ void cc::Transpiler::append_long_unsigned_const(size_t identifier) {
     const_buf.pop_back();
     const_buf.back() = 'u';
     const_buf.push_back('l');
-    append_buf(const_buf);
+    append_const_buf(const_buf);
 }
 
 void cc::Transpiler::append_identifier(size_t identifier) {
@@ -535,7 +551,6 @@ void cc::Transpiler::append_end(const std::string& end) {
 }
 
 void cc::Transpiler::derived_type(const Type* _derived_type) {
-    // TODO
     switch (_derived_type->type) {
         case AST_Int_t:
             if (with_prob(5)) {
@@ -561,6 +576,14 @@ void cc::Transpiler::derived_type(const Type* _derived_type) {
             append_buf("*");
             derived_type(_derived_type->get._Pointer.ref_type);
             break;
+        case AST_Array_t: {
+            append_buf("[");
+            append_buf(arr_sizes.back());
+            arr_sizes.pop_back();
+            append_buf("]");
+            derived_type(_derived_type->get._Array.elem_type);
+            break;
+        }
         default:
             throw std::runtime_error("invalid type");
     }

@@ -33,6 +33,7 @@ class Transpiler {
     private:
         bool top_level = true;
         bool is_elif = false;
+        bool is_arr_size = false;
         int indent = 0;
         int paren = 0;
         size_t linenum = 1;
@@ -40,7 +41,8 @@ class Transpiler {
         std::vector<bool> open_blocks = {};
         std::vector<LineBuf> cond_buf = {};
         std::vector<LineBuf> do_while_buf = {};
-        
+        std::vector<std::string> arr_sizes = {};
+
         std::string filename = "";
         const ErrorsContext* errors = nullptr;
         IdentifierContext* identifiers = nullptr;
@@ -59,6 +61,7 @@ class Transpiler {
         void set_linenum(const Token* tok);
         void set_top_level(bool top_level);
         void set_is_elif(bool is_elif);
+        void set_is_arr_size(bool is_arr_size);
         // void new_token(const Token* tok, std::string buf);
         void keep_token(const Token* tok);
         void unary_op(const Token* tok);
@@ -96,6 +99,7 @@ class Transpiler {
         void decr_paren();
         void concat_buf(const LineBuf& line_buf, const std::string& buf);
         void append_buf(const std::string& buf);
+        void append_const_buf(const std::string& buf);
         void append_end(const std::string& end);
         void append_const(size_t identifier);
         void append_long_const(size_t identifier);
