@@ -763,7 +763,7 @@ static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+static error_t parse_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) exp_left = uptr_new();
     unique_ptr_t(CExp) exp_right = uptr_new();
     unique_ptr_t(CExp) exp_left_1 = uptr_new();
@@ -799,7 +799,7 @@ static error_t parse_incr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-static error_t parse_addrof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
@@ -829,7 +829,7 @@ static error_t parse_addrof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-static error_t parse_cast_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
     shared_ptr_t(Type) target_type = sptr_new();
     CATCH_ENTER;
@@ -1021,13 +1021,13 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             break;
         case TOK_unop_incr:
         case TOK_unop_decr:
-            TRY(parse_incr_unary_factor(ctx, exp));
+            TRY(parse_incr_factor(ctx, exp));
             break;
         case TOK_unop_addrof:
-            TRY(parse_addrof_unary_factor(ctx, exp));
+            TRY(parse_addrof_factor(ctx, exp));
             break;
         case TOK_key_cast:
-            TRY(parse_cast_unary_factor(ctx, exp));
+            TRY(parse_cast_factor(ctx, exp));
             break;
         // case TOK_key_sizeof:
         //     TRY(parse_sizeof_unary_factor(ctx, exp));
