@@ -1,6 +1,6 @@
-/* A very simple subscripting test case */
+#  A very simple subscripting test case 
 
-int main(void) {
-    int arr[3] = {1, 2, 3};
-    return arr[2];
+pub fn main(none) i32 {
+    arr: [3]i32 = $(1, 2, 3)
+    return arr[2]
 }

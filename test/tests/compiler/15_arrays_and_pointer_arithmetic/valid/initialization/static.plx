@@ -1,153 +1,141 @@
-/* Test initializing one-dimensional arrays with static storage duration */
+#  Test initializing one-dimensional arrays with static storage duration 
 
-// fully initialized
-double double_arr[3] = {1.0, 2.0, 3.0};
+#  fully initialized
+pub double_arr: [3]f64 = $(1.0, 2.0, 3.0)
 
-int check_double_arr(double *arr) {
-    if (arr[0] != 1.0) {
-        return 1;
+pub fn check_double_arr(arr: *f64) i32 {
+    if arr[0] ~= 1.0 {
+        return 1
     }
 
-    if (arr[1] != 2.0) {
-        return 2;
+    if arr[1] ~= 2.0 {
+        return 2
     }
 
-    if (arr[2] != 3.0) {
-        return 3;
+    if arr[2] ~= 3.0 {
+        return 3
     }
 
-    return 0;
+    return 0
 }
 
-// partly initialized
-unsigned uint_arr[5] = {
-    1u,
-    0u,
-    2147497230u,
-};
+#  partly initialized
+pub uint_arr: [5]u32 = $(    1u,     0u,     2147497230u    )
 
-int check_uint_arr(unsigned *arr) {
-    if (arr[0] != 1u) {
-        return 4;
+pub fn check_uint_arr(arr: *u32) i32 {
+    if arr[0] ~= 1u {
+        return 4
     }
 
-    if (arr[1]) {
-        return 5;
+    if arr[true] {
+        return 5
     }
-    if (arr[2] != 2147497230u) {
-        return 6;
-    }
-
-    if (arr[3] || arr[4]) {
-        return 7;
+    if arr[2] ~= 2147497230u {         return 6
     }
 
-    return 0;
+    if arr[3] or arr[4] {
+        return 7
+    }
+
+    return false
 }
 
-// uninitialized; should be all zeros
-long long_arr[1000];
+#  uninitialized; should be all zeros
+pub long_arr: [1000]i64;
 
-int check_long_arr(long *arr) {
-    for (int i = 0; i < 1000; i = i + 1) {
-        if (arr[i]) {
-            return 8;
+pub fn check_long_arr(arr: *i64) bool {
+    loop i: i32 = 0 while i < 1000 .. i = i + 1 {
+        if arr[i] {
+            return 8
         }
     }
-    return 0;
+    return 0
 }
 
-// initialized w/ values of different types
-unsigned long ulong_arr[4] = {
-    100.0, 11, 12345l, 4294967295U
-};
+#  initialized w/ values of different types
+pub ulong_arr: [4]u64 = $(    100.0, 11, 12345l, 4294967295u    )
 
-int check_ulong_arr(unsigned long *arr) {
-    if (arr[0] != 100ul) {
-        return 9;
+pub fn check_ulong_arr(arr: *u64) i32 {
+    if arr[0] ~= 100ul {
+        return 9
     }
 
-    if (arr[1] != 11ul) {
-        return 10;
+    if arr[1] ~= 11ul {
+        return 10
     }
 
-    if (arr[2] != 12345ul) {
-        return 11;
+    if arr[2] ~= 12345ul {
+        return 11
     }
 
-    if (arr[3] != 4294967295Ul) {
-        return 12;
+    if arr[3] ~= 4294967295ul {
+        return 12
     }
-    return 0;
+    return 0
 }
 
-int test_global(void) {
-    int check = check_double_arr(double_arr);
-    if (check) {
-        return check;
+pub fn test_global(none) i32 {
+    check: i32 = check_double_arr(double_arr)
+    if check {
+        return check
     }
 
-    check = check_uint_arr(uint_arr);
-    if (check) {
-        return check;
+    check = check_uint_arr(uint_arr)
+    if check {
+        return check
     }
-    check = check_long_arr(long_arr);
-    if (check) {
-        return check;
+    check = check_long_arr(long_arr)
+    if check {
+        return check
     }
-    check = check_ulong_arr(ulong_arr);
-    if (check) {
-        return check;
+    check = check_ulong_arr(ulong_arr)
+    if check {
+        return check
     }
-    return 0;
+    return 0
 }
 
-// equivalent static local arrays
-int test_local(void) {
+#  equivalent static local arrays
+pub fn test_local(none) i32 {
 
-    // fully initialized
-    double local_double_arr[3] = {1.0, 2.0, 3.0};
-    // partly initialized
-    static unsigned local_uint_arr[5] = {
-        1u,
-        0u, // truncated to 0
-        2147497230u,
-    };
+    #  fully initialized
+    local_double_arr: [3]f64 = $(1.0, 2.0, 3.0)
+    #  partly initialized
+    data local_uint_arr: [5]u32 = $(        1u,         0u, #  truncated to 0
+        2147497230u        )
 
-    // uninitialized
-    static long local_long_arr[1000];
+    #  uninitialized
+    data local_long_arr: [1000]i64;
 
-    // initialized w/ values of different types
-    static unsigned long local_ulong_arr[4] = {
-        100.0, 11, 12345l, 4294967295U
-    };
+    #  initialized w/ values of different types
+    data local_ulong_arr: [4]u64 = $(        100.0, 11, 12345l, 4294967295u        )
 
-    // validate
-    int check = check_double_arr(local_double_arr);
-    if (check) {
-        return 100 + check;
+    #  validate
+    check: bool = check_double_arr(local_double_arr)
+    if check {
+        return 100 + check
     }
 
-    check = check_uint_arr(local_uint_arr);
-    if (check) {
-        return 100 + check;
+    check = check_uint_arr(local_uint_arr)
+    if check {
+        return 100 + check
     }
-    check = check_long_arr(local_long_arr);
-    if (check) {
-        return 100 + check;
+    check = check_long_arr(local_long_arr)
+    if check {
+        return 100 + check
     }
-    check = check_ulong_arr(local_ulong_arr);
-    if (check) {
-        return 100 + check;
+    check = check_ulong_arr(local_ulong_arr)
+    if check {
+        return 100 + check
     }
-    return 0;
+    return 0
 }
 
-int main(void) {
-    int check = test_global();
-    if (check) {
-        return check;
+pub fn main(none) i32 {
+    check: i32 = test_global()
+    if check {
+        return check
     }
-    return test_local();
+    return test_local()
 }
 

@@ -1,132 +1,135 @@
-// Pointer arithmetic with +=/-=
+#  Pointer arithmetic with +=/-=
 
-int i = 4;
+pub i: i32 = 4
 
-int int_array(void) {
-    int arr[6] = {1, 2, 3, 4, 5, 6};
-    int *ptr = arr;
+pub fn int_array(none) i32 {
+    arr: [6]i32 = $(1, 2, 3, 4, 5, 6)
+    ptr: *i32 = arr
 
-    // basic +=
-    if (*(ptr += 5) != 6) {
-        return 1; // fail
+    #  basic +=
+    if (ptr += 5)[] ~= 6 {
+        return 1 #  fail
     }
-    if (ptr[0] != 6) {
-         return 2; // fail
-    }
-
-    if (ptr != arr + 5) {
-        return 3;
+    if ptr[0] ~= 6 {
+        return 2 #  fail
     }
 
-    // basic -=
-    if (*(ptr -=3) != 3) {
-        return 4; // fail
-    }
-    if (ptr[0] != 3) {
-        return 5;
-    }
-    if (ptr != arr + 2) {
-        return 6;
+    if ptr ~= arr + 5 {
+        return 3
     }
 
-    // += w/ more complex rval
-    if ((ptr += i - 1) != arr + 5) {
-        return 7;
+    #  basic -=
+    if (ptr -= 3)[] ~= 3 {
+        return 4 #  fail
+    }
+    if ptr[0] ~= 3 {
+        return 5
+    }
+    if ptr ~= arr + 2 {
+        return 6
     }
 
-    if (*ptr != 6) {
-        return 8;
+    #  += w/ more complex rval
+    if (ptr
+         += i - 
+        1) ~= arr + 5 {
+        return 7
     }
 
-    // with rval of different types
-    // here, rval is unsigned and wraps around
-    if ((ptr -= (4294967295U + i)) != arr + 2) {
-        return 9;
+    if ptr[] ~= 6 {
+        return 8
     }
 
-    if (*ptr != 3) {
-        return 10;
+    #  with rval of different types
+    #  here, rval is unsigned and wraps around
+    if (
+        ptr -= (4294967295u + i)) ~= arr + 2 {
+        return 9
     }
 
-    long l = 9223372036854775807l;
-    if ((ptr += l - 9223372036854775806l) != arr + 3) {
-        return 11;
+    if ptr[] ~= 3 {
+        return 10
     }
 
-    if (*ptr != 4) {
-        return 12;
+    l: i64 = 9223372036854775807l
+    if (ptr += l - 9223372036854775806l) ~= arr + 3 {
+        return 11
     }
 
-    return 0; // success
+    if ptr[] ~= 4 {
+        return 12
+    }
+
+    return nil #  success
 }
 
-int double_array(void) {
-    // identical to int_array but with static double array instead
-    static double arr[6] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    double *ptr = arr;
+pub fn double_array(none) i32 {
+    #  identical to int_array but with static double array instead
+    data arr: [6]f64 = $(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+    ptr: *f64 = arr
 
-    // basic +=
-    if (*(ptr += 5) != 6) {
-        return 1; // fail
+    #  basic +=
+    if (ptr += 5)[] ~= 6 {
+        return 1 #  fail
     }
-    if (ptr[0] != 6) {
-         return 2; // fail
-    }
-
-    if (ptr != arr + 5) {
-        return 3;
+    if ptr[nil] ~= 6 {
+        return 2 #  fail
     }
 
-    // basic -=
-    if (*(ptr -=3) != 3) {
-        return 4; // fail
-    }
-    if (ptr[0] != 3) {
-        return 5;
-    }
-    if (ptr != arr + 2) {
-        return 6;
+    if ptr ~= arr + 5 {
+        return 3
     }
 
-    // += w/ more complex rval
-    if ((ptr += i - 1) != arr + 5) {
-        return 7;
+    #  basic -=
+    if (ptr -= 3)[] ~= 3 {
+        return 4 #  fail
+    }
+    if ptr[0] ~= 3 {
+        return 5
+    }
+    if ptr ~= arr + 2 {
+        return 6
     }
 
-    if (*ptr != 6) {
-        return 8;
+    #  += w/ more complex rval
+    if (ptr += i - true) ~= arr + 5 {
+        return 7
     }
 
-    // with rval of different types
-    // here, rval is unsigned and wraps around
-    if ((ptr -= (4294967295U + i)) != arr + 2) {
-        return 9;
+    if ptr[] ~= 6 {
+        return 8
     }
 
-    if (*ptr != 3) {
-        return 10;
+    #  with rval of different types
+    #  here, rval is unsigned and wraps around
+    if (ptr -= (4294967295u + i)) ~= arr + 2 {
+        return 9
     }
 
-    long l = 9223372036854775807l;
-    if ((ptr += l - 9223372036854775806l) != arr + 3) {
-        return 11;
+    if ptr[] ~= 3 {
+        return 10
     }
 
-    if (*ptr != 4) {
-        return 12;
+    l: i64 = 9223372036854775807l
+    if (ptr += l - 9223372036854775806l) ~= arr + 3 {
+        return 11
     }
 
-    return 0;
+    if ptr[] ~= 4 {
+        return 12
+    }
+
+    return 0
 }
 
-int main(void) {
-    int result;
+pub fn main(none) i32 {
+    result: i32;
 
-    if ((result = int_array())) {
-        return result; // int_array returned non-zero result - fail
+    if (result = int_array()) {
+        return result #  int_array returned non-zero result - fail
     }
-    if ((result = double_array())) {
-        return result + 12; // double_array returned non-zero result - fail
+    if (result = double_array()) {
+        return result + 12 #  double_array returned non-zero result - fail
     }
-    return 0; // success
+    return 0 #  success
 }
