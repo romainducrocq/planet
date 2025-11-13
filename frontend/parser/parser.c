@@ -1960,7 +1960,7 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
 //     CATCH_EXIT;
 // }
 
-// static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializer);
+static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializer);
 
 static error_t parse_single_init(Ctx ctx, unique_ptr_t(CInitializer) * initializer) {
     unique_ptr_t(CExp) exp = uptr_new();
@@ -1972,48 +1972,47 @@ static error_t parse_single_init(Ctx ctx, unique_ptr_t(CInitializer) * initializ
     CATCH_EXIT;
 }
 
-// static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initializer) {
-//     vector_t(unique_ptr_t(CInitializer)) initializers = vec_new();
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     while (true) {
-//         TRY(peek_next(ctx));
-//         if (ctx->peek_tok->tok_kind == TOK_close_brace) {
-//             break;
-//         }
-//         TRY(parse_initializer(ctx, initializer));
-//         vec_move_back(initializers, *initializer);
-//         TRY(peek_next(ctx));
-//         if (ctx->peek_tok->tok_kind == TOK_close_brace) {
-//             break;
-//         }
-//         TRY(pop_next(ctx));
-//         TRY(expect_next(ctx, ctx->next_tok, TOK_comma_separator));
-//     }
-//     if (vec_empty(initializers)) {
-//         THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_compound_init));
-//     }
-//     TRY(pop_next(ctx));
-//     *initializer = make_CCompoundInit(&initializers);
-//     FINALLY;
-//     for (size_t i = 0; i < vec_size(initializers); ++i) {
-//         free_CInitializer(&initializers[i]);
-//     }
-//     vec_delete(initializers);
-//     CATCH_EXIT;
-// }
+static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initializer) {
+    vector_t(unique_ptr_t(CInitializer)) initializers = vec_new();
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_close_brace) {
+        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_compound_init));
+    }
+    TRY(parse_initializer(ctx, initializer));
+    vec_move_back(initializers, *initializer);    
+    TRY(peek_next(ctx));
+    while (ctx->peek_tok->tok_kind != TOK_close_brace) {
+        TRY(pop_next(ctx));
+        TRY(expect_next(ctx, ctx->next_tok, TOK_comma_separator));
+        TRY(parse_initializer(ctx, initializer));
+        vec_move_back(initializers, *initializer);
+        TRY(peek_next(ctx));
+    }
+    TRY(pop_next(ctx));
+    *initializer = make_CCompoundInit(&initializers);
+    FINALLY;
+    for (size_t i = 0; i < vec_size(initializers); ++i) {
+        free_CInitializer(&initializers[i]);
+    }
+    vec_delete(initializers);
+    CATCH_EXIT;
+}
 
 // <initializer> ::= <exp> | "{" <initializer> { "," <initializer> } [ "," ] "}"
 // initializer = SingleInit(exp) | CompoundInit(initializer*)
 static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializer) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
-    // if (ctx->peek_tok->tok_kind == TOK_open_brace) {
-    //     TRY(parse_compound_init(ctx, initializer));
-    // }
-    // else {
+    if (ctx->peek_tok->tok_kind == TOK_compound_init) {
+        TRY(parse_compound_init(ctx, initializer));
+    }
+    else {
         TRY(parse_single_init(ctx, initializer));
-    // }
+    }
     FINALLY;
     CATCH_EXIT;
 }
