@@ -625,9 +625,13 @@ void cc::Transpiler::derived_type(const Type* _derived_type) {
             append_buf("u8");
             break;
         case AST_Pointer_t:
-            // TODO string
-            append_buf("*");
-            derived_type(_derived_type->get._Pointer.ref_type);
+            if (_derived_type->get._Pointer.ref_type->type == AST_Char_t && with_prob(50)) {
+                append_buf("string");
+            }
+            else {
+                append_buf("*");
+                derived_type(_derived_type->get._Pointer.ref_type);
+            }
             break;
         case AST_Array_t: {
             append_buf("[");
