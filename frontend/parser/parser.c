@@ -780,7 +780,6 @@ static error_t parse_subscript_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) subscript_exp = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
-    TRY(pop_next(ctx));
     TRY(parse_exp(ctx, 0, &subscript_exp));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
