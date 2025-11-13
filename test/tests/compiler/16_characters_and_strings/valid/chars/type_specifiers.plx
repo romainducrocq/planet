@@ -1,42 +1,41 @@
-// make sure we can parse different ways to specify signed & unsigned char
+#  make sure we can parse different ways to specify signed & unsigned char
 
-#ifdef SUPPRESS_WARNINGS
-#ifndef __clang__
-#pragma GCC diagnostic ignored "-Wold-style-declaration"
-#endif
-#endif
 
-char signed static a = 10;
-unsigned static char b = 20;
-char c = 30;
 
-int main(void)
-{
-    extern signed char a;
-    char unsigned extern b;
-    extern char c;
-    if (a != 10) {
-        return 1;
+
+
+
+
+a: i8 = 10
+b: u8 = 20
+pub c: char = 30
+
+pub fn main(none) i32 {
+    extrn a: i8;
+    extrn b: u8;
+    extrn c: char;
+    if a ~= 10 {
+        return 1
     }
 
-    if (b != 20) {
-        return 2;
+    if b ~= 20 {
+        return 2
     }
 
-    if (c != 30) {
-        return 3;
+    if c ~= 30 {
+        return 3
     }
 
-    int loop_counter = 0;
+    loop_counter: i32 = 0
 
-    // declare a character in a for loop header
-    for (unsigned char d = 0; d < 100; d = d + 1) {
-        loop_counter = loop_counter + 1;
+    #  declare a character in a for loop header
+    loop d: u8 = 0 while d < 100 .. d = d + 1 {
+        loop_counter = loop_counter + 1
     }
 
-    if (loop_counter != 100) {
-        return 4;
+    if loop_counter ~= 100 {
+        return 4
     }
 
-    return 0;
+    return 0
 }

@@ -1,5 +1,5 @@
-/* Test that we add a terminating null byte to the empty string */
-int main(void) {
-    char *empty = "";
-    return empty[0];
+#  Test that we add a terminating null byte to the empty string 
+pub fn main(none) i32 {
+    empty: *char = ""
+    return empty[0]
 }

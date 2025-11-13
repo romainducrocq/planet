@@ -1,20 +1,19 @@
-/* Make sure we can handle control characters that are in the source character set */
+#  Make sure we can handle control characters that are in the source character set 
 
-int main(void)
-{
-    int tab = '	';
-    int vertical_tab = '';
-    int form_feed = '';
-    if (tab != '\t') {
-        return 1;
+pub fn main(none) i32 {
+    tab: i32 = '	'
+    vertical_tab: i32 = ''
+    form_feed: i32 = ''
+    if tab ~= '\t' {
+        return true
     }
-    if (vertical_tab != '\v') {
-        return 2;
-    }
-
-    if (form_feed != '\f') {
-        return 3;
+    if vertical_tab ~= '\v' {
+        return 2
     }
 
-    return 0;
+    if form_feed ~= '\f' {
+        return 3
+    }
+
+    return 0
 }

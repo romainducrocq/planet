@@ -1,14 +1,14 @@
-/* Test casts from char * to other character pointer types */
+#  Test casts from char * to other character pointer types 
 
-int main(void) {
-    char *c = "This is a string!";
-    unsigned char *uc = (unsigned char *)c;
-    if (uc[3] != 's') {
-        return 1;
+pub fn main(none) i32 {
+    c: *char = "This is a string!"
+    uc: *u8 = cast<*u8>(c)
+    if uc[3] ~= 's' {
+        return true
     }
-    signed char *sc = (signed char *)c;
-    if (sc[3] != 's'){
-            return 2;
-        }
-    return 0;
+    sc: *i8 = cast<*i8>(c)
+    if sc[3] ~= 's' {
+        return 2
+    }
+    return 0
 }

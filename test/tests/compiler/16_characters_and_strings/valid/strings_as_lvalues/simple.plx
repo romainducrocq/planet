@@ -1,4 +1,4 @@
-int main(void) {
-    char *x = "Hello, World!";
-    return x[2];
+pub fn main(none) i32 {
+    x: *char = "Hello, World!"
+    return x[2]
 }

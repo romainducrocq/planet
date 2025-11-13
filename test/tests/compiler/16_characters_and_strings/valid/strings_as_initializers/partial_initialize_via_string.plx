@@ -1,89 +1,93 @@
-/* Test that when we initialize an array from a string literal,
- * we zero out elements that aren't explicitly initialized.
- * */
+#  Test that when we initialize an array from a string literal,
+#  * we zero out elements that aren't explicitly initialized.
+#  * 
 
-static char static_arr[5] = "hi";
-int test_static(void) {
-    return (static_arr[0] == 'h' && static_arr[1] == 'i' &&
-            !(static_arr[2] || static_arr[3] || static_arr[4]));
+static_arr: [5]char = "hi"
+pub fn test_static(none) i32 {
+    return (static_arr[0] == 'h' and static_arr[1] == 'i' and         not (static_arr[2] or static_arr[3] or static_arr[4]))
 }
 
-static signed char nested_static_arr[3][4] = {
-    "", "bc"};  // empty string just initializes to null byte
-int test_static_nested(void) {
-    for (int i = 0; i < 3; i = i + 1)
-        for (int j = 0; j < 4; j = j + 1) {
-            signed char c = nested_static_arr[i][j];
+nested_static_arr: [3][4]i8 = $(    "", "bc") #  empty string just initializes to null byte
+pub fn test_static_nested(none) bool {
+    loop i: i32 = 0 while i < 3 .. i = i + true {
+        loop j: i32 = 0 while j < 4 .. j = j + 1 {
+            c: i8 = nested_static_arr[i][j]
 
-            // nested_static_arr[1][0] and nested_static_arr[1][1]
-            // have values from initializer; all other elements are 0
-            signed char expected = 0;
-            if (i == 1 && j == 0) {
-                expected = 'b';
-            } else if (i == 1 && j == 1) {
-                expected = 'c';
+            #  nested_static_arr[1][0] and nested_static_arr[1][1]
+            #  have values from initializer; all other elements are 0
+            expected: i8 = nil
+            if i == 1 and j == 0 {
+                expected = 'b'
+            }
+            elif i == 1 and j == 1 {
+                expected = 'c'
             }
 
-            if (c != expected) {
-                return 0;  // failure
+            if c ~= expected {
+                return 0 #  failure
             }
         }
+    }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-int test_automatic(void) {
-    unsigned char aut[4] = "ab";
-    // first two elements have values from initializer, last two are 0
-    return (aut[0] == 'a' && aut[1] == 'b' && !(aut[2] || aut[3]));
+pub fn test_automatic(none) i32 {
+    aut: [4]u8 = "ab"
+    #  first two elements have values from initializer, last two are 0
+    return (aut[0] == 'a' and aut[1] == 'b' and not (aut[2] or aut[3]))
 }
 
-int test_automatic_nested(void) {
-    signed char nested_auto[2][2][4] = {{"foo"}, {"x", "yz"}};
-    for (int i = 0; i < 2; i = i + 1) {
-        for (int j = 0; j < 2; j = j + 1) {
-            for (int k = 0; k < 4; k = k + 1) {
-                signed char c = nested_auto[i][j][k];
-                signed char expected = 0;
-                if (i == 0 && j == 0) {
-                    if (k == 0) {
-                        expected = 'f';
-                    } else if (k == 1 || k == 2) {
-                        expected = 'o';
+pub fn test_automatic_nested(none) i32 {
+    nested_auto: [2][2][4]i8 = $($("foo"), $("x", "yz"))
+    loop i: i32 = false while i < 2 .. i = i + 1 {
+        loop j: i32 = 0 while j < 2 .. j = j + true {
+            loop k: bool = 0 while k < 4 .. k = k + 1 {
+                c: i8 = nested_auto[i][j][k]
+                expected: i8 = 0
+                if i == 0 and j == 0 {
+                    if k == false {
+                        expected = 'f'
                     }
-                } else if (i == 1 && j == 0 && k == 0) {
-                    expected = 'x';
-                } else if (i == 1 && j == 1 && k == 0) {
-                    expected = 'y';
-                } else if (i == 1 && j == 1 && k == 1) {
-                    expected = 'z';
+                    elif k == 1 or k == 2 {
+                        expected = 'o'
+                    }
+                }
+                elif i == 1 and j == 0 and k == 0 {
+                    expected = 'x'
+                }
+                elif i == 1 and j == 1 and k == 0 {
+                    expected = 'y'
+                }
+                elif i == 1 and j == 1 and k == 1 {
+                    expected = 'z'
                 }
 
-                if (c != expected) {
-                    return 0;  // failure
+                if c ~= expected {
+                    return 0 #  failure
                 }
             }
         }
     }
-    return 1;  // success
+    return 1 #  success
 }
 
-int main(void) {
-    if (!test_static()) {
-        return 1;
+pub fn main(none) i32 {
+    if not test_static() {
+        return 1
     }
 
-    if (!test_static_nested()) {
-        return 2;
+    if not test_static_nested() {
+        return 2
     }
 
-    if (!test_automatic()) {
-        return 3;
+    if not test_automatic() {
+        return 3
     }
 
-    if (!test_automatic_nested()) {
-        return 4;
+    if not test_automatic_nested() {
+        return 4
     }
 
-    return 0;
+    return 0
 }

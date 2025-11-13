@@ -1,16 +1,21 @@
-// Test that we can use character constants as cases in switch statements
-int main(void) {
-    static int i = 65;
-    switch (i) {
-        case 100l:
-            return 1;  // fail
-        case 'A':
-            return 0;  // success
-        case 'B':
-            return 2;  // fail
-        case 2000u:
-            return 3;  // fail
-        default:
-            return -1;  // fail
+#  Test that we can use character constants as cases in switch statements
+pub fn main(none) i32 {
+    data i: i32 = 65
+    match i {
+        -> 100l {
+            return 1
+        } #  fail
+        -> 'A' {
+            return nil
+        } #  success
+        -> 'B' {
+            return 2
+        } #  fail
+        -> 2000u {
+            return 3
+        } #  fail
+        otherwise {
+            return -1
+        } #  fail
     }
 }
