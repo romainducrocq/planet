@@ -124,21 +124,21 @@ static error_t parse_identifier(Ctx ctx, size_t i, TIdentifier* identifier) {
 
 // string = StringLiteral(int*)
 // <string> ::= ? A string token ? => "([^"\\\n]|\\['"\\?abfnrtv])*"
-// static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
-//     vector_t(TChar) value = vec_new();
-//     CATCH_ENTER;
-//     string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
-//     TRY(peek_next(ctx));
-//     while (ctx->peek_tok->tok_kind == TOK_string_literal) {
-//         TRY(pop_next(ctx));
-//         string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
-//         TRY(peek_next(ctx));
-//     }
-//     *literal = make_CStringLiteral(&value);
-//     FINALLY;
-//     vec_delete(value);
-//     CATCH_EXIT;
-// }
+static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
+    vector_t(TChar) value = vec_new();
+    CATCH_ENTER;
+    string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
+    TRY(peek_next(ctx));
+    while (ctx->peek_tok->tok_kind == TOK_string_literal) {
+        TRY(pop_next(ctx));
+        string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
+        TRY(peek_next(ctx));
+    }
+    *literal = make_CStringLiteral(&value);
+    FINALLY;
+    vec_delete(value);
+    CATCH_EXIT;
+}
 
 // <int> ::= ? An int token ? => [0-9]+
 static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
@@ -147,10 +147,10 @@ static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
 }
 
 // <char> ::= ? A char token ? => '([^'\\\n]|\\['"?\\abfnrtv])'
-// static shared_ptr_t(CConst) parse_char_const(Ctx ctx) {
-//     TInt value = string_to_char_ascii(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok));
-//     return make_CConstInt(value);
-// }
+static shared_ptr_t(CConst) parse_char_const(Ctx ctx) {
+    TInt value = string_to_char_ascii(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok));
+    return make_CConstInt(value);
+}
 
 // <long> ::= ? An int or long token ? => [0-9]+[lL]
 static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
@@ -190,10 +190,10 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     const char* strto_value;
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
-    //     case TOK_char_const: {
-    //         *constant = parse_char_const(ctx);
-    //         EARLY_EXIT;
-    //     }
+        case TOK_char_const: {
+            *constant = parse_char_const(ctx);
+            EARLY_EXIT;
+        }
         case TOK_dbl_const:
             TRY(parse_dbl_const(ctx, constant));
             TRANSPILE(keep_token(ctx->next_tok));
@@ -253,7 +253,7 @@ static error_t parse_arr_size(Ctx ctx, TLong* size) {
     switch (ctx->peek_tok->tok_kind) {
         case TOK_int_const:
         case TOK_long_const:
-        // case TOK_char_const:
+        case TOK_char_const:
             TRY(parse_const(ctx, &constant));
             break;
         case TOK_uint_const:
@@ -607,17 +607,17 @@ static error_t parse_unsigned_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_string_literal_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     shared_ptr_t(CStringLiteral) literal = sptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(parse_string_literal(ctx, &literal));
-//     *exp = make_CString(&literal, info_at);
-//     FINALLY;
-//     free_CStringLiteral(&literal);
-//     CATCH_EXIT;
-// }
+static error_t parse_string_literal_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    shared_ptr_t(CStringLiteral) literal = sptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_string_literal(ctx, &literal));
+    *exp = make_CString(&literal, info_at);
+    FINALLY;
+    free_CStringLiteral(&literal);
+    CATCH_EXIT;
+}
 
 static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
@@ -889,7 +889,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     switch (ctx->peek_tok->tok_kind) {
         case TOK_int_const:
         case TOK_long_const:
-        // case TOK_char_const:
+        case TOK_char_const:
         case TOK_dbl_const:
             TRY(parse_const_factor(ctx, exp));
             break;
@@ -907,9 +907,9 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             }
             break;
         }
-        // case TOK_string_literal:
-        //     TRY(parse_string_literal_factor(ctx, exp));
-        //     break;
+        case TOK_string_literal:
+            TRY(parse_string_literal_factor(ctx, exp));
+            break;
         case TOK_open_paren:
             TRY(parse_inner_exp_factor(ctx, exp));
             break;
@@ -1436,7 +1436,7 @@ static error_t parse_case_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     switch (ctx->peek_tok->tok_kind) {
         case TOK_int_const:
         case TOK_long_const:
-        // case TOK_char_const:
+        case TOK_char_const:
             TRY(parse_const(ctx, &constant));
             break;
         case TOK_uint_const:
