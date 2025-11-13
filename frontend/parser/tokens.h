@@ -61,13 +61,16 @@ typedef enum TOKEN_KIND {
     TOK_compound_init,
     // TOK_structop_member,
 
-    // TOK_key_char,
+    TOK_key_char,
+    TOK_key_string,
+    TOK_key_i8,
     TOK_key_int, // TODO rm
     TOK_key_i32,
     TOK_key_long, // TODO rm
     TOK_key_i64,
     TOK_key_double, // TODO rm
     TOK_key_f64,
+    TOK_key_u8,
     TOK_key_signed, // TODO rm
     TOK_key_u32,
     TOK_key_unsigned, // TODO rm

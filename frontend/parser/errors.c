@@ -114,14 +114,20 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "$";
         // case TOK_structop_member:
         //     return ".";
-        // case TOK_key_char:
-        //     return "char";
+        case TOK_key_char:
+            return "char";
+        case TOK_key_string:
+            return "string";
+        case TOK_key_i8:
+            return "i8";
         case TOK_key_i32:
             return "i32";
         case TOK_key_i64:
             return "i64";
         case TOK_key_f64:
             return "f64";
+        case TOK_key_u8:
+            return "u8";
         case TOK_key_u32:
             return "u32";
         case TOK_key_u64:
@@ -176,10 +182,10 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "false";
         case TOK_identifier:
             return "identifier";
-        // case TOK_string_literal:
-        //     return "string literal";
-        // case TOK_char_const:
-        //     return "const char";
+        case TOK_string_literal:
+            return "string literal";
+        case TOK_char_const:
+            return "const char";
         case TOK_int_const:
             return "const int";
         case TOK_long_const:
@@ -198,8 +204,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
 const char* get_tok_fmt(IdentifierContext* ctx, const Token* token) {
     switch (token->tok_kind) {
         case TOK_identifier:
-        // case TOK_string_literal:
-        // case TOK_char_const:
+        case TOK_string_literal:
+        case TOK_char_const:
         case TOK_int_const:
         case TOK_long_const:
         case TOK_uint_const:
