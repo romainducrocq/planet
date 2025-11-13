@@ -594,6 +594,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_ternary_if;
         case ',':
             return TOK_comma_separator;
+        case '$':
+            return TOK_compound_init;
         case '=': {
             if (match_char(ctx, '=')) {
                 return TOK_binop_eq;
