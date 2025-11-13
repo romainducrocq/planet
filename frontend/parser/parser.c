@@ -2029,13 +2029,13 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind == TOK_close_brace) {
+    if (ctx->peek_tok->tok_kind == TOK_close_paren) {
         THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_compound_init));
     }
     TRY(parse_initializer(ctx, initializer));
     vec_move_back(initializers, *initializer);    
     TRY(peek_next(ctx));
-    while (ctx->peek_tok->tok_kind != TOK_close_brace) {
+    while (ctx->peek_tok->tok_kind != TOK_close_paren) {
         TRY(pop_next(ctx));
         TRY(expect_next(ctx, ctx->next_tok, TOK_comma_separator));
         TRY(parse_initializer(ctx, initializer));
