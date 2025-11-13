@@ -1,8 +1,6 @@
-char *s = "hello
-    world ";
+s: *char = "hello
+    world "
 
-    int
-    main(void)
-{
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

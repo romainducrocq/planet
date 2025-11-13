@@ -1,5 +1,4 @@
-int main(void)
-{
-    char *str = "foo\ybar";
-    return 0;
+pub fn main(none) i32 {
+    str: *char = "foo\ybar"
+    return 0
 }

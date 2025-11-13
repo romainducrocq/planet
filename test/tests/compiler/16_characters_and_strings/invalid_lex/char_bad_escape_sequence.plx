@@ -1,4 +1,3 @@
-int main(void)
-{
-    return '\y';
+pub fn main(none) i32 {
+    return '\y'
 }
