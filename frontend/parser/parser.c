@@ -562,6 +562,55 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
     CATCH_EXIT;
 }
 
+static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
+    shared_ptr_t(CConst) constant = sptr_new();
+    CATCH_ENTER;
+    TLong size;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_int_const:
+        case TOK_long_const:
+        // case TOK_char_const:
+            TRY(parse_const(ctx, &constant));
+            break;
+        case TOK_uint_const:
+        case TOK_ulong_const:
+            TRY(parse_unsigned_const(ctx, &constant));
+            break;
+        default:
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx->peek_tok)));
+    }
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
+    switch (constant->type) {
+        case AST_CConstInt_t: {
+            size = (TLong)constant->get._CConstInt.value;
+            break;
+        }
+        case AST_CConstLong_t: {
+            size = constant->get._CConstLong.value;
+            break;
+        }
+        case AST_CConstUInt_t: {
+            size = (TLong)constant->get._CConstUInt.value;
+            break;
+        }
+        case AST_CConstULong_t: {
+            size = (TLong)constant->get._CConstULong.value;
+            break;
+        }
+        default:
+            THROW_ABORT;
+    }
+    TRY(parse_type_name(ctx, type_specifier));
+    *type_specifier = make_Array(size, type_specifier);
+    FINALLY;
+    free_CConst(&constant);
+    CATCH_EXIT;
+}
+
 static error_t parse_ptr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -575,6 +624,9 @@ static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
+        case TOK_open_bracket:
+            TRY(parse_arr_specifier(ctx, type_name));
+            break;    
         case TOK_binop_multiply:
             TRY(parse_ptr_specifier(ctx, type_name));
             break;
@@ -722,22 +774,21 @@ static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     *exp = make_CDereference(exp, info_at);
     FINALLY;
     CATCH_EXIT;
-
 }
 
-// static error_t parse_subscript_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) subscript_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(parse_exp(ctx, 0, &subscript_exp));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
-//     *exp = make_CSubscript(exp, &subscript_exp, info_at);
-//     FINALLY;
-//     free_CExp(&subscript_exp);
-//     CATCH_EXIT;
-// }
+static error_t parse_subscript_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) subscript_exp = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_exp(ctx, 0, &subscript_exp));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
+    *exp = make_CSubscript(exp, &subscript_exp, info_at);
+    FINALLY;
+    free_CExp(&subscript_exp);
+    CATCH_EXIT;
+}
 
 static error_t parse_arr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
@@ -747,8 +798,7 @@ static error_t parse_arr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         TRY(parse_deref_factor(ctx, exp));
     }
     else {
-        TRY(1); // TODO
-        // TRY(parse_subscript_factor(ctx, exp));
+        TRY(parse_subscript_factor(ctx, exp));
     }
     FINALLY;
     CATCH_EXIT;
