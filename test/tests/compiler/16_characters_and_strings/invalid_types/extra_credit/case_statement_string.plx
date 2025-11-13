@@ -1,9 +1,11 @@
-// Can't use strings as labels for case statements
-int main(void) {
-    switch (0) {
-        case "foo":
-            return 1;
-        default:
-            return 0;
+# Can't use strings as labels for case statements
+pub fn main(none) i32 {
+    match 0 {
+        -> "foo" {
+            return 1
+        }
+        otherwise {
+            return 0
+        }
     }
 }

@@ -1,7 +1,8 @@
-// can't use string literal as controlling expression in switch statement
-int main(void) {
-    switch ("foo") {
-        default:
-        return 0;
+#  can't use string literal as controlling expression in switch statement
+pub fn main(none) i32 {
+    match "foo" {
+        otherwise {
+            return 0
+        }
     }
 }

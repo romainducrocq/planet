@@ -1,5 +1,5 @@
-/* You can't initialize a pointer with a compound initializer */
-int main(void) {
-    char *ptr = {'a', 'b', 'c'};
-    return 0;
+#  You can't initialize a pointer with a compound initializer 
+pub fn main(none) i32 {
+    ptr: *char = $('a', 'b', 'c')
+    return nil
 }

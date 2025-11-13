@@ -1,5 +1,5 @@
-// can't apply << or >> to strings
-int main(void) {
-    "foo" << 3;
-    return 0;
+#  can't apply << or >> to strings
+pub fn main(none) i32 {
+    "foo" << 3
+    return 0
 }

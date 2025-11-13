@@ -1,5 +1,5 @@
-// Can't compound assign to string literal
-int main(void) {
-    "My string" += 1;
-    return 0;
+#  Can't compound assign to string literal
+pub fn main(none) i32 {
+    "My string" += 1
+    return 0
 }
