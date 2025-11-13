@@ -1,8 +1,8 @@
-// += and -= operators: RHS must not be a pointer regardless of LHS type
-int main(void) {
-    int arr[3] = {1, 2, 3};
-    int *elem = arr + 1;
-    int i = 0;
-    i -= elem;
-    return 0;
+#  += and -= operators: RHS must not be a pointer regardless of LHS type
+pub fn main(none) i32 {
+    arr: [3]i32 = $(1, 2, 3)
+    elem: *i32 = arr + 1
+    i: i32 = 0
+    i -= elem
+    return 0
 }

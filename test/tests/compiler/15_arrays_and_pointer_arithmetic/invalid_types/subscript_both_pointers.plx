@@ -1,8 +1,7 @@
-int main(void)
-{
-    int x = 10;
-    int *ptr = &x;
-    int *subscript = 0;
-    // you can't perform subscript operation when both operands are pointers
-    return ptr[subscript];
+pub fn main(none) i32 {
+    x: i32 = 10
+    ptr: *i32 = @x
+    subscript: *i32 = false
+    #  you can't perform subscript operation when both operands are pointers
+    return ptr[subscript]
 }

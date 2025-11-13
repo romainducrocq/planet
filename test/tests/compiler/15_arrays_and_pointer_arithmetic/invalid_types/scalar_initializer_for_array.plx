@@ -1,6 +1,5 @@
-int main(void)
-{
-    // You can't initialize an array with a scalar expression.
-    int arr[1] = 4;
-    return arr[0];
+pub fn main(none) i32 {
+    #  You can't initialize an array with a scalar expression.
+    arr: [1]i32 = 4
+    return arr[0]
 }

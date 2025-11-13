@@ -1,8 +1,7 @@
-int main(void)
-{
-    long x[10];
-    long *ptr = x;
-    unsigned long *ptr2 = (unsigned long *)ptr;
-    // You can't subtract pointers to different types
-    return ptr - ptr2;
+pub fn main(none) i32 {
+    x: [10]i64;
+    ptr: *i64 = x
+    ptr2: *u64 = cast<*u64>(ptr)
+    #  You can't subtract pointers to different types
+    return ptr - ptr2
 }
