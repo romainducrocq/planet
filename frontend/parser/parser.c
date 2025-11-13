@@ -569,6 +569,8 @@ static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_true:
+        case TOK_key_false:
         case TOK_int_const:
         case TOK_long_const:
         // case TOK_char_const:
