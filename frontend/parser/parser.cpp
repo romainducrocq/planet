@@ -193,6 +193,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_char_const: {
+            TRANSPILE(keep_token(ctx->next_tok));
             *constant = parse_char_const(ctx);
             EARLY_EXIT;
         }
