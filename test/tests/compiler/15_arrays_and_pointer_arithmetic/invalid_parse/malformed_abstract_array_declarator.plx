@@ -1,5 +1,5 @@
-int main(void) {
-    // invalid abstract declarator syntax: pointer declarator can't follow
-    // array size declarator
-    return (int[3] *)0;
+pub fn main(none) i32 {
+    # invalid abstract declarator syntax: pointer declarator can't follow
+    # array size declarator
+    return cast<[3]i32*>(0)
 }

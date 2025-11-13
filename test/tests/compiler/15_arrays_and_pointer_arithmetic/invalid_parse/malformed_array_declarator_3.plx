@@ -1,5 +1,5 @@
-int main(void) {
-    // array size specifier must follow identifier
-    int [3] arr  = {1, 2, 3};
-    return 0;
+pub fn main(none) i32 {
+    # array size specifier must follow identifier
+    arr: i32[3] = $(1, 2, 3)
+    return 0
 }

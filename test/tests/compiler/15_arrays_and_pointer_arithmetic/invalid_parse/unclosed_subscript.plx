@@ -1,4 +1,4 @@
-int main(void) {
-    int arr[] = {1, 2, 3};
-    return arr[1;
+pub fn main(none) i32 {
+    arr: [3]i32 = $(1, 2, 3)
+    return arr[1
 }
