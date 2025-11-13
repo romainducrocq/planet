@@ -127,10 +127,12 @@ static error_t parse_identifier(Ctx ctx, size_t i, TIdentifier* identifier) {
 static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
     vector_t(TChar) value = vec_new();
     CATCH_ENTER;
+    TRANSPILE(string_literal(ctx->next_tok, false));
     string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
     TRY(peek_next(ctx));
     while (ctx->peek_tok->tok_kind == TOK_string_literal) {
         TRY(pop_next(ctx));
+        TRANSPILE(string_literal(ctx->next_tok, true));
         string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
         TRY(peek_next(ctx));
     }

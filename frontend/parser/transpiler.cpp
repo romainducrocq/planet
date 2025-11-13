@@ -217,6 +217,16 @@ void cc::Transpiler::compound_init(const Token* tok) {
     }
 }
 
+void cc::Transpiler::string_literal(const Token* tok, bool concat) {
+    set_linenum(tok);
+    if (tok->tok_kind != TOK_string_literal) {
+        throw std::runtime_error("invalid string_literal");
+    }
+    std::string const_buf = concat ? " " : "";
+    const_buf += map_get(identifiers->hash_table, tok->tok);
+    append_buf(const_buf);
+}
+
 void cc::Transpiler::if_statement(const Token* tok) {
     if (lines[linenum - 1].buf.back() == '}') {
         break_line(false);
@@ -459,6 +469,9 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_ulong_const:
             append_long_unsigned_const(tok->tok);
             break;
+        case TOK_char_const:
+            append_char_const(tok->tok);
+            break;
         case TOK_semicolon:
             break;
         default:
@@ -521,6 +534,11 @@ void cc::Transpiler::append_long_unsigned_const(size_t identifier) {
     const_buf.pop_back();
     const_buf.back() = 'u';
     const_buf.push_back('l');
+    append_const_buf(const_buf);
+}
+
+void cc::Transpiler::append_char_const(size_t identifier) {
+    std::string const_buf = map_get(identifiers->hash_table, identifier);
     append_const_buf(const_buf);
 }
 
@@ -597,7 +615,17 @@ void cc::Transpiler::derived_type(const Type* _derived_type) {
         case AST_ULong_t:
             append_buf("u64");
             break;
+        case AST_Char_t:
+            append_buf("char");
+            break;
+        case AST_SChar_t:
+            append_buf("i8");
+            break;
+        case AST_UChar_t:
+            append_buf("u8");
+            break;
         case AST_Pointer_t:
+            // TODO string
             append_buf("*");
             derived_type(_derived_type->get._Pointer.ref_type);
             break;

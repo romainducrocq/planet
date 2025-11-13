@@ -70,6 +70,7 @@ class Transpiler {
         void cast_op(const Type* target_type);
         void cast_end();
         void compound_init(const Token* tok);
+        void string_literal(const Token* tok, bool concat);
         void if_statement(const Token* tok);
         void for_partial(int i);
         void goto_statement(const Token* tok);
@@ -107,6 +108,7 @@ class Transpiler {
         void append_double_const(size_t identifier);
         void append_unsigned_const(size_t identifier);
         void append_long_unsigned_const(size_t identifier);
+        void append_char_const(size_t identifier);
         void append_identifier(size_t identifier);
         void type_decl(size_t name, const Type* type_t);
         void comment(const char* line, size_t match_at, size_t match_size);
