@@ -1,6 +1,6 @@
-/* You can't use a string literal as a variable name */
+# You can't use a string literal as a variable name
 
-int main(void) {
-    int "x" = 0;
-    return 0;
+pub fn main(none) i32 {
+    "x": i32 = 0
+    return 0
 }
