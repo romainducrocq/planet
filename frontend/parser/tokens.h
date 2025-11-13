@@ -60,7 +60,7 @@ typedef enum TOKEN_KIND {
     TOK_comma_separator,
     // TOK_structop_member,
 
-    // TOK_key_char,
+    TOK_key_char,
     TOK_key_int,
     TOK_key_long,
     TOK_key_double,
