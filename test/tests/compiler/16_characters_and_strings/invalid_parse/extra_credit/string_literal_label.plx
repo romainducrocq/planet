@@ -1,4 +1,5 @@
-// You can't use a string literal as a label
-int main(void) {
-    "foo": return 0;
+# You can't use a string literal as a label
+pub fn main(none) i32 {
+    label "foo"
+    return 0
 }
