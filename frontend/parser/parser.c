@@ -123,21 +123,21 @@ static error_t parse_identifier(Ctx ctx, size_t i, TIdentifier* identifier) {
 
 // string = StringLiteral(int*)
 // <string> ::= ? A string token ? => "([^"\\\n]|\\['"\\?abfnrtv])*"
-// static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
-//     vector_t(TChar) value = vec_new();
-//     CATCH_ENTER;
-//     string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
-//     TRY(peek_next(ctx));
-//     while (ctx->peek_tok->tok_kind == TOK_string_literal) {
-//         TRY(pop_next(ctx));
-//         string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
-//         TRY(peek_next(ctx));
-//     }
-//     *literal = make_CStringLiteral(&value);
-//     FINALLY;
-//     vec_delete(value);
-//     CATCH_EXIT;
-// }
+static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
+    vector_t(TChar) value = vec_new();
+    CATCH_ENTER;
+    string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
+    TRY(peek_next(ctx));
+    while (ctx->peek_tok->tok_kind == TOK_string_literal) {
+        TRY(pop_next(ctx));
+        string_to_literal(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), &value);
+        TRY(peek_next(ctx));
+    }
+    *literal = make_CStringLiteral(&value);
+    FINALLY;
+    vec_delete(value);
+    CATCH_EXIT;
+}
 
 // <int> ::= ? An int token ? => [0-9]+
 static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
@@ -146,10 +146,10 @@ static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
 }
 
 // <char> ::= ? A char token ? => '([^'\\\n]|\\['"?\\abfnrtv])'
-// static shared_ptr_t(CConst) parse_char_const(Ctx ctx) {
-//     TInt value = string_to_char_ascii(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok));
-//     return make_CConstInt(value);
-// }
+static shared_ptr_t(CConst) parse_char_const(Ctx ctx) {
+    TInt value = string_to_char_ascii(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok));
+    return make_CConstInt(value);
+}
 
 // <long> ::= ? An int or long token ? => [0-9]+[lL]
 static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
@@ -197,10 +197,10 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
             *constant = make_CConstInt(0);
             EARLY_EXIT;
         }
-    //     case TOK_char_const: {
-    //         *constant = parse_char_const(ctx);
-    //         EARLY_EXIT;
-    //     }
+        case TOK_char_const: {
+            *constant = parse_char_const(ctx);
+            EARLY_EXIT;
+        }
         case TOK_dbl_const:
             TRY(parse_dbl_const(ctx, constant));
             EARLY_EXIT;
@@ -535,12 +535,25 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
     CATCH_ENTER;
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
+        case TOK_key_char: {
+            *type_specifier = make_Char();
+            break;
+        }
+        case TOK_key_string: {
+            *type_specifier = make_Char();
+            *type_specifier = make_Pointer(type_specifier);
+            break;
+        }
         case TOK_key_i32: {
             *type_specifier = make_Int();
             break;
         }
         case TOK_key_i64: {
             *type_specifier = make_Long();
+            break;
+        }
+        case TOK_key_i8: {
+            *type_specifier = make_SChar();
             break;
         }
         case TOK_key_f64: {
@@ -553,6 +566,10 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
         }
         case TOK_key_u64: {
             *type_specifier = make_ULong();
+            break;
+        }
+        case TOK_key_u8: {
+            *type_specifier = make_UChar();
             break;
         }
         default:
@@ -573,7 +590,7 @@ static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
         case TOK_key_false:
         case TOK_int_const:
         case TOK_long_const:
-        // case TOK_char_const:
+        case TOK_char_const:
             TRY(parse_const(ctx, &constant));
             break;
         case TOK_uint_const:
@@ -715,17 +732,17 @@ static error_t parse_unsigned_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_string_literal_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     shared_ptr_t(CStringLiteral) literal = sptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(parse_string_literal(ctx, &literal));
-//     *exp = make_CString(&literal, info_at);
-//     FINALLY;
-//     free_CStringLiteral(&literal);
-//     CATCH_EXIT;
-// }
+static error_t parse_string_literal_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    shared_ptr_t(CStringLiteral) literal = sptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_string_literal(ctx, &literal));
+    *exp = make_CString(&literal, info_at);
+    FINALLY;
+    free_CStringLiteral(&literal);
+    CATCH_EXIT;
+}
 
 static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
@@ -1021,7 +1038,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_key_false:
         case TOK_int_const:
         case TOK_long_const:
-        // case TOK_char_const:
+        case TOK_char_const:
         case TOK_dbl_const:
             TRY(parse_const_factor(ctx, exp));
             break;
@@ -1039,9 +1056,9 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             }
             break;
         }
-        // case TOK_string_literal:
-        //     TRY(parse_string_literal_factor(ctx, exp));
-        //     break;
+        case TOK_string_literal:
+            TRY(parse_string_literal_factor(ctx, exp));
+            break;
         case TOK_open_paren:
             TRY(parse_inner_exp_factor(ctx, exp));
             break;
@@ -1593,7 +1610,7 @@ static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
         case TOK_key_false:
         case TOK_int_const:
         case TOK_long_const:
-        // case TOK_char_const:
+        case TOK_char_const:
             TRY(parse_const(ctx, &constant));
             break;
         case TOK_uint_const:
