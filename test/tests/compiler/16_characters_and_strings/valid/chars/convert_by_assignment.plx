@@ -44,8 +44,8 @@ pub fn check_uchar(converted: u8, expected: u8) i32 {
     return (converted == expected)
 }
 
-pub fn check_char_on_stack(expected: i8, dummy1: i32, dummy2: i32, dummy3: i32, dummy4: i32, dummy5: bool, dummy6: i32, converted: i8) i32 
-{
+pub fn check_char_on_stack(expected: i8, dummy1: i32, dummy2: i32, dummy3: i32,
+    dummy4: i32, dummy5: bool, dummy6: i32, converted: i8) i32 {
     return converted == expected
 }
 
