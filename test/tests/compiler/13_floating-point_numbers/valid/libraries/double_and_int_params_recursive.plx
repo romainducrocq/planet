@@ -1,13 +1,13 @@
 pub fn fun(i1: i32, d1: f64, i2: i32, d2: f64, i3: i32, d3: f64, i4: i32, d4: f64, i5: i32, d5: f64, i6: i32, 
-    d6: f64, i7: bool, d7: f64, i8: i32, d8: f64, i9: i32, d9: f64) i32 {
+    d6: f64, i7: bool, d7: f64, i8_: i32, d8: f64, i9: i32, d9: f64) i32 {
 
     if i1 ~= d9 {
         #  make two recursive calls that bring these values closer together:
         #          * 1. increment i1 and all ints: 
-        call1: i32 = fun(i1 + 1, d1, i2 + 1, d2, i3 + 1, d3, i4 + 1, d4, i5 + 1, d5, i6 + 1, d6, i7 + 1, d7, i8 + 1, d8, i9 + 1, d9)
+        call1: i32 = fun(i1 + 1, d1, i2 + 1, d2, i3 + 1, d3, i4 + 1, d4, i5 + 1, d5, i6 + 1, d6, i7 + 1, d7, i8_ + 1, d8, i9 + 1, d9)
 
         #  2. decrement d9 and all doubles 
-        call2: i32 = fun(i1, d1 - 1, i2, d2 - 1, i3, d3 - 1, i4, d4 - 1, i5, d5 - 1, i6, d6 - 1, i7, d7 - 1, i8, d8 - 1, i9, d9 - 1)
+        call2: i32 = fun(i1, d1 - 1, i2, d2 - 1, i3, d3 - 1, i4, d4 - 1, i5, d5 - 1, i6, d6 - 1, i7, d7 - 1, i8_, d8 - 1, i9, d9 - 1)
 
         #  Make sure both calls succeeded; non-zero result indicates a problem 
         if call1 {
@@ -41,7 +41,7 @@ pub fn fun(i1: i32, d1: f64, i2: i32, d2: f64, i3: i32, d3: f64, i4: i32, d4: f6
     if i7 ~= i1 + 12 {
         return 7
     }
-    if i8 ~= i1 + 14 {
+    if i8_ ~= i1 + 14 {
         return 8
     }
     if i9 ~= i1 + 16 {
