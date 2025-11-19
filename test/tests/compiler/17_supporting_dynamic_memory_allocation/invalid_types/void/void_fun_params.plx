@@ -1,7 +1,7 @@
-// The standard doesn't technically prohibit void parameters
-// but there is no conceivable reason to allow them
-void foo(void x);
+#  The standard doesn't technically prohibit void parameters
+#  but there is no conceivable reason to allow them
+pub fn foo(x: none) none;
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return nil
 }

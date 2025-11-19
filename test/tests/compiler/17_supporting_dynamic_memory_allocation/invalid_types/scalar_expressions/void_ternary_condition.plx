@@ -1,6 +1,6 @@
-void f(void);
+pub fn f(none) none;
 
-int main(void) {
-    // the condition in a ternary expression must have scalar type
-    return f() ? 1 : 2;
+pub fn main(none) i32 {
+    #  the condition in a ternary expression must have scalar type
+    return ? f() then 1 else 2
 }

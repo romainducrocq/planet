@@ -1,9 +1,9 @@
-void x(void) {
-  // a function with a void return type can't return an expression
-  return 1;
+pub fn x(none) none {
+    #  a function with a void return type can't return an expression
+    return 1
 }
 
-int main(void) {
-  x();
-  return 0;
+pub fn main(none) i32 {
+    x()
+    return nil
 }

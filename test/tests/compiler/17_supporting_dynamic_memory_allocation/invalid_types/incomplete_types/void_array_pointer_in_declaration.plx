@@ -1,6 +1,6 @@
-void *malloc(unsigned long size);
+pub fn malloc(size: u64) *any;
 
-int main(void) {
-    void (*ptr)[3] = malloc(3); // array of incomplete element type is illegal
-    return ptr == 0;
+pub fn main(none) i32 {
+    ptr: *[3]any = malloc(3) #  array of incomplete element type is illegal
+    return ptr == nil
 }

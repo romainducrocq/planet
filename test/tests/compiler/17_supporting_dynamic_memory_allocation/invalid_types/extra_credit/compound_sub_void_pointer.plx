@@ -1,9 +1,9 @@
-// Can't perform +=/-= with void * lvalue
-// NOTE: GCC/Clang permit this as a language extension
-void *malloc(unsigned long size);
+#  Can't perform +=/-= with void * lvalue
+#  NOTE: GCC/Clang permit this as a language extension
+pub fn malloc(size: u64) *any;
 
-int main(void) {
-    void *buff = malloc(100);
-    buff -= 0;
-    return 0;
+pub fn main(none) i32 {
+    buff: *any = malloc(100)
+    buff -= nil
+    return nil
 }

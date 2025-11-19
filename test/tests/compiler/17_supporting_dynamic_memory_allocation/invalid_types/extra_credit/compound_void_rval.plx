@@ -1,10 +1,10 @@
-// rval in compound expression cannot be void
-void f(void) {
-    return;
+#  rval in compound expression cannot be void
+pub fn f(none) none {
+    return none
 }
 
-int main(void) {
-    int x = 10;
-    x *= f();
-    return 0;
+pub fn main(none) i32 {
+    x: i32 = 10
+    x *= f()
+    return nil
 }

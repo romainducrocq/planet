@@ -1,5 +1,5 @@
-extern void (*ptr)[3][4];  // array of incomplete element type is illegal (including nested array)
+extrn ptr: *[3][4]any; #  array of incomplete element type is illegal (including nested array)
 
-void *foo(void) {
-    return ptr;
+pub fn foo(none) *any {
+    return ptr
 }

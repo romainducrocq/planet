@@ -1,10 +1,12 @@
-// Can't use void controlling expression in switch statement
-void f(void) {
-    return;
+#  Can't use void controlling expression in switch statement
+pub fn f(none) none {
+    return none
 }
 
-int main(void) {
-    switch(f()) {
-        default: return 0;
+pub fn main(none) i32 {
+    match f() {
+        otherwise {
+            return nil
+        }
     }
 }

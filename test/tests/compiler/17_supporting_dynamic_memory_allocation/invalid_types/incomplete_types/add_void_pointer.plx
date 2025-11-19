@@ -1,10 +1,10 @@
-// no pointer arithmetic with pointers to incomplete type
-// (GCC/Clang allow this as an extension)
+#  no pointer arithmetic with pointers to incomplete type
+#  (GCC/Clang allow this as an extension)
 
-void *malloc(unsigned long size);
+pub fn malloc(size: u64) *any;
 
-int main(void) {
-  void *x = malloc(100);
-  x = x + 1;
-  return 0;
+pub fn main(none) i32 {
+    x: *any = malloc(100)
+    x = x + true
+    return nil
 }

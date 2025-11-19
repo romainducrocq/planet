@@ -1,8 +1,8 @@
-// Can't apply prefix or postfix ++/-- to pointers to void
-void *malloc(unsigned long size);
+#  Can't apply prefix or postfix ++/-- to pointers to void
+pub fn malloc(size: u64) *any;
 
-int main(void) {
-    void *buff = malloc(100);
-    ++buff;
-    return 0;
+pub fn main(none) i32 {
+    buff: *any = malloc(100)
+    ++buff
+    return nil
 }

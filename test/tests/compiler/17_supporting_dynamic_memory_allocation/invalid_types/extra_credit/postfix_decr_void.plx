@@ -1,7 +1,7 @@
-// Can't apply postfix ++/-- to void lvalue
-extern void *x;
+#  Can't apply postfix ++/-- to void lvalue
+extrn x: *any;
 
-int main(void) {
-    ++(*x)--;
-    return 0;
+pub fn main(none) i32 {
+    ++(x[])--
+    return false
 }

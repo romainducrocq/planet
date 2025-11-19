@@ -1,10 +1,11 @@
-void foo(void) {
-    return;
+pub fn foo(none) none {
+    return none
 }
 
-int main(void) {
-    // void expressions are non-scalar, so they can't be used as controlling conditions
-    for (int i = 0; foo(); )
+pub fn main(none) i32 {
+    #  void expressions are non-scalar, so they can't be used as controlling conditions
+    loop i: i32 = false while foo() {
         ;
-    return 0;
+    }
+    return 0
 }

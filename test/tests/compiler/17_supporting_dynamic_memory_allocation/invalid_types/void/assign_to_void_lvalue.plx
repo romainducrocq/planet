@@ -1,11 +1,13 @@
-extern void *x;
+extrn x: *any;
 
-void foo(void) { return; }
+pub fn foo(none) none {
+    return none
+}
 
-int main(void) {
-  // in our implementation, you can't dereference void *
-  // the standard is ambiguous on whether this is legal,
-  // but you definitely can't dereference it and then assign to the result
-  *x = foo();
-  return 0;
+pub fn main(none) i32 {
+    #  in our implementation, you can't dereference void *
+    #  the standard is ambiguous on whether this is legal,
+    #  but you definitely can't dereference it and then assign to the result
+    x[] = foo()
+    return false
 }

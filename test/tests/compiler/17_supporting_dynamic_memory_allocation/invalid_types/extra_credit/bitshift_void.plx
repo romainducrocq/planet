@@ -1,10 +1,10 @@
-// Can't perform bitshift operations with void operands
-void f(void){
-    return;
+#  Can't perform bitshift operations with void operands
+pub fn f(none) none {
+    return none
 }
 
-int main(void) {
-    int x = 10;
-    x << f();
-    return 0;
+pub fn main(none) i32 {
+    x: i32 = 10
+    x << f()
+    return nil
 }
