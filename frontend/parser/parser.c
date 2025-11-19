@@ -1006,7 +1006,7 @@ static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
-    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    TRY(parse_exp(ctx, 0, &cast_exp));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *exp = make_CCast(&cast_exp, &target_type, info_at);
@@ -1033,7 +1033,7 @@ static error_t parse_sizeof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) unary_exp = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->next_tok->info_at;
-    TRY(parse_unary_exp_factor(ctx, &unary_exp));
+    TRY(parse_exp(ctx, 0, &unary_exp));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *exp = make_CSizeOf(&unary_exp, info_at);
