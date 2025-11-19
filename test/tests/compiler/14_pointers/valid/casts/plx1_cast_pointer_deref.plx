@@ -5,6 +5,6 @@ pub fn main(none) i32 {
     ptr_x: *u64 = @x
     ptr_y: *i32 = @y
 
-    x = cast<*i32>(ptr_y)[] + cast<*u64>(ptr_x)[]
+    x = cast<*i32>(ptr_y)[] + cast<*u64>(@x)[]
     return y * 3 - cast<*u64>(ptr_x)[] * 2
 }
