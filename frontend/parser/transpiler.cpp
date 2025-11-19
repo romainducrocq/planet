@@ -341,7 +341,7 @@ void cc::Transpiler::open_sizeof(const Token* tok) {
     if (tok->tok_kind != TOK_open_paren) {
         append_buf("(");
         incr_paren();
-        open_blocks.back() = true;
+        open_sizeofs.back() = true;
     }
 }
 
