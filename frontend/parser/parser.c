@@ -572,6 +572,14 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             *type_specifier = make_UChar();
             break;
         }
+        case TOK_key_any: {
+            TRY(1); // TODO add error
+            break;
+        }
+        case TOK_key_none: {
+            TRY(1); // TODO add error
+            break;
+        }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
     }
@@ -623,7 +631,14 @@ static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
         default:
             THROW_ABORT;
     }
-    TRY(parse_type_name(ctx, type_specifier));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_key_any) {
+        TRY(pop_next(ctx));
+        *type_specifier = make_Void();
+    }
+    else {
+        TRY(parse_type_name(ctx, type_specifier));
+    }
     *type_specifier = make_Array(size, type_specifier);
     FINALLY;
     free_CConst(&constant);
@@ -633,7 +648,14 @@ static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
 static error_t parse_ptr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
-    TRY(parse_type_name(ctx, type_specifier));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_key_any) {
+        TRY(pop_next(ctx));
+        *type_specifier = make_Void();
+    }
+    else {
+        TRY(parse_type_name(ctx, type_specifier));
+    }
     *type_specifier = make_Pointer(type_specifier);
     FINALLY;
     CATCH_EXIT;
@@ -651,6 +673,40 @@ static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
             break;
         default:
             TRY(parse_type_specifier(ctx, type_name));
+            break;
+    }
+    FINALLY;
+    CATCH_EXIT;
+}
+
+static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
+    CATCH_ENTER;
+    TRY(peek_next(ctx));
+    switch (ctx->peek_tok->tok_kind) {
+        case TOK_key_char:
+        case TOK_key_string:
+        case TOK_key_i32:
+        case TOK_key_i64:
+        case TOK_key_i8:
+        case TOK_key_f64:
+        case TOK_key_u32:
+        case TOK_key_u64:
+        case TOK_key_u8:
+        case TOK_open_bracket:
+        case TOK_binop_multiply:
+            TRY(parse_type_name(ctx, maybe_type));
+            break;
+        case TOK_key_any: {
+            TRY(1); // TODO add error
+            break;
+        }
+        case TOK_key_none: {
+            TRY(pop_next(ctx));
+            *maybe_type = make_Void();
+            break;
+        }
+        default:
+            TRY(1); // TODO add error
             break;
     }
     FINALLY;
@@ -945,15 +1001,7 @@ static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt));
-    TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind == TOK_key_none) {
-        TRY(pop_next(ctx));
-        target_type = make_Void();
-    }
-    else {
-        // error message expects none?
-        TRY(parse_type_name(ctx, &target_type));
-    }    
+    TRY(parse_maybe_type(ctx, &target_type));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
     TRY(pop_next(ctx));
@@ -2434,15 +2482,7 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) *  fun_type, vector
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-    TRY(peek_next(ctx));
-    if (ctx->peek_tok->tok_kind == TOK_key_none) {
-        TRY(pop_next(ctx));
-        *fun_type = make_Void();
-    }
-    else {
-        // error message expects none?
-        TRY(parse_type_name(ctx, fun_type));
-    }
+    TRY(parse_maybe_type(ctx, fun_type));
     *fun_type = make_FunType(&param_types, fun_type);
     FINALLY;
     for (size_t i = 0; i < vec_size(param_types); ++i) {
