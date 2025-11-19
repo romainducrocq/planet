@@ -6,7 +6,8 @@ pub fn get_100_zeroed_bytes(none) *any {
     return calloc(100, 1)
 }
 
-pub fn fill_100_bytes(pointer: *any, byte: bool) none {     memset(pointer, byte, 
+pub fn fill_100_bytes(pointer: *any, byte: bool) none {
+    memset(pointer, byte, 
         100)
 }
 

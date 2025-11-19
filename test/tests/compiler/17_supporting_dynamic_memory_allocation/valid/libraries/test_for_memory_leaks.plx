@@ -1,10 +1,8 @@
 pub fn exit(status: i32) none;
 
 pub sum: i64 = 0
-pub fn lots_of_args(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32
-    , i: 
-    i32, j: i32
-    , k: i32, l: i32, m: i32, n: i32, o: i32) none {
+pub fn lots_of_args(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32, i: i32, j: i32,
+    k: i32, l: i32, m: i32, n: i32, o: i32) none {
     #  validate the arguments
     if a ~= 1 {
         exit(1)

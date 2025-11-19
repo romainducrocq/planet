@@ -11,7 +11,8 @@ pub fn set_foo_to_positive_num(a: i32) none {
     return none
 }
 pub fn do_nothing(none) none {
-#  no return statement
+    #  no return statement
+    ;
 }
 
 pub fn main(none) i32 {

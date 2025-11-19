@@ -4,10 +4,8 @@
 #  * 
 
 extrn sum: i64;
-pub fn lots_of_args(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32, i: i32, j
-    : i32, 
-    k: i32, l
-    : i32, m: i32, n: i32, o: bool) none;
+pub fn lots_of_args(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32, i: i32, j: i32, 
+    k: i32, l: i32, m: i32, n: i32, o: bool) none;
 
 pub fn main(none) i32 {
     #  call lots_of_args many times; if we aren't deallocating arguments and padding correctly, it will segfault

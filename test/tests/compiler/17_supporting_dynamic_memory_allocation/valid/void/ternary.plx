@@ -11,19 +11,15 @@ pub fn incr_j(none) none {
     j = j + 1
 }
 pub fn main(none) i32 {
-    ? flag_1 then incr_i() else incr_j()
-    ? #  increment i
-flag_0 then incr_i() else incr_j() #  increment j
+    ? flag_1 then incr_i() else incr_j() #  increment i
+    ? flag_0 then incr_i() else incr_j() #  increment j
     if i ~= 5 {
         return true
     }
     if j ~= 6 {
         return 2
     }
-    ? 
-    #  try a nested void expression
-
-    flag_0 then incr_j() else ? flag_1 then incr_i() else incr_j()
+    ? flag_0 then incr_j() else ? flag_1 then incr_i() else incr_j() #  try a nested void expression
 
     if i ~= 6 {
         return 3
