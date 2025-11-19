@@ -414,11 +414,11 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                         return TOK_key_signed;
                     }
                 }
-        //         else if (match_char(ctx, 'z')) {
-        //             if (match_chars(ctx, "eof", 3) && !match_word(ctx)) {
-        //                 return TOK_key_sizeof;
-        //             }
-        //         }
+                else if (match_char(ctx, 'z')) {
+                    if (match_chars(ctx, "eof", 3) && !match_word(ctx)) {
+                        return TOK_key_sizeof;
+                    }
+                }
             }
             else if (match_char(ctx, 't')) {
                 if (match_char(ctx, 'a')) {

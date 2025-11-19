@@ -69,7 +69,7 @@ typedef enum TOKEN_KIND {
     TOK_key_void,
     // TOK_key_struct,
     // TOK_key_union,
-    // TOK_key_sizeof,
+    TOK_key_sizeof,
     TOK_key_return,
     TOK_key_if,
     TOK_key_else,

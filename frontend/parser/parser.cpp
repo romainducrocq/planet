@@ -813,57 +813,57 @@ static error_t parse_ptr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     shared_ptr_t(Type) target_type = sptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(parse_type_name(ctx, &target_type));
-//     TRY(pop_next(ctx));
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-//     *exp = make_CSizeOfT(&target_type, info_at);
-//     FINALLY;
-//     free_Type(&target_type);
-//     CATCH_EXIT;
-// }
+static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    shared_ptr_t(Type) target_type = sptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(parse_type_name(ctx, &target_type));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    *exp = make_CSizeOfT(&target_type, info_at);
+    FINALLY;
+    free_Type(&target_type);
+    CATCH_EXIT;
+}
 
-// static error_t parse_sizeof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     unique_ptr_t(CExp) unary_exp = uptr_new();
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(parse_unary_exp_factor(ctx, &unary_exp));
-//     *exp = make_CSizeOf(&unary_exp, info_at);
-//     FINALLY;
-//     free_CExp(&unary_exp);
-//     CATCH_EXIT;
-// }
+static error_t parse_sizeof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) unary_exp = uptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(parse_unary_exp_factor(ctx, &unary_exp));
+    *exp = make_CSizeOf(&unary_exp, info_at);
+    FINALLY;
+    free_CExp(&unary_exp);
+    CATCH_EXIT;
+}
 
-// static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     CATCH_ENTER;
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     if (ctx->peek_tok->tok_kind == TOK_open_paren) {
-//         TRY(peek_next_i(ctx, 1));
-//         switch (ctx->peek_tok_i->tok_kind) {
-//             case TOK_key_char:
-//             case TOK_key_int:
-//             case TOK_key_long:
-//             case TOK_key_double:
-//             case TOK_key_unsigned:
-//             case TOK_key_signed:
-//             case TOK_key_void:
-//             case TOK_key_struct:
-//             case TOK_key_union:
-//                 TRY(parse_sizeoft_factor(ctx, exp));
-//                 EARLY_EXIT;
-//             default:
-//                 break;
-//         }
-//     }
-//     TRY(parse_sizeof_factor(ctx, exp));
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_open_paren) {
+        TRY(peek_next_i(ctx, 1));
+        switch (ctx->peek_tok_i->tok_kind) {
+            case TOK_key_char:
+            case TOK_key_int:
+            case TOK_key_long:
+            case TOK_key_double:
+            case TOK_key_unsigned:
+            case TOK_key_signed:
+            case TOK_key_void:
+            // case TOK_key_struct:
+            // case TOK_key_union:
+                TRY(parse_sizeoft_factor(ctx, exp));
+                EARLY_EXIT;
+            default:
+                break;
+        }
+    }
+    TRY(parse_sizeof_factor(ctx, exp));
+    FINALLY;
+    CATCH_EXIT;
+}
 
 static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
@@ -988,9 +988,9 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_binop_bitand:
             TRY(parse_ptr_unary_factor(ctx, exp));
             break;
-        // case TOK_key_sizeof:
-        //     TRY(parse_sizeof_unary_factor(ctx, exp));
-        //     break;
+        case TOK_key_sizeof:
+            TRY(parse_sizeof_unary_factor(ctx, exp));
+            break;
         default:
             TRY(parse_postfix_exp_factor(ctx, exp));
             break;
@@ -1012,7 +1012,7 @@ static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             case TOK_key_double:
             case TOK_key_unsigned:
             case TOK_key_signed:
-            // case TOK_key_void:
+            case TOK_key_void:
             // case TOK_key_struct:
             // case TOK_key_union:
                 TRY(parse_cast_factor(ctx, exp));
@@ -1214,10 +1214,10 @@ static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRANSPILE(keep_token(ctx->next_tok));
-    // TRY(peek_next(ctx));
-    // if (ctx->peek_tok->tok_kind != TOK_semicolon) {
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind != TOK_semicolon) {
         TRY(parse_exp(ctx, 0, &exp));
-    // }
+    }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
     TRANSPILE(keep_token(ctx->next_tok));
@@ -1685,7 +1685,7 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         case TOK_key_double:
         case TOK_key_unsigned:
         case TOK_key_signed:
-        // case TOK_key_void:
+        case TOK_key_void:
         // case TOK_key_struct:
         // case TOK_key_union:
         case TOK_key_static:
@@ -1760,8 +1760,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             case TOK_key_double:
             case TOK_key_unsigned:
             case TOK_key_signed:
-            // case TOK_key_void:
-            {
+            case TOK_key_void: {
                 TRY(pop_next_i(ctx, i));
                 type_tok_kinds[type_tok_kinds_size] = ctx->next_tok_i->tok_kind;
                 type_tok_kinds_size++;
@@ -1824,10 +1823,10 @@ Lbreak:
                     *type_specifier = make_Int();
                     EARLY_EXIT;
                 }
-                // case TOK_key_void: {
-                //     *type_specifier = make_Void();
-                //     EARLY_EXIT;
-                // }
+                case TOK_key_void: {
+                    *type_specifier = make_Void();
+                    EARLY_EXIT;
+                }
                 // case TOK_key_struct: {
                 //     TIdentifier tag;
                 //     TRY(parse_identifier(ctx, i, &tag));
@@ -2189,9 +2188,9 @@ static error_t parse_param_list(Ctx ctx, vector_t(unique_ptr_t(CParam)) * param_
             if (ctx->peek_tok_i->tok_kind == TOK_close_paren) {
                 TRY(parse_empty_param_list(ctx));
             }
-            // else {
-            //     TRY(parse_non_empty_param_list(ctx, param_list));
-            // }
+            else {
+                TRY(parse_non_empty_param_list(ctx, param_list));
+            }
             break;
         }
         case TOK_key_char:
@@ -2529,8 +2528,8 @@ error_t parse_tokens(
     THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
 
     THROW_ABORT_IF(!*c_ast);
-    // TRANSPILE(print_lines());
-    TRANSPILE(write_lines());
+    TRANSPILE(print_lines());
+    // TRANSPILE(write_lines());
     FINALLY;
     vec_delete(*tokens);
     CATCH_EXIT;
