@@ -832,6 +832,29 @@ static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
+static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    unique_ptr_t(CExp) cast_exp = uptr_new();
+    shared_ptr_t(Type) target_type = sptr_new();
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt));
+    TRY(parse_maybe_type(ctx, &target_type));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
+    TRY(parse_exp(ctx, 0, &cast_exp));
+    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+    *exp = make_CCast(&cast_exp, &target_type, info_at);
+    FINALLY;
+    free_CExp(&cast_exp);
+    free_Type(&target_type);
+    CATCH_EXIT;
+}
+
 static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -993,29 +1016,6 @@ static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_EXIT;
 // }
 
-static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-    unique_ptr_t(CExp) cast_exp = uptr_new();
-    shared_ptr_t(Type) target_type = sptr_new();
-    CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
-    TRY(pop_next(ctx));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt));
-    TRY(parse_maybe_type(ctx, &target_type));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
-    TRY(parse_exp(ctx, 0, &cast_exp));
-    TRY(pop_next(ctx));
-    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
-    *exp = make_CCast(&cast_exp, &target_type, info_at);
-    FINALLY;
-    free_CExp(&cast_exp);
-    free_Type(&target_type);
-    CATCH_EXIT;
-}
-
 static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(Type) target_type = sptr_new();
     CATCH_ENTER;
@@ -1094,6 +1094,9 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_ulong_const:
             TRY(parse_unsigned_const_factor(ctx, exp));
             break;
+        case TOK_string_literal:
+            TRY(parse_string_literal_factor(ctx, exp));
+            break;
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
             if (ctx->peek_tok_i->tok_kind == TOK_open_paren) {
@@ -1104,8 +1107,8 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             }
             break;
         }
-        case TOK_string_literal:
-            TRY(parse_string_literal_factor(ctx, exp));
+        case TOK_key_cast:
+            TRY(parse_cast_factor(ctx, exp));
             break;
         case TOK_open_paren:
             TRY(parse_inner_exp_factor(ctx, exp));
@@ -1180,9 +1183,6 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             break;
         case TOK_unop_addrof:
             TRY(parse_addrof_factor(ctx, exp));
-            break;
-        case TOK_key_cast:
-            TRY(parse_cast_factor(ctx, exp));
             break;
         case TOK_key_sizeof:
             TRY(parse_sizeof_unary_factor(ctx, exp));
