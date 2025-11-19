@@ -818,8 +818,10 @@ static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_type_name(ctx, &target_type));
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *exp = make_CSizeOfT(&target_type, info_at);
     FINALLY;
@@ -831,7 +833,9 @@ static error_t parse_sizeof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) unary_exp = uptr_new();
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
+    TRANSPILE(open_sizeof(ctx->peek_tok));
     TRY(parse_unary_exp_factor(ctx, &unary_exp));
+    TRANSPILE(close_sizeof());
     *exp = make_CSizeOf(&unary_exp, info_at);
     FINALLY;
     free_CExp(&unary_exp);
@@ -841,6 +845,7 @@ static error_t parse_sizeof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_open_paren) {
         TRY(peek_next_i(ctx, 1));

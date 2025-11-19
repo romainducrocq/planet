@@ -330,6 +330,23 @@ void cc::Transpiler::close_block(bool br_line) {
     open_blocks.pop_back();
 }
 
+void cc::Transpiler::open_sizeof(const Token* tok) {
+    open_sizeofs.push_back(false);
+    if (tok->tok_kind != TOK_open_paren) {
+        append_buf("(");
+        incr_paren();
+        open_blocks.back() = true;
+    }
+}
+
+void cc::Transpiler::close_sizeof() {
+    if (open_sizeofs.back()) {
+        append_buf(")");
+        decr_paren();
+    }
+    open_sizeofs.pop_back();
+}
+
 void cc::Transpiler::push_conditional(size_t min_precedence) {
     if (min_precedence > 3) {
         return;
@@ -453,6 +470,9 @@ void cc::Transpiler::keep_token(const Token* tok) {
             break;
         case TOK_ternary_else:
             append_buf(" else ");
+            break;
+        case TOK_key_sizeof:
+            append_buf("sizeof");
             break;
         case TOK_int_const:
             append_const(tok->tok);

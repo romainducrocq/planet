@@ -39,6 +39,7 @@ class Transpiler {
         size_t linenum = 1;
         std::vector<Line> lines = {};
         std::vector<bool> open_blocks = {};
+        std::vector<bool> open_sizeofs = {};
         std::vector<LineBuf> cond_buf = {};
         std::vector<LineBuf> do_while_buf = {};
         std::vector<std::string> arr_sizes = {};
@@ -77,6 +78,8 @@ class Transpiler {
         void label_statement(const Token* tok);
         void open_block(const Token* tok);
         void close_block(bool br_line);
+        void open_sizeof(const Token* tok);
+        void close_sizeof();
         void push_conditional(size_t min_precedence);
         void pop_conditional(size_t min_precedence);
         void push_do_while();
