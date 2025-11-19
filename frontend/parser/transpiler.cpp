@@ -198,6 +198,12 @@ void cc::Transpiler::cast_end() {
     decr_paren();        
 }
 
+void cc::Transpiler::sizeof_op(const Type* target_type) {
+    append_buf("<");
+    derived_type(target_type);
+    append_buf(">");
+}
+
 void cc::Transpiler::compound_init(const Token* tok) {
     set_linenum(tok);
     switch (tok->tok_kind) {

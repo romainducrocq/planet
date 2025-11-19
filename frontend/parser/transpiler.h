@@ -69,6 +69,7 @@ class Transpiler {
         void binary_op(const Token* tok);
         void deref_ptr();
         void cast_op(const Type* target_type);
+        void sizeof_op(const Type* target_type);
         void cast_end();
         void compound_init(const Token* tok);
         void string_literal(const Token* tok, bool concat);

@@ -818,10 +818,9 @@ static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
-    TRANSPILE(keep_token(ctx->next_tok));
     TRY(parse_type_name(ctx, &target_type));
+    TRANSPILE(sizeof_op(target_type));
     TRY(pop_next(ctx));
-    TRANSPILE(keep_token(ctx->next_tok));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *exp = make_CSizeOfT(&target_type, info_at);
     FINALLY;
