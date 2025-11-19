@@ -1047,10 +1047,10 @@ static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
     switch(ctx->next_tok->tok_kind) {
-        case TOK_open_paren:
+        case TOK_binop_lt:
             TRY(parse_sizeoft_factor(ctx, exp));
             break;
-        case TOK_binop_lt:
+        case TOK_open_paren:
             TRY(parse_sizeof_factor(ctx, exp));
             break;
         default:
