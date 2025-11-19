@@ -132,6 +132,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "u64";
         case TOK_key_u8:
             return "u8";
+        case TOK_key_any:
+            return "any";
         case TOK_key_none:
             return "none";
         case TOK_key_fn:
@@ -140,8 +142,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         //     return "struct";
         // case TOK_key_union:
         //     return "union";
-        // case TOK_key_sizeof:
-        //     return "sizeof";
+        case TOK_key_sizeof:
+            return "sizeof";
         case TOK_key_return:
             return "return";
         case TOK_key_cast:

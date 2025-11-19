@@ -306,8 +306,15 @@ static TOKEN_KIND match_const(Ctx ctx) {
 static TOKEN_KIND match_identifier(Ctx ctx) {
     switch (ctx->line[ctx->match_at]) {
         case 'a': {
-            if (match_chars(ctx, "nd", 2) && !match_word(ctx)) {
-                return TOK_binop_and;
+            if (match_char(ctx, 'n')) {
+                if (match_char(ctx, 'd')) {
+                    if (!match_word(ctx)) {
+                        return TOK_binop_and;
+                    }
+                }
+                else if (match_char(ctx, 'y') && !match_word(ctx)) {
+                    return TOK_key_any;
+                }
             }
             break;
         }
@@ -520,7 +527,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         //         }
         //     }
         //     else 
-            if (match_chars(ctx, "tring", 5) && !match_word(ctx)) {
+            if (match_char(ctx, 'i')) {
+                if (match_chars(ctx, "zeof", 4) && !match_word(ctx)) {
+                    return TOK_key_sizeof;
+                }
+            }
+            else if (match_chars(ctx, "tring", 5) && !match_word(ctx)) {
                 return TOK_key_string;
             }
             break;
