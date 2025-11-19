@@ -1,7 +1,9 @@
-void exit(int status);
-int foo(void) { exit(10); }
+pub fn exit(status: i32) none;
+pub fn foo(none) i32 {
+    exit(10)
+}
 
-int main(void) {
-  // make sure foo isn't actually called
-  return sizeof(foo());
+pub fn main(none) i32 {
+    #  make sure foo isn't actually called
+    return sizeof(foo())
 }

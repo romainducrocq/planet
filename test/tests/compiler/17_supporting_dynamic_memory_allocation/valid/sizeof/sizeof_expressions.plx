@@ -1,54 +1,53 @@
-/* Test that we correctly get the size of a range of expressions */
+#  Test that we correctly get the size of a range of expressions 
 
-#if defined SUPPRESS_WARNINGS && defined __clang__
-#pragma clang diagnostic ignored "-Wunevaluated-expression"
-#endif
 
-void *malloc(unsigned long size);
-void free(void *ptr);
 
-int main(void) {
-    // size of variables
 
-    double d;
 
-    if (sizeof d != 8) {
-        return 2;
+pub fn malloc(size: u64) *any;
+pub fn free(ptr: *any) none;
+
+pub fn main(none) i32 {
+    #  size of variables
+
+    d: f64;
+
+    if sizeof(d) ~= 8 {
+        return 2
     }
 
-    unsigned char c;
+    c: u8;
 
-    if (sizeof c != 1) {
-        return 3;
+    if sizeof(c) ~= 1 {
+        return 3
     }
 
-    void *buffer = malloc(100);
+    buffer: *any = malloc(100)
 
-    // sizeof(buffer) gets the size of the pointer, not the buffer itself
-    if (sizeof(buffer) != 8) {
-        return 4;
+    #  sizeof(buffer) gets the size of the pointer, not the buffer itself
+    if sizeof(buffer) ~= 8 {
+        return 4
     }
 
-    free(buffer);
+    free(buffer)
 
-    // more complex expressions
+    #  more complex expressions
 
-    // sizeof (int) d is a syntax error,
-    // but applying sizeof to a parenthesized cast expression is ok
-    if (sizeof ((int)d) != 4) {
-        return 5;
+    #  sizeof (int) d is a syntax error,
+    #  but applying sizeof to a parenthesized cast expression is ok
+    if sizeof(cast<i32>(d)) ~= 4 {
+        return 5
     }
 
-    // result type is long
-    if (sizeof (d ? c : 10l) != 8) {
-        return 6;
+    #  result type is long
+    if sizeof(? d then c else 10l) ~= 8 {         return 6
     }
 
-    // result type is char
+    #  result type is char
 
-    if (sizeof (c = 10.0) != 1) {
-        return 7;
+    if sizeof(c = 10.0
+        ) ~= 1 {
+        return 7
     }
 
-    return 0;
-}
+    return 0 }

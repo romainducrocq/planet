@@ -1,6 +1,6 @@
 
-extern double large_array[1000][2000];
+extrn large_array: [1000][2000]f64;
 
-int main(void) {
-    return sizeof large_array == 16000000;
+pub fn main(none) i32 {
+    return sizeof(large_array) == 16000000
 }

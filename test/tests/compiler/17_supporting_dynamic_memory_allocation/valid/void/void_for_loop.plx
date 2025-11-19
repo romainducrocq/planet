@@ -1,31 +1,30 @@
-/* Test for void expressions in for loop header */
+#  Test for void expressions in for loop header 
 
-int putchar(int c);  // from standard library
+pub fn putchar(c: i32) i32; #  from standard library
 
-int letter;
-void initialize_letter(void) {
-    letter = 'Z';
+pub letter: i32;
+pub fn initialize_letter(none) none {
+    letter = 'Z'
 }
 
-void decrement_letter(void) {
-    letter = letter - 1;
+pub fn decrement_letter(none) none {
+    letter = letter - 1
 }
 
-int main(void) {
-    // void expression in initial condition: print the alphabet backwards
-    for (initialize_letter(); letter >= 'A';
-         letter = letter - 1) {
-        putchar(letter);
+pub fn main(none) i32 {
+    #  void expression in initial condition: print the alphabet backwards
+    loop initialize_letter() while letter >= 'A' ..     letter = letter - 1 {
+        putchar(letter)
     }
 
-    // void expression in post condition: print the alphabet forwards
-    for (letter = 'A'; letter <= 90; (void)(letter = letter + 1)) {
-        putchar(letter);
+    #  void expression in post condition: print the alphabet forwards
+    loop letter = 'A' while letter <= 90 .. cast<none>((letter = letter + 1)) {
+        putchar(letter)
     }
 
-    // void expressions in both conditions: print the alphabet backwards again
-    for (initialize_letter(); letter >= 65; decrement_letter()) {
-        putchar(letter);
+    #  void expressions in both conditions: print the alphabet backwards again
+    loop initialize_letter() while letter >= 65 .. decrement_letter() {
+        putchar(letter)
     }
-    return 0;
+    return false
 }
