@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#if 0
+#if 1
 #define TRANSPILE(X) transpiler.X
 #else
 #define TRANSPILE(X)
@@ -80,6 +80,7 @@ class Transpiler {
         void close_block(bool br_line);
         void open_sizeof(const Token* tok);
         void close_sizeof();
+        void return_none(const Token* tok);
         void push_conditional(size_t min_precedence);
         void pop_conditional(size_t min_precedence);
         void push_do_while();

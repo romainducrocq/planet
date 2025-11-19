@@ -1220,6 +1220,7 @@ static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement
     TRY(pop_next(ctx));
     TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
+    TRANSPILE(return_none(ctx->peek_tok));
     if (ctx->peek_tok->tok_kind != TOK_semicolon) {
         TRY(parse_exp(ctx, 0, &exp));
     }
