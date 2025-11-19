@@ -1,3 +1,3 @@
-void char *x; // you can't combine void with other type specifiers
+pub x: *any char; # you can't combine void with other type specifiers
 
-int main(void) { return 0; }
+pub fn main(none) i32 { return 0 }
