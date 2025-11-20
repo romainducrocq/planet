@@ -1,0 +1,7 @@
+pub fn foo(x: i32, y: *none) i32 {
+    return x + y
+}
+
+pub fn main(none) i32 {
+    return 0
+}
