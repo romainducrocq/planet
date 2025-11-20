@@ -19,14 +19,15 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 
 ```
 <program> ::= { ( <declaration> | <include> ) "\n" }
-<include> ::= ( "import" | "use" ) [ "!" ] <header-file>
+<include> ::= ( "import" | "use" ) [ "!" ] "\"" <header-file> "\""
 <declaration> ::= <datatype-declaration> | <variable-declaration> | <function-declaration>
 <datatype-declaration> ::= "type" <datatype-specifier> ( <declarator-list> | ";" )
 <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
 <function-declaration> ::= [ <storage-class> ] "fn" <identifier> <function-declarator> <block>
-<function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) ( <type-name> | "none" )
+<function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) <maybe-type-name>
 <declarator> ::= <identifier> ":" <type-name>
 <declarator-list> ::= "(" <declarator> { "," <declarator> } ")"
+<maybe-type-name> ::= "none" | <type-name>
 <type-name> ::= ( "*" | "[" <const> "]" ) <type-name> | <type-specifier>
 <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "bool" | "char"
                    | "string" | "*" "any" | <datatype-specifier>
@@ -41,11 +42,10 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
               | "loop" ( <loop-init> | ".." while <exp> ) <block> | "continue" | "break"
               | "match" <exp> <block> | "->" <const> <block> | "otherwise" <block> | <exp>
 <exp> ::= <unary-exp> | <exp> <binop> <exp> | "?" <exp> "then" <exp> "else" <exp>
-<unary-exp> ::= <unop> <unary-exp> | "cast" "<" <type-name> ">" "(" <exp> ")"
-              | "sizeof" ( "<" <type-name> ">" | "<" ">" "(" <exp> ")" )
+<unary-exp> ::= <unop> <unary-exp> | "sizeof" ( "<" <type-name> ">" | "(" <exp> ")" )
               | <primary-exp> { <postfix-op> }
-<primary-exp> ::= <const> | <identifier> | "(" <exp> ")" | { <string> }+
-                | <identifier> "(" [ <exp> { "," <exp> } ] ")"
+<primary-exp> ::= <const> | { <string> }+ | "cast" "<" <maybe-type-name> ">" "(" <exp> ")"
+                | <identifier> | <identifier> "(" [ <exp> { "," <exp> } ] ")" | "(" <exp> ")"
 <postfix-op> ::= "[" [ <exp> ] "]" | "." <identifier> | "++" | "--"
 <unop> ::= "-" | "~" | "not" | "@" | "++" | "--"
 <binop> ::= "-" | "+" | "*" | "/" | "%" | "&" | "|" | "^" | "<<" | ">>" | "and" | "or" | "=="
