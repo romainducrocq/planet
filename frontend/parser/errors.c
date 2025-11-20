@@ -691,6 +691,15 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in list declaration";
         case MSG_loop_decl_not_auto:
             RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in loop initialization";
+        case MSG_expect_maybe_type:
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("none") ", " EM_CSTR("char") ", " //
+                EM_CSTR("string") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " //
+                EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("*") //
+                " or " EM_CSTR("[") " next";
+        case MSG_incomplete_any:
+            RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";      
+        case MSG_expect_open_sizeof:
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("<") " or " EM_CSTR("(") " next";
         default:
             THROW_ABORT;
     }

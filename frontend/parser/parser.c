@@ -573,12 +573,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             break;
         }
         case TOK_key_any: {
-            TRY(1); // TODO add error
-            break;
-        }
-        case TOK_key_none: {
-            TRY(1); // TODO add error
-            break;
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG_0(MSG_incomplete_any));
         }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
@@ -692,22 +687,19 @@ static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
         case TOK_key_u32:
         case TOK_key_u64:
         case TOK_key_u8:
+        case TOK_key_any:
         case TOK_open_bracket:
         case TOK_binop_multiply:
             TRY(parse_type_name(ctx, maybe_type));
             break;
-        case TOK_key_any: {
-            TRY(1); // TODO add error
-            break;
-        }
         case TOK_key_none: {
             TRY(pop_next(ctx));
             *maybe_type = make_Void();
             break;
         }
         default:
-            TRY(1); // TODO add error
-            break;
+            THROW_AT_TOKEN(ctx->peek_tok->info_at,
+                GET_PARSER_MSG(MSG_expect_maybe_type, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -1054,7 +1046,8 @@ static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             TRY(parse_sizeof_factor(ctx, exp));
             break;
         default:
-            TRY(1); // TODO throw error
+            THROW_AT_TOKEN(
+                ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_open_sizeof, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
