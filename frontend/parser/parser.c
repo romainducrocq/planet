@@ -1090,6 +1090,9 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_string_literal:
             TRY(parse_string_literal_factor(ctx, exp));
             break;
+        case TOK_key_cast:
+            TRY(parse_cast_factor(ctx, exp));
+            break;
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
             if (ctx->peek_tok_i->tok_kind == TOK_open_paren) {
@@ -1100,9 +1103,6 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             }
             break;
         }
-        case TOK_key_cast:
-            TRY(parse_cast_factor(ctx, exp));
-            break;
         case TOK_open_paren:
             TRY(parse_inner_exp_factor(ctx, exp));
             break;
