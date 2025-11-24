@@ -17,10 +17,23 @@ function transpile_test () {
     rm ${FILE}.plx
 }
 
+function transpile_include () {
+    FILE="${1}"
+    cp ${FILE}.h ${FILE}__+etc.plx
+    transpiler-planet ${FILE}__+etc.plx > /dev/null 2>&1
+    if [ -f "${FILE}__+etc.plx.transpile" ]; then
+        mv ${FILE}__+etc.plx.transpile ${TEST_DIR}/${FILE}.etc
+    fi
+    rm ${FILE}__+etc.plx
+}
+
 function transpile_src () {
     SRC=${1}
     for FILE in $(find ${SRC} -name "*.c" -type f | sort --uniq); do
         transpile_test ${FILE%.*}
+    done
+    for FILE in $(find ${SRC} -name "*.h" -type f | sort --uniq); do
+        transpile_include ${FILE%.*}
     done
 }
 
