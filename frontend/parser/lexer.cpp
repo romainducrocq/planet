@@ -78,16 +78,16 @@ static bool match_chars(Ctx ctx, const char* cs, size_t n) {
     return true;
 }
 
-// static bool match_invert(Ctx ctx, char c) {
-//     char inv = get_char(ctx);
-//     if (inv != 0 && c != inv) {
-//         ctx->match_size++;
-//         return true;
-//     }
-//     else {
-//         return false;
-//     }
-// }
+static bool match_invert(Ctx ctx, char c) {
+    char inv = get_char(ctx);
+    if (inv != 0 && c != inv) {
+        ctx->match_size++;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 static bool match_space(Ctx ctx) {
     switch (get_char(ctx)) {
@@ -139,31 +139,31 @@ static TOKEN_KIND match_preproc(Ctx ctx) {
     }
 
     if (match_chars(ctx, "include", 7)) {
-//         while (match_space(ctx)) {
-//         }
+        while (match_space(ctx)) {
+        }
 
-//         if (match_char(ctx, '"')) {
-//             ctx->match_at += ctx->match_size - 1;
-//             ctx->match_size = 1;
+        if (match_char(ctx, '"')) {
+            ctx->match_at += ctx->match_size - 1;
+            ctx->match_size = 1;
 
-//             while (match_invert(ctx, '"')) {
-//             }
-//             if (get_char(ctx) == '"') {
-//                 ctx->match_size++;
-//                 return TOK_include_preproc;
-//             }
-//         }
-//         else if (match_char(ctx, '<')) {
-//             ctx->match_at += ctx->match_size - 1;
-//             ctx->match_size = 1;
+            while (match_invert(ctx, '"')) {
+            }
+            if (get_char(ctx) == '"') {
+                ctx->match_size++;
+                return TOK_include_preproc;
+            }
+        }
+        else if (match_char(ctx, '<')) {
+            ctx->match_at += ctx->match_size - 1;
+            ctx->match_size = 1;
 
-//             while (match_invert(ctx, '>')) {
-//             }
-//             if (get_char(ctx) == '>') {
-//                 ctx->match_size++;
-//                 return TOK_include_preproc;
-//             }
-//         }
+            while (match_invert(ctx, '>')) {
+            }
+            if (get_char(ctx) == '>') {
+                ctx->match_size++;
+                return TOK_include_preproc;
+            }
+        }
         return match_error(ctx);
     }
     else {
@@ -426,11 +426,11 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                         return TOK_key_static;
                     }
                 }
-        //         else if (match_char(ctx, 'r')) {
-        //             if (match_chars(ctx, "uct", 3) && !match_word(ctx)) {
-        //                 return TOK_key_struct;
-        //             }
-        //         }
+                else if (match_char(ctx, 'r')) {
+                    if (match_chars(ctx, "uct", 3) && !match_word(ctx)) {
+                        return TOK_key_struct;
+                    }
+                }
             }
             else if (match_chars(ctx, "witch", 5) && !match_word(ctx)) {
                 return TOK_key_switch;
@@ -439,13 +439,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         }
         case 'u': {
             if (match_char(ctx, 'n')) {
-        //         if (match_char(ctx, 'i')) {
-        //             if (match_chars(ctx, "on", 2) && !match_word(ctx)) {
-        //                 return TOK_key_union;
-        //             }
-        //         }
-        //         else 
-            if (match_chars(ctx, "signed", 6) && !match_word(ctx)) {
+                if (match_char(ctx, 'i')) {
+                    if (match_chars(ctx, "on", 2) && !match_word(ctx)) {
+                        return TOK_key_union;
+                    }
+                }
+                else if (match_chars(ctx, "signed", 6) && !match_word(ctx)) {
                     return TOK_key_unsigned;
                 }
             }
@@ -515,11 +514,10 @@ static TOKEN_KIND match_token(Ctx ctx) {
             }
         }
         case '-': {
-        //     if (match_char(ctx, '>')) {
-        //         return TOK_structop_ptr;
-        //     }
-        //     else 
-            if (match_char(ctx, '-')) {
+            if (match_char(ctx, '>')) {
+                return TOK_structop_ptr;
+            }
+            else if (match_char(ctx, '-')) {
                 return TOK_unop_decr;
             }
             else if (match_char(ctx, '=')) {
@@ -640,8 +638,7 @@ static TOKEN_KIND match_token(Ctx ctx) {
                 case LEX_DIGIT:
                     return match_dbl_fraction(ctx);
                 default:
-                    return TOK_error; // TODO
-                    // return TOK_structop_member;
+                    return TOK_structop_member;
             }
         }
         case '#':
@@ -688,7 +685,7 @@ static string_t get_match(Ctx ctx, size_t match_at, size_t match_size) {
     return match;
 }
 
-// static error_t tokenize_include(Ctx ctx, size_t linenum);
+static error_t tokenize_include(Ctx ctx, size_t linenum);
 
 static size_t push_token_info(Ctx ctx) {
     TokenInfo token_info = {(int)ctx->match_at, (int)ctx->match_size, ctx->total_linenum};
@@ -727,9 +724,9 @@ static error_t tokenize_file(Ctx ctx) {
                     is_comment = false;
                     goto Lcontinue;
                 }
-                // case TOK_include_preproc:
-                //     TRY(tokenize_include(ctx, linenum));
-                //     goto Lcontinue;
+                case TOK_include_preproc:
+                    TRY(tokenize_include(ctx, linenum));
+                    goto Lcontinue;
                 case TOK_identifier:
                 case TOK_string_literal:
                 case TOK_char_const:
@@ -765,84 +762,84 @@ static error_t tokenize_file(Ctx ctx) {
     CATCH_EXIT;
 }
 
-// static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
-//     for (size_t i = 0; i < vec_size(dirnames); ++i) {
-//         string_t dirname = str_new(dirnames[i]);
-//         str_append(dirname, *filename);
-//         if (find_file(dirname)) {
-//             str_move(dirname, *filename);
-//             return true;
-//         }
-//         str_delete(dirname);
-//     }
-//     return false;
-// }
+static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
+    for (size_t i = 0; i < vec_size(dirnames); ++i) {
+        string_t dirname = str_new(dirnames[i]);
+        str_append(dirname, *filename);
+        if (find_file(dirname)) {
+            str_move(dirname, *filename);
+            return true;
+        }
+        str_delete(dirname);
+    }
+    return false;
+}
 
-// static error_t tokenize_include(Ctx ctx, size_t linenum) {
-//     string_t filename = str_new(NULL);
-//     string_t fopen_name = str_new(NULL);
-//     CATCH_ENTER;
-//     char* line;
-//     size_t line_size;
-//     size_t match_at;
-//     size_t match_size;
+static error_t tokenize_include(Ctx ctx, size_t linenum) {
+    string_t filename = str_new(NULL);
+    string_t fopen_name = str_new(NULL);
+    CATCH_ENTER;
+    char* line;
+    size_t line_size;
+    size_t match_at;
+    size_t match_size;
 
-//     filename = get_match(ctx, ctx->match_at + 1, ctx->match_size - 2);
-//     {
-//         hash_t includename = str_hash(filename);
-//         if (set_find(ctx->includename_set, includename) != set_end()) {
-//             EARLY_EXIT;
-//         }
-//         set_insert(ctx->includename_set, includename);
-//     }
-//     switch (ctx->line[ctx->match_at]) {
-//         case '<': {
-//             if (!find_include(*ctx->p_stdlibdirs, &filename) && !find_include(*ctx->p_includedirs, &filename)) {
-//                 size_t info_at = push_token_info(ctx);
-//                 THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
-//             }
-//             break;
-//         }
-//         case '"': {
-//             if (!find_include(*ctx->p_includedirs, &filename)) {
-//                 size_t info_at = push_token_info(ctx);
-//                 THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
-//             }
-//             break;
-//         }
-//         default:
-//             THROW_ABORT;
-//     }
+    filename = get_match(ctx, ctx->match_at + 1, ctx->match_size - 2);
+    {
+        hash_t includename = str_hash(filename);
+        if (set_find(ctx->includename_set, includename) != set_end()) {
+            EARLY_EXIT;
+        }
+        set_insert(ctx->includename_set, includename);
+    }
+    switch (ctx->line[ctx->match_at]) {
+        case '<': {
+            if (!find_include(*ctx->p_stdlibdirs, &filename) && !find_include(*ctx->p_includedirs, &filename)) {
+                size_t info_at = push_token_info(ctx);
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
+            }
+            break;
+        }
+        case '"': {
+            if (!find_include(*ctx->p_includedirs, &filename)) {
+                size_t info_at = push_token_info(ctx);
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
+            }
+            break;
+        }
+        default:
+            THROW_ABORT;
+    }
 
-//     line = ctx->line;
-//     line_size = ctx->line_size;
-//     match_at = ctx->match_at;
-//     match_size = ctx->match_size;
+    line = ctx->line;
+    line_size = ctx->line_size;
+    match_at = ctx->match_at;
+    match_size = ctx->match_size;
 
-//     str_copy(vec_back(ctx->errors->fopen_lines).filename, fopen_name);
-//     TRY(open_fread(ctx->fileio, filename));
-//     {
-//         FileOpenLine fopen_line = {1, ctx->total_linenum + 1, str_new(NULL)};
-//         str_move(filename, fopen_line.filename);
-//         vec_push_back(ctx->errors->fopen_lines, fopen_line);
-//     }
-//     TRY(tokenize_file(ctx));
-//     TRY(close_fread(ctx->fileio, linenum));
-//     {
-//         FileOpenLine fopen_line = {linenum + 1, ctx->total_linenum + 1, str_new(NULL)};
-//         str_move(fopen_name, fopen_line.filename);
-//         vec_push_back(ctx->errors->fopen_lines, fopen_line);
-//     }
+    str_copy(vec_back(ctx->errors->fopen_lines).filename, fopen_name);
+    TRY(open_fread(ctx->fileio, filename));
+    {
+        FileOpenLine fopen_line = {1, ctx->total_linenum + 1, str_new(NULL)};
+        str_move(filename, fopen_line.filename);
+        vec_push_back(ctx->errors->fopen_lines, fopen_line);
+    }
+    TRY(tokenize_file(ctx));
+    TRY(close_fread(ctx->fileio, linenum));
+    {
+        FileOpenLine fopen_line = {linenum + 1, ctx->total_linenum + 1, str_new(NULL)};
+        str_move(fopen_name, fopen_line.filename);
+        vec_push_back(ctx->errors->fopen_lines, fopen_line);
+    }
 
-//     ctx->line = line;
-//     ctx->line_size = line_size;
-//     ctx->match_at = match_at;
-//     ctx->match_size = match_size;
-//     FINALLY;
-//     str_delete(filename);
-//     str_delete(fopen_name);
-//     CATCH_EXIT;
-// }
+    ctx->line = line;
+    ctx->line_size = line_size;
+    ctx->match_at = match_at;
+    ctx->match_size = match_size;
+    FINALLY;
+    str_delete(filename);
+    str_delete(fopen_name);
+    CATCH_EXIT;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -856,10 +853,10 @@ error_t lex_c_code(const string_t filename, vector_t(const char*) * includedirs,
         ctx.includename_set = set_new();
         ctx.p_includedirs = includedirs;
         ctx.p_stdlibdirs = stdlibdirs;
-// #ifndef __APPLE__
-//         vec_push_back(*ctx.p_stdlibdirs, "/usr/include/");
-//         vec_push_back(*ctx.p_stdlibdirs, "/usr/local/include/");
-// #endif
+#ifndef __APPLE__
+        vec_push_back(*ctx.p_stdlibdirs, "/usr/include/");
+        vec_push_back(*ctx.p_stdlibdirs, "/usr/local/include/");
+#endif
         ctx.p_toks = tokens;
         ctx.total_linenum = 0;
     }
