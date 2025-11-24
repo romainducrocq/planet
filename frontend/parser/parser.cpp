@@ -690,6 +690,7 @@ static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier member;
@@ -703,6 +704,7 @@ static error_t parse_arrow_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier member;

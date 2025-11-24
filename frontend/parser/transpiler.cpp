@@ -486,6 +486,13 @@ void cc::Transpiler::keep_token(const Token* tok) {
         case TOK_key_sizeof:
             append_buf("sizeof");
             break;
+        case TOK_structop_member:
+            append_buf(".");
+            break;
+        case TOK_structop_ptr:
+            append_buf("[]");
+            append_buf(".");
+            break;
         case TOK_int_const:
             append_const(tok->tok);
             break;
