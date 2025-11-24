@@ -2358,6 +2358,7 @@ static error_t parse_member_declaration(Ctx ctx, unique_ptr_t(CMemberDeclaration
             GET_PARSER_MSG(MSG_member_decl_as_fun, map_get(ctx->identifiers->hash_table, decltor.name)));
     }
     info_at = ctx->next_tok->info_at;
+    TRANSPILE(var_decltor(&decltor));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
     *member_decl = make_CMemberDeclaration(decltor.name, &decltor.derived_type, info_at);
@@ -2376,17 +2377,20 @@ static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration
     bool is_union;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
+    TRANSPILE(set_linenum(ctx->next_tok));
     is_union = ctx->next_tok->tok_kind == TOK_key_union;
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier tag;
     TRY(parse_identifier(ctx, 0, &tag));
     TRY(pop_next(ctx));
+    TRANSPILE(datatype_start(tag, is_union));
     if (ctx->next_tok->tok_kind == TOK_open_brace) {
         do {
             TRY(parse_member_declaration(ctx, &member));
             vec_move_back(members, member);
             TRY(peek_next(ctx));
+            TRANSPILE(datatype_end(ctx->peek_tok));
         }
         while (ctx->peek_tok->tok_kind != TOK_close_brace);
         TRY(pop_next(ctx));

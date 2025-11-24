@@ -904,3 +904,21 @@ void cc::Transpiler::write_lines() {
     out.close();
     // std::cout << std::endl;
 }
+
+void cc::Transpiler::datatype_start(size_t tag, bool is_union) {
+    std::string tag_name = is_union ? "union " : "struc ";
+    tag_name += map_get(identifiers->hash_table, tag);
+    append_buf("type " + tag_name + "(");
+    incr_paren();
+}
+
+void cc::Transpiler::datatype_end(const Token* tok) {
+    set_linenum(tok);
+    if (tok->tok_kind == TOK_close_brace) {
+        append_buf(")");
+        decr_paren();
+    }
+    else {
+        append_buf(", ");
+    }
+}

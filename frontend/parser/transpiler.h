@@ -86,6 +86,8 @@ class Transpiler {
         void pop_conditional(size_t min_precedence);
         void push_do_while();
         void pop_do_while();
+        void datatype_start(size_t tag, bool is_union);
+        void datatype_end(const Token* tok);
         void print_lines();
         void write_lines();
 
