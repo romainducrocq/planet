@@ -1,10 +1,8 @@
-struct a {
-  int x;
-  int y;
-};
+type struc a(    x: i32    , y: i32    
+    )
 
-int main(void) {
-  struct a my_struct = {1, 2};
-  // can't apply -> to non-pointer
-  return my_struct->x;
+pub fn main(none) i32 {
+    my_struct: struc a = $(1, 2)
+    #  can't apply -> to non-pointer
+    return my_struct[].x
 }

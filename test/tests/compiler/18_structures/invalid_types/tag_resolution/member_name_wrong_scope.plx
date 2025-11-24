@@ -1,14 +1,12 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct s foo = {1};
+pub fn main(none) i32 {
+    foo: struc s = $(true)
 
-    // introduce a different struct s type
-    struct s {
-        int b;
-    };
+    #  introduce a different struct s type
+    type struc s(        b: i32        
+        )
+    
 
-    return foo.b; // foo belongs to outer struct s type, which doesn't have member 'b'
+    return foo.b #  foo belongs to outer struct s type, which doesn't have member 'b'
 }

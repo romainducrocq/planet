@@ -1,11 +1,12 @@
-struct s;
+type struc s;
 
-// you can declare extern variables of incomplete type
-// but it's illegal to initialize them
-extern struct s x = {1};
+#  you can declare extern variables of incomplete type
+#  but it's illegal to initialize them
+extrn x: struc s = $(1)
 
-int main(void) { return 0; }
+pub fn main(none) i32 {
+    return false
+}
 
-struct s {
-  int a;
-};
+type struc s(
+    a: i32    )

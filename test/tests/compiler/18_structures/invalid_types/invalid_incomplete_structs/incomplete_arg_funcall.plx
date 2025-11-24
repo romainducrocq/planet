@@ -1,10 +1,10 @@
-struct s;
+type struc s;
 
-void f(struct s param);
+pub fn f(param: struc s) none;
 
-extern struct s extern_var;
+extrn extern_var: struc s;
 
-int main(void) {
-  // can't pass a variable with incomplete type as an argument
-  f(extern_var);
+pub fn main(none) i32 {
+    #  can't pass a variable with incomplete type as an argument
+    f(extern_var)
 }

@@ -1,8 +1,7 @@
-union u {
-    int i;
-    union u self; //illegal; incomplete member type
-};
+type union u(    i: i32    , self: union u# illegal; incomplete member type
+    
+    )
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

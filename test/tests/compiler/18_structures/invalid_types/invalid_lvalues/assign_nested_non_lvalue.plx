@@ -1,20 +1,17 @@
-struct inner {
-  int x;
-  int y;
-};
+type struc inner(    x: i32    , y: i32    
+    )
 
-struct outer {
-  int a;
-  struct inner b;
-};
+type struc outer(    a: i32    
+    , b: struc inner    
+    )
 
-struct outer return_struct(void) {
-  struct outer result = {1, {2, 3}};
-  return result;
+pub fn return_struct(none) struc outer {
+    result: struc outer = $(1, $(2, 3))
+    return result
 }
 
-int main(void) {
-  // can't assign to non-lvalue
-  return_struct().b.x = 10;
-  return 0;
+pub fn main(none) i32 {
+    #  can't assign to non-lvalue
+    return_struct().b.x = 10
+    return 0
 }

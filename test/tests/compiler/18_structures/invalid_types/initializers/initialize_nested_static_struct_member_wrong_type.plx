@@ -1,7 +1,5 @@
-struct s {
-  double d;
-  void *arr[3];
-};
+type struc s(    d: f64    , arr: [3]*any    
+    )
 
-// can't initialize a nested element of type void * with a constant of type double
-struct s x = {0.0, {1.0}};
+#  can't initialize a nested element of type void * with a constant of type double
+pub x: struc s = $(0.0, $(1.0))

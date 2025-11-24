@@ -1,13 +1,14 @@
-struct s;
+type struc s;
 
-// declare a function that takes param with incomplete struct type
-int foo(struct s x);
+#  declare a function that takes param with incomplete struct type
+pub fn foo(x: struc s) i32;
 
-int main(void) {
-    union s;  // declare an incomplete union type w/ same tag
+pub fn main(none) i32 {
+    type union s;
+     #  declare an incomplete union type w/ same tag
 
-    // illegal declaration: this conflicts with earlier declaration of 'foo'
-    // becasue it has a different type ( 'union s' instead of 'struct s')
-    int foo(union s x);
-    return 0;
+    #  illegal declaration: this conflicts with earlier declaration of 'foo'
+    #  becasue it has a different type ( 'union s' instead of 'struct s')
+    fn foo(x: union s) i32;
+    return 0
 }

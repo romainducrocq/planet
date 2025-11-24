@@ -1,8 +1,8 @@
-struct s;
+type struc s;
 
-extern struct s *ptr;
+extrn ptr: *struc s;
 
-int main(void) {
-  // can't perform pointer addition w/ pointers to incomplete types
-  return ptr + 0 == ptr;
+pub fn main(none) i32 {
+    #  can't perform pointer addition w/ pointers to incomplete types
+    return ptr + 0 == ptr
 }

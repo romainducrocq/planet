@@ -1,9 +1,7 @@
-/* You can't declare a union with an incomplete member type */
-struct s;
-union u {
-    struct s bad_struct;
-};
+#  You can't declare a union with an incomplete member type 
+type struc s;
+type union u(    bad_struct: struc s    )
 
-int main(void){
-    return 0;
+pub fn main(none) i32 {
+    return nil
 }

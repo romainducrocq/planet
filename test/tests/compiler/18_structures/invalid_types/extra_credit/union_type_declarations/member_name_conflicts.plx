@@ -1,9 +1,7 @@
-/* You can't declare two members of the same union with the same name */
-union u {
-    int a;
-    int a;
-};
+#  You can't declare two members of the same union with the same name 
+type union u(    a: i32    , a: i32    
+    )
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

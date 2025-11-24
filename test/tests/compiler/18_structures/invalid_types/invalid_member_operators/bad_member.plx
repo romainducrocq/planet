@@ -1,14 +1,11 @@
-struct s {
-    int x;
-    int y;
-};
+type struc s(    x: i32    , y: i32    
+    )
 
-struct t {
-    int blah;
-    int y;
-};
+type struc t(    blah: i32    
+    , y: i32    
+    )
 
-int main(void) {
-    struct s foo = {1, 2};
-    return foo.blah; // "struct s" has no member "blah"
+pub fn main(none) i32 {
+    foo: struc s = $(1, 2)
+    return foo.blah #  "struct s" has no member "blah"
 }

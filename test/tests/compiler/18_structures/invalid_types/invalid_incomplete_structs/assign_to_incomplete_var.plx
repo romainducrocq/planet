@@ -1,9 +1,9 @@
-struct s;
+type struc s;
 
-extern struct s x;
-extern struct s y;
+extrn x: struc s;
+extrn y: struc s;
 
-int main(void) {
-  x = y; // can't assign to or from variable with incomplete type
-  return 0;
+pub fn main(none) i32 {
+    x = y #  can't assign to or from variable with incomplete type
+    return 0
 }

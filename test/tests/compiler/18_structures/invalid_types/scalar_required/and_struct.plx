@@ -1,8 +1,6 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct s x = {1};
-    return 0 && x;  // can't apply boolean operators to structs
+pub fn main(none) i32 {
+    x: struc s = $(true)
+    return 0 and x #  can't apply boolean operators to structs
 }

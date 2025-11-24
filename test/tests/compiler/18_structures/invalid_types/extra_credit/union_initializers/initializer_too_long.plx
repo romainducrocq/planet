@@ -1,14 +1,12 @@
-/* A union initializer must always have exactly one element,
- * no matter how many members the union has.
- */
+#  A union initializer must always have exactly one element,
+#  * no matter how many members the union has.
+#  
 
-union u {
-    int a;
-    long b;
-};
+type union u(    a: i32    , b: i64    
+    )
 
-int main(void){
-    union u x = {1, 2}; // invalid - multiple initializers
-    return 0;
+pub fn main(none) i32 {
+    x: union u = $(1, 2) #  invalid - multiple initializers
+    return 0
 }
 

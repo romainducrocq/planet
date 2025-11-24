@@ -1,16 +1,13 @@
-struct inner {
-  int a;
-  int b;
-};
+type struc inner(    a: i32    , b: i32    
+    )
 
-struct outer {
-  struct inner x;
-};
+type struc outer(    x: struc inner    
+    )
 
-int main(void) {
-  struct outer x = {{1, 2}};
-  // can't initialize second element of type 'struct inner'
-  // from variable of type 'struct outer'
-  struct outer y = {1, x};
-  return 0;
+pub fn main(none) i32 {
+    x: struc outer = $($(1, 2))
+    #  can't initialize second element of type 'struct inner'
+    #  from variable of type 'struct outer'
+    y: struc outer = $(1, x)
+    return 0
 }

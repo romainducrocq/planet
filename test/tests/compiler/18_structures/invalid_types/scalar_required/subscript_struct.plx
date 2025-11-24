@@ -1,8 +1,6 @@
-struct s {
-  int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-  struct s x = {1};
-  return x[0]; // can only subscript pointers, not structures
+pub fn main(none) i32 {
+    x: struc s = $(true)
+    return x[0] #  can only subscript pointers, not structures
 }

@@ -1,11 +1,11 @@
-// Can't use union as controlling expression
+#  Can't use union as controlling expression
 
-union u {int x;};
+type union u(x: i32)
 
-int main(void) {
-    union u my_union = {10};
-    if (my_union) {
-        return 1;
+pub fn main(none) i32 {
+    my_union: union u = $(10)
+    if my_union {
+        return 1
     }
-    return 0;
+    return 0
 }

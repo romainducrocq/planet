@@ -1,9 +1,9 @@
-// Can't compare objects of union type
+#  Can't compare objects of union type
 
-union u { long l; };
+type union u(l: i64)
 
-int main(void){
-    union u x = {1};
-    x == x; // illegal
-    return 0;
+pub fn main(none) i32 {
+    x: union u = $(true)
+    x == x #  illegal
+    return 0
 }

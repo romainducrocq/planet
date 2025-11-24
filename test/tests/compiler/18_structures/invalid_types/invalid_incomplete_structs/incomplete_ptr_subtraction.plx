@@ -1,8 +1,8 @@
-struct s;
+type struc s;
 
-extern struct s *ptr;
+extrn ptr: *struc s;
 
-int main(void) {
-  // can't perform pointer substraction w/ pointers to incomplete types
-  return (ptr - ptr) == 0;
+pub fn main(none) i32 {
+    #  can't perform pointer substraction w/ pointers to incomplete types
+    return (ptr - ptr) == nil
 }

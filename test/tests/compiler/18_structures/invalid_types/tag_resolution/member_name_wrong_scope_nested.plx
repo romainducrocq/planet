@@ -1,21 +1,18 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct outer {
-        struct s inner;
-    };
+pub fn main(none) i32 {
+    type struc outer(
+        inner: struc s        )
+    
 
-    struct outer foo = {{1}};
+    foo: struc outer = $($(1))
 
-    // introduce a different struct s type
-    struct s {
-        int b;
-    };
+    #  introduce a different struct s type
+    type struc s(        b: i32        )
+    
 
-    struct outer *ptr = &foo;
+    ptr: *struc outer = @foo
 
-    return ptr->inner.b;  // foo.inner belongs to first struct s type, which
-                          // doesn't have member 'b'
+    return ptr[].inner.b #  foo.inner belongs to first struct s type, which
+#  doesn't have member 'b'
 }

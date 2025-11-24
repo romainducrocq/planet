@@ -1,23 +1,17 @@
-// Make sure we validate the types of nested aggregate inits within union
-// initializers
+#  Make sure we validate the types of nested aggregate inits within union
+#  initializers
 
-struct one_elem {
-    long l;
-};
-struct three_elems {
-    int one;
-    int two;
-    int three;
-};
+type struc one_elem(    l: i64    )
+type struc three_elems(    one: i32    
+    , two: i32    
+    , three: i32    )
 
-union one_or_three_elems {
-    struct one_elem a;
-    struct three_elems b;
-};
+type union one_or_three_elems(    a: struc one_elem    , b: struc three_elems    
+    )
 
-int main(void) {
-    // invalid: first element of union is struct one_elem, which we can't
-    // initialize with three-element initializer
-    static union one_or_three_elems my_union = {{1, 2, 3}};
-    return 0;
+pub fn main(none) bool {
+    #  invalid: first element of union is struct one_elem, which we can't
+    #  initialize with three-element initializer
+    data my_union: union one_or_three_elems = $($(true, 2, 3))
+    return 0
 }

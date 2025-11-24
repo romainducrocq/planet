@@ -1,13 +1,10 @@
-struct s {
-    long l;
-};
+type struc s(    l: i64    )
 
-struct has_ptr {
-    double *ptr;
-};
+type struc has_ptr(    ptr: *f64    
+    )
 
-int main(void) {
-    double d = 0.0;
-    struct has_ptr p_struct = { &d };
-    return p_struct.ptr->l;  // can't apply -> operator to pointer to non-struct
+pub fn main(none) i32 {
+    d: f64 = 0.0
+    p_struct: struc has_ptr = $(@d)
+    return p_struct.ptr[].l #  can't apply -> operator to pointer to non-struct
 }

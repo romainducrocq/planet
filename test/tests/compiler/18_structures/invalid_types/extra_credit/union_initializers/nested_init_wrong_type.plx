@@ -1,22 +1,18 @@
-/* The one element in a union initializer (including a nested one)
- * must be compatible with the union's first element
- */
+#  The one element in a union initializer (including a nested one)
+#  * must be compatible with the union's first element
+#  
 
-union u {
-    double d;
-    int i;
-    char c;
-};
+type union u(    d: f64    , i: i32    
+    , c: char    )
 
-struct s {
-    int *ptr;
-    union u arr[3];
-};
+type struc s(
+    ptr: *i32    , arr: [3]union u    )
 
-int main(void) {
-    int x;
+pub fn main(none) i32 {
+    x: i32;
 
-    // invalid initializer for last element of arr;
-    // can't convert pointer &x to double
-    struct s my_struct = {&x, {{1.0}, {2.0}, {&x}}};
+    #  invalid initializer for last element of arr;
+    #  can't convert pointer &x to double
+    my_struct: struc s = $(@x, $($(1.0), $(2.0), $(@x))
+        )
 }

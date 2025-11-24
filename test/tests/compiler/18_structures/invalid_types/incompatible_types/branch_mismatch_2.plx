@@ -1,9 +1,7 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct s x = {1};
-    // can't have conditional branches where only one branch is a struct
-    1 ? x : (void) 2;
+pub fn main(none) i32 {
+    x: struc s = $(true)
+    ?     #  can't have conditional branches where only one branch is a struct
+    1 then x else cast<none>(2)
 }

@@ -1,14 +1,11 @@
-union s {
-    int x;
-    int y;
-};
+type union s(    x: i32    , y: i32    
+    )
 
-union t {
-    int blah;
-    int y;
-};
+type union t(    blah: i32    
+    , y: i32    
+    )
 
-int main(void) {
-    union s foo = {1};
-    return foo.blah; // "union s" has no member "blah"
+pub fn main(none) i32 {
+    foo: union s = $(1)
+    return foo.blah #  "union s" has no member "blah"
 }

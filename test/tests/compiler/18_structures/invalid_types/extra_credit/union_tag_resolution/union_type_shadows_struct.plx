@@ -1,13 +1,12 @@
-// Test that we correctly track unions shadowing structs w/ same tag
+#  Test that we correctly track unions shadowing structs w/ same tag
 
-// define a struct type
-struct u {
-    int a;
-};
+#  define a struct type
+type struc u(    a: i32    )
 
-int main(void) {
-    // declare an incomplete union type shadowing earlier complete type
-    union u;
-    union u my_union; // invalid - type is incomplete
-    return 0;
+pub fn main(none) i32 {
+    #  declare an incomplete union type shadowing earlier complete type
+    type union u;
+    
+    my_union: union u; #  invalid - type is incomplete
+    return nil
 }

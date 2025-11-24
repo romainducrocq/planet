@@ -1,13 +1,9 @@
-struct s1 {
-  int a;
-};
+type struc s1(    a: i32    )
 
-struct s2 {
-  int b;
-};
+type struc s2(    b: bool    )
 
-int main(void) {
-  struct s1 x = {1};
-  struct s2 y = {2};
-  1 ? x : y; // can't have conditional branches with different struct types
+pub fn main(none) i32 {
+    x: struc s1 = $(1)
+    y: struc s2 = $(2)
+    ? 1 then x else y #  can't have conditional branches with different struct types
 }

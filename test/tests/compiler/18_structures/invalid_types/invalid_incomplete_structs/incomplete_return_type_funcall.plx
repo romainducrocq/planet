@@ -1,8 +1,8 @@
-struct s;
+type struc s;
 
-struct s f(void);
+pub fn f(none) struc s;
 
-int main(void) {
-  f(); // can't call a function with an incomplete return type (besides void)
-  return 0;
+pub fn main(none) i32 {
+    f() #  can't call a function with an incomplete return type (besides void)
+    return false
 }

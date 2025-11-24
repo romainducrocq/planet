@@ -1,10 +1,6 @@
-struct inner {
-    int i;
-};
+type struc inner(    i: i32    )
 
-struct outer {
-    struct inner foo;
-};
+type struc outer(    foo: struc inner    )
 
-struct outer x = {{1, 2}}; // sub-initializer for nested 'struct inner' has too many elements
+pub x: struc outer = $($(1, 2)) #  sub-initializer for nested 'struct inner' has too many elements
 

@@ -1,18 +1,15 @@
-struct one {
-  int x;
-  int y;
-};
+type struc one(    x: i32    , y: i32    
+    )
 
-struct two {
-  int a;
-  int b;
-};
+type struc two(    a: i32    
+    , b: i32    
+    )
 
-struct one return_struct(void) {
-    struct two retval = {1, 2};
-    return retval; // can't return a "struct two" from function w/ return type "struct one"
+pub fn return_struct(none) struc one {
+    retval: struc two = $(1, 2)
+    return retval #  can't return a "struct two" from function w/ return type "struct one"
 }
 
-int main(void) {
-    return return_struct().x;
+pub fn main(none) i32 {
+    return return_struct().x
 }

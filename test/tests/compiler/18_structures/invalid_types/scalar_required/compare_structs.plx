@@ -1,9 +1,7 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct s x = {1};
-    struct s y = {2};
-    return x == y; // can only apply == operator to scalars, not structures
+pub fn main(none) i32 {
+    x: struc s = $(true)
+    y: struc s = $(2)
+    return x == y #  can only apply == operator to scalars, not structures
 }

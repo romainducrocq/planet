@@ -1,7 +1,6 @@
-struct incomplete;
+type struc incomplete;
 
-struct s {
-  // member type is invalid: illegal to specify array of incomplete type,
-  // even as a pointer's referenced type
-  struct incomplete (*array_pointer)[3];
-};
+type struc s(    #  member type is invalid: illegal to specify array of incomplete type,
+    #  even as a pointer's referenced type
+    array_pointer: *[3]struc incomplete    
+    )

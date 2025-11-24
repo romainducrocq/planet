@@ -1,12 +1,12 @@
-struct s1;
-struct s2;
+type struc s1;
+type struc s2;
 
-struct s1 *get_s1_ptr(void);
-struct s2 *get_s2_ptr(void);
+pub fn get_s1_ptr(none) *struc s1;
+pub fn get_s2_ptr(none) *struc s2;
 
-int main(void) {
-  // can't compare pointers to two distinct struct types
-  struct s1 *s1_ptr = get_s1_ptr();
-  struct s2 *s2_ptr = get_s2_ptr();
-  return s1_ptr == s2_ptr;
+pub fn main(none) i32 {
+    #  can't compare pointers to two distinct struct types
+    s1_ptr: *struc s1 = get_s1_ptr()
+    s2_ptr: *struc s2 = get_s2_ptr()
+    return s1_ptr == s2_ptr
 }

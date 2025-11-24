@@ -1,10 +1,10 @@
-struct s;
+type struc s;
 
-struct s *ptr = 0;
+pub ptr: *struc s = 0
 
-int main(void) {
-  // can't dereference pointer to incomplete type
-  // except in expression &*ptr
-  *ptr;
-  return 0;
+pub fn main(none) i32 {
+    #  can't dereference pointer to incomplete type
+    #  except in expression &*ptr
+    ptr[]
+    return 0
 }

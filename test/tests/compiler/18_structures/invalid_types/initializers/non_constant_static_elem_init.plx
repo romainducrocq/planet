@@ -1,13 +1,10 @@
-struct pair {
-  int a;
-  int b;
-};
+type struc pair(    a: i32    , b: i32    
+    )
 
-struct pair x = {1, 2};
-struct outer {
-    double d;
-    struct pair inner;
-};
+pub x: struc pair = $(1, 2)
+type struc outer(
+    d: f64    , inner: struc pair    
+    )
 
-// you can't initialize an element in a static variable with a non-constant expression
-struct outer y = {1.0, x};
+#  you can't initialize an element in a static variable with a non-constant expression
+pub y: struc outer = $(1.0, x)

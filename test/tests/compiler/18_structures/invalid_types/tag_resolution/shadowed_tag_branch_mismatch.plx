@@ -1,17 +1,16 @@
-int main(void) {
-    struct s {
-        int i;
-    };
-    struct s struct1 = {1};
+pub fn main(none) i32 {
+    type struc s(        i: i32        
+        )
+    
+    struct1: struc s = $(1)
 
     {
-        struct s {
-            int i;
-        };
-        struct s struct2 = {2};
+        type struc s(            i: i32            )
+        
+        struct2: struc s = $(2)
 
-        // invalid conditional expression: struct1 and struct2 have different
-        // types
-        (void)(1 ? struct1 : struct2);
+        #  invalid conditional expression: struct1 and struct2 have different
+        #  types
+        cast<none>((? true then struct1 else struct2))
     }
 }

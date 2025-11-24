@@ -1,7 +1,7 @@
-struct s;
+type struc s;
 
-extern struct s foo;
+extrn foo: struc s;
 
-int main(void) {
-  return foo.a; // can't get member of incomplete structure type
+pub fn main(none) i32 {
+    return foo.a #  can't get member of incomplete structure type
 }

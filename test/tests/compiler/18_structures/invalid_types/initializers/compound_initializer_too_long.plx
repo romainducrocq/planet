@@ -1,11 +1,9 @@
-struct pair {
-    int a;
-    int b;
-};
+type struc pair(    a: i32    , b: i32    
+    )
 
-int main(void) {
-    // a compound structure initializer can't initialize more values than the
-    // struct has
-    struct pair p = {1, 2, 3};
-    return 0;
+pub fn main(none) i32 {
+    #  a compound structure initializer can't initialize more values than the
+    #  struct has
+    p: struc pair = $(1, 2, 3)
+    return false
 }

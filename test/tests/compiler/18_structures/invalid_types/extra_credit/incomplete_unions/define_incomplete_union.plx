@@ -1,3 +1,3 @@
-union u; // declare incomplete union type
+type union u; #  declare incomplete union type
 
-union u my_union; // INVALID: defining variable with incomplete union type
+pub my_union: union u; #  INVALID: defining variable with incomplete union type

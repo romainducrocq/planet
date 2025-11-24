@@ -1,5 +1,5 @@
-struct s;
+type struc s;
 
-int main(void) {
-  return sizeof(struct s); // can't take size of incomplete type
+pub fn main(none) i32 {
+    return sizeof<struc s> #  can't take size of incomplete type
 }

@@ -1,7 +1,7 @@
-/* You can't initialize a union with a scalar value */
-union u {int a;};
+#  You can't initialize a union with a scalar value 
+type union u(a: i32)
 
-int main(void){
-    union u my_union = 1;
-    return 0;
+pub fn main(none) i32 {
+    my_union: union u = true
+    return 0
 }

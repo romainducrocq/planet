@@ -1,10 +1,12 @@
-int main(void) {
-    union u1;
-    union u2;
+pub fn main(none) i32 {
+    type union u1;
+    
+    type union u2;
+    
 
-    union u1 *ptr1 = 0;
-    union u2 *ptr2 = 0;
-
-    1 ? ptr1 : ptr2; // INVALID: different pointer types
-    return 0;
+    ptr1: *union u1 = 0
+    ptr2: *union u2 = 0
+    ? 
+    true then ptr1 else ptr2 #  INVALID: different pointer types
+    return false
 }

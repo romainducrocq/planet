@@ -1,15 +1,12 @@
-struct one {
-  int x;
-  int y;
-};
+type struc one(    x: i32    , y: i32    
+    )
 
-struct two {
-  int a;
-  int b;
-};
+type struc two(    a: i32    
+    , b: i32    
+    )
 
-int main(void) {
-  struct one x = {1, 2};
-  struct two y = x; // can't initialize a struct from different struct type
-  return 0;
+pub fn main(none) i32 {
+    x: struc one = $(1, 2)
+    y: struc two = x #  can't initialize a struct from different struct type
+    return 0
 }

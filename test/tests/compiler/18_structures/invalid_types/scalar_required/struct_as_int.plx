@@ -1,10 +1,8 @@
-struct s {
-  int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-  struct s x = {1};
-  // can only apply ~ operator to ints, not structs
-  (void)~x;
-  return 0;
+pub fn main(none) i32 {
+    x: struc s = $(true)
+    #  can only apply ~ operator to ints, not structs
+    cast<none>(~x)
+    return 0
 }

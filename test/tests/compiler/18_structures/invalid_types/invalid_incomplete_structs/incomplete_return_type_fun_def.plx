@@ -1,11 +1,13 @@
-void exit(int status);
+pub fn exit(status: i32) none;
 
-struct s;
+type struc s;
 
-// you can't define a function with an incomplete return type,
-// even if it doesn't actually return a value
-struct s return_struct_def(void) {
-  exit(0);
+#  you can't define a function with an incomplete return type,
+#  even if it doesn't actually return a value
+pub fn return_struct_def(none) struc s {
+    exit(nil)
 }
 
-int main(void) { return 0; }
+pub fn main(none) i32 {
+    return 0
+}

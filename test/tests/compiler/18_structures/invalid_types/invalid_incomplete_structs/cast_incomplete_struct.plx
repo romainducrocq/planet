@@ -1,9 +1,9 @@
-struct s;
+type struc s;
 
-extern struct s v;
+extrn v: struc s;
 
-int main(void) {
-  // you can't perform a cast on a struct with incomplete type
-  (void)v;
-  return 0;
+pub fn main(none) i32 {
+    #  you can't perform a cast on a struct with incomplete type
+    cast<none>(v)
+    return 0
 }

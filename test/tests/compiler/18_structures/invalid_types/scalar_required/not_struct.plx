@@ -1,8 +1,6 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct s x = {1};
-    return !x;  // can only apply boolean operators to scalars, not structs
+pub fn main(none) i32 {
+    x: struc s = $(true)
+    return not x #  can only apply boolean operators to scalars, not structs
 }

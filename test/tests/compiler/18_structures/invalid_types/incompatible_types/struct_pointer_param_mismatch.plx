@@ -1,17 +1,13 @@
-struct s1 {
-    int a;
-};
+type struc s1(    a: i32    )
 
-struct s2 {
-    int a;
-};
+type struc s2(    a: bool    )
 
-int get_a(struct s1 *ptr) {
-    return ptr->a;
+pub fn get_a(ptr: *struc s1) i32 {
+    return ptr[].a
 }
 
-int main(void) {
-    struct s2 arg = {1};
-    // can't pass a struct s2 * to a function that expects a struct s1 *
-    return get_a(&arg);
+pub fn main(none) i32 {
+    arg: struc s2 = $(1)
+    #  can't pass a struct s2 * to a function that expects a struct s1 *
+    return get_a(@arg)
 }

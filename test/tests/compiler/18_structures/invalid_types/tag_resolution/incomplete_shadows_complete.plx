@@ -1,10 +1,9 @@
-struct s {
-    int a;
-};
+type struc s(    a: i32    )
 
-int main(void) {
-    struct s;  // incomplete declaration shadows complete
-    struct s *x;
-    x->a = 10;  // illegal; x has incomplete type w/out member 'a'
-    return 0;
+pub fn main(none) i32 {
+    type struc s;
+     #  incomplete declaration shadows complete
+    x: *struc s;
+    x[].a = 10 #  illegal; x has incomplete type w/out member 'a'
+    return nil
 }

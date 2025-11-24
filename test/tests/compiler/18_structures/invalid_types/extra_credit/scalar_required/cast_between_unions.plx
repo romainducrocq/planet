@@ -1,12 +1,10 @@
-// Can't cast operand to union type even if it already has that type
+#  Can't cast operand to union type even if it already has that type
 
-union u1 {
-    int a;
-};
+type union u1(    a: i32    )
 
 
-int main(void){
-    union u1 var = {10};
-    (union u1) var; // illegal - no casts to union type
-    return 0;
+pub fn main(none) i32 {
+    var: union u1 = $(10)
+    cast<union u1>(var) #  illegal - no casts to union type
+    return 0
 }

@@ -1,14 +1,11 @@
-struct chars {
-    char a;
-    char b;
-    char c;
-    char null;
-};
+type struc chars(    a: char    , b: char    
+    , c: char    , null: char    
+    )
 
-int main(void) {
+pub fn main(none) i32 {
 
-    // you can't initialize structure members with a string,
-    // even if they're all chars
-    struct chars my_chars = "abc";
-    return 0;
+    #  you can't initialize structure members with a string,
+    #  even if they're all chars
+    my_chars: struc chars = "abc"
+    return 0
 }

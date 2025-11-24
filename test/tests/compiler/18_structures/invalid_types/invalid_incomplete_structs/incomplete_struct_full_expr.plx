@@ -1,10 +1,11 @@
-struct s;
+type struc s;
 
-extern struct s x;
+extrn x: struc s;
 
-int main(void) {
-  // can't use expression w/ incomplete struct type as expression statement
-  for (x;;)
-    ;
-  return 0;
+pub fn main(none) i32 {
+    #  can't use expression w/ incomplete struct type as expression statement
+    loop x {
+        ;
+    }
+    return 0
 }

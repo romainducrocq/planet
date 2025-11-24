@@ -1,10 +1,8 @@
-// Can't apply prefix or postfix ++/-- to structures
-struct s {
-    int i;
-};
+#  Can't apply prefix or postfix ++/-- to structures
+type struc s(    i: i32    )
 
-int main(void) {
-    struct s my_struct = {1};
-    my_struct++;
-    return 0;
+pub fn main(none) i32 {
+    my_struct: struc s = $(true)
+    my_struct++
+    return 0
 }

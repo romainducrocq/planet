@@ -1,7 +1,10 @@
-/* YOu can't declare the same union type twice. */
+#  YOu can't declare the same union type twice. 
 
-int main(void) {
-    union u {int a;};
-    union u {int a;}; // illegal - duplicate declaration
-    return 0;
+pub fn main(none) i32 {
+    type union u(a: i32
+        )
+    
+    type union u(a: i32)
+     #  illegal - duplicate declaration
+    return 0
 }

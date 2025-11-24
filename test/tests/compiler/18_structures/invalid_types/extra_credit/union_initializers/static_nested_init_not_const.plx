@@ -1,18 +1,13 @@
-// Validate that all static union initializers, including nested ones,
-// are constant
+#  Validate that all static union initializers, including nested ones,
+#  are constant
 
-union u {
-    long l;
-};
+type union u(    l: i64    )
 
-struct has_union {
-    int a;
-    union u b;
-    char c;
-};
+type struc has_union(    a: i32    
+    , b: union u    
+    , c: char    )
 
-long some_var = 10l;
+pub some_var: i64 = 10l
 
-struct has_union some_struct = {1,
-                                {some_var},  // INVALID - not constant
-                                'a'};
+pub some_struct: struc has_union = $(true,     $(some_var), #  INVALID - not constant
+    'a')
