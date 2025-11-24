@@ -840,7 +840,12 @@ void cc::Transpiler::include_header(std::string buf, bool is_import) {
     if (with_prob(50)) {
         append_end("! ");
     }
-    append_end("\"" + buf + "\"\n");
+    append_end("`" + buf + "`\n");
+    append_end(">>> REMOVE FROM HERE\n");
+}
+
+void cc::Transpiler::include_header_end() {
+    append_end("\n>>> TO HERE\n");
 }
 
 void cc::Transpiler::break_line(bool maybe) {

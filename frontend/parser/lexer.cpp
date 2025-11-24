@@ -837,6 +837,7 @@ static error_t tokenize_include(Ctx ctx, size_t linenum) {
     ctx->line_size = line_size;
     ctx->match_at = match_at;
     ctx->match_size = match_size;
+    TRANSPILE(include_header_end());
     FINALLY;
     str_delete(filename);
     str_delete(fopen_name);

@@ -102,7 +102,8 @@ class Transpiler {
         void comment_line(const char* line, size_t match_at, size_t line_size);
         void skip(bool is_comment, const char* line, size_t match_at, size_t match_size);
         void include_header(std::string include_buf, bool is_import);
-
+        void include_header_end();
+        
     private:
         void incr_indent();
         void decr_indent();
