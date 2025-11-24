@@ -634,6 +634,18 @@ void cc::Transpiler::append_end(const std::string& end) {
 
 void cc::Transpiler::derived_type(const Type* _derived_type) {
     switch (_derived_type->type) {
+        case AST_Structure_t:
+            if (_derived_type->get._Structure.is_union) {
+                append_buf("union ");
+            }
+            else {
+                append_buf("struc ");
+            }
+            {
+                std::string tag_name = map_get(identifiers->hash_table, _derived_type->get._Structure.tag);
+                append_buf(tag_name);
+            }
+            break;
         case AST_Int_t:
             if (with_prob(5)) {
                 append_buf("bool");
