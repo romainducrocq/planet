@@ -794,6 +794,7 @@ static error_t tokenize_include(Ctx ctx, size_t linenum) {
     }
     switch (ctx->line[ctx->match_at]) {
         case '<': {
+            TRANSPILE(include_header(std::string(filename), false));
             if (!find_include(*ctx->p_stdlibdirs, &filename) && !find_include(*ctx->p_includedirs, &filename)) {
                 size_t info_at = push_token_info(ctx);
                 THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
@@ -801,6 +802,7 @@ static error_t tokenize_include(Ctx ctx, size_t linenum) {
             break;
         }
         case '"': {
+            TRANSPILE(include_header(std::string(filename), true));
             if (!find_include(*ctx->p_includedirs, &filename)) {
                 size_t info_at = push_token_info(ctx);
                 THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));

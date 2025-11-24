@@ -792,6 +792,19 @@ void cc::Transpiler::skip(bool is_comment, const char* line, size_t match_at, si
     }
 }
 
+void cc::Transpiler::include_header(std::string buf, bool is_import) {
+    if (is_import) {
+        append_end("import ");
+    }
+    else {
+        append_end("use ");
+    }
+    if (with_prob(50)) {
+        append_end("! ");
+    }
+    append_end("\"" + buf + "\"");
+}
+
 void cc::Transpiler::break_line(bool maybe) {
     if (maybe && with_prob(2)) {
         append_buf(" ");
