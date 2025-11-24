@@ -2358,6 +2358,7 @@ static error_t parse_member_declaration(Ctx ctx, unique_ptr_t(CMemberDeclaration
             GET_PARSER_MSG(MSG_member_decl_as_fun, map_get(ctx->identifiers->hash_table, decltor.name)));
     }
     info_at = ctx->next_tok->info_at;
+    TRANSPILE(set_linenum(ctx->next_tok));
     TRANSPILE(var_decltor(&decltor));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));

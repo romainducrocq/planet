@@ -613,7 +613,7 @@ void cc::Transpiler::concat_buf(const LineBuf& line_buf, const std::string& buf)
 }
 
 void cc::Transpiler::append_buf(const std::string& buf) {
-    if (paren > 0 && with_prob(2)) {
+    if (paren > 0 && with_prob(1)) {
         break_line(false);
     }
     if (lines[linenum - 1].buf.empty() || lines[linenum - 1].buf.back() == '\n') {
@@ -844,7 +844,7 @@ void cc::Transpiler::include_header(std::string buf, bool is_import) {
 }
 
 void cc::Transpiler::break_line(bool maybe) {
-    if (maybe && with_prob(2)) {
+    if (maybe && with_prob(1)) {
         append_buf(" ");
     }
     else {
@@ -942,10 +942,16 @@ void cc::Transpiler::datatype_start(size_t tag, bool is_union) {
     append_buf("type " + tag_name + "(");
     incr_paren();
     is_struct = true;
+    if (with_prob(25)) {
+        append_buf("\n");
+    }
 }
 
 void cc::Transpiler::datatype_end(const Token* tok) {
     set_linenum(tok);
+    if (with_prob(25)) {
+        append_buf("\n");
+    }
     if (tok->tok_kind == TOK_close_brace) {
         append_buf(")");
         decr_paren();
