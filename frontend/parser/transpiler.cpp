@@ -952,14 +952,20 @@ void cc::Transpiler::write_lines() {
     // std::cout << std::endl;
 }
 
-void cc::Transpiler::datatype_start(size_t tag, bool is_union) {
+void cc::Transpiler::datatype_start(const Token* tok, size_t tag, bool is_union) {
     std::string tag_name = is_union ? "union " : "struc ";
     tag_name += map_get(identifiers->hash_table, tag);
-    append_buf("type " + tag_name + "(");
-    incr_paren();
-    is_struct = true;
-    if (with_prob(25)) {
-        append_buf("\n");
+    append_buf("type " + tag_name);
+    if (tok->tok_kind == TOK_open_brace) {
+        append_buf("(");
+        incr_paren();
+        is_struct = true;
+        if (with_prob(25)) {
+            append_buf("\n");
+        }
+    }
+    else {
+        append_buf(";\n");
     }
 }
 
@@ -969,7 +975,7 @@ void cc::Transpiler::datatype_end(const Token* tok) {
         append_buf("\n");
     }
     if (tok->tok_kind == TOK_close_brace) {
-        append_buf(")");
+        append_buf(")\n");
         decr_paren();
         is_struct = false;
     }

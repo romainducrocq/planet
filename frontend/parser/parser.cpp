@@ -2387,7 +2387,7 @@ static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration
     TIdentifier tag;
     TRY(parse_identifier(ctx, 0, &tag));
     TRY(pop_next(ctx));
-    TRANSPILE(datatype_start(tag, is_union));
+    TRANSPILE(datatype_start(ctx->next_tok, tag, is_union));
     if (ctx->next_tok->tok_kind == TOK_open_brace) {
         do {
             TRY(parse_member_declaration(ctx, &member));
