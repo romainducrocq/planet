@@ -781,19 +781,37 @@ void cc::Transpiler::storage_class(const Token* tok, const CStorageClass* clss) 
     }
 }
 
+bool cc::Transpiler::starts_with_include() {
+    if (lines.size() < 2) {
+        return false;
+    }
+    const std::string& str = lines[lines.size()-2].end;
+    if (str.size() >= 6 && strncmp(str.c_str(), "import", 6) == 0) {
+        return true;
+    }
+    if (str.size() >= 3 && strncmp(str.c_str(), "use", 3) == 0) {
+        return true;
+    }
+    return false;
+}
+
 void cc::Transpiler::comment(const char* line, size_t match_at, size_t match_size) {
+    if (starts_with_include()) return;
     append_end(std::string(line).substr(match_at, match_size));
 }
 
 void cc::Transpiler::comment_start() {
+    if (starts_with_include()) return;
     append_end("# ");
 }
 
 void cc::Transpiler::comment_end() {
+    if (starts_with_include()) return;
     append_end("\n");
 }
 
 void cc::Transpiler::comment_line(const char* line, size_t match_at, size_t line_size) {
+    if (starts_with_include()) return;
     comment_start();
     comment(line, match_at + 2, line_size);
 }
@@ -821,7 +839,7 @@ void cc::Transpiler::include_header(std::string buf, bool is_import) {
     if (with_prob(50)) {
         append_end("! ");
     }
-    append_end("\"" + buf + "\"");
+    append_end("\"" + buf + "\"\n");
 }
 
 void cc::Transpiler::break_line(bool maybe) {

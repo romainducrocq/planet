@@ -119,6 +119,7 @@ class Transpiler {
         void append_char_const(size_t identifier);
         void append_identifier(size_t identifier);
         void type_decl(size_t name, const Type* type_t);
+        bool starts_with_include();
         void comment(const char* line, size_t match_at, size_t match_size);
         void format_line(Line& line, size_t i);
         bool with_prob(unsigned int x);
