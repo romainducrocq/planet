@@ -760,6 +760,7 @@ void cc::Transpiler::fun_decltor(const Declarator* decltor, const Token* tok) {
 }
 
 void cc::Transpiler::storage_class(const Token* tok, const CStorageClass* clss) {
+    if (is_struct) return;
     set_linenum(tok);
     switch (clss->type) {
         case AST_CStorageClass_t:
@@ -940,6 +941,7 @@ void cc::Transpiler::datatype_start(size_t tag, bool is_union) {
     tag_name += map_get(identifiers->hash_table, tag);
     append_buf("type " + tag_name + "(");
     incr_paren();
+    is_struct = true;
 }
 
 void cc::Transpiler::datatype_end(const Token* tok) {
@@ -947,6 +949,7 @@ void cc::Transpiler::datatype_end(const Token* tok) {
     if (tok->tok_kind == TOK_close_brace) {
         append_buf(")");
         decr_paren();
+        is_struct = false;
     }
     else {
         append_buf(", ");

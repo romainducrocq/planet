@@ -34,6 +34,7 @@ class Transpiler {
         bool top_level = true;
         bool is_elif = false;
         bool is_arr_size = false;
+        bool is_struct = false;
         int indent = 0;
         int paren = 0;
         size_t linenum = 1;
