@@ -23,6 +23,7 @@ class Transpiler {
     struct Line {
         std::string buf;
         std::string end;
+        bool is_include;
     };
 
     struct LineBuf {
@@ -37,6 +38,7 @@ class Transpiler {
         bool is_struct = false;
         int indent = 0;
         int paren = 0;
+        int include_depth = 0;
         size_t linenum = 1;
         std::vector<Line> lines = {};
         std::vector<bool> open_blocks = {};
@@ -103,7 +105,7 @@ class Transpiler {
         void skip(bool is_comment, const char* line, size_t match_at, size_t match_size);
         void include_header(std::string include_buf, bool is_import);
         void include_header_end();
-        
+
     private:
         void incr_indent();
         void decr_indent();

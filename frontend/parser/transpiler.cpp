@@ -24,7 +24,7 @@ cc::Transpiler transpiler = []() -> cc::Transpiler {
 }();
 
 void cc::Transpiler::add_line() {
-    lines.push_back({"", ""});
+    lines.push_back({"", "", include_depth > 0});
 }
 
 void cc::Transpiler::set_filename(const char* filename) {
@@ -840,12 +840,19 @@ void cc::Transpiler::include_header(std::string buf, bool is_import) {
     if (with_prob(50)) {
         append_end("! ");
     }
+    buf.pop_back();
+    buf.pop_back();
     append_end("`" + buf + "`\n");
-    append_end(">>> REMOVE FROM HERE\n");
+    // append_end(">>> REMOVE FROM HERE\n");
+    include_depth++;
 }
 
 void cc::Transpiler::include_header_end() {
-    append_end("\n>>> TO HERE\n");
+    // append_end("\n>>> TO HERE\n");
+    include_depth--;
+    if (include_depth < 0) {
+        throw std::runtime_error("invalid include_depth");
+    }
 }
 
 void cc::Transpiler::break_line(bool maybe) {
@@ -925,7 +932,9 @@ void cc::Transpiler::print_lines() {
     for (size_t i = 0; i < lines.size(); ++i) {
         auto& line = lines[i];
         format_line(line, i);
-        std::cout << line.buf << line.end;
+        if (!line.is_include) {
+            std::cout << line.buf << line.end;
+        }
     }
     // std::cout << std::endl;
 }
@@ -935,7 +944,9 @@ void cc::Transpiler::write_lines() {
     for (size_t i = 0; i < lines.size(); ++i) {
         auto& line = lines[i];
         format_line(line, i);
-        out << line.buf << line.end;
+        if (!line.is_include) {
+            out << line.buf << line.end;
+        }
     }
     out.close();
     // std::cout << std::endl;
