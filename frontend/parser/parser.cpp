@@ -693,6 +693,7 @@ static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TRANSPILE(keep_token(ctx->peek_tok));
     TIdentifier member;
     TRY(parse_identifier(ctx, 0, &member));
     *exp = make_CDot(member, exp, info_at);
@@ -707,6 +708,7 @@ static error_t parse_arrow_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRANSPILE(keep_token(ctx->next_tok));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TRANSPILE(keep_token(ctx->peek_tok));
     TIdentifier member;
     TRY(parse_identifier(ctx, 0, &member));
     *exp = make_CArrow(member, exp, info_at);
