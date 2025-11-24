@@ -1,100 +1,96 @@
-/* Test that we treat struct tags, function/variable names,
- * and each struct type's member names as separate namespaces
- * */
+#  Test that we treat struct tags, function/variable names,
+#  * and each struct type's member names as separate namespaces
+#  * 
 
-// two structs can use same member names
-int test_shared_member_names(void) {
-    struct pair1 {
-        int x;
-        int y;
-    };
+#  two structs can use same member names
+pub fn test_shared_member_names(none) i32 {
+    type struc pair1(        x: i32        
+        , y: i32        )
+    
 
-    struct pair2 {
-        double x;
-        char y;
-    };
-    struct pair1 p1 = {1, 2};
-    struct pair2 p2 = {3.0, 4};
-    if (p1.x != 1 || p2.x != 3.0) {
-        return 0;
+    type struc pair2(
+        x: f64        , y: char        )
+    
+    p1: struc pair1 = $(1, 2)
+    p2: struc pair2 = $(3.0, 4)
+    if p1.x ~= 1 or p2.x ~= 3.0 {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-// you can use the same member name in different ways in the same expression,
-// and the type checker can infer what struct type each one refers to
-int test_shared_nested_member_names(void) {
-    struct pair1 {
-        int x;
-        int *y;
-    };
+#  you can use the same member name in different ways in the same expression,
+#  and the type checker can infer what struct type each one refers to
+pub fn test_shared_nested_member_names(none) i32 {
+    type struc pair1(        x: i32        , y
+        : *i32        )
+    
 
-    struct pair2 {
-        void *x;
-        double y[4];
-    };
-    struct pair1 p1 = {3, &(p1.x)};
-    struct pair2 p2 = {&p1, {1.0, 2.0, 3.0, 4.0}};
+    type struc pair2(
+        x: *any        , y: [4]f64        
+        )
+    
+    p1: struc pair1 = $(3, @(p1.x))
+    p2: struc pair2 = $(@p1, $(1.0, 2.0, 3.0, 4.0))
 
-    // nested access with two 'y' members
-    if (((struct pair1 *)p2.x)->x != 3) {
-        return 0;
+    #  nested access with two 'y' members
+    if (cast<*struc pair1>(p2.x))[].x ~= 3 {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-// you can use the same identiifer as a struct tag, member name, and variable
-// name
-int test_same_name_var_member_and_tag(void) {
-    struct x {
-        int x;
-    };
-    struct x x = {10};
-    if (x.x != 10) {
-        return 0;
+#  you can use the same identiifer as a struct tag, member name, and variable
+#  name
+pub fn test_same_name_var_member_and_tag(none) i32 {
+    type struc x(        x: bool        )
+    
+    x: struc x = $(10)
+    if x.x ~= 10 {
+        return false
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-// you can use the same identifier as a struct tag, member name, and function
-// name
-int test_same_name_fun_member_and_tag(void) {
-    struct f {
-        int f;
-    };
-    int f(void);
-    struct f my_struct;
-    my_struct.f = f();
-    if (my_struct.f != 10) {
-        return 0;
+#  you can use the same identifier as a struct tag, member name, and function
+#  name
+pub fn test_same_name_fun_member_and_tag(none) i32 {
+    type struc f(        f: i32        
+        )
+    
+    fn f(none) i32;
+    my_struct: struc f;
+    my_struct.f = f()
+    if my_struct.f ~= 10 {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-int f(void) {
-    return 10;
+pub fn f(none) i32 {
+    return 10
 }
 
-int main(void) {
-    if (!test_shared_member_names()) {
-        return 1;
+pub fn main(none) i32 {
+    if not test_shared_member_names() {
+        return true
     }
 
-    if (!test_shared_nested_member_names()) {
-        return 2;
+    if not test_shared_nested_member_names() {
+        return 2
     }
 
-    if (!test_same_name_var_member_and_tag()) {
-        return 3;
+    if not test_same_name_var_member_and_tag() {
+        return 3
     }
 
-    if (!test_same_name_fun_member_and_tag()) {
-        return 4;
+    if not test_same_name_fun_member_and_tag() {
+        return 4
     }
 
-    return 0;
+    return 0
 }

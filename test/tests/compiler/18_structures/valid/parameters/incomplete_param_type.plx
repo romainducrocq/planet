@@ -1,22 +1,21 @@
-/* Test that we can declare a function with an incomplete parameter type,
- * then call/define it after the type is completed */
-struct s;
+#  Test that we can declare a function with an incomplete parameter type,
+#  * then call/define it after the type is completed 
+type struc s;
 
-// struct s is incomplete here, so we can declare this function
-// but not define it
-int foo(struct s blah);
+#  struct s is incomplete here, so we can declare this function
+#  but not define it
+pub fn foo(blah: struc s) i32;
 
-// complete the type
-struct s {
-    int a;
-    int b;
-};
+#  complete the type
+type struc s(    a: i32    
+    , b: i32    
+    )
 
-int main(void) {
-    struct s arg = {1, 2};
-    return foo(arg); // we can call foo b/c 'struct s' type is completed
+pub fn main(none) i32 {
+    arg: struc s = $(1, 2)
+    return foo(arg) #  we can call foo b/c 'struct s' type is completed
 }
 
-int foo(struct s blah) {
-    return blah.a + blah.b;
+pub fn foo(blah: struc s) i32 {
+    return blah.a + blah.b
 }

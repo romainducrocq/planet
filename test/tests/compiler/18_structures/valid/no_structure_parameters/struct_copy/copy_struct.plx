@@ -1,92 +1,90 @@
-/* Test copying a whole struct via assignment w/ TACKY Copy instruction
- * (not Load, Store, CopytoOffset, CopyFromOffset)
- * Include static and automatic objects and result of conditional expressions.
- * */
+#  Test copying a whole struct via assignment w/ TACKY Copy instruction
+#  * (not Load, Store, CopytoOffset, CopyFromOffset)
+#  * Include static and automatic objects and result of conditional expressions.
+#  * 
 
-#include "structs.h"
+import `structs`
 
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
 
-// test 1: copy one struct with auto storage duration to another
-int test_auto(void) {
-    struct s x = {"ab", {-1, 2}};
-    struct s y = {"x", {1}};
-    y = x;
-    if (strcmp(y.arr, "ab") || y.inner.a != -1 || y.inner.b != 2) {
-        return 0;
+
+
+
+#  test 1: copy one struct with auto storage duration to another
+pub fn test_auto(none) i32 {
+    x: struc s = $("ab", $(-1, 2))
+    y: struc s = $("x", $(true))
+    y = x
+    if strcmp(y.arr, "ab") or y.inner.a ~= -1 or y.inner.b ~= 2 {
+        return 0
     }
 
-    // update a value in y, make sure it doesn't affect x
-    y.inner.a = 20;
-    if (y.inner.a != 20 || x.inner.a != -1) {
-        return 0;
+    #  update a value in y, make sure it doesn't affect x
+    y.inner.a = 20
+    if y.inner.a ~= 20 or x.inner.a ~= -1 {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-// test 2: copy one struct with static storage duration to another
-int test_static(void) {
-    static struct s x = {"ab", {1, 2}};
-    static struct s y;
-    y = x;
-    if (strcmp(y.arr, "ab") || y.inner.a != 1 || y.inner.b != 2) {
-        return 0;
+#  test 2: copy one struct with static storage duration to another
+pub fn test_static(none) i32 {
+    data x: struc s = $("ab", $(1, 2))
+    data y: struc s;
+    y = x
+    if strcmp(y.arr, "ab") or y.inner.a ~= 1 or y.inner.b ~= 2 {
+        return 0
     }
 
-    return 1;  // success
+    return true #  success
 }
 
-// test 3: copy a struct w/ uneven size
-struct wonky {
-    char arr[7];
-};
+#  test 3: copy a struct w/ uneven size
+type struc wonky(    arr: [7]char    )
 
-int test_wonky_size(void) {
-    struct wonky x = {"abcdef"};
-    static struct wonky y;
-    y = x;
-    if (strcmp(y.arr, "abcdef")) {
-        return 0;
+pub fn test_wonky_size(none) i32 {
+    x: struc wonky = $("abcdef")
+    data y: struc wonky;
+    y = x
+    if strcmp(y.arr, "abcdef") {
+        return 0
     }
-    return 1;  // success
+    return 1 #  success
 }
 
-// test 4: assign result of conditional expression to struct
-int true_flag(void) {
-    return 1;
+#  test 4: assign result of conditional expression to struct
+pub fn true_flag(none) i32 {
+    return 1
 }
 
-int test_conditional(void) {
-    static struct s x = {"xy", {1234, 5678}};
-    struct s y = {"!", {-10}};
-    struct s z;
-    z = true_flag() ? x : y;
-    if (strcmp(z.arr, "xy") || z.inner.a != 1234 || z.inner.b != 5678) {
-        return 0;
+pub fn test_conditional(none) i32 {
+    data x: struc s = $("xy", $(1234, 5678))
+    y: struc s = $("!", $(-10))
+    z: struc s;
+    z = ? true_flag() then x else y
+    if strcmp(z.arr, "xy") or z.inner.a ~= 1234 or z.inner.b ~= 5678 {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-int main(void) {
-    if (!test_auto()) {
-        return 1;
+pub fn main(none) i32 {
+    if not test_auto() {
+        return 1
     }
 
-    if (!test_static()) {
-        return 2;
+    if not test_static() {
+        return 2
     }
 
-    if (!test_wonky_size()) {
-        return 3;
+    if not test_wonky_size() {
+        return 3
     }
 
-    if (!test_conditional()) {
-        return 4;
+    if not test_conditional() {
+        return 4
     }
 
-    return 0;
+    return 0
 }

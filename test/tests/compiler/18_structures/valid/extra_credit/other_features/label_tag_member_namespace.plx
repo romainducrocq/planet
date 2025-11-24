@@ -1,12 +1,12 @@
-// Labels, structure tags, and member names are all different namespaces
+#  Labels, structure tags, and member names are all different namespaces
 
-int main(void) {
-    struct x {
-        int x;
-    };
-    struct x x = {10};
-    goto x;
-    return 0;
-x:
-    return x.x; // expected result in 10
+pub fn main(none) i32 {
+    type struc x(        x: i32        
+        )
+    
+    x: struc x = $(10)
+    jump x
+    return 0
+    label x
+    return x.x #  expected result in 10
 }

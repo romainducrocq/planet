@@ -1,105 +1,103 @@
-// Test copying whole structs/unions through pointers (incl. to/from array members)
+#  Test copying whole structs/unions through pointers (incl. to/from array members)
 
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
-#else
-#pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif
-#endif
 
-#include "../union_types.h"
 
-int strcmp(char* s1, char* s2);
 
-// case 1: *x = y
-int test_copy_to_pointer(void) {
-    union simple y;
-    y.l = -20;
-    union simple* x = malloc(sizeof(union simple));
-    *x = y;
 
-    // validate
-    if (x->l != -20 || x->i != -20 || x->uc_arr[0] != 236 || x->uc_arr[1] != 255 || x->uc_arr[2] != 255) {
-        return 0; // fail
+
+
+
+
+import `../union_types`
+
+pub fn strcmp(s1: *char, s2: *char) i32;
+
+#  case 1: *x = y
+pub fn test_copy_to_pointer(none) i32 {
+    y: union simple;
+    y.l = -20
+    x: *union simple = malloc(sizeof<union simple>)
+    x[] = y
+
+    #  validate
+    if x[].l ~= -20 or x[].i ~= -20 or x[].uc_arr[0] ~= 236 or x[].uc_arr[1] ~= 255 or x[].uc_arr[2] ~= 255 {
+        return 0 #  fail
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-// case 2: x = *y
-int test_copy_from_pointer(void) {
-    // define/initialize a union object containing a struct
-    struct simple_struct my_struct = { 8223372036854775807l, 20e3, 2147483650u };
-    static union has_struct my_union;
-    my_union.s = my_struct;
+#  case 2: x = *y
+pub fn test_copy_from_pointer(none) i32 {
+    #  define/initialize a union object containing a struct
+    my_struct: struc simple_struct = $(8223372036854775807l, 20e3, 2147483650u)
+    data my_union: union has_struct;
+    my_union.s = my_struct
 
-    // get a pointer to that union
-    union has_struct* union_ptr;
-    union_ptr = &my_union;
+    #  get a pointer to that union
+    union_ptr: *union has_struct;
+    union_ptr = @my_union
 
-    // copy from pointer to another union
-    union has_struct another_union = *union_ptr;
+    #  copy from pointer to another union
+    another_union: union has_struct = union_ptr[]
 
-    // validate
-    if (another_union.s.l != 8223372036854775807l || another_union.s.d != 20e3 || another_union.s.u != 2147483650u) {
-        return 0; // fail
+    #  validate
+    if another_union.s.l ~= 8223372036854775807l or another_union.s.d ~= 20e3 or another_union.s.u ~= 2147483650u {
+        return 0 #  fail
     }
 
-    return 1;
+    return true
 }
 
-// case 3: copies to and from array members (using a union w/ trailing padding)
+#  case 3: copies to and from array members (using a union w/ trailing padding)
 
-// size is 12 bytes; take largest member (10 bytes)
-// and pad to 4-byte alignment (b/c ui is 4-byte aligned)
-union with_padding {
-    char arr[10];
-    unsigned int ui;
-};
+#  size is 12 bytes; take largest member (10 bytes)
+#  and pad to 4-byte alignment (b/c ui is 4-byte aligned)
+type union with_padding(    arr: [10]char    , ui: u32    
+    )
 
-int test_copy_array_members(void) {
+pub fn test_copy_array_members(none) i32 {
 
-    // define/initialize an array of unions
-    union with_padding union_array[3] = { {"foobar"}, {"hello"}, {"itsaunion"} };
+    #  define/initialize an array of unions
+    union_array: [3]union with_padding = $($("foobar"), $("hello"), $("itsaunion"))
 
-    // copy element out of array
-    union with_padding another_union = union_array[0];
-    union with_padding yet_another_union = { "blahblah" };
+    #  copy element out of array
+    another_union: union with_padding = union_array[nil]
+    yet_another_union: union with_padding = $("blahblah")
 
-    // copy an element into the array
-    union_array[2] = yet_another_union;
+    #  copy an element into the array
+    union_array[2] = yet_another_union
 
-    // validate
-    if (strcmp(union_array[0].arr, "foobar") || strcmp(union_array[1].arr, "hello") || strcmp(union_array[2].arr, "blahblah")) {
-        return 0; // fail
+    #  validate
+    if strcmp(union_array[0].arr, "foobar") or strcmp(union_array[1].arr, "hello") or strcmp(union_array[2].arr, "blahblah") {
+        return 0 #  fail
     }
 
-    if (strcmp(another_union.arr, "foobar")) {
-        return 0; // fail
+    if strcmp(another_union.arr, "foobar") {
+        return 0 #  fail
     }
 
-    // check yet_another_union too, even though we didn't update it
-    if (strcmp(yet_another_union.arr, "blahblah")) {
-        return 0; // fail
+    #  check yet_another_union too, even though we didn't update it
+    if strcmp(yet_another_union.arr, "blahblah") {
+        return false #  fail
     }
 
-    return 1; // success
+    return 1 #  success
 
 }
 
-int main(void) {
-    if (!test_copy_to_pointer()){
-        return 1;
+pub fn main(none) i32 {
+    if not test_copy_to_pointer() {
+        return 1
     }
 
-    if (!test_copy_from_pointer()) {
-        return 2;
+    if not test_copy_from_pointer() {
+        return 2
     }
 
-    if (!test_copy_array_members()) {
-        return 3;
+    if not test_copy_array_members() {
+        return 3
     }
 
-    return 0; // success
+    return 0 #  success
 }

@@ -1,23 +1,19 @@
-// A union type declaration can shadow a struct type declaration with the same tag
-struct tag {
-    int a;
-    int b;
-};
+#  A union type declaration can shadow a struct type declaration with the same tag
+type struc tag(    a: i32    , b: i32    
+    )
 
-struct tag global_struct = {1, 2};
+pub global_struct: struc tag = $(1, 2)
 
-int main(void) {
-    // this shadows the declaration of 'struct tag'
-    union tag {
-        int x;
-        long y;
-    };
-    union tag local_union = {100};
-    if (global_struct.a != 1) {
-        return 1;  // fail
+pub fn main(none) i32 {
+    #  this shadows the declaration of 'struct tag'
+    type union tag(        x: i32        , y: i64        )
+    
+    local_union: union tag = $(100)
+    if global_struct.a ~= 1 {
+        return 1 #  fail
     }
-    if (local_union.x != 100) {
-        return 2;  // fail
+    if local_union.x ~= 100 {
+        return 2 #  fail
     }
-    return 0;  // success
+    return nil #  success
 }

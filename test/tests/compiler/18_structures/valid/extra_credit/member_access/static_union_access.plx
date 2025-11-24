@@ -1,44 +1,42 @@
-// Test access to static union members with . and ->
-union u {
-    unsigned long l;
-    double d;
-    char arr[8];
-};
+#  Test access to static union members with . and ->
+type union u(    l: u64    , d: f64    
+    , arr: [8]char    
+    )
 
-static union u my_union = { 18446744073709551615UL };
-static union u* union_ptr = 0;
+my_union: union u = $(18446744073709551615ul)
+union_ptr: *union u = 0
 
-int main(void) {
-    union_ptr = &my_union;
-    if (my_union.l != 18446744073709551615UL) {
-        return 1; // fail
+pub fn main(none) i32 {
+    union_ptr = @my_union
+    if my_union.l ~= 18446744073709551615ul {
+        return 1 #  fail
     }
 
-    for (int i = 0; i < 8; i = i + 1) {
-        if (my_union.arr[i] != -1) {
-            return 2; // fail
+    loop i: i32 = 0 while i < 8 .. i = i + 1 {
+        if my_union.arr[i] ~= -1 {
+            return 2 #  fail
         }
     }
 
-    union_ptr->d = -1.0;
+    union_ptr[].d = -1.0
 
-    if (union_ptr->l != 13830554455654793216ul) {
-        return 3; // fail
+    if union_ptr[].l ~= 13830554455654793216ul {
+        return 3 #  fail
     }
 
-    for (int i = 0; i < 6; i = i + 1) {
-        // lower 6 bytes are 0
-        if (my_union.arr[i]) {
-            return 4; // fail
+    loop i: bool = 0 while i < 6 .. i = i + true {
+        #  lower 6 bytes are 0
+        if my_union.arr[i] {
+            return 4 #  fail
         }
     }
-    if (union_ptr->arr[6] != -16) {
-        return 5; // fail
+    if union_ptr[].arr[6] ~= -16 {
+        return 5 #  fail
     }
 
-    if (union_ptr->arr[7] != -65) {
-        return 6; // fail
+    if union_ptr[].arr[7] ~= -65 {
+        return 6 #  fail
     }
 
-    return 0; // success
+    return 0 #  success
 }

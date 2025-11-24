@@ -1,11 +1,12 @@
-// Redeclaring a union that was already defined in the current scope has no effect
-int main(void) {
-    union u {
-        int a;
-    };
+#  Redeclaring a union that was already defined in the current scope has no effect
+pub fn main(none) i32 {
+    type union u(        a: i32        
+        )
+    
 
-    union u; // this does nothing
+    type union u;
+     #  this does nothing
 
-    union u my_union = {1};
-    return my_union.a;
+    my_union: union u = $(1)
+    return my_union.a
 }

@@ -1,45 +1,42 @@
-// Pointers to a union object and to its members all compare equal
-struct s {
-    int i;
-};
+#  Pointers to a union object and to its members all compare equal
+type struc s(    i: i32    )
 
-union u {
-    char arr[3];
-    double d;
-    struct s my_struct;
-};
+type union u(    arr: [3]char    , d: f64    
+    , my_struct: struc s    
+    )
 
-union u my_union; // don't initialize, so it will be initialized to zero
+pub my_union: union u; #  don't initialize, so it will be initialized to zero
 
-int main(void) {
-    union u* u_ptr = &my_union;
+pub fn main(none) i32 {
+    u_ptr: *union u = @my_union
 
-    // compare pointer to whole union w/ pointers to members,
-    // using both == and !=
-    if ((void*)u_ptr != (void*)&(u_ptr->arr)) {
-        return 1; // fail
+    #  compare pointer to whole union w/ pointers to members,
+    #  using both == and !=
+    if cast<*any>(u_ptr) ~= cast<*any>(@(u_ptr[].arr)) {
+        return 1 #  fail
     }
 
-    if (!((void*)u_ptr == (void*)&(u_ptr->d))) {
-        return 2; // fail
+    if not (cast<*any>(u_ptr) == cast<*any>(@
+        (u_ptr[].d))) {
+        return 2 #  fail
     }
 
-    if ((void*)&(u_ptr->my_struct) != u_ptr) {
-        return 3; // fail
+    if cast<*any>(@(u_ptr[].my_struct)) ~= u_ptr {
+        return 3 #  fail
     }
 
-    // compare member pointers
-    if (my_union.arr != (char*)&my_union.d) {
-        return 4; // fail
+    #  compare member pointers
+    if my_union.arr ~= cast<string>(@my_union.d) {
+        return 4 #  fail
     }
 
-    if (!(&my_union.arr[0] >= (char *) &my_union.my_struct.i)) {
-        return 5; // fail
+    if not (@my_union.arr[0] >= cast<*char>(@my_union.my_struct.i)) {
+        return 5 #  fail
     }
 
-    if (! ((char *) (&u_ptr->d) <= (char *) &u_ptr->my_struct)) {
-        return 6; // fail
+    if not (cast<*char>((@u_ptr[].d)) <= cast<string>(@u_ptr[].my_struct)) {
+        return 6 #  fail
     }
 
-    return 0;
+    return 0
 }

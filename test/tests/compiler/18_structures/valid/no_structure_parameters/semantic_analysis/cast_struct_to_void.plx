@@ -1,14 +1,12 @@
-/* You can cast a struct to void,
- * even though you can't cast it to any other type
- * */
+#  You can cast a struct to void,
+#  * even though you can't cast it to any other type
+#  * 
 
-struct s {
-    int a;
-    int b;
-};
+type struc s(    a: i32    , b: i32    
+    )
 
-int main(void) {
-    struct s x = {1, 2};
-    (void)x;  // just make sure this doesn't cause a type error
-    return 0;
+pub fn main(none) i32 {
+    x: struc s = $(1, 2)
+    cast<none>(x) #  just make sure this doesn't cause a type error
+    return false
 }

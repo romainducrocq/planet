@@ -1,200 +1,174 @@
-/* Test that we can pass static and automatic structs of every size between 1 and 24 bytes.
- * Pass each size both in a register (when possible) and on the stack. */
+#  Test that we can pass static and automatic structs of every size between 1 and 24 bytes.
+#  * Pass each size both in a register (when possible) and on the stack. 
 
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
-#else
-#pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif
-#endif
 
-struct bytesize1 {
-    unsigned char arr[1];
-};
 
-extern struct bytesize1 globvar_1;
 
-struct bytesize2 {
-    unsigned char arr[2];
-};
 
-extern struct bytesize2 globvar_2;
 
-struct bytesize3 {
-    unsigned char arr[3];
-};
 
-extern struct bytesize3 globvar_3;
 
-struct bytesize4 {
-    unsigned char arr[4];
-};
 
-extern struct bytesize4 globvar_4;
+type struc bytesize1(    arr: [1]u8    
+    )
 
-struct bytesize5 {
-    unsigned char arr[5];
-};
+extrn globvar_1: struc bytesize1;
 
-extern struct bytesize5 globvar_5;
+type struc bytesize2(
+    arr: [2]u8    
+    )
 
-struct bytesize6 {
-    unsigned char arr[6];
-};
+extrn globvar_2: struc bytesize2;
 
-extern struct bytesize6 globvar_6;
+type struc bytesize3(
+    arr: [3]u8    
+    )
 
-struct bytesize7 {
-    unsigned char arr[7];
-};
+extrn globvar_3: struc bytesize3;
 
-extern struct bytesize7 globvar_7;
+type struc bytesize4(    arr: [4]u8    )
 
-struct bytesize8 {
-    unsigned char arr[8];
-};
+extrn globvar_4: struc bytesize4;
 
-extern struct bytesize8 globvar_8;
+type struc bytesize5(    arr: [5]u8    )
 
-struct bytesize9 {
-    unsigned char arr[9];
-};
+extrn globvar_5: struc bytesize5;
 
-extern struct bytesize9 globvar_9;
+type struc bytesize6(
+    arr: [6]
+    u8    )
 
-struct bytesize10 {
-    unsigned char arr[10];
-};
+extrn globvar_6: struc bytesize6;
 
-extern struct bytesize10 globvar_10;
+type struc bytesize7(    arr: [7]u8    )
 
-struct bytesize11 {
-    unsigned char arr[11];
-};
+extrn globvar_7: struc bytesize7;
 
-extern struct bytesize11 globvar_11;
+type struc bytesize8(    arr: [8]u8    )
 
-struct bytesize12 {
-    unsigned char arr[12];
-};
+extrn globvar_8: struc bytesize8;
 
-extern struct bytesize12 globvar_12;
+type struc bytesize9(
+    arr: [9]u8    )
 
-struct bytesize13 {
-    unsigned char arr[13];
-};
+extrn globvar_9: struc bytesize9;
 
-extern struct bytesize13 globvar_13;
+type struc bytesize10(    arr: [10]u8    )
 
-struct bytesize14 {
-    unsigned char arr[14];
-};
+extrn globvar_10: struc bytesize10;
 
-extern struct bytesize14 globvar_14;
+type struc bytesize11(    arr: [11]u8    
+    )
 
-struct bytesize15 {
-    unsigned char arr[15];
-};
+extrn globvar_11: struc bytesize11;
 
-extern struct bytesize15 globvar_15;
+type struc bytesize12(    arr: [12]u8    )
 
-struct bytesize16 {
-    unsigned char arr[16];
-};
+extrn globvar_12: struc bytesize12;
 
-extern struct bytesize16 globvar_16;
+type struc bytesize13(    arr: [13]u8    )
 
-struct bytesize17 {
-    unsigned char arr[17];
-};
+extrn globvar_13: struc bytesize13;
 
-extern struct bytesize17 globvar_17;
+type struc bytesize14(
+    arr: [14]u8    
+    )
 
-struct bytesize18 {
-    unsigned char arr[18];
-};
+extrn globvar_14: struc bytesize14;
 
-extern struct bytesize18 globvar_18;
+type struc bytesize15(    arr: [15]u8    
+    )
 
-struct bytesize19 {
-    unsigned char arr[19];
-};
+extrn globvar_15: struc bytesize15;
 
-extern struct bytesize19 globvar_19;
+type struc bytesize16(
+    arr: [16]u8    
+    )
 
-struct bytesize20 {
-    unsigned char arr[20];
-};
+extrn globvar_16: struc bytesize16;
 
-extern struct bytesize20 globvar_20;
+type struc bytesize17(    arr: [17]u8    )
 
-struct bytesize21 {
-    unsigned char arr[21];
-};
+extrn globvar_17: struc bytesize17;
 
-extern struct bytesize21 globvar_21;
+type struc bytesize18(    arr: [18]u8    )
 
-struct bytesize22 {
-    unsigned char arr[22];
-};
+extrn globvar_18: struc bytesize18;
 
-extern struct bytesize22 globvar_22;
+type struc bytesize19(    arr: [19]u8    
+    )
 
-struct bytesize23 {
-    unsigned char arr[23];
-};
+extrn globvar_19: struc bytesize19;
 
-extern struct bytesize23 globvar_23;
+type struc bytesize20(    arr: [20]u8    )
 
-struct bytesize24 {
-    unsigned char arr[24];
-};
+extrn globvar_20: struc bytesize20;
 
-extern struct bytesize24 globvar_24;
+type struc bytesize21(
+    arr: [21]u8    )
 
-// Pass sizes 1 - 6 in registers, remainders on the stack
-int fun0(struct bytesize1 a, struct bytesize2 b, struct bytesize3 c,
-         struct bytesize4 d, struct bytesize5 e, struct bytesize6 f,
-         struct bytesize7 g, struct bytesize8 h, struct bytesize9 i,
-         struct bytesize10 j, struct bytesize11 k, struct bytesize12 l,
-         struct bytesize13 m, struct bytesize14 n, struct bytesize15 o,
-         struct bytesize16 p, struct bytesize17 q, struct bytesize18 r,
-         struct bytesize19 s, struct bytesize20 t, struct bytesize21 u,
-         struct bytesize22 v, struct bytesize23 w, struct bytesize24 x,
-         unsigned char *a_expected, unsigned char *b_expected,
-         unsigned char *c_expected, unsigned char *d_expected,
-         unsigned char *e_expected, unsigned char *f_expected,
-         unsigned char *g_expected, unsigned char *h_expected,
-         unsigned char *i_expected, unsigned char *j_expected,
-         unsigned char *k_expected, unsigned char *l_expected,
-         unsigned char *m_expected, unsigned char *n_expected,
-         unsigned char *o_expected, unsigned char *p_expected,
-         unsigned char *q_expected, unsigned char *r_expected,
-         unsigned char *s_expected, unsigned char *t_expected,
-         unsigned char *u_expected, unsigned char *v_expected,
-         unsigned char *w_expected, unsigned char *x_expected);
+extrn globvar_21: struc bytesize21;
 
-// Pass sizes 7-10 bytes in regs, 1-6 on the stack
-int fun1(struct bytesize7 a, struct bytesize8 b, struct bytesize9 c,
-         struct bytesize10 d, struct bytesize1 e, struct bytesize2 f,
-         struct bytesize3 g, struct bytesize4 h, struct bytesize5 i,
-         struct bytesize6 j, unsigned char *a_expected,
-         unsigned char *b_expected, unsigned char *c_expected,
-         unsigned char *d_expected, unsigned char *e_expected,
-         unsigned char *f_expected, unsigned char *g_expected,
-         unsigned char *h_expected, unsigned char *i_expected,
-         unsigned char *j_expected);
+type struc bytesize22(    arr: [22]u8    )
 
-// Pass sizes 11-13 in regs, 1 on the stack
-int fun2(struct bytesize11 a, struct bytesize12 b, struct bytesize13 c,
-         struct bytesize1 d, unsigned char *a_expected,
-         unsigned char *b_expected, unsigned char *c_expected,
-         unsigned char *d_expected);
+extrn globvar_22: struc bytesize22;
 
-// pass sizes 14-16 in regs, 2 on the stack
-int fun3(struct bytesize14 a, struct bytesize15 b, struct bytesize16 c,
-         struct bytesize2 d, unsigned char *a_expected,
-         unsigned char *b_expected, unsigned char *c_expected,
-         unsigned char *d_expected);
+type struc bytesize23(    arr: [23]u8    )
+
+extrn globvar_23: struc bytesize23;
+
+type struc bytesize24(    arr: [24]u8    
+    )
+
+extrn globvar_24: struc bytesize24;
+
+#  Pass sizes 1 - 6 in registers, remainders on the stack
+pub fn fun0(a: struc bytesize1, b: struc bytesize2, c: struc bytesize3, d: struc bytesize4, e: struc bytesize5, f: struc bytesize6, g: struc bytesize7, h: struc bytesize8, i: struc bytesize9, j: struc bytesize10, k: struc bytesize11, l: struc bytesize12, m: struc bytesize13, n: struc bytesize14, o: struc bytesize15, p: struc bytesize16, q
+    : struc bytesize17, r: struc bytesize18, s: struc bytesize19, t: struc 
+    bytesize20, u: struc bytesize21, v: struc bytesize22, w: struc bytesize23, 
+    x: struc bytesize24, a_expected
+    : *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8, e_expected: *u8, f_expected: *u8, g_expected: *u8, h_expected: *u8, i_expected: *u8, j_expected: *u8, k_expected: *u8, l_expected: *u8, m_expected: *u8, n_expected: *u8, o_expected: *u8, p_expected: *u8, q_expected: *u8, r_expected: *u8, s_expected: *u8, t_expected: *u8, u_expected: *u8, v_expected: *u8, w_expected: *u8, x_expected: *u8) i32;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  Pass sizes 7-10 bytes in regs, 1-6 on the stack
+pub fn fun1(a: struc bytesize7, b: struc bytesize8, c: struc bytesize9, d: struc bytesize10, e: 
+    struc bytesize1, f: struc bytesize2, g: struc bytesize3, h: struc bytesize4, i: struc bytesize5, j: struc bytesize6, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8, e_expected: *u8, f_expected: *u8, g_expected: *u8, h_expected: *u8, i_expected: *u8, j_expected: *u8) i32;
+
+
+
+
+
+
+
+
+
+#  Pass sizes 11-13 in regs, 1 on the stack
+pub fn fun2(a: struc bytesize11, b: struc bytesize12, c: struc bytesize13, d: struc bytesize1, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8) i32;
+
+
+
+
+#  pass sizes 14-16 in regs, 2 on the stack
+pub fn fun3(a: struc bytesize14, b: struc bytesize15, c: struc bytesize16, d: struc bytesize2, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8) i32;
+
+
+
 

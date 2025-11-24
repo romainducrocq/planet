@@ -1,12 +1,10 @@
-// You can cast a union to void
+#  You can cast a union to void
 
-union u {
-    long l;
-    double d;
-};
+type union u(    l: i64    , d: f64    
+    )
 
-int main(void) {
-    union u x = {1000};
-    (void) x; // just make sure this doesn't cause a type error
-    return 0;
+pub fn main(none) i32 {
+    x: union u = $(1000)
+    cast<none>(x) #  just make sure this doesn't cause a type error
+    return 0
 }

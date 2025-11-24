@@ -1,28 +1,20 @@
-/* Test returning struct pointers from functions
- * and using struct pointers returned from functions
- * */
+#  Test returning struct pointers from functions
+#  * and using struct pointers returned from functions
+#  * 
 
-void *malloc(unsigned long size);
+pub fn malloc(size: u64) *any;
 
-// define some struct types
-struct inner {
-    double d;
-    int i;
-};
+#  define some struct types
+type struc inner(    d: f64    
+    , i: i32    )
 
-struct outer {
-    char a;
-    char b;
-    struct inner substruct;
-};
+type struc outer(    a: char    , b: char    
+    , substruct: struc inner    )
 
-struct outermost {
-    int i;
-    struct outer *nested_ptr;
-    struct outer nested_struct;
-};
+type struc outermost(    i: i32    , nested_ptr: *struc outer    , nested_struct: struc outer    )
 
-// declare some functions that return pointers to structs
-struct inner *make_struct_inner(int seed);
-struct outer *make_struct_outer(int seed);
-struct outermost *make_struct_outermost(int seed);
+#  declare some functions that return pointers to structs
+pub fn make_struct_inner(seed: 
+    i32) *struc inner;
+pub fn make_struct_outer(seed: i32) *struc outer;
+pub fn make_struct_outermost(seed: i32) *struc outermost;

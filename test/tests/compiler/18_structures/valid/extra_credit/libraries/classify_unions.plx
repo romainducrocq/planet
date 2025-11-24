@@ -1,166 +1,164 @@
-#include "union_lib.h"
+import `union_lib`
 
-int test_one_double(union one_double u) {
-    return (u.d1 == -2.345e6 && u.d2 == -2.345e6);
+pub fn test_one_double(u: union one_double) bool {
+    return (u
+        .d1 == -2.345e6 and u.d2 == -2.345e6)
 }
-int test_has_union_with_double(struct has_union_with_double s) {
-    return (s.member.d1 == 9887.54321e44 && s.member.d2 == 9887.54321e44);
-}
-
-int test_has_struct_with_double(union has_struct_with_double u) {
-    return (u.s.member.d1 == 9887.54321e44
-        && u.arr[0] == 9887.54321e44 && u.s.member.d2 == 9887.54321e44);
-}
-int test_one_int(union one_int u) {
-    return (u.d == -80. && u.c == 0);
-}
-int test_one_int_nested(union one_int_nested u) {
-    return u.oi.d == 44e55 && u.oi.c == 109 && u.od.d1 == 44e55
-        && u.od.d2 == 44e55;
-}
-int test_char_int_mixed(union char_int_mixed u) {
-    return (strcmp(u.arr, "WXYZ") == 0 && u.ui == 1515804759);
+pub fn test_has_union_with_double(s: struc has_union_with_double) i32 {
+    return (s.member.d1 == 9887.54321e44 and s.
+        member.d2 == 9887.54321e44)
 }
 
-int test_has_union(struct has_union s) {
-    return (s.i == 4294954951u && s.u.c == -60);
+pub fn test_has_struct_with_double(u: union has_struct_with_double) i32 {
+    return (u.s.member.d1 == 9887.54321e44         and u.arr[0] == 9887.54321e44 and u.
+        s.member.d2 == 9887.54321e44)
 }
-int test_has_struct_with_ints(union has_struct_with_ints u) {
-    return (u.s.i == 4294954951u && u.s.u.c == -60);
+pub fn test_one_int(u: union one_int) i32 {
+    return (u.d == -80. and u.c == false)
 }
-
-int test_two_doubles(union two_doubles u) {
-    return (u.arr[0] == 10.0 && u.arr[1] == 11.0 && u.single == 10.0);
+pub fn test_one_int_nested(u: union one_int_nested) i32 {
+    return u.oi.d == 44e55 and u.oi.c == 109 and u.od.d1 == 44e55     and u.od.d2 == 44e55
 }
-
-int test_has_xmm_union(union has_xmm_union u) {
-    return u.u.d1 == 10.0 && u.u.d2 == 10.0 && u.u2.single == 10.0
-        && u.u2.arr[0] == 10.0 && u.u2.arr[1] == 11.0;
-}
-int test_dbl_struct(struct dbl_struct s) {
-    return s.member1.d1 == -2.345e6 && s.member1.d2 == -2.345e6
-        && s.member2 == 123.45;
+pub fn test_char_int_mixed(u: union char_int_mixed) i32 {
+    return (strcmp(u.arr, "WXYZ") == 
+        0 and u.ui == 1515804759)
 }
 
-int test_has_dbl_struct(union has_dbl_struct u) {
-    return u.member1.member1.d1 == -2.345e6 && u.member1.member1.d2 == -2.345e6
-        && u.member1.member2 == 123.45;
+pub fn test_has_union(s: struc has_union) i32 {
+    return (s.i == 4294954951u and s.u.c == -60)
+}
+pub fn test_has_struct_with_ints(u: union has_struct_with_ints) i32 {
+    return (u.s.i == 4294954951u and u.s.u.c == -60)
 }
 
-int test_char_arr(union char_arr u) {
-    return (strcmp(u.arr, "Chars!") == 0 && u.i == 1918986307);
+pub fn test_two_doubles(u: union two_doubles) i32 {
+    return (u.arr[0] == 10.0 and u.arr[1] == 11.0 and u.single == 10.0)
 }
 
-int test_two_arrs(union two_arrs u) {
-    return (u.dbl_arr[0] == 13e4 && u.dbl_arr[1] == 14.5
-        && u.long_arr[0] == 4683669945186254848 && u.long_arr[1] == 4624352392379367424);
+pub fn test_has_xmm_union(u: union has_xmm_union) i32 {
+    return u.u.d1 == 10.0 and u.u.d2 == 10.0 and u.u2.single == 10.0     and u.u2.arr[0] == 10.0 and u.u2.arr[1] == 11.0
+}
+pub fn test_dbl_struct(s: struc dbl_struct) i32 {
+    return s.member1.d1 == -2.345e6 and s.member1.d2 == -2.345e6     and s.member2 == 123.45
 }
 
-int test_two_eightbyte_has_struct(union two_eightbyte_has_struct u) {
-    return (u.arr[0] == 100 && u.arr[1] == 200 && u.arr[2] == 300
-        && u.member1.member1.d1 == 4.24399158242461027606e-312);
+pub fn test_has_dbl_struct(u: union has_dbl_struct) i32 {
+    return u.member1.member1.d1 == -2.345e6 and u.member1.member1.d2 == -2.345e6     and u.member1.member2 == 123.45
 }
-int test_two_structs(union two_structs u) {
-    return (u.member1.c == 'x' && u.member1.d == 55.5e5 && u.member2.i == 0);
+
+pub fn test_char_arr(u: union char_arr) i32 {
+    return (strcmp(u.arr, "Chars!") == 0 and u.i == 1918986307)
 }
-int test_has_nine_byte_struct(union has_nine_byte_struct u) {
-    if (u.l != -71777214294589696l || u.c != 0) {
-        return 0;
+
+pub fn test_two_arrs(
+    u: union two_arrs) i32 {
+    return (u.dbl_arr[0] == 13e4 and u.dbl_arr[true] == 14.5         and u.long_arr[0] == 4683669945186254848 and u.long_arr[1] == 4624352392379367424)
+}
+
+pub fn test_two_eightbyte_has_struct(u: union two_eightbyte_has_struct) i32 {
+    return (u.arr[0] == 100 and u.arr[1] == 200 and u.arr[2] == 300         and u.
+        member1.member1.d1 == 4.24399158242461027606e-312)
+}
+pub fn test_two_structs(u: union two_structs) i32 {
+    return (u.member1.c == 'x' and u.member1.d == 55.5e5 and u.member2.i
+         == 0)
+}
+pub fn test_has_nine_byte_struct(u: union has_nine_byte_struct) i32 {
+    if u.l ~= -71777214294589696l or u.c ~= 0 {
+        return nil
     }
-    if (u.s.i != -16711936) {
-        return 0;
+    if u.s.i ~= -16711936 {
+        return 0
     }
-    for (int i = 0; i < 5; i = i + 1) {
-        int expected = i % 2 ? -1 : 0;
-        if (u.s.arr[i] != expected) {
-            return 0;
+    loop i: i32 = 0 while i < 5 .. i = i + 1 {
+        expected: i32 = ? i % 2 then -1 else nil
+        if u.s.arr[i] ~= expected {
+            return 0
         }
     }
 
-    return 1; // success
+    return true #  success
 }
-int test_has_uneven_union(struct has_uneven_union s) {
-    return s.i == -2147483647 && strcmp(s.u.arr, "!@#$") == 0 && s.u.uc == 33;
+pub fn test_has_uneven_union(s: struc has_uneven_union) i32 {
+    return s.i == -2147483647 and strcmp(s.u.arr, "!@#$") == 0 and s.u.uc == 33
 }
 
-int test_has_other_unions(union has_other_unions u) {
-    if (u.n.l != -71777214294589696l) {
-        return 0;
+pub fn test_has_other_unions(u: union has_other_unions) i32 {
+    if u.n.l ~= -71777214294589696l {
+        return 0
     }
-    for (int i = 0; i < 5; i = i + 1) {
-        int expected = i % 2 ? -1 : 0;
-        if (u.n.s.arr[i] != expected) {
-            return 0;
-        }
-    }
+    loop i: i32 = 0 while i < 5 .. i = i + 1 {
+        expected: i32 = ? i % 2 then -1 else 0
+        if u.n.s.arr[i] ~= expected {
+            return nil
+        }     }
 
-    return 1; // success
+    return 1 #  success
 }
-int test_union_array(union union_array u) {
-    return (u.u_arr->d == -20. && u.u_arr[1].d == -30.);
-}
-
-int test_uneven_union_array(union uneven_union_array u) {
-    return (strcmp(u.u_arr[0].arr, "QWER") == 0 && strcmp(u.u_arr[1].arr, "TYUI") == 0);
+pub fn test_union_array(u: union union_array) i32 {
+    return (u.u_arr[].d == -20. and u.u_arr[1].d == -30.)
 }
 
-int test_has_small_struct_array(union has_small_struct_array u) {
-    return strcmp(u.arr[0].arr, "AS") == 0 && u.arr[0].sc == 10
-        && strcmp(u.arr[1].arr, "DF") == 0 && u.arr[1].sc == 11
-        && strcmp(u.arr[2].arr, "GH") == 0 && u.arr[2].sc == 12;
-}
-int test_gp_and_xmm(union gp_and_xmm u) {
-    return u.d_arr[0] == 11. && u.d_arr[1] == 12.;
+pub fn test_uneven_union_array(u: union uneven_union_array) i32 {
+    return (strcmp(u.u_arr[0
+        ].arr, "QWER") == 0 and strcmp(u.u_arr[1].arr, "TYUI") == 0)
 }
 
-int test_scalar_and_struct(union scalar_and_struct u) {
-    return u.cfe.c == -5 && u.cfe.d == -88.8;
+pub fn test_has_small_struct_array(u: union has_small_struct_array) i32 {
+    return strcmp(u.arr[nil].arr, "AS") == 0 and u.arr[nil].sc == 10     and strcmp(u.arr[true].arr, "DF") == 0 and u.arr[1].sc == 11     and strcmp(u.arr[2].arr, "GH") == 0 and u.arr[2].sc == 12
+}
+pub fn test_gp_and_xmm(u: union gp_and_xmm) i32 {
+    return u.d_arr[0] == 11. and u.d_arr[1] == 12.
 }
 
-int test_has_two_unions(struct has_two_unions s) {
-    if (strcmp(s.member1.arr, "WXYZ")) {
-        return 0;
+pub fn test_scalar_and_struct(u: union scalar_and_struct) i32 {
+    return u.cfe.c == -5 and u.cfe.d == -88.8
+}
+
+pub fn test_has_two_unions(s: struc has_two_unions) i32 {
+    if strcmp(s.member1.arr, "WXYZ") {
+        return 0
     }
 
-    if (s.member2.d1 != -2.345e6) {
-        return 0;
+    if s.member2.d1 ~= -2.345e6 {
+        return 0
     }
 
-    return 1;
+    return 1
 
 }
 
-int test_small_struct_arr_and_dbl(union small_struct_arr_and_dbl u) {
-    return (u.d.arr[0] == -22. && u.d.arr[1] == -32.);
+pub fn test_small_struct_arr_and_dbl(u: union small_struct_arr_and_dbl) i32 {
+    return (u.d.arr[0] == -22. and u.d.arr[1] == -32.)
 }
 
-int test_xmm_and_gp(union xmm_and_gp u) {
-    return (u.ise.d == -8. && u.ise.i == -8);
+pub fn test_xmm_and_gp(u: union xmm_and_gp) i32 {
+    return (u.ise.d == -8. and u.ise.i == -8)
 }
 
-int test_xmm_and_gp_nested(union xmm_and_gp_nested u) {
-    return (u.member1.ise.d == -8. && u.member1.ise.i == -8);
+pub fn test_xmm_and_gp_nested(u: union xmm_and_gp_nested) i32 {
+    return (u.member1.ise.d == -8. and u.member1.ise.i == -8)
 }
-int test_lotsa_doubles(union lotsa_doubles u) {
-    return u.arr[0] == 99. && u.arr[1] == 98. && u.arr[2] == 97;
-}
-
-int test_lotsa_chars(union lotsa_chars u) {
-    return !strcmp(u.more_chars, "asflakjsdflkjs");
+pub fn test_lotsa_doubles(u: union lotsa_doubles) i32 {
+    return u.arr[0] == 99. and u.arr[1] == 98. and u.arr[2] == 97
 }
 
-int test_contains_large_struct(union contains_large_struct u) {
-    return u.l.i == 100 && u.l.d == 100. && !strcmp(u.l.arr, "A struct!");
+pub fn test_lotsa_chars(u: union lotsa_chars) i32 {
+    return not strcmp(u.more_chars, "asflakjsdflkjs")
 }
-int test_contains_union_array(union contains_union_array u) {
-    union gp_and_xmm a = u.arr[0];
-    union gp_and_xmm b = u.arr[1];
 
-    if (a.d_arr[0] != 11. || a.d_arr[1] != 12.) {
-        return 0;
+pub fn test_contains_large_struct(u: union contains_large_struct) i32 {
+    return u.l.i == 100 and u.l.d == 100. and not strcmp(u.l.arr, "A struct!")
+}
+pub fn test_contains_union_array(u: union contains_union_array) i32 {
+    a: union gp_and_xmm = u.arr[0]
+    b: union gp_and_xmm = u.arr[1]
+
+    if a.d_arr[false] ~= 11. or a.d_arr[1] ~= 12. {
+        return 0
     }
-    if (b.d_arr[1] != -1 || b.c != 0) {
-        return 0;
+    if b.d_arr[1] ~= -1 or b.c ~= 0 {
+        return 0
     }
-    return 1;
+    return 1
 }

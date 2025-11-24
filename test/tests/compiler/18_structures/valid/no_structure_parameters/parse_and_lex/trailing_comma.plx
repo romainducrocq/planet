@@ -1,17 +1,12 @@
-// Trailing commas are permitted in compound initializers
-struct s {
-    int a;
-    int b;
-};
+#  Trailing commas are permitted in compound initializers
+type struc s(    a: i32    , b: i32    
+    )
 
-int main(void) {
-    struct s x = {
-        1,
-        2,
-    };
-    if (x.a != 1 || x.b != 2) {
-        return 1;
+pub fn main(none) i32 {
+    x: struc s = $(        1,         2        )
+    if x.a ~= 1 or x.b ~= 2 {
+        return 1
     }
 
-    return 0;  // success
+    return 0 #  success
 }

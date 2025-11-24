@@ -1,55 +1,55 @@
-/* Test initialization of non-nested static structs, including:
- * - partial initialization
- * - implicit conversion of scalar elements
- * - array decay of string literals
- */
+#  Test initialization of non-nested static structs, including:
+#  * - partial initialization
+#  * - implicit conversion of scalar elements
+#  * - array decay of string literals
+#  
 
-#include "static_struct_initializers.h"
+import `static_struct_initializers`
 
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wconstant-conversion"
-#pragma clang diagnostic ignored "-Wimplicit-const-int-float-conversion"
-#else
-#pragma GCC diagnostic ignored "-Woverflow"
-#endif
-#endif
 
-// case 1: struct with no explicit initializer should be all zeros
-struct s uninitialized;
 
-// case 2: partially initialized struct
-struct s partial = {1.0, "Hello"};
 
-// case 3: partially initialized array w/in struct
-struct s partial_with_array = {3.0, "!", {1}, 2};
 
-// case 4: implicit conversion of scalar elements
-struct s converted = {
-    1152921504606846977l,  // 1152921504606846976.0
-    0l,                    // null ptr
-    "abc",                 // {'a', 'b', 'c'}
-    17179869189l           // 5
-};
 
-int main(void) {
-    if (!test_uninitialized()) {
-        return 1;
+
+
+
+
+
+#  case 1: struct with no explicit initializer should be all zeros
+pub uninitialized: struc s;
+
+#  case 2: partially initialized struct
+pub partial: struc s = $(1.0, "Hello")
+
+#  case 3: partially initialized array w/in struct
+pub partial_with_array: struc s = $(3.0, "!"
+    , $(1), 2)
+
+#  case 4: implicit conversion of scalar elements
+pub converted: struc s = $(    1152921504606846977l, #  1152921504606846976.0
+    0l, #  null ptr
+    "abc", #  {'a', 'b', 'c'}
+    17179869189l#  5
+    )
+
+pub fn main(none) i32 {
+    if not test_uninitialized() {
+        return true
     }
 
-    if (!test_partially_initialized()) {
-        return 2;
+    if not test_partially_initialized() {
+        return 2
     }
 
-    if (!test_partial_inner_init()) {
-        return 3;
+    if not test_partial_inner_init() {
+        return 3
     }
 
-    if (!test_implicit_conversion()) {
-        return 4;
+    if not test_implicit_conversion() {
+        return 4
     }
 
-    return 0;  // success
+    return 0 #  success
 }
 

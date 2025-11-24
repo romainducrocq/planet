@@ -1,338 +1,265 @@
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
-#else
-#pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif
-#endif
-
-// library functions
-int strcmp(char* s1, char* s2);
-void exit(int status);
-void *malloc(unsigned long size);
-
-// I. unions passed in one register
-
-// Ia. passed in one XMM reg
-
-// union w/ only double-type members
-union one_double {
-    double d1;
-    double d2;
-};
-
-// struct containing union
-struct has_union_with_double {
-    union one_double member;
-};
-
-// union containing struct and array
-union has_struct_with_double {
-    struct has_union_with_double s;
-    double arr[1];
-};
-
-// Ib. passed in one general-purpose register
-
-// passed in one general-purpose reg b/c it can hold
-// either double or char
-union one_int {
-    double d;
-    char c;
-};
-
-// may contain double (oi.d, od.d1 or od.d2) or one char
-union one_int_nested {
-    union one_int oi;
-    union one_double od;
-};
-
-// could contain one of several types but they're all integer types
-union char_int_mixed {
-    char arr[7];
-    union char_int_mixed* union_ptr;
-    unsigned int ui;
-};
-
-// struct containing union
-union char_int_short {
-    char c;
-    int i;
-};
-
-struct has_union {
-    unsigned int i;
-    union char_int_short u;
-};
-
-// union containing struct
-union has_struct_with_ints {
-    double d;
-    struct has_union s;
-    unsigned long ul;
-};
-
-// II. Unions passed in two registers
-
-// IIa. two XMM regs
-
-// only double-type members
-union two_doubles {
-    double arr[2];
-    double single;
-};
-
-// union contains unions
-union has_xmm_union {
-    union one_double u;
-    union two_doubles u2;
-};
-
-// struct contains union
-struct dbl_struct {
-    union one_double member1; // first eightbyte
-    double member2; // second eightbyte
-};
-
-// union contains struct
-union has_dbl_struct {
-    struct dbl_struct member1;
-};
 
 
-// IIb. two general-purpose regs
-
-// first eightbyte could hold chars or int, so it's in INTEGER class
-// second must hold chars (and padding) so also in INTEGER class
-union char_arr {
-    char arr[11];
-    int i;
-};
-
-// each eightbyte could hold either integers or double and therefore is in
-// INTEGER class
-union two_arrs {
-    double dbl_arr[2];
-    long long_arr[2];
-};
-
-// union contains struct
-union two_eightbyte_has_struct {
-    int arr[3]; // includes integers in both eightbytes
-    struct dbl_struct member1; // all in the SSE class
-};
-
-// union contains structs w/ integer type
-struct char_first_eightbyte {
-    char c;
-    double d;
-};
-
-struct int_second_eightbyte {
-    double d;
-    int i;
-};
-
-union two_structs {
-    // this puts first eightbyte in INTEGER class
-    struct char_first_eightbyte member1;
-    // this puts second eightbyte in INTEGER class
-    struct int_second_eightbyte member2;
-};
-
-// another union-with-struct example - one member is struct that just extends
-// into second eightbyte
-struct nine_bytes {
-    int i;
-    char arr[5];
-};
-
-union has_nine_byte_struct {
-    char c;
-    long l;
-    struct nine_bytes s;
-};
-
-// struct contains union
-union uneven {
-    char arr[5];
-    unsigned char uc;
-};
-
-struct has_uneven_union {
-    int i;
-    union uneven u;
-};
-
-// union contains unions
-union has_other_unions {
-    union uneven u;
-    union two_doubles d;
-    union has_nine_byte_struct n;
-};
-
-// union contains array of unions
-union union_array {
-    union one_int u_arr[2];
-};
-
-union uneven_union_array {
-    union uneven u_arr[2];
-};
 
 
-// union contains array of structs
-struct small {
-    char arr[3];
-    signed char sc;
-};
 
-union has_small_struct_array {
-    struct small arr[3];
-};
 
-// IIc. general-purpose & XMM
 
-// scalars and arrays
-union gp_and_xmm {
-    double d_arr[2]; // doubles in both eightbytes
-    char c; // int in first eightbyte
-};
 
-// union contains struct
+#  library functions
+pub fn strcmp(s1: string, s2: *char) i32;
+pub fn exit(status: i32) none;
+pub fn malloc(size: u64) *any;
 
-union scalar_and_struct {
-    long* ptr; // only takes up first eightbyte
-    struct char_first_eightbyte cfe; // second eightbyte is in SSE class
-};
+#  I. unions passed in one register
 
-// struct contains unions
-struct has_two_unions {
-    union char_int_mixed member1;
-    union one_double member2;
-};
+#  Ia. passed in one XMM reg
 
-// union contains unions
+#  union w/ only double-type members
+type union one_double(    d1: f64    , d2: f64    
+    )
 
-union small_struct_arr_and_dbl {
-    struct small arr[2];
-    union two_doubles d;
-};
+#  struct containing union
+type struc has_union_with_double(    member: union one_double    
+    )
 
-// IId. XMM & general-purpose
+#  union containing struct and array
+type union has_struct_with_double(    s: struc has_union_with_double    
+    , arr: [1]f64    )
 
-union xmm_and_gp {
-    double d;
-    struct int_second_eightbyte ise;
-};
+#  Ib. passed in one general-purpose register
 
-// contains union
-union xmm_and_gp_nested {
-    union xmm_and_gp member1;
-    double arr[2];
-    union two_doubles d;
-};
+#  passed in one general-purpose reg b/c it can hold
+#  either double or char
+type union one_int(
+    d: f64    , c: char    
+    )
 
-// III. passed in memory
+#  may contain double (oi.d, od.d1 or od.d2) or one char
+type union one_int_nested(    oi: union one_int    , od: union one_double    )
 
-// contains array of scalars
-union lotsa_doubles {
-    double arr[3];
-    int i;
-};
+#  could contain one of several types but they're all integer types
+type union char_int_mixed(    arr: [7]char    , union_ptr: *union char_int_mixed    , ui: u32    )
 
-union lotsa_chars {
-    char more_chars[18];
-    char fewer_chars[5];
-};
+#  struct containing union
+type union char_int_short(
+    c: char    
+    , i: i32    )
 
-// contains a struct
+type struc has_union(
+    i: u32    , u: union char_int_short    )
 
-// From uncaptioned listing in "Classifying Eightbytes" section
-struct large {
-    int i;
-    double d;
-    char arr[10];
-};
+#  union containing struct
+type union has_struct_with_ints(    d: f64    , s: struc has_union    , ul: u64    )
 
-union contains_large_struct {
-    int i;
-    unsigned long ul;
-    struct large l;
-};
+#  II. Unions passed in two registers
 
-// contains array of unions
-union contains_union_array {
-    union gp_and_xmm arr[2];
-};
+#  IIa. two XMM regs
 
-// validation functions defined in library
+#  only double-type members
+type union two_doubles(    arr: [2]f64    
+    , single: f64    
+    )
 
-// validate one param (for classify_unions test cases)
-int test_one_double(union one_double u);
-int test_has_union_with_double(struct has_union_with_double s);
-int test_has_struct_with_double(union has_struct_with_double u);
-int test_one_int(union one_int u);
-int test_one_int_nested(union one_int_nested u);
-int test_char_int_mixed(union char_int_mixed u);
-int test_has_union(struct has_union s);
-int test_has_struct_with_ints(union has_struct_with_ints u);
-int test_two_doubles(union two_doubles u);
-int test_has_xmm_union(union has_xmm_union u);
-int test_dbl_struct(struct dbl_struct s);
-int test_has_dbl_struct(union has_dbl_struct u);
-int test_char_arr(union char_arr u);
-int test_two_arrs(union two_arrs u);
-int test_two_eightbyte_has_struct(union two_eightbyte_has_struct u);
-int test_two_structs(union two_structs u);
-int test_has_nine_byte_struct(union has_nine_byte_struct u);
-int test_has_uneven_union(struct has_uneven_union s);
-int test_has_other_unions(union has_other_unions u);
-int test_union_array(union union_array u);
-int test_uneven_union_array(union uneven_union_array u);
-int test_has_small_struct_array(union has_small_struct_array u);
-int test_gp_and_xmm(union gp_and_xmm u);
-int test_scalar_and_struct(union scalar_and_struct u);
-int test_has_two_unions(struct has_two_unions s);
-int test_small_struct_arr_and_dbl(union small_struct_arr_and_dbl u);
-int test_xmm_and_gp(union xmm_and_gp u);
-int test_xmm_and_gp_nested(union xmm_and_gp_nested u);
-int test_lotsa_doubles(union lotsa_doubles u);
-int test_lotsa_chars(union lotsa_chars u);
-int test_contains_large_struct(union contains_large_struct u);
-int test_contains_union_array(union contains_union_array u);
+#  union contains unions
+type union has_xmm_union(    u: union one_double    
+    , u2: union two_doubles    )
 
-// validate multiple params (for param_passing test cases)
-int pass_unions_and_structs(int i1, int i2, struct has_union one_gp_struct,
-    double d1, union two_doubles two_xmm, union one_int one_gp, int i3, int i4,
-    int i5);
-int pass_gp_union_in_memory(union two_doubles two_xmm,
-    struct has_union one_gp_struct, int i1, int i2, int i3,
-    int i4, int i5, int i6, union one_int one_gp);
-int pass_xmm_union_in_memory(double d1, double d2, union two_doubles two_xmm,
-    union two_doubles two_xmm_copy, double d3, double d4,
-    union two_doubles two_xmm_2);
-int pass_borderline_union(int i1, int i2, int i3, int i4, int i5,
-    union char_arr two_gp);
-int pass_borderline_xmm_union(union two_doubles two_xmm, double d1, double d2,
-    double d3, double d4, double d5, union two_doubles two_xmm_2);
-int pass_mixed_reg_in_memory(double d1, double d2, double d3, double d4,
-    int i1, int i2, int i3, int i4, int i5, int i6,
-    union gp_and_xmm mixed_regs);
-int pass_uneven_union_in_memory(int i1, int i2, int i3, int i4, int i5,
-    union gp_and_xmm mixed_regs, union one_int one_gp, union uneven uneven);
-int pass_in_mem_first(union lotsa_doubles mem, union gp_and_xmm mixed_regs,
-    union char_arr two_gp, struct has_union one_gp_struct);
+#  struct contains union
+type struc dbl_struct(    member1: union one_double#  first eightbyte
+    
+    , member2: f64#  second eightbyte
+    )
 
-// validate return values (for union_retvals test case)
-union one_double return_one_double(void);
-union one_int_nested return_one_int_nested(void);
-union has_dbl_struct return_has_dbl_struct(void);
-union two_arrs return_two_arrs(void);
-union scalar_and_struct return_scalar_and_struct(void);
-union xmm_and_gp return_xmm_and_gp(void);
-union contains_union_array return_contains_union_array(void);
-union lotsa_chars pass_params_and_return_in_mem(int i1,
-    union scalar_and_struct int_and_dbl, union two_arrs two_arrs, int i2,
-    union contains_union_array big_union, union one_int_nested oin);
-struct has_uneven_union return_struct_with_union(void);
+#  union contains struct
+type union has_dbl_struct(    member1: struc dbl_struct    )
+
+
+#  IIb. two general-purpose regs
+
+#  first eightbyte could hold chars or int, so it's in INTEGER class
+#  second must hold chars (and padding) so also in INTEGER class
+type union char_arr(    arr: [11]char    , i: i32    )
+
+#  each eightbyte could hold either integers or double and therefore is in
+#  INTEGER class
+type union two_arrs(    dbl_arr: [2]f64    , long_arr: [2]i64    )
+
+#  union contains struct
+type union two_eightbyte_has_struct(
+    arr: [3]i32#  includes integers in both eightbytes
+    
+    , member1: struc dbl_struct#  all in the SSE class
+    )
+
+#  union contains structs w/ integer type
+type struc char_first_eightbyte(    c: char    , d: f64    
+    )
+
+type struc int_second_eightbyte(    d: f64    , i: i32    
+    )
+
+type union two_structs(    #  this puts first eightbyte in INTEGER class
+    member1: struc char_first_eightbyte    #  this puts second eightbyte in INTEGER class
+    , member2: struc int_second_eightbyte    )
+
+#  another union-with-struct example - one member is struct that just extends
+#  into second eightbyte
+type struc nine_bytes(    i: i32    , arr: [5]char    )
+
+type union has_nine_byte_struct(
+    c: char    , l: i64    , s
+    : struc nine_bytes    )
+
+#  struct contains union
+type union uneven(
+    arr: [5]char    
+    , uc
+    : u8    )
+
+type struc has_uneven_union(    i: i32    , u: union uneven    )
+
+#  union contains unions
+type union has_other_unions(
+    u: union uneven    
+    , d: union two_doubles    , n: union has_nine_byte_struct    )
+
+#  union contains array of unions
+type union union_array(    u_arr: [2]union one_int    
+    )
+
+type union uneven_union_array(
+    u_arr: [2]union uneven    
+    )
+
+
+#  union contains array of structs
+type struc small(    arr: [3]char    , sc: i8    )
+
+type union has_small_struct_array(    arr: [3]struc small    )
+
+#  IIc. general-purpose & XMM
+
+#  scalars and arrays
+type union gp_and_xmm(    d_arr: [2]f64#  doubles in both eightbytes
+    , c: char#  int in first eightbyte
+    )
+
+#  union contains struct
+
+type union scalar_and_struct(
+    ptr: *i64#  only takes up first eightbyte
+    
+    , cfe: struc char_first_eightbyte#  second eightbyte is in SSE class
+    )
+
+#  struct contains unions
+type struc has_two_unions(    member1: union char_int_mixed    , member2: union one_double    )
+
+#  union contains unions
+
+type union small_struct_arr_and_dbl(
+    arr: [2]struc small    , d: union two_doubles    )
+
+#  IId. XMM & general-purpose
+
+type union xmm_and_gp(    d: f64    , ise: struc int_second_eightbyte    )
+
+#  contains union
+type union xmm_and_gp_nested(
+    member1: union xmm_and_gp    , arr: [
+    2]f64    
+    , d: union two_doubles    )
+
+#  III. passed in memory
+
+#  contains array of scalars
+type union lotsa_doubles(    arr: [3]f64    , i: i32    
+    )
+
+type union lotsa_chars(    more_chars: [18]char    , fewer_chars: [5]char    )
+
+#  contains a struct
+
+#  From uncaptioned listing in "Classifying Eightbytes" section
+type struc large(
+    i: i32    , d: f64    , arr: [10]char    )
+
+type union contains_large_struct(    i: i32    , ul: u64    , l: struc large    )
+
+#  contains array of unions
+type union contains_union_array(    arr: [2]union gp_and_xmm    )
+
+#  validation functions defined in library
+
+#  validate one param (for classify_unions test cases)
+pub fn test_one_double(u: union one_double) i32;
+pub fn test_has_union_with_double(s: struc has_union_with_double) i32;
+pub fn test_has_struct_with_double(u: union has_struct_with_double) i32;
+pub fn test_one_int(u: union one_int) i32;
+pub fn test_one_int_nested(u: union one_int_nested) i32;
+pub fn test_char_int_mixed(u: union char_int_mixed) i32;
+pub fn test_has_union(s: struc has_union) i32;
+pub fn test_has_struct_with_ints(u: union has_struct_with_ints) i32;
+pub fn test_two_doubles(u: union two_doubles) i32;
+pub fn test_has_xmm_union(u: union has_xmm_union) i32;
+pub fn test_dbl_struct(s: struc dbl_struct) i32;
+pub fn test_has_dbl_struct(u: union has_dbl_struct) i32;
+pub fn test_char_arr(u: union char_arr) i32;
+pub fn test_two_arrs(u: union two_arrs) i32;
+pub fn test_two_eightbyte_has_struct(u: union two_eightbyte_has_struct) i32;
+pub fn test_two_structs(u: union two_structs) i32;
+pub fn test_has_nine_byte_struct(u: union has_nine_byte_struct) i32;
+pub fn test_has_uneven_union(s: struc has_uneven_union) i32;
+pub fn test_has_other_unions(u: union has_other_unions) i32;
+pub fn test_union_array(u: union union_array) i32;
+pub fn test_uneven_union_array(u: union uneven_union_array) i32;
+pub fn test_has_small_struct_array(u: union has_small_struct_array) i32;
+pub fn test_gp_and_xmm(u: union gp_and_xmm) i32;
+pub fn test_scalar_and_struct(u: union scalar_and_struct) i32;
+pub fn test_has_two_unions(s: struc has_two_unions) i32;
+pub fn test_small_struct_arr_and_dbl(u: union small_struct_arr_and_dbl) i32;
+pub fn test_xmm_and_gp(u: union xmm_and_gp) i32;
+pub fn test_xmm_and_gp_nested(u: union xmm_and_gp_nested) i32;
+pub fn test_lotsa_doubles(u: union lotsa_doubles) i32;
+pub fn test_lotsa_chars(u: union lotsa_chars) bool;
+pub fn test_contains_large_struct(u: union contains_large_struct) i32;
+pub fn test_contains_union_array(u: union contains_union_array) i32;
+
+#  validate multiple params (for param_passing test cases)
+pub fn pass_unions_and_structs(i1: i32, i2: i32, one_gp_struct: struc has_union, d1: 
+    f64, two_xmm: union two_doubles, one_gp: union one_int, i3: i32, i4: i32, i5: i32) i32;
+
+
+pub fn pass_gp_union_in_memory(two_xmm: union two_doubles, one_gp_struct: struc has_union, i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, i6: i32, one_gp: union one_int) i32;
+
+
+pub fn pass_xmm_union_in_memory(d1: f64, d2: f64, two_xmm: union two_doubles, two_xmm_copy: union two_doubles, d3: f64, d4: f64, two_xmm_2: union two_doubles) i32;
+
+
+pub fn pass_borderline_union(i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, two_gp: union char_arr) i32;
+
+pub fn pass_borderline_xmm_union(two_xmm: union two_doubles, d1: f64, d2: f64, d3: f64, d4: f64, d5: f64, two_xmm_2: union two_doubles) i32;
+
+pub fn pass_mixed_reg_in_memory(d1: f64, d2: f64, d3: f64, d4: f64, i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, i6: i32, mixed_regs: union gp_and_xmm) i32;
+
+
+pub fn pass_uneven_union_in_memory(i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, mixed_regs: union gp_and_xmm, one_gp: union one_int, uneven: union uneven) i32;
+
+pub fn pass_in_mem_first(mem: union lotsa_doubles, mixed_regs: union gp_and_xmm, two_gp: union char_arr, one_gp_struct: struc has_union) i32;
+
+
+#  validate return values (for union_retvals test case)
+pub fn return_one_double(none) union one_double;
+pub fn return_one_int_nested(none) union one_int_nested;
+pub fn return_has_dbl_struct(none) union has_dbl_struct;
+pub fn return_two_arrs(none) union two_arrs;
+pub fn return_scalar_and_struct(none) union scalar_and_struct;
+pub fn return_xmm_and_gp(none
+    ) union xmm_and_gp;
+pub fn return_contains_union_array(none) union contains_union_array;
+pub fn pass_params_and_return_in_mem(i1: i32, int_and_dbl: union scalar_and_struct, two_arrs: union 
+    two_arrs, i2: i32, big_union: union contains_union_array, oin: union one_int_nested) union lotsa_chars;
+
+
+pub fn return_struct_with_union(none) struc has_uneven_union;

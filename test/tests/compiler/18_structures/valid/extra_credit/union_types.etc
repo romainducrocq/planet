@@ -1,37 +1,20 @@
-void *calloc(unsigned long nmemb, unsigned long size);
-void *malloc(unsigned long size);
+pub fn calloc(nmemb: u64, size: u64) *any;
+pub fn malloc(size: u64) *any;
 
-union simple {
-    int i;
-    long l;
-    char c;
-    unsigned char uc_arr[3];
-};
+type union simple(    i: i32    , l: i64    
+    , c: char    , uc_arr: [3]u8    )
 
-union has_union {
-    double d;
-    union simple u;
-    union simple *u_ptr;
-};
+type union has_union(
+    d: f64    
+    , u: union simple    , u_ptr: *union simple    
+    )
 
-struct simple_struct {
-    long l;
-    double d;
-    unsigned int u;
-};
+type struc simple_struct(    l: i64    , d: f64    , u: u32    )
 
-union has_struct {
-    long l;
-    struct simple_struct s;
-};
+type union has_struct(    l: i64    
+    , s: struc simple_struct    )
 
-struct struct_with_union {
-    union simple u;
-    unsigned long ul;
-};
+type struc struct_with_union(    u: union simple    , ul: u64    )
 
-union complex_union {
-    double d_arr[2];
-    struct struct_with_union s;
-    union has_union *u_ptr;
-};
+type union complex_union(    d_arr: [2]f64    
+    , s: struc struct_with_union    , u_ptr: *union has_union    )

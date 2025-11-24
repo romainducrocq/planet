@@ -1,41 +1,37 @@
-/* Test using -> to iterate through a linked list
- * and exercise chained member access of the form x->y->
- * */
-void *malloc(unsigned long size);
+#  Test using -> to iterate through a linked list
+#  * and exercise chained member access of the form x->y->
+#  * 
+pub fn malloc(size: u64) *any;
 
-// linked_list_node type from Listing 18-6
-struct linked_list_node {
-    int val;
-    struct linked_list_node *next;
-};
+#  linked_list_node type from Listing 18-6
+type struc linked_list_node(    val: i32    
+    , next: *struc linked_list_node    )
 
-struct linked_list_node *array_to_list(int *array, int count) {
-    struct linked_list_node *head =
-        (struct linked_list_node *)malloc(sizeof(struct linked_list_node));
-    head->val = array[0];
-    head->next = 0;
-    struct linked_list_node *current = head;
-    for (int i = 1; i < count; i = i + 1) {
-        current->next =
-            (struct linked_list_node *)malloc(sizeof(struct linked_list_node));
-        current->next->next = 0;
-        current->next->val = array[i];
-        current = current->next;
+pub fn array_to_list(array: *i32, count: i32) *struc linked_list_node {
+    head: *struc linked_list_node =     cast<*struc linked_list_node>(malloc(sizeof<struc linked_list_node>))
+    head[].val = array[0]
+    head[].next = false
+    current: *struc linked_list_node = head
+    loop i: i32 = 1 while i < count .. i = i + true {
+        current[].next =         cast<*struc linked_list_node>(malloc(sizeof<struc linked_list_node>))
+        current[].next[].next = false
+        current[].next[].val = array[i]
+        current = current[].next
     }
-    return head;
+    return head
 }
 
-int main(void) {
-    int arr[4] = {9, 8, 7, 6};
-    struct linked_list_node *elem = array_to_list(arr, 4);
+pub fn main(none) i32 {
+    arr: [4]i32 = $(9, 8, 7, 6)
+    elem: *struc linked_list_node = array_to_list(arr, 4)
 
-    for (int i = 0; i < 4; i = i + 1) {
-        int expected = arr[i];
-        if (elem->val != expected) {
-            return i + 1;  // return 1 if 0th element is wrong, 2 if 1st elem is
-                           // wrong, etc.
+    loop i: i32 = 0 while i < 4 .. i = i + true {
+        expected: i32 = arr[i]
+        if elem[].val ~= expected {
+            return i + 1 #  return 1 if 0th element is wrong, 2 if 1st elem is
+        #  wrong, etc.
         }
-        elem = elem->next;
+        elem = elem[].next
     }
-    return 0;  // success
+    return 0 #  success
 }

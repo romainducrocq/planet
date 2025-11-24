@@ -1,13 +1,13 @@
-/* Basic test of passing an argument of structure type: similar to chapter_18/valid/parameters/simple.c
- * but split into two translation units
- * */
+#  Basic test of passing an argument of structure type: similar to chapter_18/valid/parameters/simple.c
+#  * but split into two translation units
+#  * 
 
-#include "pass_struct.h"
+import `pass_struct`
 
-int main(void) {
-    struct pair arg = {1, 2};
-    if (!validate_struct_param(arg)) {
-        return 1;
+pub fn main(none) i32 {
+    arg: struc pair = $(1, 2)
+    if not validate_struct_param(arg) {
+        return 1
     }
-    return 0; // success
+    return 0 #  success
 }

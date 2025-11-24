@@ -1,41 +1,37 @@
-/* Test initialization of non-nested static structs, including:
- * - partial initialization
- * - implicit conversion of scalar elements
- * - array decay of string literals
- */
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
-#else
-#pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif
-#endif
+#  Test initialization of non-nested static structs, including:
+#  * - partial initialization
+#  * - implicit conversion of scalar elements
+#  * - array decay of string literals
+#  
 
-int strcmp(char *s1, char *s2);
 
-struct s {
-    double one_d;
-    char *two_msg;
-    unsigned char three_arr[3];
-    int four_i;
-};
 
-// static structures defined in client
-extern struct s uninitialized;
-extern struct s partial;
-extern struct s partial_with_array;
-extern struct s converted;
 
-// validation functions defined in library
 
-// case 1: struct with no explicit initializer should be all zeros
-int test_uninitialized(void);
 
-// case 2: partially initialized struct
-int test_partially_initialized(void);
 
-// case 3: partially initialized array w/in struct
-int test_partial_inner_init(void);
 
-// case 4: implicit conversion of scalar elements
-int test_implicit_conversion(void);
+pub fn strcmp(s1: string, s2: *char) i32;
+
+type struc s(    one_d: f64    , two_msg: string    
+    , three_arr: [3]u8    , four_i: i32    )
+
+#  static structures defined in client
+extrn uninitialized: struc s;
+extrn partial: struc s;
+extrn partial_with_array: struc s;
+extrn converted: struc s;
+
+#  validation functions defined in library
+
+#  case 1: struct with no explicit initializer should be all zeros
+pub fn test_uninitialized(none) i32;
+
+#  case 2: partially initialized struct
+pub fn test_partially_initialized(none) i32;
+
+#  case 3: partially initialized array w/in struct
+pub fn test_partial_inner_init(none) i32;
+
+#  case 4: implicit conversion of scalar elements
+pub fn test_implicit_conversion(none) i32;

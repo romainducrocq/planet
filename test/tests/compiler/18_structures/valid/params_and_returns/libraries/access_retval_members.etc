@@ -1,16 +1,10 @@
-/* Test for accessing the members in a return value of structure type */
-struct inner {
-    char x;
-    long y;
-};
+#  Test for accessing the members in a return value of structure type 
+type struc inner(    x: char    , y: i64    
+    )
 
-struct outer {
-    double d;
-    struct inner *ptr;
-    struct inner s;
-};
+type struc outer(    d: f64    , ptr: *struc inner    , s: struc inner    )
 
-void *calloc(unsigned long nmemb, unsigned long size);
+pub fn calloc(nmemb: u64, size: u64) *any;
 
-struct inner return_small_struct(void);
-struct outer return_nested_struct(void);
+pub fn return_small_struct(none) struc inner;
+pub fn return_nested_struct(none) struc outer;

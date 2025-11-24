@@ -1,88 +1,76 @@
-// Apply sizeof to a range of union types
-#include "../../no_structure_parameters/size_and_offset_calculations/struct_sizes.h"
+#  Apply sizeof to a range of union types
+import `../../no_structure_parameters/size_and_offset_calculations/struct_sizes`
 
-// size is 11 bytes; no padding
-union no_padding {
-    char c;
-    unsigned char uc;
-    signed char arr[11];
-};
+#  size is 11 bytes; no padding
+type union no_padding(    c: char    , uc: u8    , arr: [11]i8    )
 
 
-// size is 12 bytes; take largest member (10 bytes)
-// and pad to 4-byte alignment (b/c ui is 4-byte aligned)
-union with_padding {
-    signed char arr[10];
-    unsigned int ui;
-};
+#  size is 12 bytes; take largest member (10 bytes)
+#  and pad to 4-byte alignment (b/c ui is 4-byte aligned)
+type union with_padding(    arr: [10]i8    , ui: u32    
+    )
 
 
-// size is 36 bytes
-// arr1 is 24 bytes, 4-byte aligned
-// arr2 is 33 bytes, 1-byte aligned
-// round 33 up to multiple of 4 to get 36
-union contains_array {
-    union with_padding arr1[2];
-    union no_padding arr[3];
-};
+#  size is 36 bytes
+#  arr1 is 24 bytes, 4-byte aligned
+#  arr2 is 33 bytes, 1-byte aligned
+#  round 33 up to multiple of 4 to get 36
+type union contains_array(    arr1: [2]union with_padding    
+    , arr: [3]union no_padding    )
 
 
-// 8 bytes, no padding
-union double_and_int {
-    int i;
-    double d;
-};
+#  8 bytes, no padding
+type union double_and_int(    i: i32    , d: f64    )
 
-// 20 bytes, 4-byte aligned
-union contains_structs {
-    struct wonky x; // 19 bytes, 1-byte aligned
-    struct eight_bytes y; // 8 bytes, 4-byte aligned
-};
+#  20 bytes, 4-byte aligned
+type union contains_structs(    x: struc wonky#  19 bytes, 1-byte aligned
+    , y: struc eight_bytes#  8 bytes, 4-byte aligned
+    )
 
-int main(void) {
-    if (sizeof(union no_padding) != 11) {
-        return 1; // fail
+pub fn main(none) i32 {
+    if sizeof<union no_padding> ~= 11 {
+        return 1 #  fail
     }
 
-    if (sizeof(union with_padding) != 12) {
-        return 2; // fail
+    if sizeof<union with_padding> ~= 12 {
+        return 2 #  fail
     }
 
-    if (sizeof(union contains_array) != 36) {
-        return 3; // fail
+    if sizeof<union contains_array> ~= 36 {
+        return 3 #  fail
     }
 
-    if (sizeof(union double_and_int) != 8) {
-        return 4; // fail
+    if sizeof<union double_and_int> ~= 8 {
+        return 4 #  fail
     }
 
-    if (sizeof(union contains_structs) != 20) {
-        return 5; // fail
+    if sizeof<union contains_structs> ~= 20 {
+        return 5 #  fail
     }
 
 
-    // apply sizeof to some expressions with union type too
-    union no_padding x = { 1 };
-    union contains_array y = { {{{-1, 2}} }};
-    union contains_structs* get_union_ptr(void);
+    #  apply sizeof to some expressions with union type too
+    x: union no_padding = $(1)
+    y: union contains_array = $($($($(-1, 2))))
+    fn get_union_ptr(none) *union contains_structs;
 
-    if (sizeof x != 11) {
-        return 6; // fail
+    if sizeof(x) ~= 11 {
+        return 6 #  fail
     }
 
-    if (sizeof y.arr1 != 24) { // array of two union with_padding objects
-        return 7; // fail
+    if sizeof(y.arr1) ~= 24 { #  array of two union with_padding objects
+        return 7 #  fail
     }
 
-    if (sizeof * get_union_ptr() != 20) {
-        return 8; // fail
+    if sizeof(get_union_ptr()[]) ~= 20 {
+        return 8 #  fail
     }
 
 
-    return 0; // success
+    return 0 #  success
 }
 
-union contains_structs* get_union_ptr(void) {
-    // just return null pointer - okay b/c we never actually access this struct
-    return 0;
+pub fn get_union_ptr(none) *union contains_structs {
+    #  just return null pointer - okay b/c we never actually access this struct
+    return false
 }

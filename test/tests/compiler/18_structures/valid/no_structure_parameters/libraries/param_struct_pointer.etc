@@ -1,24 +1,20 @@
-/* Test passing struct pointers as function parameters */
+#  Test passing struct pointers as function parameters 
 
-// library function
-void *malloc(unsigned long size);
+#  library function
+pub fn malloc(size: u64) *any;
 
-// define some struct types
-struct inner {
-    double d;
-    int i;
-};
+#  define some struct types
+type struc inner(    d: f64    
+    , i: i32    )
 
-struct outer {
-    char a;
-    char b;
-    struct inner substruct;
-};
+type struc outer(    a: char    , b: char    
+    , substruct: struc inner    )
 
-// library function declarations
-int access_members_through_pointer(struct outer *ptr, int expected_a,
-                                   int expected_b, double expected_d,
-                                   int expected_i);
+#  library function declarations
+pub fn access_members_through_pointer(ptr: *struc outer, expected_a: bool, expected_b: i32, expected_d: f64, expected_i: 
+    i32) i32;
 
-void update_members_through_pointer(struct outer *ptr, int a, int b,
-                                    struct inner *inner_ptr);
+
+
+pub fn update_members_through_pointer(ptr: *struc outer, a: i32, b: bool, inner_ptr: *struc inner) none;
+

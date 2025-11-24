@@ -1,78 +1,55 @@
-/* Test that we classify structure parameters correctly,
- * by passing a variety of structures as arguments.
- * Each test function takes only one argument.
- * */
+#  Test that we classify structure parameters correctly,
+#  * by passing a variety of structures as arguments.
+#  * Each test function takes only one argument.
+#  * 
 
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
-#else
-#pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif
-#endif
 
-int strcmp(char *s1, char *s2);
 
-// from Listing 18-39
-struct twelve_bytes {
-    int i;
-    char arr[8];
-};  // two INTEGER eightbytes
 
-// from Listing 18-40
-struct inner {
-    int i;
-    char ch2;
-};
 
-struct nested_ints {
-    char ch1;
-    struct inner nested;
-};  // two INTEGER eightbytes
 
-// from Listing 18-41
-struct flattened_ints {
-    char c;
-    int i;
-    char a;
-};  // two INTEGER eightbytes
 
-// From uncaptioned listing in "Classifying Eightbytes" section
-struct large {
-    int i;
-    double d;
-    char arr[10];
-};  // four MEMORY eightbytes
 
-// Three structure declarations from Listing 18-42
-struct two_ints {
-    int i;
-    int i2;
-};  // one INTEGER eightbyte
 
-struct nested_double {
-    double array[1];
-};  // one SSE eightbyte
+pub fn strcmp(s1: string, s2: *char) i32;
 
-struct two_eightbytes {
-    double d;
-    char c;
-};  // one SSE eightbyte, one INTEGER eightbyte
+#  from Listing 18-39
+type struc twelve_bytes(    i: i32    , arr: [8]char    ) #  two INTEGER eightbytes
 
-// From Listing 18-47
-struct pass_in_memory {
-    double w;
-    double x;
-    int y;
-    long z;
-};  // four MEMORY eightbytes
+#  from Listing 18-40
+type struc inner(    i: i32    , ch2: char    )
 
-// validation functions defined in library
-int test_twelve_bytes(struct twelve_bytes s);
-int test_nested_ints(struct nested_ints s);
-int test_flattened_ints(struct flattened_ints s);
-int test_large(struct large s);
-int test_two_ints(struct two_ints s);
-int test_nested_double(struct nested_double s);
-int test_two_eightbytes(struct two_eightbytes s);
-int test_pass_in_memory(struct pass_in_memory s);
+type struc nested_ints(    ch1: char    
+    , nested: struc inner    ) #  two INTEGER eightbytes
+
+#  from Listing 18-41
+type struc flattened_ints(    c: char    , 
+    i: i32    , a: char    
+    ) #  two INTEGER eightbytes
+
+#  From uncaptioned listing in "Classifying Eightbytes" section
+type struc large(    i: i32    , d: f64    
+    , arr: [10]char    ) #  four MEMORY eightbytes
+
+#  Three structure declarations from Listing 18-42
+type struc two_ints(    i: i32    , i2: i32    ) #  one INTEGER eightbyte
+
+type struc nested_double(
+    array: [1]f64    
+    ) #  one SSE eightbyte
+
+type struc two_eightbytes(    d: f64    , c: char    ) #  one SSE eightbyte, one INTEGER eightbyte
+
+#  From Listing 18-47
+type struc pass_in_memory(    w: f64    , x: f64    
+    , y: i32    , z: i64    ) #  four MEMORY eightbytes
+
+#  validation functions defined in library
+pub fn test_twelve_bytes(s: struc twelve_bytes) i32;
+pub fn test_nested_ints(s: struc nested_ints) i32;
+pub fn test_flattened_ints(s: struc flattened_ints) i32;
+pub fn test_large(s: struc large) i32;
+pub fn test_two_ints(s: struc two_ints) i32;
+pub fn test_nested_double(s: struc nested_double) i32;
+pub fn test_two_eightbytes(s: struc two_eightbytes) i32;
+pub fn test_pass_in_memory(s: struc pass_in_memory) i32;

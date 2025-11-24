@@ -1,193 +1,191 @@
-/* Test that our typechecker can handle valid declarations and expressions
- * involving incomplete structure types
- * */
+#  Test that our typechecker can handle valid declarations and expressions
+#  * involving incomplete structure types
+#  * 
 
-#ifdef SUPPRESS_WARNINGS
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
-#else
-#pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif
-#endif
 
-void *malloc(unsigned long size);
-void *calloc(unsigned long nmemb, unsigned long size);
-int puts(char *s);
-int strcmp(char *s1, char *s2);
 
-// test 1: you can declare a function that accepts/returns incomplete struct
-// types. We don't define or use this function, we just need to validate that
-// this declaration doesn't cause a compiler error
-struct never_used;
-struct never_used incomplete_fun(struct never_used x);
 
-// test 2: you can declare an incomplete struct type at block scope,
-// then complete it
-int test_block_scope_forward_decl(void) {
-    struct s;             // declare incomplete struct type
-    struct s *s_ptr = 0;  // define a pointer to that struct type
 
-    struct s {
-        int x;
-        int y;
-    };  // complete the type
 
-    // now you can use s_ptr as a pointer to a completed type
-    struct s val = {1, 2};
-    s_ptr = &val;
-    if (s_ptr->x != 1 || s_ptr->y != 2) {
-        return 0;
+
+
+
+pub fn malloc(size: u64) *any;
+pub fn calloc(nmemb: u64, size: u64) *any;
+pub fn puts(s: string) i32;
+pub fn strcmp(s1: string, s2: string) i32;
+
+#  test 1: you can declare a function that accepts/returns incomplete struct
+#  types. We don't define or use this function, we just need to validate that
+#  this declaration doesn't cause a compiler error
+type struc never_used;
+pub fn incomplete_fun(x: struc never_used) struc never_used;
+
+#  test 2: you can declare an incomplete struct type at block scope,
+#  then complete it
+pub fn test_block_scope_forward_decl(none) i32 {
+    type struc s;
+     #  declare incomplete struct type
+    s_ptr: *struc s = 0 #  define a pointer to that struct type
+
+    type struc s(        x: bool        , y: i32        
+        )
+     #  complete the type
+
+    #  now you can use s_ptr as a pointer to a completed type
+    val: struc s = $(1, 2
+        )
+    s_ptr = @val
+    if s_ptr[].x ~= 1 or s_ptr[].y ~= 2 {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-// test 3: you can declare an incomplete struct type at file scope,
-// then complete it
-struct pair;  // declare an incomplete type
+#  test 3: you can declare an incomplete struct type at file scope,
+#  then complete it
+type struc pair; #  declare an incomplete type
 
-// declare functions involving pointers to that type
-struct pair *make_struct(void);
-int validate_struct(struct pair *ptr);
+#  declare functions involving pointers to that type
+pub fn make_struct(none) *struc pair;
+pub fn validate_struct(ptr: *struc pair) bool;
 
-int test_file_scope_forward_decl(void) {
-    // call the functions
-    struct pair *my_struct = make_struct();
-    return validate_struct(my_struct);
-    // this case validates by printing to stdout, not w/ return coe
+pub fn test_file_scope_forward_decl(none) i32 {
+    #  call the functions
+    my_struct: *struc pair = make_struct()
+    return validate_struct(my_struct)
+#  this case validates by printing to stdout, not w/ return coe
 }
 
-// complete the type
-struct pair {
-    long l;
-    long m;
-};
+#  complete the type
+type struc pair(    l: i64    , m: i64    )
 
-// define the functions
-struct pair *make_struct(void) {
-    struct pair *retval = malloc(sizeof(struct pair));
-    retval->l = 100;
-    retval->m = 200;
-    return retval;
+#  define the functions
+pub fn make_struct(none) *struc pair {
+    retval: *struc pair = malloc(sizeof<struc pair>)
+    retval[].l = 100
+    retval[].m = 200
+    return retval
 }
 
-int validate_struct(struct pair *ptr) {
-    return (ptr->l == 100 && ptr->m == 200);
+pub fn validate_struct(ptr: *struc pair) i32 {
+    return (ptr[].l == 100 and ptr[].m == 200)
 }
 
-// test 4: you can declare and take the address of,
-// but not define or use, variables with incomplete type
+#  test 4: you can declare and take the address of,
+#  but not define or use, variables with incomplete type
 
-struct msg_holder;
-void print_msg(struct msg_holder *param);
-int validate_incomplete_var(void);
+type struc msg_holder;
+pub fn print_msg(param: *struc msg_holder) none;
+pub fn validate_incomplete_var(none) i32;
 
-// okay to declare extern variable w/ incomplete type
-extern struct msg_holder incomplete_var;
+#  okay to declare extern variable w/ incomplete type
+extrn incomplete_var: struc msg_holder;
 
-int test_incomplete_var(void) {
-    // okay to take address of incomplete var
-    print_msg(&incomplete_var);
-    return validate_incomplete_var();
+pub fn test_incomplete_var(none) i32 {
+    #  okay to take address of incomplete var
+    print_msg(@incomplete_var)
+    return validate_incomplete_var()
 }
 
-// complete the type
-struct msg_holder {
-    char *msg;
-};
+#  complete the type
+type struc msg_holder(
+    msg: string    )
 
-// now we can use value of incomplete_var
-int validate_incomplete_var(void) {
-    if (strcmp(incomplete_var.msg, "I'm a struct!")) {
-        return 0;
+#  now we can use value of incomplete_var
+pub fn validate_incomplete_var(none) i32 {
+    if strcmp(incomplete_var.msg, "I'm a struct!") {
+        return 0
     }
 
-    return 1;  // succes
+    return 1 #  succes
 }
 
-// and we can define it
-struct msg_holder incomplete_var = {"I'm a struct!"};
+#  and we can define it
+pub incomplete_var: struc msg_holder = $("I'm a struct!")
 
-// also need to define print_msg
-void print_msg(struct msg_holder *param) {
-    puts(param->msg);
+#  also need to define print_msg
+pub fn print_msg(param: *struc msg_holder) none {
+    puts(param[].msg)
 }
 
-// test 5: you can dereference a pointer to an incomplete var, then take its
-// address
-int test_deref_incomplete_var(void) {
-    struct undefined_struct;
-    struct undefined_struct *ptr = malloc(4);
-    // NOTE: GCC fails to compile this before version 10
-    // see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88827
-    return &*ptr == ptr;
+#  test 5: you can dereference a pointer to an incomplete var, then take its
+#  address
+pub fn test_deref_incomplete_var(none) i32 {
+    type struc undefined_struct;
+    
+    ptr: *struc undefined_struct = malloc(4)
+    #  NOTE: GCC fails to compile this before version 10
+    #  see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88827
+    return @ptr[] == ptr
 }
 
-// test 6: more things you can do with pointers to incomplete structs:
-// return pointers to them, accept them as parameters, use them in conditionals,
-// cast them to void * or char *
-// compare them to 0 and each other
-struct opaque_struct;
+#  test 6: more things you can do with pointers to incomplete structs:
+#  return pointers to them, accept them as parameters, use them in conditionals,
+#  cast them to void * or char *
+#  compare them to 0 and each other
+type struc opaque_struct;
 
-struct opaque_struct *use_struct_pointers(struct opaque_struct *param) {
-    if (param == 0) {
-        puts("empty pointer!");
+pub fn use_struct_pointers(param: *struc opaque_struct) *struc opaque_struct {
+    if param == 0 {
+        puts("empty pointer!")
     }
-    return 0;
+    return nil
 }
 
-int test_use_incomplete_struct_pointers(void) {
-    // define a couple of pointers to this type
-    struct opaque_struct *ptr1 = calloc(1, 4);
-    struct opaque_struct *ptr2 = calloc(1, 4);
+pub fn test_use_incomplete_struct_pointers(none) i32 {
+    #  define a couple of pointers to this type
+    ptr1: *struc opaque_struct = calloc(1, 4)
+    ptr2: *struc opaque_struct = calloc(1, 4)
 
-    // can cast to char * and inspect; this is well-defined
-    // and all bits should be 0 since we used calloc
-    char *ptr1_bytes = (char *)ptr1;
-    if (ptr1_bytes[0] || ptr1_bytes[1]) {
-        return 0;
+    #  can cast to char * and inspect; this is well-defined
+    #  and all bits should be 0 since we used calloc
+    ptr1_bytes: *char = cast<*char>(ptr1)
+    if ptr1_bytes[0] or ptr1_bytes[1] {
+        return 0
     }
 
-    // can compare to 0 or each other
-    if (ptr1 == 0 || ptr2 == 0 || ptr1 == ptr2) {
-        return 0;
+    #  can compare to 0 or each other
+    if ptr1 == 0 or ptr2 == 0 or ptr1 == ptr2 {
+        return 0
     }
 
-    // can use them in conditionals
-    static int flse = 0;
-    struct opaque_struct *ptr3 = flse ? ptr1 : ptr2;
-    if (ptr3 != ptr2) {
-        return 0;
+    #  can use them in conditionals
+    data flse: i32 = 0
+    ptr3: *struc opaque_struct = ? flse then ptr1 else ptr2
+    if ptr3 ~= ptr2 {
+        return 0
     }
 
-    // can pass them as parameters
-    if (use_struct_pointers(ptr3)) {
-        return 0;
+    #  can pass them as parameters
+    if use_struct_pointers(ptr3) {
+        return 0
     }
 
-    return 1;  // success
+    return 1 #  success
 }
 
-int main(void) {
-    if (!test_block_scope_forward_decl()) {
-        return 2;
+pub fn main(none) i32 {
+    if not test_block_scope_forward_decl() {
+        return 2
     }
 
-    if (!test_file_scope_forward_decl()) {
-        return 3;
+    if not test_file_scope_forward_decl() {
+        return 3
     }
 
-    if (!test_incomplete_var()) {
-        return 4;
+    if not test_incomplete_var() {
+        return 4
     }
 
-    if (!test_deref_incomplete_var()) {
-        return 5;
+    if not test_deref_incomplete_var() {
+        return 5
     }
 
-    if (!test_use_incomplete_struct_pointers()) {
-        return 6;
+    if not test_use_incomplete_struct_pointers() {
+        return 6
     }
 
-    return 0;  // success
+    return false #  success
 }

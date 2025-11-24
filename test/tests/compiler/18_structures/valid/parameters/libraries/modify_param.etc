@@ -1,16 +1,12 @@
-/* Modify a parameter of structure type
- * */
+#  Modify a parameter of structure type
+#  * 
 
-struct inner {
-    double d;
-    int i;
-};
+type struc inner(    d: f64    , i: i32    
+    )
 
-struct outer {
-    struct inner s;
-    struct inner *ptr;
-    long l;
-};
+type struc outer(
+    s: struc inner    
+    , ptr: *struc inner    , l: i64    )
 
-int modify_simple_struct(struct inner s);
-int modify_nested_struct(struct outer s);
+pub fn modify_simple_struct(s: struc inner) i32;
+pub fn modify_nested_struct(s: struc outer) i32;
