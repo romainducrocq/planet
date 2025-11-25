@@ -2092,6 +2092,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     }
     TRY(parse_initializer(ctx, initializer));
     vec_move_back(initializers, *initializer);    
+    // TODO pop_next
     TRY(peek_next(ctx));
     while (ctx->peek_tok->tok_kind != TOK_close_paren) {
         TRY(pop_next(ctx));
@@ -2565,39 +2566,62 @@ static error_t parse_var_declaration(
 
 // <struct-declaration> ::= ( "struct" | "union" ) <identifier> [ "{" { <member-declaration> }+ "}" ] ";"
 // struct_declaration = StructDeclaration(identifier, bool, member_declaration*)
-// static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) * struct_decl) {
-//     unique_ptr_t(CMemberDeclaration) member = uptr_new();
-//     vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
-//     CATCH_ENTER;
-//     bool is_union;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     is_union = ctx->next_tok->tok_kind == TOK_key_union;
-//     TRY(peek_next(ctx));
-//     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-//     TIdentifier tag;
-//     TRY(parse_identifier(ctx, 0, &tag));
-//     TRY(pop_next(ctx));
-//     if (ctx->next_tok->tok_kind == TOK_open_brace) {
-//         do {
-//             TRY(parse_member_declaration(ctx, &member));
-//             vec_move_back(members, member);
-//             TRY(peek_next(ctx));
-//         }
-//         while (ctx->peek_tok->tok_kind != TOK_close_brace);
-//         TRY(pop_next(ctx));
-//         TRY(pop_next(ctx));
-//     }
-//     TRY(expect_next(ctx, ctx->next_tok, TOK_semicolon));
-//     *struct_decl = make_CStructDeclaration(tag, is_union, &members, info_at);
-//     FINALLY;
-//     free_CMemberDeclaration(&member);
-//     for (size_t i = 0; i < vec_size(members); ++i) {
-//         free_CMemberDeclaration(&members[i]);
-//     }
-//     vec_delete(members);
-//     CATCH_EXIT;
-// }
+static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) * struct_decl) {
+    unique_ptr_t(CMemberDeclaration) member = uptr_new();
+    vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
+    CATCH_ENTER;
+    bool is_union;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_key_struc: {
+            is_union = false;
+            break;
+        }
+        case TOK_key_union: {
+            is_union = true;
+            break;
+        }
+        default:
+            TRY(1); // TODO add msg
+    }
+    TRY(peek_next(ctx));
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TIdentifier tag;
+    TRY(parse_identifier(ctx, 0, &tag));
+    TRY(pop_next(ctx));
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_semicolon:
+            break;
+        case TOK_open_paren: {
+            // TODO refactor in separate function
+            // TRY(parse_member_declaration(ctx, &member));
+            vec_move_back(members, member);
+            // TODO pop_next
+            TRY(peek_next(ctx));
+            while (ctx->peek_tok->tok_kind == TOK_comma_separator) {
+                TRY(pop_next(ctx));
+                // TRY(parse_member_declaration(ctx, &member));
+                vec_move_back(members, member);
+                TRY(peek_next(ctx));
+            }
+            TRY(pop_next(ctx));
+            TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
+            break;
+        }
+        default:
+            TRY(1); // TODO add msg
+    }
+    *struct_decl = make_CStructDeclaration(tag, is_union, &members, info_at);
+    FINALLY;
+    free_CMemberDeclaration(&member);
+    for (size_t i = 0; i < vec_size(members); ++i) {
+        free_CMemberDeclaration(&members[i]);
+    }
+    vec_delete(members);
+    CATCH_EXIT;
+}
 
 static error_t parse_fun_decl(
     Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
@@ -2621,15 +2645,15 @@ static error_t parse_var_decl(
     CATCH_EXIT;
 }
 
-// static error_t parse_struct_decl(Ctx ctx, unique_ptr_t(CDeclaration) * declaration) {
-//     unique_ptr_t(CStructDeclaration) struct_decl = uptr_new();
-//     CATCH_ENTER;
-//     TRY(parse_struct_declaration(ctx, &struct_decl));
-//     *declaration = make_CStructDecl(&struct_decl);
-//     FINALLY;
-//     free_CStructDeclaration(&struct_decl);
-//     CATCH_EXIT;
-// }
+static error_t parse_struct_decl(Ctx ctx, unique_ptr_t(CDeclaration) * declaration) {
+    unique_ptr_t(CStructDeclaration) struct_decl = uptr_new();
+    CATCH_ENTER;
+    TRY(parse_struct_declaration(ctx, &struct_decl));
+    *declaration = make_CStructDecl(&struct_decl);
+    FINALLY;
+    free_CStructDeclaration(&struct_decl);
+    CATCH_EXIT;
+}
 
 // static error_t parse_decltor_decl(Ctx ctx, Declarator* decltor, CStorageClass* storage_class) {
 //     unique_ptr_t(CDeclarator) decltor_1 = uptr_new();
@@ -2672,8 +2696,8 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
             break;
         }
         case TOK_key_fn:
-        // case TOK_key_type:
         case TOK_identifier:
+        case TOK_key_type:
             EARLY_EXIT;
         default:
             THROW_AT_TOKEN(ctx->peek_tok->info_at,
@@ -2681,6 +2705,9 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
     }
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_key_type) {
+        TRY(1); // TODO add msg
+    }
     FINALLY;
     CATCH_EXIT;
 }
@@ -2708,6 +2735,9 @@ static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_p
             break;
         case TOK_identifier:
             TRY(parse_var_decl(ctx, storage_class, declaration));
+            break;
+        case TOK_key_type:
+            TRY(parse_struct_decl(ctx, declaration));
             break;
         default:
             THROW_AT_TOKEN(ctx->peek_tok->info_at,
