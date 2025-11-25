@@ -54,8 +54,6 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "|=";
         case TOK_assign_xor:
             return "^=";
-        // case TOK_structop_ptr:
-        //     return "->";
         case TOK_loop_post:
             return "..";
         case TOK_match_with:
@@ -112,8 +110,8 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return ",";
         case TOK_compound_init:
             return "$";
-        // case TOK_structop_member:
-        //     return ".";
+        case TOK_typeop_member:
+            return ".";
         case TOK_key_char:
             return "char";
         case TOK_key_string:
@@ -138,10 +136,12 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "none";
         case TOK_key_fn:
             return "fn";
-        // case TOK_key_struct:
-        //     return "struct";
-        // case TOK_key_union:
-        //     return "union";
+        case TOK_key_type:
+            return "type";    
+        case TOK_key_struc:
+            return "struc";
+        case TOK_key_union:
+            return "union";
         case TOK_key_sizeof:
             return "sizeof";
         case TOK_key_return:

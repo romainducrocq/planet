@@ -29,7 +29,6 @@ typedef enum TOKEN_KIND {
     TOK_assign_bitand,
     TOK_assign_bitor,
     TOK_assign_xor,
-    // TOK_structop_ptr,
     TOK_loop_post,
     TOK_match_with,
 
@@ -59,7 +58,7 @@ typedef enum TOKEN_KIND {
     TOK_ternary_if,
     TOK_comma_separator,
     TOK_compound_init,
-    // TOK_structop_member,
+    TOK_typeop_member,
 
     TOK_key_char,
     TOK_key_string,
@@ -79,8 +78,9 @@ typedef enum TOKEN_KIND {
     TOK_key_any,
     TOK_key_none,
     TOK_key_fn,
-    // TOK_key_struct,
-    // TOK_key_union,
+    TOK_key_type,
+    TOK_key_struc,
+    TOK_key_union,
     TOK_key_sizeof,
     TOK_key_return,
     TOK_key_cast,
@@ -112,7 +112,10 @@ typedef enum TOKEN_KIND {
     TOK_dbl_const,
 
     TOK_m4_prefix,
-    // TOK_include_preproc,
+    TOK_import_file,
+    TOK_import_force,
+    TOK_use_file,
+    TOK_use_force,
 
     TOK_error
 } TOKEN_KIND;
