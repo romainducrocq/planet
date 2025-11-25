@@ -893,18 +893,18 @@ static error_t parse_arr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-//     CATCH_ENTER;
-//     size_t info_at = ctx->peek_tok->info_at;
-//     TRY(pop_next(ctx));
-//     TRY(peek_next(ctx));
-//     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-//     TIdentifier member;
-//     TRY(parse_identifier(ctx, 0, &member));
-//     *exp = make_CDot(member, exp, info_at);
-//     FINALLY;
-//     CATCH_EXIT;
-// }
+static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
+    CATCH_ENTER;
+    size_t info_at = ctx->peek_tok->info_at;
+    TRY(pop_next(ctx));
+    TRY(peek_next(ctx));
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TIdentifier member;
+    TRY(parse_identifier(ctx, 0, &member));
+    *exp = make_CDot(member, exp, info_at);
+    FINALLY;
+    CATCH_EXIT;
+}
 
 // static error_t parse_arrow_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 //     CATCH_ENTER;
@@ -1122,9 +1122,9 @@ static error_t parse_postfix_op_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         case TOK_open_bracket:
             TRY(parse_arr_unary_factor(ctx, exp));
             break;
-        // case TOK_structop_member:
-        //     TRY(parse_dot_factor(ctx, exp));
-        //     break;
+        case TOK_typeop_member:
+            TRY(parse_dot_factor(ctx, exp));
+            break;
         // case TOK_structop_ptr:
         //     TRY(parse_arrow_factor(ctx, exp));
         //     break;
@@ -1147,7 +1147,7 @@ static error_t parse_postfix_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
         case TOK_open_bracket:
-        // case TOK_structop_member:
+        case TOK_typeop_member:
         // case TOK_structop_ptr:
         case TOK_unop_incr:
         case TOK_unop_decr:
@@ -1807,11 +1807,11 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
         // case TOK_key_struct:
         // case TOK_key_union:
         case TOK_key_pub:
-        // case TOK_key_type:
             THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_pub_in_block));
         case TOK_key_data:
         case TOK_key_extrn:
         case TOK_key_fn:
+        case TOK_key_type:
             TRY(parse_d_block_item(ctx, block_item));
             EARLY_EXIT;
         case TOK_identifier: {
