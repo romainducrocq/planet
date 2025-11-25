@@ -1,9 +1,7 @@
-struct s {
-    int a;
-};
+type struc s(a: i32)
 
-int main(void) {
-    struct s x;
-    // Recognize .0foo as an invalid token instead of a struct member operator
-    return x.0foo;
+pub fn main(none) i32 {
+    struc s x;
+    # Recognize .0foo as an invalid token instead of a struct member operator
+    return x.0foo
 }
