@@ -1,6 +1,6 @@
 type struc s(y: i32)
 
-data x: struc s;
+pub x: struc s;
 # dot operator must be immediately followed by member name
 # (can't parenthesize it)
 pub fn main(none) i32 {
