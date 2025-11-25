@@ -1,4 +1,4 @@
-type struc s (y: i32)
+type union s (y: i32)
 
 pub fn main(none) i32 {
     # can't parenthesize union tag
