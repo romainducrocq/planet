@@ -1,7 +1,7 @@
-// union member list cannot be empty
-// (note that GCC/Clang allow this as an extenision)
-union s {};
+# union member list cannot be empty
+# (note that GCC/Clang allow this as an extenision)
+type union s ()
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

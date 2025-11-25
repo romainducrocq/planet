@@ -1,8 +1,6 @@
-// Can't use struct and union keywords in same declaration
-union struct s {
-    int a;
-};
+# Can't use struct and union keywords in same declaration
+type union struc s (a: i32)
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

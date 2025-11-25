@@ -1,8 +1,8 @@
-// Can't combine union specifier with other type specifier
+# Can't combine union specifier with other type specifier
 
-union a { int a; };
+type union a (a: i32)
 
-int main(void) {
-    union a int x;
-    return 0;
+pub fn main(none) i32 {
+    x: union a i32;
+    return 0
 }

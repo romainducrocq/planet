@@ -1,9 +1,6 @@
-// Stray semicolon in union declaration
-union u {
-    int a;
-    ;
-};
+# Stray semicolon in union declaration
+type union u(a: i32,)
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

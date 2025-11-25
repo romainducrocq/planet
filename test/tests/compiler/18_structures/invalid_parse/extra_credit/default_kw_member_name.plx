@@ -1,8 +1,6 @@
 // because 'default' is a keyword, we can't use it as a member name
-struct s {
-    int default;
-};
+type struc s (otherwise: i32)
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

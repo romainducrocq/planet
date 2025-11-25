@@ -1,4 +1,4 @@
-union a {
-    // union members cannot have initializers
-    int member = 1;
-};
+type union a (
+    # union members cannot have initializers
+    member: i32 = 1
+)

@@ -1,9 +1,7 @@
-union u {
-    int a;
-};
+type union u (a: i32)
 
-union union u x;  // can't use union keyword twice in a type specifier
+pub x: union union u;  # can't use union keyword twice in a type specifier
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }
