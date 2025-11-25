@@ -1,9 +1,9 @@
-// cannot use a keyword (like 'return') as a field name
+# cannot use a keyword (like 'return') as a field name
 
-struct s {
-    int return;
-}
+type struc s (
+    return: i32
+)
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

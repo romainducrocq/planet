@@ -1,8 +1,6 @@
-struct s {
-    int y;
-};
+type struc s(y: i32)
 
-int main(void) {
-    struct s *ptr = 0;
-    return ptr->;  // arrow must be followed by a member name
+pub fn main(none) i32 {
+    ptr: *struc s = nil
+    return ptr[]. # arrow must be followed by a member name
 }

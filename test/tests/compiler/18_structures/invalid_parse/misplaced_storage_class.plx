@@ -1,6 +1,4 @@
-struct s {
-    int a;
-};
+type struc s(a: i32)
 
-// storage class specifier can't come between struct keyword and tag
-struct static s foo;
+# storage class specifier can't come between struct keyword and tag
+foo: struc data s;

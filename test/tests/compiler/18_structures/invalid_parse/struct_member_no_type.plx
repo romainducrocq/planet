@@ -1,3 +1,3 @@
-struct s {
-    a;  // each structure member declaration must specify a type
-};
+type struc s (
+    a  # each structure member declaration must specify a type
+)

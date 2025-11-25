@@ -1,5 +1,3 @@
-/* Structure tag must be a single identifier */
+# Structure tag must be a single identifier
 
-struct x y {
-    int a;
-};
+type struc x y (a: i32)

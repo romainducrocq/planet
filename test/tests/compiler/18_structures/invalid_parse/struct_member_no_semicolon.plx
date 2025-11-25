@@ -1,7 +1,7 @@
-struct s {
-    int a  // structure member declaration must end with a semicolon
-};
+type struc s (
+    a: i32  # structure member declaration must end with a semicolon
+)
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

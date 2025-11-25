@@ -1,9 +1,7 @@
-struct s {
-    int a;
-};
+type struc s ( a: i32 )
 
-struct struct s x;  // can't use struct keyword twice in a type specifier
+x: struc struc s;  # can't use struct keyword twice in a type specifier
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

@@ -1,8 +1,8 @@
-struct s;
+type struc s;
 
-// cannot combine struct keyword with other type specifier
-struct s long a;
+# cannot combine struct keyword with other type specifier
+a: struc s i64;
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

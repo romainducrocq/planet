@@ -1,6 +1,6 @@
-// struct keyword must come before tag
-s struct x { int a; };
+# struct keyword must come before tag
+x type struc ( a: i32 )
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

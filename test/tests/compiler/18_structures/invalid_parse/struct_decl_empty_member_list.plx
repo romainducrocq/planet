@@ -1,7 +1,7 @@
-// struct member list cannot be empty
-// (note that GCC/Clang allow this as an extenision)
-struct s {};
+# struct member list cannot be empty
+# (note that GCC/Clang allow this as an extenision)
+type struc s()
 
-int main(void) {
-    return 0;
+pub fn main(none) i32 {
+    return 0
 }

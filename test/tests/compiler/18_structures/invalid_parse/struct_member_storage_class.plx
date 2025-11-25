@@ -1,4 +1,4 @@
-struct y {
+type struc y (
     // structure member cannot have storage class
-    static int a;
-};
+    data a: i32
+)

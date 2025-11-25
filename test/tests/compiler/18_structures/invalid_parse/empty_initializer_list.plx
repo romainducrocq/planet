@@ -1,9 +1,9 @@
-// An initializer list must have at least one element
-// NOTE: empty initializer lists are valid as of C23
+# An initializer list must have at least one element
+# NOTE: empty initializer lists are valid as of C23
 
-struct s {int a;};
+type struc s(a: i32)
 
-int main(void) {
-    struct s foo = {};
-    return 0;
+pub fn main(none) i32 {
+    foo: struc s = $()
+    return 0
 }

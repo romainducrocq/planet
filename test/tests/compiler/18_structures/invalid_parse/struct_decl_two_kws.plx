@@ -1,5 +1,5 @@
-struct struct s;  // struct keyword can only appear once in a type declaration
+type struc struc s;  # struct keyword can only appear once in a type declaration
 
-int main(void) {
-    return 1;
+pub fn main(none) i32 {
+    return 1
 }

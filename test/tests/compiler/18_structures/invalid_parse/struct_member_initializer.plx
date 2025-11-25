@@ -1,4 +1,4 @@
-struct a {
-    // structure members cannot have initializers
-    int member = 1;
-};
+type struc a (
+    # structure members cannot have initializers
+    member: i32 = 1
+)

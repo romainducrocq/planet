@@ -1,10 +1,8 @@
-struct s {
-    int y;
-};
+type struc s (y: i32)
 
-int main(void) {
-    // can't parenthesize struct tag
-    struct(s) var;
+pub fn main(none) i32 {
+    # can't parenthesize struct tag
+    var: struc (s);
 
-    return 0;
+    return 0
 }
