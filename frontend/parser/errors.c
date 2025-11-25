@@ -135,13 +135,13 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         case TOK_key_none:
             return "none";
         case TOK_key_fn:
-            return "fn";
-        case TOK_key_type:
-            return "type";    
+            return "fn"; 
         case TOK_key_struc:
             return "struc";
         case TOK_key_union:
             return "union";
+        case TOK_key_type:
+            return "type";
         case TOK_key_sizeof:
             return "sizeof";
         case TOK_key_return:
