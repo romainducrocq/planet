@@ -7,25 +7,7 @@ pub fn memcmp(s1: *any, s2: *any, n: u64) i32;
 
 #  Pass sizes 1 - 6 in registers, remainders on the stack
 pub fn fun0(a: struc bytesize1, b: struc bytesize2, c: struc bytesize3, d: struc bytesize4, e: struc bytesize5, f: struc bytesize6, g: struc bytesize7, h: struc bytesize8, i: struc bytesize9, j: struc bytesize10, k: struc bytesize11, l: struc bytesize12, m: struc bytesize13, n: struc bytesize14, o: struc bytesize15, p: struc bytesize16, q: struc bytesize17, r: struc bytesize18, s: struc bytesize19, t: struc bytesize20, u: struc bytesize21, v: struc bytesize22, w: struc bytesize23, x: struc bytesize24, a_expected: *u8, b_expected: 
-    *u8, c_expected: *u8, d_expected: *u8, e_expected: *u8, f_expected: *u8, g_expected: *u8, h_expected: *u8, i_expected: *u8, j_expected: *u8, k_expected: *u8, l_expected: *u8, m_expected: *u8, n_expected: *u8, o_expected: *u8, p_expected: *u8, q_expected: *u8, r_expected: *u8, s_expected: *u8, t_expected: *u8, u_expected: *u8, v_expected: *u8, w_expected: *u8, x_expected: *u8) i32 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{
+    *u8, c_expected: *u8, d_expected: *u8, e_expected: *u8, f_expected: *u8, g_expected: *u8, h_expected: *u8, i_expected: *u8, j_expected: *u8, k_expected: *u8, l_expected: *u8, m_expected: *u8, n_expected: *u8, o_expected: *u8, p_expected: *u8, q_expected: *u8, r_expected: *u8, s_expected: *u8, t_expected: *u8, u_expected: *u8, v_expected: *u8, w_expected: *u8, x_expected: *u8) i32 {
     if memcmp(@a, a_expected, sizeof(a)) {
         return 0
     }
@@ -128,14 +110,7 @@ pub fn fun0(a: struc bytesize1, b: struc bytesize2, c: struc bytesize3, d: struc
 
 #  Pass sizes 7-10 bytes in regs, 1-6 on the stack
 pub fn fun1(a: struc bytesize7, b: struc bytesize8, c: struc bytesize9, 
-    d: struc bytesize10, e: struc bytesize1, f: struc bytesize2, g: struc bytesize3, h: struc bytesize4, i: struc bytesize5, j: struc bytesize6, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8, e_expected: *u8, f_expected: *u8, g_expected: *u8, h_expected: *u8, i_expected: *u8, j_expected: *u8) i32 
-
-
-
-
-
-
-{
+    d: struc bytesize10, e: struc bytesize1, f: struc bytesize2, g: struc bytesize3, h: struc bytesize4, i: struc bytesize5, j: struc bytesize6, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8, e_expected: *u8, f_expected: *u8, g_expected: *u8, h_expected: *u8, i_expected: *u8, j_expected: *u8) i32 {
     if memcmp(@a, a_expected, sizeof(a)) {
         return 0
     }
@@ -182,9 +157,7 @@ pub fn fun1(a: struc bytesize7, b: struc bytesize8, c: struc bytesize9,
 
 #  Pass sizes 11-13 in regs, 1 on the stack
 pub fn fun2(a: struc bytesize11, b: struc 
-    bytesize12, c: struc bytesize13, d: struc bytesize1, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8) i32 
-
-{
+    bytesize12, c: struc bytesize13, d: struc bytesize1, a_expected: *u8, b_expected: *u8, c_expected: *u8, d_expected: *u8) i32 {
     if memcmp(@a, 
         a_expected, sizeof(a)) {
         return 0
@@ -207,9 +180,7 @@ pub fn fun2(a: struc bytesize11, b: struc
 
 #  pass sizes 14-16 in regs, 2 on the stack
 pub fn fun3(a: struc bytesize14, b: struc bytesize15, c: struc bytesize16, d: struc bytesize2, a_expected: *u8
-    , b_expected: *u8, c_expected: *u8, d_expected: *u8) i32 
-
-{
+    , b_expected: *u8, c_expected: *u8, d_expected: *u8) i32 {
     if memcmp(@a, a_expected, sizeof(a)) {
         return 0
     }

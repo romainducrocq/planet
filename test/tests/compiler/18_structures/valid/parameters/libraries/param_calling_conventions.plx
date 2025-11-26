@@ -4,10 +4,7 @@
 import `param_calling_conventions`
 
 #  all arguments fit in registers
-pub fn pass_small_structs(two_xmm_struct: struc two_xmm, int_struct: struc one_int, xmm_struct: struc one_xmm, mixed_struct: struc xmm_and_int, int_struct_2: struc twelve_bytes, another_int_struct: struc one_int_exactly) i32 
-
-
-{
+pub fn pass_small_structs(two_xmm_struct: struc two_xmm, int_struct: struc one_int, xmm_struct: struc one_xmm, mixed_struct: struc xmm_and_int, int_struct_2: struc twelve_bytes, another_int_struct: struc one_int_exactly) i32 {
     if two_xmm_struct.d[0] ~= 55.5 or two_xmm_struct.d[1] ~= 44.4 {
         return 0
     }
@@ -66,9 +63,7 @@ pub fn structs_and_scalars(l: i64, d: f64, os: struc odd_size, mem: struc memory
 }
 
 #  pass fourth_struct in memory b/c we're out of XMM registers
-pub fn struct_in_mem(a: f64, b: f64, c: f64, first_struct: struc xmm_and_int, d: f64, second_struct: struc two_xmm, l: i64, third_struct: struc int_and_xmm, fourth_struct: struc one_xmm) i32 
-
-{
+pub fn struct_in_mem(a: f64, b: f64, c: f64, first_struct: struc xmm_and_int, d: f64, second_struct: struc two_xmm, l: i64, third_struct: struc int_and_xmm, fourth_struct: struc one_xmm) i32 {
     if a ~= 10.0 or b ~= 11.125 or c ~= 12.0 {
         return false
     }
@@ -96,8 +91,7 @@ pub fn struct_in_mem(a: f64, b: f64, c: f64, first_struct: struc xmm_and_int, d:
 
 #  pass two_ints_nested in memory - we have one general-purpose reg left for
 #  parameter passing but it requires two
-pub fn pass_borderline_struct_in_memory(t_i: struc two_ints, c: i32, i_x: struc int_and_xmm, ptr: *any, t_i_n: struc two_ints_nested, d: f64) i32 
-{
+pub fn pass_borderline_struct_in_memory(t_i: struc two_ints, c: i32, i_x: struc int_and_xmm, ptr: *any, t_i_n: struc two_ints_nested, d: f64) i32 {
     if t_i.c ~= '_' or t_i.arr[false] ~= 5 or t_i.arr[1] ~= 6 or t_i.arr[2] ~= 7 {
         return 0
     }
@@ -125,8 +119,7 @@ pub fn pass_borderline_struct_in_memory(t_i: struc two_ints, c: i32, i_x: struc 
 }
 
 #  pass a struct in memory that isn't neatly divisible by 8
-pub fn pass_uneven_struct_in_mem(struct1: struc twelve_bytes, a: i64, b: i64, struct2: struc twelve_bytes, os: struc odd_size, m: struc memory) i32 
-{
+pub fn pass_uneven_struct_in_mem(struct1: struc twelve_bytes, a: i64, b: i64, struct2: struc twelve_bytes, os: struc odd_size, m: struc memory) i32 {
     if struct1.i ~= -true {
         return nil
     }

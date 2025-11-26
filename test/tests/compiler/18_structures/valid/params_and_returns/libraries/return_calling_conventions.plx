@@ -45,11 +45,8 @@ pub fn leaf_call(t_i: struc two_ints, c: i32, d: f64) i32 {
     return 1 #  success
 }
 
-pub fn pass_and_return_regs(
-    i: i32, d: f64, strct: struc int_and_xmm, c: 
-    i32, t_i: struc two_ints, l: i64, o_i_e: struc one_int_exactly, c2
-    : i32) struc memory 
-{
+pub fn pass_and_return_regs(i: i32, d: f64, strct: struc int_and_xmm, c: i32, t_i: struc two_ints,
+    l: i64, o_i_e: struc one_int_exactly, c2: i32) struc memory {
     #  include a stack variable to make sure it doen't overwrite return value
     #  pointer or vice versa
     stackbytes: [8]char = "zyxwvut"
