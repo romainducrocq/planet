@@ -861,7 +861,19 @@ static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
-    *exp = make_CDereference(exp, info_at);
+    TRY(peek_next(ctx));
+    if (ctx->peek_tok->tok_kind == TOK_typeop_member) {
+        info_at = ctx->peek_tok->info_at;
+        TRY(pop_next(ctx));
+        TRY(peek_next(ctx));
+        TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+        TIdentifier member;
+        TRY(parse_identifier(ctx, 0, &member));
+        *exp = make_CArrow(member, exp, info_at);
+    }
+    else {
+        *exp = make_CDereference(exp, info_at);
+    }
     FINALLY;
     CATCH_EXIT;
 }
