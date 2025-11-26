@@ -2616,11 +2616,11 @@ static error_t parse_member_list(Ctx ctx, vector_t(unique_ptr_t(CMemberDeclarati
     unique_ptr_t(CMemberDeclaration) member = uptr_new();
     CATCH_ENTER;
     TRY(parse_member_declaration(ctx, &member));
-    vec_push_back(*members, member);
+    vec_move_back(*members, member);
     TRY(pop_next(ctx));
     while (ctx->next_tok->tok_kind == TOK_comma_separator) {
         TRY(parse_member_declaration(ctx, &member));
-        vec_push_back(*members, member);
+        vec_move_back(*members, member);
         TRY(pop_next(ctx));
     }
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
