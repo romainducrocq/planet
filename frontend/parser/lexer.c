@@ -509,8 +509,15 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                     return TOK_key_sizeof;
                 }
             }
-            else if (match_chars(ctx, "tring", 5) && !match_word(ctx)) {
-                return TOK_key_string;
+            else if (match_chars(ctx, "tr", 2)) {
+                if (match_char(ctx, 'u')) {
+                    if (match_char(ctx, 'c') && !match_word(ctx)) {
+                        return TOK_key_struc;
+                    }
+                }
+                else if (match_chars(ctx, "ing", 3) && !match_word(ctx)) {
+                    return TOK_key_string;
+                }
             }
             break;
         }
@@ -518,6 +525,11 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             if (match_char(ctx, 'h')) {
                 if(match_chars(ctx, "en", 2) && !match_word(ctx)) {
                     return TOK_key_then;
+                }
+            }
+            else if (match_char(ctx, 'y')) {
+                if (match_chars(ctx, "pe", 2) && !match_word(ctx)) {
+                    return TOK_key_type;
                 }
             }
             else if (match_chars(ctx, "rue", 3) && !match_word(ctx)) {
@@ -549,6 +561,11 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             else if (match_char(ctx, '8')) {
                 if (!match_word(ctx)) {
                     return TOK_key_u8;
+                }
+            }
+            else if (match_char(ctx, 'n')) {
+                if (match_chars(ctx, "ion", 3) && !match_word(ctx)) {
+                    return TOK_key_union;
                 }
             }
             else if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
