@@ -1,2 +1,2 @@
-# A backtick is not a valid token.
-`
+# A euro sign is not a valid token.
+€
