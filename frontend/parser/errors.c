@@ -677,6 +677,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 EM_CSTR("type") " next";
         case MSG_expect_assign:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("=") " or " EM_CSTR(";") " next";
+        case MSG_expect_datatype:
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("(") " or " EM_CSTR(";") " next";
         case MSG_expect_block:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("{") " or " EM_CSTR(";") " next";
         case MSG_empty_block:
@@ -687,6 +689,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level";
         case MSG_pub_in_block:
             RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block"; 
+        case MSG_type_decl_not_auto:
+            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in type declaration";
         case MSG_list_decl_not_auto:
             RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in list declaration";
         case MSG_loop_decl_not_auto:
@@ -696,6 +700,8 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 EM_CSTR("string") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " //
                 EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("*") //
                 " or " EM_CSTR("[") " next";
+        case MSG_expect_data_specifier:
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("struc") " or " EM_CSTR("union") " next";
         case MSG_incomplete_any:
             RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";      
         case MSG_expect_open_sizeof:

@@ -541,7 +541,7 @@ static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_unio
             break;
         }
         default:
-            TRY(1); // TODO add msg
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_data_specifier, str_fmt_tok(ctx->next_tok)));
     }
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -2648,7 +2648,7 @@ static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration
             TRY(parse_member_list(ctx, &members));
             break;
         default:
-            TRY(1); // TODO add msg
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_datatype, str_fmt_tok(ctx->next_tok)));
     }
     *struct_decl = make_CStructDeclaration(tag, is_union, &members, info_at);
     FINALLY;
@@ -2742,7 +2742,8 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_key_type) {
-        TRY(1); // TODO add msg
+        THROW_AT_TOKEN(ctx->peek_tok->info_at,
+            GET_PARSER_MSG(MSG_type_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
