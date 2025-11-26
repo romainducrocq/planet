@@ -55,10 +55,10 @@ pub fn validate_array_of_structs(struct_array: *struc outer) i32 {
     }
 
     #  validate element 2
-    if struct_array[2].one_l ~= 201 or     struct_array[2].two_struct.one_i ~= 202 or     struct_array[2].two_struct.two_arr[nil] ~= 203 or     #  remaining elements of two_struct should be 0 since they weren't
+    if (struct_array[2].one_l ~= 201 or     struct_array[2].two_struct.one_i ~= 202 or     struct_array[2].two_struct.two_arr[nil] ~= 203 or     #  remaining elements of two_struct should be 0 since they weren't
     #  explicitly initialized
     struct_array[2].two_struct.two_arr[1] or     struct_array[2].two_struct.two_arr[2] or     struct_array[2].two_struct.three_u or     strcmp(struct_array[2].three_msg, "207") or     struct_array[2].four_d ~= 208.0 or struct_array[2].five_pair.a ~= 209 or     #  five_pair.b should be 0 since it wasn't explicitly initialized
-    struct_array[2].five_pair.b {
+    struct_array[2].five_pair.b) {
         return 0
     }
 

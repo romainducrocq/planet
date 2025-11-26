@@ -42,8 +42,7 @@ pub fn return_contains_union_array(none) union contains_union_array {
 }
 
 pub fn pass_params_and_return_in_mem(i1: i32, int_and_dbl: union scalar_and_struct, two_arrs: union 
-    two_arrs, i2: i32, big_union: union contains_union_array, oin: union one_int_nested) union lotsa_chars 
-{
+    two_arrs, i2: i32, big_union: union contains_union_array, oin: union one_int_nested) union lotsa_chars {
 
     #  first, validate params, starting w/ scalars
     if i1 ~= 1 or i2 ~= 25 {

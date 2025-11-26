@@ -149,8 +149,8 @@ pub fn test_exp_result_member(none) i32 {
     #  correct side effect)
     result_ptr: *struc four_members = false
     #  assign to result_ptr and access member through assignment expression
-    if (result_ptr = s2_ptr)[].d ~= 12.0 or     #  make sure we can now read other members of s2 through result_ptr too
-    result_ptr[].l ~= -9223372036854775807l {
+    if ((result_ptr = s2_ptr)[].d ~= 12.0 or     #  make sure we can now read other members of s2 through result_ptr too
+        result_ptr[].l ~= -9223372036854775807l) {
         return 0
     }
 

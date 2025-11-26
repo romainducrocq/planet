@@ -5,8 +5,7 @@ import `union_lib`
 
 pub fn pass_unions_and_structs(i1: i32, i2: 
     i32, one_gp_struct: struc has_union, d1: f64, two_xmm: union two_doubles, one_gp: union one_int, i3: i32, i4: i32, 
-    i5: i32) i32 
-{
+    i5: i32) i32 {
     #  start w/ scalars
     if not (i1 == 1 and i2 == 2 and d1 == 4.0 and i3 == 100 and i4 == 120 and i5 == 130) {
         return false #  fail
@@ -29,8 +28,7 @@ pub fn pass_unions_and_structs(i1: i32, i2:
     return true #  success
 }
 
-pub fn pass_gp_union_in_memory(two_xmm: union two_doubles, one_gp_struct: struc has_union, i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, i6: i32, one_gp: union one_int) bool 
-{
+pub fn pass_gp_union_in_memory(two_xmm: union two_doubles, one_gp_struct: struc has_union, i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, i6: i32, one_gp: union one_int) bool {
 
     #  first validate scalars
     if not (i1 == -1 and i2 == -2 and i3 == -3 and i4 == -4 and i5 == -5 and i6 == -6) {
@@ -55,8 +53,7 @@ pub fn pass_gp_union_in_memory(two_xmm: union two_doubles, one_gp_struct: struc 
 }
 
 pub fn pass_xmm_union_in_memory(d1: f64
-    , d2: f64, two_xmm: union two_doubles, two_xmm_copy: union two_doubles, d3: f64, d4: f64, two_xmm_2: union two_doubles) i32 
-{
+    , d2: f64, two_xmm: union two_doubles, two_xmm_copy: union two_doubles, d3: f64, d4: f64, two_xmm_2: union two_doubles) i32 {
 
     #  start w/ scalars
     if not (d1 == 1.0 and d2 == 2.0 and d3 == 3.0 and d4 == 4.0) {
@@ -111,8 +108,7 @@ pub fn pass_borderline_xmm_union(two_xmm: union two_doubles
     return 1 #  success
 }
 
-pub fn pass_mixed_reg_in_memory(d1: f64, d2: f64, d3: f64, d4: f64, i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, i6: i32, mixed_regs: union gp_and_xmm) i32 
-{
+pub fn pass_mixed_reg_in_memory(d1: f64, d2: f64, d3: f64, d4: f64, i1: i32, i2: i32, i3: i32, i4: i32, i5: i32, i6: i32, mixed_regs: union gp_and_xmm) i32 {
 
     #  start w/ scalars
     if not (d1 == 101.2 and d2 == 102.3 and d3 == 103.4 and d4 == 104.5 and i1 == 75 and i2 == 76 and i3 == 77 and i4 == 78 and i5 == 79 and i6 == 80) {

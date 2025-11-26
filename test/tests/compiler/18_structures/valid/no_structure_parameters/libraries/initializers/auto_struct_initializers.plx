@@ -34,8 +34,8 @@ pub fn validate_partial_initialization(ptr: *struc s, expected_msg: string) i32 
     return 1 #  success
 }
 pub fn validate_converted(ptr: *struc s) i32 {
-    if not ptr[].one_msg or #  just validate that this pointer isn't null
-    ptr[].two_arr[0] ~= 220 or ptr[].two_arr[1] ~= 232 or     ptr[].two_arr[2] ~= 224 or ptr[].three_self_ptr or     ptr[].four_d ~= 2999.0 or ptr[].five_d_ptr[] ~= 0.0 {
+    if (not ptr[].one_msg or #  just validate that this pointer isn't null
+    ptr[].two_arr[0] ~= 220 or ptr[].two_arr[1] ~= 232 or     ptr[].two_arr[2] ~= 224 or ptr[].three_self_ptr or     ptr[].four_d ~= 2999.0 or ptr[].five_d_ptr[] ~= 0.0) {
         return 0
     }
 
@@ -44,11 +44,11 @@ pub fn validate_converted(ptr: *struc s) i32 {
 
 pub fn validate_two_structs(ptr1: *struc s, ptr2: *struc s) i32 {
     #  validate elements of ptr2
-    if strcmp(ptr2[].one_msg, "Yet another string") or     ptr2[].one_msg ~= ptr1[].one_msg or #  both one_msg members point to same
+    if (strcmp(ptr2[].one_msg, "Yet another string") or     ptr2[].one_msg ~= ptr1[].one_msg or #  both one_msg members point to same
     #  string literal
     #  contents of two_arr copied from s1 to s2
     ptr2[].two_arr[0] ~= 'x' or ptr2[].two_arr[1] ~= 'y' or     ptr2[].three_self_ptr ~=     ptr1 or #  ptr2->three_self_ptr is ptr1, not to itself
-    ptr2[].four_d ~= 150.0 or     ptr1[].five_d_ptr[] ~= 123.4 {
+    ptr2[].four_d ~= 150.0 or     ptr1[].five_d_ptr[] ~= 123.4) {
         return 0
     }
 

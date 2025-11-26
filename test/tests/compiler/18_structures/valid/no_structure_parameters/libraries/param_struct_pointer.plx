@@ -2,8 +2,7 @@
 
 import `param_struct_pointer`
 
-pub fn access_members_through_pointer(ptr: *struc outer, expected_a: i32, expected_b: i32, expected_d: f64, expected_i: bool) i32 
-{
+pub fn access_members_through_pointer(ptr: *struc outer, expected_a: i32, expected_b: i32, expected_d: f64, expected_i: bool) i32 {
     if ptr[].a ~= expected_a {
         return 0
     }
