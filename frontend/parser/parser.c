@@ -529,6 +529,27 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
 
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name);
 
+static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_union) {
+    CATCH_ENTER;
+    switch (ctx->next_tok->tok_kind) {
+        case TOK_key_struc: {
+            *is_union = false;
+            break;
+        }
+        case TOK_key_union: {
+            *is_union = true;
+            break;
+        }
+        default:
+            TRY(1); // TODO add msg
+    }
+    TRY(peek_next(ctx));
+    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
+    TRY(parse_identifier(ctx, 0, tag));
+    FINALLY;
+    CATCH_EXIT;
+}
+
 // <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "char" | "string"
 //                    | "*" "any" | <datatype-specifier>
 static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
@@ -574,6 +595,14 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
         }
         case TOK_key_any: {
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG_0(MSG_incomplete_any));
+        }
+        case TOK_key_struc:
+        case TOK_key_union: {
+            bool is_union;
+            TIdentifier tag;
+            TRY(parse_datatype_specifier(ctx, &tag, &is_union));
+            *type_specifier = make_Structure(tag, is_union);
+            break;
         }
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
@@ -688,6 +717,8 @@ static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
         case TOK_key_u64:
         case TOK_key_u8:
         case TOK_key_any:
+        case TOK_key_struc:
+        case TOK_key_union:
         case TOK_open_bracket:
         case TOK_binop_multiply:
             TRY(parse_type_name(ctx, maybe_type));
@@ -2604,25 +2635,11 @@ static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration
     vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
     CATCH_ENTER;
     bool is_union;
+    TIdentifier tag;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
-    switch (ctx->next_tok->tok_kind) {
-        case TOK_key_struc: {
-            is_union = false;
-            break;
-        }
-        case TOK_key_union: {
-            is_union = true;
-            break;
-        }
-        default:
-            TRY(1); // TODO add msg
-    }
-    TRY(peek_next(ctx));
-    TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-    TIdentifier tag;
-    TRY(parse_identifier(ctx, 0, &tag));
+    TRY(parse_datatype_specifier(ctx, &tag, &is_union));
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_semicolon:
