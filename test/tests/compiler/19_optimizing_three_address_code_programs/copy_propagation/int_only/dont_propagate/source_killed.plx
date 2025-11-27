@@ -1,15 +1,15 @@
-/* Basic test that updating the source of a copy kills that copy */
+#  Basic test that updating the source of a copy kills that copy 
 
-int x = 10;
+pub x: i32 = 10
 
-int main(void) {
-    int y = x;      // generate y = x
-    x = 4;          // kill y = x
-    if (y != 10) {  // can't replace y with x here
-        return 1;
+pub fn main(none) i32 {
+    y: i32 = x #  generate y = x
+    x = 4 #  kill y = x
+    if y ~= 10 { #  can't replace y with x here
+        return 1
     }
-    if (x != 4) {
-        return 2;
+    if x ~= 4 {
+        return 2
     }
-    return 0;  // success
+    return nil #  success
 }

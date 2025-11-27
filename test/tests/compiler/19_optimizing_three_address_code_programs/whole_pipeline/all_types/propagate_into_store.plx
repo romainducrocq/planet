@@ -1,29 +1,27 @@
-/* Make sure we can propagate copies into Store instruction */
+#  Make sure we can propagate copies into Store instruction 
 
-struct s {
-    int a;
-    int b;
-};
+type struc s(    a: i32    , b: i32    
+    )
 
-int glob = 0;
-int i = 0;
-int target(void) {
-    int *ptr = &i;
-    glob = 30;  // this can be removed once we propagate its value
+pub glob: i32 = 0
+pub i: i32 = 0
+pub fn target(none) i32 {
+    ptr: *i32 = @i
+    glob = 30 #  this can be removed once we propagate its value
 
-    *ptr = glob;  // rewrite as *ptr = 30, letting us remove
-                  // previous write to glob
+    ptr[] = glob #  rewrite as *ptr = 30, letting us remove
+    #  previous write to glob
 
-    glob = 10;
-    return *ptr;
+    glob = 10
+    return ptr[]
 }
 
-int main(void) {
-    if (target() != 30) {
-        return 1;  // failure
+pub fn main(none) i32 {
+    if target() ~= 30 {
+        return 1 #  failure
     }
-    if (glob != 10) {
-        return 2;  // failure
+    if glob ~= 10 {
+        return 2 #  failure
     }
-    return 0;  // success
+    return 0 #  success
 }

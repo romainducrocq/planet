@@ -1,13 +1,13 @@
-// Make sure the compiler doesn't complain if you try to cast NaN to an int
-// in code that isn't executed. (If it actually did execute it would be
-// undefined behavior)
+#  Make sure the compiler doesn't complain if you try to cast NaN to an int
+#  in code that isn't executed. (If it actually did execute it would be
+#  undefined behavior)
 
-static int flse = 0;
+flse: i32 = 0
 
-int main(void) {
-    int retval = 0;
-    if (flse) {
-        retval = (int) (0.0/0.0);
+pub fn main(none) i32 {
+    retval: i32 = nil
+    if flse {
+        retval = cast<bool>((0.0 / 0.0))
     }
-    return retval;
+    return retval
 }

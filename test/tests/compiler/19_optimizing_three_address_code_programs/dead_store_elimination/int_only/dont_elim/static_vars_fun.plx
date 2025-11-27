@@ -1,13 +1,13 @@
-/* Test that we recognize that function calls generate all static variables */
-int x = 100;
+#  Test that we recognize that function calls generate all static variables 
+pub x: i32 = 100
 
-int get_x(void) {
-    return x;
+pub fn get_x(none) i32 {
+    return x
 }
 
-int main(void) {
-    x = 5;  // don't eliminate this!
-    int result = get_x();
-    x = 10;
-    return result;
+pub fn main(none) i32 {
+    x = 5 #  don't eliminate this!
+    result: bool = get_x()
+    x = 10
+    return result
 }

@@ -1,33 +1,31 @@
-/* Make sure we can propagate copies into CopyFromOffset instruction.
- * In assembly for target, we'll see a copy to glob but no reads from it
- */
+#  Make sure we can propagate copies into CopyFromOffset instruction.
+#  * In assembly for target, we'll see a copy to glob but no reads from it
+#  
 
-struct s {
-    int a;
-    int b;
-};
+type struc s(    a: i32    , b: i32    
+    )
 
-struct s glob;
+pub glob: struc s;
 
-int target(void) {
-    struct s loc = {100, 200};
+pub fn target(none) i32 {
+    loc: struc s = $(100, 200)
 
-    glob = loc;
+    glob = loc
 
-    int x = glob.b;  // rewrite as x = loc.b
+    x: i32 = glob.b #  rewrite as x = loc.b
 
-    return x;
+    return x
 }
 
-int main(void) {
-    if (target() != 200) {
-        return 1;  // failure
+pub fn main(none) i32 {
+    if target() ~= 200 {
+        return 1 #  failure
     }
-    if (glob.a != 100) {
-        return 2;  // failure
+    if glob.a ~= 100 {
+        return 2 #  failure
     }
-    if (glob.b != 200) {
-        return 3;  // failure
+    if glob.b ~= 200 {
+        return 3 #  failure
     }
-    return 0;  // success
+    return 0 #  success
 }

@@ -1,27 +1,27 @@
-/* Test that we can detect dead stores in a function with a loop */
-int putchar(int c);  // from standard library
+#  Test that we can detect dead stores in a function with a loop 
+pub fn putchar(c: i32) i32; #  from standard library
 
-int target(void) {
-    int x = 5;   // dead store
-    int y = 65;  // not a dead store
-    do {
-        x = y + 2;  // kill x, gen y
-        if (y > 70) {
-            // make sure we assign to x on multiple paths
-            // so copy prop doesn't replace it entirely
-            x = y + 3;
+pub fn target(none) i32 {
+    x: bool = 5 #  dead store
+    y: i32 = 65 #  not a dead store
+    loop .. while y < 90 {
+        x = y + 2 #  kill x, gen y
+        if y > 70 {
+            #  make sure we assign to x on multiple paths
+            #  so copy prop doesn't replace it entirely
+            x = y + 3
         }
-        y = putchar(x) + 3;  // gen x and y
-    } while (y < 90);
-    if (x != 90) {
-        return 1;  // fail
+        y = putchar(x) + 3 #  gen x and y
     }
-    if (y != 93) {
-        return 2;  // fail
+    if x ~= 90 {
+        return 1 #  fail
     }
-    return 0;  // success
+    if y ~= 93 {
+        return 2 #  fail
+    }
+    return 0 #  success
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

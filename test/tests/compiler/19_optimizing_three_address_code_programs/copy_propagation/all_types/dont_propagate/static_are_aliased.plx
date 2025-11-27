@@ -1,23 +1,23 @@
-/* Test that we consider all static variables aliased,
- * so store kills copies to/from these variables */
-int stat;
+#  Test that we consider all static variables aliased,
+#  * so store kills copies to/from these variables 
+pub stat: i32;
 
-int target(int *stat_ptr) {
-    int a = 0;
-    a = stat;       // gen a = stat
-    *stat_ptr = 8;  // kill a = stat
-    return a;       // make sure we don't rewrite as 'return stat'
+pub fn target(stat_ptr: *i32) i32 {
+    a: i32 = nil
+    a = stat #  gen a = stat
+    stat_ptr[] = 8 #  kill a = stat
+    return a #  make sure we don't rewrite as 'return stat'
 }
 
-int main(void) {
-    int *ptr = &stat;
-    stat = 5;
-    int result = target(ptr);
-    if (result != 5) {
-        return 1;  // fail
+pub fn main(none) i32 {
+    ptr: *i32 = @stat
+    stat = 5
+    result: i32 = target(ptr)
+    if result ~= 5 {
+        return 1 #  fail
     }
-    if (stat != 8) {
-        return 2;  // fail
+    if stat ~= 8 {
+        return 2 #  fail
     }
-    return 0;  // success
+    return false #  success
 }

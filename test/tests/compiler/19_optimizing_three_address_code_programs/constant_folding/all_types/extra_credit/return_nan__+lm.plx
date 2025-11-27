@@ -1,16 +1,16 @@
-/* Test case where we return NaN after constant folding */
+#  Test case where we return NaN after constant folding 
 
-int double_isnan(double d); // defined in tests/chapter_13/helper_libs/nan.c
+pub fn double_isnan(d: f64) i32; #  defined in tests/chapter_13/helper_libs/nan.c
 
-double target(void) {
-    return 0.0 / 0.0;
+pub fn target(none) f64 {
+    return 0.0 / 0.0
 }
 
-int main(void) {
-    double nan = target();
-    if (double_isnan(nan)) {
-        return 0; // success
+pub fn main(none) i32 {
+    nan: f64 = target()
+    if double_isnan(nan) {
+        return 0 #  success
     }
 
-    return 1; // fail
+    return 1 #  fail
 }

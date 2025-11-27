@@ -1,29 +1,29 @@
-/* Test that we recognize aliased non-static variables are live
- * just after function calls but dead at function exit
- * */
+#  Test that we recognize aliased non-static variables are live
+#  * just after function calls but dead at function exit
+#  * 
 
-int b = 0;
+pub b: i32 = 0
 
-void callee(int *ptr) {
-    b = *ptr;
-    *ptr = 100;
+pub fn callee(ptr: *i32) none {
+    b = ptr[]
+    ptr[] = 100
 }
 
-int target(void) {
-    int x = 10;
-    callee(&x);  // generates all aliased variables (i.e. x)
-    int y = x;
-    x = 50;  // this is dead
-    return y;
+pub fn target(none) i32 {
+    x: i32 = 10
+    callee(@x) #  generates all aliased variables (i.e. x)
+    y: i32 = x
+    x = 50 #  this is dead
+    return y
 }
 
-int main(void) {
-    int a = target();
-    if (a != 100) {
-        return 1; // fail
+pub fn main(none) i32 {
+    a: i32 = target()
+    if a ~= 100 {
+        return 1 #  fail
     }
-    if (b != 10) {
-        return 2; // fail
+    if b ~= 10 {
+        return 2 #  fail
     }
-    return 0; // success
+    return 0 #  success
 }

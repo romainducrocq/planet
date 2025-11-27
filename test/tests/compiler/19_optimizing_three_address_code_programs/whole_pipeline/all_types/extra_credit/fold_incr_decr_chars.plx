@@ -1,25 +1,25 @@
-/* Evaluate ++/-- with character types; make sure we handle integer promotions correctly */
-int target(void) {
-    signed char s = -127;
-    signed char s2 = --s;
-    signed char s3 = s--;
+#  Evaluate ++/-- with character types; make sure we handle integer promotions correctly 
+pub fn target(none) i32 {
+    s: i8 = -127
+    s2: i8 = --s
+    s3: i8 = s--
 
-    unsigned char uc1 = 255;
-    unsigned char uc2 = uc1++;
-    unsigned char uc3 = ++uc1;
+    uc1: u8 = 255
+    uc2: u8 = uc1++
+    uc3: u8 = ++uc1
 
-    if (!(s == 127 && s2 == -128 && s3 == -128)) {
-        return 1; // fail
+    if not (s == 127 and s2 == -128 and s3 == -128) {
+        return 1 #  fail
     }
 
-    if (!(uc1 == 1 && uc2 == 255 && uc3 == 1)) {
-        return 2; // fail
+    if not (uc1 == 1 and uc2 == 255 and uc3 == 1) {
+        return 2 #  fail
     }
 
-    return 0; // success
+    return 0 #  success
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 
 }

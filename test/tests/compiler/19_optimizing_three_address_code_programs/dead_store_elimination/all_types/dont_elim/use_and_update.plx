@@ -1,25 +1,23 @@
-/* Test that updating and using a value in the same AddPtr instruction
- * generates it rather than killing it.
- * Most instructions won't use and update the same variable,
- * since their destinations are temporary variables that are used updated
- * only once, but implement &x.member  as:
- *   tmp = &x
- *   tmp = AddPtr(tmp, <offset of member>, scale=1)
- * So we can validate that AddPtr generates tmp rather than killing it.
- * */
+#  Test that updating and using a value in the same AddPtr instruction
+#  * generates it rather than killing it.
+#  * Most instructions won't use and update the same variable,
+#  * since their destinations are temporary variables that are used updated
+#  * only once, but implement &x.member  as:
+#  *   tmp = &x
+#  *   tmp = AddPtr(tmp, <offset of member>, scale=1)
+#  * So we can validate that AddPtr generates tmp rather than killing it.
+#  * 
 
-struct s {
-    int a;
-    int b;
-    int c;
-};
+type struc s(    a: i32    , b: i32    
+    , c: i32    
+    )
 
-struct s global_struct = {1, 2, 3};
+pub global_struct: struc s = $(1, 2, 3)
 
-int *target(void) {
-    return &global_struct.b;
+pub fn target(none) *i32 {
+    return @global_struct.b
 }
 
-int main(void) {
-    return *target() == 2;
+pub fn main(none) i32 {
+    return target()[] == 2
 }

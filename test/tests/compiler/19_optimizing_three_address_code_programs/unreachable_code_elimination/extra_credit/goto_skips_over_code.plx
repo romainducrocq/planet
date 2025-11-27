@@ -1,16 +1,16 @@
-/* Test that we eliminate code that goto jumps over */
-int callee(void) {
-    return 1;
+#  Test that we eliminate code that goto jumps over 
+pub fn callee(none) i32 {
+    return 1
 }
 
-int target(void) {
-    int x = 10;
-    goto end;
-    x = callee(); // eliminate this
-    end:
-    return x;
+pub fn target(none) i32 {
+    x: bool = 10
+    jump end
+    x = callee() #  eliminate this
+    label end
+    return x
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

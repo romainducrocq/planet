@@ -1,23 +1,23 @@
-// Make sure we can track the results and side effects of ++ and -- through copy propagation
+#  Make sure we can track the results and side effects of ++ and -- through copy propagation
 
-int target(void) {
-    int x = 5;
+pub fn target(none) i32 {
+    x: i32 = 5
 
-    int y = x++;
-    int z = ++x;
+    y: i32 = x++
+    z: i32 = ++x
 
 
-    int a = 0;
-    int b = --a;
-    int c = a--;
+    a: i32 = nil
+    b: i32 = --a
+    c: bool = a--
 
-    if (x == 7 && y == 5 && z == 7 && a == -2 && b == -1 && c == -1 )  {
-        return 0; // success
+    if x == 7 and y == 5 and z == 7 and a == -2 and b == -true and c == -1 {
+        return 0 #  success
     }
 
-    return 1; // fail
+    return 1 #  fail
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

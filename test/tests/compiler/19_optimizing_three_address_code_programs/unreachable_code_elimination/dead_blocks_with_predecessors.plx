@@ -1,28 +1,28 @@
-/* Make sure we can eliminate unreachable code even if every unreachable
- * block has a predecessor; in other words, we're traversing the graph to find
- * reachable blocks, not just looking for blocks with no predecessor list.
- * */
-#if defined SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wdiv-by-zero"
-#endif
+#  Make sure we can eliminate unreachable code even if every unreachable
+#  * block has a predecessor; in other words, we're traversing the graph to find
+#  * reachable blocks, not just looking for blocks with no predecessor list.
+#  * 
 
-int callee(void) {
-    return 1 / 0;
+
+
+
+pub fn callee(none) i32 {
+    return 1 / 0
 }
 
-int target(void) {
-    int x = 5;
+pub fn target(none) bool {
+    x: i32 = 5
 
-    return x;
+    return x
 
-    /* make sure we eliminate this loop even though every block in it has a
-     * predecessor */
-    for (; x < 10; x = x + 1) {
-        x = x + callee();
+    #  make sure we eliminate this loop even though every block in it has a
+    #      * predecessor 
+    loop  while x < 10 .. x = x + 1 {
+        x = x + callee()
     }
-    return x;
+    return x
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

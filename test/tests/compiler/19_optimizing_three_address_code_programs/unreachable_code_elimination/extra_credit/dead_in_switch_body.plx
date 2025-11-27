@@ -1,26 +1,36 @@
-/* Eliminate unreachable code witihn a switch statement body */
+#  Eliminate unreachable code witihn a switch statement body 
 
-int callee(void) {
-    return -1;
+pub fn callee(none) i32 {
+    return -1
 }
 
-int target(int x) {
-    int retval = 0;
-    switch (x) {
-    case 1:
-        retval = 1; break;
-    case 2: retval = 2; break;
-        callee(); // unreachable - occurs after 'break' from previous case and before next one
-    case 3: retval = 10; break;
-    default: return -1;
-        callee(); // unreachable
+pub fn target(x: i32) i32 {
+    retval: i32 = 0
+    match x {
+        -> 1 {
+            retval = 1
+        }
+        break
+        -> 2 {
+            retval = 2
+        }
+        break
+        callee() #  unreachable - occurs after 'break' from previous case and before next one
+        -> 3 {
+            retval = 10
+        }
+        break
+        otherwise {
+            return -1
+        }
+        callee() #  unreachable
     }
 
-    return retval;
+    return retval
 
 
 }
 
-int main(void) {
-    return target(3);
+pub fn main(none) i32 {
+    return target(3)
 }

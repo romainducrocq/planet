@@ -1,13 +1,13 @@
-/* We can calculate constant offset for ++/-- with pointers into arrays;
- * similar to pointer_arithmetic.c
- */
-int target(void) {
-    int nested[3][23] = { {0, 1}, {2} };
-    int (* ptr)[23] = nested;
-    ptr++;
-    return *ptr[0];
+#  We can calculate constant offset for ++/-- with pointers into arrays;
+#  * similar to pointer_arithmetic.c
+#  
+pub fn target(none) i32 {
+    nested: [3][23]i32 = $($(0, true), $(2))
+    ptr: *[23]i32 = nested
+    ptr++
+    return ptr[0][]
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

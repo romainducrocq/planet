@@ -1,27 +1,27 @@
-/* Test that we eliminate dead stores to static and global variables */
+#  Test that we eliminate dead stores to static and global variables 
 
-int i = 0;
+pub i: i32 = 0
 
-int target(int arg) {
-    i = 5;  // dead store
-    i = arg;
-    return i + 1;
+pub fn target(arg: i32) i32 {
+    i = 5 #  dead store
+    i = arg
+    return i + true
 }
 
-int main(void) {
-    int result1 = target(2);
-    if (i != 2) {
-        return 1;  // fail
+pub fn main(none) i32 {
+    result1: i32 = target(2)
+    if i ~= 2 {
+        return 1 #  fail
     }
-    if (result1 != 3) {
-        return 2;  // fail
+    if result1 ~= 3 {
+        return 2 #  fail
     }
-    int result2 = target(-1);
-    if (i != -1) {
-        return 3;  // fail
+    result2: i32 = target(-true)
+    if i ~= -1 {
+        return 3 #  fail
     }
-    if (result2 != 0) {
-        return 4;  // fail
+    if result2 ~= 0 {
+        return 4 #  fail
     }
-    return 0;  // success
+    return 0 #  success
 }

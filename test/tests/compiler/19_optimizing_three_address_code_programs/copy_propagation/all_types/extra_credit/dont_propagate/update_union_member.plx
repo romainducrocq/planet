@@ -1,15 +1,13 @@
-/* Writing to union member kills previous copies to/from that union */
+#  Writing to union member kills previous copies to/from that union 
 
-union u {
-    long l;
-    int i;
-};
+type union u(    l: i64    , i: i32    
+    )
 
-int main(void) {
-    static union u u1 = {20};
-    union u u2 = {3};
-    u1 = u2; // generate u1 = u2
-    u2.i = 0; // kill u1 = u2
+pub fn main(none) i32 {
+    data u1: union u = $(20)
+    u2: union u = $(3)
+    u1 = u2 #  generate u1 = u2
+    u2.i = 0 #  kill u1 = u2
 
-    return u1.i;  // make sure we don't propagate u2 into this return statement
+    return u1.i #  make sure we don't propagate u2 into this return statement
 }

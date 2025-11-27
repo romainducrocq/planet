@@ -1,53 +1,53 @@
-/* A ++/-- operation kills its operand */
+#  A ++/-- operation kills its operand 
 
-int target(int flag) {
-    int w = 3;
-    if (flag) {
-        w++;
+pub fn target(flag: i32) i32 {
+    w: i32 = 3
+    if flag {
+        w++
     }
 
-    int x = 10;
-    if (flag) {
-        x--;
+    x: bool = 10
+    if flag {
+        x--
     }
 
-    int y = -12;
-    if (flag) {
-        ++y;
+    y: i32 = -12
+    if flag {
+        ++y
     }
 
-    int z = -100;
-    if (flag) {
-        --z;
+    z: i32 = -100
+    if flag {
+        --z
     }
 
-    if (flag) {
-        if (w == 4 && x == 9 && y == -11 && z == -101) {
-            // success
-            return 0;
+    if flag {
+        if w == 4 and x == 9 and y == -11 and z == -101 {
+            #  success
+            return 0
         }
-        return 1;
+        return 1
     }
     else {
-        if (w == 3 && x == 10 && y == -12 && z == -100) {
-            // success
-            return 0;
+        if w == 3 and x == 10 and y == -12 and z == -100 {
+            #  success
+            return 0
         }
-        return 1; // fail
+        return 1 #  fail
 
     }
 
 }
 
-int main(void) {
-    if (target(0)) {
-        return 1; // fail
+pub fn main(none) i32 {
+    if target(0) {
+        return true #  fail
     }
 
-    if (target(1)) {
-        return 2; // fail
+    if target(1) {
+        return 2 #  fail
     }
 
-    return 0;
+    return false
 }
 

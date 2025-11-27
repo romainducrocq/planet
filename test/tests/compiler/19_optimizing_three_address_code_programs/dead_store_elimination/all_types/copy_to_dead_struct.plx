@@ -1,19 +1,17 @@
-/* Dead store elimination can also eliminate copies to struct members. */
-struct s {
-    int i;
-};
+#  Dead store elimination can also eliminate copies to struct members. 
+type struc s(    i: i32    )
 
-int f(struct s arg) {
-    return arg.i;
+pub fn f(arg: struc s) i32 {
+    return arg.i
 }
 
-int target(void) {
-    struct s my_struct = {4};
-    int x = f(my_struct);
-    my_struct.i = 10;  // dead!
-    return x;
+pub fn target(none) i32 {
+    my_struct: struc s = $(4)
+    x: i32 = f(my_struct)
+    my_struct.i = 10 #  dead!
+    return x
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

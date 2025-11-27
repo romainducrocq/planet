@@ -1,11 +1,11 @@
-/* Test constant-folding with INT_MIN */
-int target(void) {
-    return -2147483647 - 1;
+#  Test constant-folding with INT_MIN 
+pub fn target(none) i32 {
+    return -2147483647 - 1
 }
 
-int main(void) {
-    if (~target() != 2147483647) {
-        return 1; // fail
+pub fn main(none) i32 {
+    if ~target() ~= 2147483647 {
+        return 1 #  fail
     }
-    return 0;
+    return 0
 }

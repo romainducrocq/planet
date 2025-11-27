@@ -1,13 +1,13 @@
-/* Test that we can propagate values from copies
- * into unary expressions, binary expressions,
- * and conditional jumps.
- * */
-int target(void) {
-    int x = 100;
-    int y = -x * 3 + 300;
-    return (y ? x % 3 : x / 4);
+#  Test that we can propagate values from copies
+#  * into unary expressions, binary expressions,
+#  * and conditional jumps.
+#  * 
+pub fn target(none) i32 {
+    x: i32 = 100
+    y: i32 = -x * 3 + 300
+    return (? y then x % 3 else x / 4)
 }
 
-int main(void) {
-    return target() == 25;
+pub fn main(none) i32 {
+    return target() == 25
 }

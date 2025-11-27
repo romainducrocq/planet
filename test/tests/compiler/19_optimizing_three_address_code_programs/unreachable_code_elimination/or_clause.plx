@@ -1,10 +1,10 @@
-/* Test that we eliminate the second clause in 1 || x */
-int putchar(int c);
+#  Test that we eliminate the second clause in 1 || x 
+pub fn putchar(c: i32) i32;
 
-int target(void) {
-    return 1 || putchar(97);
+pub fn target(none) i32 {
+    return true or putchar(97)
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

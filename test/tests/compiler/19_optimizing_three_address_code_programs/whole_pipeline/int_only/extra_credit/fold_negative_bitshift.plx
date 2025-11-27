@@ -1,15 +1,15 @@
-/* Test constant folding >> with negative source value (make sure
- * we perform an arithmetic rather than logical bit shit)
- */
+#  Test constant folding >> with negative source value (make sure
+#  * we perform an arithmetic rather than logical bit shit)
+#  
 
-int target(void) {
-    return -20000 >> 3;
+pub fn target(none) i32 {
+    return -20000 >> 3
 }
 
-int main(void) {
-    if (target() != -2500) {
-        return 1;
+pub fn main(none) i32 {
+    if target() ~= -2500 {
+        return true
     }
 
-    return 0; // success
+    return 0 #  success
 }

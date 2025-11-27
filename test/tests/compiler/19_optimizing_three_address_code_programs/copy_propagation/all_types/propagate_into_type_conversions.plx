@@ -1,19 +1,19 @@
-/* Test that we correctly propagate copies into type conversion instructions */
+#  Test that we correctly propagate copies into type conversion instructions 
 
-int target(void) {
-    unsigned char uc = 250;
-    int i = uc * 2;              // 500 - tests ZeroExtend
-    double d = i * 1000.;        // 500000.0 - tests IntToDouble
-    unsigned long ul = d / 6.0;  // 83333 - tests DoubleToUInt
-    d = ul + 5.0;                // 83338 - tests UIntToDouble
-    long l = -i;                 // -500 - tests SignExtend
-    char c = l;                  // 12 - tests Truncate
-    return d + i - c;            // 83826 - tests DoubleToInt
+pub fn target(none) i32 {
+    uc: u8 = 250
+    i: i32 = uc * 2 #  500 - tests ZeroExtend
+    d: f64 = i * 1000. #  500000.0 - tests IntToDouble
+    ul: u64 = d / 6.0 #  83333 - tests DoubleToUInt
+    d = ul + 5.0 #  83338 - tests UIntToDouble
+    l: i64 = -i #  -500 - tests SignExtend
+    c: char = l #  12 - tests Truncate
+    return d + i - c #  83826 - tests DoubleToInt
 }
 
-int main(void) {
-    if (target() != 83826) {
-        return 1; // fail
+pub fn main(none) i32 {
+    if target() ~= 83826 {
+        return 1 #  fail
     }
-    return 0; // success
+    return 0 #  success
 }

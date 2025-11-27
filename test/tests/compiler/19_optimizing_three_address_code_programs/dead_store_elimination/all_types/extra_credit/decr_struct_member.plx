@@ -1,16 +1,14 @@
-/* ++/-- applied to struct members can be a dead store */
+#  ++/-- applied to struct members can be a dead store 
 
-struct s {
-    int i;
-};
+type struc s(    i: i32    )
 
-int target(void) {
-    struct s my_struct = {4};
-    int x = 15;
-    my_struct.i--; // dead!
-    return x;
+pub fn target(none) i32 {
+    my_struct: struc s = $(4)
+    x: i32 = 15
+    my_struct.i-- #  dead!
+    return x
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

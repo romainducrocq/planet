@@ -1,12 +1,12 @@
-/* A basic test of constant propagation in a function with no control flow
- * structures
- * */
-int target(void) {
-    int x = 3;
-    int y = x;
-    return x + y;  // should become return 6
+#  A basic test of constant propagation in a function with no control flow
+#  * structures
+#  * 
+pub fn target(none) i32 {
+    x: i32 = 3
+    y: i32 = x
+    return x + y #  should become return 6
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

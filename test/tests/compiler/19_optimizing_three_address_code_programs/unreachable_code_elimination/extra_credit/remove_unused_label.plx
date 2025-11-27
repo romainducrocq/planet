@@ -1,14 +1,14 @@
-/* Make sure this pass removes unused label instructions */
+#  Make sure this pass removes unused label instructions 
 
-#ifdef SUPPRESS_WARNINGS
-#pragma GCC diagnostic ignored "-Wunused-label"
-#endif
 
-int target(void) {
-    lbl:
-    return 0;
+
+
+
+pub fn target(none) i32 {
+    label lbl
+    return 0
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

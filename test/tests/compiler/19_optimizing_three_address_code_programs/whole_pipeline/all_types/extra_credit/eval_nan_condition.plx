@@ -1,13 +1,13 @@
-/* NaN controlling expressions are treated as true */
+#  NaN controlling expressions are treated as true 
 
-int target(void) {
-    double nan = 0.0 / 0.0;
-    if (nan) {
-        return 0; // success
+pub fn target(none) i32 {
+    nan: f64 = 0.0 / 0.0
+    if nan {
+        return 0 #  success
     }
-    return 1; // fail
+    return true #  fail
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

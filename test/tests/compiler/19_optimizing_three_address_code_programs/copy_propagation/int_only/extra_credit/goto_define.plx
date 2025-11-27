@@ -1,13 +1,13 @@
-int target(int flag) {
-    int x = 10;
-    goto def_x;
-    if (flag) {
-    def_x:
-        x = 20;
+pub fn target(flag: i32) i32 {
+    x: i32 = 10
+    jump def_x
+    if flag {
+        label def_x
+        x = 20
     }
-    return x; // return 20
+    return x #  return 20
 }
 
-int main(void) {
-    return target(0);
+pub fn main(none) i32 {
+    return target(0)
 }

@@ -1,22 +1,22 @@
-/* Test that we eliminate any code after a return statement. */
-int callee(void) {
-    return 1;
+#  Test that we eliminate any code after a return statement. 
+pub fn callee(none) i32 {
+    return 1
 }
 
-int target(void) {
-    return 2;
+pub fn target(none) i32 {
+    return 2
 
-    /* Everything past this point should be optimized away */
-    int x = callee();
+    #  Everything past this point should be optimized away 
+    x: bool = callee()
 
-    if (x) {
-        x = 10;
+    if x {
+        x = 10
     }
 
-    int y = callee();
-    return x + y;
+    y: i32 = callee()
+    return x + y
 }
 
-int main(void) {
-    return target();
+pub fn main(none) i32 {
+    return target()
 }

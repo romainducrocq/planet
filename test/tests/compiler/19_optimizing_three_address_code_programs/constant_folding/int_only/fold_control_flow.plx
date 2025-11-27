@@ -1,111 +1,115 @@
-/* Test constant folding of JumpIfZero and JumpIfNotZero instructions
- * resulting from conditional ?: expressions, if statements, and loops.
- * */
+#  Test constant folding of JumpIfZero and JumpIfNotZero instructions
+#  * resulting from conditional ?: expressions, if statements, and loops.
+#  * 
 
-int target_if(void) {
-    if (0)
-        return 1;
-    return 0;
-}
-
-int target_if_else_true(void) {
-    if (1) {
-        return 2;
-    } else {
-        return 3;
+pub fn target_if(none) i32 {
+    if 0 {
+        return 1
     }
+    return false
 }
 
-int target_if_else_false(void) {
-    if (0) {
-        return 2;
-    } else {
-        return 3;
+pub fn target_if_else_true(none) i32 {
+    if 1 {
+        return 2
+    }
+    else {
+        return 3
     }
 }
 
-int target_conditional_true(void) {
-    return 1 ? 2 : 3;
+pub fn target_if_else_false(none) i32 {
+    if nil {
+        return 2
+    }
+    else {
+        return 3
+    }
 }
 
-int target_conditional_false(void) {
-    return 0 ? 4 : 5;
+pub fn target_conditional_true(none) i32 {
+    return ? 1 then 2 else 3
 }
 
-int target_do_loop(void) {
-    int retval = 0;
-    do {
-        retval = 10;
-    } while (0);
-    return retval;
+pub fn target_conditional_false(none) i32 {
+    return ? false then 4 else 5
 }
 
-int target_while_loop_false(void) {
-    int retval = 0;
-    while (0) {
-        retval = 10;
+pub fn target_do_loop(none) i32 {
+    retval: i32 = false
+    loop .. while 0 {
+        retval = 10
     }
-    return retval;
+    return retval
 }
 
-int target_while_loop_true(void) {
-    int retval = 0;
-    while (1048576) {  // 1048576 == 2^20
-        retval = 10;
-        break;
+pub fn target_while_loop_false(none
+    ) i32 {
+    retval: i32 = 0
+    loop while 0 {
+        retval = 10
     }
-    return retval;
+    return retval
 }
 
-int target_for_loop_true(void) {
-    int retval = 0;
-    for (int i = 100; 123;) {
-        retval = i;
-        break;
+pub fn target_while_loop_true(none) i32 {
+    retval: i32 = nil
+    loop while 1048576 { #  1048576 == 2^20
+        retval = 10
+        break
     }
-    return retval;
+    return retval
 }
 
-int target_for_loop_false(void) {
-    int retval = 0;
-    for (int i = 100; 0;) {
-        retval = i;
-        break;
+pub fn target_for_loop_true(none) i32 {
+    retval: i32 = 0
+    loop i: i32 = 100 while 123 {
+        retval = i
+        break
     }
-    return retval;
+    return retval
 }
 
-int main(void) {
-    if (target_if() != 0) {
-        return 1;
+pub fn target_for_loop_false(none) i32 {
+    retval: i32 = 0
+    loop i: i32 = 100 while 0 {
+        retval = i
+        break
     }
-    if (target_if_else_true() != 2) {
-        return 2;
+    return retval
+}
+
+pub fn main(none) i32 {
+    if target_if() ~= nil {
+        return 1
     }
-    if (target_if_else_false() != 3) {
-        return 3;
+    if target_if_else_true() ~= 2 {
+        return 2
     }
-    if (target_conditional_true() != 2) {
-        return 4;
+    if target_if_else_false() ~= 3 {
+        return 3
     }
-    if (target_conditional_false() != 5) {
-        return 5;
+    if target_conditional_true() ~= 2 {
+        return 4
     }
-    if (target_do_loop() != 10) {
-        return 6;
+    if target_conditional_false() ~= 5 {
+        return 5
     }
-    if (target_while_loop_false() != 0) {
-        return 7;
+    if target_do_loop() ~= 10 {
+        return 6
     }
-    if (target_while_loop_true() != 10) {
-        return 8;
+    if target_while_loop_false() ~= 0 {
+        return 7
     }
-    if (target_for_loop_true() != 100) {
-        return 9;
+    if target_while_loop_true() ~= 10 {
+        return 8
     }
-    if (target_for_loop_false() != 0) {
-        return 10;
+    if target_for_loop_true() ~= 100 {
+        return 9
+    }
+    if target_for_loop_false() ~= 0 {
+        return 10
     }
 
-    return 0;  // success
+    return 0 #  success
 }

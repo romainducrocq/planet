@@ -1,26 +1,26 @@
-/* Function calls kill copies to variables with static storage duration */
-int x;
+#  Function calls kill copies to variables with static storage duration 
+pub x: i32;
 
-int update_x(void) {
-    x = 4;
-    return 0;
+pub fn update_x(none) i32 {
+    x = 4
+    return 0
 }
 
-int target(void) {
-    x = 3;       // generate x = 3
-    update_x();  // kill x = 3
-    return x;    // can't propagte b/c it's static
+pub fn target(none) bool {
+    x = 3 #  generate x = 3
+    update_x() #  kill x = 3
+    return x #  can't propagte b/c it's static
 }
 
-int main(void) {
-    // validate return value and value of x after function call
-    if (target() != 4) {
-        return 1;
+pub fn main(none) i32 {
+    #  validate return value and value of x after function call
+    if target() ~= 4 {
+        return 1
     }
 
-    if (x != 4) {
-        return 2;
+    if x ~= 4 {
+        return 2
     }
 
-    return 0;  // success
+    return 0 #  success
 }
