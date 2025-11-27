@@ -1,53 +1,57 @@
-/* Helper functions defined in tests/chapter_20/helper_libs/util.c */
+#  Helper functions defined in tests/chapter_20/helper_libs/util.c 
 
-/* The check_* functions return 0 on success,
- * print and exit with code -1 on failure.
- */
+#  The check_* functions return 0 on success,
+#  * print and exit with code -1 on failure.
+#  
 
-/* Validating ints */
+#  Validating ints 
 
-int check_one_int(int actual, int expected);
+pub fn check_one_int(actual: i32, expected: i32) bool;
 
-// Validates a == start, b == start + 1, ...e == start + 5
-int check_5_ints(int a, int b, int c, int d, int e, int start);
+#  Validates a == start, b == start + 1, ...e == start + 5
+pub fn check_5_ints(a: i32, b: i32, c: i32, d: i32, e: i32, start: i32) i32;
 
-// Validates a == start, b == start + 1, ... l == start + 11
-int check_12_ints(int a, int b, int c, int d, int e, int f, int g, int h, int i,
-                  int j, int k, int l, int start);
+#  Validates a == start, b == start + 1, ... l == start + 11
+pub fn check_12_ints(a: i32, b: i32, c: i32, d
+    : i32, e: i32, f: i32, g: bool, h: i32, i: i32, j: i32, k: i32, l: i32, start: i32) i32;
 
-/* Validating other types */
 
-int check_one_uchar(unsigned char actual, unsigned char expected);
-int check_one_uint(unsigned int actual, unsigned int expected);
-int check_one_long(long actual, long expected);
-int check_one_ulong(unsigned long actual, unsigned long expected);
+#  Validating other types 
 
-int check_one_double(double actual, double expected);
+pub fn check_one_uchar(actual: u8, expected: u8) i32;
+pub fn check_one_uint(actual: u32, expected: u32) i32;
+pub fn check_one_long(actual: i64, expected: i64) bool;
+pub fn check_one_ulong(actual: u64, expected: u64) i32;
 
-int check_12_longs(long a, long b, long c, long d, long e, long f, long g,
-                   long h, long i, long j, long k, long l, long start);
+pub fn check_one_double(actual: f64, expected: f64) i32;
 
-int check_six_chars(char a, char b, char c, char d, char e, char f, int start);
+pub fn check_12_longs(a: i64, b: i64, c: i64, d: i64, e: i64, f: i64, g: i64, h: i64, i: i64, j: i64, k: i64, l: i64, start: i64) i32;
 
-// validates a == start, b == start + 1, ... n == start + 13
-// and exits early if they don't have those values
-// NOTE: assumes a-n are small integral values that can be represented exactly
-// as double so no rounding error
-int check_14_doubles(double a, double b, double c, double d, double e, double f,
-                     double g, double h, double i, double j, double k, double l,
-                     double m, double n, double start);
 
-// Used in force_spill_mixed_ints; validates a == start, b == start + 1, ...,
-// *k == start + 10, *l == start + 11
-int check_12_vals(int a, int b, int c, int d, int e, int f, int g, int h, int i,
-                  int j, long *k, double *l, int start);
+pub fn check_six_chars(a: char, b: char, c: char, d: char, e: char, f: char, start: i32) i32;
 
-/* Identity functions that return their argument;
- * used to get constants in a way that can't be optimized away
- */
-int id(int x);
-double dbl_id(double x);
-long long_id(long l);
-unsigned unsigned_id(unsigned u);
-unsigned char uchar_id(unsigned char uc);
+#  validates a == start, b == start + 1, ... n == start + 13
+#  and exits early if they don't have those values
+#  NOTE: assumes a-n are small integral values that can be represented exactly
+#  as double so no rounding error
+pub fn check_14_doubles(a: f64, b: f64, c: f64, d: f64, e: f64, f: f64, g: f64, h: f64, i: f64, j: f64, k: f64, l: f64, m: f64, n: f64, start: f64) i32;
+
+
+
+#  Used in force_spill_mixed_ints; validates a == start, b == start + 1, ...,
+#  *k == start + 10, *l == start + 11
+pub fn check_12_vals(a: i32, b: i32, c: i32, d: bool, e: i32, f: i32, g: i32, 
+    h: i32, i: i32, j: i32, k: 
+    *i64, l: *
+    f64, start: i32) i32;
+
+
+#  Identity functions that return their argument;
+#  * used to get constants in a way that can't be optimized away
+#  
+pub fn id(x: i32) i32;
+pub fn dbl_id(x: f64) f64;
+pub fn long_id(l: i64) i64;
+pub fn unsigned_id(u: u32) u32;
+pub fn uchar_id(uc: u8) u8;
 

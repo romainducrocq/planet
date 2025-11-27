@@ -1,15 +1,15 @@
-/* A simple function that's easy to color without spilling.
- * The test script validates that we don't spill any pseudoregisters in target.
- */
+#  A simple function that's easy to color without spilling.
+#  * The test script validates that we don't spill any pseudoregisters in target.
+#  
 
-#include "../util.h"
+import `../util`
 
-int target(int one, int two) {
-    // perform a few calculations that make one, two, three, four, and five
-    // interfere
-    int three = one + two;
-    int four = two * two;
-    int five = three + two;
-    return check_5_ints(one, two, three, four, five, 1);
+pub fn target(one: i32, two: i32) i32 {
+    #  perform a few calculations that make one, two, three, four, and five
+    #  interfere
+    three: i32 = one + two
+    four: i32 = two * two
+    five: i32 = three + two
+    return check_5_ints(one, two, three, four, five, 1)
 }
 
