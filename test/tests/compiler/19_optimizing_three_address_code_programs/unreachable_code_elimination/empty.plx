@@ -3,5 +3,4 @@
 #  * function
 #  * 
 
-pub fn main(none) i32 {
-}
+pub fn main(none) i32 { ; }

@@ -5,8 +5,7 @@
 
 pub fn target(x: i32, y: i32) bool {
     if x {
-        if y {
-        }
+        if y;
     }
     return 1
 }
