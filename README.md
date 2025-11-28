@@ -89,8 +89,8 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] fixed-sized arrays, pointer arithmetic [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/15_arrays_and_pointer_arithmetic)
 - [x] characters, strings literals, ascii [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/16_characters_and_strings)
 - [x] any, support dynamic memory allocation [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/17_supporting_dynamic_memory_allocation)
-- [ ] structures
-- [ ] unions
+- [x] structures [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/18_structures)
+- [x] unions [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/18_structures/valid/extra_credit)
 > Tooling
 - [ ] process import, use, comments
 - [ ] support m4 preprocessor
