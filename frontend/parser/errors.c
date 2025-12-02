@@ -628,11 +628,6 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("&&")        //
                 ", " EM_CSTR("||") ", " EM_CSTR("==") ", " EM_CSTR("!=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " //
                 EM_CSTR(">") " or " EM_CSTR(">=") " next";
-        case MSG_expect_abstract_decltor:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("*") ", " EM_CSTR("(") " or " EM_CSTR("[") //
-                " next";
-        case MSG_expect_ptr_unary_factor:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("*") " or " EM_CSTR("&") " next";
         case MSG_expect_primary_exp_factor:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("const int") ", " EM_CSTR("const long") ", " //
                 EM_CSTR("const char") ", " EM_CSTR("const double") ", " EM_CSTR("const unsigned int") ", "          //
@@ -646,33 +641,17 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 EM_CSTR("=") ", " EM_CSTR("+=") ", " EM_CSTR("-=") ", " EM_CSTR("*=") ", " EM_CSTR("/=") ", "        //
                 EM_CSTR("%=") ", " EM_CSTR("&=") ", " EM_CSTR("|=") ", " EM_CSTR("^=") ", " EM_CSTR("<<=") ", "      //
                 EM_CSTR(">>=") " or " EM_CSTR("?") " next";
-        case MSG_for_init_decl_as_fun:
-            RET_ERRNO "function declared in " EM_CSTR("for") " loop initial declaration"; // TODO
         case MSG_expect_specifier:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR(")") ", " //
                 EM_CSTR("char") ", " EM_CSTR("int") ", " EM_CSTR("long") ", " EM_CSTR("double") ", "        //
                 EM_CSTR("unsigned") ", " EM_CSTR("signed") ", " EM_CSTR("void") ", " EM_CSTR("struct") ", " //
                 EM_CSTR("union") ", " EM_CSTR("static") ", " EM_CSTR("extern") ", " EM_CSTR("*") ", "       //
                 EM_CSTR("(") " or " EM_CSTR("[") " next";
-        case MSG_expect_specifier_list:
-            RET_ERRNO "found tokens " EM_VARG ", but expected valid list of unique type specifiers next";
         case MSG_expect_storage_class:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") ", " //
                 EM_CSTR("type") ", " EM_CSTR("pub") ", " EM_CSTR("data") " or " EM_CSTR("extrn") " next";
         case MSG_empty_compound_init:
             RET_ERRNO "empty compound initializer requires at least one initializer";
-        case MSG_derived_fun_decl:
-            RET_ERRNO "cannot apply further type derivation to function declaration";
-        case MSG_expect_simple_decltor:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") " or " EM_CSTR("(") " next";
-        case MSG_expect_param_list:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("void") ", " EM_CSTR("char") ", " //
-                EM_CSTR("int") ", " EM_CSTR("long") ", " EM_CSTR("double") ", " EM_CSTR("unsigned") ", " //
-                EM_CSTR("signed") ", " EM_CSTR("struct") " or " EM_CSTR("union") " next";
-        case MSG_member_decl_not_auto:
-            RET_ERRNO "data structure type declared with member " EM_VARG " with " EM_VARG " storage class";
-        case MSG_member_decl_as_fun:
-            RET_ERRNO "data structure type declared with member " EM_VARG " as a function";
         case MSG_expect_declaration:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " //
                 EM_CSTR("type") " next";
