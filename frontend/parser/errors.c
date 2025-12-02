@@ -135,7 +135,7 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         case TOK_key_none:
             return "none";
         case TOK_key_fn:
-            return "fn"; 
+            return "fn";
         case TOK_key_struc:
             return "struc";
         case TOK_key_union:
@@ -367,6 +367,7 @@ const char* get_assign_fmt(const CBinaryOp* node, const CUnaryOp* unop) {
     }
 }
 
+// TODO
 const char* get_name_fmt(IdentifierContext* ctx, TIdentifier name, string_t* name_fmt) {
     const string_t value = map_get(ctx->hash_table, name);
     str_copy(value, *name_fmt);
@@ -688,7 +689,7 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_data_at_toplvl:
             RET_ERRNO "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level";
         case MSG_pub_in_block:
-            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block"; 
+            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block";
         case MSG_type_decl_not_auto:
             RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in type declaration";
         case MSG_list_decl_not_auto:
@@ -696,14 +697,14 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_loop_decl_not_auto:
             RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in loop initialization";
         case MSG_expect_maybe_type:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("none") ", " EM_CSTR("char") ", " //
-                EM_CSTR("string") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " //
+            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("none") ", " EM_CSTR("char") ", "    //
+                EM_CSTR("string") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", "           //
                 EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("*") //
                 " or " EM_CSTR("[") " next";
         case MSG_expect_data_specifier:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("struc") " or " EM_CSTR("union") " next";
         case MSG_incomplete_any:
-            RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";      
+            RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
         case MSG_expect_open_sizeof:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("<") " or " EM_CSTR("(") " next";
         default:
