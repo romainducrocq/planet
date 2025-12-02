@@ -389,28 +389,30 @@ const char* get_struct_name_fmt(IdentifierContext* ctx, TIdentifier name, bool i
     return *struct_fmt;
 }
 
-// TODO
 const char* get_fun_fmt(IdentifierContext* ctx, const FunType* fun_type, string_t* fun_fmt) {
     *fun_fmt = str_new("(");
-    {
+    if (vec_empty(fun_type->param_types)) {
+        str_append(*fun_fmt, "none");
+    }
+    else {
         string_t type_fmt = str_new(NULL);
-        str_append(*fun_fmt, get_type_fmt(ctx, fun_type->ret_type, &type_fmt));
+        str_append(*fun_fmt, get_type_fmt(ctx, fun_type->param_types[0], &type_fmt));
         str_delete(type_fmt);
     }
-    str_append(*fun_fmt, ")(");
-    for (size_t i = 0; i < vec_size(fun_type->param_types); ++i) {
+    for (size_t i = 1; i < vec_size(fun_type->param_types); ++i) {
+        str_append(*fun_fmt, ", ");
         {
             string_t type_fmt = str_new(NULL);
             str_append(*fun_fmt, get_type_fmt(ctx, fun_type->param_types[i], &type_fmt));
             str_delete(type_fmt);
         }
-        str_append(*fun_fmt, ", ");
     }
-    if (!vec_empty(fun_type->param_types)) {
-        str_pop_back(*fun_fmt);
-        str_pop_back(*fun_fmt);
+    str_append(*fun_fmt, ") -> ");
+    {
+        string_t type_fmt = str_new(NULL);
+        str_append(*fun_fmt, get_type_fmt(ctx, fun_type->ret_type, &type_fmt));
+        str_delete(type_fmt);
     }
-    str_append(*fun_fmt, ")");
     return *fun_fmt;
 }
 
