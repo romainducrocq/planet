@@ -292,7 +292,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         }
         case 'b': {
             if (match_char(ctx, 'r')) {
-                if(match_chars(ctx, "eak", 3) && !match_word(ctx)) {
+                if (match_chars(ctx, "eak", 3) && !match_word(ctx)) {
                     return TOK_key_break;
                 }
             }
@@ -311,28 +311,12 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                 if (match_chars(ctx, "ar", 2) && !match_word(ctx)) {
                     return TOK_key_char;
                 }
-            } 
+            }
             else if (match_chars(ctx, "ontinue", 7) && !match_word(ctx)) {
                 return TOK_key_continue;
             }
             break;
         }
-        // case 'd': {
-        //     if (match_char(ctx, 'o')) {
-        //         if (match_char(ctx, 'u')) {
-        //             if (match_chars(ctx, "ble", 3) && !match_word(ctx)) {
-        //                 return TOK_key_double;
-        //             }
-        //         }
-        //         else if (!match_word(ctx)) {
-        //             return TOK_key_do;
-        //         }
-        //     }
-        //     else if (match_chars(ctx, "efault", 6) && !match_word(ctx)) {
-        //         return TOK_key_default;
-        //     }
-        //     break;
-        // }
         case 'd': {
             if (match_chars(ctx, "ata", 3) && !match_word(ctx)) {
                 return TOK_key_data;
@@ -342,7 +326,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         case 'e': {
             if (match_char(ctx, 'l')) {
                 if (match_char(ctx, 'i')) {
-                    if(match_char(ctx, 'f') && !match_word(ctx)) {
+                    if (match_char(ctx, 'f') && !match_word(ctx)) {
                         return TOK_key_elif;
                     }
                 }
@@ -371,12 +355,6 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             }
             break;
         }
-        // case 'g': {
-        //     if (match_chars(ctx, "oto", 3) && !match_word(ctx)) {
-        //         return TOK_key_goto;
-        //     }
-        //     break;
-        // }
         case 'i': {
             if (match_char(ctx, 'f')) {
                 if (!match_word(ctx)) {
@@ -411,7 +389,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         }
         case 'l': {
             if (match_char(ctx, 'o')) {
-                if(match_chars(ctx, "op", 2) && !match_word(ctx)) {
+                if (match_chars(ctx, "op", 2) && !match_word(ctx)) {
                     return TOK_key_loop;
                 }
             }
@@ -420,15 +398,9 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             }
             break;
         }
-        // case 'l': {
-        //     if (match_chars(ctx, "ong", 3) && !match_word(ctx)) {
-        //         return TOK_key_long;
-        //     }
-        //     break;
-        // }
         case 'm': {
             if (match_char(ctx, 'a')) {
-                if(match_chars(ctx, "tch", 3) && !match_word(ctx)) {
+                if (match_chars(ctx, "tch", 3) && !match_word(ctx)) {
                     return TOK_key_match;
                 }
             }
@@ -457,7 +429,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         }
         case 'o': {
             if (match_char(ctx, 'r')) {
-                if(!match_word(ctx)) {
+                if (!match_word(ctx)) {
                     return TOK_binop_or;
                 }
             }
@@ -479,31 +451,6 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 's': {
-        //     if (match_char(ctx, 'i')) {
-        //         if (match_char(ctx, 'g')) {
-        //             if (match_chars(ctx, "ned", 3) && !match_word(ctx)) {
-        //                 return TOK_key_signed;
-        //             }
-        //         }
-        //         else if (match_char(ctx, 'z')) {
-        //             if (match_chars(ctx, "eof", 3) && !match_word(ctx)) {
-        //                 return TOK_key_sizeof;
-        //             }
-        //         }
-        //     }
-        //     else if (match_char(ctx, 't')) {
-        //         if (match_char(ctx, 'a')) {
-        //             if (match_chars(ctx, "tic", 3) && !match_word(ctx)) {
-        //                 return TOK_key_static;
-        //             }
-        //         }
-        //         else if (match_char(ctx, 'r')) {
-        //             if (match_chars(ctx, "uct", 3) && !match_word(ctx)) {
-        //                 return TOK_key_struct;
-        //             }
-        //         }
-        //     }
-        //     else 
             if (match_char(ctx, 'i')) {
                 if (match_chars(ctx, "zeof", 4) && !match_word(ctx)) {
                     return TOK_key_sizeof;
@@ -523,7 +470,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
         }
         case 't': {
             if (match_char(ctx, 'h')) {
-                if(match_chars(ctx, "en", 2) && !match_word(ctx)) {
+                if (match_chars(ctx, "en", 2) && !match_word(ctx)) {
                     return TOK_key_then;
                 }
             }
@@ -538,16 +485,6 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
         }
         case 'u': {
-        //     if (match_char(ctx, 'n')) {
-        //         if (match_char(ctx, 'i')) {
-        //             if (match_chars(ctx, "on", 2) && !match_word(ctx)) {
-        //                 return TOK_key_union;
-        //             }
-        //         }
-        //         else if (match_chars(ctx, "signed", 6) && !match_word(ctx)) {
-        //             return TOK_key_unsigned;
-        //         }
-        //     }
             if (match_char(ctx, '3')) {
                 if (match_char(ctx, '2') && !match_word(ctx)) {
                     return TOK_key_u32;
@@ -608,8 +545,6 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_semicolon;
         case '@':
             return TOK_unop_addrof;
-        // case '!':
-        //     return TODO;
         case ':':
             return TOK_assign_type;
         case '?':
