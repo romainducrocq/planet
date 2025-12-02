@@ -623,13 +623,13 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 " or " EM_CSTR("not") " next";
         // MSG_expect_binop,
         case MSG_expect_binop:
-            RET_ERRNO "found token " EM_VARG ", but expected binary operator " EM_CSTR("+") ", " EM_CSTR("+=")    //
-                ", " EM_CSTR("++") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("--") ", " EM_CSTR("*") ", " //
-                EM_CSTR("*=") ", " EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", "      //
-                EM_CSTR("&") ", " EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", "       //
-                EM_CSTR("^=") ", " EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", "  //
-                EM_CSTR("and") ", " EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", "    //
-                EM_CSTR("<=") ", " EM_CSTR(">") " or " EM_CSTR(">=") " next";
+            RET_ERRNO "found token " EM_VARG ", but expected binary operator " EM_CSTR("=") ", " EM_CSTR("+") ", " //
+                EM_CSTR("+=") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", "       //
+                EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", "        //
+                EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", "       //
+                EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("and") ", "  //
+                EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", "      //
+                EM_CSTR(">") " or " EM_CSTR(">=") " next";
         // MSG_expect_data_specifier,
         case MSG_expect_data_specifier:
             RET_ERRNO "found token " EM_VARG ", but expected datatype specifier " EM_CSTR("struc") " or " //
@@ -651,7 +651,6 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_expect_open_sizeof:
             RET_ERRNO "found token " EM_VARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR("(") " next";
         // MSG_expect_primary_exp_factor,
-        // MSG_expect_exp,
         // MSG_expect_assign,
         case MSG_expect_assign:
             RET_ERRNO "found token " EM_VARG ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";") " next";

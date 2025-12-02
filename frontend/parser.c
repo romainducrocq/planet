@@ -901,6 +901,7 @@ static error_t parse_postfix_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
+// TODO here
 static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -1093,7 +1094,7 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
                 TRY(parse_assign_compound_exp(ctx, precedence, exp));
                 break;
             default:
-                THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_exp, str_fmt_tok(ctx->peek_tok)));
+                THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->peek_tok)));
         }
     }
     FINALLY;
