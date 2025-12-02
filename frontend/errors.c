@@ -816,11 +816,11 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_multiple_default:
             RET_ERRNO "found more than one " EM_CSTR("otherwise") " statement in " EM_CSTR("match");
         case MSG_break_out_of_loop:
-            RET_ERRNO "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop");
+            RET_ERRNO "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop") " or " EM_CSTR("match");
         case MSG_continue_out_of_loop:
             RET_ERRNO "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop");
         case MSG_undef_goto_target:
-            RET_ERRNO "found " EM_CSTR("jump") " statement, but target " EM_CSTR("label") " " //
+            RET_ERRNO "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " statement with target " //
                 EM_VARG " not defined in function " EM_VARG;
         case MSG_redecl_struct_conflict:
             RET_ERRNO EM_VARG " conflicts with datatype " EM_VARG " previously declared or defined in this scope";
@@ -832,9 +832,9 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
             RET_ERRNO "function " EM_VARG " not declared in this scope";
         case MSG_for_init_decl_not_auto:
             RET_ERRNO "variable " EM_VARG " declared with " EM_VARG " storage class in " EM_CSTR("loop") //
-                " loop initialization";
+                " initialization";
         case MSG_redef_label_in_scope:
-            RET_ERRNO EM_CSTR("label") " " EM_VARG " already defined in this scope";
+            RET_ERRNO EM_CSTR("label") " statement with target " EM_VARG " already defined in this scope";
         case MSG_redecl_var_in_scope:
             RET_ERRNO "variable " EM_VARG " already declared in this scope";
         case MSG_def_nested_fun:
