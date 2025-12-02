@@ -1585,16 +1585,13 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     }
     TRY(parse_initializer(ctx, initializer));
     vec_move_back(initializers, *initializer);
-    // TODO pop_next
-    TRY(peek_next(ctx));
-    while (ctx->peek_tok->tok_kind != TOK_close_paren) {
-        TRY(pop_next(ctx));
-        TRY(expect_next(ctx, ctx->next_tok, TOK_comma_separator));
+    TRY(pop_next(ctx));
+    while (ctx->next_tok->tok_kind == TOK_comma_separator) {
         TRY(parse_initializer(ctx, initializer));
         vec_move_back(initializers, *initializer);
-        TRY(peek_next(ctx));
+        TRY(pop_next(ctx));
     }
-    TRY(pop_next(ctx));
+    TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *initializer = make_CCompoundInit(&initializers);
     FINALLY;
     for (size_t i = 0; i < vec_size(initializers); ++i) {
