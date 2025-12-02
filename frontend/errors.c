@@ -748,8 +748,8 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_invalid_do_while:
             RET_ERRNO "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " EM_VARG;
         case MSG_invalid_for:
-            RET_ERRNO "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") " condition expression type " //
-                EM_VARG;
+            RET_ERRNO "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") //
+                " condition expression type " EM_VARG;
         case MSG_invalid_switch:
             RET_ERRNO "cannot use " EM_CSTR("match") " statement with match expression type " //
                 EM_VARG ", requires an integer type";
