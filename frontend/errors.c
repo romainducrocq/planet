@@ -648,13 +648,27 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
                 ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or "           //
                 EM_CSTR("[") " next";
         // MSG_expect_open_sizeof,
+        case MSG_expect_open_sizeof:
+            RET_ERRNO "found token " EM_VARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR("(") " next";
         // MSG_expect_primary_exp_factor,
         // MSG_expect_exp,
         // MSG_expect_assign,
+        case MSG_expect_assign:
+            RET_ERRNO "found token " EM_VARG ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";") " next";
         // MSG_expect_datatype,
+        case MSG_expect_datatype:
+            RET_ERRNO "found token " EM_VARG ", but expected member list " EM_CSTR("(") " or " EM_CSTR(";") " next";
         // MSG_expect_block,
+        case MSG_expect_block:
+            RET_ERRNO "found token " EM_VARG ", but expected block " EM_CSTR("{") " or " EM_CSTR(";") " next";
         // MSG_expect_declaration,
+        case MSG_expect_declaration:
+            RET_ERRNO "found token " EM_VARG ", but expected declaration " EM_CSTR("identifier") ", " EM_CSTR("fn") //
+                " or " EM_CSTR("type") " next";
         // MSG_expect_storage_class,
+        case MSG_expect_storage_class:
+            RET_ERRNO "found token " EM_VARG ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " //
+                EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next";
         // MSG_incomplete_any,
         // MSG_arr_size_not_int_const,
         // MSG_case_value_not_int_const,
