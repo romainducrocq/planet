@@ -605,87 +605,151 @@ const char* get_lexer_msg(MESSAGE_LEXER msg) {
 
 const char* get_parser_msg(MESSAGE_PARSER msg) {
     switch (msg) {
+        // MSG_unexpected_next_tok,
         case MSG_unexpected_next_tok:
             RET_ERRNO "found token " EM_VARG ", but expected " EM_VARG " next";
+        // MSG_reached_eof,
         case MSG_reached_eof:
             RET_ERRNO "reached end of file, but expected declaration or statement next";
+        // MSG_overflow_long_const,
         case MSG_overflow_long_const:
             RET_ERRNO "cannot represent " EM_VARG " as a 64 bits signed integer constant, very large number";
+        // MSG_overflow_ulong_const,
         case MSG_overflow_ulong_const:
             RET_ERRNO "cannot represent " EM_VARG " as a 64 bits unsigned integer constant, very large number";
-        case MSG_arr_size_not_int_const:
-            RET_ERRNO "illegal array size " EM_VARG ", requires a constant integer";
-        case MSG_case_value_not_int_const:
-            RET_ERRNO "illegal " EM_CSTR("case") " value " EM_VARG ", requires a constant integer";
+        // MSG_expect_unop,
         case MSG_expect_unop:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("~") ", " EM_CSTR("-") " or " EM_CSTR("!") //
-                " next";
+            RET_ERRNO "found token " EM_VARG ", but expected unary operator " EM_CSTR("~") ", " EM_CSTR("-") //
+                " or " EM_CSTR("not") " next";
+        // MSG_expect_binop,
         case MSG_expect_binop:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("+") ", " EM_CSTR("+=") ", " EM_CSTR("++")  //
-                ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("--") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", "  //
-                EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", "        //
-                EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", "       //
-                EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("&&")        //
-                ", " EM_CSTR("||") ", " EM_CSTR("==") ", " EM_CSTR("!=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " //
-                EM_CSTR(">") " or " EM_CSTR(">=") " next";
-        case MSG_expect_primary_exp_factor:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("const int") ", " EM_CSTR("const long") ", " //
-                EM_CSTR("const char") ", " EM_CSTR("const double") ", " EM_CSTR("const unsigned int") ", "          //
-                EM_CSTR("const unsigned long") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier(") ", "          //
-                EM_CSTR("string literal") " or " EM_CSTR("(") " next";
-        case MSG_expect_exp:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("+") ", " EM_CSTR("-") ", " EM_CSTR("*") ", " //
-                EM_CSTR("/") ", " EM_CSTR("%") ", " EM_CSTR("&") ", " EM_CSTR("|") ", " EM_CSTR("^") ", "            //
-                EM_CSTR("<<") ", " EM_CSTR(">>") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " EM_CSTR(">") ", "         //
-                EM_CSTR(">=") ", " EM_CSTR("==") ", " EM_CSTR("!=") ", " EM_CSTR("&&") ", " EM_CSTR("||") ", "       //
-                EM_CSTR("=") ", " EM_CSTR("+=") ", " EM_CSTR("-=") ", " EM_CSTR("*=") ", " EM_CSTR("/=") ", "        //
-                EM_CSTR("%=") ", " EM_CSTR("&=") ", " EM_CSTR("|=") ", " EM_CSTR("^=") ", " EM_CSTR("<<=") ", "      //
-                EM_CSTR(">>=") " or " EM_CSTR("?") " next";
-        case MSG_expect_specifier:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR(")") ", " //
-                EM_CSTR("char") ", " EM_CSTR("int") ", " EM_CSTR("long") ", " EM_CSTR("double") ", "        //
-                EM_CSTR("unsigned") ", " EM_CSTR("signed") ", " EM_CSTR("void") ", " EM_CSTR("struct") ", " //
-                EM_CSTR("union") ", " EM_CSTR("static") ", " EM_CSTR("extern") ", " EM_CSTR("*") ", "       //
-                EM_CSTR("(") " or " EM_CSTR("[") " next";
-        case MSG_expect_storage_class:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") ", " //
-                EM_CSTR("type") ", " EM_CSTR("pub") ", " EM_CSTR("data") " or " EM_CSTR("extrn") " next";
-        case MSG_empty_compound_init:
-            RET_ERRNO "empty compound initializer requires at least one initializer";
-        case MSG_expect_declaration:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " //
-                EM_CSTR("type") " next";
-        case MSG_expect_assign:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("=") " or " EM_CSTR(";") " next";
-        case MSG_expect_datatype:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("(") " or " EM_CSTR(";") " next";
-        case MSG_expect_block:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("{") " or " EM_CSTR(";") " next";
-        case MSG_empty_block:
-            RET_ERRNO "empty block requires at least one item, or use " EM_CSTR(";") " instead";
-        case MSG_infinite_loop:
-            RET_ERRNO "cannot exit this loop, infinite loop requires at least one statement";
-        case MSG_data_at_toplvl:
-            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level";
-        case MSG_pub_in_block:
-            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block";
-        case MSG_type_decl_not_auto:
-            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in type declaration";
-        case MSG_list_decl_not_auto:
-            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in list declaration";
-        case MSG_loop_decl_not_auto:
-            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in loop initialization";
-        case MSG_expect_maybe_type:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("none") ", " EM_CSTR("char") ", "    //
-                EM_CSTR("string") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", "           //
-                EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("*") //
-                " or " EM_CSTR("[") " next";
+            RET_ERRNO "found token " EM_VARG ", but expected binary operator " EM_CSTR("+") ", " EM_CSTR("+=")    //
+                ", " EM_CSTR("++") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("--") ", " EM_CSTR("*") ", " //
+                EM_CSTR("*=") ", " EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", "      //
+                EM_CSTR("&") ", " EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", "       //
+                EM_CSTR("^=") ", " EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", "  //
+                EM_CSTR("and") ", " EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", "    //
+                EM_CSTR("<=") ", " EM_CSTR(">") " or " EM_CSTR(">=") " next";
+        // MSG_expect_data_specifier,
         case MSG_expect_data_specifier:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("struc") " or " EM_CSTR("union") " next";
-        case MSG_incomplete_any:
-            RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
-        case MSG_expect_open_sizeof:
-            RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("<") " or " EM_CSTR("(") " next";
+            RET_ERRNO "found token " EM_VARG ", but expected datatype specifier " EM_CSTR("struc") " or " //
+                EM_CSTR("union") " next";
+        // MSG_expect_specifier,
+        case MSG_expect_specifier:
+            RET_ERRNO "found token " EM_VARG ", but expected type specifier " EM_CSTR("char") ", " EM_CSTR("string") //
+                ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64")  //
+                ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", "                //
+                EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next";
+        // MSG_expect_maybe_type,
+        case MSG_expect_maybe_type:
+            RET_ERRNO "found token " EM_VARG ", but expected maybe type specifier " EM_CSTR("none") ", "            //
+                EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") //
+                ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8")   //
+                ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or "           //
+                EM_CSTR("[") " next";
+        // MSG_expect_open_sizeof,
+        // MSG_expect_primary_exp_factor,
+        // MSG_expect_exp,
+        // MSG_expect_assign,
+        // MSG_expect_datatype,
+        // MSG_expect_block,
+        // MSG_expect_declaration,
+        // MSG_expect_storage_class,
+        // MSG_incomplete_any,
+        // MSG_arr_size_not_int_const,
+        // MSG_case_value_not_int_const,
+        // MSG_empty_block,
+        // MSG_empty_compound_init,
+        // MSG_infinite_loop,
+        // MSG_loop_decl_not_auto,
+        // MSG_list_decl_not_auto,
+        // MSG_type_decl_not_auto,
+        // MSG_pub_in_block,
+        // MSG_data_at_toplvl
+
+        // case MSG_unexpected_next_tok:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_VARG " next";
+        // case MSG_reached_eof:
+        //     RET_ERRNO "reached end of file, but expected declaration or statement next";
+        // case MSG_overflow_long_const:
+        //     RET_ERRNO "cannot represent " EM_VARG " as a 64 bits signed integer constant, very large number";
+        // case MSG_overflow_ulong_const:
+        //     RET_ERRNO "cannot represent " EM_VARG " as a 64 bits unsigned integer constant, very large number";
+        // case MSG_arr_size_not_int_const:
+        //     RET_ERRNO "illegal array size " EM_VARG ", requires a constant integer";
+        // case MSG_case_value_not_int_const:
+        //     RET_ERRNO "illegal " EM_CSTR("case") " value " EM_VARG ", requires a constant integer";
+        // case MSG_expect_unop:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("~") ", " EM_CSTR("-") " or " EM_CSTR("!") //
+        //         " next";
+        // case MSG_expect_binop:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("+") ", " EM_CSTR("+=") ", " EM_CSTR("++")  //
+        //         ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("--") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", "  //
+        //         EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", "        //
+        //         EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", "       //
+        //         EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("&&")        //
+        //         ", " EM_CSTR("||") ", " EM_CSTR("==") ", " EM_CSTR("!=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " //
+        //         EM_CSTR(">") " or " EM_CSTR(">=") " next";
+        // case MSG_expect_primary_exp_factor:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("const int") ", " EM_CSTR("const long") ", "
+        //     //
+        //         EM_CSTR("const char") ", " EM_CSTR("const double") ", " EM_CSTR("const unsigned int") ", " //
+        //         EM_CSTR("const unsigned long") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier(") ", " //
+        //         EM_CSTR("string literal") " or " EM_CSTR("(") " next";
+        // case MSG_expect_exp:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("+") ", " EM_CSTR("-") ", " EM_CSTR("*") ", "
+        //     //
+        //         EM_CSTR("/") ", " EM_CSTR("%") ", " EM_CSTR("&") ", " EM_CSTR("|") ", " EM_CSTR("^") ", " //
+        //         EM_CSTR("<<") ", " EM_CSTR(">>") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " EM_CSTR(">") ", " //
+        //         EM_CSTR(">=") ", " EM_CSTR("==") ", " EM_CSTR("!=") ", " EM_CSTR("&&") ", " EM_CSTR("||") ", " //
+        //         EM_CSTR("=") ", " EM_CSTR("+=") ", " EM_CSTR("-=") ", " EM_CSTR("*=") ", " EM_CSTR("/=") ", " //
+        //         EM_CSTR("%=") ", " EM_CSTR("&=") ", " EM_CSTR("|=") ", " EM_CSTR("^=") ", " EM_CSTR("<<=") ", " //
+        //         EM_CSTR(">>=") " or " EM_CSTR("?") " next";
+        // case MSG_expect_specifier:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR(")") ", " //
+        //         EM_CSTR("char") ", " EM_CSTR("int") ", " EM_CSTR("long") ", " EM_CSTR("double") ", "        //
+        //         EM_CSTR("unsigned") ", " EM_CSTR("signed") ", " EM_CSTR("void") ", " EM_CSTR("struct") ", " //
+        //         EM_CSTR("union") ", " EM_CSTR("static") ", " EM_CSTR("extern") ", " EM_CSTR("*") ", "       //
+        //         EM_CSTR("(") " or " EM_CSTR("[") " next";
+        // case MSG_expect_storage_class:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") ", " //
+        //         EM_CSTR("type") ", " EM_CSTR("pub") ", " EM_CSTR("data") " or " EM_CSTR("extrn") " next";
+        // case MSG_empty_compound_init:
+        //     RET_ERRNO "empty compound initializer requires at least one initializer";
+        // case MSG_expect_declaration:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " //
+        //         EM_CSTR("type") " next";
+        // case MSG_expect_assign:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("=") " or " EM_CSTR(";") " next";
+        // case MSG_expect_datatype:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("(") " or " EM_CSTR(";") " next";
+        // case MSG_expect_block:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("{") " or " EM_CSTR(";") " next";
+        // case MSG_empty_block:
+        //     RET_ERRNO "empty block requires at least one item, or use " EM_CSTR(";") " instead";
+        // case MSG_infinite_loop:
+        //     RET_ERRNO "cannot exit this loop, infinite loop requires at least one statement";
+        // case MSG_data_at_toplvl:
+        //     RET_ERRNO "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level";
+        // case MSG_pub_in_block:
+        //     RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block";
+        // case MSG_type_decl_not_auto:
+        //     RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in type declaration";
+        // case MSG_list_decl_not_auto:
+        //     RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in list declaration";
+        // case MSG_loop_decl_not_auto:
+        //     RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in loop initialization";
+        // case MSG_expect_maybe_type:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("none") ", " EM_CSTR("char") ", "    //
+        //         EM_CSTR("string") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", "           //
+        //         EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("*") //
+        //         " or " EM_CSTR("[") " next";
+        // case MSG_expect_data_specifier:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("struc") " or " EM_CSTR("union") " next";
+        // case MSG_incomplete_any:
+        //     RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
+        // case MSG_expect_open_sizeof:
+        //     RET_ERRNO "found token " EM_VARG ", but expected " EM_CSTR("<") " or " EM_CSTR("(") " next";
         default:
             THROW_ABORT;
     }
