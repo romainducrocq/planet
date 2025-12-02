@@ -24,7 +24,7 @@ typedef enum TOKEN_KIND {
     TOK_unop_addrof,
     TOK_unop_incr,
     TOK_unop_decr,
-    
+
     TOK_binop_add,
     TOK_binop_multiply,
     TOK_binop_divide,
@@ -42,7 +42,7 @@ typedef enum TOKEN_KIND {
     TOK_binop_le,
     TOK_binop_gt,
     TOK_binop_ge,
-    
+
     TOK_assign,
     TOK_assign_type,
     TOK_assign_add,
@@ -61,7 +61,7 @@ typedef enum TOKEN_KIND {
     TOK_typeop_member,
     TOK_loop_post,
     TOK_match_with,
-    
+
     TOK_key_char,
     TOK_key_string,
     TOK_key_i32,

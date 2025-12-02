@@ -422,7 +422,10 @@ const char* get_ptr_fmt(IdentifierContext* ctx, const Pointer* ptr_type, string_
         ptr_type = &ptr_type->ref_type->get._Pointer;
         str_append(*ptr_fmt, "*");
     }
-    {
+    if (ptr_type->ref_type->type == AST_Void_t) {
+        str_append(*ptr_fmt, "any");
+    }
+    else {
         string_t type_fmt = str_new(NULL);
         str_append(*ptr_fmt, get_type_fmt(ctx, ptr_type->ref_type, &type_fmt));
         str_delete(type_fmt);
@@ -448,7 +451,10 @@ const char* get_arr_fmt(IdentifierContext* ctx, const Array* arr_type, string_t*
         }
         str_append(*arr_fmt, "]");
     }
-    {
+    if (arr_type->elem_type->type == AST_Void_t) {
+        str_append(*arr_fmt, "any");
+    }
+    else {
         string_t type_fmt = str_new(NULL);
         str_append(*arr_fmt, get_type_fmt(ctx, arr_type->elem_type, &type_fmt));
         str_delete(type_fmt);
