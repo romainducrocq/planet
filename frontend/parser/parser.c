@@ -19,7 +19,6 @@ typedef struct ParserContext {
     size_t pop_idx;
     const Token* next_tok;
     const Token* peek_tok;
-    const Token* next_tok_i;
     const Token* peek_tok_i;
     vector_t(Token) * p_toks;
 } ParserContext;
@@ -52,29 +51,6 @@ static error_t pop_next(Ctx ctx) {
     CATCH_EXIT;
 }
 
-static error_t pop_next_i(Ctx ctx, size_t i) {
-    CATCH_ENTER;
-    if (i == 0) {
-        TRY(pop_next(ctx));
-        ctx->next_tok_i = ctx->next_tok;
-        EARLY_EXIT;
-    }
-    if (ctx->pop_idx + i >= vec_size(*ctx->p_toks)) {
-        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG_0(MSG_reached_eof));
-    }
-    {
-        Token swap_token_i = (*ctx->p_toks)[ctx->pop_idx + i];
-        for (size_t j = ctx->pop_idx + i; j-- > ctx->pop_idx;) {
-            (*ctx->p_toks)[j + 1] = (*ctx->p_toks)[j];
-        }
-        (*ctx->p_toks)[ctx->pop_idx] = swap_token_i;
-    }
-    TRY(pop_next(ctx));
-    ctx->next_tok_i = &(*ctx->p_toks)[ctx->pop_idx - 1];
-    FINALLY;
-    CATCH_EXIT;
-}
-
 static error_t peek_next(Ctx ctx) {
     CATCH_ENTER;
     if (ctx->pop_idx >= vec_size(*ctx->p_toks)) {
@@ -102,11 +78,10 @@ static error_t peek_next_i(Ctx ctx, size_t i) {
     CATCH_EXIT;
 }
 
-// TODO
-static error_t parse_identifier(Ctx ctx, size_t i, TIdentifier* identifier) {
+static error_t parse_identifier(Ctx ctx, TIdentifier* identifier) {
     CATCH_ENTER;
-    TRY(pop_next_i(ctx, i));
-    *identifier = ctx->next_tok_i->tok;
+    TRY(pop_next(ctx));
+    *identifier = ctx->next_tok->tok;
     FINALLY;
     CATCH_EXIT;
 }
@@ -360,7 +335,7 @@ static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_unio
     }
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-    TRY(parse_identifier(ctx, 0, tag));
+    TRY(parse_identifier(ctx, tag));
     FINALLY;
     CATCH_EXIT;
 }
@@ -549,7 +524,6 @@ static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
 }
 
 static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp);
-static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp);
 static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * exp);
 
 static error_t parse_arg_list(Ctx ctx, vector_t(unique_ptr_t(CExp)) * args) {
@@ -607,7 +581,7 @@ static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TIdentifier name;
-    TRY(parse_identifier(ctx, 0, &name));
+    TRY(parse_identifier(ctx, &name));
     *exp = make_CVar(name, info_at);
     FINALLY;
     CATCH_EXIT;
@@ -618,7 +592,7 @@ static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TIdentifier name;
-    TRY(parse_identifier(ctx, 0, &name));
+    TRY(parse_identifier(ctx, &name));
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind != TOK_close_paren) {
@@ -679,7 +653,7 @@ static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
         TRY(peek_next(ctx));
         TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
         TIdentifier member;
-        TRY(parse_identifier(ctx, 0, &member));
+        TRY(parse_identifier(ctx, &member));
         *exp = make_CArrow(member, exp, info_at);
     }
     else {
@@ -723,7 +697,7 @@ static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier member;
-    TRY(parse_identifier(ctx, 0, &member));
+    TRY(parse_identifier(ctx, &member));
     *exp = make_CDot(member, exp, info_at);
     FINALLY;
     CATCH_EXIT;
@@ -756,7 +730,7 @@ static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     size_t info_at = ctx->peek_tok->info_at;
     CUnaryOp unop = init_CUnaryOp();
     TRY(parse_unop(ctx, &unop));
-    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    TRY(parse_unary_exp_factor(ctx, &cast_exp));
     *exp = make_CUnary(&unop, &cast_exp, info_at);
     FINALLY;
     free_CExp(&cast_exp);
@@ -774,7 +748,7 @@ static error_t parse_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CUnaryOp unop = init_CPrefix();
     CBinaryOp binop = init_CBinaryOp();
     TRY(parse_binop(ctx, &binop));
-    TRY(parse_cast_exp_factor(ctx, &exp_left));
+    TRY(parse_unary_exp_factor(ctx, &exp_left));
     constant = make_CConstInt(1);
     exp_right = make_CConstant(&constant, info_at);
     exp_right_1 = make_CBinary(&binop, &exp_left, &exp_right, info_at);
@@ -793,7 +767,7 @@ static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
-    TRY(parse_cast_exp_factor(ctx, &cast_exp));
+    TRY(parse_unary_exp_factor(ctx, &cast_exp));
     *exp = make_CAddrOf(&cast_exp, info_at);
     FINALLY;
     free_CExp(&cast_exp);
@@ -954,14 +928,6 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// TODO
-static error_t parse_cast_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
-    CATCH_ENTER;
-    TRY(parse_unary_exp_factor(ctx, exp));
-    FINALLY;
-    CATCH_EXIT;
-}
-
 static error_t parse_assign_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
     unique_ptr_t(CExp) exp_right = uptr_new();
     CATCH_ENTER;
@@ -1082,7 +1048,7 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
         TRY(parse_ternary_exp(ctx, exp));
     }
     else {
-        TRY(parse_cast_exp_factor(ctx, exp));
+        TRY(parse_unary_exp_factor(ctx, exp));
     }
     while (true) {
         TRY(peek_next(ctx));
@@ -1221,7 +1187,7 @@ static error_t parse_jump_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier target;
-    TRY(parse_identifier(ctx, 0, &target));
+    TRY(parse_identifier(ctx, &target));
     *statement = make_CGoto(target, info_at);
     FINALLY;
     CATCH_EXIT;
@@ -1235,7 +1201,7 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier target;
-    TRY(parse_identifier(ctx, 0, &target));
+    TRY(parse_identifier(ctx, &target));
     jump_to = make_CNull();
     *statement = make_CLabel(target, &jump_to, info_at);
     FINALLY;
@@ -1654,7 +1620,7 @@ static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializ
 static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * derived_type) {
     CATCH_ENTER;
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-    TRY(parse_identifier(ctx, 0, name));
+    TRY(parse_identifier(ctx, name));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_assign_type));
     TRY(parse_type_name(ctx, derived_type));
@@ -1733,7 +1699,7 @@ static error_t parse_fun_declaration(
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
     TIdentifier name;
-    TRY(parse_identifier(ctx, 0, &name));
+    TRY(parse_identifier(ctx, &name));
     TRY(parse_fun_decltor(ctx, &fun_type, &params));
     TRY(parse_block(ctx, &body));
     *fun_decl = make_CFunctionDeclaration(name, &params, &body, &fun_type, storage_class, info_at);
