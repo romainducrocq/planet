@@ -14,14 +14,50 @@
 
 const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
     switch (tok_kind) {
-        case TOK_assign_shiftleft:
-            return "<<=";
-        case TOK_assign_shiftright:
-            return ">>=";
+        case TOK_line_break:
+            return "line break";
+        case TOK_open_paren:
+            return "(";
+        case TOK_close_paren:
+            return ")";
+        case TOK_open_brace:
+            return "{";
+        case TOK_close_brace:
+            return "}";
+        case TOK_open_bracket:
+            return "[";
+        case TOK_close_bracket:
+            return "]";
+        case TOK_comma_separator:
+            return ",";
+        case TOK_semicolon:
+            return ";";
+        case TOK_unop_complement:
+            return "~";
+        case TOK_unop_neg:
+            return "-";
+        case TOK_unop_not:
+            return "not";
+        case TOK_unop_addrof:
+            return "@";
         case TOK_unop_incr:
             return "++";
         case TOK_unop_decr:
             return "--";
+        case TOK_binop_add:
+            return "+";
+        case TOK_binop_multiply:
+            return "*";
+        case TOK_binop_divide:
+            return "/";
+        case TOK_binop_remainder:
+            return "%";
+        case TOK_binop_bitand:
+            return "&";
+        case TOK_binop_bitor:
+            return "|";
+        case TOK_binop_xor:
+            return "^";
         case TOK_binop_shiftleft:
             return "<<";
         case TOK_binop_shiftright:
@@ -34,10 +70,18 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "==";
         case TOK_binop_ne:
             return "~=";
+        case TOK_binop_lt:
+            return "<";
         case TOK_binop_le:
             return "<=";
+        case TOK_binop_gt:
+            return ">";
         case TOK_binop_ge:
             return ">=";
+        case TOK_assign:
+            return "=";
+        case TOK_assign_type:
+            return ":";
         case TOK_assign_add:
             return "+=";
         case TOK_assign_subtract:
@@ -54,64 +98,20 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
             return "|=";
         case TOK_assign_xor:
             return "^=";
-        case TOK_loop_post:
-            return "..";
-        case TOK_match_with:
-            return "->";
-        case TOK_line_break:
-            return "line break";
-        case TOK_open_paren:
-            return "(";
-        case TOK_close_paren:
-            return ")";
-        case TOK_open_brace:
-            return "{";
-        case TOK_close_brace:
-            return "}";
-        case TOK_open_bracket:
-            return "[";
-        case TOK_close_bracket:
-            return "]";
-        case TOK_semicolon:
-            return ";";
-        case TOK_unop_complement:
-            return "~";
-        case TOK_unop_neg:
-            return "-";
-        case TOK_unop_not:
-            return "not";
-        case TOK_unop_addrof:
-            return "@";
-        case TOK_binop_add:
-            return "+";
-        case TOK_binop_multiply:
-            return "*";
-        case TOK_binop_divide:
-            return "/";
-        case TOK_binop_remainder:
-            return "%";
-        case TOK_binop_bitand:
-            return "&";
-        case TOK_binop_bitor:
-            return "|";
-        case TOK_binop_xor:
-            return "^";
-        case TOK_binop_lt:
-            return "<";
-        case TOK_binop_gt:
-            return ">";
-        case TOK_assign:
-            return "=";
-        case TOK_assign_type:
-            return ":";
+        case TOK_assign_shiftleft:
+            return "<<=";
+        case TOK_assign_shiftright:
+            return ">>=";
         case TOK_ternary_if:
             return "?";
-        case TOK_comma_separator:
-            return ",";
         case TOK_compound_init:
             return "$";
         case TOK_typeop_member:
             return ".";
+        case TOK_loop_post:
+            return "..";
+        case TOK_match_with:
+            return "->";
         case TOK_key_char:
             return "char";
         case TOK_key_string:
