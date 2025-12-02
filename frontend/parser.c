@@ -855,7 +855,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             break;
         default:
             THROW_AT_TOKEN(
-                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_primary_exp, str_fmt_tok(ctx->peek_tok)));
+                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_expression, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;

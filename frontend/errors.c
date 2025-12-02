@@ -592,6 +592,7 @@ const char* get_lexer_msg(MESSAGE_LEXER msg) {
     switch (msg) {
         case MSG_invalid_tok:
             RET_ERRNO "found invalid token " EM_VARG;
+        // TODO use or import
         case MSG_failed_include:
             RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("include") " directive search";
         case MSG_preproc_macro:
@@ -650,9 +651,14 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
         // MSG_expect_open_sizeof,
         case MSG_expect_open_sizeof:
             RET_ERRNO "found token " EM_VARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR("(") " next";
-        // MSG_expect_primary_exp,
-        case MSG_expect_primary_exp:
-            RET_ERRNO "TODO";
+        // MSG_expect_expression,
+        case MSG_expect_expression:
+            RET_ERRNO "found token " EM_VARG ", but expected expression " EM_CSTR("?") ", " EM_CSTR("~") ", "       //
+                EM_CSTR("-") ", " EM_CSTR("not") ", " EM_CSTR("++") ", " EM_CSTR("--") ", " EM_CSTR("@") ", "       //
+                EM_CSTR("sizeof") ", " EM_CSTR("cast") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier(") ", "  //
+                EM_CSTR("(") ", " EM_CSTR("const string") ", " EM_CSTR("const char") ", " EM_CSTR("const i32") ", " //
+                EM_CSTR("const i64") ", " EM_CSTR("const u32") ", " EM_CSTR("const u64") ", " EM_CSTR("const f64")  //
+                ", " EM_CSTR("true") ", " EM_CSTR("false") " or " EM_CSTR("nil") " next";
         // MSG_expect_assign,
         case MSG_expect_assign:
             RET_ERRNO "found token " EM_VARG ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";") " next";
