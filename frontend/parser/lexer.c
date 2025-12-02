@@ -541,6 +541,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_open_bracket;
         case ']':
             return TOK_close_bracket;
+        case ',':
+            return TOK_comma_separator;
         case ';':
             return TOK_semicolon;
         case '@':
@@ -549,8 +551,6 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_assign_type;
         case '?':
             return TOK_ternary_if;
-        case ',':
-            return TOK_comma_separator;
         case '$':
             return TOK_compound_init;
         case '=': {
