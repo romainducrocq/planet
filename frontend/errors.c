@@ -367,7 +367,6 @@ const char* get_assign_fmt(const CBinaryOp* node, const CUnaryOp* unop) {
     }
 }
 
-// TODO
 const char* get_name_fmt(IdentifierContext* ctx, TIdentifier name, string_t* name_fmt) {
     const string_t value = map_get(ctx->hash_table, name);
     str_copy(value, *name_fmt);
@@ -381,7 +380,7 @@ const char* get_name_fmt(IdentifierContext* ctx, TIdentifier name, string_t* nam
 }
 
 const char* get_struct_name_fmt(IdentifierContext* ctx, TIdentifier name, bool is_union, string_t* struct_fmt) {
-    *struct_fmt = is_union ? str_new("union ") : str_new("struct ");
+    *struct_fmt = is_union ? str_new("union ") : str_new("struc ");
     {
         string_t name_fmt = str_new(NULL);
         str_append(*struct_fmt, get_name_fmt(ctx, name, &name_fmt));
@@ -390,6 +389,7 @@ const char* get_struct_name_fmt(IdentifierContext* ctx, TIdentifier name, bool i
     return *struct_fmt;
 }
 
+// TODO
 const char* get_fun_fmt(IdentifierContext* ctx, const FunType* fun_type, string_t* fun_fmt) {
     *fun_fmt = str_new("(");
     {
@@ -415,48 +415,42 @@ const char* get_fun_fmt(IdentifierContext* ctx, const FunType* fun_type, string_
 }
 
 const char* get_ptr_fmt(IdentifierContext* ctx, const Pointer* ptr_type, string_t* ptr_fmt) {
-    *ptr_fmt = str_new("");
-    string_t decltor_fmt = str_new("*");
+    *ptr_fmt = str_new("*");
     while (ptr_type->ref_type->type == AST_Pointer_t) {
         ptr_type = &ptr_type->ref_type->get._Pointer;
-        str_append(decltor_fmt, "*");
+        str_append(*ptr_fmt, "*");
     }
     {
         string_t type_fmt = str_new(NULL);
         str_append(*ptr_fmt, get_type_fmt(ctx, ptr_type->ref_type, &type_fmt));
         str_delete(type_fmt);
     }
-    str_append(*ptr_fmt, decltor_fmt);
-    str_delete(decltor_fmt);
     return *ptr_fmt;
 }
 
 const char* get_arr_fmt(IdentifierContext* ctx, const Array* arr_type, string_t* arr_fmt) {
-    *arr_fmt = str_new("");
-    string_t decltor_fmt = str_new("[");
+    *arr_fmt = str_new("[");
     {
         string_t strto_size = str_to_string(arr_type->size);
-        str_append(decltor_fmt, strto_size);
+        str_append(*arr_fmt, strto_size);
         str_delete(strto_size);
     }
-    str_append(decltor_fmt, "]");
+    str_append(*arr_fmt, "]");
     while (arr_type->elem_type->type == AST_Array_t) {
         arr_type = &arr_type->elem_type->get._Array;
-        str_append(decltor_fmt, "[");
+        str_append(*arr_fmt, "[");
         {
             string_t strto_size = str_to_string(arr_type->size);
-            str_append(decltor_fmt, strto_size);
+            str_append(*arr_fmt, strto_size);
             str_delete(strto_size);
         }
-        str_append(decltor_fmt, "]");
+        str_append(*arr_fmt, "]");
     }
     {
         string_t type_fmt = str_new(NULL);
         str_append(*arr_fmt, get_type_fmt(ctx, arr_type->elem_type, &type_fmt));
         str_delete(type_fmt);
     }
-    str_append(*arr_fmt, decltor_fmt);
-    str_delete(decltor_fmt);
     return *arr_fmt;
 }
 
@@ -469,21 +463,21 @@ const char* get_type_fmt(IdentifierContext* ctx, const Type* type, string_t* typ
         case AST_Char_t:
             return "char";
         case AST_SChar_t:
-            return "signed char";
+            return "i8";
         case AST_UChar_t:
-            return "unsigned char";
+            return "u8";
         case AST_Int_t:
-            return "int";
+            return "i32";
         case AST_Long_t:
-            return "long";
+            return "i64";
         case AST_UInt_t:
-            return "unsigned int";
+            return "u32";
         case AST_ULong_t:
-            return "unsigned long";
+            return "u64";
         case AST_Double_t:
-            return "double";
+            return "f64";
         case AST_Void_t:
-            return "void";
+            return "none";
         case AST_FunType_t:
             return get_fun_fmt(ctx, &type->get._FunType, type_fmt);
         case AST_Pointer_t:
