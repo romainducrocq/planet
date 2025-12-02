@@ -25,7 +25,7 @@ typedef enum MESSAGE_PARSER {
     MSG_expect_specifier,
     MSG_expect_maybe_type,
     MSG_expect_open_sizeof,
-    MSG_expect_primary_exp_factor,
+    MSG_expect_primary_exp,
     MSG_expect_assign,
     MSG_expect_datatype,
     MSG_expect_block,

@@ -650,7 +650,9 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
         // MSG_expect_open_sizeof,
         case MSG_expect_open_sizeof:
             RET_ERRNO "found token " EM_VARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR("(") " next";
-        // MSG_expect_primary_exp_factor,
+        // MSG_expect_primary_exp,
+        case MSG_expect_primary_exp:
+            RET_ERRNO "TODO";
         // MSG_expect_assign,
         case MSG_expect_assign:
             RET_ERRNO "found token " EM_VARG ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";") " next";
