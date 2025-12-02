@@ -720,21 +720,21 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_addrof_rvalue:
             RET_ERRNO "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue";
         case MSG_invalid_subscript:
-            RET_ERRNO "cannot subscript array with operand types " EM_VARG " and " EM_VARG
+            RET_ERRNO "cannot subscript array with operand types " EM_VARG " and " EM_VARG //
                       ", requires a complete pointer and an integer types";
         case MSG_sizeof_incomplete:
             RET_ERRNO "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " EM_VARG;
         case MSG_dot_not_struct:
-            RET_ERRNO "cannot access datatype member " EM_VARG
-                      " with dot operator " EM_CSTR(".") " on non-datatype " EM_VARG;
+            RET_ERRNO "cannot access datatype member " EM_VARG " with dot operator " EM_CSTR(".") //
+                " on non-datatype " EM_VARG;
         case MSG_member_not_in_struct:
             RET_ERRNO "datatype " EM_VARG " has no member named " EM_VARG;
         case MSG_arrow_not_struct_ptr:
-            RET_ERRNO "cannot access datatype member " EM_VARG
-                      " with dereferenced dot operator " EM_CSTR("[].") " on non-pointer-to-datatype " EM_VARG;
+            RET_ERRNO "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
+                EM_CSTR("[].") " on non-pointer-to-datatype " EM_VARG;
         case MSG_arrow_incomplete:
-            RET_ERRNO "cannot access datatype member " EM_VARG
-                      " with dereferenced dot operator " EM_CSTR("[].") " on incomplete datatype " EM_VARG;
+            RET_ERRNO "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
+                EM_CSTR("[].") " on incomplete datatype " EM_VARG;
         case MSG_exp_incomplete:
             RET_ERRNO "incomplete datatype " EM_VARG " in expression";
         case MSG_ret_value_in_void_fun:
@@ -751,7 +751,7 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
             RET_ERRNO "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") " condition expression type " //
                 EM_VARG;
         case MSG_invalid_switch:
-            RET_ERRNO "cannot use " EM_CSTR("match") " statement with match expression type " EM_VARG
+            RET_ERRNO "cannot use " EM_CSTR("match") " statement with match expression type " EM_VARG //
                                                      ", requires an integer type";
         case MSG_duplicate_case_value:
             RET_ERRNO "found duplicate " EM_CSTR("->") " value " EM_VARG " in " EM_CSTR("match") " statement";
@@ -772,14 +772,14 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_incomplete_param:
             RET_ERRNO "function " EM_VARG " defined with parameter " EM_VARG " with incomplete datatype " EM_VARG;
         case MSG_redecl_fun_conflict:
-            RET_ERRNO "function " EM_VARG " redeclared with function type " EM_VARG
+            RET_ERRNO "function " EM_VARG " redeclared with function type " EM_VARG //
                       ", but previous declaration has function type " EM_VARG;
         case MSG_redef_fun:
             RET_ERRNO "function " EM_VARG " already defined with function type " EM_VARG;
         case MSG_redecl_static_conflict:
             RET_ERRNO "function " EM_VARG " with " EM_CSTR("data") " storage class already declared non-data";
         case MSG_static_ptr_init_not_int:
-            RET_ERRNO "cannot statically initialize pointer type " EM_VARG " from constant " EM_VARG
+            RET_ERRNO "cannot statically initialize pointer type " EM_VARG " from constant " EM_VARG //
                       ", requires a constant integer";
         case MSG_static_ptr_init_not_null:
             RET_ERRNO "cannot statically initialize pointer type " EM_VARG " from non-nil value " EM_VARG;
@@ -796,13 +796,13 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_incomplete_var_decl:
             RET_ERRNO "variable " EM_VARG " declared with incomplete datatype " EM_VARG;
         case MSG_redecl_var_conflict:
-            RET_ERRNO "variable " EM_VARG " redeclared with conflicting type " EM_VARG
+            RET_ERRNO "variable " EM_VARG " redeclared with conflicting type " EM_VARG //
                       ", but previously declared with type " EM_VARG;
         case MSG_redecl_var_storage:
             RET_ERRNO "variable " EM_VARG " redeclared with conflicting storage class";
         case MSG_redef_extern_var:
-            RET_ERRNO "illegal initializer, can only declare variable " EM_VARG
-                      " with " EM_CSTR("extrn") " storage class";
+            RET_ERRNO "illegal initializer, can only declare variable " EM_VARG " with " EM_CSTR("extrn") //
+                " storage class";
         case MSG_duplicate_member_decl:
             RET_ERRNO "datatype " EM_VARG " declared with duplicate member name " EM_VARG;
         case MSG_incomplete_member_decl:
@@ -820,9 +820,8 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_continue_out_of_loop:
             RET_ERRNO "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop");
         case MSG_undef_goto_target:
-            RET_ERRNO
-                "found " EM_CSTR("jump") " statement, but target " EM_CSTR("label") " " EM_VARG //
-                                                                                    " not defined in function " EM_VARG;
+            RET_ERRNO "found " EM_CSTR("jump") " statement, but target " EM_CSTR("label") " " //
+                EM_VARG " not defined in function " EM_VARG;
         case MSG_redecl_struct_conflict:
             RET_ERRNO EM_VARG " conflicts with datatype " EM_VARG " previously declared or defined in this scope";
         case MSG_undef_struct_in_scope:
@@ -832,18 +831,18 @@ const char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_undecl_fun_in_scope:
             RET_ERRNO "function " EM_VARG " not declared in this scope";
         case MSG_for_init_decl_not_auto:
-            RET_ERRNO "variable " EM_VARG " declared with " EM_VARG
-                      " storage class in " EM_CSTR("loop") " loop initialization";
+            RET_ERRNO "variable " EM_VARG " declared with " EM_VARG " storage class in " EM_CSTR("loop") //
+                " loop initialization";
         case MSG_redef_label_in_scope:
             RET_ERRNO EM_CSTR("label") " " EM_VARG " already defined in this scope";
         case MSG_redecl_var_in_scope:
             RET_ERRNO "variable " EM_VARG " already declared in this scope";
         case MSG_def_nested_fun:
-            RET_ERRNO "function " EM_VARG
+            RET_ERRNO "function " EM_VARG //
                       " defined inside another function, but nested function definition are not permitted";
         case MSG_decl_nested_static_fun:
-            RET_ERRNO "cannot declare nested function " EM_VARG
-                      " in another function with " EM_CSTR("data") " storage class";
+            RET_ERRNO "cannot declare nested function " EM_VARG " in another function with " EM_CSTR("data") //
+                " storage class";
         case MSG_redecl_fun_in_scope:
             RET_ERRNO "function " EM_VARG " already declared in this scope";
         default:
