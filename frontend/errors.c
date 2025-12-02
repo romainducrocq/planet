@@ -670,16 +670,38 @@ const char* get_parser_msg(MESSAGE_PARSER msg) {
             RET_ERRNO "found token " EM_VARG ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " //
                 EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next";
         // MSG_incomplete_any,
+        case MSG_incomplete_any:
+            RET_ERRNO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
         // MSG_arr_size_not_int_const,
+        case MSG_arr_size_not_int_const:
+            RET_ERRNO "illegal array size " EM_VARG ", requires a constant integer";
         // MSG_case_value_not_int_const,
+        case MSG_case_value_not_int_const:
+            RET_ERRNO "illegal " EM_CSTR("->") " value " EM_VARG ", requires a constant integer";
         // MSG_empty_block,
+        case MSG_empty_block:
+            RET_ERRNO "empty block requires at least one item, or use " EM_CSTR(";") " instead";
         // MSG_empty_compound_init,
+        case MSG_empty_compound_init:
+            RET_ERRNO "empty compound initializer requires at least one initializer";
         // MSG_infinite_loop,
+        case MSG_infinite_loop:
+            RET_ERRNO "cannot exit " EM_CSTR("loop") ", infinite loop requires at least one statement";
         // MSG_loop_decl_not_auto,
+        case MSG_loop_decl_not_auto:
+            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in " EM_CSTR("loop") " initialization";
         // MSG_list_decl_not_auto,
+        case MSG_list_decl_not_auto:
+            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in list declaration";
         // MSG_type_decl_not_auto,
+        case MSG_type_decl_not_auto:
+            RET_ERRNO "illegal storage " EM_VARG ", cannot use storage class in type declaration";
         // MSG_pub_in_block,
+        case MSG_pub_in_block:
+            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block";
         // MSG_data_at_toplvl
+        case MSG_data_at_toplvl:
+            RET_ERRNO "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level";
 
         // case MSG_unexpected_next_tok:
         //     RET_ERRNO "found token " EM_VARG ", but expected " EM_VARG " next";
