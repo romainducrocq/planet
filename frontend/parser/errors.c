@@ -243,9 +243,9 @@ const char* get_const_fmt(const CConst* node) {
 const char* get_storage_class_fmt(const CStorageClass* node) {
     switch (node->type) {
         case AST_CStatic_t:
-            return "static";
+            return "data";
         case AST_CExtern_t:
-            return "extern";
+            return "extrn";
         default:
             THROW_ABORT;
     }
@@ -258,7 +258,7 @@ const char* get_unop_fmt(const CUnaryOp* node) {
         case AST_CNegate_t:
             return "-";
         case AST_CNot_t:
-            return "!";
+            return "not";
         default:
             THROW_ABORT;
     }
@@ -289,13 +289,13 @@ const char* get_binop_fmt(const CBinaryOp* node) {
         case AST_CBitShrArithmetic_t:
             return ">>";
         case AST_CAnd_t:
-            return "&&";
+            return "and";
         case AST_COr_t:
-            return "||";
+            return "or";
         case AST_CEqual_t:
             return "==";
         case AST_CNotEqual_t:
-            return "!=";
+            return "~=";
         case AST_CLessThan_t:
             return "<";
         case AST_CLessOrEqual_t:
