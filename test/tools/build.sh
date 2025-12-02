@@ -1,8 +1,7 @@
 #!/bin/bash
 
 BACKEND_PATH="$(readlink -f ../../wheelcc)"
-cp -v ../../frontend/parser/* ${BACKEND_PATH}/src/frontend/parser/
-# cp -v ../../frontend/intermediate/* ${BACKEND_PATH}/src/frontend/intermediate/
+cp -v ../../frontend/* ${BACKEND_PATH}/src/frontend/parser/
 
 cd ../
 ./build.sh ${@}

@@ -35,10 +35,8 @@ function config_backend () {
     if [ ${?} -ne 0 ]; then return 1; fi
 
     # frontend
-    cp ../frontend/parser/* ${BACKEND_PATH}/src/frontend/parser/
+    cp ../frontend/* ${BACKEND_PATH}/src/frontend/parser/
     if [ ${?} -ne 0 ]; then return 1; fi
-    # cp ../frontend/intermediate/* ${BACKEND_PATH}/src/frontend/intermediate/
-    # if [ ${?} -ne 0 ]; then return 1; fi
 
     # TODO
     # # stdlib
