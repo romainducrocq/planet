@@ -185,19 +185,19 @@ const char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         case TOK_identifier:
             return "identifier";
         case TOK_string_literal:
-            return "string literal";
+            return "const string";
         case TOK_char_const:
             return "const char";
         case TOK_int_const:
-            return "const int";
+            return "const i32";
         case TOK_long_const:
-            return "const long";
+            return "const i64";
         case TOK_uint_const:
-            return "const unsigned int";
+            return "const u32";
         case TOK_ulong_const:
-            return "const unsigned long";
+            return "const u64";
         case TOK_dbl_const:
-            return "const double";
+            return "const f64";
         default:
             THROW_ABORT;
     }
@@ -222,19 +222,19 @@ const char* get_tok_fmt(IdentifierContext* ctx, const Token* token) {
 const char* get_const_fmt(const CConst* node) {
     switch (node->type) {
         case AST_CConstInt_t:
-            return "int";
+            return "i32";
         case AST_CConstLong_t:
-            return "long";
+            return "i64";
         case AST_CConstUInt_t:
-            return "unsigned int";
+            return "u32";
         case AST_CConstULong_t:
-            return "unsigned long";
+            return "u64";
         case AST_CConstDouble_t:
-            return "double";
+            return "f64";
         case AST_CConstChar_t:
             return "char";
         case AST_CConstUChar_t:
-            return "unsigned char";
+            return "u8";
         default:
             THROW_ABORT;
     }
