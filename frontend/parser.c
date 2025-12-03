@@ -1340,9 +1340,8 @@ static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     unique_ptr_t(CStatement) jump_to = uptr_new();
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
-    size_t info_at;
+    size_t info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
-    info_at = ctx->peek_tok->info_at;
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
         case TOK_key_true:
