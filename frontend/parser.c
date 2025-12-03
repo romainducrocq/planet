@@ -86,6 +86,7 @@ static error_t parse_identifier(Ctx ctx, TIdentifier* identifier) {
     CATCH_EXIT;
 }
 
+// string = StringLiteral(int*)
 static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
     vector_t(TChar) value = vec_new();
     CATCH_ENTER;
@@ -137,6 +138,7 @@ static shared_ptr_t(CConst) parse_ulong_const(uintmax_t uintmax) {
     return make_CConstULong(value);
 }
 
+// (signed) const = ConstInt(int) | ConstLong(long) | ConstDouble(double) | ConstChar(int)
 static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
     intmax_t value;
@@ -177,6 +179,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_EXIT;
 }
 
+// (unsigned) const = ConstUInt(uint) | ConstULong(ulong) | ConstUChar(int)
 static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
     uintmax_t value;
@@ -198,6 +201,7 @@ static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_EXIT;
 }
 
+// unary_operator = Complement | Negate | Not | Prefix | Postfix
 static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -221,6 +225,9 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
     CATCH_EXIT;
 }
 
+// binary_operator = Add | Subtract | Multiply | Divide | Remainder | BitAnd | BitOr | BitXor | BitShiftLeft
+//                 | BitShiftRight | BitShrArithmetic | And | Or | Equal | NotEqual | LessThan | LessOrEqual
+//                 | GreaterThan | GreaterOrEqual
 static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -1040,6 +1047,12 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
     }
 }
 
+// exp = Constant(const, type) | String(string, type) | Var(identifier, type) | Cast(type, exp, type)
+//     | Unary(unary_operator, exp, type) | Binary(binary_operator, exp, exp, type)
+//     | Assignment(unary_operator, exp, exp, type) | Conditional(exp, exp, exp, type)
+//     | FunctionCall(identifier, exp*, type) | Dereference(exp, type) | AddrOf(exp, type)
+//     | Subscript(exp, exp, type) | SizeOf(exp, type) | SizeOfT(type, type) | Dot(exp, identifier, type)
+//     | Arrow(exp, identifier, type)
 static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -1229,6 +1242,7 @@ static error_t parse_loop_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
     CATCH_EXIT;
 }
 
+// for_init = InitDecl(variable_declaration) | InitExp(exp?)
 static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CForInit) for_init = uptr_new();
     unique_ptr_t(CExp) condition = uptr_new();
@@ -1407,6 +1421,11 @@ static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     CATCH_EXIT;
 }
 
+// statement = Return(exp?) | Expression(exp) | If(exp, statement, statement?) | Goto(identifier)
+//           | Label(identifier, target) | Compound(block) | While(exp, statement, identifier)
+//           | DoWhile(statement, exp, identifier) | For(for_init, exp?, exp?, statement, identifier)
+//           | Switch(identifier, bool, exp, statement, exp*) | Case(identifier, exp, statement)
+//           | Default(identifier, statement) | Break(identifier) | Continue(identifier) | Null
 static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
     switch (ctx->peek_tok->tok_kind) {
@@ -1477,6 +1496,7 @@ static error_t parse_d_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item
     CATCH_EXIT;
 }
 
+// block_item = S(statement) | D(declaration)
 static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     CATCH_ENTER;
     switch (ctx->peek_tok->tok_kind) {
@@ -1543,6 +1563,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_EXIT;
 }
 
+// block = B(block_item*)
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -1599,6 +1620,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     CATCH_EXIT;
 }
 
+// initializer = SingleInit(exp) | CompoundInit(initializer*)
 static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializer) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -1683,6 +1705,7 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_
     CATCH_EXIT;
 }
 
+// function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
 static error_t parse_fun_declaration(
     Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
     unique_ptr_t(CBlock) body = uptr_new();
@@ -1705,6 +1728,7 @@ static error_t parse_fun_declaration(
     CATCH_EXIT;
 }
 
+// variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
 static error_t parse_var_declaration(
     Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl) {
     unique_ptr_t(CInitializer) initializer = uptr_new();
@@ -1730,6 +1754,7 @@ static error_t parse_var_declaration(
     CATCH_EXIT;
 }
 
+// member_declaration = MemberDeclaration(identifier, type)
 static error_t parse_member_declaration(Ctx ctx, unique_ptr_t(CMemberDeclaration) * member_decl) {
     shared_ptr_t(Type) member_type = sptr_new();
     CATCH_ENTER;
@@ -1761,6 +1786,7 @@ static error_t parse_member_list(Ctx ctx, vector_t(unique_ptr_t(CMemberDeclarati
     CATCH_EXIT;
 }
 
+// struct_declaration = StructDeclaration(identifier, bool, member_declaration*)
 static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) * struct_decl) {
     vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
     CATCH_ENTER;
@@ -1819,6 +1845,7 @@ static error_t parse_struct_decl(Ctx ctx, unique_ptr_t(CDeclaration) * declarati
     CATCH_EXIT;
 }
 
+// storage_class = Static | Extern
 static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
     CATCH_ENTER;
     switch (ctx->peek_tok->tok_kind) {
@@ -1851,6 +1878,7 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
     CATCH_EXIT;
 }
 
+// declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
 static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     CATCH_ENTER;
     TRY(parse_storage_class(ctx, storage_class));
@@ -1871,6 +1899,7 @@ static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_p
     CATCH_EXIT;
 }
 
+// AST = Program(declaration*)
 static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     unique_ptr_t(CDeclaration) declaration = uptr_new();
     vector_t(unique_ptr_t(CDeclaration)) declarations = vec_new();
