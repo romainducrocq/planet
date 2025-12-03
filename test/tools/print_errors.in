@@ -249,12 +249,12 @@ at line 2: [0;31m              v[0m
          | [1m    return 1 && 0[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/4_logical_and_relational_operators/invalid_parse/plx1_ne_exclamation.plx:2:14:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘!’[0m
+[0;31merror:[0m (no. 401) found token [1m‘!’[0m, but expected [1m‘line break’[0m next
 at line 2: [0;31m             v[0m
          | [1m    return 1 != 1[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/4_logical_and_relational_operators/invalid_parse/plx1_not_exclamation.plx:2:12:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘!’[0m
+[0;31merror:[0m (no. 411) found token [1m‘!’[0m, but expected expression [1m‘?’[0m, [1m‘~’[0m, [1m‘-’[0m, [1m‘not’[0m, [1m‘++’[0m, [1m‘--’[0m, [1m‘@’[0m, [1m‘sizeof’[0m, [1m‘cast’[0m, [1m‘identifier’[0m, [1m‘identifier(’[0m, [1m‘(’[0m, [1m‘const string’[0m, [1m‘const char’[0m, [1m‘const i32’[0m, [1m‘const i64’[0m, [1m‘const u32’[0m, [1m‘const u64’[0m, [1m‘const f64’[0m, [1m‘true’[0m, [1m‘false’[0m or [1m‘nil’[0m next
 at line 2: [0;31m           v[0m
          | [1m    return !1[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
