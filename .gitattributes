@@ -1,1 +1,3 @@
+*.plx linguist-language=Python
+*.etc linguist-language=Python
 test/tests/** linguist-vendored
