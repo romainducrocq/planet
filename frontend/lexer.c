@@ -127,6 +127,7 @@ static TOKEN_KIND match_error(Ctx ctx) {
 }
 
 // TODO use and force
+// <header-file> ::= ? Path to a ".etc" header file without extension ?
 static TOKEN_KIND match_include(Ctx ctx) {
     while (match_space(ctx)) {
     }
@@ -819,6 +820,7 @@ static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
     return false;
 }
 
+// <include> ::= ( "import" | "use" ) [ "!" ] "`" <header-file> "`"
 static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum) {
     string_t filename = str_new(NULL);
     string_t fopen_name = str_new(NULL);

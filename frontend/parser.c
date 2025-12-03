@@ -78,6 +78,7 @@ static error_t peek_next_i(Ctx ctx, size_t i) {
     CATCH_EXIT;
 }
 
+// <identifier> ::= ? An identifier token ? => [a-zA-Z_]\w*
 static error_t parse_identifier(Ctx ctx, TIdentifier* identifier) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -86,6 +87,7 @@ static error_t parse_identifier(Ctx ctx, TIdentifier* identifier) {
     CATCH_EXIT;
 }
 
+// <string> ::= ? A string token ? => "([^"\\\n]|\\['"\\?abfnrtv])*"
 // string = StringLiteral(int*)
 static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * literal) {
     vector_t(TChar) value = vec_new();
@@ -103,21 +105,26 @@ static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * lite
     CATCH_EXIT;
 }
 
+// <int> ::= "true" | "false" | "nil" | ? An int token ? => [0-9]+
 static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
     TInt value = intmax_to_int32(intmax);
     return make_CConstInt(value);
 }
 
+// <char> ::= ? A char token ? => '([^'\\\n]|\\['"?\\abfnrtv])'
 static shared_ptr_t(CConst) parse_char_const(Ctx ctx) {
     TInt value = string_to_char_ascii(map_get(ctx->identifiers->hash_table, ctx->next_tok->tok));
     return make_CConstInt(value);
 }
 
+// <long> ::= ? An int or long token ? => [0-9]+l
 static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
     TLong value = intmax_to_int64(intmax);
     return make_CConstLong(value);
 }
 
+// <double> ::= ? A floating-point constant token ?
+//            => (([0-9]*\.[0-9]+|[0-9]+\.?)e[+\-]?[0-9]+|[0-9]*\.[0-9]+|[0-9]+\.)
 static error_t parse_dbl_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
     TDouble value;
@@ -128,16 +135,19 @@ static error_t parse_dbl_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_EXIT;
 }
 
+// <uint> ::= ? An unsigned int token ? => [0-9]+u
 static shared_ptr_t(CConst) parse_uint_const(uintmax_t uintmax) {
     TUInt value = uintmax_to_uint32(uintmax);
     return make_CConstUInt(value);
 }
 
+// <ulong> ::= ? An unsigned int or unsigned long token ? => [0-9]+ul
 static shared_ptr_t(CConst) parse_ulong_const(uintmax_t uintmax) {
     TULong value = uintmax_to_uint64(uintmax);
     return make_CConstULong(value);
 }
 
+// (signed) <const> ::= <int> | <long> | <double> | <char>
 // (signed) const = ConstInt(int) | ConstLong(long) | ConstDouble(double) | ConstChar(int)
 static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
@@ -179,6 +189,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_EXIT;
 }
 
+// (unsigned) <const> ::= <uint> | <ulong>
 // (unsigned) const = ConstUInt(uint) | ConstULong(ulong) | ConstUChar(int)
 static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
@@ -201,6 +212,7 @@ static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_EXIT;
 }
 
+// <unop> ::= "-" | "~" | "not" | "@" | "++" | "--"
 // unary_operator = Complement | Negate | Not | Prefix | Postfix
 static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
     CATCH_ENTER;
@@ -225,6 +237,9 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
     CATCH_EXIT;
 }
 
+// <binop> ::= "-" | "+" | "*" | "/" | "%" | "&" | "|" | "^" | "<<" | ">>" | "and" | "or" | "=="
+//           | "~=" | "<" | "<=" | ">" | ">=" | "=" | "-=" | "+=" | "*=" | "/=" | "%=" | "&="
+//           | "|=" | "^=" | "<<=" | ">>="
 // binary_operator = Add | Subtract | Multiply | Divide | Remainder | BitAnd | BitOr | BitXor | BitShiftLeft
 //                 | BitShiftRight | BitShrArithmetic | And | Or | Equal | NotEqual | LessThan | LessOrEqual
 //                 | GreaterThan | GreaterOrEqual
@@ -325,6 +340,7 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
 
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name);
 
+// <datatype-specifier> ::= ( "struc" | "union" ) <identifier>
 static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_union) {
     CATCH_ENTER;
     switch (ctx->next_tok->tok_kind) {
@@ -347,6 +363,8 @@ static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_unio
     CATCH_EXIT;
 }
 
+// <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "bool" | "char"
+//                    | "string" | "*" "any" | <datatype-specifier>
 static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
@@ -480,6 +498,7 @@ static error_t parse_ptr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
     CATCH_EXIT;
 }
 
+// <type-name> ::= ( "*" | "[" <const> "]" ) <type-name> | <type-specifier>
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -498,6 +517,7 @@ static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
     CATCH_EXIT;
 }
 
+// <maybe-type-name> ::= "none" | <type-name>
 static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -825,6 +845,8 @@ static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
+// <primary-exp> ::= <const> | { <string> }+ | "cast" "<" <maybe-type-name> ">" "(" <exp> ")"
+//                 | <identifier> | <identifier> "(" [ <exp> { "," <exp> } ] ")" | "(" <exp> ")"
 static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -867,6 +889,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
+// <postfix-op> ::= "[" [ <exp> ] "]" | "." <identifier> | "++" | "--"
 static error_t parse_postfix_op_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -907,6 +930,8 @@ static error_t parse_postfix_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
+// <unary-exp> ::= <unop> <unary-exp> | "sizeof" ( "<" <type-name> ">" | "(" <exp> ")" )
+//               | <primary-exp> { <postfix-op> }
 static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -1047,6 +1072,7 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
     }
 }
 
+// <exp> ::= <unary-exp> | <exp> <binop> <exp> | "?" <exp> "then" <exp> "else" <exp>
 // exp = Constant(const, type) | String(string, type) | Var(identifier, type) | Cast(type, exp, type)
 //     | Unary(unary_operator, exp, type) | Binary(binary_operator, exp, exp, type)
 //     | Assignment(unary_operator, exp, exp, type) | Conditional(exp, exp, exp, type)
@@ -1242,6 +1268,7 @@ static error_t parse_loop_init_exp(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
     CATCH_EXIT;
 }
 
+// <loop-init> ::= [ <variable-declaration> | <exp> ] [ "while" <exp> ] [ ".." <exp> ]
 // for_init = InitDecl(variable_declaration) | InitExp(exp?)
 static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CForInit) for_init = uptr_new();
@@ -1421,6 +1448,10 @@ static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     CATCH_EXIT;
 }
 
+// <statement> ::=  "return" ( <exp> | "none" ) | "jump" <identifier> | "label" <identifier>
+//               | <block> | "if" <exp> <block> { "\n" "elif" <block> } [ "\n" "else" <block> ]
+//               | "loop" ( <loop-init> | ".." while <exp> ) <block> | "continue" | "break"
+//               | "match" <exp> <block> | "->" <const> <block> | "otherwise" <block> | <exp>
 // statement = Return(exp?) | Expression(exp) | If(exp, statement, statement?) | Goto(identifier)
 //           | Label(identifier, target) | Compound(block) | While(exp, statement, identifier)
 //           | DoWhile(statement, exp, identifier) | For(for_init, exp?, exp?, statement, identifier)
@@ -1496,6 +1527,7 @@ static error_t parse_d_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item
     CATCH_EXIT;
 }
 
+// <block-item> ::= <statement> | <declaration>
 // block_item = S(statement) | D(declaration)
 static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     CATCH_ENTER;
@@ -1563,6 +1595,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_EXIT;
 }
 
+// <block> ::= "{" [ "\n" ] <block-item> { "\n" <block-item> } [ "\n" ] "}" | ";"
 // block = B(block_item*)
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     CATCH_ENTER;
@@ -1620,6 +1653,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     CATCH_EXIT;
 }
 
+// <initializer> ::= <exp> | "$" "(" <initializer> { "," <initializer> } ")"
 // initializer = SingleInit(exp) | CompoundInit(initializer*)
 static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializer) {
     CATCH_ENTER;
@@ -1634,6 +1668,7 @@ static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializ
     CATCH_EXIT;
 }
 
+// <declarator> ::= <identifier> ":" <type-name>
 static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * derived_type) {
     CATCH_ENTER;
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -1660,6 +1695,7 @@ static error_t parse_item_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type)
     CATCH_EXIT;
 }
 
+// <declarator-list> ::= "(" <declarator> { "," <declarator> } ")"
 static error_t parse_decltor_list(Ctx ctx, vector_t(TIdentifier) * params, vector_t(shared_ptr_t(Type)) * param_types) {
     shared_ptr_t(Type) param_type = sptr_new();
     CATCH_ENTER;
@@ -1681,6 +1717,7 @@ static error_t parse_decltor_list(Ctx ctx, vector_t(TIdentifier) * params, vecto
     CATCH_EXIT;
 }
 
+// <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) <maybe-type-name>
 static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_t(TIdentifier) * params) {
     vector_t(shared_ptr_t(Type)) param_types = vec_new();
     CATCH_ENTER;
@@ -1705,6 +1742,7 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_
     CATCH_EXIT;
 }
 
+// <function-declaration> ::= [ <storage-class> ] "fn" <identifier> <function-declarator> <block>
 // function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
 static error_t parse_fun_declaration(
     Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
@@ -1728,6 +1766,7 @@ static error_t parse_fun_declaration(
     CATCH_EXIT;
 }
 
+// <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
 // variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
 static error_t parse_var_declaration(
     Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl) {
@@ -1786,8 +1825,9 @@ static error_t parse_member_list(Ctx ctx, vector_t(unique_ptr_t(CMemberDeclarati
     CATCH_EXIT;
 }
 
+// <datatype-declaration> ::= "type" <datatype-specifier> ( <declarator-list> | ";" )
 // struct_declaration = StructDeclaration(identifier, bool, member_declaration*)
-static error_t parse_struct_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) * struct_decl) {
+static error_t parse_type_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) * struct_decl) {
     vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
     CATCH_ENTER;
     bool is_union;
@@ -1835,16 +1875,17 @@ static error_t parse_var_decl(Ctx ctx, const CStorageClass* storage_class, uniqu
     CATCH_EXIT;
 }
 
-static error_t parse_struct_decl(Ctx ctx, unique_ptr_t(CDeclaration) * declaration) {
+static error_t parse_type_decl(Ctx ctx, unique_ptr_t(CDeclaration) * declaration) {
     unique_ptr_t(CStructDeclaration) struct_decl = uptr_new();
     CATCH_ENTER;
-    TRY(parse_struct_declaration(ctx, &struct_decl));
+    TRY(parse_type_declaration(ctx, &struct_decl));
     *declaration = make_CStructDecl(&struct_decl);
     FINALLY;
     free_CStructDeclaration(&struct_decl);
     CATCH_EXIT;
 }
 
+// <storage-class> ::= "pub" | "extrn" | "data"
 // storage_class = Static | Extern
 static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
     CATCH_ENTER;
@@ -1878,6 +1919,7 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
     CATCH_EXIT;
 }
 
+// <declaration> ::= <datatype-declaration> | <variable-declaration> | <function-declaration>
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
 static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     CATCH_ENTER;
@@ -1890,7 +1932,7 @@ static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_p
             TRY(parse_var_decl(ctx, storage_class, declaration));
             break;
         case TOK_key_type:
-            TRY(parse_struct_decl(ctx, declaration));
+            TRY(parse_type_decl(ctx, declaration));
             break;
         default:
             THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx->peek_tok)));
@@ -1899,6 +1941,7 @@ static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_p
     CATCH_EXIT;
 }
 
+// <program> ::= { ( <declaration> | <include> ) "\n" }
 // AST = Program(declaration*)
 static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     unique_ptr_t(CDeclaration) declaration = uptr_new();
