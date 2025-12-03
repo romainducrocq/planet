@@ -550,6 +550,8 @@ static TOKEN_KIND match_token(Ctx ctx) {
             return TOK_unop_addrof;
         case ':':
             return TOK_assign_type;
+        case '!':
+            return TOK_force_exec;
         case '?':
             return TOK_ternary_if;
         case '$':

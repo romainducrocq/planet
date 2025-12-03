@@ -56,6 +56,7 @@ typedef enum TOKEN_KIND {
     TOK_assign_shiftleft,
     TOK_assign_shiftright,
 
+    TOK_force_exec,
     TOK_ternary_if,
     TOK_compound_init,
     TOK_typeop_member,
