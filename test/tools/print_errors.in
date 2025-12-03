@@ -1,7 +1,7 @@
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/at_sign.plx:4:13:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘�’[0m
+[0;31merror:[0m (no. 301) found invalid token [1m‘`’[0m
 at line 4: [0;31m            v[0m
-         | [1m    return 0€1[0m
+         | [1m    return 0`1[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/backslash.plx:2:1:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘\’[0m
@@ -9,9 +9,9 @@ at line 2: [0;31mv[0m
          | [1m\[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/backtick.plx:2:1:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘�’[0m
+[0;31merror:[0m (no. 301) found invalid token [1m‘`’[0m
 at line 2: [0;31mv[0m
-         | [1m€[0m
+         | [1m`[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/invalid_identifier_2.plx:3:12:[0m
 [0;31merror:[0m (no. 303) found m4 macro [1m‘m4_b’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
