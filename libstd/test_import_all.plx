@@ -1,5 +1,6 @@
 import `ctype`
 import `errno`
+import `stdio`
 import `stdlib`
 import `string`
 import `time`

@@ -1,0 +1,62 @@
+# https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+# Section 7 and Annex B
+
+type struc FILE;
+
+# wrappers
+extrn fn get__IOFBF(none) i32;
+extrn fn get__IOLBF(none) i32;
+extrn fn get__IONBF(none) i32;
+extrn fn get_BUFSIZ(none) u64;
+extrn fn get_EOF(none) i32;
+extrn fn get_FOPEN_MAX(none) i32;
+extrn fn get_FILENAME_MAX(none) i32;
+extrn fn get_L_tmpnam(none) i32;
+extrn fn get_SEEK_CUR(none) i32;
+extrn fn get_SEEK_END(none) i32;
+extrn fn get_SEEK_SET(none) i32;
+extrn fn get_TMP_MAX(none) i32;
+extrn fn get_stderr(none) *struc FILE;
+extrn fn get_stdin(none) *struc FILE;
+extrn fn get_stdout(none) *struc FILE;
+
+# bindings
+extrn fn remove(filename: string) i32;
+extrn fn rename(old: string, new: string) i32;
+extrn fn tmpfile(none) *struc FILE;
+extrn fn tmpnam(s: string) string;
+extrn fn fclose(stream: *struc FILE) i32;
+extrn fn fflush(stream: *struc FILE) i32;
+extrn fn fopen(filename: string, mode: string) *struc FILE;
+extrn fn freopen(filename: string, mode: string, stream: *struc FILE) *struc FILE;
+extrn fn setbuf(stream: *struc FILE, buf: string) none;
+extrn fn setvbuf(stream: *struc FILE, buf: string, mode: i32, size: u64) i32;
+extrn fn fgetc(stream: *struc FILE) i32;
+extrn fn fgets(s: string, n: i32, stream: *struc FILE) string;
+extrn fn fputc(c: i32, stream: *struc FILE) i32;
+extrn fn fputs(s: string, stream: *struc FILE) i32;
+extrn fn getc(stream: *struc FILE) i32;
+extrn fn getchar(none) i32;
+extrn fn putc(c: i32, stream: *struc FILE) i32;
+extrn fn putchar(c: i32) i32;
+extrn fn puts(s: string) i32;
+extrn fn ungetc(c: i32, stream: *struc FILE) i32;
+extrn fn fread(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
+extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
+extrn fn fseek(stream: *struc FILE, offset: i64, whence: i32) i32;
+extrn fn ftell(stream: *struc FILE) i64;
+extrn fn rewind(stream: *struc FILE) none;
+extrn fn clearerr(stream: *struc FILE) none;
+extrn fn feof(stream: *struc FILE) i32;
+extrn fn ferror(stream: *struc FILE) i32;
+extrn fn perror(s: string) none;
+
+# TODO
+# variadics
+extrn fn fprint(stream: *struc FILE, format: string) i32;
+extrn fn fscan(stream: *struc FILE, format: string) i32;
+extrn fn print(format: string) i32;
+extrn fn scan(format: string) i32;
+extrn fn snprint(s: string, n: u64, format: string) i32;
+extrn fn sprint(s: string, format: string) i32;
+extrn fn sscan(s: string, format: string) i32;
