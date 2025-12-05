@@ -1,8 +1,6 @@
 # https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
 # Section 7 and Annex B
 
-type struc FILE;
-
 # wrappers
 pub fn get_EXIT_FAILURE(none) i32;
 pub fn get_EXIT_SUCCESS(none) i32;
@@ -17,4 +15,20 @@ pub fn strtod(nptr: string, endptr: *string) f64;
 pub fn strtol(nptr: string, endptr: *string, base: i32) i64;
 pub fn strtoll(nptr: string, endptr: *string, base: i32) i64;
 pub fn strtoul(nptr: string, endptr: *string, base: i32) u64;
-pub fn fwide(stream: *struc FILE, mode: i32) i32;
+pub fn strtoull(nptr: string, endptr: *string, base: i32) u64;
+pub fn rand(none) i32;
+pub fn srand(seed: u32) none;
+pub fn aligned_alloc(alignment: u64, size: u64) *any;
+pub fn calloc(nmemb: u64, size: u64) *any;
+pub fn free(ptr: *any) none;
+pub fn malloc(size: u64) *any;
+pub fn realloc(ptr: *any, size: u64) *any;
+pub fn abort(none) none;
+pub fn exit(status: i32) none;
+pub fn _Exit(status: i32) none;
+pub fn getenv(name: string) string;
+pub fn quick_exit(status: i32) none;
+pub fn system(string: string) i32;
+pub fn abs(j: i32) i32;
+pub fn labs(j: i64) i64;
+pub fn llabs(j: i64) i64;

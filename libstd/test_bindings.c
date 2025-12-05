@@ -20,19 +20,34 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
     const char* s7, const char* s8, const char* s9, const char* s10);
 int print(const char* str);
 
-struct FILE;
 int get_EXIT_FAILURE(void);
 int get_EXIT_SUCCESS(void);
 int get_RAND_MAX(void);
-double atof(char *nptr);
-int atoi(char *nptr);
-long atol(char *nptr);
-long atoll(char *nptr);
-double strtod(char * nptr, char ** endptr);
-long strtol(char * nptr, char ** endptr, int base);
-long strtoll(char * nptr, char ** endptr, int base);
-unsigned long strtoul(char * nptr, char ** endptr, int base);
-int fwide(struct FILE *stream, int mode);
+double atof(char* nptr);
+int atoi(char* nptr);
+long atol(char* nptr);
+long atoll(char* nptr);
+double strtod(char* nptr, char** endptr);
+long strtol(char* nptr, char** endptr, int base);
+long strtoll(char* nptr, char** endptr, int base);
+unsigned long strtoul(char* nptr, char** endptr, int base);
+unsigned long strtoull(char* nptr, char** endptr, int base);
+int rand(void);
+void srand(unsigned int seed);
+void* aligned_alloc(unsigned long alignment, unsigned long size);
+void* calloc(unsigned long nmemb, unsigned long size);
+void free(void* ptr);
+void* malloc(unsigned long size);
+void* realloc(void* ptr, unsigned long size);
+void abort(void);
+void exit(int status);
+void _Exit(int status);
+char* getenv(char* name);
+void quick_exit(int status);
+int system(char* string);
+int abs(int j);
+long labs(long j);
+long llabs(long j);
 
 int main(void) {
     set_errno(42);

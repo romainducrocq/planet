@@ -160,16 +160,31 @@ EILSEQ
 ERANGE
 errno
 // <stdlib.h>
-struct FILE;
 int get_EXIT_FAILURE(void);
 int get_EXIT_SUCCESS(void);
 int get_RAND_MAX(void);
-double atof(char *nptr);
-int atoi(char *nptr);
-long atol(char *nptr);
-long atoll(char *nptr);
-double strtod(char * nptr, char ** endptr);
-long strtol(char * nptr, char ** endptr, int base);
-long strtoll(char * nptr, char ** endptr, int base);
-unsigned long strtoul(char * nptr, char ** endptr, int base);
-int fwide(struct FILE *stream, int mode);
+double atof(char* nptr);
+int atoi(char* nptr);
+long atol(char* nptr);
+long atoll(char* nptr);
+double strtod(char* nptr, char** endptr);
+long strtol(char* nptr, char** endptr, int base);
+long strtoll(char* nptr, char** endptr, int base);
+unsigned long strtoul(char* nptr, char** endptr, int base);
+unsigned long strtoull(char* nptr, char** endptr, int base);
+int rand(void);
+void srand(unsigned int seed);
+void* aligned_alloc(unsigned long alignment, unsigned long size);
+void* calloc(unsigned long nmemb, unsigned long size);
+void free(void* ptr);
+void* malloc(unsigned long size);
+void* realloc(void* ptr, unsigned long size);
+void abort(void);
+void exit(int status);
+void _Exit(int status);
+char* getenv(char* name);
+void quick_exit(int status);
+int system(char* string);
+int abs(int j);
+long labs(long j);
+long llabs(long j);
