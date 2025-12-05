@@ -1,0 +1,18 @@
+#  https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+#  Section 7 and Annex B
+
+#  function bindings
+pub fn isalnum(c: i32) i32;
+pub fn isalpha(c: i32) i32;
+pub fn isblank(c: i32) i32;
+pub fn iscntrl(c: i32) i32;
+pub fn isdigit(c: i32) i32;
+pub fn isgraph(c: i32) i32;
+pub fn islower(c: i32) i32;
+pub fn isprint(c: i32) i32;
+pub fn ispunct(c: i32) i32;
+pub fn isspace(c: i32) i32;
+pub fn isupper(c: i32) i32;
+pub fn isxdigit(c: i32) i32;
+pub fn tolower(c: i32) i32;
+pub fn toupper(c: i32) i32;
