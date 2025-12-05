@@ -115,7 +115,6 @@ int islessequal(real-floating x, real-floating y);
 int islessgreater(real-floating x, real-floating y);
 int isunordered(real-floating x, real-floating y);
 // TODO // <stdio.h>
-// TODO // <string.h>
 // TODO // <time.h>
 
 DONE:
@@ -188,3 +187,26 @@ int system(char* string);
 int abs(int j);
 long labs(long j);
 long llabs(long j);
+// <string.h>
+void *memcpy(void * s1, void * s2, unsigned long n);
+void *memmove(void *s1, void *s2, unsigned long n);
+char *strcpy(char * s1, char * s2);
+char *strncpy(char * s1, char * s2, unsigned long n);
+char *strcat(char * s1, char * s2);
+char *strncat(char * s1, char * s2, unsigned long n);
+int memcmp(void *s1, void *s2, unsigned long n);
+int strcmp(char *s1, char *s2);
+int strcoll(char *s1, char *s2);
+int strncmp(char *s1, char *s2, unsigned long n);
+unsigned long strxfrm(char * s1, char * s2, unsigned long n);
+void *memchr(void *s, int c, unsigned long n);
+char *strchr(char *s, int c);
+unsigned long strcspn(char *s1, char *s2);
+char *strpbrk(char *s1, char *s2);
+char *strrchr(char *s, int c);
+unsigned long strspn(char *s1, char *s2);
+char *strstr(char *s1, char *s2);
+char *strtok(char * s1, char * s2);
+void *memset(void *s, int c, unsigned long n);
+char *strerror(int errnum);
+unsigned long strlen(char *s);
