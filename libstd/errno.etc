@@ -1,0 +1,8 @@
+#  https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+#  Section 7 and Annex B
+
+pub fn get_errno(none) i32;
+pub fn set_errno(value: i32) none;
+pub fn get_EDOM(none) i32;
+pub fn get_EILSEQ(none) i32;
+pub fn get_ERANGE(none) i32;
