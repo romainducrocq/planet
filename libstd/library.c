@@ -160,3 +160,17 @@ EDOM
 EILSEQ
 ERANGE
 errno
+
+struct FILE;
+int get_EXIT_FAILURE(void);
+int get_EXIT_SUCCESS(void);
+int get_RAND_MAX(void);
+double atof(char *nptr);
+int atoi(char *nptr);
+long atol(char *nptr);
+long atoll(char *nptr);
+double strtod(char * nptr, char ** endptr);
+long strtol(char * nptr, char ** endptr, int base);
+long strtoll(char * nptr, char ** endptr, int base);
+unsigned long strtoul(char * nptr, char ** endptr, int base);
+int fwide(struct FILE *stream, int mode);

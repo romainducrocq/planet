@@ -20,12 +20,32 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
     const char* s7, const char* s8, const char* s9, const char* s10);
 int print(const char* str);
 
+struct FILE;
+int get_EXIT_FAILURE(void);
+int get_EXIT_SUCCESS(void);
+int get_RAND_MAX(void);
+double atof(char *nptr);
+int atoi(char *nptr);
+long atol(char *nptr);
+long atoll(char *nptr);
+double strtod(char * nptr, char ** endptr);
+long strtol(char * nptr, char ** endptr, int base);
+long strtoll(char * nptr, char ** endptr, int base);
+unsigned long strtoul(char * nptr, char ** endptr, int base);
+int fwide(struct FILE *stream, int mode);
+
 int main(void) {
     set_errno(42);
     char val[20] = {0};
     snprintf(val, 19, "%i", get_errno());
-    print(val);
     set_errno(0);
+    print(val);
+    print("\n");
+
+    long x = strtol(1337, 0, 10);
+    snprintf(val, 19, "%li", x);
+    print(val);
+    print("\n");
 
     print(fmt1("Hello World\n"));
     print("Hello World\n");

@@ -1,0 +1,20 @@
+# https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+# Section 7 and Annex B
+
+type struc FILE;
+
+# wrappers
+pub fn get_EXIT_FAILURE(none) i32;
+pub fn get_EXIT_SUCCESS(none) i32;
+pub fn get_RAND_MAX(none) i32;
+
+# bindings
+pub fn atof(nptr: string) f64;
+pub fn atoi(nptr: string) i32;
+pub fn atol(nptr: string) i64;
+pub fn atoll(nptr: string) i64;
+pub fn strtod(nptr: string, endptr: *string) f64;
+pub fn strtol(nptr: string, endptr: *string, base: i32) i64;
+pub fn strtoll(nptr: string, endptr: *string, base: i32) i64;
+pub fn strtoul(nptr: string, endptr: *string, base: i32) u64;
+pub fn fwide(stream: *struc FILE, mode: i32) i32;
