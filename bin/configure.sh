@@ -63,8 +63,6 @@ if [ ${?} -ne 0 ]; then
     exit 1
 fi
 
-# TODO use `<filename>.etc` for headers
-
 ${BACKEND_PATH}/bin/configure.sh "${PACKAGE_NAME}"
 if [ ${?} -ne 0 ]; then exit 1; fi
 
