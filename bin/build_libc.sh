@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# TODO
-
 PACKAGE_BUILD="$(dirname $(readlink -f ${0}))"
 PACKAGE_DIR="$(dirname ${PACKAGE_BUILD})/bin"
 PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
@@ -11,18 +9,29 @@ if [[ "$(uname -s)" = "Darwin"* ]]; then
     CC="clang -arch x86_64"
 fi
 
-function build_so () {
-    FILE="${1}"
-    echo "${PACKAGE_LIBC}/${FILE}.o -> ${PACKAGE_LIBC}/lib${FILE}.so"
-    ${CC} ${PACKAGE_LIBC}/${FILE}.c -c -fPIC -o ${PACKAGE_LIBC}/${FILE}.o
-    if [ ${?} -ne 0 ]; then exit 1; fi
-    ${CC} ${PACKAGE_LIBC}/${FILE}.o -shared -o ${PACKAGE_LIBC}/lib${FILE}.so
+CC_FLAGS="-O3 -Wall -Wextra -Wpedantic -pedantic-errors"
+LIBC_NAME="${PACKAGE_LIBC}/libplx.so"
+
+OBJECT_FILES=""
+function build_obj () {
+    FILE="${PACKAGE_LIBC}/${1}"
+    OBJECT="${FILE%.*}.o"
+    OBJECT_FILES="${OBJECT_FILES} ${OBJECT}"
+    echo "${FILE} -> ${OBJECT}"
+    ${CC} ${FILE} ${CC_FLAGS} -c -fPIC -o ${OBJECT}
     if [ ${?} -ne 0 ]; then exit 1; fi
 }
 
+echo ""
 echo "-- Build libc ..."
-build_so "print"
+build_obj "wrap_errno.c"
+build_obj "wrap_stdio.c"
+
+${CC} ${OBJECT_FILES} ${CC_FLAGS} -shared -o ${LIBC_NAME}
+if [ ${?} -ne 0 ]; then exit 1; fi
 echo "OK"
-echo "-- Created lib ${PACKAGE_LIBC}/"
+
+echo "-- Created lib ${LIBC_NAME}"
+echo ""
 
 exit 0

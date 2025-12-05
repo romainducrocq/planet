@@ -176,14 +176,15 @@ int print(const char* str) {
     return num;
 }
 
-int main(void) {
-    print(fmt1("Hello World\n"));
-    print("Hello World\n");
-    print(fmt3("My ", "name ", "is Romain\n"));
+// TODO
+// int main(void) {
+//     print(fmt1("Hello World\n"));
+//     print("Hello World\n");
+//     print(fmt3("My ", "name ", "is Romain\n"));
 
-    char age[20] = {0};
-    snprintf(age, 19, "%li", 29l);
-    print(age);
-    print("\n");
-    return print(fmt6("My ", "name ", "is Romain ", "and my age is ", age, "\n"));
-}
+//     char age[20] = {0};
+//     snprintf(age, 19, "%li", 29l);
+//     print(age);
+//     print("\n");
+//     return print(fmt6("My ", "name ", "is Romain ", "and my age is ", age, "\n"));
+// }
