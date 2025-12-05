@@ -2,17 +2,17 @@
 # Section 7 and Annex B
 
 # bindings
-pub fn isalnum(c: i32) bool;
-pub fn isalpha(c: i32) bool;
-pub fn isblank(c: i32) bool;
-pub fn iscntrl(c: i32) bool;
-pub fn isdigit(c: i32) bool;
-pub fn isgraph(c: i32) bool;
-pub fn islower(c: i32) bool;
-pub fn isprint(c: i32) bool;
-pub fn ispunct(c: i32) bool;
-pub fn isspace(c: i32) bool;
-pub fn isupper(c: i32) bool;
-pub fn isxdigit(c: i32) bool;
-pub fn tolower(c: i32) i32;
-pub fn toupper(c: i32) i32;
+extrn fn isalnum(c: i32) bool;
+extrn fn isalpha(c: i32) bool;
+extrn fn isblank(c: i32) bool;
+extrn fn iscntrl(c: i32) bool;
+extrn fn isdigit(c: i32) bool;
+extrn fn isgraph(c: i32) bool;
+extrn fn islower(c: i32) bool;
+extrn fn isprint(c: i32) bool;
+extrn fn ispunct(c: i32) bool;
+extrn fn isspace(c: i32) bool;
+extrn fn isupper(c: i32) bool;
+extrn fn isxdigit(c: i32) bool;
+extrn fn tolower(c: i32) i32;
+extrn fn toupper(c: i32) i32;

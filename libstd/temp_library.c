@@ -115,7 +115,6 @@ int islessequal(real-floating x, real-floating y);
 int islessgreater(real-floating x, real-floating y);
 int isunordered(real-floating x, real-floating y);
 // TODO // <stdio.h>
-// TODO // <time.h>
 
 DONE:
 
@@ -210,13 +209,11 @@ char *strtok(char * s1, char * s2);
 void *memset(void *s, int c, unsigned long n);
 char *strerror(int errnum);
 unsigned long strlen(char *s);
-
+// <time.h>
 struct timespec;
 struct tm;
-
 unsigned long get_CLOCKS_PER_SEC(void);
 unsigned long get_TIME_UTC(void);
-
 unsigned long clock(void);
 double difftime(unsigned long time1, unsigned long time0);
 unsigned long mktime(struct tm *timeptr);

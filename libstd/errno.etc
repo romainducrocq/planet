@@ -2,8 +2,8 @@
 # Section 7 and Annex B
 
 # wrappers
-pub fn get_errno(none) i32;
-pub fn set_errno(value: i32) none;
-pub fn get_EDOM(none) i32;
-pub fn get_EILSEQ(none) i32;
-pub fn get_ERANGE(none) i32;
+extrn fn get_errno(none) i32;
+extrn fn set_errno(value: i32) none;
+extrn fn get_EDOM(none) i32;
+extrn fn get_EILSEQ(none) i32;
+extrn fn get_ERANGE(none) i32;
