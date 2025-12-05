@@ -115,7 +115,6 @@ int islessequal(real-floating x, real-floating y);
 int islessgreater(real-floating x, real-floating y);
 int isunordered(real-floating x, real-floating y);
 // TODO // <stdio.h>
-// TODO // <stdlib.h>
 // TODO // <string.h>
 // TODO // <time.h>
 
@@ -160,7 +159,7 @@ EDOM
 EILSEQ
 ERANGE
 errno
-
+// <stdlib.h>
 struct FILE;
 int get_EXIT_FAILURE(void);
 int get_EXIT_SUCCESS(void);
