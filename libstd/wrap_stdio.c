@@ -1,36 +1,21 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int get__IOFBF(void) { return _IOFBF; }
-
 int get__IOLBF(void) { return _IOLBF; }
-
 int get__IONBF(void) { return _IONBF; }
-
 unsigned long get_BUFSIZ(void) { return BUFSIZ; }
-
 int get_EOF(void) { return EOF; }
-
 int get_FOPEN_MAX(void) { return FOPEN_MAX; }
-
 int get_FILENAME_MAX(void) { return FILENAME_MAX; }
-
 int get_L_tmpnam(void) { return L_tmpnam; }
-
 int get_SEEK_CUR(void) { return SEEK_CUR; }
-
 int get_SEEK_END(void) { return SEEK_END; }
-
 int get_SEEK_SET(void) { return SEEK_SET; }
-
 int get_TMP_MAX(void) { return TMP_MAX; }
-
 FILE* get_stderr(void) { return stderr; }
-
 FILE* get_stdin(void) { return stdin; }
-
 FILE* get_stdout(void) { return stdout; }
 
 static char* fmt = NULL;
