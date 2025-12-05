@@ -1,7 +1,6 @@
 # https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
 # Section 7 and Annex B
 
-type struc timespec;
 type struc tm;
 
 # wrappers
@@ -13,7 +12,6 @@ extrn fn clock(none) u64;
 extrn fn difftime(time1: u64, time0: u64) f64;
 extrn fn mktime(timeptr: *struc tm) u64;
 extrn fn time(timer: *u64) u64;
-extrn fn timespec_get(ts: *struc timespec, base: i32) i32;
 extrn fn asctime(timeptr: *struc tm) string;
 extrn fn ctime(timer: *u64) string;
 extrn fn gmtime(timer: *u64) *struc tm;
