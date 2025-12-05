@@ -1,0 +1,21 @@
+# https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+# Section 7 and Annex B
+
+type struc timespec;
+type struc tm;
+
+# wrappers
+pub fn get_CLOCKS_PER_SEC(none) u64;
+pub fn get_TIME_UTC(none) u64;
+
+# bindings
+pub fn clock(none) u64;
+pub fn difftime(time1: u64, time0: u64) f64;
+pub fn mktime(timeptr: *struc tm) u64;
+pub fn time(timer: *u64) u64;
+pub fn timespec_get(ts: *struc timespec, base: i32) i32;
+pub fn asctime(timeptr: *struc tm) *char;
+pub fn ctime(timer: *u64) *char;
+pub fn gmtime(timer: *u64) *struc tm;
+pub fn localtime(timer: *u64) *struc tm;
+pub fn strftime(s: *char, maxsize: u64, format: *char, timeptr: *struc tm) u64;

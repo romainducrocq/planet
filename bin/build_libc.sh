@@ -27,6 +27,7 @@ echo "-- Build libc ..."
 build_obj "wrap_errno.c"
 build_obj "wrap_stdio.c"
 build_obj "wrap_stdlib.c"
+build_obj "wrap_time.c"
 
 ${CC} ${OBJECT_FILES} ${CC_FLAGS} -shared -o ${LIBC_NAME}
 if [ ${?} -ne 0 ]; then exit 1; fi

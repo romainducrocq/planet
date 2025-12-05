@@ -72,6 +72,23 @@ void *memset(void *s, int c, unsigned long n);
 char *strerror(int errnum);
 unsigned long strlen(char *s);
 
+struct timespec;
+struct tm;
+
+unsigned long get_CLOCKS_PER_SEC(void);
+unsigned long get_TIME_UTC(void);
+
+unsigned long clock(void);
+double difftime(unsigned long time1, unsigned long time0);
+unsigned long mktime(struct tm *timeptr);
+unsigned long time(unsigned long *timer);
+int timespec_get(struct timespec *ts, int base);
+char *asctime(struct tm *timeptr);
+char *ctime(unsigned long *timer);
+struct tm *gmtime(unsigned long *timer);
+struct tm *localtime(unsigned long *timer);
+unsigned long strftime(char * s, unsigned long maxsize, char * format, struct tm * timeptr);
+
 int main(void) {
     set_errno(42);
     char val[20] = {0};
