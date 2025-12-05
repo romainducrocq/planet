@@ -28,7 +28,7 @@ extrn fn exit(status: i32) none;
 extrn fn _Exit(status: i32) none;
 extrn fn getenv(name: string) string;
 extrn fn quick_exit(status: i32) none;
-extrn fn system(string: string) i32;
+extrn fn system(str: string) i32;
 extrn fn abs(j: i32) i32;
 extrn fn labs(j: i64) i64;
 extrn fn llabs(j: i64) i64;
