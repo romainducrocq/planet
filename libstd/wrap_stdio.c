@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TODO merge all wrap_*.c in one file ?
+
 int get__IOFBF(void) { return _IOFBF; }
 int get__IOLBF(void) { return _IOLBF; }
 int get__IONBF(void) { return _IONBF; }
@@ -18,40 +20,40 @@ FILE* get_stderr(void) { return stderr; }
 FILE* get_stdin(void) { return stdin; }
 FILE* get_stdout(void) { return stdout; }
 
-static char* fmt = NULL;
+static char* sfmt = NULL;
 
-static void fmt_free(void) {
-    if (fmt) {
-        free(fmt);
-        fmt = NULL;
+static void sfmt_free(void) {
+    if (sfmt) {
+        free(sfmt);
+        sfmt = NULL;
     }
 }
 
-static int fmt_alloc(size_t size) {
-    fmt_free();
-    fmt = (char*)malloc(size * sizeof(char));
-    return (fmt != NULL);
+static int sfmt_alloc(size_t size) {
+    sfmt_free();
+    sfmt = (char*)malloc(size * sizeof(char));
+    return (sfmt != NULL);
 }
 
 const char* fmt1(const char* s1) {
     size_t size = 1;
     size += strlen(s1);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s", s1);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s", s1);
+        sfmt[size - 1] = '\0'; // TODO rm here ? and all next occurences
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt2(const char* s1, const char* s2) {
     size_t size = 1;
     size += strlen(s1);
     size += strlen(s2);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s", s1, s2);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s", s1, s2);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt3(const char* s1, const char* s2, const char* s3) {
@@ -59,11 +61,11 @@ const char* fmt3(const char* s1, const char* s2, const char* s3) {
     size += strlen(s1);
     size += strlen(s2);
     size += strlen(s3);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s", s1, s2, s3);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s", s1, s2, s3);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt4(const char* s1, const char* s2, const char* s3, const char* s4) {
@@ -72,11 +74,11 @@ const char* fmt4(const char* s1, const char* s2, const char* s3, const char* s4)
     size += strlen(s2);
     size += strlen(s3);
     size += strlen(s4);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s", s1, s2, s3, s4);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s", s1, s2, s3, s4);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt5(const char* s1, const char* s2, const char* s3, const char* s4, const char* s5) {
@@ -86,11 +88,11 @@ const char* fmt5(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s3);
     size += strlen(s4);
     size += strlen(s5);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s%s", s1, s2, s3, s4, s5);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s%s", s1, s2, s3, s4, s5);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt6(const char* s1, const char* s2, const char* s3, const char* s4, const char* s5, const char* s6) {
@@ -101,11 +103,11 @@ const char* fmt6(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s4);
     size += strlen(s5);
     size += strlen(s6);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt7(
@@ -118,11 +120,11 @@ const char* fmt7(
     size += strlen(s5);
     size += strlen(s6);
     size += strlen(s7);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt8(const char* s1, const char* s2, const char* s3, const char* s4, const char* s5, const char* s6,
@@ -136,11 +138,11 @@ const char* fmt8(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s6);
     size += strlen(s7);
     size += strlen(s8);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt9(const char* s1, const char* s2, const char* s3, const char* s4, const char* s5, const char* s6,
@@ -155,11 +157,11 @@ const char* fmt9(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s7);
     size += strlen(s8);
     size += strlen(s9);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8, s9);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
 const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4, const char* s5, const char* s6,
@@ -175,18 +177,18 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
     size += strlen(s8);
     size += strlen(s9);
     size += strlen(s10);
-    if (fmt_alloc(size)) {
-        snprintf(fmt, size, "%s%s%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8, s9, s10);
-        fmt[size - 1] = '\0';
+    if (sfmt_alloc(size)) {
+        snprintf(sfmt, size, "%s%s%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8, s9, s10);
+        sfmt[size - 1] = '\0';
     }
-    return fmt;
+    return sfmt;
 }
 
-int print(const char* str) {
-    if (!str) {
+int print(const char* format) {
+    if (!format) {
         return -1;
     }
-    int num = printf(str);
-    fmt_free();
+    int num = printf(format);
+    sfmt_free();
     return num;
 }
