@@ -42,7 +42,7 @@ int main(void) {
     print(val);
     print("\n");
 
-    long x = strtol(1337, 0, 10);
+    long x = strtol("1337", 0, 10);
     snprintf(val, 19, "%li", x);
     print(val);
     print("\n");
