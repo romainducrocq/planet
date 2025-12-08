@@ -853,18 +853,28 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum) 
     str_append(filename, ".etc");
     {
         hash_t includename = str_hash(filename);
-        // TODO skip if force
         if (set_find(ctx->includename_set, includename) != set_end()) {
-            EARLY_EXIT;
+            switch (match_tok) {
+                case TOK_import_file:
+                case TOK_use_file:
+                    EARLY_EXIT;
+                case TOK_import_force:
+                case TOK_use_force:
+                    break;
+                default:
+                    THROW_ABORT;
+            }
         }
-        set_insert(ctx->includename_set, includename);
+        else {
+            set_insert(ctx->includename_set, includename);
+        }
     }
     switch (match_tok) {
         case TOK_import_file:
         case TOK_import_force: {
             if (!find_include(*ctx->p_includedirs, &filename)) {
                 size_t info_at = push_token_info(ctx);
-                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_import, filename));
             }
             break;
         }
@@ -872,7 +882,7 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum) 
         case TOK_use_force: {
             if (!find_include(*ctx->p_stdlibdirs, &filename)) {
                 size_t info_at = push_token_info(ctx);
-                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_include, filename));
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_use, filename));
             }
             break;
         }

@@ -596,9 +596,10 @@ const char* get_lexer_msg(MESSAGE_LEXER msg) {
     switch (msg) {
         case MSG_invalid_tok:
             RET_ERRNO "found invalid token " EM_VARG;
-        // TODO use or import
-        case MSG_failed_include:
-            RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("include") " directive search";
+        case MSG_failed_import:
+            RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("import") " directive search";
+        case MSG_failed_use:
+            RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("use") " directive search";
         case MSG_preproc_macro:
             RET_ERRNO "found m4 macro " EM_VARG ", preprocess with " EM_CSTR("-E") " or see " EM_CSTR("--help");
         case MSG_unmatched_close:
