@@ -1,11 +1,11 @@
-import `ctype`
-import `errno`
-import `stdio`
-import `stdlib`
-import `string`
-import `time`
+use `ctype`
+use `errno`
+use `stdio`
+use `stdlib`
+use `string`
+use `time`
 
 pub fn main(none) i32 {
-    return 0
+    return 42
 }
 

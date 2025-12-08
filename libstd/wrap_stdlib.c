@@ -14,8 +14,8 @@ static int qsort_fptr(const void* a, const void* b) {
     return qsort_compare(a, b);
 }
 
-void* bsearch_f(void* key, void* base, unsigned long nmemb, unsigned long size) {
+void* bsearch_f(const void *key, const void *base, size_t nmemb, size_t size) {
     return bsearch(key, base, nmemb, size, bsearch_fptr);
 }
 
-void qsort_f(void* base, unsigned long nmemb, unsigned long size) { qsort(base, nmemb, size, qsort_fptr); }
+void qsort_f(void *base, size_t nmemb, size_t size) { qsort(base, nmemb, size, qsort_fptr); }

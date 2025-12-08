@@ -35,5 +35,5 @@ extrn fn llabs(j: i64) i64;
 
 # bindings with function pointers
 # TODO document
-void *bsearch_f(void *key, void *base, unsigned long nmemb, unsigned long size);
-void qsort_f(void *base, unsigned long nmemb, unsigned long size);
+extrn fn bsearch_f(key: *any, base: *any, nmemb: u64, size: u64) *any;
+extrn fn qsort_f(base: *any, nmemb: u64, size: u64) none;
