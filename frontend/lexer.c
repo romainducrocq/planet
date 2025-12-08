@@ -126,10 +126,27 @@ static TOKEN_KIND match_error(Ctx ctx) {
     return TOK_error;
 }
 
-// TODO use and force
 // <header-file> ::= ? Path to a ".etc" header file without extension ?
-static TOKEN_KIND match_include(Ctx ctx) {
+static TOKEN_KIND match_include(Ctx ctx, TOKEN_KIND tok_kind) {
     while (match_space(ctx)) {
+    }
+
+    if (match_char(ctx, '!')) {
+        switch (tok_kind) {
+            case TOK_import_file: {
+                tok_kind = TOK_import_force;
+                break;
+            }
+            case TOK_use_file: {
+                tok_kind = TOK_use_force;
+                break;
+            }
+            default:
+                THROW_ABORT;
+        }
+
+        while (match_space(ctx)) {
+        }
     }
 
     if (match_char(ctx, '`')) {
@@ -140,7 +157,7 @@ static TOKEN_KIND match_include(Ctx ctx) {
         }
         if (get_char(ctx) == '`') {
             ctx->match_size++;
-            return TOK_import_file;
+            return tok_kind;
         }
     }
     return match_error(ctx);
@@ -378,7 +395,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                 }
             }
             else if (match_chars(ctx, "mport", 5) && !match_word(ctx)) {
-                return match_include(ctx);
+                return match_include(ctx, TOK_import_file);
             }
             break;
         }
@@ -507,7 +524,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                 }
             }
             else if (match_chars(ctx, "se", 2) && !match_word(ctx)) {
-                return match_include(ctx);
+                return match_include(ctx, TOK_use_file);
             }
             break;
         }
