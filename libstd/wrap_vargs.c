@@ -45,7 +45,6 @@ const char* fmt1(const char* s1) {
     size += strlen(s1);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s", s1);
-        sfmt[size - 1] = '\0'; // TODO rm here ? and all next occurences
     }
     return sfmt;
 }
@@ -56,7 +55,6 @@ const char* fmt2(const char* s1, const char* s2) {
     size += strlen(s2);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s", s1, s2);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -68,7 +66,6 @@ const char* fmt3(const char* s1, const char* s2, const char* s3) {
     size += strlen(s3);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s", s1, s2, s3);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -81,7 +78,6 @@ const char* fmt4(const char* s1, const char* s2, const char* s3, const char* s4)
     size += strlen(s4);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s", s1, s2, s3, s4);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -95,7 +91,6 @@ const char* fmt5(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s5);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s%s", s1, s2, s3, s4, s5);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -110,7 +105,6 @@ const char* fmt6(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s6);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -127,7 +121,6 @@ const char* fmt7(
     size += strlen(s7);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -145,7 +138,6 @@ const char* fmt8(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s8);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -164,7 +156,6 @@ const char* fmt9(const char* s1, const char* s2, const char* s3, const char* s4,
     size += strlen(s9);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8, s9);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }
@@ -184,7 +175,6 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
     size += strlen(s10);
     if (sfmt_alloc(size)) {
         snprintf(sfmt, size, "%s%s%s%s%s%s%s%s%s%s", s1, s2, s3, s4, s5, s6, s7, s8, s9, s10);
-        sfmt[size - 1] = '\0';
     }
     return sfmt;
 }

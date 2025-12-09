@@ -55,5 +55,3 @@ extrn fn bsearch_f(key: *any, base: *any, nmemb: u64, size: u64) *any;
 # link with `-lqsort` and define `qsort_compare`
 pub fn qsort_compare(a: *any, b: *any) i32;
 extrn fn qsort_f(base: *any, nmemb: u64, size: u64) none;
-
-# TODO signal bindings
