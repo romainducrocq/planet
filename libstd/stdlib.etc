@@ -32,3 +32,6 @@ extrn fn system(str: string) i32;
 extrn fn abs(j: i32) i32;
 extrn fn labs(j: i64) i64;
 extrn fn llabs(j: i64) i64;
+
+# TODO fptrs bindings
+# TODO signal bindings

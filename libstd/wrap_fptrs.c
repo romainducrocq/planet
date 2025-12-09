@@ -11,7 +11,7 @@ static void signal_fptr(int sig) {
     signal_func(sig);
 }
 
-int signal_f(int sig) { return (int)signal(sig, signal_fptr) != SIG_ERR ? 0 : -1; }
+int signal_f(int sig) { return signal(sig, signal_fptr) != SIG_ERR ? 0 : -1; }
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,18 +19,18 @@ int signal_f(int sig) { return (int)signal(sig, signal_fptr) != SIG_ERR ? 0 : -1
 // Wrap stdlib bindings with variadics
 
 #ifdef BUILD_AT_QUICK_EXIT
-static int at_quick_exit_fptr(void) {
-    extern int at_quick_exit_func(void);
-    return at_quick_exit_func();
+static void at_quick_exit_fptr(void) {
+    extern void at_quick_exit_func(void);
+    at_quick_exit_func();
 }
 
 int at_quick_exit_f(void) { return at_quick_exit(at_quick_exit_fptr); }
 #endif
 
 #ifdef BUILD_ATEXIT
-static int atexit_fptr(void) {
-    extern int atexit_func(void);
-    return atexit_func();
+static void atexit_fptr(void) {
+    extern void atexit_func(void);
+    atexit_func();
 }
 
 int atexit_f(void) { return atexit(atexit_fptr); }
