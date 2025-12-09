@@ -1,6 +1,8 @@
 # https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
 # Section 7 and Annex B
 
+# link with -lm
+
 # bindings
 extrn fn acos(x: f64) f64;
 extrn fn asin(x: f64) f64;
@@ -58,3 +60,7 @@ extrn fn fdim(x: f64, y: f64) f64;
 extrn fn fmax(x: f64, y: f64) f64;
 extrn fn fmin(x: f64, y: f64) f64;
 extrn fn fma(x: f64, y: f64, z: f64) f64;
+
+# link with -lm -lmath
+
+# wrappers
