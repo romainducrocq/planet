@@ -8,7 +8,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap errno consts
+// Wrap errno defines
 
 int get_errno(void) { return errno; }
 void set_errno(int value) { errno = value; }
@@ -18,7 +18,7 @@ int get_ERANGE(void) { return ERANGE; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap locale consts
+// Wrap locale defines
 
 int get_LC_ALL(void) { return LC_ALL; }
 int get_LC_COLLATE(void) { return LC_COLLATE; }
@@ -29,7 +29,7 @@ int get_LC_TIME(void) { return LC_TIME; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap signal consts
+// Wrap signal defines
 
 int get_SIGABRT(void) { return SIGABRT; }
 int get_SIGFPE(void) { return SIGFPE; }
@@ -42,7 +42,7 @@ int signal_ign(int sig) { return signal(sig, SIG_IGN) != SIG_ERR ? 0 : -1; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap stdio consts
+// Wrap stdio defines
 
 int get__IOFBF(void) { return _IOFBF; }
 int get__IOLBF(void) { return _IOLBF; }
@@ -62,7 +62,7 @@ FILE* get_stdout(void) { return stdout; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap stdlib consts
+// Wrap stdlib defines
 
 int get_EXIT_FAILURE(void) { return EXIT_FAILURE; }
 int get_EXIT_SUCCESS(void) { return EXIT_SUCCESS; }
@@ -70,7 +70,7 @@ int get_RAND_MAX(void) { return RAND_MAX; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap time consts
+// Wrap time defines
 
 unsigned long get_CLOCKS_PER_SEC(void) { return CLOCKS_PER_SEC; }
 unsigned long get_TIME_UTC(void) { return TIME_UTC; }

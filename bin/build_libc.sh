@@ -23,7 +23,7 @@ function build_obj () {
 }
 
 echo "-- Build libc ..."
-build_obj "wrap_consts.c"
+build_obj "wrap_defs.c"
 build_obj "wrap_vargs.c"
 
 ${CC} ${OBJECT_FILES} ${CC_FLAGS} -shared -o ${LIBC_NAME}
