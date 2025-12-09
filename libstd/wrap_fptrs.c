@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap signal bindings with variadics
+// Wrap signal bindings with function pointers
 
 #ifdef BUILD_SIGNAL
 static void signal_fptr(int sig) {
@@ -16,7 +16,7 @@ int signal_f(int sig) { return signal(sig, signal_fptr) != SIG_ERR ? 0 : -1; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Wrap stdlib bindings with variadics
+// Wrap stdlib bindings with function pointers
 
 #ifdef BUILD_AT_QUICK_EXIT
 static void at_quick_exit_fptr(void) {
