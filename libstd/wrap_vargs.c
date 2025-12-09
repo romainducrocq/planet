@@ -179,8 +179,6 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
     return sfmt;
 }
 
-// TODO add wrappers for ltostr, ultostr, ctostr, dltostr, ptostr, xtostr
-
 char* ltostr(char* s, long value) {
     snprintf(s, 21, "%li", value);
     return s;
@@ -190,3 +188,5 @@ char* lutostr(char* s, unsigned long value) {
     snprintf(s, 21, "%lu", value);
     return s;
 }
+
+// TODO add wrappers for ctostr, dtostr, d20tostr, ptostr, xtostr, x2tostr
