@@ -2,15 +2,14 @@
 # Section 7 and Annex B
 
 # wrappers
-extrn fn get_SIG_DFL(none) i32;
-extrn fn get_SIG_ERR(none) i32;
-extrn fn get_SIG_IGN(none) i32;
 extrn fn get_SIGABRT(none) i32;
 extrn fn get_SIGFPE(none) i32;
 extrn fn get_SIGILL(none) i32;
 extrn fn get_SIGINT(none) i32;
 extrn fn get_SIGSEGV(none) i32;
 extrn fn get_SIGTERM(none) i32;
+extrn fn signal_dfl(sig: i32) i32;
+extrn fn signal_ign(sig: i32) i32;
 
 # bindings
 extrn fn raise(sig: i32) i32;

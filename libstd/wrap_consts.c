@@ -31,15 +31,14 @@ int get_LC_TIME(void) { return LC_TIME; }
 
 // Wrap signal consts
 
-int get_SIG_DFL(void) { return SIG_DFL; }
-int get_SIG_ERR(void) { return SIG_ERR; }
-int get_SIG_IGN(void) { return SIG_IGN; }
 int get_SIGABRT(void) { return SIGABRT; }
 int get_SIGFPE(void) { return SIGFPE; }
 int get_SIGILL(void) { return SIGILL; }
 int get_SIGINT(void) { return SIGINT; }
 int get_SIGSEGV(void) { return SIGSEGV; }
 int get_SIGTERM(void) { return SIGTERM; }
+int signal_dfl(int sig) { return signal(sig, SIG_DFL) != SIG_ERR ? 0 : -1; }
+int signal_ign(int sig) { return signal(sig, SIG_IGN) != SIG_ERR ? 0 : -1; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
