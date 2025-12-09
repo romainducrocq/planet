@@ -74,6 +74,25 @@ static void sfmt_free(void) {
     }
 }
 
+#define SFMT_FUNC(X, F) \
+    do {                \
+        if (!X) {       \
+            return -1;  \
+        }               \
+        int _num = F;   \
+        sfmt_free();    \
+        return _num;    \
+    }                   \
+    while (0)
+
+int fprint(FILE* stream, const char* format) { SFMT_FUNC(format, fprintf(stream, format)); }
+int fscan(FILE* stream, const char* format) { SFMT_FUNC(format, fscanf(stream, format)); }
+int print(const char* format) { SFMT_FUNC(format, printf(format)); }
+int scan(const char* format) { SFMT_FUNC(format, scanf(format)); }
+int snprint(char* s, unsigned long n, const char* format) { SFMT_FUNC(format, snprintf(s, n, format)); }
+int sprint(char* s, const char* format) { SFMT_FUNC(format, sprintf(s, format)); }
+int sscan(char* s, const char* format) { SFMT_FUNC(format, sscanf(s, format)); }
+
 static int sfmt_alloc(size_t size) {
     sfmt_free();
     sfmt = (char*)malloc(size * sizeof(char));
@@ -227,13 +246,4 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
         sfmt[size - 1] = '\0';
     }
     return sfmt;
-}
-
-int print(const char* format) {
-    if (!format) {
-        return -1;
-    }
-    int num = printf(format);
-    sfmt_free();
-    return num;
 }
