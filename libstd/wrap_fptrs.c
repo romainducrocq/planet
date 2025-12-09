@@ -8,7 +8,7 @@
 #ifdef BUILD_SIGNAL
 static void signal_fptr(int sig) {
     extern void signal_func(int sig);
-    return signal_func(sig);
+    signal_func(sig);
 }
 
 int signal_f(int sig) { return (int)signal(sig, signal_fptr) != SIG_ERR ? 0 : -1; }
