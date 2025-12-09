@@ -61,7 +61,9 @@ extrn fn fmax(x: f64, y: f64) f64;
 extrn fn fmin(x: f64, y: f64) f64;
 extrn fn fma(x: f64, y: f64, z: f64) f64;
 
-# link with `-lm -lmath`
+# link with `-lm -lmath2`
+# wrappers are in a seperate lib `libmath2.so`
+# to not link all the libc bindings with `-lm`
 
 # wrappers
 extrn fn get_HUGE_VAL(none) f64;
