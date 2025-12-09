@@ -188,3 +188,5 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
     }
     return sfmt;
 }
+
+// TODO add wrappers for ltostr, ultostr, ctostr, dltostr, ptostr, xtostr
