@@ -60,3 +60,14 @@ extrn fn scan(format: string) i32;
 extrn fn snprint(s: string, n: u64, format: string) i32;
 extrn fn sprint(s: string, format: string) i32;
 extrn fn sscan(s: string, format: string) i32;
+
+extrn fn fmt1(s1: string) string;
+extrn fn fmt2(s1: string, s2: string) string;
+extrn fn fmt3(s1: string, s2: string, s3: string) string;
+extrn fn fmt4(s1: string, s2: string, s3: string, s4: string) string;
+extrn fn fmt5(s1: string, s2: string, s3: string, s4: string, s5: string) string;
+extrn fn fmt6(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string) string;
+extrn fn fmt7(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string) string;
+extrn fn fmt8(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string, s8: string) string;
+extrn fn fmt9(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string, s8: string, s9: string) string;
+extrn fn fmt10(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string, s8: string, s9: string, s10: string) string;
