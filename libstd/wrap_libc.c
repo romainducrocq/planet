@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +14,17 @@ void set_errno(int value) { errno = value; }
 int get_EDOM(void) { return EDOM; }
 int get_EILSEQ(void) { return EILSEQ; }
 int get_ERANGE(void) { return ERANGE; }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap locale
+
+int get_LC_ALL(void) { return LC_ALL; }
+int get_LC_COLLATE(void) { return LC_COLLATE; }
+int get_LC_CTYPE(void) { return LC_CTYPE; }
+int get_LC_MONETARY(void) { return LC_MONETARY; }
+int get_LC_NUMERIC(void) { return LC_NUMERIC; }
+int get_LC_TIME(void) { return LC_TIME; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

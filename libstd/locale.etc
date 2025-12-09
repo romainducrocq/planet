@@ -1,0 +1,13 @@
+# https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+# Section 7 and Annex B
+
+# wrappers
+extrn fn get_LC_ALL(none) i32;
+extrn fn get_LC_COLLATE(none) i32;
+extrn fn get_LC_CTYPE(none) i32;
+extrn fn get_LC_MONETARY(none) i32;
+extrn fn get_LC_NUMERIC(none) i32;
+extrn fn get_LC_TIME(none) i32;
+
+# bindings
+extrn fn setlocale(category: i32, locale: string) string;
