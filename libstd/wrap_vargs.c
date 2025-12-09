@@ -190,3 +190,13 @@ const char* fmt10(const char* s1, const char* s2, const char* s3, const char* s4
 }
 
 // TODO add wrappers for ltostr, ultostr, ctostr, dltostr, ptostr, xtostr
+
+char* ltostr(char* s, long value) {
+    snprintf(s, 21, "%li", value);
+    return s;
+}
+
+char* lutostr(char* s, unsigned long value) {
+    snprintf(s, 21, "%lu", value);
+    return s;
+}
