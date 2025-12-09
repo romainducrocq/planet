@@ -1,8 +1,22 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-// TODO merge all wrap_*.c in one file ?
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap errno
+
+int get_errno(void) { return errno; }
+void set_errno(int value) { errno = value; }
+int get_EDOM(void) { return EDOM; }
+int get_EILSEQ(void) { return EILSEQ; }
+int get_ERANGE(void) { return ERANGE; }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap stdio
 
 int get__IOFBF(void) { return _IOFBF; }
 int get__IOLBF(void) { return _IOLBF; }
@@ -19,6 +33,25 @@ int get_TMP_MAX(void) { return TMP_MAX; }
 FILE* get_stderr(void) { return stderr; }
 FILE* get_stdin(void) { return stdin; }
 FILE* get_stdout(void) { return stdout; }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap stdlib
+
+int get_EXIT_FAILURE(void) { return EXIT_FAILURE; }
+int get_EXIT_SUCCESS(void) { return EXIT_SUCCESS; }
+int get_RAND_MAX(void) { return RAND_MAX; }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap time
+
+unsigned long get_CLOCKS_PER_SEC(void) { return CLOCKS_PER_SEC; }
+unsigned long get_TIME_UTC(void) { return TIME_UTC; }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap printf variadics
 
 static char* sfmt = NULL;
 

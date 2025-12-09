@@ -28,92 +28,6 @@ UCHAR_MAX
 ULONG_MAX
 ULLONG_MAX
 // TODO // <locale.h>
-// <math.h>
-HUGE_VAL
-INFINITY
-NAN
-FP_INFINITE
-FP_NAN
-FP_NORMAL
-FP_SUBNORMAL
-FP_ZERO
-FP_FAST_FMA
-FP_FAST_FMAF
-FP_FAST_FMAL
-FP_ILOGB0
-FP_ILOGBNAN
-MATH_ERRNO
-MATH_ERREXCEPT
-math_errhandling
-int fpclassify(real-floating x);
-int isfinite(real-floating x);
-int isinf(real-floating x);
-int isnan(real-floating x);
-int isnormal(real-floating x);
-int signbit(real-floating x);
-double acos(double x);
-double asin(double x);
-double atan(double x);
-double atan2(double y, double x);
-double cos(double x);
-double sin(double x);
-double tan(double x);
-double acosh(double x);
-double asinh(double x);
-double atanh(double x);
-double cosh(double x);
-double sinh(double x);
-double tanh(double x);
-double exp(double x);
-double exp2(double x);
-double expm1(double x);
-double frexp(double value, int *exp);
-int ilogb(double x);
-double ldexp(double x, int exp);
-double log(double x);
-double log10(double x);
-double log1p(double x);
-double log2(double x);
-double logb(double x);
-double modf(double value, double *iptr);
-double scalbn(double x, int n);
-double scalbln(double x, long int n);
-double cbrt(double x);
-double fabs(double x);
-double hypot(double x, double y);
-double pow(double x, double y);
-double sqrt(double x);
-double erf(double x);
-double erfc(double x);
-double lgamma(double x);
-double tgamma(double x);
-double ceil(double x);
-double floor(double x);
-double nearbyint(double x);
-double rint(double x);
-long int lrint(double x);
-long long int llrint(double x);
-double round(double x);
-long int lround(double x);
-long long int llround(double x);
-double trunc(double x);
-double fmod(double x, double y);
-double remainder(double x, double y);
-double remquo(double x, double y, int *quo);
-double copysign(double x, double y);
-double nan(const char *tagp);
-double nextafter(double x, double y);
-double nexttoward(double x, long double y);
-double fdim(double x, double y);
-double fmax(double x, double y);
-double fmin(double x, double y);
-double fma(double x, double y, double z);
-int isgreater(real-floating x, real-floating y);
-int isgreaterequal(real-floating x, real-floating y);
-int isless(real-floating x, real-floating y);
-int islessequal(real-floating x, real-floating y);
-int islessgreater(real-floating x, real-floating y);
-int isunordered(real-floating x, real-floating y);
 
 DONE:
 
@@ -276,3 +190,4 @@ int scan(char* format);
 int snprint(char* s, unsigned long n, char* format);
 int sprint(char* s, char* format);
 int sscan(char* s, char* format);
+// <math.h>

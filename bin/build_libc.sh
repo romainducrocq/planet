@@ -12,28 +12,18 @@ fi
 CC_FLAGS="-O3 -Wall -Wextra -Wpedantic -pedantic-errors"
 LIBC_NAME="${PACKAGE_LIBC}/libplx.so"
 
-OBJECT_FILES=""
-function build_obj () {
-    FILE="${PACKAGE_LIBC}/${1}"
-    OBJECT="${FILE%.*}.o"
-    OBJECT_FILES="${OBJECT_FILES} ${OBJECT}"
-    echo "${FILE} -> ${OBJECT}"
-    ${CC} ${FILE} ${CC_FLAGS} -c -fPIC -o ${OBJECT}
-    if [ ${?} -ne 0 ]; then exit 1; fi
-}
-
-echo ""
 echo "-- Build libc ..."
-build_obj "wrap_errno.c"
-build_obj "wrap_stdio.c"
-build_obj "wrap_stdlib.c"
-build_obj "wrap_time.c"
+FILE="${PACKAGE_LIBC}/wrap_libc.c"
+OBJECT="${FILE%.*}.o"
 
-${CC} ${OBJECT_FILES} ${CC_FLAGS} -shared -o ${LIBC_NAME}
+echo "${FILE} -> ${OBJECT}"
+${CC} ${FILE} ${CC_FLAGS} -c -fPIC -o ${OBJECT}
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+${CC} ${OBJECT} ${CC_FLAGS} -shared -o ${LIBC_NAME}
 if [ ${?} -ne 0 ]; then exit 1; fi
 echo "OK"
 
 echo "-- Created lib ${LIBC_NAME}"
-echo ""
 
 exit 0
