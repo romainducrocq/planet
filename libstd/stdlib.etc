@@ -33,15 +33,26 @@ extrn fn abs(j: i32) i32;
 extrn fn labs(j: i64) i64;
 extrn fn llabs(j: i64) i64;
 
+# bindings with function pointers
+# no native support for function pointers
+# each function is wrapped in its own lib
+# `libat_quick_exit.so`, `libatexit.so`,
+# `libbsearch.so`, `libqsort.so`, with a
+# callback to be defined in the program
+
+# link with `-lat_quick_exit` and define `at_quick_exit_func`
 pub fn at_quick_exit_func(none) none;
 extrn fn at_quick_exit_f(none) i32;
 
+# link with `-latexit` and define `atexit_func`
 pub fn atexit_func(none) none;
 extrn fn atexit_f(none) i32;
 
+# link with `-lbsearch` and define `bsearch_compare`
 pub fn bsearch_compare(a: *any, b: *any) i32;
 extrn fn bsearch_f(key: *any, base: *any, nmemb: u64, size: u64) *any;
 
+# link with `-lqsort` and define `qsort_compare`
 pub fn qsort_compare(a: *any, b: *any) i32;
 extrn fn qsort_f(base: *any, nmemb: u64, size: u64) none;
 
