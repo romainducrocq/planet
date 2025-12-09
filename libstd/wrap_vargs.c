@@ -27,12 +27,12 @@ static void sfmt_free(void) {
     while (0)
 
 int fprint(FILE* stream, const char* format) { SFMT_FUNC(format, fprintf(stream, format)); }
-int fscan(FILE* stream, const char* format) { SFMT_FUNC(format, fscanf(stream, format)); }
+int fscan(FILE* stream, void* valptr, const char* format) { SFMT_FUNC(format, fscanf(stream, format, valptr)); }
 int print(const char* format) { SFMT_FUNC(format, printf(format)); }
-int scan(const char* format) { SFMT_FUNC(format, scanf(format)); }
+int scan(void* valptr, const char* format) { SFMT_FUNC(format, scanf(format, valptr)); }
 int snprint(char* s, unsigned long n, const char* format) { SFMT_FUNC(format, snprintf(s, n, format)); }
 int sprint(char* s, const char* format) { SFMT_FUNC(format, sprintf(s, format)); }
-int sscan(char* s, const char* format) { SFMT_FUNC(format, sscanf(s, format)); }
+int sscan(char* s, void* valptr, const char* format) { SFMT_FUNC(format, sscanf(s, format, valptr)); }
 
 static int sfmt_alloc(size_t size) {
     sfmt_free();

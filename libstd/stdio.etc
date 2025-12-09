@@ -54,12 +54,12 @@ extrn fn perror(s: string) none;
 # TODO
 # variadics
 extrn fn fprint(stream: *struc FILE, format: string) i32;
-extrn fn fscan(stream: *struc FILE, format: string) i32;
+extrn fn fscan(stream: *struc FILE, valptr: *any, format: string) i32;
 extrn fn print(format: string) i32;
-extrn fn scan(format: string) i32;
+extrn fn scan(valptr: *any, format: string) i32;
 extrn fn snprint(s: string, n: u64, format: string) i32;
 extrn fn sprint(s: string, format: string) i32;
-extrn fn sscan(s: string, format: string) i32;
+extrn fn sscan(s: string, valptr: *any, format: string) i32;
 
 extrn fn fmt1(s1: string) string;
 extrn fn fmt2(s1: string, s2: string) string;
