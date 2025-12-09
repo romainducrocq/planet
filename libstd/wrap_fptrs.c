@@ -1,19 +1,40 @@
-// signal.c
-// void (*signal(int sig, void (*func)(int)))(int);
-
-// stdlib.c
-// int atexit(void (*func)(void));
-// int at_quick_exit(void (*func)(void))
-
-// void *bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
-// void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
-
 #include <signal.h>
 #include <stdlib.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Wrap signal bindings with variadics
+
+#ifdef BUILD_SIGNAL
+static void signal_fptr(int sig) {
+    extern void signal_func(int sig);
+    return signal_func(sig);
+}
+
+int signal_f(int sig) { return (int)signal(sig, signal_fptr) != SIG_ERR ? 0 : -1; }
+#endif
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Wrap stdlib bindings with variadics
+
+#ifdef BUILD_AT_QUICK_EXIT
+static int at_quick_exit_fptr(void) {
+    extern int at_quick_exit_func(void);
+    return at_quick_exit_func();
+}
+
+int at_quick_exit_f(void) { return at_quick_exit(at_quick_exit_fptr); }
+#endif
+
+#ifdef BUILD_ATEXIT
+static int atexit_fptr(void) {
+    extern int atexit_func(void);
+    return atexit_func();
+}
+
+int atexit_f(void) { return atexit(atexit_fptr); }
+#endif
 
 #ifdef BUILD_BSEARCH
 static int bsearch_fptr(const void* a, const void* b) {
