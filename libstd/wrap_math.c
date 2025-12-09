@@ -1,5 +1,9 @@
 #include <math.h>
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap math consts and macros
+
 double get_HUGE_VAL(void) { return HUGE_VAL; }
 double get_INFINITY(void) { return INFINITY; }
 double get_NAN(void) {
