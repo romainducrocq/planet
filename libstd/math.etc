@@ -1,7 +1,7 @@
 # https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
 # Section 7 and Annex B
 
-# link with -lm
+# link with `-lm`
 
 # bindings
 extrn fn acos(x: f64) f64;
@@ -61,6 +61,32 @@ extrn fn fmax(x: f64, y: f64) f64;
 extrn fn fmin(x: f64, y: f64) f64;
 extrn fn fma(x: f64, y: f64, z: f64) f64;
 
-# link with -lm -lmath
+# link with `-lm -lmath`
 
 # wrappers
+extrn fn get_HUGE_VAL(none) f64;
+extrn fn get_INFINITY(none) f64;
+extrn fn get_NAN(none) f64;
+extrn fn get_FP_INFINITE(none) f64;
+extrn fn get_FP_NAN(none) f64;
+extrn fn get_FP_NORMAL(none) f64;
+extrn fn get_FP_SUBNORMAL(none) f64;
+extrn fn get_FP_ZERO(none) f64;
+extrn fn get_FP_ILOGB0(none) f64;
+extrn fn get_FP_ILOGBNAN(none) f64;
+extrn fn get_MATH_ERRNO(none) i32;
+extrn fn get_MATH_ERREXCEPT(none) i32;
+extrn fn get_math_errhandling(none) i32;
+
+extrn fn get_fpclassify(x: f64) i32;
+extrn fn get_isfinite(x: f64) i32;
+extrn fn get_isinf(x: f64) i32;
+extrn fn get_isnan(x: f64) i32;
+extrn fn get_isnormal(x: f64) i32;
+extrn fn get_signbit(x: f64) i32;
+extrn fn get_isgreater(x: f64, y: f64) i32;
+extrn fn get_isgreaterequal(x: f64, y: f64) i32;
+extrn fn get_isless(x: f64, y: f64) i32;
+extrn fn get_islessequal(x: f64, y: f64) i32;
+extrn fn get_islessgreater(x: f64, y: f64) i32;
+extrn fn get_isunordered(x: f64, y: f64) i32;
