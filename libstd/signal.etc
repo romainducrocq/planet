@@ -1,0 +1,26 @@
+# https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+# Section 7 and Annex B
+
+# wrappers
+extrn fn get_SIG_DFL(none) i32;
+extrn fn get_SIG_ERR(none) i32;
+extrn fn get_SIG_IGN(none) i32;
+extrn fn get_SIGABRT(none) i32;
+extrn fn get_SIGFPE(none) i32;
+extrn fn get_SIGILL(none) i32;
+extrn fn get_SIGINT(none) i32;
+extrn fn get_SIGSEGV(none) i32;
+extrn fn get_SIGTERM(none) i32;
+
+# bindings
+extrn fn raise(sig: i32) i32;
+
+# bindings with function pointers
+# no native support for function pointers
+# each function is wrapped in its own lib
+# `libsignal.so`, with a callback to be 
+# defined in the program
+
+# link with `-lsignal_f` and define `signal_func`
+pub fn signal_func(sig: i32) none;
+extrn fn signal_f(sig: i32) i32;

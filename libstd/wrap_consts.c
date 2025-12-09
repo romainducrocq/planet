@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <locale.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +26,20 @@ int get_LC_CTYPE(void) { return LC_CTYPE; }
 int get_LC_MONETARY(void) { return LC_MONETARY; }
 int get_LC_NUMERIC(void) { return LC_NUMERIC; }
 int get_LC_TIME(void) { return LC_TIME; }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Wrap signal consts
+
+int get_SIG_DFL(void) { return SIG_DFL; }
+int get_SIG_ERR(void) { return SIG_ERR; }
+int get_SIG_IGN(void) { return SIG_IGN; }
+int get_SIGABRT(void) { return SIGABRT; }
+int get_SIGFPE(void) { return SIGFPE; }
+int get_SIGILL(void) { return SIGILL; }
+int get_SIGINT(void) { return SIGINT; }
+int get_SIGSEGV(void) { return SIGSEGV; }
+int get_SIGTERM(void) { return SIGTERM; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
