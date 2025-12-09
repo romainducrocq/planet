@@ -52,7 +52,12 @@ extrn fn ferror(stream: *struc FILE) i32;
 extrn fn perror(s: string) none;
 
 # TODO
-# variadics
+# bindings with variadics
+
+# example:
+# s: [32]char = $(0)
+# print(fmt3("The Answer to the Ultimate Question of Life is ", ltostr(s, 42), "\n"))
+
 extrn fn fprint(stream: *struc FILE, format: string) i32;
 extrn fn fscan(stream: *struc FILE, valptr: *any, format: string) i32;
 extrn fn print(format: string) i32;
