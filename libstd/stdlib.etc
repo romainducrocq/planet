@@ -33,5 +33,16 @@ extrn fn abs(j: i32) i32;
 extrn fn labs(j: i64) i64;
 extrn fn llabs(j: i64) i64;
 
-# TODO fptrs bindings
+pub fn at_quick_exit_func(none) none;
+extrn fn at_quick_exit_f(none) i32;
+
+pub fn atexit_func(none) none;
+extrn fn atexit_f(none) i32;
+
+pub fn bsearch_compare(a: *any, b: *any) i32;
+extrn fn bsearch_f(key: *any, base: *any, nmemb: u64, size: u64) *any;
+
+pub fn qsort_compare(a: *any, b: *any) i32;
+extrn fn qsort_f(base: *any, nmemb: u64, size: u64) none;
+
 # TODO signal bindings
