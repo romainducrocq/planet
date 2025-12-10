@@ -16,9 +16,11 @@ extrn fn raise(sig: i32) i32;
 
 # bindings with function pointers
 # no native support for function pointers
-# the function is wrapped in its own lib
-# `libsignal.so`, with a callback to be 
-# defined in the program
+# each function has a wrapper without function
+# pointer argument in its own lib (`signal` ->
+# `signal_f` in `libsignal.so`), and a forward
+# declared callback (`signal_func`, ...) that
+# must be defined within the caller program
 
 # link with `-lsignal_f` and define `signal_func`
 pub fn signal_func(sig: i32) none;

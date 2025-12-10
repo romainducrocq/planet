@@ -35,10 +35,11 @@ extrn fn llabs(j: i64) i64;
 
 # bindings with function pointers
 # no native support for function pointers
-# each function is wrapped in its own lib
-# `libat_quick_exit.so`, `libatexit.so`,
-# `libbsearch.so`, `libqsort.so`, with a
-# callback to be defined in the program
+# each function has a wrapper without function
+# pointer argument in its own lib (`atexit` ->
+# `atexit_f` in `libatexit.so`), and a forward
+# declared callback (`atexit_func`, ...) that
+# must be defined within the caller program
 
 # link with `-lat_quick_exit` and define `at_quick_exit_func`
 pub fn at_quick_exit_func(none) none;
