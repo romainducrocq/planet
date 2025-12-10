@@ -77,5 +77,9 @@ extrn fn fmt8(s1: string, s2: string, s3: string, s4: string, s5: string, s6: st
 extrn fn fmt9(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string, s8: string, s9: string) string;
 extrn fn fmt10(s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string, s8: string, s9: string, s10: string) string;
 
+extrn fn ctostr(s: string, value: char) string;
+extrn fn dtostr(s: string, value: f64, precision: i32) string;
 extrn fn ltostr(s: string, value: i64) string;
-extrn fn lutostr(s: string, value: u64) string;
+extrn fn ultostr(s: string, value: u64) string;
+extrn fn ptostr(s: string, value: *any) string;
+extrn fn xtostr(s: string, value: i32, precision: i32) string;
