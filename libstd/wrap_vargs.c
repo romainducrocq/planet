@@ -195,9 +195,17 @@ char* ltostr(char* s, long value) {
     return s;
 }
 
-char* lutostr(char* s, unsigned long value) {
+char* ultostr(char* s, unsigned long value) {
     snprintf(s, 21, "%lu", value);
     return s;
 }
 
-// TODO add wrappers for ptostr, xtostr
+char* ptostr(char* s, void* value) {
+    sprintf(s, "%p", value);
+    return s;
+}
+
+char* xtostr(char* s, int value, int precision) {
+    sprintf(s, "%.*x", precision, value);
+    return s;
+}
