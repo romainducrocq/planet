@@ -51,8 +51,13 @@ extrn fn feof(stream: *struc FILE) i32;
 extrn fn ferror(stream: *struc FILE) i32;
 extrn fn perror(s: string) none;
 
-# TODO
 # bindings with variadics
+# no native support for variadics for printf family
+# each function has a wrapper without argument list
+# (`printf` -> `print`), and the `fmt<n>` functions
+# emulate the argument list by concatenating up to
+# 10 strings, while other helpers (`ltostr`, ...)
+# can be used to convert primitive types to strings
 
 # example:
 # s: [32]char = $(nil)
