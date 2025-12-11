@@ -5,6 +5,12 @@
 The core language is done [x], I'm still working on the tooling. Nothing is documented yet, documentation will come at the beginning of 2026.  
 A first release (version `0.1.0`) is planned for spring 2026. See below for progress updates ...  
 
+<!---->
+
+Advent of code 2025 with `planet`: https://github.com/romainducrocq/planet-aoc2025  
+
+<!---->
+
 ```
 git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
 ```
