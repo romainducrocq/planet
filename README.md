@@ -2,8 +2,8 @@
 
 > **THIS LANGUAGE IS A WORK IN PROGRESS! ANYTHING CAN CHANGE AT ANY MOMENT WITHOUT ANY NOTICE! USE THIS LANGUAGE AT YOUR OWN RISK!**
 
-Development is still at a very early stage, see below for progress updates ...  
-Not much to see around here for now ... Maybe check again after some time ...  
+The core language is done [x], I'm still working on the tooling. Nothing is documented yet, documentation will come at the beginning of 2026.  
+A first release (version `0.1.0`) is planned for spring 2026. See below for progress updates ...  
 
 ```
 git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
