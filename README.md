@@ -2,8 +2,9 @@
 
 > **THIS LANGUAGE IS A WORK IN PROGRESS! ANYTHING CAN CHANGE AT ANY MOMENT WITHOUT ANY NOTICE! USE THIS LANGUAGE AT YOUR OWN RISK!**
 
-The core language is done [x], I'm still working on the tooling. Nothing is documented yet, documentation will come at the beginning of 2026.  
-A first release (version `0.1.0`) is planned for spring 2026. See below for progress updates ...  
+- The core language is done [x], I'm still working on the tooling.
+- Nothing is documented yet, documentation will come at the beginning of 2026.
+- First release (`0.1.0`) planned for spring 2026. See below for progress ...
 
 <!---->
 
