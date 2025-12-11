@@ -99,9 +99,9 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] structures [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/18_structures)
 - [x] unions [examples](https://github.com/romainducrocq/planet/tree/master/test/tests/compiler/18_structures/valid/extra_credit)
 > Tooling
-- [ ] process import, use, comments
+- [x] process import, use, comments
 - [ ] support m4 preprocessor
-- [ ] glibc standard library bindings
+- [x] glibc standard library bindings
 - [ ] text editor themes
 - [ ] readme + documentation
 
