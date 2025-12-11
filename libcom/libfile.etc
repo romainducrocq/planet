@@ -1,0 +1,6 @@
+type struc FileText(lines: i32, width: i32, buf: string, text: *string)
+
+pub fn ftext_close(filetext: *struc FileText) none;
+pub fn ftext_read(filename: string, filetext: *struc FileText) i32;
+pub fn ftext_dd(i: i32, j: i32, filetext: *struc FileText) char;
+pub fn parse_num(str: *string) i64;
