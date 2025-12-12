@@ -32,8 +32,10 @@ function build_lib () {
     if [ ! "${LIB_NAME}" = "${LIBC_NAME}" ]; then
         echo "${FILE} ${FLAGS} -> ${LIB_NAME}"
     fi
-    ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME} \
-        -undefined dynamic_lookup
+    if [[ "$(uname -s)" = "Darwin"* ]]; then
+        BUILD_FLAGS="${BUILD_FLAGS} -undefined dynamic_lookup"
+    fi
+    ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME}
     if [ ${?} -ne 0 ]; then exit 1; fi
 }
 
