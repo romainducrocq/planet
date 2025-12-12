@@ -10,10 +10,16 @@
 
 Advent of code 2025 with `planet`: https://github.com/romainducrocq/planet-aoc2025  
 
-<!---->
+### Quick install
 
+More info will come soon, for now get started with:  
 ```
 git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
+cd planet/bin/
+./configure.sh
+./make.sh
+./install.sh
+. ~/.bashrc # or . ~/.zshrc
 ```
 
 ****
