@@ -32,14 +32,15 @@ function build_lib () {
     if [ ! "${LIB_NAME}" = "${LIBC_NAME}" ]; then
         echo "${FILE} ${FLAGS} -> ${LIB_NAME}"
     fi
-    ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME}
+    ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME} \
+        -undefined dynamic_lookup
     if [ ${?} -ne 0 ]; then exit 1; fi
 }
 
 echo "-- Build libc ..."
 
 build_lib "$(basename "${LIBC_NAME}")" 2 "wrap_defs.c" "wrap_vargs.c"
-build_lib "libmath2.so" 1 "wrap_math.c" "-lm"
+build_lib "libmath2.so" 1 "wrap_math.c" # "-lm"
 build_lib "libsignal.so" 1 "wrap_fptrs.c" "-DBUILD_SIGNAL"
 build_lib "libat_quick_exit.so" 1 "wrap_fptrs.c" "-DBUILD_AT_QUICK_EXIT"
 build_lib "libatexit.so" 1 "wrap_fptrs.c" "-DBUILD_ATEXIT"
