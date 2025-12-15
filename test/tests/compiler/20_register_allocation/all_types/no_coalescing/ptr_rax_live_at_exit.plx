@@ -8,7 +8,7 @@
 
 import `../util`
 
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 pub arr: [3]i64 = $(100, 200, 300)
 pub glob2: i64;
