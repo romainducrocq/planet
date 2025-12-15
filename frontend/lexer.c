@@ -762,7 +762,7 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_use_file:
                 case TOK_use_force:
                     TRY(tokenize_include(ctx, match_kind, linenum, is_empty));
-                    goto Lbreak; // TODO add tests
+                    goto Lbreak;
                 case TOK_line_break: {
                     if (is_empty || ctx->paren_depth > 0) {
                         goto Lbreak;
@@ -852,7 +852,6 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, 
     filename = get_match(ctx, ctx->match_at + 1, ctx->match_size - 2);
     str_append(filename, ".etc");
     if (!is_empty) {
-        // TODO add tests
         size_t info_at = push_token_info(ctx);
         switch (match_tok) {
             case TOK_import_file:
