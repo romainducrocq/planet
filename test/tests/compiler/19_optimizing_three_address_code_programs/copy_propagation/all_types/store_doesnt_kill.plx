@@ -1,6 +1,7 @@
 #  Test that updating a value through a pointer does not kill that pointer 
 
-pub fn exit(status: i32) none; #  from standard library
+#  from standard library
+use `stdlib`
 
 pub fn check_pointers(a: i32, b: i32, ptr1: *i32, ptr2: *i32) none {
     if a ~= 100 or b ~= 101 {
