@@ -760,9 +760,13 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_import_file:
                 case TOK_import_force:
                 case TOK_use_file:
-                case TOK_use_force:
+                case TOK_use_force: {
+                    if (!is_empty) {
+                        THROW_ABORT; // TODO add message and tests
+                    }
                     TRY(tokenize_include(ctx, match_kind, linenum));
-                    goto Lcontinue;
+                    goto Lbreak; // TODO add tests
+                }
                 case TOK_line_break: {
                     if (is_empty || ctx->paren_depth > 0) {
                         goto Lbreak;
