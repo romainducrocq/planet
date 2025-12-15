@@ -3,7 +3,7 @@
 #  * Pass each size both in a register (when possible) and on the stack. 
 
 import `struct_sizes`
-pub fn memcmp(s1: *any, s2: *any, n: u64) i32;
+use `string`
 
 #  Pass sizes 1 - 6 in registers, remainders on the stack
 pub fn fun0(a: struc bytesize1, b: struc bytesize2, c: struc bytesize3, d: struc bytesize4, e: struc bytesize5, f: struc bytesize6, g: struc bytesize7, h: struc bytesize8, i: struc bytesize9, j: struc bytesize10, k: struc bytesize11, l: struc bytesize12, m: struc bytesize13, n: struc bytesize14, o: struc bytesize15, p: struc bytesize16, q: struc bytesize17, r: struc bytesize18, s: struc bytesize19, t: struc bytesize20, u: struc bytesize21, v: struc bytesize22, w: struc bytesize23, x: struc bytesize24, a_expected: *u8, b_expected: 

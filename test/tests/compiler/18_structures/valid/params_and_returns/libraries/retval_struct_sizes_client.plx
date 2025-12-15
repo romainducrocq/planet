@@ -1,6 +1,6 @@
 #  Test that we can return structs of every size between 1 and 24 bytes. 
 import `retval_struct_sizes`
-pub fn memcmp(s1: *any, s2: *any, n: u64) i32;
+use `string`
 
 pub fn main(none) i32 {
     s1: struc bytesize1 = fun1()

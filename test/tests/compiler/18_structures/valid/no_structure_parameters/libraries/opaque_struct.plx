@@ -13,7 +13,7 @@
 #  library functions
 use `stdio`
 use `stdlib`
-pub fn strcmp(s1: string, s2: *char) i32;
+use `string`
 
 
 type struc s(

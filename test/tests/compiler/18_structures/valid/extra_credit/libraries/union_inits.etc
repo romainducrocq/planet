@@ -7,7 +7,7 @@
 
 
 #  library functions
-pub fn strcmp(s1: string, s2: *char) i32;
+use `string`
 
 type union simple(    d: f64    , c: char    , ptr: *i32    )
 

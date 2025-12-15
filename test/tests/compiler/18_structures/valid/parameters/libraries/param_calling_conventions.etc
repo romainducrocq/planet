@@ -9,8 +9,7 @@
 
 
 
-pub fn strcmp(s1: string, s2: *char) i32;
-pub fn strncmp(s1: string, s2: string, n: u64) i32;
+use `string`
 
 #  This type comes from Listing 18-45
 type struc two_longs(    a: i64    , b: i64    )

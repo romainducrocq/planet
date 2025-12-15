@@ -21,8 +21,8 @@
 
 
 
-pub fn strcmp(s1: string, s2: *char) i32;
 use `stdlib`
+use `string`
 
 type struc stack_bytes(    bytes: [16]char    )
 

@@ -7,8 +7,7 @@
 
 
 
-pub fn strcmp(s1: string, s2: *char) i32;
-pub fn strncmp(s1: string, s2: string, n: u64) i32;
+use `string`
 
 type struc one_int(    i: i32    , c: char    )
 

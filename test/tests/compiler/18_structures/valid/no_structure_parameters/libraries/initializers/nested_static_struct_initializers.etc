@@ -13,7 +13,7 @@
 
 
 #  standard library function
-pub fn strcmp(s1: string, s2: *char) i32;
+use `string`
 
 #  structure type defs
 type struc inner(    one_i: i32    , two_arr: [3]i8    , three_u: u32    

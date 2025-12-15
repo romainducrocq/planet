@@ -10,7 +10,7 @@
 
 import `../union_types`
 
-pub fn strcmp(s1: *char, s2: *char) i32;
+use `string`
 
 #  case 1: *x = y
 pub fn test_copy_to_pointer(none) i32 {

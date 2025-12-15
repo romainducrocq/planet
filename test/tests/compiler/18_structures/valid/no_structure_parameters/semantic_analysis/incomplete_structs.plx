@@ -12,7 +12,7 @@
 
 use `stdio`
 use `stdlib`
-pub fn strcmp(s1: string, s2: string) i32;
+use `string`
 
 #  test 1: you can declare a function that accepts/returns incomplete struct
 #  types. We don't define or use this function, we just need to validate that

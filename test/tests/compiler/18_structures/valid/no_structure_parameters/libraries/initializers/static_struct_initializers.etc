@@ -11,7 +11,7 @@
 
 
 
-pub fn strcmp(s1: string, s2: *char) i32;
+use `string`
 
 type struc s(    one_d: f64    , two_msg: string    
     , three_arr: [3]u8    , four_i: i32    )

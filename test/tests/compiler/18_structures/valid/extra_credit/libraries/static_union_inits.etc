@@ -6,7 +6,7 @@
 
 
 
-pub fn strcmp(s1: string, s2: *char) i32;
+use `string`
 
 #  Test case 1 - simple union w/ scalar elements (and padding)
 type union simple(    i: i32    , c: char    
