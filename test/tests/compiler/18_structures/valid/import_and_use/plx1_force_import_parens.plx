@@ -19,5 +19,5 @@ pub fn main(none) i32 {
     import! `incr_x`
     + 1)
     import !`close_paren`
-    return x
+    return x ~= 10
 }
