@@ -600,6 +600,10 @@ const char* get_lexer_msg(MESSAGE_LEXER msg) {
             RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("import") " directive search";
         case MSG_failed_use:
             RET_ERRNO "cannot find " EM_VARG " header file in " EM_CSTR("use") " directive search";
+        case MSG_import_in_line:
+            RET_ERRNO "cannot search " EM_VARG " in a line, " EM_CSTR("import") " requires its own line";
+        case MSG_use_in_line:
+            RET_ERRNO "cannot search " EM_VARG " in a line, " EM_CSTR("use") " requires its own line";
         case MSG_preproc_macro:
             RET_ERRNO "found m4 macro " EM_VARG ", preprocess with " EM_CSTR("-E") " or see " EM_CSTR("--help");
         case MSG_unmatched_close:

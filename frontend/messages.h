@@ -8,6 +8,8 @@
 typedef enum MESSAGE_LEXER {
     MSG_unhandled_lexer_error = 300,
     MSG_invalid_tok,
+    MSG_import_in_line,
+    MSG_use_in_line,
     MSG_failed_import,
     MSG_failed_use,
     MSG_preproc_macro,

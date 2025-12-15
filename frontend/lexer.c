@@ -736,7 +736,7 @@ static string_t get_match(Ctx ctx, size_t match_at, size_t match_size) {
     return match;
 }
 
-static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum);
+static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, bool is_empty);
 
 static size_t push_token_info(Ctx ctx) {
     TokenInfo token_info = {(int)ctx->match_at, (int)ctx->match_size, ctx->total_linenum};
@@ -760,13 +760,9 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_import_file:
                 case TOK_import_force:
                 case TOK_use_file:
-                case TOK_use_force: {
-                    if (!is_empty) {
-                        THROW_ABORT; // TODO add message and tests
-                    }
-                    TRY(tokenize_include(ctx, match_kind, linenum));
+                case TOK_use_force:
+                    TRY(tokenize_include(ctx, match_kind, linenum, is_empty));
                     goto Lbreak; // TODO add tests
-                }
                 case TOK_line_break: {
                     if (is_empty || ctx->paren_depth > 0) {
                         goto Lbreak;
@@ -844,7 +840,7 @@ static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
 }
 
 // <include> ::= ( "import" | "use" ) [ "!" ] "`" <header-file> "`"
-static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum) {
+static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, bool is_empty) {
     string_t filename = str_new(NULL);
     string_t fopen_name = str_new(NULL);
     CATCH_ENTER;
@@ -855,6 +851,20 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum) 
 
     filename = get_match(ctx, ctx->match_at + 1, ctx->match_size - 2);
     str_append(filename, ".etc");
+    if (!is_empty) {
+        // TODO add tests
+        size_t info_at = push_token_info(ctx);
+        switch (match_tok) {
+            case TOK_import_file:
+            case TOK_import_force:
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_import_in_line, filename));
+            case TOK_use_file:
+            case TOK_use_force:
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_use_in_line, filename));
+            default:
+                THROW_ABORT;
+        }
+    }
     {
         hash_t includename = str_hash(filename);
         if (set_find(ctx->includename_set, includename) != set_end()) {
