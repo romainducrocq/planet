@@ -17,8 +17,7 @@
 #  library functions
 pub fn strcmp(s1: string, s2: *char) i32;
 
-pub fn malloc(size: u64) *any;
-pub fn calloc(nmemb: u64, size: u64) *any;
+use `stdlib`
 
 #  struct type def
 type struc s(    one_msg: *char    

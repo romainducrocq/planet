@@ -10,9 +10,8 @@
 
 
 
-pub fn malloc(size: u64) *any;
-pub fn calloc(nmemb: u64, size: u64) *any;
-pub fn puts(s: string) i32;
+use `stdio`
+use `stdlib`
 pub fn strcmp(s1: string, s2: string) i32;
 
 #  test 1: you can declare a function that accepts/returns incomplete struct

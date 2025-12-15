@@ -1,5 +1,4 @@
-pub fn calloc(nmemb: u64, size: u64) *any;
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 type union simple(    i: i32    , l: i64    
     , c: char    , uc_arr: [3]u8    )

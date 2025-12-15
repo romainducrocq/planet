@@ -8,7 +8,7 @@
 #  * validate, and go undetected).
 #  
 
-pub fn exit(status: i32) none;
+use `stdlib`
 
 type struc chars(    char_array: [3]char    )
 

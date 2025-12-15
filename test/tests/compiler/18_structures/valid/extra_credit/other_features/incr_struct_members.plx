@@ -5,7 +5,7 @@ type struc inner(    c: char    , u: u32
 
 type struc outer(    l: u64    , in_ptr: *struc inner    , array: [3]i32    )
 
-pub fn calloc(nmemb: u64, size: u64) *any;
+use `stdlib`
 
 pub fn main(none) i32 {
     my_struct: struc outer = $(        #  l

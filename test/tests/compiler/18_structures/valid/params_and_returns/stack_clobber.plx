@@ -22,7 +22,7 @@
 
 
 pub fn strcmp(s1: string, s2: *char) i32;
-pub fn exit(status: i32) none;
+use `stdlib`
 
 type struc stack_bytes(    bytes: [16]char    )
 

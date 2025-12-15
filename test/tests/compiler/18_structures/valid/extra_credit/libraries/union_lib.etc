@@ -8,8 +8,7 @@
 
 #  library functions
 pub fn strcmp(s1: string, s2: *char) i32;
-pub fn exit(status: i32) none;
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 #  I. unions passed in one register
 

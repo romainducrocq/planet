@@ -4,7 +4,7 @@
 #  * 
 import `struct_sizes`
 
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 #  test 1: validate struct w/ scalar members (includes trailing padding)
 #  test member accesses of the form &x.y

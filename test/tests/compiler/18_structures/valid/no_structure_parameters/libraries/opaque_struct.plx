@@ -11,9 +11,10 @@
 
 
 #  library functions
+use `stdio`
+use `stdlib`
 pub fn strcmp(s1: string, s2: *char) i32;
-pub fn puts(s: string) i32;
-pub fn malloc(size: u64) *any;
+
 
 type struc s(
     member1: i32    , member2: f64    , member3: *char    )

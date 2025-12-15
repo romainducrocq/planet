@@ -1,7 +1,7 @@
 #  Test passing struct pointers as function parameters 
 
 #  library function
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 #  define some struct types
 type struc inner(    d: f64    

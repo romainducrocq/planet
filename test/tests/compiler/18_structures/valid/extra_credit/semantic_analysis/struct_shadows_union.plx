@@ -1,5 +1,5 @@
 #  One type declaration can shadow another with the same tag
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 pub fn main(none) i32 {
     type struc s(

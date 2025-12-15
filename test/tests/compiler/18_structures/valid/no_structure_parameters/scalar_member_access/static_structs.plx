@@ -9,9 +9,8 @@
 
 
 
-pub fn malloc(size: u64) *any;
-pub fn putchar(ch: i32) i32;
-pub fn puts(s: *char) i32;
+use `stdio`
+use `stdlib`
 
 #  test that changes to static struct are retained across function calls
 #  do this by validating text written to stdout,

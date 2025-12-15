@@ -2,7 +2,7 @@
 
 import `../union_types`
 
-pub fn calloc(nmemb: u64, size: u64) *any;
+use `stdlib`
 
 pub fn test_dot(none) i32 {
     #  Test reading/writing whole nested unions/structs w/ . operator

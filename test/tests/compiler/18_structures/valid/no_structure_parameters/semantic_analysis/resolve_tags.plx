@@ -4,8 +4,7 @@
 #  * and does nothing if one is already in scope?
 #  * 
 
-pub fn calloc(nmemb: u64, size: u64) *any;
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 #  simple struct type used in several tests
 type struc s(    a: i32    )

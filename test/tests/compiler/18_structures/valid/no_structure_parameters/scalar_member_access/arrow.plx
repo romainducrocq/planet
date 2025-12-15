@@ -3,7 +3,7 @@
 #  * types.
 #  
 
-pub fn calloc(nmemb: u64, size: u64) *any;
+use `stdlib`
 
 type struc four_members(
     d: f64    

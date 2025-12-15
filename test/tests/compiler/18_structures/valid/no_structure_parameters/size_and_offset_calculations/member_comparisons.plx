@@ -8,7 +8,7 @@ type struc three_ints(    a: i32    , b: i32
     , c: i32    
     )
 
-pub fn calloc(nmem: u64, size: u64) *any;
+use `stdlib`
 
 pub fn main(none) i32 {
     my_struct: *struc three_ints = calloc(1, sizeof<struc three_ints>)

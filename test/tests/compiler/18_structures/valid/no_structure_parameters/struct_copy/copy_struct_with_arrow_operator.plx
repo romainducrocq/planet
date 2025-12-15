@@ -1,8 +1,7 @@
 #  Test using -> to copy entire structures,
 #  including large structures w/ members of different sizes
 
-pub fn calloc(nmemb: u64, size: u64) *any;
-pub fn malloc(size: u64) *any;
+use `stdlib`
 
 type struc inner(    d: f64    , i: i32    
     )

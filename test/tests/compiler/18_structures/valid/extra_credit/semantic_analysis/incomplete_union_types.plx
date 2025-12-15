@@ -10,8 +10,8 @@
 
 
 
-pub fn calloc(nmemb: u64, size: u64) *any;
-pub fn puts(s: string) i32;
+use `stdio`
+use `stdlib`
 
 #  Test 1: you can declare a function that accepts/returns incomplete
 #  union types
