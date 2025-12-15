@@ -14,7 +14,7 @@ at line 2: [0;31mv[0m
          | [1m`[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/invalid_identifier_2.plx:3:12:[0m
-[0;31merror:[0m (no. 303) found m4 macro [1m‘m4_b’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
+[0;31merror:[0m (no. 304) found m4 macro [1m‘m4_b’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
 at line 3: [0;31m           v~~~[0m
          | [1m    return m4_b[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
@@ -24,12 +24,12 @@ at line 3: [0;31m           v~[0m
          | [1m    return 1foo[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/plx1_m4_identifier.plx:1:8:[0m
-[0;31merror:[0m (no. 303) found m4 macro [1m‘m4_main’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
+[0;31merror:[0m (no. 304) found m4 macro [1m‘m4_main’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
 at line 1: [0;31m       v~~~~~~[0m
          | [1mpub fn m4_main(none) i32 {[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/plx1_unmatched_paren.plx:1:18:[0m
-[0;31merror:[0m (no. 304) found unmatched bracket [1m‘)’[0m
+[0;31merror:[0m (no. 305) found unmatched bracket [1m‘)’[0m
 at line 1: [0;31m                 v[0m
          | [1mpub fn main(none)) i32 {[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
@@ -124,7 +124,7 @@ at line 2: [0;31m          v[0m
          | [1m    retur n 0[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_parse/switched_parens.plx:1:12:[0m
-[0;31merror:[0m (no. 304) found unmatched bracket [1m‘)’[0m
+[0;31merror:[0m (no. 305) found unmatched bracket [1m‘)’[0m
 at line 1: [0;31m           v[0m
          | [1mpub fn main)none( i32 {[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
@@ -139,7 +139,7 @@ at line 1: [0;31m                 v~~[0m
          | [1mpub fn main(none i32 {[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/2_unary_operators/invalid_parse/extra_paren.plx:2:15:[0m
-[0;31merror:[0m (no. 304) found unmatched bracket [1m‘)’[0m
+[0;31merror:[0m (no. 305) found unmatched bracket [1m‘)’[0m
 at line 2: [0;31m              v[0m
          | [1m    return (3))[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
@@ -204,7 +204,7 @@ at line 2: [0;31m           v[0m
          | [1m    return /3[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/3_binary_operators/invalid_parse/missing_open_paren.plx:2:17:[0m
-[0;31merror:[0m (no. 304) found unmatched bracket [1m‘)’[0m
+[0;31merror:[0m (no. 305) found unmatched bracket [1m‘)’[0m
 at line 2: [0;31m                v[0m
          | [1m    return 1 + 2)[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
@@ -1794,7 +1794,7 @@ at line 2: [0;31m                   v[0m
          | [1m    return cast<i32(10)[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/11_long_integers/invalid_parse/plx1_cast_unmatched_lt_2.plx:2:20:[0m
-[0;31merror:[0m (no. 304) found unmatched bracket [1m‘)’[0m
+[0;31merror:[0m (no. 305) found unmatched bracket [1m‘)’[0m
 at line 2: [0;31m                   v[0m
          | [1m    return cast<i32)(10)[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
@@ -3099,7 +3099,7 @@ at line 2: [0;31m                     v[0m
          | [1m    return sizeof<i32[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/17_supporting_dynamic_memory_allocation/invalid_parse/plx1_sizeof_unmatched_lt_2.plx:2:22:[0m
-[0;31merror:[0m (no. 304) found unmatched bracket [1m‘)’[0m
+[0;31merror:[0m (no. 305) found unmatched bracket [1m‘)’[0m
 at line 2: [0;31m                     v[0m
          | [1m    return sizeof<i32)[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
