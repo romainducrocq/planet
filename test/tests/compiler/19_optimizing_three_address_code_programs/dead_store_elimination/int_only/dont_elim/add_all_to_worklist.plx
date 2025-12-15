@@ -1,7 +1,7 @@
 #  Make sure we add every basic block to the worklist
 #  * at the start of the iterative algorithm
 #  
-pub fn putchar(c: i32) i32;
+use `stdio`
 
 pub fn f(arg: i32) i32 {
     x: i32 = 76

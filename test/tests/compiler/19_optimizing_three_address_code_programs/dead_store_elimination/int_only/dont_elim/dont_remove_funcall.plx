@@ -5,7 +5,7 @@
 
 
 
-pub fn putchar(c: i32) i32;
+use `stdio`
 
 pub fn main(none) i32 {
     #  Make sure we don't optimize away this function call.

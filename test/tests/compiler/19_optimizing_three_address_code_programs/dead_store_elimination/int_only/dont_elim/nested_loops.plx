@@ -2,7 +2,7 @@
 #  * some blocks need to be visited three times before the algorithm converges
 #  * 
 
-pub fn putchar(c: i32) i32;
+use `stdio`
 
 pub fn target(a: i32, b: i32, c: i32, d: i32) i32 {
     loop while a > 0 {

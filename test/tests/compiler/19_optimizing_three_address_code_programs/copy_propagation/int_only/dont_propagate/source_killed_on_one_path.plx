@@ -3,7 +3,7 @@
 #  * it doesn't reach that block
 #  * 
 
-pub fn putchar(c: i32) i32; #  from standard library
+use `stdio`
 
 pub fn f(src: i32, flag: i32) i32 {
     x: i32 = src #  generate x = src

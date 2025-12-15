@@ -7,7 +7,7 @@
 
 
 
-pub fn putchar(c: i32) i32; #  from standard library
+use `stdio`
 
 pub fn print_some_chars(a: char, b: char, c: char, d: char) none {
     putchar(a)

@@ -1,6 +1,6 @@
 #  Test that we rerun alias analysis with each pipeline iteration 
 
-pub fn putchar(c: i32) i32;
+use `stdio`
 
 pub fn foo(ptr: *i32) i32 {
     putchar(ptr[])
