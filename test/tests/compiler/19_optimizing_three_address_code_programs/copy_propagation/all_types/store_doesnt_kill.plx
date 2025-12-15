@@ -1,5 +1,4 @@
 #  Test that updating a value through a pointer does not kill that pointer 
-
 #  from standard library
 use `stdlib`
 
