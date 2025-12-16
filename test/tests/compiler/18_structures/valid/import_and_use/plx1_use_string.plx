@@ -13,10 +13,5 @@ pub fn main(none) i32 {
         return 3
     }
 
-# atoi is stdlib?
-#    if atoi("10") ~= 10 {         
-#        return 4
-#    }
-
     return 0
 }
