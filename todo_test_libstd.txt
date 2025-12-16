@@ -78,26 +78,26 @@
 
 // string
 [x] memcpy
-[ ] memmove
-[ ] strcpy
-[ ] strncpy
-[ ] strcat
-[ ] strncat
+[x] memmove
+[x] strcpy
+[x] strncpy
+[x] strcat
+[x] strncat
 [x] memcmp
 [x] strcmp
-[ ] strcoll
+[x] strcoll
 [x] strncmp
-[ ] strxfrm
-[ ] memchr
-[ ] strchr
-[ ] strcspn
-[ ] strpbrk
-[ ] strrchr
-[ ] strspn
-[ ] strstr
-[ ] strtok
+[x] strxfrm
+[x] memchr
+[x] strchr
+[x] strcspn
+[x] strpbrk
+[x] strrchr
+[x] strspn
+[x] strstr
+[x] strtok
 [x] memset
-[ ] strerror
+[x] strerror
 [x] strlen
 
 ### preprocessor:
