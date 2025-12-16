@@ -50,17 +50,17 @@
 [ ] fscan
 
 // stdlib
-[ ] atof
-[~] atoi
-[ ] atol
-[ ] atoll
-[ ] strtod
-[ ] strtol
-[ ] strtoll
-[ ] strtoul
-[ ] strtoull
-[ ] rand
-[ ] srand
+[x] atof
+[x] atoi
+[x] atol
+[x] atoll
+[x] strtod
+[x] strtol
+[x] strtoll
+[x] strtoul
+[x] strtoull
+[x] rand
+[x] srand
 [x] aligned_alloc
 [x] calloc
 [x] free
@@ -68,13 +68,13 @@
 [x] realloc
 [ ] abort
 [x] exit
-[ ] _Exit
-[ ] getenv
-[ ] quick_exit
-[ ] system
-[ ] abs
-[ ] labs
-[ ] llabs
+[x] _Exit
+[x] getenv
+[x] quick_exit
+[x] system
+[x] abs
+[x] labs
+[x] llabs
 
 // string
 [x] memcpy
