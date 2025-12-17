@@ -72,7 +72,7 @@ function check_test () {
     FILE=$(file ${1})
 
     let TOTAL+=1
-    planet ${OPTIM} ${FILE}.plx > /dev/null 2>&1
+    planet ${OPTIM} -E ${FILE}.plx > /dev/null 2>&1
     RETURN_PASS=${?}
 
     if [[ "${FILE}" == *"invalid"* ]]; then
