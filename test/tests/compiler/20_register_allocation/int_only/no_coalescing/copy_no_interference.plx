@@ -3,7 +3,7 @@
 #  * pseudoregisters conflict at any time.
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob0: i32 = 0
 pub glob1: bool = 1

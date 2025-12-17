@@ -5,7 +5,7 @@
 #  * where both operands are XMM registers.
 #  * 
 
-import `../util`
+import "../util"
 
 #  store some initial values in global variables
 #  to prevent constant folding

@@ -7,7 +7,7 @@
 #  * resulting in more memory accesses overall.
 #  
 
-import `../util`
+import "../util"
 
 pub fn target(none) i32 {
 

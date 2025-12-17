@@ -2,7 +2,7 @@
 #  * spills and no mov instructions between registers.
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob_a: char;
 pub glob_b: char;

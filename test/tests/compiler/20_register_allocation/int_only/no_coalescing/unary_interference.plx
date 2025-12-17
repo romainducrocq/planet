@@ -3,7 +3,7 @@
 #  * Only guaranteed to work as intended after implementing register coalescing.
 #  * 
 
-import `../util`
+import "../util"
 
 pub fn main(none) i32 {
     #  negation

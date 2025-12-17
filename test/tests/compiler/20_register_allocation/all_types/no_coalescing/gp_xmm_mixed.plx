@@ -3,7 +3,7 @@
 #  * Test script validates that there are no spills.
 #  
 
-import `../util`
+import "../util"
 
 pub fn target(one: i32, two: i32, one_d: f64, two_d: f64, three: i32, three_d: f64) i32 {
     #  Define ints 4-8 (all callee-saved) and doubles 10-23 and validate them

@@ -6,7 +6,7 @@
 #  * sure there are no spills.
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob: i32 = 1
 

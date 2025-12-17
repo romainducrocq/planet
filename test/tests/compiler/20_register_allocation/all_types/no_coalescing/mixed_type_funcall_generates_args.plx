@@ -7,7 +7,7 @@
 #  * NOTE: only works as intended once we've implemented coalescing.
 #  * 
 
-import `../util`
+import "../util"
 
 type struc s(    l: i64#  RDI
     , d: f64#  XMM0

@@ -7,7 +7,7 @@
 #  * This test program is generated from templates/chapter_20_templates/force_spill.c.jinja
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob_three: i32 = 3
 

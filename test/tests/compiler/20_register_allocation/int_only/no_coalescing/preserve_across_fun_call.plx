@@ -5,7 +5,7 @@
 #  * accident.
 #  
 
-import `../util`
+import "../util"
 
 pub glob1: i32 = 1
 pub glob2: i32 = 2

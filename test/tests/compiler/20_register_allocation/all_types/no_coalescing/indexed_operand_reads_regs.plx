@@ -4,7 +4,7 @@
 #  * Note: only works as intended after we've implemented register coalescing.
 #  * 
 
-import `../util`
+import "../util"
 
 pub arr: [2]i32 = $(1, 2)
 pub arr2: [2]i64 = $(3, 4)

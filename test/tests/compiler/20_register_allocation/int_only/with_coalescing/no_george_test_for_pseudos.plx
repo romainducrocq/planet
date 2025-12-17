@@ -7,7 +7,7 @@
 #  * make sure it has no more than the expected number of spill instructions.
 #  * 
 
-import `../util`
+import "../util"
 
 #  TODO consider refactoring with spill_test_metric, some of this is copy-pasted
 #  from there

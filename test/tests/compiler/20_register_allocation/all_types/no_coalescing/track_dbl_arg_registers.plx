@@ -8,7 +8,7 @@
 #  * in spills.
 #  * 
 
-import `../util`
+import "../util"
 
 #  defined in tests/chapter_20/helper_libs/track_dbl_arg_registers_lib.c,
 #  exits early if a, b, c don't have expected values

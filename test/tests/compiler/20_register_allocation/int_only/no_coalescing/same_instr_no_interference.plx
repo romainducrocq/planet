@@ -5,7 +5,7 @@
 #  * allocate every register without spilling.
 #  
 
-import `../util`
+import "../util"
 
 pub fn target(none) i32 {
     #  define some values - must be in callee-saved regs 

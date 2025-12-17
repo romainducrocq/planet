@@ -4,7 +4,7 @@
 #  * but should be able to store all other pseudos in registers.
 #  
 
-import `../util`
+import "../util"
 
 pub fn increment(ptr: *i32) none {
     ptr[] = ptr[] + 1

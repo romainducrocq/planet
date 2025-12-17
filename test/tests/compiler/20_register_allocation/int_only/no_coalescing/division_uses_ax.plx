@@ -6,7 +6,7 @@
 #  * This test program is generated from templates/chapter_20_templates/division_uses_ax.c.jinja
 #  
 
-import `../util`
+import "../util"
 
 pub fn main(none) i32 {
     #  we'll coalesce this into EAX because it's a function's return value,

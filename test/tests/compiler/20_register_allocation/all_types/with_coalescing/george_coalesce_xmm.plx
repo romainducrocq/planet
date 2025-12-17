@@ -7,7 +7,7 @@
 #  * This test was generated from templates/chapter_20_templates/george_coalesce.c.jinja.
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob: f64 = 4.0
 

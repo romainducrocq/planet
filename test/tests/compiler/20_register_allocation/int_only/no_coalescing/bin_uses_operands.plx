@@ -6,7 +6,7 @@
 #  * This test program is generated from templates/chapter_20_templates/bin_uses_operands.c.jinja
 #  
 
-import `../util`
+import "../util"
 
 #  recognize that addl uses its source
 pub fn src_test(arg: i32) i32 {

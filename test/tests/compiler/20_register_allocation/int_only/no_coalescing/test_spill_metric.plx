@@ -2,7 +2,7 @@
 #  * we spill the one with the lowest spill cost (i.e. fewest uses)
 #  
 
-import `../util`
+import "../util"
 
 pub fn target(none) i32 {
     #  Define 6 callee-saved regs that interfere with each other;

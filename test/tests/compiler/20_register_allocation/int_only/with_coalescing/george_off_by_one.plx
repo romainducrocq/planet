@@ -10,7 +10,7 @@
 #  * templates/chapter_20_templates/george_off_by_one.c.jinja.
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob: i32 = 0
 

@@ -10,7 +10,7 @@
 #  * even if we don't perform register coalescing.
 #  * 
 
-import `../util`
+import "../util"
 
 pub flag: i32 = 1
 

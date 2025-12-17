@@ -8,7 +8,7 @@
 #  * This test program is generated from templates/chapter_20_templates/rewrite_regression_test.c.jinja
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob_three: i32 = 3
 pub glob_four: i32 = 4

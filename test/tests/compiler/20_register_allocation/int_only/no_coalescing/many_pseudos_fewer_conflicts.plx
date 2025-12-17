@@ -3,7 +3,7 @@
 #  * conflict
 #  
 
-import `../util`
+import "../util"
 
 #  define a function that returns a value
 #  so we can't just constant fold everything away

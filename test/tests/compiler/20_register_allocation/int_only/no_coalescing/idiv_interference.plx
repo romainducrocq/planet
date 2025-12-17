@@ -7,7 +7,7 @@
 #  * This test program is generated from templates/chapter_20_templates/division_interference.c.jinja
 #  
 
-import `../util`
+import "../util"
 
 pub glob: i32 = 3
 

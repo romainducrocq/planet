@@ -4,7 +4,7 @@
 #  * behavior, don't inspect assembly.
 #  * 
 
-import `../util`
+import "../util"
 
 pub one: i64 = 1l
 

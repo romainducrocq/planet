@@ -6,7 +6,7 @@
 #  * This test program is generated from templates/chapter_20_templates/bin_uses_operands.c.jinja
 #  
 
-import `../util`
+import "../util"
 
 #  recognize that addsd uses its source
 pub fn src_test(arg: f64) f64 {

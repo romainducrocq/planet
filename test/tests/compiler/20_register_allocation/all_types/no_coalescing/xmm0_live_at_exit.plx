@@ -5,7 +5,7 @@
 #  * This test program is generated from templates/chapter_20_templates/reg_live_at_exit.c.jinja
 #  * 
 
-import `../util`
+import "../util"
 
 pub glob: f64 = 10.0
 pub glob2: f64 = 0.0

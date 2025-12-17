@@ -6,9 +6,9 @@
 #  * as the return type.
 #  * 
 
-import `../util`
+import "../util"
 
-use `stdlib`
+use "stdlib"
 
 pub arr: [3]i64 = $(100, 200, 300)
 pub glob2: i64;

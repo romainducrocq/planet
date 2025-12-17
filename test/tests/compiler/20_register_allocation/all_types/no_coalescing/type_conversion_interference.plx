@@ -4,7 +4,7 @@
 #  * we've implemented register coalescing.
 #  
 
-import `../util`
+import "../util"
 
 pub glob: i32;
 

@@ -3,7 +3,7 @@
 #  * spill candidates but only spill 5 of them.
 #  
 
-import `../util`
+import "../util"
 
 pub flag: i32 = 0
 pub result: bool = 0

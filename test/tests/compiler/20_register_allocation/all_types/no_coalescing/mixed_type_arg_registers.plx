@@ -11,7 +11,7 @@
 #  * param-passing registers/push them onto the stack
 #  * 
 
-import `../util`
+import "../util"
 
 type struc s1(    #  XMM0
     d: f64    #  RDI

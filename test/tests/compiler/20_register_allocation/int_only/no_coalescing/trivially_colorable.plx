@@ -2,7 +2,7 @@
 #  * The test script validates that we don't spill any pseudoregisters in target.
 #  
 
-import `../util`
+import "../util"
 
 pub fn target(one: i32, two: i32) i32 {
     #  perform a few calculations that make one, two, three, four, and five

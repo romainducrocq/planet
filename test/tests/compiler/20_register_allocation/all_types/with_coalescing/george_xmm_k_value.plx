@@ -3,7 +3,7 @@
 #  * and no moves between XMM registers.
 #  
 
-import `../util`
+import "../util"
 
 #  use these to create non-const-foldable initial values
 pub glob1: f64 = 1.

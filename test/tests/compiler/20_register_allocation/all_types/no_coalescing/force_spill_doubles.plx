@@ -1,4 +1,4 @@
-import `../util`
+import "../util"
 
 pub glob: i32 = 3
 pub glob2: f64 = 4.0

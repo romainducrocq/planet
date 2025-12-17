@@ -1,6 +1,6 @@
 #  Test that liveness analysis for registers handles loop correctly 
 
-import `../util`
+import "../util"
 
 pub counter: i32 = 5
 pub expected_a: i32 = 2

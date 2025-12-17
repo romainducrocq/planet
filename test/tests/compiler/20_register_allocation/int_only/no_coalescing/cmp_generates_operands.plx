@@ -3,7 +3,7 @@
 #  * Note: this only works as intended after we've implemented register
 #  * coalescing.
 #  * 
-import `../util`
+import "../util"
 
 pub glob: i32 = 10
 pub glob2: i32 = 20
