@@ -149,13 +149,13 @@ static TOKEN_KIND match_include(Ctx ctx, TOKEN_KIND tok_kind) {
         }
     }
 
-    if (match_char(ctx, '`')) {
+    if (match_char(ctx, '"')) {
         ctx->match_at += ctx->match_size - 1;
         ctx->match_size = 1;
 
-        while (match_invert(ctx, '`')) {
+        while (match_invert(ctx, '"')) {
         }
-        if (get_char(ctx) == '`') {
+        if (get_char(ctx) == '"') {
             ctx->match_size++;
             return tok_kind;
         }
@@ -839,7 +839,7 @@ static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
     return false;
 }
 
-// <include> ::= ( "import" | "use" ) [ "!" ] "`" <header-file> "`"
+// <include> ::= ( "import" | "use" ) [ "!" ] "\"" <header-file> "\""
 static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, bool is_empty) {
     string_t filename = str_new(NULL);
     string_t fopen_name = str_new(NULL);
