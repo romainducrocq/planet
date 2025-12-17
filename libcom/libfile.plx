@@ -1,7 +1,7 @@
-import `libfile`
-use `ctype`
-use `stdio`
-use `stdlib`
+import "libfile"
+use "ctype"
+use "stdio"
+use "stdlib"
 
 pub fn ftext_close(filetext: *struc FileText) none {
     filetext[].lines = 0
