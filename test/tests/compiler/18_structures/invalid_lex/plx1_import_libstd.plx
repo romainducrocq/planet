@@ -1,4 +1,4 @@
-import `stdlib`
+import "stdlib"
 
 pub fn main(none) i32 {
     return 0

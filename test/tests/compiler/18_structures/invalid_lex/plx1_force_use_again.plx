@@ -1,6 +1,6 @@
-use `stdlib`
+use "stdlib"
 
 pub fn main(none) i32 {
-    use! `stdlib`
+    use! "stdlib"
     return 0
 }
