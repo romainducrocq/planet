@@ -1,5 +1,7 @@
 *.plx linguist-language=Python
 *.etc linguist-language=Python
+*.m4 linguist-language=Python
+*.i linguist-language=Python
 libcom/* linguist-vendored
 libcom/** linguist-vendored
 libstd/* linguist-vendored
