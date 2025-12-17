@@ -1,6 +1,6 @@
 
 #  Test that we can return structs of every size between 1 and 24 bytes. 
-import `retval_struct_sizes`
+import "retval_struct_sizes"
 
 pub fn fun1(none) struc bytesize1 {
     return globvar_1

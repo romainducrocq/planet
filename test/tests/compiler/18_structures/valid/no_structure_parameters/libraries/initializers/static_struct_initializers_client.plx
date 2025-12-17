@@ -4,7 +4,7 @@
 #  * - array decay of string literals
 #  
 
-import `static_struct_initializers`
+import "static_struct_initializers"
 
 
 

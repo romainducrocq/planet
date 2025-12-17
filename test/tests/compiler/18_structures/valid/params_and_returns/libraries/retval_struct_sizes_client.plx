@@ -1,6 +1,6 @@
 #  Test that we can return structs of every size between 1 and 24 bytes. 
-import `retval_struct_sizes`
-use `string`
+import "retval_struct_sizes"
+use "string"
 
 pub fn main(none) i32 {
     s1: struc bytesize1 = fun1()

@@ -6,7 +6,7 @@
 #  * - string literals as pointer and array initializers
 #  * 
 
-import `auto_struct_initializers`
+import "auto_struct_initializers"
 
 
 

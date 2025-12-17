@@ -1,6 +1,6 @@
 #  Test that we can pass static and automatic structs of every size between 1 and 24 bytes.
 #  * Pass each size both in a register (when possible) and on the stack. 
-import `struct_sizes`
+import "struct_sizes"
 
 pub fn main(none) i32 {
 

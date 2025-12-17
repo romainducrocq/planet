@@ -1,6 +1,6 @@
 #  Test returning unions (and structs containing unions) according to the ABI 
 
-import `union_lib`
+import "union_lib"
 
 pub fn return_one_double(none) union one_double {
     result: union one_double = $(245.5)

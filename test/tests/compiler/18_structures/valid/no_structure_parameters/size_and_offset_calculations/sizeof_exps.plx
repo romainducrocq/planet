@@ -5,7 +5,7 @@
 #  * type
 #  * 
 
-import `struct_sizes`
+import "struct_sizes"
 
 pub fn get_twentybyte_ptr(none) *struc twenty_bytes {
     return 0

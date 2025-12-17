@@ -1,7 +1,7 @@
 #  Test passing union types along w/ other arguments according to ABI;
 #  * these functions just validate params passed by client
 #  
-import `union_lib`
+import "union_lib"
 
 pub fn pass_unions_and_structs(i1: i32, i2: 
     i32, one_gp_struct: struc has_union, d1: f64, two_xmm: union two_doubles, one_gp: union one_int, i3: i32, i4: i32, 

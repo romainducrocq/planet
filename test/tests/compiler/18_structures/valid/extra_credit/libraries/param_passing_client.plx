@@ -1,6 +1,6 @@
 #  Test passing union types along w/ other arguments according to ABI 
 
-import `union_lib`
+import "union_lib"
 
 pub fn main(none) i32 {
     #  mix of unions, structs, and other args; we can pass the unions in registers

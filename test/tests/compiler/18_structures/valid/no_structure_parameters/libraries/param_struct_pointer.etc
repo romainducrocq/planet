@@ -1,7 +1,7 @@
 #  Test passing struct pointers as function parameters 
 
 #  library function
-use `stdlib`
+use "stdlib"
 
 #  define some struct types
 type struc inner(    d: f64    

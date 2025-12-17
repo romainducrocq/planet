@@ -13,7 +13,7 @@
 
 
 #  standard library function
-use `string`
+use "string"
 
 #  structure type defs
 type struc inner(    one_i: i32    , two_arr: [3]i8    , three_u: u32    

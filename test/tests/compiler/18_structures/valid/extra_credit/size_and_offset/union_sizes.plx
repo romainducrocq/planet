@@ -1,5 +1,5 @@
 #  Apply sizeof to a range of union types
-import `../../no_structure_parameters/size_and_offset_calculations/struct_sizes`
+import "../../no_structure_parameters/size_and_offset_calculations/struct_sizes"
 
 #  size is 11 bytes; no padding
 type union no_padding(    c: char    , uc: u8    , arr: [11]i8    )

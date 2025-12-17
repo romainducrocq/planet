@@ -2,7 +2,7 @@
 #  * and using struct pointers returned from functions
 #  * 
 
-use `stdlib`
+use "stdlib"
 
 #  define some struct types
 type struc inner(    d: f64    

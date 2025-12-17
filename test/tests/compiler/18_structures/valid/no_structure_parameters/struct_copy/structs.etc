@@ -7,8 +7,8 @@
 
 
 
-use `stdlib`
-use `string`
+use "stdlib"
+use "string"
 
 type struc small(    a: i32    , b: i64    
     )

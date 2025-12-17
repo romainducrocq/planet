@@ -3,7 +3,7 @@
 #  * doesn't try to use the return value
 #  * 
 
-import `missing_retval`
+import "missing_retval"
 
 
 

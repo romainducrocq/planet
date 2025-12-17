@@ -1,7 +1,7 @@
 #  Test using -> to iterate through a linked list
 #  * and exercise chained member access of the form x->y->
 #  * 
-use `stdlib`
+use "stdlib"
 
 #  linked_list_node type from Listing 18-6
 type struc linked_list_node(    val: i32    

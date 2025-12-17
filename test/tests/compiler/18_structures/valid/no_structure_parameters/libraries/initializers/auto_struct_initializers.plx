@@ -6,7 +6,7 @@
 #  * - string literals as pointer and array initializers
 #  * 
 
-import `auto_struct_initializers`
+import "auto_struct_initializers"
 
 pub fn validate_full_initialization(ptr: *struc s) i32 {
     if strcmp(ptr[].one_msg, "I'm a struct!") or ptr[].two_arr[0] ~= 's' or     ptr[].two_arr[1] ~= 'u' or ptr[].two_arr[2] ~= 'p' or     ptr[].three_self_ptr ~= ptr or ptr[].four_d ~= 2e12 or     ptr[].five_d_ptr[] ~= 2e12 {

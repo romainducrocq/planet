@@ -10,9 +10,9 @@
 
 
 
-use `stdio`
-use `stdlib`
-use `string`
+use "stdio"
+use "stdlib"
+use "string"
 
 #  test 1: you can declare a function that accepts/returns incomplete struct
 #  types. We don't define or use this function, we just need to validate that

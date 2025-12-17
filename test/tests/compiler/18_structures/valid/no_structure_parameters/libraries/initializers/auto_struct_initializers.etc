@@ -15,8 +15,8 @@
 
 
 #  library functions
-use `stdlib`
-use `string`
+use "stdlib"
+use "string"
 
 #  struct type def
 type struc s(    one_msg: *char    

@@ -1,6 +1,6 @@
 #  Test initialization of unions with both automatic and static storage duration
 
-import `union_inits`
+import "union_inits"
 
 pub fn validate_simple(ptr: *union simple) i32 {
     return (ptr[].d == 123.45)

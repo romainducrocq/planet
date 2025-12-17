@@ -4,7 +4,7 @@
 #  * and does nothing if one is already in scope?
 #  * 
 
-use `stdlib`
+use "stdlib"
 
 #  simple struct type used in several tests
 type struc s(    a: i32    )

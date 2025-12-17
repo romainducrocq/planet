@@ -1,5 +1,5 @@
 #  Test that we return a wide range of struct types according to the ABI 
-import `return_calling_conventions`
+import "return_calling_conventions"
 
 pub fn return_int_struct(none) struc one_int {
     retval: struc one_int = $(1, 2)

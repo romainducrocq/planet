@@ -8,7 +8,7 @@
 #  * validate, and go undetected).
 #  
 
-use `stdlib`
+use "stdlib"
 
 type struc chars(    char_array: [3]char    )
 

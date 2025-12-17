@@ -5,7 +5,7 @@
 #  * - arrays of structs, structs containing arrays
 #  * 
 
-import `nested_auto_struct_initializers`
+import "nested_auto_struct_initializers"
 
 pub fn validate_full_initialization(ptr: *struc outer) i32 {
     if ptr[].one_l ~= -200l or ptr[].two_struct.one_i ~= -171 or     ptr[].two_struct.two_arr[0] ~= 200 or     ptr[].two_struct.two_arr[1] ~= 202 or     ptr[].two_struct.two_arr[2] ~= 203 or ptr[].two_struct.three_u ~= 40u or     strcmp(ptr[].three_msg, "Important message!") or ptr[].four_d ~= -22. or     ptr[].five_pair.a ~= 1 or ptr[].five_pair.b ~= 2 {

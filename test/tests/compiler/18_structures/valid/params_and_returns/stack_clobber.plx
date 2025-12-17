@@ -21,8 +21,8 @@
 
 
 
-use `stdlib`
-use `string`
+use "stdlib"
+use "string"
 
 type struc stack_bytes(    bytes: [16]char    )
 

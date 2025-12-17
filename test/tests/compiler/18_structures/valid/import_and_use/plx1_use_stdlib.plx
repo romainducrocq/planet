@@ -1,4 +1,4 @@
-use `stdlib`
+use "stdlib"
 
 pub fn main(none) i32 {
     {

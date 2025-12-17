@@ -7,7 +7,7 @@
 
 
 
-use `string`
+use "string"
 
 type struc one_int(    i: i32    , c: char    )
 

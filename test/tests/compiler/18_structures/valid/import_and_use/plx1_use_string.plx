@@ -1,4 +1,4 @@
-use `string`
+use "string"
 
 fn check_bytes(mem: *char, size: i32, byte: char) i32 {
     loop i: i32 = 0 while i < size .. i = i + 1 {

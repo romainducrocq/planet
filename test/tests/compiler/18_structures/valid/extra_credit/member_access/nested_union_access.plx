@@ -1,6 +1,6 @@
 #  Test access to nested union members through dot, arrow, and subscript operators 
 
-import `../union_types`
+import "../union_types"
 
 pub fn test_auto_dot(none) i32 {
     #  Test nested access with . in unions/structs containing unions

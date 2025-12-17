@@ -4,7 +4,7 @@
 #  * - implicit conversion of scalar elements, array decay of string literals
 #  
 
-import `nested_static_struct_initializers`
+import "nested_static_struct_initializers"
 
 
 

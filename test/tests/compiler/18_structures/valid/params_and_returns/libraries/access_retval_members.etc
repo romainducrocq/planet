@@ -4,7 +4,7 @@ type struc inner(    x: char    , y: i64
 
 type struc outer(    d: f64    , ptr: *struc inner    , s: struc inner    )
 
-use `stdlib`
+use "stdlib"
 
 pub fn return_small_struct(none) struc inner;
 pub fn return_nested_struct(none) struc outer;

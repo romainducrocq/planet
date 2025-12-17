@@ -1,7 +1,7 @@
 #  Test that we can pass a mix of struct and non-struct arguments according to
 #  * the ABI 
 
-import `param_calling_conventions`
+import "param_calling_conventions"
 
 #  all arguments fit in registers
 pub fn pass_small_structs(two_xmm_struct: struc two_xmm, int_struct: struc one_int, xmm_struct: struc one_xmm, mixed_struct: struc xmm_and_int, int_struct_2: struc twelve_bytes, another_int_struct: struc one_int_exactly) i32 {

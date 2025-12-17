@@ -1,8 +1,8 @@
 #  Read and assign to non-scalar union members
 
-import `../union_types`
+import "../union_types"
 
-use `stdlib`
+use "stdlib"
 
 pub fn test_dot(none) i32 {
     #  Test reading/writing whole nested unions/structs w/ . operator

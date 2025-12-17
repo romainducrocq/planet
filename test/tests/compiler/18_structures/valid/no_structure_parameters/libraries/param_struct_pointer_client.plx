@@ -1,6 +1,6 @@
 #  Test passing struct pointers as function parameters 
 
-import `param_struct_pointer`
+import "param_struct_pointer"
 
 pub fn main(none) i32 {
     s: struc outer = $(1, 2, $(3.0, 4))

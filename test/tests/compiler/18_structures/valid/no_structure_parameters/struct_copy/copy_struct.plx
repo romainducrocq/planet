@@ -3,7 +3,7 @@
 #  * Include static and automatic objects and result of conditional expressions.
 #  * 
 
-import `structs`
+import "structs"
 
 
 

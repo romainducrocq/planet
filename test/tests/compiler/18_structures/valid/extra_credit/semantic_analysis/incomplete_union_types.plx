@@ -10,8 +10,8 @@
 
 
 
-use `stdio`
-use `stdlib`
+use "stdio"
+use "stdlib"
 
 #  Test 1: you can declare a function that accepts/returns incomplete
 #  union types

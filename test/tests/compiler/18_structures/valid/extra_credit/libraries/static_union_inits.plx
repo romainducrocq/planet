@@ -1,5 +1,5 @@
 #  Test initialization of static unions; make sure uninitialized unions are initialized to zero
-import `static_union_inits`
+import "static_union_inits"
 
 
 pub fn validate_simple(none) i32 {

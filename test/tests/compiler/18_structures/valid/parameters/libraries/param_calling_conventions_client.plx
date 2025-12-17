@@ -1,7 +1,7 @@
 #  Test that we can pass a mix of struct and non-struct arguments according to
 #  * the ABI 
 
-import `param_calling_conventions`
+import "param_calling_conventions"
 
 pub fn main(none) i32 {
     #  define a bunch of structures

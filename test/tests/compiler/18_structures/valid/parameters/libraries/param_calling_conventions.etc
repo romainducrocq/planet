@@ -9,7 +9,7 @@
 
 
 
-use `string`
+use "string"
 
 #  This type comes from Listing 18-45
 type struc two_longs(    a: i64    , b: i64    )

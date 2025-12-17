@@ -1,5 +1,5 @@
 #  Test for accessing the members in a return value of structure type 
-import `access_retval_members`
+import "access_retval_members"
 
 pub fn main(none) i32 {
     #  get member in a non-nested struct

@@ -8,9 +8,9 @@
 
 
 
-import `../union_types`
+import "../union_types"
 
-use `string`
+use "string"
 
 #  case 1: *x = y
 pub fn test_copy_to_pointer(none) i32 {

@@ -2,7 +2,7 @@
 #  * but split into two translation units
 #  * 
 
-import `pass_struct`
+import "pass_struct"
 
 pub fn main(none) i32 {
     arg: struc pair = $(1, 2)

@@ -1,6 +1,6 @@
 #  Test initialization of unions with automatic storage duration
 
-import `union_inits`
+import "union_inits"
 
 
 

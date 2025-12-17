@@ -1,4 +1,4 @@
-use `stdlib`
+use "stdlib"
 
 type union simple(    i: i32    , l: i64    
     , c: char    , uc_arr: [3]u8    )

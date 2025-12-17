@@ -11,7 +11,7 @@
 
 
 
-use `string`
+use "string"
 
 #  from Listing 18-39
 type struc twelve_bytes(    i: i32    , arr: [8]char    ) #  two INTEGER eightbytes

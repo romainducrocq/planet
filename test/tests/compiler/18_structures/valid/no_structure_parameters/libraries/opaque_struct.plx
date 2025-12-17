@@ -11,9 +11,9 @@
 
 
 #  library functions
-use `stdio`
-use `stdlib`
-use `string`
+use "stdio"
+use "stdlib"
+use "string"
 
 
 type struc s(

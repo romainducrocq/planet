@@ -1,7 +1,7 @@
 #  Test accessing nested structures members, through dot, arrow, and subscript
 #  * operators 
 
-use `stdlib`
+use "stdlib"
 
 type struc inner(    a: f64    , b: char    , ptr: *i32    )
 

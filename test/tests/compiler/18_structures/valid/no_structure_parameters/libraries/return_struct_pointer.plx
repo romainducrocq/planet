@@ -2,7 +2,7 @@
 #  * and using struct pointers returned from functions
 #  * 
 
-import `return_struct_pointer`
+import "return_struct_pointer"
 
 #  define some functions that return pointers to structs
 pub fn make_struct_inner(seed: bool) *struc inner {

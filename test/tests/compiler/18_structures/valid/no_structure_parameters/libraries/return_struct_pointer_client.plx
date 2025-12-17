@@ -2,7 +2,7 @@
 #  * and using struct pointers returned from functions
 #  * 
 
-import `return_struct_pointer`
+import "return_struct_pointer"
 
 #  case 1: use a struct pointer returned from a function call
 pub fn test_get_struct_ptr(none) bool {

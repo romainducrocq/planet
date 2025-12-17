@@ -1,4 +1,4 @@
-use `ctype`
+use "ctype"
 
 pub fn main(none) i32 {
     if not isalnum('a') { return 1 }

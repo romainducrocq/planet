@@ -1,4 +1,4 @@
-import `union_lib`
+import "union_lib"
 
 pub fn test_one_double(u: union one_double) bool {
     return (u

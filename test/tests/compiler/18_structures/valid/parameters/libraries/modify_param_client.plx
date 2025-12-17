@@ -1,6 +1,6 @@
 #  Modify a parameter of structure type
 #  * 
-import `modify_param`
+import "modify_param"
 
 pub fn main(none) i32 {
     s_inner: struc inner = $(2.0, 3)

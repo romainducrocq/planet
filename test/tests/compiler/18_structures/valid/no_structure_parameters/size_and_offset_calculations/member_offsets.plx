@@ -2,9 +2,9 @@
 #  * (including nested members accessed through chains of . and -> operations)
 #  * and addresses of one-past-the-end of structs to validate trailing padding
 #  * 
-import `struct_sizes`
+import "struct_sizes"
 
-use `stdlib`
+use "stdlib"
 
 #  test 1: validate struct w/ scalar members (includes trailing padding)
 #  test member accesses of the form &x.y

@@ -3,7 +3,7 @@
 #  * Each test function takes only one argument.
 #  * 
 
-import `classify_params`
+import "classify_params"
 
 pub fn main(none) i32 {
     s1: struc twelve_bytes = $(0, "lmnopqr")

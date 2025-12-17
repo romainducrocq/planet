@@ -1,7 +1,7 @@
 #  Verify that sizeof produces correct results for various structure types (and
 #  * arrays of structs) 
 
-import `struct_sizes`
+import "struct_sizes"
 
 pub fn main(none) i32 {
     #  validate the size of every type in struct_sizes.h

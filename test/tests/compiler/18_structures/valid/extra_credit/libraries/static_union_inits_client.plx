@@ -1,6 +1,6 @@
 #  Test initialization of static unions; make sure uninitialized
 #  unions/sub-objects are initialized to zero
-import `static_union_inits`
+import "static_union_inits"
 
 #  Test case 1 - simple union w/ scalar elements
 

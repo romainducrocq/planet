@@ -2,7 +2,7 @@
 #  * is missing a return statement. This is well-defined as long as the caller
 #  * doesn't try to use the return value
 #  * 
-import `missing_retval`
+import "missing_retval"
 
 pub fn main(none) i32 {
     array: [4]i32 = $(1, 2, 3, 4)

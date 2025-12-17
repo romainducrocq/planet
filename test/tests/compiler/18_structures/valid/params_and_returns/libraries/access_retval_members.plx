@@ -1,5 +1,5 @@
 #  Test for accessing the members in a return value of structure type 
-import `access_retval_members`
+import "access_retval_members"
 
 pub fn return_small_struct(none) struc inner {
     i: struc inner = $(101, 102)

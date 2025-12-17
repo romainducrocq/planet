@@ -1,7 +1,7 @@
 #  Test using -> to copy entire structures,
 #  including large structures w/ members of different sizes
 
-use `stdlib`
+use "stdlib"
 
 type struc inner(    d: f64    , i: i32    
     )

@@ -9,8 +9,8 @@
 
 
 
-use `stdio`
-use `stdlib`
+use "stdio"
+use "stdlib"
 
 #  test that changes to static struct are retained across function calls
 #  do this by validating text written to stdout,

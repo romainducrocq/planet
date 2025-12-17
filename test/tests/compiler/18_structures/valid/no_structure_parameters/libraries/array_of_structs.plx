@@ -1,6 +1,6 @@
 #  Test that we can pass a pointer to an array of structures as a parameter 
 
-import `array_of_structs`
+import "array_of_structs"
 
 pub fn validate_struct_array(struct_array: *struc outer) i32 {
     loop i: i32 = false while i < 3 .. i = i + 1 {

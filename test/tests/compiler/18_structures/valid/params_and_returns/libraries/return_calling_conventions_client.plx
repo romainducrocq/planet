@@ -1,5 +1,5 @@
 #  Test that we return a wide range of struct types according to the ABI 
-import `return_calling_conventions`
+import "return_calling_conventions"
 
 pub fn main(none) i32 {
     one_long: struc one_int_exactly = $(567890l)

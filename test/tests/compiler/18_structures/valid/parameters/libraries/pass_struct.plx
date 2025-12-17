@@ -2,7 +2,7 @@
 #  * but split into two translation units
 #  * 
 
-import `pass_struct`
+import "pass_struct"
 
 pub fn validate_struct_param(p: struc pair) i32 {
     if p.x ~= 1 or p.y ~= 2 {

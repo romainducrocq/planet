@@ -3,7 +3,7 @@
 #  * Each test function takes only one argument.
 #  * 
 
-import `classify_params`
+import "classify_params"
 
 pub fn test_twelve_bytes(s: struc twelve_bytes) i32 {
     if s.i ~= 0 or strcmp(s.arr, "lmnopqr") {

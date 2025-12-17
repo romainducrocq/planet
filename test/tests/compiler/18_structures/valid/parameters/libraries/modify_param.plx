@@ -1,7 +1,7 @@
 #  Modify a parameter of structure type
 #  * 
 
-import `modify_param`
+import "modify_param"
 
 pub fn modify_simple_struct(s: struc inner) bool {
     #  copy it

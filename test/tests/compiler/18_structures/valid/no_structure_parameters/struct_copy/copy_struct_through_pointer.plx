@@ -4,7 +4,7 @@
 #  * with a mix of static and automatic structs
 #  * 
 
-import `structs`
+import "structs"
 
 #  case 1: *x = y
 pub fn test_copy_to_pointer(none) i32 {

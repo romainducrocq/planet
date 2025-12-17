@@ -5,7 +5,7 @@
 #  * - arrays of structs, structs containing arrays
 #  * 
 
-import `nested_auto_struct_initializers`
+import "nested_auto_struct_initializers"
 
 
 

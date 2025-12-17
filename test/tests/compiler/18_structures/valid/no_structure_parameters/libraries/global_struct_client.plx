@@ -1,6 +1,6 @@
 #  Basic test that we can access a global struct in multiple translation units
 #  * 
-import `global_struct`
+import "global_struct"
 
 pub global: struc s = $(1, $(2, 3), 4.0)
 pub global_outer: struc outer = $(5, $(6, $(7, 
