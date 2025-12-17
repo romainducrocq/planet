@@ -32,7 +32,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 
 ```
 <program> ::= { ( <declaration> | <include> ) "\n" }
-<include> ::= ( "import" | "use" ) [ "!" ] "`" <header-file> "`"
+<include> ::= ( "import" | "use" ) [ "!" ] "\"" <header-file> "\""
 <declaration> ::= <datatype-declaration> | <variable-declaration> | <function-declaration>
 <datatype-declaration> ::= "type" <datatype-specifier> ( <declarator-list> | ";" )
 <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
