@@ -1,5 +1,5 @@
 #  Test that we eliminate the second clause in 1 || x 
-use `stdio`
+use "stdio"
 
 pub fn target(none) i32 {
     return true or putchar(97)

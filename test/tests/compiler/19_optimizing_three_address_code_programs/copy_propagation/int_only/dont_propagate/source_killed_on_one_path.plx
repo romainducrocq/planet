@@ -3,7 +3,7 @@
 #  * it doesn't reach that block
 #  * 
 
-use `stdio`
+use "stdio"
 
 pub fn f(src: i32, flag: i32) i32 {
     x: i32 = src #  generate x = src

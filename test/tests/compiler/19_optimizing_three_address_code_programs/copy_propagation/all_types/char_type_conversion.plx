@@ -7,7 +7,7 @@
 
 
 
-use `stdio`
+use "stdio"
 
 pub fn print_some_chars(a: char, b: char, c: char, d: char) none {
     putchar(a)

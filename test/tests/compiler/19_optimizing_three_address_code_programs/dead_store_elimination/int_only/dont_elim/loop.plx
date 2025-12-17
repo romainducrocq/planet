@@ -1,7 +1,7 @@
 #  Test case where a block is its own predecessor
 #  * 
 
-use `stdio`
+use "stdio"
 
 pub fn fib(count: i32) i32 {
     n0: i32 = 0

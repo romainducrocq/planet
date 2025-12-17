@@ -1,5 +1,5 @@
 #  Test that we eliminate the second clause in 0 && y 
-use `stdio`
+use "stdio"
 
 pub fn target(none) i32 {
     return nil and putchar(97)

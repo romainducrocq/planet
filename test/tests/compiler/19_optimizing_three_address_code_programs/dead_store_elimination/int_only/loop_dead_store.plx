@@ -1,5 +1,5 @@
 #  Test that we can detect dead stores in a function with a loop 
-use `stdio`
+use "stdio"
 
 pub fn target(none) i32 {
     x: bool = 5 #  dead store
