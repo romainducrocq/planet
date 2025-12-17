@@ -1,7 +1,7 @@
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/at_sign.plx:4:13:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘`’[0m
 at line 4: [0;31m            v[0m
-         | [1m    return 0`1[0m
+         | [1m    return 0``1''[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/backslash.plx:2:1:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘\’[0m
@@ -11,7 +11,7 @@ planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/backtick.plx:2:1:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘`’[0m
 at line 2: [0;31mv[0m
-         | [1m`[0m
+         | [1m``''[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/1_int_constants/invalid_lex/invalid_identifier_2.plx:3:12:[0m
 [0;31merror:[0m (no. 306) found m4 macro [1m‘m4_b’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
@@ -3478,7 +3478,7 @@ planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 at line 1: [0;31m         v~~~~~~~[0m
          | [1mimport ! `stdlib`[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
-[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_import_missing_backtick.plx:1:9:[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_import_missing_quote.plx:1:9:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘`return_0
 ’[0m
 at line 1: [0;31m        v~~~~~~~~~~[0m
@@ -3519,26 +3519,26 @@ planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 at line 1: [0;31m       v~~~~~~~[0m
          | [1mimport `stdlib`[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
-[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_missing_backtick_1.plx:1:8:[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_missing_quote_1.plx:1:8:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘`return_0
 ’[0m
 at line 1: [0;31m       v~~~~~~~~~~[0m
          | [1mimport `return_0[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
-[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_missing_backtick_2.plx:1:1:[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_missing_quote_2.plx:1:1:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘import r’[0m
 at line 1: [0;31mv~~~~~~~[0m
          | [1mimport return_0`[0m
-planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
-[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_no_backtick.plx:1:1:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘import r’[0m
-at line 1: [0;31mv~~~~~~~[0m
-         | [1mimport return_0[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_no_file.plx:1:8:[0m
 [0;31merror:[0m (no. 304) cannot find [1m‘.etc’[0m header file in [1m‘import’[0m directive search
 at line 1: [0;31m       v~[0m
          | [1mimport ``[0m
+planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_no_quotes.plx:1:1:[0m
+[0;31merror:[0m (no. 301) found invalid token [1m‘import r’[0m
+at line 1: [0;31mv~~~~~~~[0m
+         | [1mimport return_0[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_include_no_import.plx:1:1:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘`’[0m
