@@ -3545,6 +3545,11 @@ planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 at line 1: [0;31mv~~~~~~~~~[0m
          | [1m"return_0"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_m4_define_no_suffix.plx:1:7:[0m
+[0;31merror:[0m (no. 401) found token [1m‘(’[0m, but expected [1m‘:’[0m next
+at line 1: [0;31m      v[0m
+         | [1mdefine(EXIT_ZERO, 0)[0m
+planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_use_in_line.plx:2:16:[0m
 [0;31merror:[0m (no. 303) cannot search [1m‘ctype.etc’[0m in a line, [1m‘use’[0m requires its own line
 at line 2: [0;31m               v~~~~~~[0m
