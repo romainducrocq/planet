@@ -11,7 +11,7 @@ m4_define(`RETURN_VAL', `return $1')m4_dnl
 
 pub fn main(none) i32 {
     if 'a' ~= M4_CHAR(a) {
-        RETURN_VAL(1)
+        RETURN_VAL(CONST_ONE)
     }
 
     arr: [CONST_THREE]i32 = $(
@@ -30,10 +30,10 @@ pub fn main(none) i32 {
         }
         -> CONST_TWO {
             if arr[CONST_TWO] == '0' {
-                RETURN_VAL(0)
+                RETURN_VAL(CONST_ZERO)
             }
             else {
-                RETURN_VAL(2)
+                RETURN_VAL(CONST_TWO)
             }
         }
         otherwise {
@@ -41,5 +41,5 @@ pub fn main(none) i32 {
         }
     }
 
-    RETURN_VAL(3)
+    return 3
 }
