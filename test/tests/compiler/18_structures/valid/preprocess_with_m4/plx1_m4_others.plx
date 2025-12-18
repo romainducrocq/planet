@@ -4,7 +4,7 @@ m4_define(`M4_INCR', `m4_$1($2)')m4_dnl
 m4_define(`CONST_TWO_DECR', `M4_INCR(decr, 2)')m4_dnl
 m4_define(`CONST_FOUR_INCR', `M4_INCR(incr, 4)')m4_dnl
 
-m4_sinclude(`not_a_file.plx.m4')
+m4_sinclude(`not_a_file.plx.m4')m4_dnl
 
 m4_define(`IMPORT_RETURN_0', `
 import "../../invalid_lex/return_0"
