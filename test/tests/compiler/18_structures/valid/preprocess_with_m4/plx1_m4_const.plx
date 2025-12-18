@@ -1,3 +1,5 @@
+# https://www.cs.auckland.ac.nz/references/unix/digital/APS32DTE/DOCU_006.HTM
+
 m4_changequote(`[[', `]]')m4_dnl
 m4_define([[M4_CHAR]], [['$1']])m4_dnl
 m4_changequote([[`]], [[']])m4_dnl

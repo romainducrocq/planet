@@ -1,3 +1,5 @@
+# https://www.cs.auckland.ac.nz/references/unix/digital/APS32DTE/DOCU_006.HTM
+
 m4_define(`EXIT_ONE', `')m4_dnl
 m4_undefine(`EXIT_ONE')m4_dnl
 
