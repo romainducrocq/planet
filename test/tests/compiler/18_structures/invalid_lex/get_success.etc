@@ -1,0 +1,3 @@
+fn get_success(none) i32 {
+    return 0
+}

@@ -1,4 +1,4 @@
-use! "return_0"
+use! "get_success"
 
 pub fn main(none) i32 {
     return 0

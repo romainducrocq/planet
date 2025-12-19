@@ -1,5 +1,5 @@
-extrn import! "return_0"
+extrn import! "get_success"
 
 pub fn main(none) i32 {
-    return_0()
+    return get_success()
 }

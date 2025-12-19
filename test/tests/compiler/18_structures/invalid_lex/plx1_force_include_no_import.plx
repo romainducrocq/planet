@@ -1,5 +1,5 @@
-! "return_0"
+! "get_success"
 
 pub fn main(none) i32 {
-    return_0()
+    return get_success()
 }
