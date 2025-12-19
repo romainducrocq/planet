@@ -7,7 +7,7 @@ m4_define(`CONST_FOUR_INCR', `M4_INCR(incr, 4)')m4_dnl
 m4_sinclude(`not_a_file.plx.m4')m4_dnl
 
 m4_define(`IMPORT_RETURN_0', `
-import "../../invalid_lex/return_0"
+import "../../invalid_lex/get_success"
 ')m4_dnl
 
 m4_define(`CONST_ONE', 1)m4_dnl
@@ -25,6 +25,6 @@ pub fn main(none) i32 {
         RETURN_VAL(CONST_THREE)
     }
 
-    RETURN_VAL(return_0())
+    RETURN_VAL(get_success())
     return 4
 }
