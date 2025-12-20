@@ -1,15 +1,7 @@
 # https://www.cs.auckland.ac.nz/references/unix/digital/APS32DTE/DOCU_006.HTM
 
-m4_changequote(`[[', `]]')m4_dnl
-m4_define([[M4_CHAR]], [['$1']])m4_dnl
-m4_changequote([[`]], [[']])m4_dnl
-
-m4_define(`CONST_ZERO', 0)m4_dnl
-m4_define(`CONST_ONE', 1)m4_dnl
-m4_define(`CONST_TWO', 2)m4_dnl
-m4_define(`CONST_THREE', 3)m4_dnl
-
-m4_define(`RETURN_VAL', `return $1')m4_dnl
+m4_include(`../../../../../../libcom/defchar.plx.m4')m4_dnl
+m4_include(`return_val.plx.m4')m4_dnl
 
 pub fn main(none) i32 {
     if 'a' ~= M4_CHAR(a) {

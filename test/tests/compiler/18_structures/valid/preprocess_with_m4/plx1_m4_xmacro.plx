@@ -9,7 +9,7 @@ m4_define(`COLORS_X', `
 ')m4_dnl
 m4_define(`COLOR_SIZE', `m4_incr(COLOR_WHITE)')m4_dnl
 
-m4_define(`RETURN_VAL', `return $1')m4_dnl
+m4_include(`return_val.plx.m4')m4_dnl
 
 m4_define(`M4_X', `m4_define(`$1', $2)')m4_dnl
 COLORS_X

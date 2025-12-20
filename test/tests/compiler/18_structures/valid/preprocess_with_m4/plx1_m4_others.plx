@@ -10,10 +10,7 @@ m4_define(`IMPORT_RETURN_0', `
 import "../../invalid_lex/get_success"
 ')m4_dnl
 
-m4_define(`CONST_ONE', 1)m4_dnl
-m4_define(`CONST_TWO', 2)m4_dnl
-m4_define(`CONST_THREE', 3)m4_dnl
-m4_define(`RETURN_VAL', `return $1')m4_dnl
+m4_include(`return_val.plx.m4')m4_dnl
 
 IMPORT_RETURN_0
 
