@@ -475,7 +475,7 @@ function parse_args () {
 
 function add_includedirs () {
     if [ ! -z "${INCLUDE_DIRS}" ]; then
-        if [ "${PP}" = "m4" ]; then
+        if [ ${IS_PREPROC} -eq 1 ]; then
             PREPROC_DIRS="${INCLUDE_DIRS// / -I}"
             PREPROC_DIRS=$(echo "${PREPROC_DIRS}" | tr ' ' '\n' | sort --uniq | tr '\n' ' ')
         fi
@@ -516,7 +516,7 @@ function preprocess () {
                     raise_error "preprocessing failed"
                 fi
             else
-                ${CC} -E -P ${DEF_VALS} ${FILE}.${EXT_IN} -o ${FILE}.i
+                ${CC} -E -P -I${LIBC_DIR} -I$(dirname ${FILE})/ ${PREPROC_DIRS} ${DEF_VALS} ${FILE}.${EXT_IN} -o ${FILE}.i
                 if [ ${?} -ne 0 ]; then
                     raise_error "preprocessing failed"
                 fi
