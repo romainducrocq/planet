@@ -1,5 +1,5 @@
 import "magic_define"
 
 pub fn main(none) i32 {
-    return MAGIC_VAL
+    return 0 and MAGIC_VAL
 }
