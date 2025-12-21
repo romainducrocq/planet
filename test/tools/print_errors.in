@@ -3463,15 +3463,15 @@ planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 at line 7: [0;31m            v~~[0m
          | [1m    return x.1l[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
-[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/return_0.etc:1:1:[0m
-[0;31merror:[0m (no. 540) function [1m‘return_0’[0m already defined with function type [1m‘(none) -> i32’[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/get_success.etc:1:1:[0m
+[0;31merror:[0m (no. 540) function [1m‘get_success’[0m already defined with function type [1m‘(none) -> i32’[0m
 at line 1: [0;31mv~[0m
-         | [1mfn return_0(none) i32 {[0m
+         | [1mfn get_success(none) i32 {[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_import_in_line.plx:1:15:[0m
-[0;31merror:[0m (no. 302) cannot search [1m‘return_0.etc’[0m in a line, [1m‘import’[0m requires its own line
-at line 1: [0;31m              v~~~~~~~~~[0m
-         | [1mextrn import! "return_0"[0m
+[0;31merror:[0m (no. 302) cannot search [1m‘get_success.etc’[0m in a line, [1m‘import’[0m requires its own line
+at line 1: [0;31m              v~~~~~~~~~~~~[0m
+         | [1mextrn import! "get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_import_libstd.plx:1:10:[0m
 [0;31merror:[0m (no. 304) cannot find [1m‘stdlib.etc’[0m header file in [1m‘import’[0m directive search
@@ -3479,20 +3479,20 @@ at line 1: [0;31m         v~~~~~~~[0m
          | [1mimport ! "stdlib"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_import_missing_quote.plx:1:9:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘"return_0
+[0;31merror:[0m (no. 301) found invalid token [1m‘"get_success
 ’[0m
-at line 1: [0;31m        v~~~~~~~~~~[0m
-         | [1mimport! "return_0[0m
+at line 1: [0;31m        v~~~~~~~~~~~~~[0m
+         | [1mimport! "get_success[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_include_no_import.plx:1:1:[0m
 [0;31merror:[0m (no. 416) found token [1m‘!’[0m, but expected storage class [1m‘pub’[0m, [1m‘data’[0m, [1m‘extrn’[0m, [1m‘identifier’[0m, [1m‘fn’[0m or [1m‘type’[0m next
 at line 1: [0;31mv[0m
-         | [1m! "return_0"[0m
+         | [1m! "get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_twice_import.plx:1:1:[0m
 [0;31merror:[0m (no. 301) found invalid token [1m‘import!!’[0m
 at line 1: [0;31mv~~~~~~~[0m
-         | [1mimport!! "return_0"[0m
+         | [1mimport!! "get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/wheelcc/bin/libc/stdlib.etc:45:1:[0m
 [0;31merror:[0m (no. 426) illegal storage class, cannot use [1m‘pub’[0m declaration in block
@@ -3505,30 +3505,35 @@ at line 2: [0;31m                       v~~~~~~~[0m
          | [1m    str: string = use! "string"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_force_use_local_lib.plx:1:6:[0m
-[0;31merror:[0m (no. 305) cannot find [1m‘return_0.etc’[0m header file in [1m‘use’[0m directive search
-at line 1: [0;31m     v~~~~~~~~~[0m
-         | [1muse! "return_0"[0m
+[0;31merror:[0m (no. 305) cannot find [1m‘get_success.etc’[0m header file in [1m‘use’[0m directive search
+at line 1: [0;31m     v~~~~~~~~~~~~[0m
+         | [1muse! "get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_in_line.plx:1:12:[0m
-[0;31merror:[0m (no. 302) cannot search [1m‘return_0.etc’[0m in a line, [1m‘import’[0m requires its own line
-at line 1: [0;31m           v~~~~~~~~~[0m
-         | [1mpub import "return_0"[0m
+[0;31merror:[0m (no. 302) cannot search [1m‘get_success.etc’[0m in a line, [1m‘import’[0m requires its own line
+at line 1: [0;31m           v~~~~~~~~~~~~[0m
+         | [1mpub import "get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_libstd.plx:1:8:[0m
 [0;31merror:[0m (no. 304) cannot find [1m‘stdlib.etc’[0m header file in [1m‘import’[0m directive search
 at line 1: [0;31m       v~~~~~~~[0m
          | [1mimport "stdlib"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
+[1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/magic_define.etc:1:1:[0m
+[0;31merror:[0m (no. 306) found m4 macro [1m‘m4_define’[0m, preprocess with [1m‘-E’[0m or see [1m‘--help’[0m
+at line 1: [0;31mv~~~~~~~~[0m
+         | [1mm4_define(`MAGIC_VAL', 42)m4_dnl[0m
+planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_missing_quote_1.plx:1:8:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘"return_0
+[0;31merror:[0m (no. 301) found invalid token [1m‘"get_success
 ’[0m
-at line 1: [0;31m       v~~~~~~~~~~[0m
-         | [1mimport "return_0[0m
+at line 1: [0;31m       v~~~~~~~~~~~~~[0m
+         | [1mimport "get_success[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_missing_quote_2.plx:1:1:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘import r’[0m
+[0;31merror:[0m (no. 301) found invalid token [1m‘import g’[0m
 at line 1: [0;31mv~~~~~~~[0m
-         | [1mimport return_0"[0m
+         | [1mimport get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_no_file.plx:1:8:[0m
 [0;31merror:[0m (no. 304) cannot find [1m‘.etc’[0m header file in [1m‘import’[0m directive search
@@ -3536,14 +3541,14 @@ at line 1: [0;31m       v~[0m
          | [1mimport ""[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_import_no_quotes.plx:1:1:[0m
-[0;31merror:[0m (no. 301) found invalid token [1m‘import r’[0m
+[0;31merror:[0m (no. 301) found invalid token [1m‘import g’[0m
 at line 1: [0;31mv~~~~~~~[0m
-         | [1mimport return_0[0m
+         | [1mimport get_success[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_include_no_import.plx:1:1:[0m
-[0;31merror:[0m (no. 416) found token [1m‘"return_0"’[0m, but expected storage class [1m‘pub’[0m, [1m‘data’[0m, [1m‘extrn’[0m, [1m‘identifier’[0m, [1m‘fn’[0m or [1m‘type’[0m next
-at line 1: [0;31mv~~~~~~~~~[0m
-         | [1m"return_0"[0m
+[0;31merror:[0m (no. 416) found token [1m‘"get_success"’[0m, but expected storage class [1m‘pub’[0m, [1m‘data’[0m, [1m‘extrn’[0m, [1m‘identifier’[0m, [1m‘fn’[0m or [1m‘type’[0m next
+at line 1: [0;31mv~~~~~~~~~~~~[0m
+         | [1m"get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_m4_define_no_suffix.plx:1:7:[0m
 [0;31merror:[0m (no. 401) found token [1m‘(’[0m, but expected [1m‘:’[0m next
@@ -3556,9 +3561,9 @@ at line 2: [0;31m               v~~~~~~[0m
          | [1m    return use "ctype"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_lex/plx1_use_local_lib.plx:1:5:[0m
-[0;31merror:[0m (no. 305) cannot find [1m‘return_0.etc’[0m header file in [1m‘use’[0m directive search
-at line 1: [0;31m    v~~~~~~~~~[0m
-         | [1muse "return_0"[0m
+[0;31merror:[0m (no. 305) cannot find [1m‘get_success.etc’[0m header file in [1m‘use’[0m directive search
+at line 1: [0;31m    v~~~~~~~~~~~~[0m
+         | [1muse "get_success"[0m
 planet: [0;31merror:[0m compilation failed, see [1m‘--help’[0m
 [1m@PACKAGE_PATH@/test/tests/compiler/18_structures/invalid_parse/arrow_missing_member.plx:5:19:[0m
 [0;31merror:[0m (no. 401) found token [1m‘line break’[0m, but expected [1m‘identifier’[0m next
