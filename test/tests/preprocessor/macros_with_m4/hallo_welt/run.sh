@@ -23,5 +23,3 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 if [ ${?} -ne 42 ]; then exit 1; fi
 
 # TODO check stdout for "Hallo Welt!\n"
-# compile without includes and check if haupt.i exist
-# compile with -S and check if .s and .i exits
