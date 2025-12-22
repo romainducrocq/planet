@@ -9,8 +9,7 @@ m4_define(`TOGGLE', `ON')m4_dnl
 m4_ifdef(`TOGGLE', `
 m4_define(`EXIT_ZERO', CONST_ZERO)m4_dnl
 m4_undefine(`CONST_ZERO')m4_dnl
-', `
-')m4_dnl
+', `')m4_dnl
 
 pub fn main(none) i32 {
 m4_ifdef(`CONST_ZERO', `
