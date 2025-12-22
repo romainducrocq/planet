@@ -6,13 +6,13 @@ m4_define(`CONST_FOUR_INCR', `M4_INCR(incr, 4)')m4_dnl
 
 m4_sinclude(`not_a_file.plx.m4')m4_dnl
 
-m4_define(`IMPORT_RETURN_0', `
+m4_define(`IMPORT_GET_SUCCESS', `
 import "../../invalid_lex/get_success"
 ')m4_dnl
 
 m4_include(`return_val.plx.m4')m4_dnl
 
-IMPORT_RETURN_0
+IMPORT_GET_SUCCESS
 
 pub fn main(none) i32 {
     if CONST_TWO_DECR ~= 1 { RETURN_VAL(CONST_ONE) }
