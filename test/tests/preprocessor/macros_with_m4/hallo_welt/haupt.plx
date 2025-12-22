@@ -1,19 +1,22 @@
-m4_ifdef(`Programmierschnittstelle', `', `
-m4_define(`benutze', `use')m4_dnl
-m4_define(`StandardEA', `stdio')m4_dnl
-m4_define(`offentlich', `pub')m4_dnl
-m4_define(`Funktion', `fn')m4_dnl
-m4_define(`keiner', `none')m4_dnl
-m4_define(`Ganz', `i32')m4_dnl
-m4_define(`Zeichenkette', `string')m4_dnl
-m4_define(`zuruck', `return')m4_dnl
-m4_define(`Haupt', `main')m4_dnl
-m4_define(`drucke', `print')m4_dnl
-')m4_dnl
+m4_include(`defchar.plx.m4')m4_dnl
+m4_include(`defhaupt.plx.m4')m4_dnl
+
+m4_define(`Charakter', M4_CHAR($1))m4_dnl
+m4_define(`Haupt', `main($1, $2)')m4_dnl
+m4_define(`drucke', `print($1)')m4_dnl
+m4_define(`ZeichenketteZuLang', `strtol($1, $2, $3)')m4_dnl
 
 benutze "StandardEA"
-offentlich Funktion Haupt (keiner) Ganz {
-    drucke ("Hallo Welt!\n")
-    zuruck 0
-}
+benutze "StandardBib"
 
+offentlich Funktion Haupt(Argumentanzahl: Ganz, Argumentwert: *Zeichenkette) Ganz {
+    drucke("Hallo Welt!\n")
+    Argument: Ganz = 0
+    wenn Argumentanzahl == 2 {
+        Argument = ZeichenketteZuLang(Argumentwert[1], nichtig, 10)    
+        wenn Argument ~= Charakter(*) {
+            zuruck 1
+        }
+    }
+    zuruck Argument
+}
