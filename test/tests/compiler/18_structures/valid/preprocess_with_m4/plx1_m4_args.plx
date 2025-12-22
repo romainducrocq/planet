@@ -16,6 +16,8 @@ CALC_FUNC(`div', $1, `/')
 CALC_FUNCS(i32)
 CALC_FUNCS(f64)
 
+m4_include(`return_val.plx.m4')m4_dnl
+
 pub fn main(none) i32 {
     x: i32 = 0
     add_i32(@x, 10)
@@ -23,7 +25,7 @@ pub fn main(none) i32 {
     mul_i32(@x, 9)
     div_i32(@x, 27)
     if x ~= 3 {
-        return 1
+        RETURN_VAL(CONST_ONE)
     }
 
     d: f64 = 0.0
@@ -32,8 +34,9 @@ pub fn main(none) i32 {
     mul_f64(@d, 10.1)
     div_f64(@d, 6.0)
     if d < 20.8 or d > 20.9 {
-        return 2
+        RETURN_VAL(CONST_TWO)
     }
 
-    return 0
+    RETURN_VAL(CONST_ZERO)
+    return 3
 }
