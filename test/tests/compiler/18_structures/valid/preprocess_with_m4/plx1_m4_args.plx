@@ -18,25 +18,38 @@ CALC_FUNCS(f64)
 
 m4_include(`return_val.plx.m4')m4_dnl
 
+fn calc_pi(prec: i32) f64 {
+    pi: f64 = 0.0
+    loop i: i32 = 0 while i < prec .. add_i32(@i, 1) {
+        j: i32 = i
+        next: f64 = 1.0
+        mul_i32(@j, 2)
+        add_i32(@j, 1)
+        div_f64(@next, j)
+        sub_i32(@j, i)
+        div_i32(@i, 2)
+        div_i32(@j, 2)
+        if i == j {
+            add_f64(@pi, next)
+            j = 0
+        }
+        else {
+            sub_f64(@pi, next)
+            j = 1
+        }
+        mul_i32(@i, 2)
+        add_i32(@i, j)
+    }
+    mul_f64(@pi, 4.0)
+    return pi
+}
+
 pub fn main(none) i32 {
-    x: i32 = 0
-    add_i32(@x, 10)
-    sub_i32(@x, 1)
-    mul_i32(@x, 9)
-    div_i32(@x, 27)
-    if x ~= 3 {
+    pi: f64 = calc_pi(1000)
+    if pi < 3.14 or pi >= 3.15 {
         RETURN_VAL(CONST_ONE)
     }
 
-    d: f64 = 0.0
-    add_f64(@d, 13.5)
-    sub_f64(@d, 1.1)
-    mul_f64(@d, 10.1)
-    div_f64(@d, 6.0)
-    if d < 20.8 or d > 20.9 {
-        RETURN_VAL(CONST_TWO)
-    }
-
     RETURN_VAL(CONST_ZERO)
-    return 3
+    return 2
 }
