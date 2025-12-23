@@ -6,6 +6,6 @@ pub fn main(none) i32 {
     0')m4_dnl
 m4_define(`print', `
     puts($1)
-    return 0
+    return MAGIC_VAL
 }')m4_dnl
 m4_changequote(`"_', `":')m4_dnl

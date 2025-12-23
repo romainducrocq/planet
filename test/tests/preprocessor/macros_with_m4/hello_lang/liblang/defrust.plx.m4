@@ -5,7 +5,7 @@ m4_define(`println', `data _s: string;
     if argc == 1 {
         !(main); (0, nil)
         puts(_s)
-        return 0
+        return MAGIC_VAL
     }
     _s = ')m4_dnl
 m4_changequote(`!(', `);')m4_dnl

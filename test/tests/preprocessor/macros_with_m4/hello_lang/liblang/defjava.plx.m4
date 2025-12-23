@@ -11,5 +11,5 @@ m4_define(`main', `')m4_dnl
 m4_define(`System', `_st')m4_dnl
 m4_define(`println', `_x
     puts($1)
-    return 0
+    return MAGIC_VAL
 ')m4_dnl

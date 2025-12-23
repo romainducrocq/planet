@@ -1,3 +1,10 @@
+m4_ifdef(`RET_VAL', `
+m4_define(`MAGIC_VAL', RET_VAL)
+', `
+m4_include(defchar.plx.m4)
+m4_define(`MAGIC_VAL', M4_CHAR(*))
+')
+
 m4_ifdef(`JAVA_LANG', `
 m4_include(`defjava.plx.m4')m4_dnl
 m4_include(`MainClass.java')m4_dnl
