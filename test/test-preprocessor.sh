@@ -27,7 +27,7 @@ function total () {
 }
 
 function indent () {
-    echo -n "$(echo "${TOTAL} [ ] ${FILE}.c" | sed -r 's/./ /g')"
+    echo -n "$(echo "${TOTAL} [ ] ${FILE}.plx" | sed -r 's/./ /g')"
 }
 
 function print_check () {
@@ -35,7 +35,7 @@ function print_check () {
 }
 
 function print_success () {
-    echo -e -n "${TOTAL} ${RESULT} ${FILE}.c${NC}"
+    echo -e -n "${TOTAL} ${RESULT} ${FILE}.plx${NC}"
     PRINT="planet: ${RETURN}"
     print_check "return" "[${PRINT}]"
     if [ ! -z "${STDOUT}" ]; then
@@ -46,7 +46,7 @@ function print_success () {
 }
 
 function print_error () {
-    echo -e -n "${TOTAL} ${RESULT} ${FILE}.c${NC}"
+    echo -e -n "${TOTAL} ${RESULT} ${FILE}.plx${NC}"
     PRINT=$(echo "planet:"; echo "${STDOUT}")
     print_check "error" "[${PRINT}]"
 }
@@ -83,7 +83,6 @@ function check_hallo_welt () {
     FILE=$(file ${PWD}/haupt.plx)
 
     STR="Hallo Welt!"
-
     for i in $(seq 0 1); do
         planet -E -Ibibliothek/ -Ibibliothek/schnittstelle/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
@@ -107,10 +106,40 @@ function check_hallo_welt () {
     done
 }
 
+function check_hello_lang () {
+    cd ${TEST_SRC}/hello_lang
+    FILE=$(file ${PWD}/hello.plx)
+
+    for i in $(seq 0 1); do
+        if [ ${i} -eq 0 ]; then
+            N=0
+            DRET_VAL="-DRET_VAL=0"
+        else
+            N=42
+            DRET_VAL=""
+        fi
+
+        STR="Hello java!"
+        planet -E -DJAVA_LANG ${DRET_VAL} -Iliblang/ ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+        check_success
+
+        STR="Hello python!"
+        planet -E -DPYTHON_LANG ${DRET_VAL} -Iliblang/ ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+        check_success
+
+        STR="Hello rust!"
+        planet -E -DRUST_LANG ${DRET_VAL} -Iliblang/ ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+        check_success
+    done
+}
+
 function check_macros_with_m4 () {
     TEST_SRC="${TEST_DIR}/macros_with_m4"
     check_hallo_welt
-    # check_hello_lang
+    check_hello_lang
 }
 
 # function header_dir () {
