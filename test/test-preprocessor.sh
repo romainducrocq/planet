@@ -60,7 +60,7 @@ function check_success () {
         STDOUT=$(${FILE} ${@})
         RETURN=${?}
         rm ${FILE}
-        
+
         if [ ${RETURN} -eq ${CHECK_VAL} ]; then
             if [[ "${STDOUT}" == "${CHECK_STR}" ]]; then
                 RESULT="${LIGHT_GREEN}[y]"
@@ -271,9 +271,8 @@ function check_error () {
 
     STDOUT=$(planet -E -I${TEST_SRC} ${FILE}.plx 2>&1)
     RETURN=${?}
-    rm ${FILE}
-    
     if [ ${RETURN} -eq 0 ]; then
+        rm ${FILE}
         RESULT="${LIGHT_RED}[n]"
     elif [ ! -f "${FILE}.i" ]; then
         RETURN=1
