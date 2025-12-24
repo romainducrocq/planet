@@ -276,6 +276,7 @@ function check_error () {
         rm ${FILE}
         RESULT="${LIGHT_RED}[n]"
     else
+        rm ${FILE}.i
         diff -sq <(echo "${STDOUT}") <(
             echo -e -n "\033[1m${TEST_SRC}/"
             for i in $(seq 1 $((${ERR}))); do
