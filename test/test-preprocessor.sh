@@ -272,6 +272,11 @@ function check_error () {
     if [ ${RETURN} -eq 0 ]; then
         rm ${FILE}
         RESULT="${LIGHT_RED}[n]"
+    elif [ ! -f "${FILE}.i" ]; then
+        RETURN=0
+        STDOUT="File ${FILE}.i not found"
+        rm ${FILE}
+        RESULT="${LIGHT_RED}[n]"
     else
         diff -sq <(echo "${STDOUT}") <(
             echo -e -n "\033[1m${TEST_SRC}/"
