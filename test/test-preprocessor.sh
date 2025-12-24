@@ -61,8 +61,8 @@ function check_success () {
         RETURN=${?}
         rm ${FILE}
         
-        if [ ${RETURN} -eq ${N} ]; then
-            if [[ "${STDOUT}" == "${STR}" ]]; then
+        if [ ${RETURN} -eq ${CHECK_VAL} ]; then
+            if [[ "${STDOUT}" == "${CHECK_STR}" ]]; then
                 RESULT="${LIGHT_GREEN}[y]"
                 let PASS+=1
             else
@@ -80,14 +80,14 @@ function check_hallo_welt () {
     cd ${TEST_SRC}/hallo_welt
     FILE=$(file ${PWD}/haupt.plx)
 
-    STR="Hallo Welt!"
+    CHECK_STR="Hallo Welt!"
     for i in $(seq 0 1); do
         planet -E -Ibibliothek/ -Ibibliothek/schnittstelle/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
         if [ ${i} -eq 0 ]; then
-            N=0; check_success
+            CHECK_VAL=0; check_success
         else
-            N=42; check_success 42
+            CHECK_VAL=42; check_success 42
         fi
 
         planet -E -DProgrammierschnittstelle \
@@ -97,9 +97,9 @@ function check_hallo_welt () {
             -Ibibliothek/ -Ibibliothek/schnittstelle/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
         if [ ${i} -eq 0 ]; then
-            N=0; check_success
+            CHECK_VAL=0; check_success
         else
-            N=42; check_success 42
+            CHECK_VAL=42; check_success 42
         fi
     done
 }
@@ -110,24 +110,24 @@ function check_hello_lang () {
 
     for i in $(seq 0 1); do
         if [ ${i} -eq 0 ]; then
-            N=0
+            CHECK_VAL=0
             DRET_VAL="-DRET_VAL=0"
         else
-            N=42
+            CHECK_VAL=42
             DRET_VAL=""
         fi
 
-        STR="Hello java!"
+        CHECK_STR="Hello java!"
         planet -E -DJAVA_LANG ${DRET_VAL} -Iliblang/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
         check_success
 
-        STR="Hello python!"
+        CHECK_STR="Hello python!"
         planet -E -DPYTHON_LANG ${DRET_VAL} -Iliblang/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
         check_success
 
-        STR="Hello rust!"
+        CHECK_STR="Hello rust!"
         planet -E -DRUST_LANG ${DRET_VAL} -Iliblang/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
         check_success
@@ -135,11 +135,13 @@ function check_hello_lang () {
 }
 
 function check_compiler_tests () {
-    TEST_SRC="$(readlink -f ${TEST_DIR}/../compiler)"
     RETURN=0
     STDOUT=""
-    N=0; N_i=0; N_s=0
-    for FILE in $(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq); do
+
+    COUNT_I=0; COUNT_S=0; CHECK_VAL=0
+    FILES="$(find $(readlink -f ${TEST_DIR}/../compiler) -name "*.plx" -type f |\
+         grep --invert-match invalid | sort --uniq)"
+    for FILE in ${FILES}; do
         FILE=$(file ${FILE})
         if [ -f "${FILE}.i" ]; then
             rm "${FILE}.i"
@@ -153,55 +155,54 @@ function check_compiler_tests () {
             RETURN=1
         fi
         if [ -f "${FILE}.i" ]; then
-            let N_i+=1
+            let COUNT_I+=1
             rm "${FILE}.i"
         else
             RETURN=2
         fi
         if [ -f "${FILE}.s" ]; then
-            let N_s+=1
+            let COUNT_S+=1
             rm "${FILE}.s"
         else
             RETURN=3
         fi
         if [ ${RETURN} -eq 0 ]; then
-            let N+=1
+            let CHECK_VAL+=1
         fi
     done
 
-    RETURN=$(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq | wc -l)
-    STR="${RETURN}/${RETURN}"
+    RETURN=$(echo "${FILES}" | wc -l)
+    CHECK_STR="${RETURN}/${RETURN}"
 
-    TEST_SRC="${TEST_DIR}/macros_with_m4"
-    FILE=$(file ${TEST_SRC}/check_i.plx)
-    echo "use \"stdio\"" > ${FILE}.plx
-    echo "pub fn main(none) i32 {" >> ${FILE}.plx
-    echo "    print(\"${N_i}/${RETURN}\")" >> ${FILE}.plx
-    echo "    if ${N_i} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
-    echo "        return 0" >> ${FILE}.plx
-    echo "    }" >> ${FILE}.plx
-    echo "    return 1" >> ${FILE}.plx
-    echo "}" >> ${FILE}.plx
+    OUT_FILE="${TEST_SRC}/check_i.plx"
+    echo "use \"stdio\"" > ${OUT_FILE}
+    echo "pub fn main(none) i32 {" >> ${OUT_FILE}
+    echo "    print(\"${COUNT_I}/${RETURN}\")" >> ${OUT_FILE}
+    echo "    if ${COUNT_I} == ${RETURN} and ${CHECK_VAL} == ${RETURN} {" >> ${OUT_FILE}
+    echo "        return 0" >> ${OUT_FILE}
+    echo "    }" >> ${OUT_FILE}
+    echo "    return 1" >> ${OUT_FILE}
+    echo "}" >> ${OUT_FILE}
 
-    FILE=$(file ${TEST_SRC}/check_s.plx)
-    echo "use \"stdio\"" > ${FILE}.plx
-    echo "pub fn main(none) i32 {" >> ${FILE}.plx
-    echo "    print(\"${N_s}/${RETURN}\")" >> ${FILE}.plx
-    echo "    if ${N_s} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
-    echo "        return 0" >> ${FILE}.plx
-    echo "    }" >> ${FILE}.plx
-    echo "    return 1" >> ${FILE}.plx
-    echo "}" >> ${FILE}.plx
+    OUT_FILE="${TEST_SRC}/check_s.plx"
+    echo "use \"stdio\"" > ${OUT_FILE}
+    echo "pub fn main(none) i32 {" >> ${OUT_FILE}
+    echo "    print(\"${COUNT_S}/${RETURN}\")" >> ${OUT_FILE}
+    echo "    if ${COUNT_S} == ${RETURN} and ${CHECK_VAL} == ${RETURN} {" >> ${OUT_FILE}
+    echo "        return 0" >> ${OUT_FILE}
+    echo "    }" >> ${OUT_FILE}
+    echo "    return 1" >> ${OUT_FILE}
+    echo "}" >> ${OUT_FILE}
 
     FILE=$(file ${TEST_SRC}/check_i.plx)
     planet ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
-    N=0; check_success
+    CHECK_VAL=0; check_success
 
     FILE=$(file ${TEST_SRC}/check_s.plx)
     planet ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
-    N=0; check_success
+    CHECK_VAL=0; check_success
 }
 
 function check_macros_with_m4 () {
@@ -270,13 +271,13 @@ function check_error () {
 
     STDOUT=$(planet -E -I${TEST_SRC} ${FILE}.plx 2>&1)
     RETURN=${?}
+    rm ${FILE}
+    
     if [ ${RETURN} -eq 0 ]; then
-        rm ${FILE}
         RESULT="${LIGHT_RED}[n]"
     elif [ ! -f "${FILE}.i" ]; then
-        RETURN=0
+        RETURN=1
         STDOUT="File ${FILE}.i not found"
-        rm ${FILE}
         RESULT="${LIGHT_RED}[n]"
     else
         rm ${FILE}.i
