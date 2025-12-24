@@ -318,6 +318,8 @@ function check_compiler_tests () {
     RETURN=0
     STDOUT=""
     N=0
+    N_i=0
+    N_s=0
     for FILE in $(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq); do
         FILE=$(file ${FILE})
         if [ -f "${FILE}.i" ]; then
@@ -332,11 +334,13 @@ function check_compiler_tests () {
             RETURN=1
         fi
         if [ -f "${FILE}.i" ]; then
+            let N_i+=1
             rm "${FILE}.i"
         else
             RETURN=2
         fi
         if [ -f "${FILE}.s" ]; then
+            let N_s+=1
             rm "${FILE}.s"
         else
             RETURN=3
@@ -346,7 +350,39 @@ function check_compiler_tests () {
         fi
     done
 
-    # echo "${N}"
+    RETURN=$(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq | wc -l)
+    STR="${RETURN}/${RETURN}"
+
+    TEST_SRC="${TEST_DIR}/macros_with_m4"
+    FILE=$(file ${TEST_SRC}/check_i.plx)
+    echo "use \"stdio\"" > ${FILE}.plx
+    echo "pub fn main(none) i32 {" >> ${FILE}.plx
+    echo "    print(\"${N_i}/${RETURN}\")" >> ${FILE}.plx
+    echo "    if ${N_i} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
+    echo "        return 0" >> ${FILE}.plx
+    echo "    }" >> ${FILE}.plx
+    echo "    return 1" >> ${FILE}.plx
+    echo "}" >> ${FILE}.plx
+
+    FILE=$(file ${TEST_SRC}/check_s.plx)
+    echo "use \"stdio\"" > ${FILE}.plx
+    echo "pub fn main(none) i32 {" >> ${FILE}.plx
+    echo "    print(\"${N_s}/${RETURN}\")" >> ${FILE}.plx
+    echo "    if ${N_s} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
+    echo "        return 0" >> ${FILE}.plx
+    echo "    }" >> ${FILE}.plx
+    echo "    return 1" >> ${FILE}.plx
+    echo "}" >> ${FILE}.plx
+
+    FILE=$(file ${TEST_SRC}/check_i.plx)
+    planet ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    N=0; check_success
+
+    FILE=$(file ${TEST_SRC}/check_s.plx)
+    planet ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    N=0; check_success
 }
 
 PASS=0
