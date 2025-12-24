@@ -134,10 +134,81 @@ function check_hello_lang () {
     done
 }
 
+function check_compiler_tests () {
+    TEST_SRC="$(readlink -f ${TEST_DIR}/../compiler)"
+    RETURN=0
+    STDOUT=""
+    N=0; N_i=0; N_s=0
+    for FILE in $(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq); do
+        FILE=$(file ${FILE})
+        if [ -f "${FILE}.i" ]; then
+            rm "${FILE}.i"
+        fi
+        if [ -f "${FILE}.s" ]; then
+            rm "${FILE}.s"
+        fi
+        planet -E -S ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+        if [ ${RETURN} -ne 0 ]; then
+            RETURN=1
+        fi
+        if [ -f "${FILE}.i" ]; then
+            let N_i+=1
+            rm "${FILE}.i"
+        else
+            RETURN=2
+        fi
+        if [ -f "${FILE}.s" ]; then
+            let N_s+=1
+            rm "${FILE}.s"
+        else
+            RETURN=3
+        fi
+        if [ ${RETURN} -eq 0 ]; then
+            let N+=1
+        fi
+    done
+
+    RETURN=$(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq | wc -l)
+    STR="${RETURN}/${RETURN}"
+
+    TEST_SRC="${TEST_DIR}/macros_with_m4"
+    FILE=$(file ${TEST_SRC}/check_i.plx)
+    echo "use \"stdio\"" > ${FILE}.plx
+    echo "pub fn main(none) i32 {" >> ${FILE}.plx
+    echo "    print(\"${N_i}/${RETURN}\")" >> ${FILE}.plx
+    echo "    if ${N_i} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
+    echo "        return 0" >> ${FILE}.plx
+    echo "    }" >> ${FILE}.plx
+    echo "    return 1" >> ${FILE}.plx
+    echo "}" >> ${FILE}.plx
+
+    FILE=$(file ${TEST_SRC}/check_s.plx)
+    echo "use \"stdio\"" > ${FILE}.plx
+    echo "pub fn main(none) i32 {" >> ${FILE}.plx
+    echo "    print(\"${N_s}/${RETURN}\")" >> ${FILE}.plx
+    echo "    if ${N_s} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
+    echo "        return 0" >> ${FILE}.plx
+    echo "    }" >> ${FILE}.plx
+    echo "    return 1" >> ${FILE}.plx
+    echo "}" >> ${FILE}.plx
+
+    FILE=$(file ${TEST_SRC}/check_i.plx)
+    planet ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    N=0; check_success
+
+    FILE=$(file ${TEST_SRC}/check_s.plx)
+    planet ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    N=0; check_success
+}
+
 function check_macros_with_m4 () {
     TEST_SRC="${TEST_DIR}/macros_with_m4"
     check_hallo_welt
     check_hello_lang
+    check_compiler_tests
 }
 
 function header_dir () {
@@ -313,84 +384,11 @@ function check_preprocessor () {
     check_error
 }
 
-function check_compiler_tests () {
-    TEST_SRC="$(readlink -f ${TEST_DIR}/../compiler)"
-    RETURN=0
-    STDOUT=""
-    N=0
-    N_i=0
-    N_s=0
-    for FILE in $(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq); do
-        FILE=$(file ${FILE})
-        if [ -f "${FILE}.i" ]; then
-            rm "${FILE}.i"
-        fi
-        if [ -f "${FILE}.s" ]; then
-            rm "${FILE}.s"
-        fi
-        planet -E -S ${FILE}.plx > /dev/null 2>&1
-        RETURN=${?}
-        if [ ${RETURN} -ne 0 ]; then
-            RETURN=1
-        fi
-        if [ -f "${FILE}.i" ]; then
-            let N_i+=1
-            rm "${FILE}.i"
-        else
-            RETURN=2
-        fi
-        if [ -f "${FILE}.s" ]; then
-            let N_s+=1
-            rm "${FILE}.s"
-        else
-            RETURN=3
-        fi
-        if [ ${RETURN} -eq 0 ]; then
-            let N+=1
-        fi
-    done
-
-    RETURN=$(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq | wc -l)
-    STR="${RETURN}/${RETURN}"
-
-    TEST_SRC="${TEST_DIR}/macros_with_m4"
-    FILE=$(file ${TEST_SRC}/check_i.plx)
-    echo "use \"stdio\"" > ${FILE}.plx
-    echo "pub fn main(none) i32 {" >> ${FILE}.plx
-    echo "    print(\"${N_i}/${RETURN}\")" >> ${FILE}.plx
-    echo "    if ${N_i} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
-    echo "        return 0" >> ${FILE}.plx
-    echo "    }" >> ${FILE}.plx
-    echo "    return 1" >> ${FILE}.plx
-    echo "}" >> ${FILE}.plx
-
-    FILE=$(file ${TEST_SRC}/check_s.plx)
-    echo "use \"stdio\"" > ${FILE}.plx
-    echo "pub fn main(none) i32 {" >> ${FILE}.plx
-    echo "    print(\"${N_s}/${RETURN}\")" >> ${FILE}.plx
-    echo "    if ${N_s} == ${RETURN} and ${N} == ${RETURN} {" >> ${FILE}.plx
-    echo "        return 0" >> ${FILE}.plx
-    echo "    }" >> ${FILE}.plx
-    echo "    return 1" >> ${FILE}.plx
-    echo "}" >> ${FILE}.plx
-
-    FILE=$(file ${TEST_SRC}/check_i.plx)
-    planet ${FILE}.plx > /dev/null 2>&1
-    RETURN=${?}
-    N=0; check_success
-
-    FILE=$(file ${TEST_SRC}/check_s.plx)
-    planet ${FILE}.plx > /dev/null 2>&1
-    RETURN=${?}
-    N=0; check_success
-}
-
 PASS=0
 TOTAL=0
 RETURN=0
 check_macros_with_m4
 check_preprocessor
-check_compiler_tests
 total
 
 exit ${RETURN}
