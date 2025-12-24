@@ -5,7 +5,6 @@ LIGHT_GREEN='\033[1;32m'
 NC='\033[0m'
 
 TEST_DIR="${PWD}/tests/preprocessor"
-# TEST_SRC="${TEST_DIR}/preprocessor"
 
 function file () {
     FILE=${1%.*}
@@ -142,108 +141,106 @@ function check_macros_with_m4 () {
     check_hello_lang
 }
 
-# function header_dir () {
-#     HEADER_DIR=""
-#     for i in $(seq 1 ${1}); do
-#         HEADER_DIR="${HEADER_DIR}${i}/"
-#     done
-#     mkdir -p ${TEST_SRC}/${HEADER_DIR}
-#     echo "${HEADER_DIR}"
-# }
+function header_dir () {
+    HEADER_DIR=""
+    for i in $(seq 1 ${1}); do
+        HEADER_DIR="${HEADER_DIR}${i}/"
+    done
+    mkdir -p ${TEST_SRC}/${HEADER_DIR}
+    echo "${HEADER_DIR}"
+}
 
-# function make_test () {
-#     if [ -d "${TEST_SRC}" ]; then
-#         rm -r ${TEST_SRC}
-#     fi
-#     mkdir -p ${TEST_SRC}
+function make_test () {
+    if [ -d "${TEST_SRC}" ]; then
+        rm -r ${TEST_SRC}
+    fi
+    mkdir -p ${TEST_SRC}
 
-#     for i in $(seq 1 $((N-1))); do
-#         echo "int x${i} = 1;" > ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "// a single-line comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "#pragma pragma${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "#include \"$(header_dir $((${N}-${i})))test-header_$((${N}-${i})).h\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "/* a multi-line" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "   */" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "#define MACRO_${i} ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#         echo "char* s${i} = \"Hello ${i}!\";" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.h
-#     done
+    for i in $(seq 1 $((N-1))); do
+        echo "int x${i} = 1;" > ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "// a single-line comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "#pragma pragma${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "#include \"$(header_dir $((${N}-${i})))test-header_$((${N}-${i})).etc\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "/* a multi-line" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "   */" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "#define MACRO_${i} ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "char* s${i} = \"Hello ${i}!\";" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+    done
 
-#     echo "int x${N} = 1;" > ${TEST_SRC}/test-header_${N}.h
-#     echo "// a single-line comment ${N}" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "#pragma pragma${N}" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "#include \"test-header_0.h\"" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "/* a multi-line" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "comment ${N}" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "   */" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "#define MACRO_${N} ${N}" >> ${TEST_SRC}/test-header_${N}.h
-#     echo "char* s${N} = \"Hello ${N}!\";" >> ${TEST_SRC}/test-header_${N}.h
+    echo "int x${N} = 1;" > ${TEST_SRC}/test-header_${N}.etc
+    echo "// a single-line comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "#pragma pragma${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "#include \"test-header_0.etc\"" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "/* a multi-line" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "   */" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "#define MACRO_${N} ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "char* s${N} = \"Hello ${N}!\";" >> ${TEST_SRC}/test-header_${N}.etc
 
-#     echo -n "" > ${TEST_SRC}/test-header_0.h
+    echo -n "" > ${TEST_SRC}/test-header_0.etc
 
-#     echo "int puts(char* s);" > ${FILE}.c
-#     echo "" >> ${FILE}.c
-#     echo "int x$((${N}+1)) = 1;" >> ${FILE}.c
-#     echo "// a single-line comment $((${N}+1))" >> ${FILE}.c
-#     echo "#pragma pragma$((${N}+1))" >> ${FILE}.c
-#     echo "" >> ${FILE}.c
-#     for i in $(seq 1 $((N-1))); do
-#         echo "#include \"$(header_dir ${i})test-header_${i}.h\"" >> ${FILE}.c
-#     done
-#     echo "#include \"test-header_${N}.h\"" >> ${FILE}.c
-#     echo "" >> ${FILE}.c
-#     echo "/* a multi-line" >> ${FILE}.c
-#     echo "comment $((${N}+1))" >> ${FILE}.c
-#     echo "   */" >> ${FILE}.c
-#     echo "#define MACRO_$((${N}+1)) $((${N}+1))" >> ${FILE}.c
-#     echo "char* s$((${N}+1)) = \"Hello $((${N}+1))!\";" >> ${FILE}.c
-#     echo "" >> ${FILE}.c
-#     echo "int main(void) {" >> ${FILE}.c
-#     for i in $(seq 1 $((${N}+1))); do
-#         echo "    puts(s${i});" >> ${FILE}.c
-#     done
-#         echo "    return 0" >> ${FILE}.c;
-#     for i in $(seq 1 $((${N}+1))); do
-#         echo "    + x${i}" >> ${FILE}.c
-#     done
-#     echo "    ;" >> ${FILE}.c
-#     echo "}" >> ${FILE}.c
-# }
+    echo "int puts(char* s);" > ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "int x$((${N}+1)) = 1;" >> ${FILE}.plx
+    echo "// a single-line comment $((${N}+1))" >> ${FILE}.plx
+    echo "#pragma pragma$((${N}+1))" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    for i in $(seq 1 $((N-1))); do
+        echo "#include \"$(header_dir ${i})test-header_${i}.etc\"" >> ${FILE}.plx
+    done
+    echo "#include \"test-header_${N}.etc\"" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "/* a multi-line" >> ${FILE}.plx
+    echo "comment $((${N}+1))" >> ${FILE}.plx
+    echo "   */" >> ${FILE}.plx
+    echo "#define MACRO_$((${N}+1)) $((${N}+1))" >> ${FILE}.plx
+    echo "char* s$((${N}+1)) = \"Hello $((${N}+1))!\";" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "int main(void) {" >> ${FILE}.plx
+    for i in $(seq 1 $((${N}+1))); do
+        echo "    puts(s${i});" >> ${FILE}.plx
+    done
+        echo "    return 0" >> ${FILE}.plx;
+    for i in $(seq 1 $((${N}+1))); do
+        echo "    + x${i}" >> ${FILE}.plx
+    done
+    echo "    ;" >> ${FILE}.plx
+    echo "}" >> ${FILE}.plx
+}
 
-# function check_preprocess () {
-#     let TOTAL+=1
+function check_includes () {
+    let TOTAL+=1
 
-#     make_test
+    planet ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    STDOUT=""
+    if [ ${RETURN} -ne 0 ]; then
+        RESULT="${LIGHT_RED}[n]"
+    else
+        STDOUT=$(${FILE})
+        RETURN=${?}
+        rm ${FILE}
 
-#     planet ${FILE}.c > /dev/null 2>&1
-#     RETURN=${?}
-#     STDOUT=""
-#     if [ ${RETURN} -ne 0 ]; then
-#         RESULT="${LIGHT_RED}[n]"
-#     else
-#         STDOUT=$(${FILE})
-#         RETURN=${?}
-#         rm ${FILE}
+        diff -sq <(echo "${STDOUT}") <(
+            for i in $(seq 1 $((${N}+1))); do
+                echo "Hello ${i}!"
+            done
+        ) | grep -q "identical"
+        if [ ${?} -eq 0 ]; then
+            if [ ${RETURN} -eq $((${N}+1)) ]; then
+                RESULT="${LIGHT_GREEN}[y]"
+                let PASS+=1
+            else
+                RESULT="${LIGHT_RED}[n]"
+            fi
+        else
+            RESULT="${LIGHT_RED}[n]"
+        fi
+    fi
 
-#         diff -sq <(echo "${STDOUT}") <(
-#             for i in $(seq 1 $((${N}+1))); do
-#                 echo "Hello ${i}!"
-#             done
-#         ) | grep -q "identical"
-#         if [ ${?} -eq 0 ]; then
-#             if [ ${RETURN} -eq $((${N}+1)) ]; then
-#                 RESULT="${LIGHT_GREEN}[y]"
-#                 let PASS+=1
-#             else
-#                 RESULT="${LIGHT_RED}[n]"
-#             fi
-#         else
-#             RESULT="${LIGHT_RED}[n]"
-#         fi
-#     fi
-
-#     print_preprocess
-# }
+    print_success
+}
 
 # function check_error () {
 #     let TOTAL+=1
@@ -282,20 +279,26 @@ function check_macros_with_m4 () {
 #     print_error
 # }
 
-# function check_test () {
-    # FILE=$(file ${1})
-    # check_preprocess
-    # check_error
-# }
+function check_preprocessor () {
+    TEST_SRC="${TEST_DIR}/preprocessor"
 
-# N=63
-# ERR=27
+    cd ${TEST_SRC}
+    FILE=$(file ${PWD}/main.plx)
+
+    N=63
+    ERR=27
+
+    make_test
+
+    # check_includes
+    # check_error
+}
 
 PASS=0
 TOTAL=0
 RETURN=0
 check_macros_with_m4
-# check_test ${TEST_SRC}/main.c
+check_preprocessor
 total
 
 exit ${RETURN}
