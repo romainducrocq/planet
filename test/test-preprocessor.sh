@@ -157,55 +157,52 @@ function make_test () {
     mkdir -p ${TEST_SRC}
 
     for i in $(seq 1 $((N-1))); do
-        echo "int x${i} = 1;" > ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "// a single-line comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "#pragma pragma${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "#include \"$(header_dir $((${N}-${i})))test-header_$((${N}-${i})).etc\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "/* a multi-line" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "   */" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "#define MACRO_${i} ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "char* s${i} = \"Hello ${i}!\";" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "x${i}: i32 = 1" > ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "# a single-line comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        #echo "#pragma pragma${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "import \"$(header_dir $((${N}-${i})))test-header_$((${N}-${i}))\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "# a multi-line" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "# comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        #echo "#define MACRO_${i} ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
+        echo "s${i}: string = \"Hello ${i}!\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
     done
 
-    echo "int x${N} = 1;" > ${TEST_SRC}/test-header_${N}.etc
-    echo "// a single-line comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "#pragma pragma${N}" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "#include \"test-header_0.etc\"" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "/* a multi-line" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "   */" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "#define MACRO_${N} ${N}" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "char* s${N} = \"Hello ${N}!\";" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "x${N}: i32 = 1" > ${TEST_SRC}/test-header_${N}.etc
+    echo "# a single-line comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    #echo "#pragma pragma${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "import \"test-header_0\"" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "# a multi-line" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "# comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    #echo "#define MACRO_${N} ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "s${N}: string = \"Hello ${N}!\"" >> ${TEST_SRC}/test-header_${N}.etc
 
     echo -n "" > ${TEST_SRC}/test-header_0.etc
 
-    echo "int puts(char* s);" > ${FILE}.plx
+    echo "pub fn puts(s: string) i32;" > ${FILE}.plx
     echo "" >> ${FILE}.plx
-    echo "int x$((${N}+1)) = 1;" >> ${FILE}.plx
-    echo "// a single-line comment $((${N}+1))" >> ${FILE}.plx
-    echo "#pragma pragma$((${N}+1))" >> ${FILE}.plx
+    echo "x$((${N}+1)): i32 = 1" >> ${FILE}.plx
+    echo "# a single-line comment $((${N}+1))" >> ${FILE}.plx
+    #echo "#pragma pragma$((${N}+1))" >> ${FILE}.plx
     echo "" >> ${FILE}.plx
     for i in $(seq 1 $((N-1))); do
-        echo "#include \"$(header_dir ${i})test-header_${i}.etc\"" >> ${FILE}.plx
+        echo "import \"$(header_dir ${i})test-header_${i}\"" >> ${FILE}.plx
     done
-    echo "#include \"test-header_${N}.etc\"" >> ${FILE}.plx
+    echo "import \"test-header_${N}\"" >> ${FILE}.plx
     echo "" >> ${FILE}.plx
-    echo "/* a multi-line" >> ${FILE}.plx
-    echo "comment $((${N}+1))" >> ${FILE}.plx
-    echo "   */" >> ${FILE}.plx
-    echo "#define MACRO_$((${N}+1)) $((${N}+1))" >> ${FILE}.plx
-    echo "char* s$((${N}+1)) = \"Hello $((${N}+1))!\";" >> ${FILE}.plx
+    echo "# a multi-line" >> ${FILE}.plx
+    echo "# comment $((${N}+1))" >> ${FILE}.plx
+    #echo "#define MACRO_$((${N}+1)) $((${N}+1))" >> ${FILE}.plx
+    echo "s$((${N}+1)): string = \"Hello $((${N}+1))!\"" >> ${FILE}.plx
     echo "" >> ${FILE}.plx
-    echo "int main(void) {" >> ${FILE}.plx
+    echo "pub fn main(none) i32 {" >> ${FILE}.plx
     for i in $(seq 1 $((${N}+1))); do
-        echo "    puts(s${i});" >> ${FILE}.plx
+        echo "    puts(s${i})" >> ${FILE}.plx
     done
-        echo "    return 0" >> ${FILE}.plx;
+        echo "    return (0" >> ${FILE}.plx;
     for i in $(seq 1 $((${N}+1))); do
         echo "    + x${i}" >> ${FILE}.plx
     done
-    echo "    ;" >> ${FILE}.plx
+    echo "    )" >> ${FILE}.plx
     echo "}" >> ${FILE}.plx
 }
 
@@ -290,7 +287,7 @@ function check_preprocessor () {
 
     make_test
 
-    # check_includes
+    check_includes
     # check_error
 }
 
