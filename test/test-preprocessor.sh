@@ -225,7 +225,7 @@ function make_test () {
 function check_includes () {
     let TOTAL+=1
 
-    planet -E ${FILE}.plx > /dev/null 2>&1
+    planet -E -I${TEST_SRC} ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
     STDOUT=""
     if [ ${RETURN} -ne 0 ]; then
@@ -255,48 +255,50 @@ function check_includes () {
     print_success
 }
 
-# function check_error () {
-#     let TOTAL+=1
+function check_error () {
+    let TOTAL+=1
 
-#     echo "int e1 = {0, 1, 2};" >> ${TEST_SRC}/$(header_dir ${ERR})test-header_${ERR}.h
+    echo "e1: i32 = \$(0, 1, 2)" >> ${TEST_SRC}/$(header_dir ${ERR})test-header_${ERR}.etc
 
-#     if [ -f "${FILE}" ]; then
-#         rm ${FILE}
-#     fi
+    if [ -f "${FILE}" ]; then
+        rm ${FILE}
+    fi
+    if [ -f "${FILE}.i" ]; then
+        rm ${FILE}.i
+    fi
 
-#     STDOUT=$(planet ${FILE}.c 2>&1)
-#     RETURN=${?}
-#     if [ ${RETURN} -eq 0 ]; then
-#         rm ${FILE}
-#         RESULT="${LIGHT_RED}[n]"
-#     else
-#         diff -sq <(echo "${STDOUT}") <(
-#             echo -e -n "\033[1m${TEST_SRC}/"
-#             for i in $(seq 1 $((${ERR}))); do
-#                 echo -n "${i}/"
-#             done
-#             echo -e "test-header_${ERR}.h:10:11:${NC}"
-#             echo -e "\033[0;31merror:${NC} (no. 547) cannot initialize scalar type \033[1m‘int’${NC} with compound initializer"
-#             echo -e "at line 10: \033[0;31m          v${NC}"
-#             echo -e "          | \033[1mint e1 = {0, 1, 2};${NC}"
-#             echo -e "planet: \033[0;31merror:${NC} compilation failed, see \033[1m‘--help’${NC}"
-#         ) | grep -q "identical"
-#         if [ ${?} -eq 0 ]; then
-#             RESULT="${LIGHT_GREEN}[y]"
-#             let PASS+=1
-#         else
-#             RESULT="${LIGHT_RED}[n]"
-#         fi
-#     fi
+    STDOUT=$(planet -E -I${TEST_SRC} ${FILE}.plx 2>&1)
+    RETURN=${?}
+    if [ ${RETURN} -eq 0 ]; then
+        rm ${FILE}
+        RESULT="${LIGHT_RED}[n]"
+    else
+        diff -sq <(echo "${STDOUT}") <(
+            echo -e -n "\033[1m${TEST_SRC}/"
+            for i in $(seq 1 $((${ERR}))); do
+                echo -n "${i}/"
+            done
+            echo -e "test-header_${ERR}.etc:8:13:${NC}"
+            echo -e "\033[0;31merror:${NC} (no. 547) cannot initialize scalar type \033[1m‘i32’${NC} with compound initializer"
+            echo -e "at line 8: \033[0;31m            v${NC}"
+            echo -e "         | \033[1me1: i32 = \$(0, 1, 2)${NC}"
+            echo -e "planet: \033[0;31merror:${NC} compilation failed, see \033[1m‘--help’${NC}"
+        ) | grep -q "identical"
+        if [ ${?} -eq 0 ]; then
+            RESULT="${LIGHT_GREEN}[y]"
+            let PASS+=1
+        else
+            RESULT="${LIGHT_RED}[n]"
+        fi
+    fi
 
-#     print_error
-# }
+    print_error
+}
 
 function check_preprocessor () {
+    cd ${TEST_DIR}
     TEST_SRC="${TEST_DIR}/preprocessor"
-
-    cd ${TEST_SRC}
-    FILE=$(file ${PWD}/main.plx)
+    FILE=$(file ${TEST_SRC}/main.plx)
 
     N=63
     ERR=27
@@ -304,7 +306,7 @@ function check_preprocessor () {
     make_test
 
     check_includes
-    # check_error
+    check_error
 }
 
 PASS=0
