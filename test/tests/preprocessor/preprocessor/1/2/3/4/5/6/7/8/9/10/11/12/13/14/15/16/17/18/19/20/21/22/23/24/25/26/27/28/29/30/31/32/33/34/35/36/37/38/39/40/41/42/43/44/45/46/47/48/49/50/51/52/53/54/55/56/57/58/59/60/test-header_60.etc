@@ -1,0 +1,7 @@
+x60: i32 = 1
+# a single-line comment 60
+use "stdio"
+import "1/2/3/test-header_3"
+# a multi-line
+# comment 60
+s60: string = nil

@@ -1,0 +1,7 @@
+x62: i32 = 1
+# a single-line comment 62
+use "stdio"
+import "1/test-header_1"
+# a multi-line
+# comment 62
+s62: string = nil

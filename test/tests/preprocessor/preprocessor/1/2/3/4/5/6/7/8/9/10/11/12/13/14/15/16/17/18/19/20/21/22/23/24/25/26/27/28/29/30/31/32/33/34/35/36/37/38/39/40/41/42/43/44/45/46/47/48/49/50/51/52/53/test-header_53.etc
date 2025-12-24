@@ -1,0 +1,7 @@
+x53: i32 = 1
+# a single-line comment 53
+use "stdio"
+import "1/2/3/4/5/6/7/8/9/10/test-header_10"
+# a multi-line
+# comment 53
+s53: string = nil
