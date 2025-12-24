@@ -211,85 +211,13 @@ function check_macros_with_m4 () {
     check_compiler_tests
 }
 
-function header_dir () {
+function get_hdir () {
     HEADER_DIR=""
     for i in $(seq 1 ${1}); do
         HEADER_DIR="${HEADER_DIR}${i}/"
     done
     mkdir -p ${TEST_SRC}/${HEADER_DIR}
     echo "${HEADER_DIR}"
-}
-
-function make_test () {
-    if [ -d "${TEST_SRC}" ]; then
-        rm -r ${TEST_SRC}
-    fi
-    mkdir -p ${TEST_SRC}
-
-    echo "m4_define(\`DEF_STR', \`s\$1 = \"Hello \$1!\n\"')" > ${TEST_SRC}/test-define_0.plx.m4
-    echo -n "" > ${TEST_SRC}/test-header_0.etc
-
-    for i in $(seq 1 $((N-1))); do
-        echo "m4_define(\`STR_${i}', \`DEF_STR(${i})')" > ${TEST_SRC}/$(header_dir ${i})test-define_${i}.plx.m4
-        echo "x${i}: i32 = 1" > ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "# a single-line comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "use \"stdio\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "import \"$(header_dir $((${N}-${i})))test-header_$((${N}-${i}))\"" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "# a multi-line" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "# comment ${i}" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-        echo "s${i}: string = nil" >> ${TEST_SRC}/$(header_dir ${i})test-header_${i}.etc
-    done
-
-    echo "m4_include(\`test-define_0.plx.m4')" > ${TEST_SRC}/test-define_${N}.plx.m4
-    echo "m4_define(\`STR_${N}', \`DEF_STR(${N})')" >> ${TEST_SRC}/test-define_${N}.plx.m4
-    echo "x${N}: i32 = 1" > ${TEST_SRC}/test-header_${N}.etc
-    echo "# a single-line comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "use \"stdio\"" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "import \"test-header_0\"" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "# a multi-line" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "# comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
-    echo "s${N}: string = nil" >> ${TEST_SRC}/test-header_${N}.etc
-
-    echo "use \"stdio\"" >> ${FILE}.plx
-    echo "" >> ${FILE}.plx
-    echo "x$((${N}+1)): i32 = 1" >> ${FILE}.plx
-    echo "# a single-line comment $((${N}+1))" >> ${FILE}.plx
-    echo "" >> ${FILE}.plx
-    echo "m4_define(\`STR_$((${N}+1))', \`DEF_STR($((${N}+1)))')" >> ${FILE}.plx
-    echo "m4_include(\`test-define_${N}.plx.m4')" >> ${FILE}.plx
-    for i in $(seq 1 $((N-1))); do
-        echo "m4_include(\`$(header_dir ${i})test-define_${i}.plx.m4')" >> ${FILE}.plx
-        echo "import \"$(header_dir ${i})test-header_${i}\"" >> ${FILE}.plx
-    done
-    echo "import \"test-header_${N}\"" >> ${FILE}.plx
-    echo "" >> ${FILE}.plx
-    echo "# a multi-line" >> ${FILE}.plx
-    echo "# comment $((${N}+1))" >> ${FILE}.plx
-    echo "s$((${N}+1)): string = nil" >> ${FILE}.plx
-    echo "" >> ${FILE}.plx
-    echo "pub fn main(none) i32 {" >> ${FILE}.plx
-    for i in $(seq 1 $((${N}+1))); do
-        echo "    s${i} = STR_${i}" >> ${FILE}.plx
-    done
-    k=1
-    for i in $(seq 1 10); do
-        echo -n "    print(fmt${i}(" >> ${FILE}.plx
-        for j in $(seq 1 $((${i}-1))); do
-            echo -n "s${k}, " >> ${FILE}.plx
-            k=$((${k}+1))
-        done
-        echo "s${k}))" >> ${FILE}.plx
-        k=$((${k}+1))
-    done
-    for i in $(seq ${k} $((${N}+1))); do
-        echo "    print(s${i})" >> ${FILE}.plx
-    done
-        echo "    return (0" >> ${FILE}.plx;
-    for i in $(seq 1 $((${N}+1))); do
-        echo "    + x${i}" >> ${FILE}.plx
-    done
-    echo "    )" >> ${FILE}.plx
-    echo "}" >> ${FILE}.plx
 }
 
 function check_includes () {
@@ -328,7 +256,7 @@ function check_includes () {
 function check_error () {
     let TOTAL+=1
 
-    echo "e1: i32 = \$(0, 1, 2)" >> ${TEST_SRC}/$(header_dir ${ERR})test-header_${ERR}.etc
+    echo "e1: i32 = \$(0, 1, 2)" >> ${TEST_SRC}/$(get_hdir ${ERR})test-header_${ERR}.etc
 
     if [ -f "${FILE}" ]; then
         rm ${FILE}
@@ -378,7 +306,75 @@ function check_preprocessor () {
     N=63
     ERR=27
 
-    make_test
+    if [ -d "${TEST_SRC}" ]; then
+        rm -r ${TEST_SRC}
+    fi
+    mkdir -p ${TEST_SRC}
+
+    echo "m4_define(\`DEF_STR', \`s\$1 = \"Hello \$1!\n\"')" > ${TEST_SRC}/test-define_0.plx.m4
+    echo -n "" > ${TEST_SRC}/test-header_0.etc
+
+    for i in $(seq 1 $((N-1))); do
+        echo "m4_define(\`STR_${i}', \`DEF_STR(${i})')" > ${TEST_SRC}/$(get_hdir ${i})test-define_${i}.plx.m4
+        echo "x${i}: i32 = 1" > ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+        echo "# a single-line comment ${i}" >> ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+        echo "use \"stdio\"" >> ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+        echo "import \"$(get_hdir $((${N}-${i})))test-header_$((${N}-${i}))\"" >> ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+        echo "# a multi-line" >> ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+        echo "# comment ${i}" >> ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+        echo "s${i}: string = nil" >> ${TEST_SRC}/$(get_hdir ${i})test-header_${i}.etc
+    done
+
+    echo "m4_include(\`test-define_0.plx.m4')" > ${TEST_SRC}/test-define_${N}.plx.m4
+    echo "m4_define(\`STR_${N}', \`DEF_STR(${N})')" >> ${TEST_SRC}/test-define_${N}.plx.m4
+    echo "x${N}: i32 = 1" > ${TEST_SRC}/test-header_${N}.etc
+    echo "# a single-line comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "use \"stdio\"" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "import \"test-header_0\"" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "# a multi-line" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "# comment ${N}" >> ${TEST_SRC}/test-header_${N}.etc
+    echo "s${N}: string = nil" >> ${TEST_SRC}/test-header_${N}.etc
+
+    echo "use \"stdio\"" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "x$((${N}+1)): i32 = 1" >> ${FILE}.plx
+    echo "# a single-line comment $((${N}+1))" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "m4_define(\`STR_$((${N}+1))', \`DEF_STR($((${N}+1)))')" >> ${FILE}.plx
+    echo "m4_include(\`test-define_${N}.plx.m4')" >> ${FILE}.plx
+    for i in $(seq 1 $((N-1))); do
+        echo "m4_include(\`$(get_hdir ${i})test-define_${i}.plx.m4')" >> ${FILE}.plx
+        echo "import \"$(get_hdir ${i})test-header_${i}\"" >> ${FILE}.plx
+    done
+    echo "import \"test-header_${N}\"" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "# a multi-line" >> ${FILE}.plx
+    echo "# comment $((${N}+1))" >> ${FILE}.plx
+    echo "s$((${N}+1)): string = nil" >> ${FILE}.plx
+    echo "" >> ${FILE}.plx
+    echo "pub fn main(none) i32 {" >> ${FILE}.plx
+    for i in $(seq 1 $((${N}+1))); do
+        echo "    s${i} = STR_${i}" >> ${FILE}.plx
+    done
+    k=1
+    for i in $(seq 1 10); do
+        echo -n "    print(fmt${i}(" >> ${FILE}.plx
+        for j in $(seq 1 $((${i}-1))); do
+            echo -n "s${k}, " >> ${FILE}.plx
+            k=$((${k}+1))
+        done
+        echo "s${k}))" >> ${FILE}.plx
+        k=$((${k}+1))
+    done
+    for i in $(seq ${k} $((${N}+1))); do
+        echo "    print(s${i})" >> ${FILE}.plx
+    done
+        echo "    return (0" >> ${FILE}.plx;
+    for i in $(seq 1 $((${N}+1))); do
+        echo "    + x${i}" >> ${FILE}.plx
+    done
+    echo "    )" >> ${FILE}.plx
+    echo "}" >> ${FILE}.plx
 
     check_includes
     check_error
