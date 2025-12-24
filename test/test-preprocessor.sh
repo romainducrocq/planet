@@ -50,7 +50,6 @@ function print_error () {
     print_check "error" "[${PRINT}]"
 }
 
-
 function check_success () {
     let TOTAL+=1
 
@@ -314,11 +313,48 @@ function check_preprocessor () {
     check_error
 }
 
+function check_compiler_tests () {
+    TEST_SRC="$(readlink -f ${TEST_DIR}/../compiler)"
+    RETURN=0
+    STDOUT=""
+    N=0
+    for FILE in $(find ${TEST_SRC} -name "*.plx" -type f | grep --invert-match invalid | sort --uniq); do
+        FILE=$(file ${FILE})
+        if [ -f "${FILE}.i" ]; then
+            rm "${FILE}.i"
+        fi
+        if [ -f "${FILE}.s" ]; then
+            rm "${FILE}.s"
+        fi
+        planet -E -S ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+        if [ ${RETURN} -ne 0 ]; then
+            RETURN=1
+        fi
+        if [ -f "${FILE}.i" ]; then
+            rm "${FILE}.i"
+        else
+            RETURN=2
+        fi
+        if [ -f "${FILE}.s" ]; then
+            rm "${FILE}.s"
+        else
+            RETURN=3
+        fi
+        if [ ${RETURN} -eq 0 ]; then
+            let N+=1
+        fi
+    done
+
+    # echo "${N}"
+}
+
 PASS=0
 TOTAL=0
 RETURN=0
 check_macros_with_m4
 check_preprocessor
+check_compiler_tests
 total
 
 exit ${RETURN}
