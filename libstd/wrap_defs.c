@@ -11,15 +11,17 @@
 
 // Wrap assert defines
 
-static int ndebug = 1;
+static int ndebug = 0;
 
-int get_ndebug(void) { return !ndebug; }
-void set_ndebug(int value) { ndebug = !value; }
+int get_ndebug(void) { return ndebug; }
+void set_ndebug(int value) { ndebug = value; }
 void set_assert(int expression) {
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
-    assert(ndebug && expression);
+    if (!ndebug) {
+        assert(expression);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
