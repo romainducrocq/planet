@@ -21,4 +21,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 ./test_errno
 if [ ${?} -ne 0 ]; then exit 1; fi
 
+planet test_locale.plx
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+./test_locale
+if [ ${?} -ne 0 ]; then exit 1; fi
+
 echo "SUCCESS"
