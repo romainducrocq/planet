@@ -9,10 +9,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 planet test_assert.plx
 if [ ${?} -ne 0 ]; then exit 1; fi
 
-! ($(./test_assert > /dev/null 2>&1) || false)
+! ($(./test_assert 1 > /dev/null 2>&1) || false)
 if [ ${?} -ne 0 ]; then exit 1; fi
 
-./test_assert true
+./test_assert 2
 if [ ${?} -ne 0 ]; then exit 1; fi
 
 planet test_errno.plx
