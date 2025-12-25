@@ -39,4 +39,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 ./test_time
 if [ ${?} -ne 0 ]; then exit 1; fi
 
+planet -lat_quick_exit -latexit -lbsearch -lqsort test_stdlib.plx
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+./test_stdlib
+if [ ${?} -ne 0 ]; then exit 1; fi
+
 echo "SUCCESS"
