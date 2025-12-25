@@ -127,16 +127,16 @@
 [x] // all
 
 // signal
-[ ] get_SIGABRT
-[ ] get_SIGFPE
-[ ] get_SIGILL
-[ ] get_SIGINT
-[ ] get_SIGSEGV
-[ ] get_SIGTERM
-[ ] signal_dfl
-[ ] signal_ign
-[ ] raise
-[ ] signal_f
+[x] get_SIGABRT
+[x] get_SIGFPE
+[x] get_SIGILL
+[x] get_SIGINT
+[x] get_SIGSEGV
+[x] get_SIGTERM
+[x] signal_dfl
+[x] signal_ign
+[x] raise
+[x] signal_f
 
 // stdio
 [ ] get__IOFBF
@@ -177,13 +177,13 @@
 [ ] xtostr
 
 // stdlib
-[ ] get_EXIT_FAILURE
-[ ] get_EXIT_SUCCESS
-[ ] get_RAND_MAX
-[ ] at_quick_exit_f
-[ ] atexit_f
-[ ] bsearch_f
-[ ] qsort_f
+[x] get_EXIT_FAILURE
+[x] get_EXIT_SUCCESS
+[x] get_RAND_MAX
+[x] at_quick_exit_f
+[x] atexit_f
+[x] bsearch_f
+[x] qsort_f
 
 // time
 [x] get_CLOCKS_PER_SEC

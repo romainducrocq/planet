@@ -48,4 +48,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 ./test_stdlib 2
 if [ ${?} -ne 0 ]; then exit 1; fi
 
+planet -lsignal test_signal.plx
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+./test_signal
+if [ ${?} -ne 0 ]; then exit 1; fi
+
 echo "SUCCESS"
