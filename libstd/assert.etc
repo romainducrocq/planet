@@ -2,4 +2,5 @@
 # Section 7 and Annex B
 
 # wrappers
-extrn fn set_assert(cond: i32) none;
+extrn fn set_ndebug(none) none;
+extrn fn set_assert(expression: i32) none;
