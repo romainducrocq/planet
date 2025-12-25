@@ -42,7 +42,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 planet -lat_quick_exit -latexit -lbsearch -lqsort test_stdlib.plx
 if [ ${?} -ne 0 ]; then exit 1; fi
 
-./test_stdlib
+./test_stdlib 1
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+./test_stdlib 2
 if [ ${?} -ne 0 ]; then exit 1; fi
 
 echo "SUCCESS"
