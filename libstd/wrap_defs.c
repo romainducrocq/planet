@@ -13,7 +13,8 @@
 
 static int ndebug = 1;
 
-void set_ndebug(void) { ndebug = 0; }
+int get_ndebug(void) { return !ndebug; }
+void set_ndebug(int value) { ndebug = !value; }
 void set_assert(int expression) {
 #ifdef NDEBUG
 #undef NDEBUG
