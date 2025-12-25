@@ -33,4 +33,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 ./test_math
 if [ ${?} -ne 0 ]; then exit 1; fi
 
+planet test_time.plx
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+./test_time
+if [ ${?} -ne 0 ]; then exit 1; fi
+
 echo "SUCCESS"

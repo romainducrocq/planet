@@ -123,7 +123,8 @@
 [x] get_LC_TIME(none) i32;
 [x] setlocale
 
-// math todo
+// math
+[x] // all
 
 // signal
 [ ] get_SIGABRT
@@ -185,14 +186,14 @@
 [ ] qsort_f
 
 // time
-[ ] get_CLOCKS_PER_SEC
-[ ] get_TIME_UTC
-[ ] clock
-[ ] difftime
-[ ] mktime
-[ ] time
-[ ] asctime
-[ ] ctime
-[ ] gmtime
-[ ] localtime
-[ ] strftime
+[x] get_CLOCKS_PER_SEC
+[x] get_TIME_UTC
+[x] clock
+[x] difftime
+[x] mktime
+[x] time
+[x] asctime
+[x] ctime
+[x] gmtime
+[x] localtime
+[x] strftime
