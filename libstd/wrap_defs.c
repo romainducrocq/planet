@@ -14,7 +14,6 @@
 static int ndebug = 1;
 
 void set_ndebug(void) { ndebug = 0; }
-
 void set_assert(int expression) {
 #ifdef NDEBUG
 #undef NDEBUG
