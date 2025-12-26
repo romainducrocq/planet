@@ -98,13 +98,28 @@ function check_failure () {
 }
 
 function check_libc_bindings () {
-    cd ${TEST_SRC}/libc_bindings
+    cd ${TEST_DIR}/libc_bindings
+    CHECK_VAL=0
+    CHECK_STR=""
 
     FILE=$(file ${PWD}/test_abort.plx)
     planet -E ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
-    CHECK_VAL=0; check_failure
+    check_failure
 
+    FILE=$(file ${PWD}/test_assert.plx)
+    for i in $(seq 1 2); do
+        planet -E ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+
+        if [ ${i} -eq 1 ]; then
+            check_failure 1
+        else
+            CHECK_STR="Hello assert!"
+            check_success 2
+            CHECK_STR=""
+        fi
+    done
     # TODO
 }
 
@@ -113,10 +128,10 @@ function check_hallo_welt () {
     FILE=$(file ${PWD}/haupt.plx)
 
     CHECK_STR="Hallo Welt!"
-    for i in $(seq 0 1); do
+    for i in $(seq 1 2); do
         planet -E -Ibibliothek/ -Ibibliothek/schnittstelle/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
-        if [ ${i} -eq 0 ]; then
+        if [ ${i} -eq 1 ]; then
             CHECK_VAL=0; check_success
         else
             CHECK_VAL=42; check_success 42
@@ -128,7 +143,7 @@ function check_hallo_welt () {
             -Dbenutze=use -Doffentlich=pub -DFunktion=fn -Dwenn=if -Dzuruck=return \
             -Ibibliothek/ -Ibibliothek/schnittstelle/ ${FILE}.plx > /dev/null 2>&1
         RETURN=${?}
-        if [ ${i} -eq 0 ]; then
+        if [ ${i} -eq 1 ]; then
             CHECK_VAL=0; check_success
         else
             CHECK_VAL=42; check_success 42
@@ -140,8 +155,8 @@ function check_hello_lang () {
     cd ${TEST_SRC}/hello_lang
     FILE=$(file ${PWD}/hello.plx)
 
-    for i in $(seq 0 1); do
-        if [ ${i} -eq 0 ]; then
+    for i in $(seq 1 2); do
+        if [ ${i} -eq 1 ]; then
             CHECK_VAL=0
             DRET_VAL="-DRET_VAL=0"
         else
