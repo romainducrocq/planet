@@ -73,7 +73,6 @@ pub fn main(argc: i32, argv: *string) i32 {
     }
 
     {
-        rewind(file)
         freopen(filename, "r", file)
         if file == nil {
             return 1
@@ -87,7 +86,6 @@ pub fn main(argc: i32, argv: *string) i32 {
     str: [128]char = $(nil)
     sprint(buf, "The Answer to the Ultimate Question of Life is")
     {
-        rewind(file)
         freopen(filename, "w", file)
         if file == nil {
             return 1
@@ -100,7 +98,6 @@ pub fn main(argc: i32, argv: *string) i32 {
     }
 
     {
-        rewind(file)
         freopen(filename, "r", file)
         if file == nil {
             return 1
@@ -119,6 +116,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         return 1
     }
     fclose(file)
+    file = nil
     if strcmp(str, "The Answer to the Ultimate Question of Life is at least -42"
         " but less than 18446744073709551615 and maybe 3.14") {
         return 1
@@ -128,8 +126,32 @@ pub fn main(argc: i32, argv: *string) i32 {
     if strcmp(buf, str) {
         return 1
     }
-
     print(fmt4(str, " ", ltostr(s1, magic), "\n"))
+
+    {
+        file = tmpfile()
+        setvbuf(file, buf, get__IOFBF(), sizeof(buf))
+        fputs("Hello fputs!\n", file)
+        rewind(file)
+        fgets(str, sizeof(buf), file)
+        if strcmp(str, "Hello fputs!\n") {
+            return 1
+        }
+        rewind(file)
+        setbuf(file, buf)
+        fputc('A', file)
+        rewind(file)
+        str[0] = fgetc(file)
+        if strncmp(str, "A", 1) {
+            return 1
+        }
+        clearerr(file)
+        if feof(file) {
+            return 1
+        }
+        fclose(file)
+        file = nil
+    }
 
     return 0
     perror("Hello perror!")
@@ -163,18 +185,18 @@ pub fn main(argc: i32, argv: *string) i32 {
 
 # [ ] remove
 # [ ] rename
-# [ ] tmpfile
+# [x] tmpfile
 # [x] tmpnam
 # [x] fclose
 # [x] fflush
 # [x] fopen
 # [x] freopen
-# [ ] setbuf
-# [ ] setvbuf
+# [x] setbuf
+# [x] setvbuf
 # [x] fgetc
-# [ ] fgets
-# [ ] fputc
-# [ ] fputs
+# [x] fgets
+# [x] fputc
+# [x] fputs
 # [x] getc
 # [x] getchar
 # [ ] putc
