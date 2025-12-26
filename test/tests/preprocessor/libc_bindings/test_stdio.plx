@@ -24,7 +24,7 @@ pub fn main(argc: i32, argv: *string) i32 {
     buf: [128]char = $(nil)
 
     ctostr(s1, 'a')
-    dtostr(s1, 0.123456789, 6)
+    dtostr(s1, 0.123456789, 20)
     ltostr(s1, -10)
     ultostr(s1, 20)
     ptostr(s1, @s1)
@@ -69,6 +69,7 @@ pub fn main(argc: i32, argv: *string) i32 {
             return 1
         }
     }
+    rewind(file)
 
     {
         freopen(filename, "r", file)
@@ -83,6 +84,10 @@ pub fn main(argc: i32, argv: *string) i32 {
         fseek(file, 0, get_SEEK_SET())
         fread(str, 1, len, file)
         str[len] = nil
+    }
+    clearerr(file)
+    if feof(file) {
+        return 1
     }
     fclose(file)
     if strcmp(str, "The Answer to the Ultimate Question of Life is at least -42"
@@ -100,7 +105,9 @@ pub fn main(argc: i32, argv: *string) i32 {
     fprint(get_stdout(), fmt5("Hello", " ", "stdout", ctostr(s1, '!'), "\n"))
     fflush(get_stdout())
     fprint(get_stderr(), "Hello stderr!\n")
+    return 0
 
+    perror("Hello perror!")
 
     #sprint(buf, "The Sleeper must awaken")
 
@@ -152,11 +159,11 @@ pub fn main(argc: i32, argv: *string) i32 {
 # [x] fwrite
 # [x] fseek
 # [x] ftell
-# [ ] rewind
-# [ ] clearerr
-# [ ] feof
+# [x] rewind
+# [x] clearerr
+# [x] feof
 # [x] ferror
-# [ ] perror
+# [x] perror
 
     return 0
 }
