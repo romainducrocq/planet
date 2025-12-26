@@ -151,7 +151,7 @@ function check_libc_bindings () {
         RETURN=${?}
 
         if [ ${i} -eq 1 ]; then
-            # TODO STDOUT
+            CHECK_STR="Hello at_quick_exit!"
             check_success 1
         else
             CHECK_STR="Hello atexit!"

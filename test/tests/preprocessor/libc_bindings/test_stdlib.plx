@@ -1,6 +1,6 @@
+use "stdio"
 use "stdlib"
 
-pub fn puts(s: string) i32;
 pub fn main(argc: i32, argv: *string) i32 {
     get_EXIT_FAILURE()
     get_EXIT_SUCCESS()
@@ -45,6 +45,7 @@ pub fn main(argc: i32, argv: *string) i32 {
 
 pub fn at_quick_exit_func(none) none {
     puts("Hello at_quick_exit!")
+    fflush(get_stdout())
 }
 
 pub fn atexit_func(none) none {
