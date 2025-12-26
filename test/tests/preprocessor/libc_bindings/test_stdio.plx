@@ -68,6 +68,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         }
         fprint(file, ltostr(s1, 42))
         if ferror(file) {
+            perror("Hello perror!")
             return 1
         }
     }
@@ -93,6 +94,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         fprint(file, fmt7(buf, " at least ", ltostr(s1, -42l), " but less than ",
             ultostr(s2, 18446744073709551615ul), " and maybe ", dtostr(s3, 3.14159265, 2)))
         if ferror(file) {
+            perror("Hello perror!")
             return 1
         }
     }
@@ -153,12 +155,12 @@ pub fn main(argc: i32, argv: *string) i32 {
         file = nil
     }
 
-    return 0
-    perror("Hello perror!")
     #tmpnam(filename)
+    return 0
 
     #sprint(buf, "The Sleeper must awaken")
 
+# TODO
 # [x] fprint
 # [x] fscan
 # [x] print
