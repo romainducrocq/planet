@@ -58,6 +58,12 @@ pub fn main(_: i32, argv: *string) i32 {
     fflush(get_stdout())
     fprint(get_stderr(), fmt1("Hello stderr!\n"))
 
+    str: [128]char = $(nil)
+    snprint(str, 128, "The quick brown fox jumped over the lazy dog")
+    if strcmp(str, "The quick brown fox jumped over the lazy dog") {
+        return 1
+    }
+
     file: *struc FILE = nil
     filename: [256]char = $(nil)
     snprint(filename, 256, fmt5(argv[0], ".", "t", "x", "t"))
@@ -81,7 +87,6 @@ pub fn main(_: i32, argv: *string) i32 {
         return 8
     }
 
-    str: [128]char = $(nil)
     sprint(buf, "The Answer to the Ultimate Question of Life is")
     {
         freopen(filename, "w", file)
@@ -120,6 +125,31 @@ pub fn main(_: i32, argv: *string) i32 {
         return 13
     }
     print(fmt4(str, " ", ltostr(s1, magic), "\n"))
+
+    snprint(str, 128, fmt8("One Ring to", " Rule them all,",
+        " One Ring to", " find them,", " One Ring to",
+        " Bring them all", " and in the darkness", " Bind them."))
+    if strcmp(str, "One Ring to Rule them all, One Ring to find them,"
+        " One Ring to Bring them all and in the darkness Bind them.") {
+        return 1
+    }
+
+    snprint(str, 128, fmt9("Without", " change,", " something",
+        " sleeps", " inside us,", " and", " seldom", " awakens.",
+        " The sleeper must awaken."))
+    if strcmp(str, "Without change, something sleeps inside us,"
+        " and seldom awakens. The sleeper must awaken.") {
+        return 1
+    }
+
+    snprint(str, 128, fmt10("I want to be", " the very best",
+        " Like no one", " ever was,", " To catch them", " is my real test",
+        " To train them", " is my cause,", " Gotta catch", " 'em all"))
+    if strcmp(str, "I want to be the very best Like no one ever was,"
+        " To catch them is my real test To train them is my cause,"
+        " Gotta catch 'em all") {
+        return 1
+    }
 
     {
         file = tmpfile()
