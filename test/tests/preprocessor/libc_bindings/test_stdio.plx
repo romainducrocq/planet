@@ -53,8 +53,8 @@ pub fn main(argc: i32, argv: *string) i32 {
         return 1
     }
 
-    print("Hello print!\n")
-    fprint(get_stdout(), fmt5("Hello", " ", "stdout", ctostr(s1, '!'), "\n"))
+    fprint(get_stdout(), fmt4("Hello", " ", "stdout", ctostr(s1, '!')))
+    putc('\n', get_stdout())
     fflush(get_stdout())
     fprint(get_stderr(), "Hello stderr!\n")
 
@@ -199,7 +199,7 @@ pub fn main(argc: i32, argv: *string) i32 {
 # [x] fputs
 # [x] getc
 # [x] getchar
-# [ ] putc
+# [x] putc
 # [x] putchar
 # [x] puts
 # [x] ungetc
