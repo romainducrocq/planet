@@ -120,7 +120,50 @@ function check_libc_bindings () {
             CHECK_STR=""
         fi
     done
-    # TODO
+
+    FILE=$(file ${PWD}/test_errno.plx)
+    planet -E ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    check_success
+
+    FILE=$(file ${PWD}/test_locale.plx)
+    planet -E ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    check_success
+
+    FILE=$(file ${PWD}/test_math.plx)
+    planet -E -lm -lmath2 ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    check_success
+
+    CHECK_STR="Hello signal!"
+    FILE=$(file ${PWD}/test_signal.plx)
+    planet -E -lsignal ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    check_success
+    CHECK_STR=""
+
+    # TODO stdio
+
+    FILE=$(file ${PWD}/test_stdlib.plx)
+    for i in $(seq 1 2); do
+        planet -E -lat_quick_exit -latexit -lbsearch -lqsort ${FILE}.plx > /dev/null 2>&1
+        RETURN=${?}
+
+        if [ ${i} -eq 1 ]; then
+            # TODO STDOUT
+            check_success 1
+        else
+            CHECK_STR="Hello atexit!"
+            check_success 2
+        fi
+        CHECK_STR=""
+    done
+
+    FILE=$(file ${PWD}/test_time.plx)
+    planet -E ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    check_success
 }
 
 function check_hallo_welt () {
