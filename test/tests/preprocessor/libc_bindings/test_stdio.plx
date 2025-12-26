@@ -61,7 +61,7 @@ pub fn main(_: i32, argv: *string) i32 {
     str: [128]char = $(nil)
     snprint(str, 128, "The quick brown fox jumped over the lazy dog")
     if strcmp(str, "The quick brown fox jumped over the lazy dog") {
-        return 1
+        return 6
     }
 
     file: *struc FILE = nil
@@ -70,12 +70,12 @@ pub fn main(_: i32, argv: *string) i32 {
     {
         file = fopen(filename, "w")
         if file == nil {
-            return 6
+            return 7
         }
         fprint(file, ltostr(s1, 42))
         if ferror(file) {
             perror("Hello perror!")
-            return 7
+            return 8
         }
     }
 
@@ -84,7 +84,7 @@ pub fn main(_: i32, argv: *string) i32 {
         fscan(file, @magic, "%i")
     }
     if magic ~= 42 {
-        return 8
+        return 9
     }
 
     sprint(buf, "The Answer to the Ultimate Question of Life is")
@@ -94,7 +94,7 @@ pub fn main(_: i32, argv: *string) i32 {
             ultostr(s2, 18446744073709551615ul), " and maybe ", dtostr(s3, 3.14159265, 2)))
         if ferror(file) {
             perror("Hello perror!")
-            return 9
+            return 10
         }
     }
 
@@ -103,7 +103,7 @@ pub fn main(_: i32, argv: *string) i32 {
         fseek(file, 0, get_SEEK_END())
         len: i32 = ftell(file)
         if len > 127 {
-            return 10
+            return 11
         }
         fseek(file, 0, get_SEEK_SET())
         fread(str, 1, len, file)
@@ -111,18 +111,18 @@ pub fn main(_: i32, argv: *string) i32 {
     }
     clearerr(file)
     if feof(file) {
-        return 11
+        return 12
     }
     fclose(file)
     file = nil
     if strcmp(str, "The Answer to the Ultimate Question of Life is at least -42"
         " but less than 18446744073709551615 and maybe 3.14") {
-        return 12
+        return 13
     }
 
     snprint(str, strlen(buf) + 1, fmt2(str, " 42\n"))
     if strcmp(buf, str) {
-        return 13
+        return 14
     }
     print(fmt4(str, " ", ltostr(s1, magic), "\n"))
 
@@ -131,7 +131,7 @@ pub fn main(_: i32, argv: *string) i32 {
         " Bring them all", " and in the darkness", " Bind them."))
     if strcmp(str, "One Ring to Rule them all, One Ring to find them,"
         " One Ring to Bring them all and in the darkness Bind them.") {
-        return 1
+        return 15
     }
 
     snprint(str, 128, fmt9("Without", " change,", " something",
@@ -139,7 +139,7 @@ pub fn main(_: i32, argv: *string) i32 {
         " The sleeper must awaken."))
     if strcmp(str, "Without change, something sleeps inside us,"
         " and seldom awakens. The sleeper must awaken.") {
-        return 1
+        return 16
     }
 
     snprint(str, 128, fmt10("I want to be", " the very best",
@@ -148,7 +148,7 @@ pub fn main(_: i32, argv: *string) i32 {
     if strcmp(str, "I want to be the very best Like no one ever was,"
         " To catch them is my real test To train them is my cause,"
         " Gotta catch 'em all") {
-        return 1
+        return 17
     }
 
     {
@@ -158,7 +158,7 @@ pub fn main(_: i32, argv: *string) i32 {
         rewind(file)
         fgets(str, sizeof(buf), file)
         if strcmp(str, "Hello fputs!\n") {
-            return 14
+            return 18
         }
         rewind(file)
         setbuf(file, buf)
@@ -166,11 +166,11 @@ pub fn main(_: i32, argv: *string) i32 {
         rewind(file)
         str[0] = fgetc(file)
         if strncmp(str, "A", 1) {
-            return 15
+            return 19
         }
         clearerr(file)
         if feof(file) {
-            return 16
+            return 20
         }
         fclose(file)
         file = nil
@@ -178,70 +178,13 @@ pub fn main(_: i32, argv: *string) i32 {
 
     snprint(filename, 256, fmt6(filename, ".", "f", "a", "k", "e"))
     if not rename(filename, filename) {
-        return 17
+        return 21
     }
     if not remove(filename) {
-        return 18
+        return 22
     }
     # deprecated
     # tmpnam(filename)
 
     return 0
-
-    #sprint(buf, "The Sleeper must awaken")
-
-# TODO
-# [x] fprint
-# [x] fscan
-# [x] print
-# [x] scan
-# [x] snprint
-# [x] sprint
-# [x] sscan
-# [x] fmt1
-# [ ] fmt2
-# [ ] fmt3
-# [x] fmt4
-# [x] fmt5
-# [ ] fmt6
-# [ ] fmt7
-# [x] fmt8
-# [ ] fmt9
-# [ ] fmt10
-# [x] ctostr
-# [x] dtostr
-# [x] ltostr
-# [x] ultostr
-# [x] ptostr
-# [x] xtostr
-
-# [x] remove
-# [x] rename
-# [x] tmpfile
-# [x] tmpnam
-# [x] fclose
-# [x] fflush
-# [x] fopen
-# [x] freopen
-# [x] setbuf
-# [x] setvbuf
-# [x] fgetc
-# [x] fgets
-# [x] fputc
-# [x] fputs
-# [x] getc
-# [x] getchar
-# [x] putc
-# [x] putchar
-# [x] puts
-# [x] ungetc
-# [x] fread
-# [x] fwrite
-# [x] fseek
-# [x] ftell
-# [x] rewind
-# [x] clearerr
-# [x] feof
-# [x] ferror
-# [x] perror
 }
