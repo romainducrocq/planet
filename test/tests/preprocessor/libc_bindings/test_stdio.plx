@@ -46,6 +46,7 @@ pub fn main(argc: i32, argv: *string) i32 {
 
     magic: i32 = 0
     {
+        rewind(file)
         freopen(filename, "r", file)
         if file == nil {
             return 1
@@ -59,6 +60,7 @@ pub fn main(argc: i32, argv: *string) i32 {
     str: [128]char = $(nil)
     sprint(buf, "The Answer to the Ultimate Question of Life is")
     {
+        rewind(file)
         freopen(filename, "w", file)
         if file == nil {
             return 1
@@ -69,9 +71,9 @@ pub fn main(argc: i32, argv: *string) i32 {
             return 1
         }
     }
-    rewind(file)
 
     {
+        rewind(file)
         freopen(filename, "r", file)
         if file == nil {
             return 1
