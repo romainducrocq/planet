@@ -80,10 +80,32 @@ function check_success () {
     print_success
 }
 
+function check_failure () {
+    let TOTAL+=1
+
+    STDOUT=""
+    if [ ${RETURN} -ne 0 ]; then
+        RESULT="${LIGHT_RED}[n]"
+    else
+        STDOUT=$(! ($(${FILE} ${@} > /dev/null 2>&1) || false))
+        RETURN=${?}
+        rm ${FILE}
+
+        check_result
+    fi
+
+    print_success
+}
+
 function check_libc_bindings () {
     cd ${TEST_SRC}/libc_bindings
-    FILE=$(file ${PWD}/.plx)
 
+    FILE=$(file ${PWD}/test_abort.plx)
+    planet -E ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    CHECK_VAL=0; check_failure
+
+    # TODO
 }
 
 function check_hallo_welt () {
@@ -205,12 +227,12 @@ function check_compiler_tests () {
     echo "}" >> ${OUT_FILE}
 
     FILE=$(file ${TEST_SRC}/check_i.plx)
-    planet ${FILE}.plx > /dev/null 2>&1
+    planet -E ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
     CHECK_VAL=0; check_success
 
     FILE=$(file ${TEST_SRC}/check_s.plx)
-    planet ${FILE}.plx > /dev/null 2>&1
+    planet -E ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
     CHECK_VAL=0; check_success
 }
