@@ -54,4 +54,10 @@ if [ ${?} -ne 0 ]; then exit 1; fi
 ./test_signal
 if [ ${?} -ne 0 ]; then exit 1; fi
 
+planet test_stdio.plx
+if [ ${?} -ne 0 ]; then exit 1; fi
+
+./test_stdio < <(echo -n "99")
+if [ ${?} -ne 0 ]; then exit 1; fi
+
 echo "SUCCESS"
