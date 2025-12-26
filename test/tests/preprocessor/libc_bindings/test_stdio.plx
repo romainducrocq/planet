@@ -44,6 +44,14 @@ pub fn main(argc: i32, argv: *string) i32 {
     if getchar() ~= 'a' {
         return 1
     }
+    ungetc('b', get_stdin())
+    if getc(get_stdin()) ~= 'b' {
+        return 1
+    }
+    ungetc('c', get_stdin())
+    if fgetc(get_stdin()) ~= 'c' {
+        return 1
+    }
 
     print("Hello print!\n")
     fprint(get_stdout(), fmt5("Hello", " ", "stdout", ctostr(s1, '!'), "\n"))
@@ -124,8 +132,8 @@ pub fn main(argc: i32, argv: *string) i32 {
     print(fmt4(str, " ", ltostr(s1, magic), "\n"))
 
     return 0
-
     perror("Hello perror!")
+    #tmpnam(filename)
 
     #sprint(buf, "The Sleeper must awaken")
 
@@ -156,18 +164,18 @@ pub fn main(argc: i32, argv: *string) i32 {
 # [ ] remove
 # [ ] rename
 # [ ] tmpfile
-# [ ] tmpnam
+# [x] tmpnam
 # [x] fclose
 # [x] fflush
 # [x] fopen
 # [x] freopen
 # [ ] setbuf
 # [ ] setvbuf
-# [ ] fgetc
+# [x] fgetc
 # [ ] fgets
 # [ ] fputc
 # [ ] fputs
-# [ ] getc
+# [x] getc
 # [x] getchar
 # [ ] putc
 # [x] putchar
