@@ -37,20 +37,20 @@ pub fn main(_: i32, argv: *string) i32 {
     }
     sscan("101", @magic, "%i")
     if magic ~= 101 {
-        return 1
+        return 2
     }
 
     ungetc('a', get_stdin())
     if getchar() ~= 'a' {
-        return 1
+        return 3
     }
     ungetc('b', get_stdin())
     if getc(get_stdin()) ~= 'b' {
-        return 1
+        return 4
     }
     ungetc('c', get_stdin())
     if fgetc(get_stdin()) ~= 'c' {
-        return 1
+        return 5
     }
 
     fprint(get_stdout(), fmt4("Hello", " ", "stdout", ctostr(s1, '!')))
@@ -64,50 +64,41 @@ pub fn main(_: i32, argv: *string) i32 {
     {
         file = fopen(filename, "w")
         if file == nil {
-            return 1
+            return 6
         }
         fprint(file, ltostr(s1, 42))
         if ferror(file) {
             perror("Hello perror!")
-            return 1
+            return 7
         }
     }
 
     {
         freopen(filename, "r", file)
-        if file == nil {
-            return 1
-        }
         fscan(file, @magic, "%i")
     }
     if magic ~= 42 {
-        return 1
+        return 8
     }
 
     str: [128]char = $(nil)
     sprint(buf, "The Answer to the Ultimate Question of Life is")
     {
         freopen(filename, "w", file)
-        if file == nil {
-            return 1
-        }
         fprint(file, fmt7(buf, " at least ", ltostr(s1, -42l), " but less than ",
             ultostr(s2, 18446744073709551615ul), " and maybe ", dtostr(s3, 3.14159265, 2)))
         if ferror(file) {
             perror("Hello perror!")
-            return 1
+            return 9
         }
     }
 
     {
         freopen(filename, "r", file)
-        if file == nil {
-            return 1
-        }
         fseek(file, 0, get_SEEK_END())
         len: i32 = ftell(file)
         if len > 127 {
-            return 1
+            return 10
         }
         fseek(file, 0, get_SEEK_SET())
         fread(str, 1, len, file)
@@ -115,18 +106,18 @@ pub fn main(_: i32, argv: *string) i32 {
     }
     clearerr(file)
     if feof(file) {
-        return 1
+        return 11
     }
     fclose(file)
     file = nil
     if strcmp(str, "The Answer to the Ultimate Question of Life is at least -42"
         " but less than 18446744073709551615 and maybe 3.14") {
-        return 1
+        return 12
     }
 
     snprint(str, strlen(buf) + 1, fmt4(str, " ", ltostr(s1, 42), "\n"))
     if strcmp(buf, str) {
-        return 1
+        return 13
     }
     print(fmt4(str, " ", ltostr(s1, magic), "\n"))
 
@@ -137,7 +128,7 @@ pub fn main(_: i32, argv: *string) i32 {
         rewind(file)
         fgets(str, sizeof(buf), file)
         if strcmp(str, "Hello fputs!\n") {
-            return 1
+            return 14
         }
         rewind(file)
         setbuf(file, buf)
@@ -145,11 +136,11 @@ pub fn main(_: i32, argv: *string) i32 {
         rewind(file)
         str[0] = fgetc(file)
         if strncmp(str, "A", 1) {
-            return 1
+            return 15
         }
         clearerr(file)
         if feof(file) {
-            return 1
+            return 16
         }
         fclose(file)
         file = nil
@@ -157,10 +148,10 @@ pub fn main(_: i32, argv: *string) i32 {
 
     snprint(filename, 256, fmt2(filename, ".fake"))
     if not rename(filename, filename) {
-        return 1
+        return 17
     }
     if not remove(filename) {
-        return 1
+        return 18
     }
     # deprecated
     # tmpnam(filename)
@@ -194,8 +185,8 @@ pub fn main(_: i32, argv: *string) i32 {
 # [x] ptostr
 # [x] xtostr
 
-# [ ] remove
-# [ ] rename
+# [x] remove
+# [x] rename
 # [x] tmpfile
 # [x] tmpnam
 # [x] fclose
@@ -223,6 +214,4 @@ pub fn main(_: i32, argv: *string) i32 {
 # [x] feof
 # [x] ferror
 # [x] perror
-
-    return 0
 }
