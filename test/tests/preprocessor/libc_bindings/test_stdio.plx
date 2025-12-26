@@ -1,7 +1,7 @@
 use "stdio"
 use "string"
 
-pub fn main(argc: i32, argv: *string) i32 {
+pub fn main(_: i32, argv: *string) i32 {
     get__IOFBF()
     get__IOLBF()
     get__IONBF()
@@ -59,8 +59,8 @@ pub fn main(argc: i32, argv: *string) i32 {
     fprint(get_stderr(), "Hello stderr!\n")
 
     file: *struc FILE = nil
-    filename: [32]char = $(nil)
-    snprint(filename, 32, fmt2(argv[0], ".txt"))
+    filename: [256]char = $(nil)
+    snprint(filename, 256, fmt2(argv[0], ".txt"))
     {
         file = fopen(filename, "w")
         if file == nil {
@@ -155,7 +155,16 @@ pub fn main(argc: i32, argv: *string) i32 {
         file = nil
     }
 
-    #tmpnam(filename)
+    snprint(filename, 256, fmt2(filename, ".fake"))
+    if not rename(filename, filename) {
+        return 1
+    }
+    if not remove(filename) {
+        return 1
+    }
+    # deprecated
+    # tmpnam(filename)
+
     return 0
 
     #sprint(buf, "The Sleeper must awaken")
