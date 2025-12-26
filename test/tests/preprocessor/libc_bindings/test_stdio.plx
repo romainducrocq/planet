@@ -53,14 +53,14 @@ pub fn main(_: i32, argv: *string) i32 {
         return 5
     }
 
-    fprint(get_stdout(), fmt4("Hello", " ", "stdout", ctostr(s1, '!')))
+    fprint(get_stdout(), fmt3("Hello", " stdout", ctostr(s1, '!')))
     putc('\n', get_stdout())
     fflush(get_stdout())
-    fprint(get_stderr(), "Hello stderr!\n")
+    fprint(get_stderr(), fmt1("Hello stderr!\n"))
 
     file: *struc FILE = nil
     filename: [256]char = $(nil)
-    snprint(filename, 256, fmt2(argv[0], ".txt"))
+    snprint(filename, 256, fmt5(argv[0], ".", "t", "x", "t"))
     {
         file = fopen(filename, "w")
         if file == nil {
@@ -115,7 +115,7 @@ pub fn main(_: i32, argv: *string) i32 {
         return 12
     }
 
-    snprint(str, strlen(buf) + 1, fmt4(str, " ", ltostr(s1, 42), "\n"))
+    snprint(str, strlen(buf) + 1, fmt2(str, " 42\n"))
     if strcmp(buf, str) {
         return 13
     }
@@ -146,7 +146,7 @@ pub fn main(_: i32, argv: *string) i32 {
         file = nil
     }
 
-    snprint(filename, 256, fmt2(filename, ".fake"))
+    snprint(filename, 256, fmt6(filename, ".", "f", "a", "k", "e"))
     if not rename(filename, filename) {
         return 17
     }
