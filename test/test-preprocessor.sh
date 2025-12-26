@@ -50,6 +50,19 @@ function print_error () {
     print_check "error" "[${PRINT}]"
 }
 
+function check_result () {
+    if [ ${RETURN} -eq ${CHECK_VAL} ]; then
+        if [[ "${STDOUT}" == "${CHECK_STR}" ]]; then
+            RESULT="${LIGHT_GREEN}[y]"
+            let PASS+=1
+        else
+            RESULT="${LIGHT_RED}[n]"
+        fi
+    else
+        RESULT="${LIGHT_RED}[n]"
+    fi
+}
+
 function check_success () {
     let TOTAL+=1
 
@@ -57,23 +70,20 @@ function check_success () {
     if [ ${RETURN} -ne 0 ]; then
         RESULT="${LIGHT_RED}[n]"
     else
-        STDOUT=$(${FILE} ${@})
+        STDOUT=$(${FILE} ${@} 2>&1)
         RETURN=${?}
         rm ${FILE}
 
-        if [ ${RETURN} -eq ${CHECK_VAL} ]; then
-            if [[ "${STDOUT}" == "${CHECK_STR}" ]]; then
-                RESULT="${LIGHT_GREEN}[y]"
-                let PASS+=1
-            else
-                RESULT="${LIGHT_RED}[n]"
-            fi
-        else
-            RESULT="${LIGHT_RED}[n]"
-        fi
+        check_result
     fi
 
     print_success
+}
+
+function check_libc_bindings () {
+    cd ${TEST_SRC}/libc_bindings
+    FILE=$(file ${PWD}/.plx)
+
 }
 
 function check_hallo_welt () {
@@ -314,12 +324,12 @@ function check_preprocessor () {
         rm -r ${TEST_SRC}
     fi
     mkdir -p ${TEST_SRC}
-    
+
     echo -n "" > ${TEST_SRC}/test-header_0.etc
 
     OUT_FILE="${TEST_SRC}/test-define_0.plx.m4"
     echo "m4_define(\`DEF_STR', \`s\$1 = \"Hello \$1!\n\"')" > ${OUT_FILE}
-    
+
     for i in $(seq 1 $((N-1))); do
         OUT_FILE="${TEST_SRC}/$(get_header_dir ${i})test-header_${i}.etc"
         echo "x${i}: i32 = 1" > ${OUT_FILE}
@@ -396,6 +406,7 @@ function check_preprocessor () {
 PASS=0
 TOTAL=0
 RETURN=0
+check_libc_bindings
 check_macros_with_m4
 check_preprocessor
 total
