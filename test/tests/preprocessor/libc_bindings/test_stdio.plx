@@ -40,6 +40,11 @@ pub fn main(argc: i32, argv: *string) i32 {
         return 1
     }
 
+    ungetc('a', get_stdin())
+    if getchar() ~= 'a' {
+        return 1
+    }
+
     print("Hello print!\n")
     fprint(get_stdout(), fmt5("Hello", " ", "stdout", ctostr(s1, '!'), "\n"))
     fflush(get_stdout())
@@ -163,11 +168,11 @@ pub fn main(argc: i32, argv: *string) i32 {
 # [ ] fputc
 # [ ] fputs
 # [ ] getc
-# [ ] getchar
+# [x] getchar
 # [ ] putc
 # [x] putchar
-# [ ] puts
-# [ ] ungetc
+# [x] puts
+# [x] ungetc
 # [x] fread
 # [x] fwrite
 # [x] fseek
