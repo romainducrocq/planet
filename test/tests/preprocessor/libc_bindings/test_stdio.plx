@@ -18,17 +18,32 @@ pub fn main(argc: i32, argv: *string) i32 {
     get_stdin()
     get_stdout()
 
+    magic: i32 = 0
     s1: [32]char = $(nil)
     s2: [32]char = $(nil)
     s3: [32]char = $(nil)
     buf: [128]char = $(nil)
 
     ctostr(s1, 'a')
-    dtostr(s1, 0.123456789, 20)
+    dtostr(s1, 0.123456789, 6)
     ltostr(s1, -10)
     ultostr(s1, 20)
     ptostr(s1, @s1)
     xtostr(s1, 16, 2)
+
+    scan(@magic, "%i")
+    if magic ~= 99 {
+        return 1
+    }
+    sscan("101", @magic, "%i")
+    if magic ~= 101 {
+        return 1
+    }
+
+    print("Hello print!\n")
+    fprint(get_stdout(), fmt5("Hello", " ", "stdout", ctostr(s1, '!'), "\n"))
+    fflush(get_stdout())
+    fprint(get_stderr(), "Hello stderr!\n")
 
     file: *struc FILE = nil
     filename: [32]char = $(nil)
@@ -44,7 +59,6 @@ pub fn main(argc: i32, argv: *string) i32 {
         }
     }
 
-    magic: i32 = 0
     {
         rewind(file)
         freopen(filename, "r", file)
@@ -104,9 +118,6 @@ pub fn main(argc: i32, argv: *string) i32 {
 
     print(fmt4(str, " ", ltostr(s1, magic), "\n"))
 
-    fprint(get_stdout(), fmt5("Hello", " ", "stdout", ctostr(s1, '!'), "\n"))
-    fflush(get_stdout())
-    fprint(get_stderr(), "Hello stderr!\n")
     return 0
 
     perror("Hello perror!")
@@ -116,10 +127,10 @@ pub fn main(argc: i32, argv: *string) i32 {
 # [x] fprint
 # [x] fscan
 # [x] print
-# [ ] scan
+# [x] scan
 # [x] snprint
 # [x] sprint
-# [ ] sscan
+# [x] sscan
 # [x] fmt1
 # [ ] fmt2
 # [ ] fmt3
