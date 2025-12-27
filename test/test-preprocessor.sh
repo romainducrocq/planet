@@ -143,7 +143,28 @@ function check_libc_bindings () {
     check_success
     CHECK_STR=""
 
-    # TODO stdio
+    CHECK_STR=$(echo "Hello stdout!"; echo "Hello stderr!";
+        echo "The Answer to the Ultimate Question of Life is 42")
+    FILE=$(file ${PWD}/test_stdio.plx)
+    planet -E ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    {
+        let TOTAL+=1
+
+        STDOUT=""
+        if [ ${RETURN} -ne 0 ]; then
+            RESULT="${LIGHT_RED}[n]"
+        else
+            STDOUT=$(${FILE} < <(echo -n "99") 2>&1)
+            RETURN=${?}
+            rm ${FILE}
+
+            check_result
+        fi
+
+        print_success
+    }
+    CHECK_STR=""
 
     FILE=$(file ${PWD}/test_stdlib.plx)
     for i in $(seq 1 2); do
