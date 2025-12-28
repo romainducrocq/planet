@@ -246,9 +246,6 @@ function check_hello_lang () {
 }
 
 function check_compiler_tests () {
-    RETURN=0
-    STDOUT=""
-
     COUNT_I=0; COUNT_S=0; CHECK_VAL=0
     FILES="$(find $(readlink -f ${TEST_DIR}/../compiler) -name "*.plx" -type f |\
          grep --invert-match invalid | sort --uniq)"
@@ -282,6 +279,7 @@ function check_compiler_tests () {
         fi
     done
 
+    STDOUT=""
     RETURN=$(echo "${FILES}" | wc -l)
     CHECK_STR="${RETURN}/${RETURN}"
 
