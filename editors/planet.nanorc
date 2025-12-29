@@ -16,7 +16,7 @@ color brightred "\<([A-Z_][0-9A-Z_]*|false|nil|true)\>"
 color green "\<(any|bool|cast|char|data|extrn|f64|fn|i32|i64|i8|none|pub|sizeof|string|struc|type|u32|u64|u8|union)\>"
 
 # Flow control
-color brightyellow "\<(and|elif|else|if|then|while|not|or|loop|match|otherwise)\>"
+color brightyellow "\<(and|elif|else|if|loop|match|not|or|otherwise|then|while)\>"
 color magenta "\<(break|continue|jump|label|return)\>"
 
 # Function definitions
