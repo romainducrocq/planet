@@ -81,7 +81,7 @@ pub fn main(none) i32 {
     get_MATH_ERREXCEPT()
     get_math_errhandling()
 
-    if get_fpclassify(get_NAN()) {
+    if get_fpclassify(0.0 / 0.0) ~= get_FP_NAN() {
         return 1
     }
     if not get_isfinite(get_FP_ZERO()) {
