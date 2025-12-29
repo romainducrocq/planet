@@ -280,7 +280,7 @@ function check_compiler_tests () {
     done
 
     STDOUT=""
-    RETURN=$(echo "${FILES}" | wc -l)
+    RETURN=$(echo "${FILES}" | wc -l | tr -d ' ')
     CHECK_STR="${RETURN}/${RETURN}"
 
     OUT_FILE="${TEST_SRC}/check_i.plx"
@@ -481,10 +481,12 @@ function check_preprocessor () {
     k=1
     for i in $(seq 1 10); do
         echo -n "    print(fmt${i}(" >> ${OUT_FILE}
-        for j in $(seq 1 $((${i}-1))); do
-            echo -n "s${k}, " >> ${OUT_FILE}
-            k=$((${k}+1))
-        done
+        if [ ${i} -gt 1 ]; then
+            for j in $(seq 1 $((${i}-1))); do
+                echo -n "s${k}, " >> ${OUT_FILE}
+                k=$((${k}+1))
+            done
+        fi
         echo "s${k}))" >> ${OUT_FILE}
         k=$((${k}+1))
     done
