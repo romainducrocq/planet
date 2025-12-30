@@ -45,11 +45,6 @@ function setup_neovim () {
     if [ ${?} -ne 0 ]; then return 1; fi
 }
 
-function usage () {
-    echo "Usage: ${SCRIPT_NAME} {--nano|--neovim|--vim}"
-    exit 0
-}
-
 SET_STATUS=0
 case "${1}" in
     "--nano")
@@ -65,7 +60,7 @@ case "${1}" in
         SET_STATUS=${?}
         ;;
     *)
-        echo "Usage: ${0} {--nano|--vim}"
+        echo "Usage: ${0} {--nano | --neovim | --vim}"
         exit 0
 esac
 
