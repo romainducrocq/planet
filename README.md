@@ -108,7 +108,8 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] process import, use, comments
 - [x] support m4 preprocessor
 - [x] glibc standard library bindings
-- [x] text editor themes
+- [x] support basic text editors
+- [ ] support more editors (neovim, emacs)
 - [ ] readme + documentation
 
 ****
