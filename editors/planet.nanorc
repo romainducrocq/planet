@@ -13,14 +13,14 @@ comment "#"
 color brightred "\<([A-Z_][0-9A-Z_]*|false|nil|true)\>"
 
 # Types and related keywords
-color green "\<(any|bool|cast|char|data|extrn|f64|fn|i32|i64|i8|none|pub|sizeof|string|struc|type|u32|u64|u8|union)\>"
+color green "\<(any|bool|cast|char|data|extrn|f64|i32|i64|i8|none|pub|sizeof|string|struc|type|u32|u64|u8|union)\>"
 
 # Flow control
 color brightyellow "\<(and|elif|else|if|loop|match|not|or|otherwise|then|while)\>"
 color magenta "\<(break|continue|jump|label|return)\>"
 
 # Function definitions
-color blue "\<fn[[:blank:]]+[a-zA-Z_][0-9a-zA-Z_]*"
+color blue "\<fn\>([[:blank:]]+[a-zA-Z_][0-9a-zA-Z_]*)?"
 
 # Single-quoted stuff (characters, backslash escapes)
 color brightmagenta "'([^'\]|\\(["'\abfnrtv]))'"
