@@ -20,7 +20,7 @@ color brightyellow "\<(and|elif|else|if|loop|match|not|or|otherwise|then|while)\
 color magenta "\<(break|continue|jump|label|return)\>"
 
 # Function definitions
-color blue "\<fn\>([[:blank:]]+[a-zA-Z_][0-9a-zA-Z_]*)?"
+color blue "\<fn\>([[:blank:]]+\<[a-zA-Z_][0-9a-zA-Z_]*\>)?"
 
 # Single-quoted stuff (characters, backslash escapes)
 color brightmagenta "'([^'\]|\\(["'\abfnrtv]))'"
@@ -29,7 +29,7 @@ color brightmagenta "'([^'\]|\\(["'\abfnrtv]))'"
 color brightyellow ""([^"]|\\")*""
 
 # Preprocessor directives
-color brightcyan "^[[:blank:]]*(import|use)"
+color brightcyan "^[[:blank:]]*\<(import|use)\>"
 color brightcyan "\<m4_[0-9a-zA-Z_]*\>"
 
 # Comments

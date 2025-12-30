@@ -24,7 +24,7 @@ syn keyword planetKeyword and elif else if loop match not or otherwise then whil
 syn keyword planetLabel break continue jump label return
 
 " Function definitions
-syn match planetFunction "\<fn\>\([[:blank:]]\+[a-zA-Z_][0-9a-zA-Z_]*\)\?"
+syn match planetFunction "\<fn\>\([[:blank:]]\+\<[a-zA-Z_][0-9a-zA-Z_]*\>\)\?"
 
 " Single-quoted stuff (characters, backslash escapes)
 syn match planetCharacter "\'\([^\'\\]\|\\\([\"\'\abfnrtv]\)\)\'"
@@ -33,7 +33,7 @@ syn match planetCharacter "\'\([^\'\\]\|\\\([\"\'\abfnrtv]\)\)\'"
 syn match planetString "\"\([^\"]\|\\\"\)*\""
 
 " Preprocessor directives
-syn match planetPreProc "^[[:blank:]]*\(import\|use\)"
+syn match planetPreProc "^[[:blank:]]*\<\(import\|use\)\>"
 syn match planetMacro "\<m4_[0-9a-zA-Z_]*\>"
 
 " Comments
