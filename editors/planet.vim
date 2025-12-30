@@ -1,9 +1,9 @@
 " Vim syntax file
-" Language: planet
+" Language: Planet
 
 " Usage Instructions
-" Put this file in .vim/syntax/planet.vim
-" and add in your .vimrc file the next line:
+" Put this file in ~/.vim/syntax/
+" and add in your ~/.vimrc file the next line:
 " autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet
 
 " Set to v:true for vim color scheme
