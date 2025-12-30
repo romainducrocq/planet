@@ -10,30 +10,46 @@ if exists("b:current_syntax")
   finish
 endif
 
-" Type names the compiler recognizes
-syntax keyword planetTypes any bool cast char data extrn f64 fn i32 i64 i8 none pub sizeof string struc type u32 u64 u8 union
+" Constants
+syn match planetConstant "\<\([A-Z_][0-9A-Z_]*\|false\|nil\|true\)\>"
 
-" Language keywords
-syntax keyword planetKeywords and break continue elif else if jump label loop match not or otherwise return then while
+" Types and related keywords
+syn keyword planetType any bool cast char data extrn f64 i32 i64 i8 none pub sizeof string struc type u32 u64 u8 union
+
+" Flow control
+syn keyword planetKeyword and elif else if loop match not or otherwise then while
+syn keyword planetLabel break continue jump label return
+
+" Function definitions
+syn match planetFunction "\<fn\>\([[:blank:]]\+[a-zA-Z_][0-9a-zA-Z_]*\)\?"
 
 " Single-quoted stuff (characters, backslash escapes)
-syntax match planetChar "'([^'\]|\\(["'\abfnrtv]))'"
+syn match planetCharacter "\'\([^\'\\]\|\\\([\"\'\abfnrtv]\)\)\'"
 
 " Strings and names of included files
-syntax region planetString ""([^"]|\\")*""
+syn match planetString "\"\([^\"]\|\\\"\)*\""
+
+" Preprocessor directives
+syn match planetPreProc "^[[:blank:]]*\(import\|use\)"
+syn match planetMacro "\<m4_[0-9a-zA-Z_]*\>"
 
 " Comments
-syntax region planetComments start="#" end="$" contains=planetTodos
+syn region planetComment start="#" end="$" contains=planetTodo
 
 " Reminders
-syntax keyword planetTodos FIXME TODO XXX
+syn keyword planetTodo FIXME TODO XXX
 
 " Set highlights
-highlight default link planetTypes Type
-highlight default link planetKeywords Keyword
-highlight default link planetChar Character
-highlight default link planetString String
-highlight default link planetComments Comment
-highlight default link planetTodos Todo
+hi def link planetConstant Constant
+hi def link planetType Type
+hi def link planetKeyword Keyword
+hi def link planetLabel Label
+hi def link planetFunction Function
+hi def link planetCharacter Character
+hi def link planetString String
+hi def link planetPreProc PreProc
+hi def link planetMacro Macro
+hi def link planetComment Comment
+hi def link planetTodo Todo
 
 let b:current_syntax = "planet"
