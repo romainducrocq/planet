@@ -6,6 +6,9 @@
 " and add in your .vimrc file the next line:
 " autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet
 
+" Set to v:true for vim color scheme
+let s:set_vim_colors = v:false
+
 if exists("b:current_syntax")
   finish
 endif
@@ -40,16 +43,30 @@ syn region planetComment start="#" end="$" contains=planetTodo
 syn keyword planetTodo FIXME TODO XXX
 
 " Set highlights
-hi def link planetConstant Constant
-hi def link planetType Type
-hi def link planetKeyword Keyword
-hi def link planetLabel Label
-hi def link planetFunction Function
-hi def link planetCharacter Character
-hi def link planetString String
-hi def link planetPreProc PreProc
-hi def link planetMacro Macro
-hi def link planetComment Comment
-hi def link planetTodo Todo
+if s:set_vim_colors
+    hi def link planetConstant Constant
+    hi def link planetType Type
+    hi def link planetKeyword Keyword
+    hi def link planetLabel Label
+    hi def link planetFunction Function
+    hi def link planetCharacter Character
+    hi def link planetString String
+    hi def link planetPreProc PreProc
+    hi def link planetMacro Macro
+    hi def link planetComment Comment
+    hi def link planetTodo Todo
+else
+    hi planetConstant cterm=bold ctermfg=red
+    hi planetType ctermfg=green
+    hi planetKeyword cterm=bold ctermfg=yellow
+    hi planetLabel ctermfg=magenta
+    hi planetFunction ctermfg=blue
+    hi planetCharacter cterm=bold ctermfg=magenta
+    hi planetString cterm=bold ctermfg=yellow
+    hi planetPreProc cterm=bold ctermfg=cyan
+    hi planetMacro cterm=bold ctermfg=cyan
+    hi planetComment cterm=bold ctermfg=blue
+    hi planetTodo cterm=bold ctermbg=white ctermfg=yellow
+endif
 
 let b:current_syntax = "planet"
