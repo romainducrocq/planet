@@ -1,16 +1,25 @@
 " Vim syntax file
 " Language: Planet
 
-" Usage Instructions
+" Usage Instructions for vim
 " Put this file in ~/.vim/syntax/
 " and add in your ~/.vimrc file the next line:
 " autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet
 
-" Set to v:true for vim color scheme
+" Usage Instructions for neovim
+" Put this file in ~/.config/nvim/syntax/
+" and add file ~/.config/nvim/ftdetect/planet.vim with the next line:
+" autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet
+
+" Set to v:true for vim color scheme (this is always true for neovim)
 let s:set_vim_colors = v:false
 
 if exists("b:current_syntax")
-  finish
+    finish
+endif
+
+if has('nvim')
+    let s:set_vim_colors = v:true
 endif
 
 " Constants

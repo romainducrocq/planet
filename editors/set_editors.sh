@@ -31,15 +31,13 @@ function setup_vim () {
 }
 
 function setup_neovim () {
-    echo "TODO setup neovim not available yet"; return 1
-    # TODO
     mkdir -p ${NEOVIM_RUNTIME}/syntax/
     if [ ${?} -ne 0 ]; then return 1; fi
     mkdir -p ${NEOVIM_RUNTIME}/ftdetect/
     if [ ${?} -ne 0 ]; then return 1; fi
     cp -v planet.vim ${NEOVIM_RUNTIME}/syntax/
     if [ ${?} -ne 0 ]; then return 1; fi
-    echo "autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet" >> ${NEOVIM_RUNTIME}/ftdetect/planet.vim
+    echo "autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet" > ${NEOVIM_RUNTIME}/ftdetect/planet.vim
     if [ ${?} -ne 0 ]; then return 1; fi
     cat ${NEOVIM_RUNTIME}/ftdetect/planet.vim | tail -1
     if [ ${?} -ne 0 ]; then return 1; fi
