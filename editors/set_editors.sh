@@ -8,6 +8,8 @@ VIM_RUNTIME="${HOME}/.vim"
 
 NEOVIM_RUNTIME="${HOME}/.config/nvim"
 
+VSCODE_RUNTIME="${HOME}/.vscode/"
+
 function setup_nano () {
     mkdir -p ${NANO_RUNTIME}/
     if [ ${?} -ne 0 ]; then return 1; fi
@@ -43,6 +45,13 @@ function setup_neovim () {
     if [ ${?} -ne 0 ]; then return 1; fi
 }
 
+function setup_vscode () {
+    mkdir -p ${VSCODE_RUNTIME}/extensions/
+    if [ ${?} -ne 0 ]; then return 1; fi
+    cp -rv planet-vscode/ ${VSCODE_RUNTIME}/extensions/
+    if [ ${?} -ne 0 ]; then return 1; fi
+}
+
 SET_STATUS=0
 case "${1}" in
     "--nano")
@@ -57,8 +66,12 @@ case "${1}" in
         setup_vim
         SET_STATUS=${?}
         ;;
+    "--vscode")
+        setup_vscode
+        SET_STATUS=${?}
+        ;;
     *)
-        echo "Usage: ${0} {--nano | --neovim | --vim}"
+        echo "Usage: ${0} {--nano | --neovim | --vim | --vscode}"
         exit 0
 esac
 
