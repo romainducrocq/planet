@@ -55,7 +55,7 @@
         "strings": {
             "patterns": [{
                 "name": "string.quoted.double.planet",
-                "match": "\"([^\"]|\\\")*\""
+                "match": "\"([^\"]|\\\\\")*\""
             }]
         },
         "characters": {
