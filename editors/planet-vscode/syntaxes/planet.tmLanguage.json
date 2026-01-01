@@ -4,15 +4,33 @@
     "patterns": [
         {
             "include": "#comments"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#constants"
         }
     ],
     "repository": {
-		"comments": {
-			"patterns": [{
-					"name": "comment.line.planet",
-					"match": "#.*"
-				}]
-		}
+        "comments": {
+            "patterns": [{
+                "name": "comment.line.planet",
+                "match": "#.*"
+            }]
+        },
+        "types": {
+            "patterns": [{
+                "name": "entity.name.type.planet",
+                "match": "\\b(any|bool|cast|char|data|extrn|f64|i32|i64|i8|none|pub|sizeof|string|struc|type|u32|u64|u8|union)\\b"
+            }]
+        },
+        "constants": {
+            "patterns": [{
+                "name": "constant.numeric.planet",
+                "match": "\\b([A-Z_][0-9A-Z_]*|false|nil|true)\\b"
+            }]
+        }
     },
     "scopeName": "source.planet"
 }
