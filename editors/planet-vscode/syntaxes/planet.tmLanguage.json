@@ -15,6 +15,9 @@
             "include": "#strings"
         },
         {
+            "include": "#characters"
+        },
+        {
             "include": "#functions"
         },
         {
@@ -53,6 +56,12 @@
             "patterns": [{
                 "name": "string.quoted.double.planet",
                 "match": "\"([^\"]|\\\")*\""
+            }]
+        },
+        "characters": {
+            "patterns": [{
+                "name": "string.quoted.single.planet",
+                "match": "'([^'\\\\]|\\\\([\"'\\\\abfnrtv]))'"
             }]
         },
         "functions": {
