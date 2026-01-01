@@ -1,25 +1,25 @@
 {
-  "name": "planet-vscode",
-  "displayName": "Planet",
-  "description": "Planet Language",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.107.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "contributes": {
-    "languages": [{
-      "id": "planet",
-      "aliases": ["Planet", "planet"],
-      "extensions": [".plx",".plx.m4",".etc"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "planet",
-      "scopeName": "source.planet",
-      "path": "./syntaxes/planet.tmLanguage.json"
-    }]
-  }
+    "name": "planet-vscode",
+    "displayName": "Planet",
+    "description": "Planet Language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.107.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "planet",
+            "aliases": ["Planet", "planet"],
+            "extensions": [".plx",".plx.m4",".etc"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "planet",
+            "scopeName": "source.planet",
+            "path": "./syntaxes/planet.tmLanguage.json"
+        }]
+    }
 }
