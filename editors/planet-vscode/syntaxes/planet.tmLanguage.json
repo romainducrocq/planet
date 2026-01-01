@@ -6,6 +6,12 @@
             "include": "#comments"
         },
         {
+            "include": "#functions"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
             "include": "#types"
         },
         {
@@ -17,6 +23,21 @@
             "patterns": [{
                 "name": "comment.line.planet",
                 "match": "#.*"
+            }]
+        },
+        "functions": {
+            "patterns": [{
+                "name": "entity.name.function.planet",
+                "match": "\\bfn\\b([[:blank:]]+\\b[a-zA-Z_][0-9a-zA-Z_]*\\b)?"
+            }]
+        },
+        "keywords": {
+            "patterns": [{
+                "name": "keyword.control.planet",
+                "match": "\\b(and|elif|else|if|loop|match|not|or|otherwise|then|while)\\b"
+            }, {
+                "name": "keyword.other.planet",
+                "match": "\\b(break|continue|jump|label|return)\\b"
             }]
         },
         "types": {
