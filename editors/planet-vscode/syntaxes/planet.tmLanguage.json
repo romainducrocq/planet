@@ -3,7 +3,16 @@
     "name": "Planet",
     "patterns": [
         {
+            "include": "#reminders"
+        },
+        {
             "include": "#comments"
+        },
+        {
+            "include": "#preprocessors"
+        },
+        {
+            "include": "#strings"
         },
         {
             "include": "#functions"
@@ -19,10 +28,31 @@
         }
     ],
     "repository": {
+        "reminders": {
+            "patterns": [{
+                "name": "invalid.illegal.planet",
+                "match": "\\b(FIXME|TODO|XXX)\\b"
+            }]
+        },
         "comments": {
             "patterns": [{
                 "name": "comment.line.planet",
                 "match": "#.*"
+            }]
+        },
+        "preprocessors": {
+            "patterns": [{
+                "name": "meta.preprocessor.planet",
+                "match": "^[[:blank:]]*\\b(import|use)\\b"
+            }, {
+                "name": "variable.language.planet",
+                "match": "\\bm4_[0-9a-zA-Z_]*\\b"
+            }]
+        },
+        "strings": {
+            "patterns": [{
+                "name": "string.quoted.double.planet",
+                "match": "\"([^\"]|\\\")*\""
             }]
         },
         "functions": {
