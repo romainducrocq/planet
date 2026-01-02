@@ -23,17 +23,17 @@ color magenta "\<(break|continue|jump|label|return)\>"
 color blue "\<fn\>([[:blank:]]+\<[a-zA-Z_][0-9a-zA-Z_]*\>)?"
 
 # Single-quoted stuff (characters, backslash escapes)
-color brightmagenta "'([^'\]|\\(["'\abfnrtv]))'"
+color brightmagenta "'([^'\\]|\\['"?\\abfnrtv])'"
 
 # Strings and names of included files
-color brightyellow ""([^"]|\\")*""
+color brightyellow ""([^"\\]|\\['"\\?abfnrtv])*""
 
 # Preprocessor directives
 color brightcyan "^[[:blank:]]*\<(import|use)\>"
 color brightcyan "\<m4_[0-9a-zA-Z_]*\>"
 
 # Comments
-color brightblue "#.*"
+color brightblue "#.*$"
 
 # Reminders
 color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
