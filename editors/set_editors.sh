@@ -8,7 +8,7 @@ VIM_RUNTIME="${HOME}/.vim"
 
 NEOVIM_RUNTIME="${HOME}/.config/nvim"
 
-VSCODE_RUNTIME="${HOME}/.vscode/"
+VSCODE_RUNTIME="${HOME}/.vscode"
 
 function setup_nano () {
     mkdir -p ${NANO_RUNTIME}/
@@ -37,7 +37,7 @@ function setup_neovim () {
     if [ ${?} -ne 0 ]; then return 1; fi
     mkdir -p ${NEOVIM_RUNTIME}/ftdetect/
     if [ ${?} -ne 0 ]; then return 1; fi
-    cp -v planet.vim ${NEOVIM_RUNTIME}/syntax/
+    cp -v $(readlink -f planet.vim) ${NEOVIM_RUNTIME}/syntax/
     if [ ${?} -ne 0 ]; then return 1; fi
     echo "autocmd BufRead,BufNewFile *.plx,*.plx.m4,*.etc set filetype=planet" > ${NEOVIM_RUNTIME}/ftdetect/planet.vim
     if [ ${?} -ne 0 ]; then return 1; fi
@@ -48,7 +48,7 @@ function setup_neovim () {
 function setup_vscode () {
     mkdir -p ${VSCODE_RUNTIME}/extensions/
     if [ ${?} -ne 0 ]; then return 1; fi
-    cp -rv planet-vscode/ ${VSCODE_RUNTIME}/extensions/
+    cp -rv $(readlink -f planet-vscode) ${VSCODE_RUNTIME}/extensions/
     if [ ${?} -ne 0 ]; then return 1; fi
 }
 

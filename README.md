@@ -14,13 +14,23 @@ Advent of code 2025 with `planet`: https://github.com/romainducrocq/planet-aoc20
 
 More info will come soon, for now get started with:  
 ```
-git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
-cd planet/bin/
-./configure.sh
-./make.sh
-./install.sh
-. ~/.bashrc # or . ~/.zshrc
+$ git clone --depth 1 --branch master --recurse-submodules --shallow-submodules https://github.com/romainducrocq/planet
+$ cd planet/bin/
+$ ./configure.sh
+$ ./make.sh
+$ ./install.sh
+$ . ~/.bashrc # or . ~/.zshrc
 ```
+
+### Editor support
+
+You can also setup syntax highlighting for your text editor with:  
+```
+$ cd editors/
+$ ./set_editors.sh {--nano | --neovim | --vim | --vscode}
+```
+- or follow the instructions in the syntax files manually.  
+Nano, Neovim, Vim and VScode are currently supported (sorry Emacs users).  
 
 ****
 
