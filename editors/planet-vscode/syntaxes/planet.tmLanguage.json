@@ -43,7 +43,7 @@
         "comments": {
             "patterns": [{
                 "name": "comment.line.planet",
-                "match": "#.*"
+                "match": "#.*$"
             }]
         },
         "preprocessors": {
@@ -58,13 +58,13 @@
         "strings": {
             "patterns": [{
                 "name": "string.quoted.double.planet",
-                "match": "\"([^\"]|\\\\\")*\""
+                "match": "\"([^\"\\\\]|\\\\['\"\\\\?abfnrtv])*\""
             }]
         },
         "characters": {
             "patterns": [{
                 "name": "string.quoted.single.planet",
-                "match": "'([^'\\\\]|\\\\([\"'\\\\abfnrtv]))'"
+                "match": "'([^'\\\\]|\\\\['\"?\\\\abfnrtv])'"
             }]
         },
         "functions": {
