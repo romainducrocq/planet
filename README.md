@@ -29,8 +29,8 @@ You can also setup syntax highlighting for your text editor with:
 $ cd editors/
 $ ./set_editors.sh {--nano | --neovim | --vim | --vscode}
 ```
-- or follow the instructions in the syntax files manually.  
-Nano, Neovim, Vim and VScode are currently supported (sorry Emacs users).  
+Or by following the instructions in the syntax files manually.  
+Supported editors are Nano, Neovim, Vim and VScode (sorry Emacs users).  
 
 ****
 
