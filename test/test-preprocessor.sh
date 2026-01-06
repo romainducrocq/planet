@@ -286,7 +286,7 @@ function check_compiler_tests () {
     OUT_FILE="${TEST_SRC}/check_i.plx"
     echo "use \"stdio\"" > ${OUT_FILE}
     echo "pub fn main(none) i32 {" >> ${OUT_FILE}
-    echo "    print(\"${COUNT_I}/${RETURN}\")" >> ${OUT_FILE}
+    echo "    print(\"${COUNT_I}/${RETURN}\n\")" >> ${OUT_FILE}
     echo "    if ${COUNT_I} == ${RETURN} and ${CHECK_VAL} == ${RETURN} {" >> ${OUT_FILE}
     echo "        return 0" >> ${OUT_FILE}
     echo "    }" >> ${OUT_FILE}
@@ -296,7 +296,7 @@ function check_compiler_tests () {
     OUT_FILE="${TEST_SRC}/check_s.plx"
     echo "use \"stdio\"" > ${OUT_FILE}
     echo "pub fn main(none) i32 {" >> ${OUT_FILE}
-    echo "    print(\"${COUNT_S}/${RETURN}\")" >> ${OUT_FILE}
+    echo "    print(\"${COUNT_S}/${RETURN}\n\")" >> ${OUT_FILE}
     echo "    if ${COUNT_S} == ${RETURN} and ${CHECK_VAL} == ${RETURN} {" >> ${OUT_FILE}
     echo "        return 0" >> ${OUT_FILE}
     echo "    }" >> ${OUT_FILE}
@@ -457,7 +457,7 @@ function check_preprocessor () {
     echo "m4_define(\`STR_${N}', \`DEF_STR(${N})')" >> ${OUT_FILE}
 
     OUT_FILE="${FILE}.plx"
-    echo "use \"stdio\"" >> ${OUT_FILE}
+    echo "use \"stdio\"" > ${OUT_FILE}
     echo "" >> ${OUT_FILE}
     echo "x$((${N}+1)): i32 = 1" >> ${OUT_FILE}
     echo "# a single-line comment $((${N}+1))" >> ${OUT_FILE}
