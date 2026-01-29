@@ -2,9 +2,8 @@
 
 > **THIS LANGUAGE IS A WORK IN PROGRESS! ANYTHING CAN CHANGE AT ANY MOMENT WITHOUT ANY NOTICE! USE THIS LANGUAGE AT YOUR OWN RISK!**
 
-- [x] The core language and the tooling are done, ready for first release.
-- [ ] Not a lot is documented yet, documentation is coming around january/february.
-- [ ] First release (`0.1.0`) planned for spring. **See below for progress ...**
+- [x] The core language and the tooling are done. **See below for progress ...**
+- [ ] Not a lot is documented yet, more documentation is coming in version `0.1.1`.
 
 <!---->
 
@@ -119,7 +118,7 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] support m4 preprocessor
 - [x] glibc standard library bindings
 - [x] support multiple text editors
-- [ ] readme + documentation
+- [ ] readme + documentation (TBD in `0.1.1`)
 
 ****
 
