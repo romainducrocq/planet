@@ -9,6 +9,14 @@
 
 Advent of code 2025 with `planet`: https://github.com/romainducrocq/planet-aoc2025  
 
+****
+
+`planet` is a procedural C-like programming language based on my C compiler [wheelcc](https://github.com/romainducrocq/wheelcc), written in C from scratch for GNU/Linux and MacOS. This language is built as an alternative frontend for a large subset of C with a new and modern syntax, as well as slightly improved semantics. It also integrates with the m4 preprocessor, has native bindings to libc and compiles programs directly to x86-64 assembly for the System-V ABI. Overall, it is a fun and small language to experiment with PL design and write simple things from the ground up. See the `wheelcc` submodule for more information on the compiler implementation.  
+
+<!---->
+
+A huge thanks to _Tsoding_ for [Porth](https://gitlab.com/tsoding/porth) and _Nora Sandler_ for [Writing a C Compiler](https://nostarch.com/writing-c-compiler), who sparked my deep interest in compilers and inspired me to make my own programming language.  
+
 ### Quick install
 
 More info will come soon, for now get started with:  
