@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
+KERNEL_NAME="$(uname -s)"
 PACKAGE_BUILD="$(dirname $(readlink -f ${0}))"
 PACKAGE_DIR="$(dirname ${PACKAGE_BUILD})/bin"
 PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
 PACKAGE_LIBC="${PACKAGE_DIR}/libc"
 CC="gcc"
-if [[ "$(uname -s)" == "Darwin"* ]]; then
+if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
     CC="clang -arch x86_64"
 fi
 
@@ -32,7 +33,7 @@ function build_lib () {
     if [ ! "${LIB_NAME}" = "${LIBC_NAME}" ]; then
         echo "${FILE} ${FLAGS} -> ${LIB_NAME}"
     fi
-    if [[ "$(uname -s)" == "Darwin"* ]]; then
+    if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
         BUILD_FLAGS="${BUILD_FLAGS} -undefined dynamic_lookup"
     fi
     ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME}
