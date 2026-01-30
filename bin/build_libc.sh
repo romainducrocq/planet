@@ -35,7 +35,7 @@ function build_lib () {
     if [ ! "${LIB_NAME}" = "${LIBC_NAME}" ]; then
         echo "${FILE} ${FLAGS} -> ${LIB_NAME}"
     fi
-    if [ "${CC}" = "clang" ]; then
+    if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
         BUILD_FLAGS="${BUILD_FLAGS} -undefined dynamic_lookup"
     fi
     ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME}
