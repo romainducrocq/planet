@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 NANO_RC="${HOME}/.nanorc"
 NANO_RUNTIME="${HOME}/.nano"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 RESULTS_DIR="$(dirname "${0}")/../test_results"
 if [ ! -z "${1}" ]; then

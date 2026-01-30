@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BACKEND_PATH="$(readlink -f ../wheelcc)"
 PACKAGE_PATH="$(readlink -f ..)"

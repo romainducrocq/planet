@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PACKAGE_BUILD="$(dirname $(readlink -f ${0}))"
 PACKAGE_DIR="$(dirname ${PACKAGE_BUILD})/bin"

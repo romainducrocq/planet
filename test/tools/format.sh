@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ROOT="${PWD}/../.."
 BACKEND_PATH="$(readlink -f ../../wheelcc)"

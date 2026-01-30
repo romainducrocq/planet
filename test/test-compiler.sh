@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 RESULT="$(echo "$(./test-compiler-cc.sh ${@} | tee /dev/tty)" | tail -1)"
 if [[ "${RESULT}" == *"FAIL:"* ]]; then

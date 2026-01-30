@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 TEST_DIR_CC="${PWD}/../../wheelcc/test/tests/compiler"
 TEST_DIR="${PWD}/../tests/compiler"
