@@ -8,6 +8,8 @@ PACKAGE_LIBC="${PACKAGE_DIR}/libc"
 CC="gcc"
 if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
     CC="clang -arch x86_64"
+elif [[ "${KERNEL_NAME}" == "FreeBSD"* ]]; then
+    CC="clang"
 fi
 
 CC_FLAGS="-O3 -Wall -Wextra -Wpedantic -pedantic-errors"
@@ -33,7 +35,7 @@ function build_lib () {
     if [ ! "${LIB_NAME}" = "${LIBC_NAME}" ]; then
         echo "${FILE} ${FLAGS} -> ${LIB_NAME}"
     fi
-    if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
+    if [ "${CC}" = "clang" ]; then
         BUILD_FLAGS="${BUILD_FLAGS} -undefined dynamic_lookup"
     fi
     ${CC} ${OBJECT_FILES} ${BUILD_FLAGS} -shared -o ${LIB_NAME}
