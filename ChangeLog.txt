@@ -1,3 +1,7 @@
+version 0.1.1 (tags/0.1.1):
+  - add support for FreeBSD with wheelcc version 0.3.0
+  - document planet language in README
+
 version 0.1.0 (tags/0.1.0):
   - planet initial release based on wheelcc version 0.2.2
   - full implementation in C17 for GNU/Linux and MacOS
