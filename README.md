@@ -8,6 +8,7 @@
 <!---->
 
 Advent of code 2025 with `planet`: https://github.com/romainducrocq/planet-aoc2025  
+Port of the Kilo text editor to `planet`: https://github.com/romainducrocq/planet-kilo  
 
 ****
 
