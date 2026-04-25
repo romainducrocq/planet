@@ -27,7 +27,7 @@ $ cd planet/bin/
 $ ./configure.sh
 $ ./make.sh
 $ ./install.sh
-$ . ~/.bashrc # or . ~/.zshrc
+$ . ~/.bashrc # or . ~/.zshrc or . ~/.shrc
 ```
 
 ### Editor support
