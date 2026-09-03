@@ -1,0 +1,1382 @@
+#ifndef _OPTIMIZER_IMPL_OLVL_H
+#define _OPTIMIZER_IMPL_OLVL_H
+
+#ifdef __OPTIM_LEVEL__
+#if __OPTIM_LEVEL__ >= 1 && __OPTIM_LEVEL__ <= 2
+
+#define GET_INSTR(X) (*ctx->p_instrs)[X]
+#define GET_CFG_BLOCK(X) ctx->cfg->blocks[X]
+
+#if __OPTIM_LEVEL__ == 1
+#define mask_t TULong
+#define AstInstruction TacInstruction
+#define Ctx struct OptimTacContext*
+#define free_AstInstruction(X) free_TacInstruction(X)
+#define uptr_move_AstInstruction(X, Y) uptr_move(TacInstruction, X, Y)
+#elif __OPTIM_LEVEL__ == 2
+#define AstInstruction AsmInstruction
+#define Ctx struct RegAllocContext*
+#define free_AstInstruction(X) free_AsmInstruction(X)
+#define uptr_move_AstInstruction(X, Y) uptr_move(AsmInstruction, X, Y)
+#endif
+
+struct ControlFlowBlock {
+    unsigned long size;
+    unsigned long instrs_front_idx;
+    unsigned long instrs_back_idx;
+    vector_t(unsigned long) pred_ids;
+    vector_t(unsigned long) succ_ids;
+};
+
+struct ControlFlowGraph {
+    unsigned long entry_id;
+    unsigned long exit_id;
+    vector_t(unsigned long) entry_succ_ids;
+    vector_t(unsigned long) exit_pred_ids;
+    vector_t(bool) reaching_code;
+    vector_t(struct ControlFlowBlock) blocks;
+    hashmap_t(TIdentifier, ulong_t) identifier_id_map;
+};
+
+struct DataFlowAnalysis {
+    unsigned long set_size;
+    unsigned long mask_size;
+    unsigned long incoming_idx;
+    unsigned long static_idx;
+    vector_t(unsigned long) open_data_map;
+    vector_t(unsigned long) instr_idx_map;
+    vector_t(mask_t) blocks_mask_sets;
+    vector_t(mask_t) instrs_mask_sets;
+};
+
+#if __OPTIM_LEVEL__ == 1
+struct DataFlowAnalysisO1 {
+    // Copy propagation
+    vector_t(unsigned long) data_idx_map;
+    vector_t(unique_ptr_t(TacInstruction)) bak_instrs;
+    // Dead store elimination
+    unsigned long addressed_idx;
+};
+#elif __OPTIM_LEVEL__ == 2
+struct DataFlowAnalysisO2 {
+    // Register allocation
+    vector_t(TIdentifier) data_name_map;
+};
+#endif
+
+static void free_ControlFlowGraph(unique_ptr_t(ControlFlowGraph) * self) {
+    uptr_delete(*self);
+    vec_delete((*self)->entry_succ_ids);
+    vec_delete((*self)->exit_pred_ids);
+    vec_delete((*self)->reaching_code);
+    for (unsigned long i = 0; i < vec_size((*self)->blocks); ++i) {
+        vec_delete((*self)->blocks[i].pred_ids);
+        vec_delete((*self)->blocks[i].succ_ids);
+    }
+    vec_delete((*self)->blocks);
+    map_delete((*self)->identifier_id_map);
+    uptr_free(*self);
+}
+
+static unique_ptr_t(ControlFlowGraph) make_ControlFlowGraph(void) {
+    unique_ptr_t(ControlFlowGraph) self = uptr_new();
+    uptr_alloc(ControlFlowGraph, self);
+    self->entry_id = 0;
+    self->exit_id = 0;
+    self->entry_succ_ids = vec_new();
+    self->exit_pred_ids = vec_new();
+    self->reaching_code = vec_new();
+    self->blocks = vec_new();
+    self->identifier_id_map = map_new();
+    return self;
+}
+
+static void free_DataFlowAnalysis(unique_ptr_t(DataFlowAnalysis) * self) {
+    uptr_delete(*self);
+    vec_delete((*self)->open_data_map);
+    vec_delete((*self)->instr_idx_map);
+    vec_delete((*self)->blocks_mask_sets);
+    vec_delete((*self)->instrs_mask_sets);
+    uptr_free(*self);
+}
+
+static unique_ptr_t(DataFlowAnalysis) make_DataFlowAnalysis(void) {
+    unique_ptr_t(DataFlowAnalysis) self = uptr_new();
+    uptr_alloc(DataFlowAnalysis, self);
+    self->set_size = 0;
+    self->mask_size = 0;
+    self->incoming_idx = 0;
+    self->static_idx = 0;
+    self->open_data_map = vec_new();
+    self->instr_idx_map = vec_new();
+    self->blocks_mask_sets = vec_new();
+    self->instrs_mask_sets = vec_new();
+    return self;
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void free_DataFlowAnalysisO1(unique_ptr_t(DataFlowAnalysisO1) * self) {
+    uptr_delete(*self);
+    vec_delete((*self)->data_idx_map);
+    for (unsigned long i = 0; i < vec_size((*self)->bak_instrs); ++i) {
+        free_TacInstruction(&(*self)->bak_instrs[i]);
+    }
+    vec_delete((*self)->bak_instrs);
+    uptr_free(*self);
+}
+
+static unique_ptr_t(DataFlowAnalysisO1) make_DataFlowAnalysisO1(void) {
+    unique_ptr_t(DataFlowAnalysisO1) self = uptr_new();
+    uptr_alloc(DataFlowAnalysisO1, self);
+    self->addressed_idx = 0;
+    self->data_idx_map = vec_new();
+    self->bak_instrs = vec_new();
+    return self;
+}
+#elif __OPTIM_LEVEL__ == 2
+static void free_DataFlowAnalysisO2(unique_ptr_t(DataFlowAnalysisO2) * self) {
+    uptr_delete(*self);
+    vec_delete((*self)->data_name_map);
+    uptr_free(*self);
+}
+
+static unique_ptr_t(DataFlowAnalysisO2) make_DataFlowAnalysisO2(void) {
+    unique_ptr_t(DataFlowAnalysisO2) self = uptr_new();
+    uptr_alloc(DataFlowAnalysisO2, self);
+    self->data_name_map = vec_new();
+    return self;
+}
+#endif
+
+static void set_instr(Ctx ctx, unique_ptr_t(AstInstruction) instr, unsigned long instr_idx) {
+    if (instr) {
+        uptr_move_AstInstruction(instr, GET_INSTR(instr_idx));
+    }
+    else {
+        free_AstInstruction(&GET_INSTR(instr_idx));
+    }
+#if __OPTIM_LEVEL__ == 1
+    ctx->is_fixed_point = false;
+#endif
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Control flow graph
+
+static bool find_size_t(vector_t(unsigned long) xs, unsigned long x) {
+    for (unsigned long i = 0; i < vec_size(xs); ++i) {
+        if (xs[i] == x) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static void cfg_add_edge(vector_t(unsigned long) * succ_ids, vector_t(unsigned long) * pred_ids, unsigned long succ_id,
+    unsigned long pred_id) {
+    if (!find_size_t(*succ_ids, succ_id)) {
+        vec_push_back(*succ_ids, succ_id);
+    }
+    if (!find_size_t(*pred_ids, pred_id)) {
+        vec_push_back(*pred_ids, pred_id);
+    }
+}
+
+static void cfg_add_succ_edge(Ctx ctx, unsigned long block_id, unsigned long succ_id) {
+    if (succ_id < ctx->cfg->exit_id) {
+        cfg_add_edge(&GET_CFG_BLOCK(block_id).succ_ids, &GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id);
+    }
+    else if (succ_id == ctx->cfg->exit_id) {
+        cfg_add_edge(&GET_CFG_BLOCK(block_id).succ_ids, &ctx->cfg->exit_pred_ids, succ_id, block_id);
+    }
+    else {
+        THROW_ABORT;
+    }
+}
+
+static void cfg_add_pred_edge(Ctx ctx, unsigned long block_id, unsigned long pred_id) {
+    if (pred_id < ctx->cfg->exit_id) {
+        cfg_add_edge(&GET_CFG_BLOCK(pred_id).succ_ids, &GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id);
+    }
+    else if (pred_id == ctx->cfg->entry_id) {
+        cfg_add_edge(&ctx->cfg->entry_succ_ids, &GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id);
+    }
+    else {
+        THROW_ABORT;
+    }
+}
+
+static void cfg_rm_edge(vector_t(unsigned long) * succ_ids, vector_t(unsigned long) * pred_ids, unsigned long succ_id,
+    unsigned long pred_id, bool is_reachable) {
+    if (is_reachable) {
+        for (unsigned long i = vec_size(*succ_ids); i-- > 0;) {
+            if ((*succ_ids)[i] == succ_id) {
+                vec_remove_swap(*succ_ids, i);
+                break;
+            }
+        }
+    }
+    for (unsigned long i = vec_size(*pred_ids); i-- > 0;) {
+        if ((*pred_ids)[i] == pred_id) {
+            vec_remove_swap(*pred_ids, i);
+            break;
+        }
+    }
+}
+
+static void cfg_rm_succ_edge(Ctx ctx, unsigned long block_id, unsigned long succ_id, bool is_reachable) {
+    if (succ_id < ctx->cfg->exit_id) {
+        cfg_rm_edge(
+            &GET_CFG_BLOCK(block_id).succ_ids, &GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id, is_reachable);
+    }
+    else if (succ_id == ctx->cfg->exit_id) {
+        cfg_rm_edge(&GET_CFG_BLOCK(block_id).succ_ids, &ctx->cfg->exit_pred_ids, succ_id, block_id, is_reachable);
+    }
+    else {
+        THROW_ABORT;
+    }
+}
+
+static void cfg_rm_pred_edge(Ctx ctx, unsigned long block_id, unsigned long pred_id) {
+    if (pred_id < ctx->cfg->exit_id) {
+        cfg_rm_edge(&GET_CFG_BLOCK(pred_id).succ_ids, &GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id, true);
+    }
+    else if (pred_id == ctx->cfg->entry_id) {
+        cfg_rm_edge(&ctx->cfg->entry_succ_ids, &GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id, true);
+    }
+    else {
+        THROW_ABORT;
+    }
+}
+
+static void cfg_rm_empty_block(Ctx ctx, unsigned long block_id, bool is_reachable) {
+    for (unsigned long i = 0; i < vec_size(GET_CFG_BLOCK(block_id).succ_ids); ++i) {
+        unsigned long succ_id = GET_CFG_BLOCK(block_id).succ_ids[i];
+        if (is_reachable) {
+            for (unsigned long j = 0; j < vec_size(GET_CFG_BLOCK(block_id).pred_ids); ++j) {
+                unsigned long pred_id = GET_CFG_BLOCK(block_id).pred_ids[j];
+                if (pred_id == ctx->cfg->entry_id) {
+                    cfg_add_pred_edge(ctx, succ_id, pred_id);
+                }
+                else {
+                    cfg_add_succ_edge(ctx, pred_id, succ_id);
+                }
+            }
+        }
+        cfg_rm_succ_edge(ctx, block_id, succ_id, is_reachable);
+    }
+    if (is_reachable) {
+        for (unsigned long i = 0; i < vec_size(GET_CFG_BLOCK(block_id).pred_ids); ++i) {
+            unsigned long pred_id = GET_CFG_BLOCK(block_id).pred_ids[i];
+            cfg_rm_pred_edge(ctx, block_id, pred_id);
+        }
+    }
+    GET_CFG_BLOCK(block_id).instrs_front_idx = ctx->cfg->exit_id;
+    GET_CFG_BLOCK(block_id).instrs_back_idx = ctx->cfg->exit_id;
+}
+
+static void cfg_rm_block_instr(Ctx ctx, unsigned long instr_idx, unsigned long block_id) {
+    if (GET_INSTR(instr_idx)) {
+        set_instr(ctx, uptr_new(), instr_idx);
+        GET_CFG_BLOCK(block_id).size--;
+        if (GET_CFG_BLOCK(block_id).size == 0) {
+            cfg_rm_empty_block(ctx, block_id, true);
+        }
+        else if (instr_idx == GET_CFG_BLOCK(block_id).instrs_front_idx) {
+            for (; instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx; ++instr_idx) {
+                if (GET_INSTR(instr_idx)) {
+                    GET_CFG_BLOCK(block_id).instrs_front_idx = instr_idx;
+                    break;
+                }
+            }
+        }
+        else if (instr_idx == GET_CFG_BLOCK(block_id).instrs_back_idx) {
+            instr_idx++;
+            for (; instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx;) {
+                if (GET_INSTR(instr_idx)) {
+                    GET_CFG_BLOCK(block_id).instrs_back_idx = instr_idx;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void cfg_init_label_block(Ctx ctx, struct TacLabel* node) {
+    map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1);
+}
+#elif __OPTIM_LEVEL__ == 2
+static void cfg_init_label_block(Ctx ctx, struct AsmLabel* node) {
+    map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1);
+}
+#endif
+
+static void cfg_init_block(Ctx ctx, unsigned long instr_idx, unsigned long* instrs_back_idx) {
+    struct AstInstruction* node = GET_INSTR(instr_idx);
+    switch (node->type) {
+#if __OPTIM_LEVEL__ == 1
+        case AST_TacLabel_t:
+#elif __OPTIM_LEVEL__ == 2
+        case AST_AsmLabel_t:
+#endif
+        {
+            if (*instrs_back_idx != vec_size(*ctx->p_instrs)) {
+                vec_back(ctx->cfg->blocks).instrs_back_idx = *instrs_back_idx;
+                struct ControlFlowBlock block = {0, instr_idx, 0, vec_new(), vec_new()};
+                vec_push_back(ctx->cfg->blocks, block);
+            }
+#if __OPTIM_LEVEL__ == 1
+            cfg_init_label_block(ctx, &node->get._TacLabel);
+#elif __OPTIM_LEVEL__ == 2
+            cfg_init_label_block(ctx, &node->get._AsmLabel);
+#endif
+            *instrs_back_idx = instr_idx;
+            break;
+        }
+#if __OPTIM_LEVEL__ == 1
+        case AST_TacReturn_t:
+        case AST_TacJump_t:
+        case AST_TacJumpIfZero_t:
+        case AST_TacJumpIfNotZero_t:
+#elif __OPTIM_LEVEL__ == 2
+        case AST_AsmJmp_t:
+        case AST_AsmJmpCC_t:
+        case AST_AsmRet_t:
+#endif
+        {
+            vec_back(ctx->cfg->blocks).instrs_back_idx = instr_idx;
+            *instrs_back_idx = vec_size(*ctx->p_instrs);
+            break;
+        }
+        default: {
+            *instrs_back_idx = instr_idx;
+            break;
+        }
+    }
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void cfg_init_jump_edges(Ctx ctx, struct TacJump* node, unsigned long block_id) {
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx->cfg->identifier_id_map, node->target));
+}
+
+static void cfg_init_jmp_eq_0_edges(Ctx ctx, struct TacJumpIfZero* node, unsigned long block_id) {
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx->cfg->identifier_id_map, node->target));
+    cfg_add_succ_edge(ctx, block_id, block_id + 1);
+}
+
+static void cfg_init_jmp_ne_0_edges(Ctx ctx, struct TacJumpIfNotZero* node, unsigned long block_id) {
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx->cfg->identifier_id_map, node->target));
+    cfg_add_succ_edge(ctx, block_id, block_id + 1);
+}
+#elif __OPTIM_LEVEL__ == 2
+static void cfg_init_jmp_edges(Ctx ctx, struct AsmJmp* node, unsigned long block_id) {
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx->cfg->identifier_id_map, node->target));
+}
+
+static void cfg_init_jmp_cc_edges(Ctx ctx, struct AsmJmpCC* node, unsigned long block_id) {
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx->cfg->identifier_id_map, node->target));
+    cfg_add_succ_edge(ctx, block_id, block_id + 1);
+}
+#endif
+
+static void cfg_init_edges(Ctx ctx, unsigned long block_id) {
+    struct AstInstruction* node = GET_INSTR(GET_CFG_BLOCK(block_id).instrs_back_idx);
+    switch (node->type) {
+#if __OPTIM_LEVEL__ == 1
+        case AST_TacReturn_t:
+#elif __OPTIM_LEVEL__ == 2
+        case AST_AsmRet_t:
+#endif
+            cfg_add_succ_edge(ctx, block_id, ctx->cfg->exit_id);
+            break;
+#if __OPTIM_LEVEL__ == 1
+        case AST_TacJump_t:
+            cfg_init_jump_edges(ctx, &node->get._TacJump, block_id);
+            break;
+        case AST_TacJumpIfZero_t:
+            cfg_init_jmp_eq_0_edges(ctx, &node->get._TacJumpIfZero, block_id);
+            break;
+        case AST_TacJumpIfNotZero_t:
+            cfg_init_jmp_ne_0_edges(ctx, &node->get._TacJumpIfNotZero, block_id);
+            break;
+#elif __OPTIM_LEVEL__ == 2
+        case AST_AsmJmp_t:
+            cfg_init_jmp_edges(ctx, &node->get._AsmJmp, block_id);
+            break;
+        case AST_AsmJmpCC_t:
+            cfg_init_jmp_cc_edges(ctx, &node->get._AsmJmpCC, block_id);
+            break;
+#endif
+        default:
+            cfg_add_succ_edge(ctx, block_id, block_id + 1);
+            break;
+    }
+}
+
+static void init_control_flow_graph(Ctx ctx) {
+    for (unsigned long block_id = 0; block_id < vec_size(ctx->cfg->blocks); ++block_id) {
+        vec_delete(GET_CFG_BLOCK(block_id).pred_ids);
+        vec_delete(GET_CFG_BLOCK(block_id).succ_ids);
+    }
+    vec_clear(ctx->cfg->blocks);
+    map_clear(ctx->cfg->identifier_id_map);
+    {
+        unsigned long instrs_back_idx = vec_size(*ctx->p_instrs);
+        for (unsigned long instr_idx = 0; instr_idx < vec_size(*ctx->p_instrs); ++instr_idx) {
+            if (GET_INSTR(instr_idx)) {
+                if (instrs_back_idx == vec_size(*ctx->p_instrs)) {
+                    struct ControlFlowBlock block = {0, instr_idx, 0, vec_new(), vec_new()};
+                    vec_push_back(ctx->cfg->blocks, block);
+                }
+                cfg_init_block(ctx, instr_idx, &instrs_back_idx);
+                vec_back(ctx->cfg->blocks).size++;
+            }
+        }
+        if (instrs_back_idx != vec_size(*ctx->p_instrs)) {
+            vec_back(ctx->cfg->blocks).instrs_back_idx = instrs_back_idx;
+        }
+    }
+
+    ctx->cfg->exit_id = vec_size(ctx->cfg->blocks);
+    ctx->cfg->entry_id = ctx->cfg->exit_id + 1;
+    vec_clear(ctx->cfg->entry_succ_ids);
+    vec_clear(ctx->cfg->exit_pred_ids);
+    if (!vec_empty(ctx->cfg->blocks)) {
+        cfg_add_pred_edge(ctx, 0, ctx->cfg->entry_id);
+        for (unsigned long block_id = 0; block_id < vec_size(ctx->cfg->blocks); ++block_id) {
+            cfg_init_edges(ctx, block_id);
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Data flow analysis
+
+static bool mask_get(TULong mask, unsigned long bit) {
+    if (bit > 63) {
+        bit %= 64;
+    }
+    return (mask & (((TULong)1ul) << bit)) > 0;
+}
+
+static void mask_set(TULong* mask, unsigned long bit, bool value) {
+    if (bit > 63) {
+        bit %= 64;
+    }
+    if (value) {
+        *mask |= ((TULong)1ul) << bit;
+    }
+    else {
+        *mask &= ~(((TULong)1ul) << bit);
+    }
+}
+
+#define MASK_FALSE 0ul
+#if __OPTIM_LEVEL__ == 1
+#define MASK_TRUE 18446744073709551615ul
+#endif
+#define MASK_OFFSET(X) X > 63 ? X / 64 : 0
+
+#define GET_DFA_BLOCK_SET_IDX(X, Y) (X) * ctx->dfa->mask_size + (Y)
+#define GET_DFA_INSTR_SET_IDX(X, Y) ctx->dfa->instr_idx_map[X] * ctx->dfa->mask_size + (Y)
+
+#define GET_DFA_BLOCK_SET_MASK(X, Y) ctx->dfa->blocks_mask_sets[GET_DFA_BLOCK_SET_IDX(X, Y)]
+#define GET_DFA_INSTR_SET_MASK(X, Y) ctx->dfa->instrs_mask_sets[GET_DFA_INSTR_SET_IDX(X, Y)]
+
+#define GET_DFA_BLOCK_SET_AT(X, Y) mask_get(GET_DFA_BLOCK_SET_MASK(X, MASK_OFFSET(Y)), Y)
+#define GET_DFA_INSTR_SET_AT(X, Y) mask_get(GET_DFA_INSTR_SET_MASK(X, MASK_OFFSET(Y)), Y)
+
+#define SET_DFA_INSTR_SET_AT(X, Y, Z) mask_set(&GET_DFA_INSTR_SET_MASK(X, MASK_OFFSET(Y)), Y, Z)
+
+#if __OPTIM_LEVEL__ == 1
+#define GET_DFA_INSTR(X) GET_INSTR(ctx->dfa_o1->data_idx_map[X])
+#endif
+
+static bool is_transfer_instr(Ctx ctx, unsigned long instr_idx
+#if __OPTIM_LEVEL__ == 1
+    ,
+    bool is_store_elim
+#endif
+) {
+    switch (GET_INSTR(instr_idx)->type) {
+#if __OPTIM_LEVEL__ == 1
+        case AST_TacSignExtend_t:
+        case AST_TacTruncate_t:
+        case AST_TacZeroExtend_t:
+        case AST_TacDoubleToInt_t:
+        case AST_TacDoubleToUInt_t:
+        case AST_TacIntToDouble_t:
+        case AST_TacUIntToDouble_t:
+        case AST_TacFunCall_t:
+        case AST_TacUnary_t:
+        case AST_TacBinary_t:
+        case AST_TacCopy_t:
+        case AST_TacGetAddress_t:
+        case AST_TacLoad_t:
+        case AST_TacStore_t:
+        case AST_TacAddPtr_t:
+        case AST_TacCopyToOffset_t:
+        case AST_TacCopyFromOffset_t:
+            return true;
+        case AST_TacReturn_t:
+        case AST_TacJumpIfZero_t:
+        case AST_TacJumpIfNotZero_t:
+            return is_store_elim;
+#elif __OPTIM_LEVEL__ == 2
+        case AST_AsmMov_t:
+        case AST_AsmMovSx_t:
+        case AST_AsmMovZeroExtend_t:
+        case AST_AsmLea_t:
+        case AST_AsmCvttsd2si_t:
+        case AST_AsmCvtsi2sd_t:
+        case AST_AsmUnary_t:
+        case AST_AsmBinary_t:
+        case AST_AsmCmp_t:
+        case AST_AsmIdiv_t:
+        case AST_AsmDiv_t:
+        case AST_AsmCdq_t:
+        case AST_AsmSetCC_t:
+        case AST_AsmPush_t:
+        case AST_AsmCall_t:
+            return true;
+#endif
+        default:
+            return false;
+    }
+}
+
+#if __OPTIM_LEVEL__ == 1
+static unsigned long get_dfa_data_idx(Ctx ctx, unsigned long instr_idx) {
+    for (unsigned long i = 0; i < ctx->dfa->set_size; ++i) {
+        if (ctx->dfa_o1->data_idx_map[i] == instr_idx) {
+            return i;
+        }
+    }
+    THROW_ABORT;
+}
+
+static struct TacInstruction* get_dfa_bak_instr(Ctx ctx, unsigned long i) {
+    if (ctx->cfg->reaching_code[i]) {
+        if (ctx->dfa_o1->bak_instrs[i]) {
+            return ctx->dfa_o1->bak_instrs[i];
+        }
+        else {
+            THROW_ABORT;
+        }
+    }
+    else if (GET_DFA_INSTR(i)) {
+        return GET_DFA_INSTR(i);
+    }
+    else {
+        THROW_ABORT;
+    }
+}
+
+static bool set_dfa_bak_instr(Ctx ctx, unsigned long instr_idx, unsigned long* i) {
+    *i = get_dfa_data_idx(ctx, instr_idx);
+    if (!ctx->cfg->reaching_code[*i]) {
+        ctx->cfg->reaching_code[*i] = true;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+#endif
+
+#if __OPTIM_LEVEL__ == 1
+static bool prop_transfer_reach_copies(Ctx ctx, unsigned long instr_idx, unsigned long next_instr_idx);
+static void elim_transfer_live_values(Ctx ctx, unsigned long instr_idx, unsigned long next_instr_idx);
+#elif __OPTIM_LEVEL__ == 2
+static void infer_transfer_live_regs(Ctx ctx, unsigned long instr_idx, unsigned long next_instr_idx);
+#endif
+
+#if __OPTIM_LEVEL__ == 1
+static unsigned long dfa_forward_transfer_block(Ctx ctx, unsigned long instr_idx, unsigned long block_id) {
+    for (unsigned long next_instr_idx = instr_idx + 1; next_instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx;
+         ++next_instr_idx) {
+        if (GET_INSTR(next_instr_idx) && is_transfer_instr(ctx, next_instr_idx, false)) {
+            for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+                GET_DFA_INSTR_SET_MASK(next_instr_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i);
+            }
+            if (!prop_transfer_reach_copies(ctx, instr_idx, next_instr_idx)) {
+                for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+                    GET_DFA_INSTR_SET_MASK(next_instr_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i);
+                }
+            }
+            instr_idx = next_instr_idx;
+        }
+    }
+    for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+        GET_DFA_INSTR_SET_MASK(ctx->dfa->incoming_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i);
+    }
+    if (!prop_transfer_reach_copies(ctx, instr_idx, ctx->dfa->incoming_idx)) {
+        for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+            GET_DFA_INSTR_SET_MASK(ctx->dfa->incoming_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i);
+        }
+    }
+    return instr_idx;
+}
+#endif
+
+static unsigned long dfa_backward_transfer_block(Ctx ctx, unsigned long instr_idx, unsigned long block_id) {
+    if (instr_idx > 0) {
+        for (unsigned long next_instr_idx = instr_idx; next_instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx;) {
+            if (GET_INSTR(next_instr_idx)
+                && is_transfer_instr(ctx, next_instr_idx
+#if __OPTIM_LEVEL__ == 1
+                    ,
+                    true
+#endif
+                    )) {
+                for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+                    GET_DFA_INSTR_SET_MASK(next_instr_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i);
+                }
+#if __OPTIM_LEVEL__ == 1
+                elim_transfer_live_values
+#elif __OPTIM_LEVEL__ == 2
+                infer_transfer_live_regs
+#endif
+                    (ctx, instr_idx, next_instr_idx);
+                instr_idx = next_instr_idx;
+            }
+        }
+    }
+    for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+        GET_DFA_INSTR_SET_MASK(ctx->dfa->incoming_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i);
+    }
+#if __OPTIM_LEVEL__ == 1
+    elim_transfer_live_values
+#elif __OPTIM_LEVEL__ == 2
+    infer_transfer_live_regs
+#endif
+        (ctx, instr_idx, ctx->dfa->incoming_idx);
+    return instr_idx;
+}
+
+static bool dfa_after_meet_block(Ctx ctx, unsigned long block_id) {
+    bool is_fixed_point = true;
+    {
+        unsigned long i = 0;
+        for (; i < ctx->dfa->mask_size; ++i) {
+            if (GET_DFA_BLOCK_SET_MASK(block_id, i) != GET_DFA_INSTR_SET_MASK(ctx->dfa->incoming_idx, i)) {
+                is_fixed_point = false;
+                break;
+            }
+        }
+        for (; i < ctx->dfa->mask_size; ++i) {
+            GET_DFA_BLOCK_SET_MASK(block_id, i) = GET_DFA_INSTR_SET_MASK(ctx->dfa->incoming_idx, i);
+        }
+    }
+    return is_fixed_point;
+}
+
+#if __OPTIM_LEVEL__ == 1
+static bool dfa_forward_meet_block(Ctx ctx, unsigned long block_id) {
+    unsigned long instr_idx = GET_CFG_BLOCK(block_id).instrs_front_idx;
+    for (; instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx; ++instr_idx) {
+        if (GET_INSTR(instr_idx) && is_transfer_instr(ctx, instr_idx, false)) {
+            goto Lelse;
+        }
+    }
+    instr_idx = ctx->dfa->incoming_idx;
+Lelse:
+    for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+        GET_DFA_INSTR_SET_MASK(instr_idx, i) = MASK_TRUE;
+    }
+
+    for (unsigned long i = 0; i < vec_size(GET_CFG_BLOCK(block_id).pred_ids); ++i) {
+        unsigned long pred_id = GET_CFG_BLOCK(block_id).pred_ids[i];
+        if (pred_id < ctx->cfg->exit_id) {
+            for (unsigned long j = 0; j < ctx->dfa->mask_size; ++j) {
+                GET_DFA_INSTR_SET_MASK(instr_idx, j) &= GET_DFA_BLOCK_SET_MASK(pred_id, j);
+            }
+        }
+        else if (pred_id == ctx->cfg->entry_id) {
+            for (unsigned long j = 0; j < ctx->dfa->mask_size; ++j) {
+                GET_DFA_INSTR_SET_MASK(instr_idx, j) = MASK_FALSE;
+            }
+            break;
+        }
+        else {
+            THROW_ABORT;
+        }
+    }
+
+    if (instr_idx < ctx->dfa->incoming_idx) {
+        dfa_forward_transfer_block(ctx, instr_idx, block_id);
+    }
+    else {
+        THROW_ABORT_IF(instr_idx != ctx->dfa->incoming_idx);
+    }
+
+    return dfa_after_meet_block(ctx, block_id);
+}
+#endif
+
+static bool dfa_backward_meet_block(Ctx ctx, unsigned long block_id) {
+    unsigned long instr_idx = GET_CFG_BLOCK(block_id).instrs_back_idx + 1;
+    while (instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx) {
+        if (GET_INSTR(instr_idx)
+            && is_transfer_instr(ctx, instr_idx
+#if __OPTIM_LEVEL__ == 1
+                ,
+                true
+#endif
+                )) {
+            goto Lelse;
+        }
+    }
+    instr_idx = ctx->dfa->incoming_idx;
+Lelse:
+    for (unsigned long i = 0; i < ctx->dfa->mask_size; ++i) {
+        GET_DFA_INSTR_SET_MASK(instr_idx, i) = MASK_FALSE;
+    }
+
+    for (unsigned long i = 0; i < vec_size(GET_CFG_BLOCK(block_id).succ_ids); ++i) {
+        unsigned long succ_id = GET_CFG_BLOCK(block_id).succ_ids[i];
+        if (succ_id < ctx->cfg->exit_id) {
+            for (unsigned long j = 0; j < ctx->dfa->mask_size; ++j) {
+                GET_DFA_INSTR_SET_MASK(instr_idx, j) |= GET_DFA_BLOCK_SET_MASK(succ_id, j);
+            }
+        }
+        else if (succ_id == ctx->cfg->exit_id) {
+            for (unsigned long j = 0; j < ctx->dfa->mask_size; ++j) {
+                GET_DFA_INSTR_SET_MASK(instr_idx, j) = GET_DFA_INSTR_SET_MASK(ctx->dfa->static_idx, j);
+            }
+            break;
+        }
+        else {
+            THROW_ABORT;
+        }
+    }
+
+    if (instr_idx < ctx->dfa->incoming_idx) {
+        dfa_backward_transfer_block(ctx, instr_idx, block_id);
+    }
+    else {
+        THROW_ABORT_IF(instr_idx != ctx->dfa->incoming_idx);
+    }
+
+    return dfa_after_meet_block(ctx, block_id);
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void dfa_forward_iter_alg(Ctx ctx) {
+    unsigned long open_data_map_size = vec_size(ctx->cfg->blocks);
+    for (unsigned long i = 0; i < open_data_map_size; ++i) {
+        unsigned long block_id = ctx->dfa->open_data_map[i];
+        if (block_id == ctx->cfg->exit_id) {
+            continue;
+        }
+
+        bool is_fixed_point = dfa_forward_meet_block(ctx, block_id);
+        if (!is_fixed_point) {
+            for (unsigned long j = 0; j < vec_size(GET_CFG_BLOCK(block_id).succ_ids); ++j) {
+                unsigned long succ_id = GET_CFG_BLOCK(block_id).succ_ids[j];
+                if (succ_id < ctx->cfg->exit_id) {
+                    for (unsigned long k = i + 1; k < open_data_map_size; ++k) {
+                        if (succ_id == ctx->dfa->open_data_map[k]) {
+                            goto Lelse;
+                        }
+                    }
+                    if (open_data_map_size < vec_size(ctx->dfa->open_data_map)) {
+                        ctx->dfa->open_data_map[open_data_map_size] = succ_id;
+                    }
+                    else {
+                        vec_push_back(ctx->dfa->open_data_map, succ_id);
+                    }
+                    open_data_map_size++;
+                Lelse:;
+                }
+                else {
+                    THROW_ABORT_IF(succ_id != ctx->cfg->exit_id);
+                }
+            }
+        }
+    }
+}
+#endif
+
+static void dfa_iter_alg(Ctx ctx) {
+    unsigned long open_data_map_size = vec_size(ctx->cfg->blocks);
+    for (unsigned long i = 0; i < open_data_map_size; ++i) {
+        unsigned long block_id = ctx->dfa->open_data_map[i];
+        if (block_id == ctx->cfg->exit_id) {
+            continue;
+        }
+
+        bool is_fixed_point = dfa_backward_meet_block(ctx, block_id);
+        if (!is_fixed_point) {
+            for (unsigned long j = 0; j < vec_size(GET_CFG_BLOCK(block_id).pred_ids); ++j) {
+                unsigned long pred_id = GET_CFG_BLOCK(block_id).pred_ids[j];
+                if (pred_id < ctx->cfg->exit_id) {
+                    for (unsigned long k = i + 1; k < open_data_map_size; ++k) {
+                        if (pred_id == ctx->dfa->open_data_map[k]) {
+                            goto Lelse;
+                        }
+                    }
+                    if (open_data_map_size < vec_size(ctx->dfa->open_data_map)) {
+                        ctx->dfa->open_data_map[open_data_map_size] = pred_id;
+                    }
+                    else {
+                        vec_push_back(ctx->dfa->open_data_map, pred_id);
+                    }
+                    open_data_map_size++;
+                Lelse:;
+                }
+                else {
+                    THROW_ABORT_IF(pred_id != ctx->cfg->entry_id);
+                }
+            }
+        }
+    }
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void dfa_forward_open_block(Ctx ctx, unsigned long block_id, unsigned long* i);
+#endif
+static void dfa_backward_open_block(Ctx ctx, unsigned long block_id, unsigned long* i);
+
+#if __OPTIM_LEVEL__ == 1
+static void dfa_forward_succ_open_block(Ctx ctx, unsigned long block_id, unsigned long* i) {
+    for (unsigned long j = 0; j < vec_size(GET_CFG_BLOCK(block_id).succ_ids); ++j) {
+        dfa_forward_open_block(ctx, GET_CFG_BLOCK(block_id).succ_ids[j], i);
+    }
+}
+#endif
+
+static void dfa_backward_succ_open_block(Ctx ctx, unsigned long block_id, unsigned long* i) {
+    for (unsigned long j = 0; j < vec_size(GET_CFG_BLOCK(block_id).succ_ids); ++j) {
+        dfa_backward_open_block(ctx, GET_CFG_BLOCK(block_id).succ_ids[j], i);
+    }
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void dfa_forward_open_block(Ctx ctx, unsigned long block_id, unsigned long* i) {
+    if (block_id < ctx->cfg->exit_id && !ctx->cfg->reaching_code[block_id]) {
+        ctx->cfg->reaching_code[block_id] = true;
+        dfa_forward_succ_open_block(ctx, block_id, i);
+        (*i)--;
+        ctx->dfa->open_data_map[*i] = block_id;
+    }
+}
+#endif
+
+static void dfa_backward_open_block(Ctx ctx, unsigned long block_id, unsigned long* i) {
+    if (block_id < ctx->cfg->exit_id && !ctx->cfg->reaching_code[block_id]) {
+        ctx->cfg->reaching_code[block_id] = true;
+        dfa_backward_succ_open_block(ctx, block_id, i);
+        ctx->dfa->open_data_map[*i] = block_id;
+        (*i)++;
+    }
+}
+
+static bool is_aliased_name(Ctx ctx, TIdentifier name) {
+    return map_get(ctx->frontend->symbol_table, name)->attrs->type == AST_StaticAttr_t
+           || set_find(ctx->frontend->addressed_set, name) != set_end();
+}
+
+#if __OPTIM_LEVEL__ == 1
+static void dfa_add_aliased_value(Ctx ctx, struct TacValue* node) {
+    if (node->type == AST_TacVariable_t) {
+        set_insert(ctx->frontend->addressed_set, node->get._TacVariable.name);
+    }
+}
+
+static bool is_same_value(struct TacValue* node_1, struct TacValue* node_2);
+
+static bool prop_add_data_idx(Ctx ctx, struct TacCopy* node, unsigned long instr_idx, unsigned long block_id) {
+    THROW_ABORT_IF(node->dst->type != AST_TacVariable_t);
+    if (is_same_value(node->src, node->dst)) {
+        cfg_rm_block_instr(ctx, instr_idx, block_id);
+        return false;
+    }
+    else {
+        if (ctx->dfa->set_size < vec_size(ctx->dfa_o1->data_idx_map)) {
+            ctx->dfa_o1->data_idx_map[ctx->dfa->set_size] = instr_idx;
+        }
+        else {
+            vec_push_back(ctx->dfa_o1->data_idx_map, instr_idx);
+        }
+        ctx->dfa->set_size++;
+        return true;
+    }
+}
+
+static void elim_add_data_name(Ctx ctx, TIdentifier name) {
+    if (map_find(ctx->cfg->identifier_id_map, name) == map_end()) {
+        map_add(ctx->cfg->identifier_id_map, name, ctx->dfa->set_size);
+        ctx->dfa->set_size++;
+    }
+}
+
+static void elim_add_data_value(Ctx ctx, struct TacValue* node) {
+    if (node->type == AST_TacVariable_t) {
+        elim_add_data_name(ctx, node->get._TacVariable.name);
+    }
+}
+#elif __OPTIM_LEVEL__ == 2
+static void infer_add_data_name(Ctx ctx, TIdentifier name) {
+    if (!is_aliased_name(ctx, name) && map_find(ctx->cfg->identifier_id_map, name) == map_end()) {
+        map_add(ctx->cfg->identifier_id_map, name, REGISTER_MASK_SIZE + ctx->dfa->set_size);
+        ctx->dfa->set_size++;
+    }
+}
+
+static void infer_add_data_op(Ctx ctx, struct AsmOperand* node) {
+    if (node->type == AST_AsmPseudo_t) {
+        infer_add_data_name(ctx, node->get._AsmPseudo.name);
+    }
+}
+#endif
+
+static bool init_data_flow_analysis(Ctx ctx,
+#if __OPTIM_LEVEL__ == 1
+    bool is_store_elim, bool is_addressed_set
+#elif __OPTIM_LEVEL__ == 2
+    TIdentifier fun_name
+#endif
+) {
+    ctx->dfa->set_size = 0;
+    ctx->dfa->incoming_idx = vec_size(*ctx->p_instrs);
+
+    if (vec_size(ctx->dfa->open_data_map) < vec_size(ctx->cfg->blocks)) {
+        vec_resize(ctx->dfa->open_data_map, vec_size(ctx->cfg->blocks));
+    }
+    {
+        unsigned long i;
+#if __OPTIM_LEVEL__ == 1
+        i = is_store_elim ? 3 : 1;
+#elif __OPTIM_LEVEL__ == 2
+        i = 2;
+#endif
+        if (vec_size(ctx->dfa->instr_idx_map) < vec_size(*ctx->p_instrs) + i) {
+            vec_resize(ctx->dfa->instr_idx_map, vec_size(*ctx->p_instrs) + i);
+        }
+    }
+    if (vec_size(ctx->cfg->reaching_code) < vec_size(ctx->cfg->blocks)) {
+        vec_resize(ctx->cfg->reaching_code, vec_size(ctx->cfg->blocks));
+    }
+    memset(ctx->cfg->reaching_code, false, sizeof(bool) * vec_size(ctx->cfg->blocks));
+
+    unsigned long instrs_mask_sets_size = 0;
+#if __OPTIM_LEVEL__ == 1
+    bool is_copy_prop = !is_store_elim;
+    if (is_store_elim) {
+#endif
+        map_clear(ctx->cfg->identifier_id_map);
+        ctx->dfa->static_idx = ctx->dfa->incoming_idx + 1;
+#if __OPTIM_LEVEL__ == 1
+        ctx->dfa_o1->addressed_idx = ctx->dfa->static_idx + 1;
+    }
+    if (is_addressed_set) {
+        set_clear(ctx->frontend->addressed_set);
+    }
+#endif
+    for (unsigned long block_id = 0; block_id < vec_size(ctx->cfg->blocks); ++block_id) {
+        if (GET_CFG_BLOCK(block_id).size > 0) {
+            for (unsigned long instr_idx = GET_CFG_BLOCK(block_id).instrs_front_idx;
+                 instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx; ++instr_idx) {
+                if (GET_INSTR(instr_idx)) {
+                    struct AstInstruction* node = GET_INSTR(instr_idx);
+                    switch (node->type) {
+#if __OPTIM_LEVEL__ == 1
+                        case AST_TacReturn_t: {
+                            if (is_copy_prop) {
+                                goto Lcontinue;
+                            }
+                            struct TacReturn* p_node = &node->get._TacReturn;
+                            if (p_node->val) {
+                                elim_add_data_value(ctx, p_node->val);
+                            }
+                            break;
+                        }
+                        case AST_TacSignExtend_t: {
+                            if (is_store_elim) {
+                                struct TacSignExtend* p_node = &node->get._TacSignExtend;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacTruncate_t: {
+                            if (is_store_elim) {
+                                struct TacTruncate* p_node = &node->get._TacTruncate;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacZeroExtend_t: {
+                            if (is_store_elim) {
+                                struct TacZeroExtend* p_node = &node->get._TacZeroExtend;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacDoubleToInt_t: {
+                            if (is_store_elim) {
+                                struct TacDoubleToInt* p_node = &node->get._TacDoubleToInt;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacDoubleToUInt_t: {
+                            if (is_store_elim) {
+                                struct TacDoubleToUInt* p_node = &node->get._TacDoubleToUInt;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacIntToDouble_t: {
+                            if (is_store_elim) {
+                                struct TacIntToDouble* p_node = &node->get._TacIntToDouble;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacUIntToDouble_t: {
+                            if (is_store_elim) {
+                                struct TacUIntToDouble* p_node = &node->get._TacUIntToDouble;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacFunCall_t: {
+                            if (is_store_elim) {
+                                struct TacFunCall* p_node = &node->get._TacFunCall;
+                                for (unsigned long i = 0; i < vec_size(p_node->args); ++i) {
+                                    elim_add_data_value(ctx, p_node->args[i]);
+                                }
+                                if (p_node->dst) {
+                                    elim_add_data_value(ctx, p_node->dst);
+                                }
+                            }
+                            break;
+                        }
+                        case AST_TacUnary_t: {
+                            if (is_store_elim) {
+                                struct TacUnary* p_node = &node->get._TacUnary;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacBinary_t: {
+                            if (is_store_elim) {
+                                struct TacBinary* p_node = &node->get._TacBinary;
+                                elim_add_data_value(ctx, p_node->src1);
+                                elim_add_data_value(ctx, p_node->src2);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacCopy_t: {
+                            struct TacCopy* p_node = &node->get._TacCopy;
+                            if (is_copy_prop) {
+                                if (!prop_add_data_idx(ctx, p_node, instr_idx, block_id)) {
+                                    goto Lcontinue;
+                                }
+                            }
+                            else {
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacGetAddress_t: {
+                            struct TacGetAddress* p_node = &node->get._TacGetAddress;
+                            if (is_store_elim) {
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            if (is_addressed_set) {
+                                dfa_add_aliased_value(ctx, p_node->src);
+                            }
+                            break;
+                        }
+                        case AST_TacLoad_t: {
+                            if (is_store_elim) {
+                                struct TacLoad* p_node = &node->get._TacLoad;
+                                elim_add_data_value(ctx, p_node->src_ptr);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacStore_t: {
+                            if (is_store_elim) {
+                                struct TacStore* p_node = &node->get._TacStore;
+                                elim_add_data_value(ctx, p_node->src);
+                                elim_add_data_value(ctx, p_node->dst_ptr);
+                            }
+                            break;
+                        }
+                        case AST_TacAddPtr_t: {
+                            if (is_store_elim) {
+                                struct TacAddPtr* p_node = &node->get._TacAddPtr;
+                                elim_add_data_value(ctx, p_node->src_ptr);
+                                elim_add_data_value(ctx, p_node->idx);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacCopyToOffset_t: {
+                            if (is_store_elim) {
+                                struct TacCopyToOffset* p_node = &node->get._TacCopyToOffset;
+                                elim_add_data_name(ctx, p_node->dst_name);
+                                elim_add_data_value(ctx, p_node->src);
+                            }
+                            break;
+                        }
+                        case AST_TacCopyFromOffset_t: {
+                            if (is_store_elim) {
+                                struct TacCopyFromOffset* p_node = &node->get._TacCopyFromOffset;
+                                elim_add_data_name(ctx, p_node->src_name);
+                                elim_add_data_value(ctx, p_node->dst);
+                            }
+                            break;
+                        }
+                        case AST_TacJumpIfZero_t: {
+                            if (is_copy_prop) {
+                                goto Lcontinue;
+                            }
+                            elim_add_data_value(ctx, node->get._TacJumpIfZero.condition);
+                            break;
+                        }
+                        case AST_TacJumpIfNotZero_t: {
+                            if (is_copy_prop) {
+                                goto Lcontinue;
+                            }
+                            elim_add_data_value(ctx, node->get._TacJumpIfNotZero.condition);
+                            break;
+                        }
+#elif __OPTIM_LEVEL__ == 2
+                        case AST_AsmMov_t: {
+                            struct AsmMov* p_node = &node->get._AsmMov;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmMovSx_t: {
+                            struct AsmMovSx* p_node = &node->get._AsmMovSx;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmMovZeroExtend_t: {
+                            struct AsmMovZeroExtend* p_node = &node->get._AsmMovZeroExtend;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmLea_t: {
+                            struct AsmLea* p_node = &node->get._AsmLea;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmCvttsd2si_t: {
+                            struct AsmCvttsd2si* p_node = &node->get._AsmCvttsd2si;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmCvtsi2sd_t: {
+                            struct AsmCvtsi2sd* p_node = &node->get._AsmCvtsi2sd;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmUnary_t:
+                            infer_add_data_op(ctx, node->get._AsmUnary.dst);
+                            break;
+                        case AST_AsmBinary_t: {
+                            struct AsmBinary* p_node = &node->get._AsmBinary;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmCmp_t: {
+                            struct AsmCmp* p_node = &node->get._AsmCmp;
+                            infer_add_data_op(ctx, p_node->src);
+                            infer_add_data_op(ctx, p_node->dst);
+                            break;
+                        }
+                        case AST_AsmIdiv_t:
+                            infer_add_data_op(ctx, node->get._AsmIdiv.src);
+                            break;
+                        case AST_AsmDiv_t:
+                            infer_add_data_op(ctx, node->get._AsmDiv.src);
+                            break;
+                        case AST_AsmSetCC_t:
+                            infer_add_data_op(ctx, node->get._AsmSetCC.dst);
+                            break;
+                        case AST_AsmPush_t:
+                            infer_add_data_op(ctx, node->get._AsmPush.src);
+                            break;
+                        case AST_AsmCdq_t:
+                        case AST_AsmCall_t:
+                            break;
+#endif
+                        default:
+                            goto Lcontinue;
+                    }
+                    ctx->dfa->instr_idx_map[instr_idx] = instrs_mask_sets_size;
+                    instrs_mask_sets_size++;
+                Lcontinue:;
+                }
+            }
+        }
+        else {
+            ctx->cfg->reaching_code[block_id] = true;
+        }
+    }
+    if (ctx->dfa->set_size == 0) {
+        return false;
+    }
+
+#if __OPTIM_LEVEL__ == 2
+    if (vec_size(ctx->dfa_o2->data_name_map) < ctx->dfa->set_size) {
+        vec_resize(ctx->dfa_o2->data_name_map, ctx->dfa->set_size);
+    }
+    ctx->dfa->set_size += REGISTER_MASK_SIZE;
+#endif
+
+    ctx->dfa->instr_idx_map[ctx->dfa->incoming_idx] = instrs_mask_sets_size;
+    instrs_mask_sets_size++;
+#if __OPTIM_LEVEL__ == 1
+    if (is_store_elim) {
+#endif
+        ctx->dfa->instr_idx_map[ctx->dfa->static_idx] = instrs_mask_sets_size;
+        instrs_mask_sets_size++;
+#if __OPTIM_LEVEL__ == 1
+        ctx->dfa->instr_idx_map[ctx->dfa_o1->addressed_idx] = instrs_mask_sets_size;
+        instrs_mask_sets_size++;
+    }
+#endif
+    ctx->dfa->mask_size = (ctx->dfa->set_size + 63) / 64;
+    instrs_mask_sets_size *= ctx->dfa->mask_size;
+    unsigned long blocks_mask_sets_size = ctx->dfa->mask_size * vec_size(ctx->cfg->blocks);
+
+    if (vec_size(ctx->dfa->blocks_mask_sets) < blocks_mask_sets_size) {
+        vec_resize(ctx->dfa->blocks_mask_sets, blocks_mask_sets_size);
+    }
+    if (vec_size(ctx->dfa->instrs_mask_sets) < instrs_mask_sets_size) {
+        vec_resize(ctx->dfa->instrs_mask_sets, instrs_mask_sets_size);
+#if __OPTIM_LEVEL__ == 2
+        memset(ctx->dfa->instrs_mask_sets, MASK_FALSE, sizeof(mask_t) * instrs_mask_sets_size);
+#endif
+    }
+
+#if __OPTIM_LEVEL__ == 1
+    if (is_copy_prop) {
+        unsigned long i = vec_size(ctx->cfg->blocks);
+        for (unsigned long j = 0; j < vec_size(ctx->cfg->entry_succ_ids); ++j) {
+            unsigned long succ_id = ctx->cfg->entry_succ_ids[j];
+            if (!ctx->cfg->reaching_code[succ_id]) {
+                dfa_forward_open_block(ctx, succ_id, &i);
+            }
+        }
+        while (i-- > 0) {
+            ctx->dfa->open_data_map[i] = ctx->cfg->exit_id;
+        }
+
+        mask_t mask_true_back = MASK_TRUE;
+        i = ctx->dfa->set_size - (ctx->dfa->mask_size - 1) * 64;
+        if (i > 0) {
+            for (; i < 64; ++i) {
+                mask_set(&mask_true_back, i, false);
+            }
+        }
+
+        if (vec_size(ctx->cfg->reaching_code) < ctx->dfa->set_size) {
+            vec_resize(ctx->cfg->reaching_code, ctx->dfa->set_size);
+        }
+        for (unsigned long j = vec_size(ctx->dfa_o1->bak_instrs); j <= ctx->dfa->set_size; ++j) {
+            vec_push_back(ctx->dfa_o1->bak_instrs, uptr_new());
+        }
+
+        memset(ctx->cfg->reaching_code, false, sizeof(bool) * ctx->dfa->set_size);
+
+        if (ctx->dfa->mask_size > 1) {
+            i = 0;
+            do {
+                for (unsigned long j = ctx->dfa->mask_size - 1; j-- > 0;) {
+                    ctx->dfa->blocks_mask_sets[i] = MASK_TRUE;
+                    i++;
+                }
+                ctx->dfa->blocks_mask_sets[i] = mask_true_back;
+                i++;
+            }
+            while (i < blocks_mask_sets_size);
+        }
+        else {
+            for (unsigned long j = 0; j < blocks_mask_sets_size; ++j) {
+                ctx->dfa->blocks_mask_sets[j] = mask_true_back;
+            }
+        }
+    }
+    else {
+#endif
+        unsigned long i = 0;
+        for (unsigned long j = 0; j < vec_size(ctx->cfg->entry_succ_ids); ++j) {
+            unsigned long succ_id = ctx->cfg->entry_succ_ids[j];
+            if (!ctx->cfg->reaching_code[succ_id]) {
+                dfa_backward_open_block(ctx, succ_id, &i);
+            }
+        }
+        for (; i < vec_size(ctx->cfg->blocks); ++i) {
+            ctx->dfa->open_data_map[i] = ctx->cfg->exit_id;
+        }
+
+#if __OPTIM_LEVEL__ == 1
+        GET_DFA_INSTR_SET_MASK(ctx->dfa->static_idx, 0) = MASK_FALSE;
+        GET_DFA_INSTR_SET_MASK(ctx->dfa_o1->addressed_idx, 0) = MASK_FALSE;
+#elif __OPTIM_LEVEL__ == 2
+    {
+        struct FunType* fun_type = &map_get(ctx->frontend->symbol_table, fun_name)->type_t->get._FunType;
+        GET_DFA_INSTR_SET_MASK(ctx->dfa->static_idx, 0) = fun_type->ret_reg_mask;
+    }
+#endif
+        for (i = 1; i < ctx->dfa->mask_size; ++i) {
+            GET_DFA_INSTR_SET_MASK(ctx->dfa->static_idx, i) = MASK_FALSE;
+#if __OPTIM_LEVEL__ == 1
+            GET_DFA_INSTR_SET_MASK(ctx->dfa_o1->addressed_idx, i) = MASK_FALSE;
+#endif
+        }
+
+        for (unsigned long i = 0; i < map_size(ctx->cfg->identifier_id_map); ++i) {
+            pair_t(TIdentifier, ulong_t)* name_id = &ctx->cfg->identifier_id_map[i];
+#if __OPTIM_LEVEL__ == 1
+            if (map_get(ctx->frontend->symbol_table, pair_first(*name_id))->attrs->type == AST_StaticAttr_t) {
+                SET_DFA_INSTR_SET_AT(ctx->dfa->static_idx, pair_second(*name_id), true);
+            }
+            if (set_find(ctx->frontend->addressed_set, pair_first(*name_id)) != set_end()) {
+                SET_DFA_INSTR_SET_AT(ctx->dfa_o1->addressed_idx, pair_second(*name_id), true);
+            }
+#elif __OPTIM_LEVEL__ == 2
+        ctx->dfa_o2->data_name_map[pair_second(*name_id) - REGISTER_MASK_SIZE] = pair_first(*name_id);
+#endif
+        }
+
+        memset(ctx->dfa->blocks_mask_sets, MASK_FALSE, sizeof(mask_t) * blocks_mask_sets_size);
+#if __OPTIM_LEVEL__ == 1
+    }
+#endif
+
+    return true;
+}
+
+#endif
+#endif
+#endif
