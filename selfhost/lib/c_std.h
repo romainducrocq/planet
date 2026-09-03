@@ -1,0 +1,259 @@
+#ifndef _LIB_C_STD_H
+#define _LIB_C_STD_H
+
+#include "../lib/c_lib.h"
+
+#include "../3rdparty/sds.h"
+#include "../3rdparty/stb_ds.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// C std
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Errors
+
+#define error_t int
+#define ERROR_MSG_SIZE 1024
+
+#define CATCH_ENTER error_t _errval = 0
+#define CATCH_EXIT return _errval
+#define EARLY_EXIT goto _Lfinally
+#define FINALLY \
+    _Lfinally:
+#define TRY(X)              \
+    do {                    \
+        _errval = X;        \
+        if (_errval != 0) { \
+            EARLY_EXIT;     \
+        }                   \
+    }                       \
+    while (0)
+
+#define THROW_PANIC(...) PANIC_FUNC(__VA_ARGS__, __LINE__, __FILE__)
+#define SET_ERROR_MSG(...) snprintf(ERROR_MSG_BUF, sizeof(char) * ERROR_MSG_SIZE, __VA_ARGS__)
+#define THROW_ERROR(X, Y, ...)                                  \
+    do {                                                        \
+        SET_ERROR_MSG(__VA_ARGS__) > 0 ? (void)Y : THROW_ABORT; \
+        _errval = X;                                            \
+        EARLY_EXIT;                                             \
+    }                                                           \
+    while (0)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Memory
+
+#define tagged_def_t(E, T) E##_##T##_t
+#define tagged_def_impl(T) T type
+#define tagged_def_init(E, T1, T2) make_##T1(tagged_def_t(E, T2))
+
+#define unique_ptr_t(T) struct T*
+#define unique_ptr_impl(T) tagged_def_impl(T)
+#define uptr_new() NULL
+#define uptr_delete(X) \
+    if (!X) {          \
+        return;        \
+    }
+#define uptr_alloc(T, X)                         \
+    do {                                         \
+        free_##T(&X);                            \
+        X = (struct T*)malloc(sizeof(struct T)); \
+        if (!X) {                                \
+            THROW_ALLOC(T);                      \
+        }                                        \
+    }                                            \
+    while (0)
+#define uptr_free(X)    \
+    if (X) {            \
+        free(X);        \
+        X = uptr_new(); \
+    }
+#define uptr_move(T, X, Y) \
+    if (X != Y) {          \
+        free_##T(&Y);      \
+        Y = X;             \
+        X = uptr_new();    \
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Shared pointer
+
+#define shared_ptr_t(T) unique_ptr_t(T)
+#define shared_ptr_impl(T)    \
+    unsigned long _ref_count; \
+    unique_ptr_impl(T)
+#define sptr_new() uptr_new()
+#define sptr_delete(X)                             \
+    uptr_delete(X) else if ((X)->_ref_count > 1) { \
+        (X)->_ref_count--;                         \
+        X = sptr_new();                            \
+        return;                                    \
+    }
+#define sptr_alloc(T, X)     \
+    do {                     \
+        uptr_alloc(T, X);    \
+        (X)->_ref_count = 1; \
+    }                        \
+    while (0)
+#define sptr_free(X) uptr_free(X)
+#define sptr_move(T, X, Y) uptr_move(T, X, Y)
+#define sptr_copy(T, X, Y) \
+    if (X != Y) {          \
+        free_##T(&Y);      \
+        Y = X;             \
+        (Y)->_ref_count++; \
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// String
+
+#define string_t sds
+#define str_new(X) X ? sdsnew(X) : NULL
+#define str_delete(X)      \
+    if (X) {               \
+        sdsfree(X);        \
+        X = str_new(NULL); \
+    }
+#define str_move(X, Y)     \
+    if (X != Y) {          \
+        str_delete(Y);     \
+        Y = X;             \
+        X = str_new(NULL); \
+    }
+#define str_size(X) sdslen(X)
+#define str_back(X) (X)[str_size(X) - 1]
+#define str_append(X, Y)  \
+    do {                  \
+        X = sdscat(X, Y); \
+    }                     \
+    while (0)
+#define str_clear(X) sdsclear(X)
+#define str_copy(X, Y) \
+    if (X != Y) {      \
+        str_delete(Y); \
+        Y = sdsdup(X); \
+    }
+#define str_hash(X) stbds_hash_string(X, 42)
+#define str_pop_back(X) sdsrange(X, 0, -2)
+#define str_push_back(X, Y)             \
+    do {                                \
+        str_resize(X, str_size(X) + 1); \
+        str_back(X) = Y;                \
+    }                                   \
+    while (0)
+#define str_reserve(X, Y)         \
+    do {                          \
+        X = sdsMakeRoomFor(X, Y); \
+    }                             \
+    while (0)
+#define str_resize(X, Y)       \
+    do {                       \
+        X = sdsgrowzero(X, Y); \
+    }                          \
+    while (0)
+#define str_substr(X, Y, Z) sdsrange(X, Y, Z)
+#define str_to_string(X) (X) > 0 ? sdsfromunsignedlong((unsigned long)(X)) : sdsfromlong((long)(X))
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Vector
+
+#define vector_t(T) T*
+#define vec_new() NULL
+#define vec_delete(X)  \
+    if (X) {           \
+        arrfree(X);    \
+        X = vec_new(); \
+    }
+#define vec_move(X, Y) \
+    if (X != Y) {      \
+        vec_delete(Y); \
+        Y = X;         \
+        X = vec_new(); \
+    }
+#define vec_size(X) arrlenu(X)
+#define vec_back(X) (X)[vec_size(X) - 1]
+#define vec_clear(X)                 \
+    if (X) {                         \
+        stbds_header(X)->length = 0; \
+    }
+#define vec_empty(X) (vec_size(X) == 0)
+#define vec_move_back(X, Y)  \
+    do {                     \
+        vec_push_back(X, Y); \
+        Y = NULL;            \
+    }                        \
+    while (0)
+#define vec_pop_back(X) arrpop(X)
+#define vec_push_back(X, Y) arrput(X, Y)
+#define vec_remove_swap(X, Y) arrdelswap(X, Y)
+#define vec_resize(X, Y) arrsetlen(X, Y)
+#define vec_reserve(X, Y) arrsetcap(X, Y)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Hashmap
+
+#define pair_t(TK, TV) struct Pair##TK##TV
+#define PairKeyValue(TK, TV) \
+    struct Pair##TK##TV {    \
+        TK key;              \
+        TV value;            \
+    }
+#define pair_first(X) (X).key
+#define pair_second(X) (X).value
+
+#define hashmap_t(TK, TV) struct Pair##TK##TV*
+#define map_new() NULL
+#define map_delete(X)  \
+    if (X) {           \
+        hmfree(X);     \
+        X = map_new(); \
+    }
+#define map_move(X, Y) \
+    if (X != Y) {      \
+        map_delete(Y); \
+        Y = X;         \
+        X = map_new(); \
+    }
+#define map_size(X) hmlenu(X)
+#define map_add(X, Y, Z) hmput(X, Y, Z)
+#define map_clear(X) map_delete(X)
+#define map_empty(X) (map_size(X) == 0)
+#define map_end() -1
+#define map_erase(X, Y) hmdel(X, Y)
+#define map_find(X, Y) hmgeti(X, Y)
+#define map_get(X, Y) hmget(X, Y)
+#define map_move_add(X, Y, Z) \
+    do {                      \
+        map_add(X, Y, Z);     \
+        Z = NULL;             \
+    }                         \
+    while (0)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Hashset
+
+#define element_t(TK) struct Element##TK
+#define ElementKey(TK)   \
+    struct Element##TK { \
+        TK key;          \
+        char value;      \
+    }
+#define element_get(X) (X).key
+
+#define hashset_t(TK) struct Element##TK*
+#define set_new() map_new()
+#define set_delete(X) map_delete(X)
+#define set_size(X) map_size(X)
+#define set_clear(X) map_clear(X)
+#define set_end() map_end()
+#define set_find(X, Y) map_find(X, Y)
+#define set_insert(X, Y) map_add(X, Y, 0)
+
+#endif

@@ -1,0 +1,22 @@
+#ifndef _OPTIMIZER_OPTIM_TAC_H
+#define _OPTIMIZER_OPTIM_TAC_H
+
+#include "../lib/c_std.h"
+
+struct TacProgram;
+struct FrontEndContext;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Three address code optimization
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Constant folding
+// Unreachable code elimination
+// Copy propagation
+// Dead store elimination
+
+void optimize_three_address_code(struct TacProgram* node, struct FrontEndContext* frontend, uint8_t optim_1_mask);
+
+#endif
