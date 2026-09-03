@@ -1,0 +1,11 @@
+.ignore
+build.sh
+build-nqcc2.md
+build-wheelcc.sh
+crt.s
+crt.o
+driver.sh
+exec.name
+set-exec.sh
+test-suite.sh
+wacc-selfhosted

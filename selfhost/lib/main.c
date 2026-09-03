@@ -1,0 +1,305 @@
+#include "c_std.h"
+
+#include "../util/fileio.h"
+#include "../util/throw.h"
+
+#include "../ast/ast.h"
+#include "../ast/back_ast.h"
+#include "../ast/back_symt.h"
+#include "../ast/front_ast.h"
+#include "../ast/front_symt.h"
+#include "../ast/interm_ast.h"
+
+#include "../frontend/errors.h"
+#include "../frontend/lexer.h"
+#include "../frontend/parser.h"
+#include "../frontend/semantic.h"
+#include "../frontend/tac_repr.h"
+
+#include "../backend/asm_gen.h"
+#include "../backend/gas_code.h"
+#include "../backend/stack_fix.h"
+#include "../backend/symt_cvt.h"
+
+#include "../optimizer/optim_tac.h"
+#include "../optimizer/reg_alloc.h"
+
+struct MainContext {
+    struct ErrorsContext* errors;
+    // Main
+    bool is_verbose;
+    uint8_t debug_code;
+    uint8_t optim_1_mask;
+    uint8_t optim_2_code;
+    string_t filename;
+    vector_t(char*) includedirs;
+    vector_t(char*) stdlibdirs;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Main
+
+#define Ctx struct MainContext*
+
+static void verbose(Ctx ctx, char* msg) {
+    if (ctx->is_verbose) {
+        printf("%s", msg);
+    }
+}
+
+static void set_filename_ext(Ctx ctx, char* ext) {
+    for (unsigned long i = str_size(ctx->filename); i-- > 0;) {
+        if (ctx->filename[i] == '.') {
+            str_substr(ctx->filename, 0, i);
+            str_append(ctx->filename, ext);
+            return;
+        }
+    }
+    THROW_ABORT;
+}
+
+static error_t compile(Ctx ctx, struct ErrorsContext* errors, struct FileIoContext* fileio) {
+    struct IdentifierContext identifiers;
+    struct FrontEndContext frontend;
+    struct BackEndContext backend;
+    vector_t(struct Token) tokens = vec_new();
+    unique_ptr_t(CProgram) c_ast = uptr_new();
+    unique_ptr_t(TacProgram) tac_ast = uptr_new();
+    unique_ptr_t(AsmProgram) asm_ast = uptr_new();
+    {
+        if (ctx->debug_code > 0 && ctx->debug_code <= 127) {
+            ctx->is_verbose = true;
+            errors->is_stdout = true;
+        }
+
+        identifiers.label_count = 0u;
+        identifiers.var_count = 0u;
+        identifiers.struct_count = 0u;
+        identifiers.hash_table = map_new();
+
+        frontend.string_const_table = map_new();
+        frontend.struct_typedef_table = map_new();
+        frontend.symbol_table = map_new();
+        frontend.addressed_set = set_new();
+
+        backend.symbol_table = map_new();
+    }
+
+    CATCH_ENTER;
+
+#ifdef _WIN32
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_os, "Windows"));
+
+#elif defined(__APPLE__) || defined(__FreeBSD__)
+#if defined(__GNUC__) && !defined(__clang__)
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_compiler, "gcc"));
+#elif !defined(__clang__)
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_compiler, "unknown"));
+#elif __clang_major__ < 5
+    THROW_INIT(GET_FATAL_MSG(3, MSG_unsupported_cc_ver, CLANG_VERSION));
+#endif
+
+#elif defined(__linux__)
+#ifdef __arm__
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_arch, "arm"));
+#elif defined(__i386__)
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_arch, "x86"));
+#elif !defined(__x86_64__)
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_arch, "unknown"));
+#elif defined(__clang__)
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_compiler, "clang"));
+#elif !defined(__GNUC__)
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_compiler, "unknown"));
+#elif __GNUC__ < 8 || (__GNUC__ == 8 && __GNUC_MINOR__ == 0)
+    THROW_INIT(GET_FATAL_MSG(3, MSG_unsupported_cc_ver, GCC_VERSION));
+#endif
+
+#else
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_os, "unknown"));
+#endif
+
+    verbose(ctx, "-- Lexing ... ");
+    TRY(lex_c_code(ctx->filename, &ctx->includedirs, &ctx->stdlibdirs, errors, fileio, &identifiers, &tokens));
+    verbose(ctx, "OK\n");
+    if (ctx->debug_code == 255) {
+        EARLY_EXIT;
+    }
+
+    verbose(ctx, "-- Parsing ... ");
+    TRY(parse_tokens(&tokens, errors, &identifiers, &c_ast));
+    verbose(ctx, "OK\n");
+    if (ctx->debug_code == 254) {
+        EARLY_EXIT;
+    }
+
+    verbose(ctx, "-- Semantic analysis ... ");
+    TRY(analyze_semantic(c_ast, errors, &frontend, &identifiers));
+    verbose(ctx, "OK\n");
+    if (ctx->debug_code == 253) {
+        EARLY_EXIT;
+    }
+
+    verbose(ctx, "-- TAC representation ... ");
+    tac_ast = represent_three_address_code(&c_ast, &frontend, &identifiers);
+    if (ctx->optim_1_mask > 0) {
+        verbose(ctx, "OK\n-- Level 1 optimization ... ");
+        optimize_three_address_code(tac_ast, &frontend, ctx->optim_1_mask);
+    }
+    verbose(ctx, "OK\n");
+    if (ctx->debug_code == 252) {
+        EARLY_EXIT;
+    }
+
+    verbose(ctx, "-- Assembly generation ... ");
+    asm_ast = generate_assembly(&tac_ast, &frontend, &identifiers);
+    convert_symbol_table(asm_ast, &backend, &frontend);
+    if (ctx->optim_2_code > 0) {
+        verbose(ctx, "OK\n-- Level 2 optimization ... ");
+        allocate_registers(asm_ast, &backend, &frontend, ctx->optim_2_code);
+    }
+    fix_stack(asm_ast, &backend);
+    verbose(ctx, "OK\n");
+    if (ctx->debug_code == 251) {
+        EARLY_EXIT;
+    }
+
+    verbose(ctx, "-- Code emission ... ");
+    set_filename_ext(ctx, "s");
+    TRY(open_fwrite(fileio, ctx->filename));
+    emit_gas_code(&asm_ast, &backend, fileio, &identifiers);
+    close_fwrite(fileio);
+    verbose(ctx, "OK\n");
+
+    FINALLY;
+    for (unsigned long i = 0; i < map_size(identifiers.hash_table); ++i) {
+        str_delete(pair_second(identifiers.hash_table[i]));
+    }
+    map_delete(identifiers.hash_table);
+
+    map_delete(frontend.string_const_table);
+    for (unsigned long i = 0; i < map_size(frontend.struct_typedef_table); ++i) {
+        free_StructTypedef(&pair_second(frontend.struct_typedef_table[i]));
+    }
+    map_delete(frontend.struct_typedef_table);
+    for (unsigned long i = 0; i < map_size(frontend.symbol_table); ++i) {
+        free_Symbol(&pair_second(frontend.symbol_table[i]));
+    }
+    map_delete(frontend.symbol_table);
+    set_delete(frontend.addressed_set);
+
+    for (unsigned long i = 0; i < map_size(backend.symbol_table); ++i) {
+        free_BackendSymbol(&pair_second(backend.symbol_table[i]));
+    }
+    map_delete(backend.symbol_table);
+
+    vec_delete(tokens);
+    free_CProgram(&c_ast);
+    free_TacProgram(&tac_ast);
+    free_AsmProgram(&asm_ast);
+    CATCH_EXIT;
+}
+
+static bool arg_parse_uint8(char* arg, uint8_t* value) {
+    char* end_ptr = NULL;
+    *value = (uint8_t)strtol(arg, &end_ptr, 10);
+    return end_ptr == arg;
+}
+
+static error_t arg_parse(Ctx ctx, int argc, char** argv) {
+    CATCH_ENTER;
+    unsigned long i = 0;
+
+    if (argc == 2 && strcmp(argv[1], "--help") == 0) {
+        THROW_INIT(GET_ARG_MSG(1, MSG_print_help, argv[0]));
+    }
+
+    if (!argv[++i]) {
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_debug_arg));
+    }
+    else if (arg_parse_uint8(argv[i], &ctx->debug_code)) {
+        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_debug_arg, argv[i]));
+    }
+
+    if (!argv[++i]) {
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_optim_1_arg));
+    }
+    else if (arg_parse_uint8(argv[i], &ctx->optim_1_mask) || ctx->optim_1_mask > 15) {
+        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_optim_1_arg, argv[i]));
+    }
+
+    if (!argv[++i]) {
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_optim_2_arg));
+    }
+    else if (arg_parse_uint8(argv[i], &ctx->optim_2_code) || ctx->optim_2_code > 2) {
+        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_optim_2_arg, argv[i]));
+    }
+
+    if (!argv[++i]) {
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_input_files_arg));
+    }
+    ctx->filename = str_new(argv[i]);
+
+    if (!argv[++i]) {
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_stdlib_dir_arg));
+    }
+    vec_push_back(ctx->stdlibdirs, (char*)argv[i]);
+
+    do {
+        vec_push_back(ctx->includedirs, (char*)argv[i]);
+    }
+    while (argv[++i]);
+    FINALLY;
+    CATCH_EXIT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+error_t main(int argc, char** argv) {
+    struct ErrorsContext errors;
+    struct FileIoContext fileio;
+    struct MainContext ctx;
+    {
+        errors.errors = &errors;
+        errors.fileio = &fileio;
+        errors.is_stdout = false;
+        errors.info_at_map = map_new();
+        errors.fopen_lines = vec_new();
+        errors.token_infos = vec_new();
+
+        fileio.errors = &errors;
+        fileio.fd_write = NULL;
+        fileio.write_buf = str_new(NULL);
+        fileio.filename = str_new(NULL);
+        fileio.file_reads = vec_new();
+
+        ctx.errors = &errors;
+        ctx.is_verbose = false;
+        ctx.filename = str_new(NULL);
+        ctx.includedirs = vec_new();
+        ctx.stdlibdirs = vec_new();
+    }
+    CATCH_ENTER;
+    TRY(arg_parse(&ctx, argc, argv));
+    TRY(compile(&ctx, &errors, &fileio));
+
+    FINALLY;
+    map_delete(errors.info_at_map);
+    for (unsigned long i = 0; i < vec_size(errors.fopen_lines); ++i) {
+        str_delete(errors.fopen_lines[i].filename);
+    }
+    vec_delete(errors.fopen_lines);
+    vec_delete(errors.token_infos);
+
+    str_delete(fileio.write_buf);
+    str_delete(fileio.filename);
+    for (unsigned long i = 0; i < vec_size(fileio.file_reads); ++i) {
+        str_delete(fileio.file_reads[i].filename);
+    }
+    vec_delete(fileio.file_reads);
+
+    str_delete(ctx.filename);
+    vec_delete(ctx.includedirs);
+    vec_delete(ctx.stdlibdirs);
+    CATCH_EXIT;
+}
