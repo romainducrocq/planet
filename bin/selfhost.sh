@@ -141,8 +141,6 @@ function build_selfhost () {
 build_selfhost
 if [ ${?} -ne 0 ]; then raise_error "build selfhost failed"; fi
 
-echo "---"
-echo -e "[\033[1;32mselfhost\033[0m] build was successful, \
+echo -e "selfhosting was successful, \
 see usage with command $(em "${PACKAGE_NAME} --help")"
-echo "---"
 exit 0
