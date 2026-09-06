@@ -13,14 +13,14 @@
 #include "../ast/front_symt.h"
 
 typedef struct ParserContext {
-    ErrorsContext* errors;
-    IdentifierContext* identifiers;
+    struct ErrorsContext* errors;
+    struct IdentifierContext* identifiers;
     // Parser
-    size_t pop_idx;
-    const Token* next_tok;
-    const Token* peek_tok;
-    const Token* peek_tok_i;
-    vector_t(Token) * p_toks;
+    unsigned long pop_idx;
+    struct Token* next_tok;
+    struct Token* peek_tok;
+    struct Token* peek_tok_i;
+    vector_t(struct Token) * p_toks;
 } ParserContext;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,11 +29,11 @@ typedef struct ParserContext {
 
 typedef ParserContext* Ctx;
 
-static error_t expect_next(Ctx ctx, const Token* next_tok, TOKEN_KIND expect_tok) {
+static error_t expect_next(Ctx ctx, struct Token* next_tok, TOKEN_KIND expect_tok) {
     CATCH_ENTER;
     if (next_tok->tok_kind != expect_tok) {
         THROW_AT_TOKEN(next_tok->info_at,
-            GET_PARSER_MSG(MSG_unexpected_next_tok, str_fmt_tok(next_tok), get_tok_kind_fmt(expect_tok)));
+            GET_PARSER_MSG(2, MSG_unexpected_next_tok, str_fmt_tok(next_tok), get_tok_kind_fmt(expect_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -42,7 +42,7 @@ static error_t expect_next(Ctx ctx, const Token* next_tok, TOKEN_KIND expect_tok
 static error_t pop_next(Ctx ctx) {
     CATCH_ENTER;
     if (ctx->pop_idx >= vec_size(*ctx->p_toks)) {
-        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG_0(MSG_reached_eof));
+        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG(0, MSG_reached_eof));
     }
 
     ctx->next_tok = &(*ctx->p_toks)[ctx->pop_idx];
@@ -54,7 +54,7 @@ static error_t pop_next(Ctx ctx) {
 static error_t peek_next(Ctx ctx) {
     CATCH_ENTER;
     if (ctx->pop_idx >= vec_size(*ctx->p_toks)) {
-        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG_0(MSG_reached_eof));
+        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG(0, MSG_reached_eof));
     }
 
     ctx->peek_tok = &(*ctx->p_toks)[ctx->pop_idx];
@@ -62,7 +62,7 @@ static error_t peek_next(Ctx ctx) {
     CATCH_EXIT;
 }
 
-static error_t peek_next_i(Ctx ctx, size_t i) {
+static error_t peek_next_i(Ctx ctx, unsigned long i) {
     CATCH_ENTER;
     if (i == 0) {
         TRY(peek_next(ctx));
@@ -70,7 +70,7 @@ static error_t peek_next_i(Ctx ctx, size_t i) {
         EARLY_EXIT;
     }
     if (ctx->pop_idx + i >= vec_size(*ctx->p_toks)) {
-        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG_0(MSG_reached_eof));
+        THROW_AT_TOKEN(vec_back(*ctx->p_toks).info_at, GET_PARSER_MSG(0, MSG_reached_eof));
     }
 
     ctx->peek_tok_i = &(*ctx->p_toks)[ctx->pop_idx + i];
@@ -106,8 +106,8 @@ static error_t parse_string_literal(Ctx ctx, shared_ptr_t(CStringLiteral) * lite
 }
 
 // <int> ::= "true" | "false" | "nil" | ? An int token ? => [0-9]+
-static shared_ptr_t(CConst) parse_int_const(intmax_t intmax) {
-    TInt value = intmax_to_int32(intmax);
+static shared_ptr_t(CConst) parse_int_const(long intmax) {
+    TInt value = (int32_t)intmax;
     return make_CConstInt(value);
 }
 
@@ -118,8 +118,8 @@ static shared_ptr_t(CConst) parse_char_const(Ctx ctx) {
 }
 
 // <long> ::= ? An int or long token ? => [0-9]+l
-static shared_ptr_t(CConst) parse_long_const(intmax_t intmax) {
-    TLong value = intmax_to_int64(intmax);
+static shared_ptr_t(CConst) parse_long_const(long intmax) {
+    TLong value = (int64_t)intmax;
     return make_CConstLong(value);
 }
 
@@ -136,14 +136,14 @@ static error_t parse_dbl_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 }
 
 // <uint> ::= ? An unsigned int token ? => [0-9]+u
-static shared_ptr_t(CConst) parse_uint_const(uintmax_t uintmax) {
-    TUInt value = uintmax_to_uint32(uintmax);
+static shared_ptr_t(CConst) parse_uint_const(unsigned long uintmax) {
+    TUInt value = (uint32_t)uintmax;
     return make_CConstUInt(value);
 }
 
 // <ulong> ::= ? An unsigned int or unsigned long token ? => [0-9]+ul
-static shared_ptr_t(CConst) parse_ulong_const(uintmax_t uintmax) {
-    TULong value = uintmax_to_uint64(uintmax);
+static shared_ptr_t(CConst) parse_ulong_const(unsigned long uintmax) {
+    TULong value = (uint64_t)uintmax;
     return make_CConstULong(value);
 }
 
@@ -151,8 +151,8 @@ static shared_ptr_t(CConst) parse_ulong_const(uintmax_t uintmax) {
 // (signed) const = ConstInt(int) | ConstLong(long) | ConstDouble(double) | ConstChar(int)
 static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
-    intmax_t value;
-    const char* strto_value;
+    long value;
+    char* strto_value;
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_key_true: {
@@ -175,9 +175,9 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     }
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
-    TRY(string_to_intmax(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
+    TRY(string_to_long(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
     if (value > 9223372036854775807ll) {
-        THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_overflow_long_const, strto_value));
+        THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_overflow_long_const, strto_value));
     }
     else if (ctx->next_tok->tok_kind == TOK_int_const && value <= 2147483647l) {
         *constant = parse_int_const(value);
@@ -193,14 +193,14 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 // (unsigned) const = ConstUInt(uint) | ConstULong(ulong) | ConstUChar(int)
 static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
     CATCH_ENTER;
-    uintmax_t value;
-    const char* strto_value;
+    unsigned long value;
+    char* strto_value;
     TRY(pop_next(ctx));
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
-    TRY(string_to_uintmax(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
+    TRY(string_to_ulong(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
     if (value > 18446744073709551615ull) {
-        THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_overflow_ulong_const, strto_value));
+        THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_overflow_ulong_const, strto_value));
     }
     else if (ctx->next_tok->tok_kind == TOK_uint_const && value <= 4294967295ul) {
         *constant = parse_uint_const(value);
@@ -214,7 +214,7 @@ static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 
 // <unop> ::= "-" | "~" | "not" | "@" | "++" | "--"
 // unary_operator = Complement | Negate | Not | Prefix | Postfix
-static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
+static error_t parse_unop(Ctx ctx, struct CUnaryOp* unop) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
@@ -231,7 +231,7 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
             break;
         }
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_unop, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_unop, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -243,7 +243,7 @@ static error_t parse_unop(Ctx ctx, CUnaryOp* unop) {
 // binary_operator = Add | Subtract | Multiply | Divide | Remainder | BitAnd | BitOr | BitXor | BitShiftLeft
 //                 | BitShiftRight | BitShrArithmetic | And | Or | Equal | NotEqual | LessThan | LessOrEqual
 //                 | GreaterThan | GreaterOrEqual
-static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
+static error_t parse_binop(Ctx ctx, struct CBinaryOp* binop) {
     CATCH_ENTER;
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
@@ -332,7 +332,7 @@ static error_t parse_binop(Ctx ctx, CBinaryOp* binop) {
             break;
         }
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_binop, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -354,7 +354,7 @@ static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_unio
         }
         default:
             THROW_AT_TOKEN(
-                ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_data_specifier, str_fmt_tok(ctx->next_tok)));
+                ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_data_specifier, str_fmt_tok(ctx->next_tok)));
     }
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -407,7 +407,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             break;
         }
         case TOK_key_any: {
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG_0(MSG_incomplete_any));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(0, MSG_incomplete_any));
         }
         case TOK_key_struc:
         case TOK_key_union: {
@@ -418,7 +418,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
             break;
         }
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_specifier, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -427,7 +427,7 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
 static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
-    TLong size;
+    TLong size = 0;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
@@ -444,7 +444,7 @@ static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
             break;
         default:
             THROW_AT_TOKEN(
-                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx->peek_tok)));
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_arr_size_not_int_const, str_fmt_tok(ctx->peek_tok)));
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
@@ -544,7 +544,7 @@ static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
             break;
         }
         default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_maybe_type, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_maybe_type, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -573,7 +573,7 @@ static error_t parse_arg_list(Ctx ctx, vector_t(unique_ptr_t(CExp)) * args) {
 static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(parse_const(ctx, &constant));
     *exp = make_CConstant(&constant, info_at);
     FINALLY;
@@ -584,7 +584,7 @@ static error_t parse_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_unsigned_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(parse_unsigned_const(ctx, &constant));
     *exp = make_CConstant(&constant, info_at);
     FINALLY;
@@ -595,7 +595,7 @@ static error_t parse_unsigned_const_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_string_literal_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(CStringLiteral) literal = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(parse_string_literal(ctx, &literal));
     *exp = make_CString(&literal, info_at);
@@ -606,7 +606,7 @@ static error_t parse_string_literal_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 
 static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TIdentifier name;
     TRY(parse_identifier(ctx, &name));
     *exp = make_CVar(name, info_at);
@@ -617,7 +617,7 @@ static error_t parse_var_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     vector_t(unique_ptr_t(CExp)) args = vec_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TIdentifier name;
     TRY(parse_identifier(ctx, &name));
     TRY(pop_next(ctx));
@@ -629,7 +629,7 @@ static error_t parse_call_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *exp = make_CFunctionCall(name, &args, info_at);
     FINALLY;
-    for (size_t i = 0; i < vec_size(args); ++i) {
+    for (unsigned long i = 0; i < vec_size(args); ++i) {
         free_CExp(&args[i]);
     }
     vec_delete(args);
@@ -640,7 +640,7 @@ static error_t parse_cast_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
     shared_ptr_t(Type) target_type = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt));
@@ -671,7 +671,7 @@ static error_t parse_inner_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 
 static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_typeop_member) {
@@ -693,7 +693,7 @@ static error_t parse_deref_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_subscript_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) subscript_exp = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(parse_exp(ctx, 0, &subscript_exp));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
@@ -719,7 +719,7 @@ static error_t parse_arr_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 
 static error_t parse_dot_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -736,9 +736,9 @@ static error_t parse_postfix_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
     unique_ptr_t(CExp) exp_null = uptr_new();
-    size_t info_at = ctx->peek_tok->info_at;
-    CUnaryOp unop = init_CPostfix();
-    CBinaryOp binop = init_CBinaryOp();
+    unsigned long info_at = ctx->peek_tok->info_at;
+    struct CUnaryOp unop = init_CPostfix();
+    struct CBinaryOp binop = init_CBinaryOp();
     TRY(parse_binop(ctx, &binop));
     constant = make_CConstInt(1);
     exp_right = make_CConstant(&constant, info_at);
@@ -754,8 +754,8 @@ static error_t parse_postfix_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
-    CUnaryOp unop = init_CUnaryOp();
+    unsigned long info_at = ctx->peek_tok->info_at;
+    struct CUnaryOp unop = init_CUnaryOp();
     TRY(parse_unop(ctx, &unop));
     TRY(parse_unary_exp_factor(ctx, &cast_exp));
     *exp = make_CUnary(&unop, &cast_exp, info_at);
@@ -771,9 +771,9 @@ static error_t parse_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) exp_right_1 = uptr_new();
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
-    CUnaryOp unop = init_CPrefix();
-    CBinaryOp binop = init_CBinaryOp();
+    unsigned long info_at = ctx->peek_tok->info_at;
+    struct CUnaryOp unop = init_CPrefix();
+    struct CBinaryOp binop = init_CBinaryOp();
     TRY(parse_binop(ctx, &binop));
     TRY(parse_unary_exp_factor(ctx, &exp_left));
     constant = make_CConstInt(1);
@@ -792,7 +792,7 @@ static error_t parse_incr_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) cast_exp = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(parse_unary_exp_factor(ctx, &cast_exp));
     *exp = make_CAddrOf(&cast_exp, info_at);
@@ -804,7 +804,7 @@ static error_t parse_addrof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     shared_ptr_t(Type) target_type = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->next_tok->info_at;
+    unsigned long info_at = ctx->next_tok->info_at;
     TRY(parse_type_name(ctx, &target_type));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt));
@@ -817,7 +817,7 @@ static error_t parse_sizeoft_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_sizeof_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) unary_exp = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->next_tok->info_at;
+    unsigned long info_at = ctx->next_tok->info_at;
     TRY(parse_exp(ctx, 0, &unary_exp));
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
@@ -839,7 +839,7 @@ static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             TRY(parse_sizeof_factor(ctx, exp));
             break;
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_open_sizeof, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_open_sizeof, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -883,7 +883,7 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             TRY(parse_inner_exp_factor(ctx, exp));
             break;
         default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_expression, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_expression, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -962,8 +962,8 @@ static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
 static error_t parse_assign_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
     unique_ptr_t(CExp) exp_right = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
-    CUnaryOp unop = init_CUnaryOp();
+    unsigned long info_at = ctx->peek_tok->info_at;
+    struct CUnaryOp unop = init_CUnaryOp();
     TRY(pop_next(ctx));
     TRY(parse_exp(ctx, precedence, &exp_right));
     *exp_left = make_CAssignment(&unop, exp_left, &exp_right, info_at);
@@ -977,9 +977,9 @@ static error_t parse_assign_compound_exp(Ctx ctx, int32_t precedence, unique_ptr
     unique_ptr_t(CExp) exp_right_1 = uptr_new();
     CATCH_ENTER;
     unique_ptr_t(CExp) exp_null = uptr_new();
-    size_t info_at = ctx->peek_tok->info_at;
-    CUnaryOp unop = init_CUnaryOp();
-    CBinaryOp binop = init_CBinaryOp();
+    unsigned long info_at = ctx->peek_tok->info_at;
+    struct CUnaryOp unop = init_CUnaryOp();
+    struct CBinaryOp binop = init_CBinaryOp();
     TRY(parse_binop(ctx, &binop));
     TRY(parse_exp(ctx, precedence, &exp_right));
     exp_right_1 = make_CBinary(&binop, exp_left, &exp_right, info_at);
@@ -993,8 +993,8 @@ static error_t parse_assign_compound_exp(Ctx ctx, int32_t precedence, unique_ptr
 static error_t parse_binary_exp(Ctx ctx, int32_t precedence, unique_ptr_t(CExp) * exp_left) {
     unique_ptr_t(CExp) exp_right = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
-    CBinaryOp binop = init_CBinaryOp();
+    unsigned long info_at = ctx->peek_tok->info_at;
+    struct CBinaryOp binop = init_CBinaryOp();
     TRY(parse_binop(ctx, &binop));
     TRY(parse_exp(ctx, precedence + 1, &exp_right));
     *exp_left = make_CBinary(&binop, exp_left, &exp_right, info_at);
@@ -1008,7 +1008,7 @@ static error_t parse_ternary_exp(Ctx ctx, unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CExp) exp_middle = uptr_new();
     unique_ptr_t(CExp) exp_right = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(parse_exp(ctx, 0, &exp_left));
     TRY(pop_next(ctx));
@@ -1131,7 +1131,7 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
                 TRY(parse_assign_compound_exp(ctx, precedence, exp));
                 break;
             default:
-                THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx->peek_tok)));
+                THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_binop, str_fmt_tok(ctx->peek_tok)));
         }
     }
     FINALLY;
@@ -1140,12 +1140,12 @@ static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * e
 
 static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block);
 static error_t parse_var_declaration(
-    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl);
+    Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl);
 
 static error_t parse_ret_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CExp) exp = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_key_none) {
@@ -1220,7 +1220,7 @@ static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement)
 
 static error_t parse_jump_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -1234,7 +1234,7 @@ static error_t parse_jump_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
 static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CStatement) jump_to = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -1250,7 +1250,7 @@ static error_t parse_label_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
 static error_t parse_loop_init_decl(Ctx ctx, unique_ptr_t(CForInit) * for_init) {
     unique_ptr_t(CVariableDeclaration) var_decl = uptr_new();
     CATCH_ENTER;
-    CStorageClass storage_class = init_CStorageClass();
+    struct CStorageClass storage_class = init_CStorageClass();
     TRY(parse_var_declaration(ctx, &storage_class, &var_decl));
     *for_init = make_CInitDecl(&var_decl);
     FINALLY;
@@ -1282,7 +1282,7 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
         case TOK_open_brace:
             goto Lbreak;
         case TOK_semicolon:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_infinite_loop));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(0, MSG_infinite_loop));
         case TOK_loop_post: {
             TRY(pop_next(ctx));
             TRY(peek_next(ctx));
@@ -1316,7 +1316,7 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
         case TOK_key_pub:
         case TOK_key_data:
         case TOK_key_extrn:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_loop_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_loop_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
             if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
@@ -1349,7 +1349,7 @@ Lbreak:
     if (!condition) {
         TRY(peek_next(ctx));
         if (ctx->peek_tok->tok_kind == TOK_semicolon) {
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_infinite_loop));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(0, MSG_infinite_loop));
         }
     }
     TRY(parse_compound_statement(ctx, &body));
@@ -1381,7 +1381,7 @@ static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
     unique_ptr_t(CStatement) jump_to = uptr_new();
     shared_ptr_t(CConst) constant = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     switch (ctx->peek_tok->tok_kind) {
@@ -1398,7 +1398,7 @@ static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
             break;
         default:
             THROW_AT_TOKEN(
-                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx->peek_tok)));
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_case_value_not_int_const, str_fmt_tok(ctx->peek_tok)));
     }
     value = make_CConstant(&constant, info_at);
     TRY(parse_compound_statement(ctx, &jump_to));
@@ -1413,7 +1413,7 @@ static error_t parse_with_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
 static error_t parse_otherwise_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CStatement) jump_to = uptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(parse_compound_statement(ctx, &jump_to));
     *statement = make_CDefault(&jump_to, info_at);
@@ -1424,7 +1424,7 @@ static error_t parse_otherwise_statement(Ctx ctx, unique_ptr_t(CStatement) * sta
 
 static error_t parse_break_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     *statement = make_CBreak(info_at);
     FINALLY;
@@ -1433,7 +1433,7 @@ static error_t parse_break_statement(Ctx ctx, unique_ptr_t(CStatement) * stateme
 
 static error_t parse_continue_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     *statement = make_CContinue(info_at);
     FINALLY;
@@ -1504,7 +1504,7 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_EXIT;
 }
 
-static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration);
+static error_t parse_declaration(Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration);
 
 static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CStatement) statement = uptr_new();
@@ -1519,7 +1519,7 @@ static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item
 static error_t parse_d_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CDeclaration) declaration = uptr_new();
     CATCH_ENTER;
-    CStorageClass storage_class = init_CStorageClass();
+    struct CStorageClass storage_class = init_CStorageClass();
     TRY(parse_declaration(ctx, &storage_class, &declaration));
     *block_item = make_CD(&declaration);
     FINALLY;
@@ -1533,7 +1533,7 @@ static error_t parse_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) 
     CATCH_ENTER;
     switch (ctx->peek_tok->tok_kind) {
         case TOK_key_pub:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_pub_in_block));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(0, MSG_pub_in_block));
         case TOK_key_data:
         case TOK_key_extrn:
         case TOK_key_fn:
@@ -1566,7 +1566,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
         TRY(peek_next(ctx));
     }
     if (ctx->peek_tok->tok_kind == TOK_close_brace) {
-        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_block));
+        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(0, MSG_empty_block));
     }
     TRY(parse_block_item(ctx, &block_item));
     vec_move_back(block_items, block_item);
@@ -1588,7 +1588,7 @@ static error_t parse_b_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
     *block = make_CB(&block_items);
     FINALLY;
     free_CBlockItem(&block_item);
-    for (size_t i = 0; i < vec_size(block_items); ++i) {
+    for (unsigned long i = 0; i < vec_size(block_items); ++i) {
         free_CBlockItem(&block_items[i]);
     }
     vec_delete(block_items);
@@ -1607,7 +1607,7 @@ static error_t parse_block(Ctx ctx, unique_ptr_t(CBlock) * block) {
             TRY(parse_b_block(ctx, block));
             break;
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_block, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_block, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -1633,7 +1633,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_close_paren) {
-        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_empty_compound_init));
+        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(0, MSG_empty_compound_init));
     }
     TRY(parse_initializer(ctx, initializer));
     vec_move_back(initializers, *initializer);
@@ -1646,7 +1646,7 @@ static error_t parse_compound_init(Ctx ctx, unique_ptr_t(CInitializer) * initial
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren));
     *initializer = make_CCompoundInit(&initializers);
     FINALLY;
-    for (size_t i = 0; i < vec_size(initializers); ++i) {
+    for (unsigned long i = 0; i < vec_size(initializers); ++i) {
         free_CInitializer(&initializers[i]);
     }
     vec_delete(initializers);
@@ -1686,7 +1686,7 @@ static error_t parse_item_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type)
         case TOK_key_pub:
         case TOK_key_data:
         case TOK_key_extrn:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_list_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_list_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
         default:
             break;
     }
@@ -1735,7 +1735,7 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_
     TRY(parse_maybe_type(ctx, fun_type));
     *fun_type = make_FunType(&param_types, fun_type);
     FINALLY;
-    for (size_t i = 0; i < vec_size(param_types); ++i) {
+    for (unsigned long i = 0; i < vec_size(param_types); ++i) {
         free_Type(&param_types[i]);
     }
     vec_delete(param_types);
@@ -1745,12 +1745,12 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_
 // <function-declaration> ::= [ <storage-class> ] "fn" <identifier> <function-declarator> <block>
 // function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
 static error_t parse_fun_declaration(
-    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
+    Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
     unique_ptr_t(CBlock) body = uptr_new();
     shared_ptr_t(Type) fun_type = sptr_new();
     vector_t(TIdentifier) params = vec_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -1769,11 +1769,11 @@ static error_t parse_fun_declaration(
 // <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
 // variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
 static error_t parse_var_declaration(
-    Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl) {
+    Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl) {
     unique_ptr_t(CInitializer) initializer = uptr_new();
     shared_ptr_t(Type) var_type = sptr_new();
     CATCH_ENTER;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TIdentifier name;
     TRY(parse_decltor(ctx, &name, &var_type));
     TRY(pop_next(ctx));
@@ -1784,7 +1784,7 @@ static error_t parse_var_declaration(
             TRY(parse_initializer(ctx, &initializer));
             break;
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_assign, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_assign, str_fmt_tok(ctx->next_tok)));
     }
     *var_decl = make_CVariableDeclaration(name, &initializer, &var_type, storage_class, info_at);
     FINALLY;
@@ -1797,7 +1797,7 @@ static error_t parse_var_declaration(
 static error_t parse_member_declaration(Ctx ctx, unique_ptr_t(CMemberDeclaration) * member_decl) {
     shared_ptr_t(Type) member_type = sptr_new();
     CATCH_ENTER;
-    size_t info_at;
+    unsigned long info_at;
     TIdentifier member_name;
     TRY(peek_next(ctx));
     info_at = ctx->peek_tok->info_at;
@@ -1832,7 +1832,7 @@ static error_t parse_type_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) 
     CATCH_ENTER;
     bool is_union;
     TIdentifier tag;
-    size_t info_at = ctx->peek_tok->info_at;
+    unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
     TRY(parse_datatype_specifier(ctx, &tag, &is_union));
@@ -1844,18 +1844,18 @@ static error_t parse_type_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) 
             TRY(parse_member_list(ctx, &members));
             break;
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(MSG_expect_datatype, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_datatype, str_fmt_tok(ctx->next_tok)));
     }
     *struct_decl = make_CStructDeclaration(tag, is_union, &members, info_at);
     FINALLY;
-    for (size_t i = 0; i < vec_size(members); ++i) {
+    for (unsigned long i = 0; i < vec_size(members); ++i) {
         free_CMemberDeclaration(&members[i]);
     }
     vec_delete(members);
     CATCH_EXIT;
 }
 
-static error_t parse_fun_decl(Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
+static error_t parse_fun_decl(Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     unique_ptr_t(CFunctionDeclaration) fun_decl = uptr_new();
     CATCH_ENTER;
     TRY(parse_fun_declaration(ctx, storage_class, &fun_decl));
@@ -1865,7 +1865,7 @@ static error_t parse_fun_decl(Ctx ctx, const CStorageClass* storage_class, uniqu
     CATCH_EXIT;
 }
 
-static error_t parse_var_decl(Ctx ctx, const CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
+static error_t parse_var_decl(Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     unique_ptr_t(CVariableDeclaration) var_decl = uptr_new();
     CATCH_ENTER;
     TRY(parse_var_declaration(ctx, storage_class, &var_decl));
@@ -1887,7 +1887,7 @@ static error_t parse_type_decl(Ctx ctx, unique_ptr_t(CDeclaration) * declaration
 
 // <storage-class> ::= "pub" | "extrn" | "data"
 // storage_class = Static | Extern
-static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
+static error_t parse_storage_class(Ctx ctx, struct CStorageClass* storage_class) {
     CATCH_ENTER;
     switch (ctx->peek_tok->tok_kind) {
         case TOK_key_pub: {
@@ -1908,12 +1908,12 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
             EARLY_EXIT;
         default:
             THROW_AT_TOKEN(
-                ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx->peek_tok)));
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_storage_class, str_fmt_tok(ctx->peek_tok)));
     }
     TRY(pop_next(ctx));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_key_type) {
-        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_type_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
+        THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_type_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -1921,7 +1921,7 @@ static error_t parse_storage_class(Ctx ctx, CStorageClass* storage_class) {
 
 // <declaration> ::= <datatype-declaration> | <variable-declaration> | <function-declaration>
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
-static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
+static error_t parse_declaration(Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     CATCH_ENTER;
     TRY(parse_storage_class(ctx, storage_class));
     switch (ctx->peek_tok->tok_kind) {
@@ -1935,7 +1935,7 @@ static error_t parse_declaration(Ctx ctx, CStorageClass* storage_class, unique_p
             TRY(parse_type_decl(ctx, declaration));
             break;
         default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_declaration, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -1948,10 +1948,10 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     vector_t(unique_ptr_t(CDeclaration)) declarations = vec_new();
     CATCH_ENTER;
     while (ctx->pop_idx < vec_size(*ctx->p_toks)) {
-        CStorageClass storage_class = init_CStatic();
+        struct CStorageClass storage_class = init_CStatic();
         TRY(peek_next(ctx));
         if (ctx->peek_tok->tok_kind == TOK_key_data) {
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG_0(MSG_data_at_toplvl));
+            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(0, MSG_data_at_toplvl));
         }
         TRY(parse_declaration(ctx, &storage_class, &declaration));
         vec_move_back(declarations, declaration);
@@ -1961,7 +1961,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
     *c_ast = make_CProgram(&declarations);
     FINALLY;
     free_CDeclaration(&declaration);
-    for (size_t i = 0; i < vec_size(declarations); ++i) {
+    for (unsigned long i = 0; i < vec_size(declarations); ++i) {
         free_CDeclaration(&declarations[i]);
     }
     vec_delete(declarations);
@@ -1971,7 +1971,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 error_t parse_tokens(
-    vector_t(Token) * tokens, ErrorsContext* errors, IdentifierContext* identifiers, unique_ptr_t(CProgram) * c_ast) {
+    vector_t(struct Token) * tokens, struct ErrorsContext* errors, struct IdentifierContext* identifiers, unique_ptr_t(CProgram) * c_ast) {
     ParserContext ctx;
     {
         ctx.errors = errors;
