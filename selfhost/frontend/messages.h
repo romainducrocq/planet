@@ -23,6 +23,7 @@
 #define MSG_invalid_optim_2_arg 107
 #define MSG_no_input_files_arg 108
 #define MSG_no_stdlib_dir_arg 109
+#define MSG_no_include_dir_arg 110
 
 #define MESSAGE_UTIL int
 #define MSG_unhandled_util_error 200

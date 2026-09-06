@@ -245,6 +245,9 @@ static error_t arg_parse(Ctx ctx, int argc, char** argv) {
     }
     vec_push_back(ctx->stdlibdirs, (char*)argv[i]);
 
+    if (!argv[++i]) {
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_include_dir_arg));
+    }
     do {
         vec_push_back(ctx->includedirs, (char*)argv[i]);
     }
