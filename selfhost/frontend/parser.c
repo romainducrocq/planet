@@ -12,7 +12,7 @@
 #include "../ast/front_ast.h"
 #include "../ast/front_symt.h"
 
-typedef struct ParserContext {
+struct ParserContext {
     struct ErrorsContext* errors;
     struct IdentifierContext* identifiers;
     // Parser
@@ -21,13 +21,13 @@ typedef struct ParserContext {
     struct Token* peek_tok;
     struct Token* peek_tok_i;
     vector_t(struct Token) * p_toks;
-} ParserContext;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Parser
 
-typedef ParserContext* Ctx;
+#define Ctx struct ParserContext*
 
 static error_t expect_next(Ctx ctx, struct Token* next_tok, TOKEN_KIND expect_tok) {
     CATCH_ENTER;
@@ -1980,7 +1980,7 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
 
 error_t parse_tokens(vector_t(struct Token) * tokens, struct ErrorsContext* errors,
     struct IdentifierContext* identifiers, unique_ptr_t(CProgram) * c_ast) {
-    ParserContext ctx;
+    struct ParserContext ctx;
     {
         ctx.errors = errors;
         ctx.identifiers = identifiers;
