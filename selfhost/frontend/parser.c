@@ -544,7 +544,8 @@ static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
             break;
         }
         default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_maybe_type, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_maybe_type, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -839,7 +840,8 @@ static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             TRY(parse_sizeof_factor(ctx, exp));
             break;
         default:
-            THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_open_sizeof, str_fmt_tok(ctx->next_tok)));
+            THROW_AT_TOKEN(
+                ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_open_sizeof, str_fmt_tok(ctx->next_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -883,7 +885,8 @@ static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
             TRY(parse_inner_exp_factor(ctx, exp));
             break;
         default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_expression, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_expression, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -1316,7 +1319,8 @@ static error_t parse_loop_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
         case TOK_key_pub:
         case TOK_key_data:
         case TOK_key_extrn:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_loop_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_loop_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
         case TOK_identifier: {
             TRY(peek_next_i(ctx, 1));
             if (ctx->peek_tok_i->tok_kind == TOK_assign_type) {
@@ -1504,7 +1508,8 @@ static error_t parse_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     CATCH_EXIT;
 }
 
-static error_t parse_declaration(Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration);
+static error_t parse_declaration(
+    Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration);
 
 static error_t parse_s_block_item(Ctx ctx, unique_ptr_t(CBlockItem) * block_item) {
     unique_ptr_t(CStatement) statement = uptr_new();
@@ -1686,7 +1691,8 @@ static error_t parse_item_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type)
         case TOK_key_pub:
         case TOK_key_data:
         case TOK_key_extrn:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_list_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_list_decl_not_auto, str_fmt_tok(ctx->peek_tok)));
         default:
             break;
     }
@@ -1921,7 +1927,8 @@ static error_t parse_storage_class(Ctx ctx, struct CStorageClass* storage_class)
 
 // <declaration> ::= <datatype-declaration> | <variable-declaration> | <function-declaration>
 // declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
-static error_t parse_declaration(Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
+static error_t parse_declaration(
+    Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CDeclaration) * declaration) {
     CATCH_ENTER;
     TRY(parse_storage_class(ctx, storage_class));
     switch (ctx->peek_tok->tok_kind) {
@@ -1935,7 +1942,8 @@ static error_t parse_declaration(Ctx ctx, struct CStorageClass* storage_class, u
             TRY(parse_type_decl(ctx, declaration));
             break;
         default:
-            THROW_AT_TOKEN(ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_declaration, str_fmt_tok(ctx->peek_tok)));
+            THROW_AT_TOKEN(
+                ctx->peek_tok->info_at, GET_PARSER_MSG(1, MSG_expect_declaration, str_fmt_tok(ctx->peek_tok)));
     }
     FINALLY;
     CATCH_EXIT;
@@ -1970,8 +1978,8 @@ static error_t parse_program(Ctx ctx, unique_ptr_t(CProgram) * c_ast) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-error_t parse_tokens(
-    vector_t(struct Token) * tokens, struct ErrorsContext* errors, struct IdentifierContext* identifiers, unique_ptr_t(CProgram) * c_ast) {
+error_t parse_tokens(vector_t(struct Token) * tokens, struct ErrorsContext* errors,
+    struct IdentifierContext* identifiers, unique_ptr_t(CProgram) * c_ast) {
     ParserContext ctx;
     {
         ctx.errors = errors;
