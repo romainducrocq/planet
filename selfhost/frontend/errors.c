@@ -329,6 +329,7 @@ char* get_assign_fmt(struct CBinaryOp* node, struct CUnaryOp* unop) {
                     THROW_ABORT;
             }
         }
+        // fall through
         case AST_CPostfix_t: {
             switch (node->type) {
                 case AST_CAdd_t:
@@ -339,6 +340,7 @@ char* get_assign_fmt(struct CBinaryOp* node, struct CUnaryOp* unop) {
                     THROW_ABORT;
             }
         }
+        // fall through
         default:
             THROW_ABORT;
     }
@@ -504,32 +506,39 @@ char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type, string_t* t
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define EM_CSTR(X) "\033[1m‘" X "’\033[0m"
-#define EM_VARG "\033[1m‘%s’\033[0m"
+// TODO rm
 #define RET_ERRNO return "(no. %i) "
+
+#define EM_CSTR(X) "‘" X "’"
+#define EM_VARG "‘%s’"
+#define PAD_ERR_0 "%s%s%s"
+#define PAD_ERR_1 "%s%s"
+#define PAD_ERR_2 "%s"
+#define PAD_ERR_3 ""
+#define RET_ERR(N) return "(no. %s) " PAD_ERR_##N
 
 char* get_fatal_msg(MESSAGE_FATAL msg) {
     switch (msg) {
         case MSG_unsupported_os:
-            RET_ERRNO EM_VARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or " //
+            RET_ERR(1) EM_VARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or " //
                 EM_CSTR("MacOS");
         case MSG_unsupported_arch:
 #ifdef __APPLE__
-            RET_ERRNO EM_VARG " architecture is not supported, requires " EM_CSTR("x86_64") " or " EM_CSTR("arm");
+            RET_ERR(1) EM_VARG " architecture is not supported, requires " EM_CSTR("x86_64") " or " EM_CSTR("arm");
 #else
-            RET_ERRNO EM_VARG " architecture is not supported, requires " EM_CSTR("x86_64");
+            RET_ERR(1) EM_VARG " architecture is not supported, requires " EM_CSTR("x86_64");
 #endif
         case MSG_unsupported_compiler:
 #ifdef __APPLE__
-            RET_ERRNO EM_VARG " compiler is not supported, requires " EM_CSTR("clang") " >= 5.0.0";
+            RET_ERR(1) EM_VARG " compiler is not supported, requires " EM_CSTR("clang") " >= 5.0.0";
 #else
-            RET_ERRNO EM_VARG " compiler is not supported, requires " EM_CSTR("gcc") " >= 8.1.0";
+            RET_ERR(1) EM_VARG " compiler is not supported, requires " EM_CSTR("gcc") " >= 8.1.0";
 #endif
         case MSG_unsupported_cc_ver:
 #ifdef __APPLE__
-            RET_ERRNO EM_CSTR("clang") " %i.%i.%i is not supported, requires " EM_CSTR("clang") " >= 5.0.0";
+            RET_ERR(3) EM_CSTR("clang") " %s.%s.%s is not supported, requires " EM_CSTR("clang") " >= 5.0.0";
 #else
-            RET_ERRNO EM_CSTR("gcc") " %i.%i.%i is not supported, requires " EM_CSTR("gcc") " >= 8.1.0";
+            RET_ERR(3) EM_CSTR("gcc") " %s.%s.%s is not supported, requires " EM_CSTR("gcc") " >= 8.1.0";
 #endif
         default:
             THROW_ABORT;
@@ -539,13 +548,9 @@ char* get_fatal_msg(MESSAGE_FATAL msg) {
 char* get_arg_msg(MESSAGE_ARG msg) {
     switch (msg) {
         case MSG_print_help:
-            RET_ERRNO "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"
+            RET_ERR(1) "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"
                       "    [--help]:         print help and exit\n"
-                      "    Debug:            print debug info (0..1"
-#ifndef __NDEBUG__
-                      "|251..255"
-#endif
-                      ")\n"
+                      "    Debug:            print debug info (0..1|251..255)\n"
                       "    OptimL1:          optimization level 1 mask (0..15)\n"
                       "    OptimL2:          optimization level 2 enum (0..2)\n"
                       "    FILE:             source file to compile\n"
@@ -554,23 +559,23 @@ char* get_arg_msg(MESSAGE_ARG msg) {
                       "    [IncludeDir...]:  add a list of paths to include path\n"
                       "see " EM_CSTR("driver.sh");
         case MSG_no_debug_arg:
-            RET_ERRNO "no debug code passed in first argument, see " EM_CSTR("--help");
+            RET_ERR(0) "no debug code passed in first argument, see " EM_CSTR("--help");
         case MSG_invalid_debug_arg:
-            RET_ERRNO "invalid debug code " EM_VARG " passed in first argument, see " EM_CSTR("--help");
+            RET_ERR(1) "invalid debug code " EM_VARG " passed in first argument, see " EM_CSTR("--help");
         case MSG_no_optim_1_arg:
-            RET_ERRNO "no level 1 optimization mask passed in second argument, see " EM_CSTR("--help");
+            RET_ERR(0) "no level 1 optimization mask passed in second argument, see " EM_CSTR("--help");
         case MSG_invalid_optim_1_arg:
-            RET_ERRNO "invalid level 1 optimization mask " EM_VARG " passed in second argument, see " EM_CSTR("--help");
+            RET_ERR(1) "invalid level 1 optimization mask " EM_VARG " passed in second argument, see " EM_CSTR("--help");
         case MSG_no_optim_2_arg:
-            RET_ERRNO "no level 2 optimization code passed in third argument, see " EM_CSTR("--help");
+            RET_ERR(0) "no level 2 optimization code passed in third argument, see " EM_CSTR("--help");
         case MSG_invalid_optim_2_arg:
-            RET_ERRNO "invalid level 2 optimization code " EM_VARG " passed in third argument, see " EM_CSTR("--help");
+            RET_ERR(1) "invalid level 2 optimization code " EM_VARG " passed in third argument, see " EM_CSTR("--help");
         case MSG_no_input_files_arg:
-            RET_ERRNO "no input file passed in fourth argument, see " EM_CSTR("--help");
+            RET_ERR(0) "no input file passed in fourth argument, see " EM_CSTR("--help");
         case MSG_no_stdlib_dir_arg:
-            RET_ERRNO "no standard lib directory passed in fifth argument, see " EM_CSTR("--help");
+            RET_ERR(0) "no standard lib directory passed in fifth argument, see " EM_CSTR("--help");
         case MSG_no_include_dir_arg:
-            RET_ERRNO "no include directories passed in sixth argument, see " EM_CSTR("--help");
+            RET_ERR(0) "no include directories passed in sixth argument, see " EM_CSTR("--help");
         default:
             THROW_ABORT;
     }
@@ -579,15 +584,15 @@ char* get_arg_msg(MESSAGE_ARG msg) {
 char* get_util_msg(MESSAGE_UTIL msg) {
     switch (msg) {
         case MSG_failed_fread:
-            RET_ERRNO "cannot read input file " EM_VARG;
+            RET_ERR(1) "cannot read input file " EM_VARG;
         case MSG_failed_fwrite:
-            RET_ERRNO "cannot write output file " EM_VARG;
+            RET_ERR(1) "cannot write output file " EM_VARG;
         case MSG_failed_strtoi:
-            RET_ERRNO "cannot interpret string " EM_VARG " to an integer value";
+            RET_ERR(1) "cannot interpret string " EM_VARG " to an integer value";
         case MSG_failed_strtou:
-            RET_ERRNO "cannot interpret string " EM_VARG " to an unsigned integer value";
+            RET_ERR(1) "cannot interpret string " EM_VARG " to an unsigned integer value";
         case MSG_failed_strtod:
-            RET_ERRNO "cannot interpret string " EM_VARG " to a floating point value";
+            RET_ERR(1) "cannot interpret string " EM_VARG " to a floating point value";
         default:
             THROW_ABORT;
     }
@@ -700,161 +705,161 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
 char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
     switch (msg) {
         case MSG_incomplete_arr:
-            RET_ERRNO "array type " EM_VARG " of incomplete type " EM_VARG ", requires a complete type";
+            RET_ERR(2) "array type " EM_VARG " of incomplete type " EM_VARG ", requires a complete type";
         case MSG_joint_ptr_mismatch:
-            RET_ERRNO "pointer type mismatch " EM_VARG " and " EM_VARG " in operator";
+            RET_ERR(2) "pointer type mismatch " EM_VARG " and " EM_VARG " in operator";
         case MSG_fun_used_as_var:
-            RET_ERRNO "function " EM_VARG " used as a variable";
+            RET_ERR(1) "function " EM_VARG " used as a variable";
         case MSG_illegal_cast:
-            RET_ERRNO "illegal cast, cannot convert expression from type " EM_VARG " to " EM_VARG;
+            RET_ERR(2) "illegal cast, cannot convert expression from type " EM_VARG " to " EM_VARG;
         case MSG_invalid_unary_op:
-            RET_ERRNO "cannot apply unary operator " EM_VARG " on operand type " EM_VARG;
+            RET_ERR(2) "cannot apply unary operator " EM_VARG " on operand type " EM_VARG;
         case MSG_invalid_binary_op:
-            RET_ERRNO "cannot apply binary operator " EM_VARG " on operand type " EM_VARG;
+            RET_ERR(2) "cannot apply binary operator " EM_VARG " on operand type " EM_VARG;
         case MSG_invalid_binary_ops:
-            RET_ERRNO "cannot apply binary operator " EM_VARG " on operand types " EM_VARG " and " EM_VARG;
+            RET_ERR(3) "cannot apply binary operator " EM_VARG " on operand types " EM_VARG " and " EM_VARG;
         case MSG_assign_to_void:
-            RET_ERRNO "cannot assign " EM_CSTR("=") " to left operand type " EM_CSTR("none");
+            RET_ERR(0) "cannot assign " EM_CSTR("=") " to left operand type " EM_CSTR("none");
         case MSG_assign_to_rvalue:
-            RET_ERRNO "assignment " EM_VARG " requires lvalue left operand, but got rvalue";
+            RET_ERR(1) "assignment " EM_VARG " requires lvalue left operand, but got rvalue";
         case MSG_invalid_condition:
-            RET_ERRNO "cannot apply conditional " EM_CSTR("then") " on condition operand type " EM_VARG;
+            RET_ERR(1) "cannot apply conditional " EM_CSTR("then") " on condition operand type " EM_VARG;
         case MSG_invalid_ternary_op:
-            RET_ERRNO "cannot apply ternary operator " EM_CSTR("else") " on operand types " EM_VARG " and " EM_VARG;
+            RET_ERR(2) "cannot apply ternary operator " EM_CSTR("else") " on operand types " EM_VARG " and " EM_VARG;
         case MSG_var_used_as_fun:
-            RET_ERRNO "variable " EM_VARG " used as a function";
+            RET_ERR(1) "variable " EM_VARG " used as a function";
         case MSG_call_with_wrong_argc:
-            RET_ERRNO "function " EM_VARG " called with " EM_VARG " arguments instead of " EM_VARG;
+            RET_ERR(3) "function " EM_VARG " called with " EM_VARG " arguments instead of " EM_VARG;
         case MSG_deref_not_ptr:
-            RET_ERRNO "cannot apply dereference operator " EM_CSTR("[]") " on non-pointer type " EM_VARG;
+            RET_ERR(1) "cannot apply dereference operator " EM_CSTR("[]") " on non-pointer type " EM_VARG;
         case MSG_addrof_rvalue:
-            RET_ERRNO "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue";
+            RET_ERR(0) "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue";
         case MSG_invalid_subscript:
-            RET_ERRNO "cannot subscript array with operand types " EM_VARG " and " //
+            RET_ERR(2) "cannot subscript array with operand types " EM_VARG " and " //
                 EM_VARG ", requires a complete pointer and an integer types";
         case MSG_sizeof_incomplete:
-            RET_ERRNO "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " EM_VARG;
+            RET_ERR(1) "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " EM_VARG;
         case MSG_dot_not_struct:
-            RET_ERRNO "cannot access datatype member " EM_VARG " with dot operator " EM_CSTR(".") //
+            RET_ERR(2) "cannot access datatype member " EM_VARG " with dot operator " EM_CSTR(".") //
                 " on non-datatype " EM_VARG;
         case MSG_member_not_in_struct:
-            RET_ERRNO "datatype " EM_VARG " has no member named " EM_VARG;
+            RET_ERR(2) "datatype " EM_VARG " has no member named " EM_VARG;
         case MSG_arrow_not_struct_ptr:
-            RET_ERRNO "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
+            RET_ERR(2) "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
                 EM_CSTR("[].") " on non-pointer-to-datatype " EM_VARG;
         case MSG_arrow_incomplete:
-            RET_ERRNO "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
+            RET_ERR(2) "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
                 EM_CSTR("[].") " on incomplete datatype " EM_VARG;
         case MSG_exp_incomplete:
-            RET_ERRNO "incomplete datatype " EM_VARG " in expression";
+            RET_ERR(1) "incomplete datatype " EM_VARG " in expression";
         case MSG_ret_value_in_void_fun:
-            RET_ERRNO "found " EM_CSTR("return") " value in function " EM_VARG " returning type " EM_CSTR("none");
+            RET_ERR(1) "found " EM_CSTR("return") " value in function " EM_VARG " returning type " EM_CSTR("none");
         case MSG_no_ret_value_in_fun:
-            RET_ERRNO "found " EM_CSTR("return") " with no value in function " EM_VARG " returning type " EM_VARG;
+            RET_ERR(2) "found " EM_CSTR("return") " with no value in function " EM_VARG " returning type " EM_VARG;
         case MSG_invalid_if:
-            RET_ERRNO "cannot use " EM_CSTR("if") " statement with condition expression type " EM_VARG;
+            RET_ERR(1) "cannot use " EM_CSTR("if") " statement with condition expression type " EM_VARG;
         case MSG_invalid_while:
-            RET_ERRNO "cannot use " EM_CSTR("loop while") " statement with condition expression type " EM_VARG;
+            RET_ERR(1) "cannot use " EM_CSTR("loop while") " statement with condition expression type " EM_VARG;
         case MSG_invalid_do_while:
-            RET_ERRNO "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " EM_VARG;
+            RET_ERR(1) "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " EM_VARG;
         case MSG_invalid_for:
-            RET_ERRNO "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") //
+            RET_ERR(1) "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") //
                 " condition expression type " EM_VARG;
         case MSG_invalid_switch:
-            RET_ERRNO "cannot use " EM_CSTR("match") " statement with match expression type " //
+            RET_ERR(1) "cannot use " EM_CSTR("match") " statement with match expression type " //
                 EM_VARG ", requires an integer type";
         case MSG_duplicate_case_value:
-            RET_ERRNO "found duplicate " EM_CSTR("->") " value " EM_VARG " in " EM_CSTR("match") " statement";
+            RET_ERR(1) "found duplicate " EM_CSTR("->") " value " EM_VARG " in " EM_CSTR("match") " statement";
         case MSG_string_init_not_char_arr:
-            RET_ERRNO "non-character array type " EM_VARG " initialized from string constant";
+            RET_ERR(1) "non-character array type " EM_VARG " initialized from string constant";
         case MSG_string_init_overflow:
-            RET_ERRNO "size " EM_VARG " string constant initialized with " EM_VARG " characters";
+            RET_ERR(2) "size " EM_VARG " string constant initialized with " EM_VARG " characters";
         case MSG_arr_init_overflow:
-            RET_ERRNO "size " EM_VARG " array type " EM_VARG " initialized with " EM_VARG " initializers";
+            RET_ERR(3) "size " EM_VARG " array type " EM_VARG " initialized with " EM_VARG " initializers";
         case MSG_struct_init_overflow:
-            RET_ERRNO "datatype " EM_VARG " initialized with " EM_VARG " members instead of " EM_VARG;
+            RET_ERR(3) "datatype " EM_VARG " initialized with " EM_VARG " members instead of " EM_VARG;
         case MSG_ret_arr:
-            RET_ERRNO "function " EM_VARG " returns array type " EM_VARG ", instead of pointer type";
+            RET_ERR(2) "function " EM_VARG " returns array type " EM_VARG ", instead of pointer type";
         case MSG_ret_incomplete:
-            RET_ERRNO "function " EM_VARG " returns incomplete datatype " EM_VARG;
+            RET_ERR(2) "function " EM_VARG " returns incomplete datatype " EM_VARG;
         case MSG_void_param:
-            RET_ERRNO "function " EM_VARG " declared with parameter " EM_VARG " with type " EM_CSTR("none");
+            RET_ERR(2) "function " EM_VARG " declared with parameter " EM_VARG " with type " EM_CSTR("none");
         case MSG_incomplete_param:
-            RET_ERRNO "function " EM_VARG " defined with parameter " EM_VARG " with incomplete datatype " EM_VARG;
+            RET_ERR(3) "function " EM_VARG " defined with parameter " EM_VARG " with incomplete datatype " EM_VARG;
         case MSG_redecl_fun_conflict:
-            RET_ERRNO "function " EM_VARG " redeclared with function type " //
+            RET_ERR(3) "function " EM_VARG " redeclared with function type " //
                 EM_VARG ", but previous declaration has function type " EM_VARG;
         case MSG_redef_fun:
-            RET_ERRNO "function " EM_VARG " already defined with function type " EM_VARG;
+            RET_ERR(2) "function " EM_VARG " already defined with function type " EM_VARG;
         case MSG_redecl_static_conflict:
-            RET_ERRNO "function " EM_VARG " with " EM_CSTR("data") " storage class already declared non-static";
+            RET_ERR(1) "function " EM_VARG " with " EM_CSTR("data") " storage class already declared non-static";
         case MSG_static_ptr_init_not_int:
-            RET_ERRNO "cannot statically initialize pointer type " EM_VARG " from constant " //
+            RET_ERR(2) "cannot statically initialize pointer type " EM_VARG " from constant " //
                 EM_VARG ", requires a constant integer";
         case MSG_static_ptr_init_not_null:
-            RET_ERRNO "cannot statically initialize pointer type " EM_VARG " from non-zero value " EM_VARG;
+            RET_ERR(2) "cannot statically initialize pointer type " EM_VARG " from non-zero value " EM_VARG;
         case MSG_agg_init_with_single:
-            RET_ERRNO "aggregate type " EM_VARG " statically initialized with single initializer";
+            RET_ERR(1) "aggregate type " EM_VARG " statically initialized with single initializer";
         case MSG_static_ptr_init_string:
-            RET_ERRNO "non-character pointer type " EM_VARG " statically initialized from string constant";
+            RET_ERR(1) "non-character pointer type " EM_VARG " statically initialized from string constant";
         case MSG_static_init_not_const:
-            RET_ERRNO "cannot statically initialize variable from non-constant type " EM_VARG ", requires a constant";
+            RET_ERR(1) "cannot statically initialize variable from non-constant type " EM_VARG ", requires a constant";
         case MSG_scalar_init_with_compound:
-            RET_ERRNO "cannot initialize scalar type " EM_VARG " with compound initializer";
+            RET_ERR(1) "cannot initialize scalar type " EM_VARG " with compound initializer";
         case MSG_void_var_decl:
-            RET_ERRNO "variable " EM_VARG " declared with type " EM_CSTR("none");
+            RET_ERR(1) "variable " EM_VARG " declared with type " EM_CSTR("none");
         case MSG_incomplete_var_decl:
-            RET_ERRNO "variable " EM_VARG " declared with incomplete datatype " EM_VARG;
+            RET_ERR(2) "variable " EM_VARG " declared with incomplete datatype " EM_VARG;
         case MSG_redecl_var_conflict:
-            RET_ERRNO "variable " EM_VARG " redeclared with conflicting type " //
+            RET_ERR(3) "variable " EM_VARG " redeclared with conflicting type " //
                 EM_VARG ", but previously declared with type " EM_VARG;
         case MSG_redecl_var_storage:
-            RET_ERRNO "variable " EM_VARG " redeclared with conflicting storage class";
+            RET_ERR(1) "variable " EM_VARG " redeclared with conflicting storage class";
         case MSG_redef_extern_var:
-            RET_ERRNO "illegal initializer, can only declare variable " EM_VARG " with " EM_CSTR("extrn") //
+            RET_ERR(1) "illegal initializer, can only declare variable " EM_VARG " with " EM_CSTR("extrn") //
                 " storage class";
         case MSG_duplicate_member_decl:
-            RET_ERRNO "datatype " EM_VARG " declared with duplicate member name " EM_VARG;
+            RET_ERR(2) "datatype " EM_VARG " declared with duplicate member name " EM_VARG;
         case MSG_incomplete_member_decl:
-            RET_ERRNO "datatype " EM_VARG " declared with member " EM_VARG " with incomplete type " EM_VARG;
+            RET_ERR(3) "datatype " EM_VARG " declared with member " EM_VARG " with incomplete type " EM_VARG;
         case MSG_redecl_struct_in_scope:
-            RET_ERRNO "datatype " EM_VARG " already declared in this scope";
+            RET_ERR(1) "datatype " EM_VARG " already declared in this scope";
         case MSG_case_out_of_switch:
-            RET_ERRNO "found " EM_CSTR("->") " statement outside of " EM_CSTR("match");
+            RET_ERR(0) "found " EM_CSTR("->") " statement outside of " EM_CSTR("match");
         case MSG_default_out_of_switch:
-            RET_ERRNO "found " EM_CSTR("otherwise") " statement outside of " EM_CSTR("match");
+            RET_ERR(0) "found " EM_CSTR("otherwise") " statement outside of " EM_CSTR("match");
         case MSG_multiple_default:
-            RET_ERRNO "found more than one " EM_CSTR("otherwise") " statement in " EM_CSTR("match");
+            RET_ERR(0) "found more than one " EM_CSTR("otherwise") " statement in " EM_CSTR("match");
         case MSG_break_out_of_loop:
-            RET_ERRNO "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop") " or " EM_CSTR("match");
+            RET_ERR(0) "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop") " or " EM_CSTR("match");
         case MSG_continue_out_of_loop:
-            RET_ERRNO "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop");
+            RET_ERR(0) "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop");
         case MSG_undef_goto_target:
-            RET_ERRNO "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " //
+            RET_ERR(2) "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " //
                 EM_VARG " not defined in function " EM_VARG;
         case MSG_redecl_struct_conflict:
-            RET_ERRNO EM_VARG " conflicts with datatype " EM_VARG " previously declared or defined in this scope";
+            RET_ERR(2) EM_VARG " conflicts with datatype " EM_VARG " previously declared or defined in this scope";
         case MSG_undef_struct_in_scope:
-            RET_ERRNO "datatype " EM_VARG " not defined in this scope";
+            RET_ERR(1) "datatype " EM_VARG " not defined in this scope";
         case MSG_undecl_var_in_scope:
-            RET_ERRNO "variable " EM_VARG " not declared in this scope";
+            RET_ERR(1) "variable " EM_VARG " not declared in this scope";
         case MSG_undecl_fun_in_scope:
-            RET_ERRNO "function " EM_VARG " not declared in this scope";
+            RET_ERR(1) "function " EM_VARG " not declared in this scope";
         case MSG_for_init_decl_not_auto:
-            RET_ERRNO "variable " EM_VARG " declared with " EM_VARG " storage class in " EM_CSTR("loop") //
+            RET_ERR(2) "variable " EM_VARG " declared with " EM_VARG " storage class in " EM_CSTR("loop") //
                 " initialization";
         case MSG_redef_label_in_scope:
-            RET_ERRNO EM_CSTR("label") " with target " EM_VARG " already defined in this scope";
+            RET_ERR(1) EM_CSTR("label") " with target " EM_VARG " already defined in this scope";
         case MSG_redecl_var_in_scope:
-            RET_ERRNO "variable " EM_VARG " already declared in this scope";
+            RET_ERR(1) "variable " EM_VARG " already declared in this scope";
         case MSG_def_nested_fun:
-            RET_ERRNO "function " //
+            RET_ERR(1) "function " //
                 EM_VARG " defined inside another function, but nested function definition are not permitted";
         case MSG_decl_nested_static_fun:
-            RET_ERRNO "cannot declare nested function " EM_VARG " in another function with " EM_CSTR("data") //
+            RET_ERR(1) "cannot declare nested function " EM_VARG " in another function with " EM_CSTR("data") //
                 " storage class";
         case MSG_redecl_fun_in_scope:
-            RET_ERRNO "function " EM_VARG " already declared in this scope";
+            RET_ERR(1) "function " EM_VARG " already declared in this scope";
         default:
             THROW_ABORT;
     }
