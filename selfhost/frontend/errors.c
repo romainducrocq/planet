@@ -520,7 +520,8 @@ char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type, string_t* t
 char* get_fatal_msg(MESSAGE_FATAL msg) {
     switch (msg) {
         case MSG_unsupported_os:
-            RET_ERR(1) EM_VARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or " //
+            RET_ERR(1)
+            EM_VARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or " //
                 EM_CSTR("MacOS");
         case MSG_unsupported_arch:
 #ifdef __APPLE__
@@ -548,16 +549,17 @@ char* get_fatal_msg(MESSAGE_FATAL msg) {
 char* get_arg_msg(MESSAGE_ARG msg) {
     switch (msg) {
         case MSG_print_help:
-            RET_ERR(1) "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"
-                      "    [--help]:         print help and exit\n"
-                      "    Debug:            print debug info (0..1|251..255)\n"
-                      "    OptimL1:          optimization level 1 mask (0..15)\n"
-                      "    OptimL2:          optimization level 2 enum (0..2)\n"
-                      "    FILE:             source file to compile\n"
-                      "    StdlibDir:        standard lib include path\n"
-                      "    SourceDir:        source file include path\n"
-                      "    [IncludeDir...]:  add a list of paths to include path\n"
-                      "see " EM_CSTR("driver.sh");
+            RET_ERR(1)
+            "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"
+            "    [--help]:         print help and exit\n"
+            "    Debug:            print debug info (0..1|251..255)\n"
+            "    OptimL1:          optimization level 1 mask (0..15)\n"
+            "    OptimL2:          optimization level 2 enum (0..2)\n"
+            "    FILE:             source file to compile\n"
+            "    StdlibDir:        standard lib include path\n"
+            "    SourceDir:        source file include path\n"
+            "    [IncludeDir...]:  add a list of paths to include path\n"
+            "see " EM_CSTR("driver.sh");
         case MSG_no_debug_arg:
             RET_ERR(0) "no debug code passed in first argument, see " EM_CSTR("--help");
         case MSG_invalid_debug_arg:
@@ -565,7 +567,8 @@ char* get_arg_msg(MESSAGE_ARG msg) {
         case MSG_no_optim_1_arg:
             RET_ERR(0) "no level 1 optimization mask passed in second argument, see " EM_CSTR("--help");
         case MSG_invalid_optim_1_arg:
-            RET_ERR(1) "invalid level 1 optimization mask " EM_VARG " passed in second argument, see " EM_CSTR("--help");
+            RET_ERR(1)
+            "invalid level 1 optimization mask " EM_VARG " passed in second argument, see " EM_CSTR("--help");
         case MSG_no_optim_2_arg:
             RET_ERR(0) "no level 2 optimization code passed in third argument, see " EM_CSTR("--help");
         case MSG_invalid_optim_2_arg:
@@ -630,26 +633,31 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_overflow_ulong_const:
             RET_ERR(1) "cannot represent " EM_VARG " as a 64 bits unsigned integer constant, very large number";
         case MSG_expect_unop:
-            RET_ERR(1) "found token " EM_VARG ", but expected unary operator " EM_CSTR("~") ", " EM_CSTR("-") //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected unary operator " EM_CSTR("~") ", " EM_CSTR("-") //
                 " or " EM_CSTR("not") " next";
         case MSG_expect_binop:
-            RET_ERR(1) "found token " EM_VARG ", but expected binary operator " EM_CSTR("=") ", " EM_CSTR("+") ", " //
-                EM_CSTR("+=") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", "       //
-                EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", "        //
-                EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", "       //
-                EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("and") ", "  //
-                EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", "      //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected binary operator " EM_CSTR("=") ", " EM_CSTR("+") ", "          //
+                EM_CSTR("+=") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", "      //
+                EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", "       //
+                EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", "      //
+                EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("and") ", " //
+                EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", "     //
                 EM_CSTR(">") " or " EM_CSTR(">=") " next";
         case MSG_expect_data_specifier:
-            RET_ERR(1) "found token " EM_VARG ", but expected datatype specifier " EM_CSTR("struc") " or " //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected datatype specifier " EM_CSTR("struc") " or " //
                 EM_CSTR("union") " next";
         case MSG_expect_specifier:
-            RET_ERR(1) "found token " EM_VARG ", but expected type specifier " EM_CSTR("char") ", " EM_CSTR("string") //
-                ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64")  //
-                ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", "                //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected type specifier " EM_CSTR("char") ", " EM_CSTR("string")          //
+                ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64") //
+                ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", "               //
                 EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next";
         case MSG_expect_maybe_type:
-            RET_ERR(1) "found token " EM_VARG ", but expected maybe type specifier " EM_CSTR("none") ", "            //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected maybe type specifier " EM_CSTR("none") ", "                      //
                 EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") //
                 ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8")   //
                 ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or "           //
@@ -657,7 +665,8 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_expect_open_sizeof:
             RET_ERR(1) "found token " EM_VARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR("(") " next";
         case MSG_expect_expression:
-            RET_ERR(1) "found token " EM_VARG ", but expected expression " EM_CSTR("?") ", " EM_CSTR("~") ", "       //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected expression " EM_CSTR("?") ", " EM_CSTR("~") ", "                 //
                 EM_CSTR("-") ", " EM_CSTR("not") ", " EM_CSTR("++") ", " EM_CSTR("--") ", " EM_CSTR("@") ", "       //
                 EM_CSTR("sizeof") ", " EM_CSTR("cast") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier(") ", "  //
                 EM_CSTR("(") ", " EM_CSTR("const string") ", " EM_CSTR("const char") ", " EM_CSTR("const i32") ", " //
@@ -670,10 +679,12 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_expect_block:
             RET_ERR(1) "found token " EM_VARG ", but expected block " EM_CSTR("{") " or " EM_CSTR(";") " next";
         case MSG_expect_declaration:
-            RET_ERR(1) "found token " EM_VARG ", but expected declaration " EM_CSTR("identifier") ", " EM_CSTR("fn") //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected declaration " EM_CSTR("identifier") ", " EM_CSTR("fn") //
                 " or " EM_CSTR("type") " next";
         case MSG_expect_storage_class:
-            RET_ERR(1) "found token " EM_VARG ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " //
+            RET_ERR(1)
+            "found token " EM_VARG ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " //
                 EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next";
         case MSG_incomplete_any:
             RET_ERR(0) "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
@@ -735,20 +746,24 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_addrof_rvalue:
             RET_ERR(0) "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue";
         case MSG_invalid_subscript:
-            RET_ERR(2) "cannot subscript array with operand types " EM_VARG " and " //
+            RET_ERR(2)
+            "cannot subscript array with operand types " EM_VARG " and " //
                 EM_VARG ", requires a complete pointer and an integer types";
         case MSG_sizeof_incomplete:
             RET_ERR(1) "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " EM_VARG;
         case MSG_dot_not_struct:
-            RET_ERR(2) "cannot access datatype member " EM_VARG " with dot operator " EM_CSTR(".") //
+            RET_ERR(2)
+            "cannot access datatype member " EM_VARG " with dot operator " EM_CSTR(".") //
                 " on non-datatype " EM_VARG;
         case MSG_member_not_in_struct:
             RET_ERR(2) "datatype " EM_VARG " has no member named " EM_VARG;
         case MSG_arrow_not_struct_ptr:
-            RET_ERR(2) "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
+            RET_ERR(2)
+            "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
                 EM_CSTR("[].") " on non-pointer-to-datatype " EM_VARG;
         case MSG_arrow_incomplete:
-            RET_ERR(2) "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
+            RET_ERR(2)
+            "cannot access datatype member " EM_VARG " with dereferenced dot operator " //
                 EM_CSTR("[].") " on incomplete datatype " EM_VARG;
         case MSG_exp_incomplete:
             RET_ERR(1) "incomplete datatype " EM_VARG " in expression";
@@ -763,10 +778,12 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_invalid_do_while:
             RET_ERR(1) "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " EM_VARG;
         case MSG_invalid_for:
-            RET_ERR(1) "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") //
+            RET_ERR(1)
+            "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") //
                 " condition expression type " EM_VARG;
         case MSG_invalid_switch:
-            RET_ERR(1) "cannot use " EM_CSTR("match") " statement with match expression type " //
+            RET_ERR(1)
+            "cannot use " EM_CSTR("match") " statement with match expression type " //
                 EM_VARG ", requires an integer type";
         case MSG_duplicate_case_value:
             RET_ERR(1) "found duplicate " EM_CSTR("->") " value " EM_VARG " in " EM_CSTR("match") " statement";
@@ -787,14 +804,16 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_incomplete_param:
             RET_ERR(3) "function " EM_VARG " defined with parameter " EM_VARG " with incomplete datatype " EM_VARG;
         case MSG_redecl_fun_conflict:
-            RET_ERR(3) "function " EM_VARG " redeclared with function type " //
+            RET_ERR(3)
+            "function " EM_VARG " redeclared with function type " //
                 EM_VARG ", but previous declaration has function type " EM_VARG;
         case MSG_redef_fun:
             RET_ERR(2) "function " EM_VARG " already defined with function type " EM_VARG;
         case MSG_redecl_static_conflict:
             RET_ERR(1) "function " EM_VARG " with " EM_CSTR("data") " storage class already declared non-static";
         case MSG_static_ptr_init_not_int:
-            RET_ERR(2) "cannot statically initialize pointer type " EM_VARG " from constant " //
+            RET_ERR(2)
+            "cannot statically initialize pointer type " EM_VARG " from constant " //
                 EM_VARG ", requires a constant integer";
         case MSG_static_ptr_init_not_null:
             RET_ERR(2) "cannot statically initialize pointer type " EM_VARG " from non-zero value " EM_VARG;
@@ -811,12 +830,14 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_incomplete_var_decl:
             RET_ERR(2) "variable " EM_VARG " declared with incomplete datatype " EM_VARG;
         case MSG_redecl_var_conflict:
-            RET_ERR(3) "variable " EM_VARG " redeclared with conflicting type " //
+            RET_ERR(3)
+            "variable " EM_VARG " redeclared with conflicting type " //
                 EM_VARG ", but previously declared with type " EM_VARG;
         case MSG_redecl_var_storage:
             RET_ERR(1) "variable " EM_VARG " redeclared with conflicting storage class";
         case MSG_redef_extern_var:
-            RET_ERR(1) "illegal initializer, can only declare variable " EM_VARG " with " EM_CSTR("extrn") //
+            RET_ERR(1)
+            "illegal initializer, can only declare variable " EM_VARG " with " EM_CSTR("extrn") //
                 " storage class";
         case MSG_duplicate_member_decl:
             RET_ERR(2) "datatype " EM_VARG " declared with duplicate member name " EM_VARG;
@@ -835,7 +856,8 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_continue_out_of_loop:
             RET_ERR(0) "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop");
         case MSG_undef_goto_target:
-            RET_ERR(2) "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " //
+            RET_ERR(2)
+            "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " //
                 EM_VARG " not defined in function " EM_VARG;
         case MSG_redecl_struct_conflict:
             RET_ERR(2) EM_VARG " conflicts with datatype " EM_VARG " previously declared or defined in this scope";
@@ -846,17 +868,20 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_undecl_fun_in_scope:
             RET_ERR(1) "function " EM_VARG " not declared in this scope";
         case MSG_for_init_decl_not_auto:
-            RET_ERR(2) "variable " EM_VARG " declared with " EM_VARG " storage class in " EM_CSTR("loop") //
+            RET_ERR(2)
+            "variable " EM_VARG " declared with " EM_VARG " storage class in " EM_CSTR("loop") //
                 " initialization";
         case MSG_redef_label_in_scope:
             RET_ERR(1) EM_CSTR("label") " with target " EM_VARG " already defined in this scope";
         case MSG_redecl_var_in_scope:
             RET_ERR(1) "variable " EM_VARG " already declared in this scope";
         case MSG_def_nested_fun:
-            RET_ERR(1) "function " //
+            RET_ERR(1)
+            "function " //
                 EM_VARG " defined inside another function, but nested function definition are not permitted";
         case MSG_decl_nested_static_fun:
-            RET_ERR(1) "cannot declare nested function " EM_VARG " in another function with " EM_CSTR("data") //
+            RET_ERR(1)
+            "cannot declare nested function " EM_VARG " in another function with " EM_CSTR("data") //
                 " storage class";
         case MSG_redecl_fun_in_scope:
             RET_ERR(1) "function " EM_VARG " already declared in this scope";
