@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# TODO rm
+BUILD_PLX=0
+
 # TODO review this file
 KERNEL_NAME="$(uname -s)"
 PACKAGE_DIR="$(readlink -f ../wheelcc/bin)"
@@ -16,34 +19,39 @@ CC_FLAGS_RELEASE="-O3 -DNDEBUG -Werror -pedantic-errors"
 CC_FLAGS="-std=c17 ${CC_FLAGS} ${CC_FLAGS_RELEASE}"
 
 BUILD_DIR="$(dirname ${PACKAGE_DIR})/build"
-# SELFHOST_DIR="$(readlink -f ../selfhost)"
-SELFHOST_DIR="$(readlink -f ../selfhost/wheelcc)"
+SELFHOST_DIR="$(readlink -f ../selfhost)"
+# TODO rm
+EXT="plx"
+if [ ${BUILD_PLX} -ne 0 ]; then
+    SELFHOST_DIR="$(readlink -f ../selfhost/wheelcc)"
+    EXT="c"
+fi
 
-SOURCE_FILES="${SELFHOST_DIR}/lib/main.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/3rdparty/sds.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/3rdparty/stb_ds.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/ast.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_ast.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_symt.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_ast.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_symt.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/interm_ast.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/asm_gen.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/gas_code.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/registers.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/stack_fix.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/symt_cvt.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/errors.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/idents.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/lexer.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/parser.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/semantic.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/tac_repr.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/optim_tac.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/reg_alloc.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/fileio.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/str2t.c"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/throw.c"
+SOURCE_FILES="${SELFHOST_DIR}/lib/main.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/3rdparty/sds.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/3rdparty/stb_ds.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/ast.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_ast.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_symt.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_ast.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_symt.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/interm_ast.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/asm_gen.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/gas_code.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/registers.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/stack_fix.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/symt_cvt.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/errors.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/idents.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/lexer.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/parser.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/semantic.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/tac_repr.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/optim_tac.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/reg_alloc.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/fileio.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/str2t.${EXT}"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/throw.${EXT}"
 
 function em() {
     echo "\033[1m‘${1}’\033[0m"
@@ -105,10 +113,17 @@ function build_selfhost () {
         # ${LD} -c ${FILE} ${CC_FLAGS} -o ${OBJECT}
         # if [ ${?} -ne 0 ]; then return 1; fi
 
-        wheelcc -O2 -E -c ${FILE}
-        if [ ${?} -ne 0 ]; then return 1; fi
-        mv ${FILE%.*}.o ${OBJECT}
-        if [ ${?} -ne 0 ]; then return 1; fi
+        if [ ${BUILD_PLX} -eq 0 ]; then
+            planet -O2 -E -c ${FILE}
+            if [ ${?} -ne 0 ]; then return 1; fi
+            mv ${FILE%.*}.o ${OBJECT}
+            if [ ${?} -ne 0 ]; then return 1; fi
+        else
+            wheelcc -O2 -E -c ${FILE}
+            if [ ${?} -ne 0 ]; then return 1; fi
+            mv ${FILE%.*}.o ${OBJECT}
+            if [ ${?} -ne 0 ]; then return 1; fi
+        fi
 
         # "wheelcc")
         #     bash ${WHEELCC_DIR}/bin/driver.sh -O2 -E -c ${FILE}
