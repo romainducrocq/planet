@@ -176,7 +176,7 @@ static error_t parse_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
     TRY(string_to_long(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
-    if (value > 9223372036854775807ll) {
+    if (value > 9223372036854775807l) {
         THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_overflow_long_const, strto_value));
     }
     else if (ctx->next_tok->tok_kind == TOK_int_const && value <= 2147483647l) {
@@ -199,7 +199,7 @@ static error_t parse_unsigned_const(Ctx ctx, shared_ptr_t(CConst) * constant) {
 
     strto_value = map_get(ctx->identifiers->hash_table, ctx->next_tok->tok);
     TRY(string_to_ulong(ctx->errors, strto_value, ctx->next_tok->info_at, &value));
-    if (value > 18446744073709551615ull) {
+    if (value > 18446744073709551615ul) {
         THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_overflow_ulong_const, strto_value));
     }
     else if (ctx->next_tok->tok_kind == TOK_uint_const && value <= 4294967295ul) {
