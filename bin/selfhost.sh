@@ -101,7 +101,12 @@ function build_selfhost () {
         OBJECT_FILES="${OBJECT_FILES} ${OBJECT}"
         echo "${FILE} -> ${OBJECT}"
 
-        ${LD} -c ${FILE} ${CC_FLAGS} -o ${OBJECT}
+        # ${LD} -c ${FILE} ${CC_FLAGS} -o ${OBJECT}
+        # if [ ${?} -ne 0 ]; then return 1; fi
+
+        wheelcc -O2 -E -c ${FILE}
+        if [ ${?} -ne 0 ]; then return 1; fi
+        mv ${FILE%.*}.o ${OBJECT}
         if [ ${?} -ne 0 ]; then return 1; fi
 
         # "wheelcc")
