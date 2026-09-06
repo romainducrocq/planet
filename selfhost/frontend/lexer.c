@@ -11,20 +11,20 @@
 ElementKey(hash_t);
 
 typedef struct LexerContext {
-    ErrorsContext* errors;
-    FileIoContext* fileio;
-    IdentifierContext* identifiers;
+    struct ErrorsContext* errors;
+    struct FileIoContext* fileio;
+    struct IdentifierContext* identifiers;
     // Lexer
     char* line;
-    size_t line_size;
-    size_t match_at;
-    size_t match_size;
+    unsigned long line_size;
+    unsigned long match_at;
+    unsigned long match_size;
     hashset_t(hash_t) includename_set;
-    vector_t(const char*) * p_includedirs;
-    vector_t(const char*) * p_stdlibdirs;
-    vector_t(Token) * p_toks;
-    size_t paren_depth;
-    size_t total_linenum;
+    vector_t(char*) * p_includedirs;
+    vector_t(char*) * p_stdlibdirs;
+    vector_t(struct Token) * p_toks;
+    unsigned long paren_depth;
+    unsigned long total_linenum;
 } LexerContext;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ typedef struct LexerContext {
 typedef LexerContext* Ctx;
 
 static char get_char(Ctx ctx) {
-    size_t i = ctx->match_at + ctx->match_size;
+    unsigned long i = ctx->match_at + ctx->match_size;
     if (i < ctx->line_size) {
         return ctx->line[i];
     }
@@ -69,8 +69,8 @@ static bool match_char(Ctx ctx, char c) {
     }
 }
 
-static bool match_chars(Ctx ctx, const char* cs, size_t n) {
-    for (size_t i = 0; i < n; ++i) {
+static bool match_chars(Ctx ctx, char* cs, unsigned long n) {
+    for (unsigned long i = 0; i < n; ++i) {
         if (!match_char(ctx, cs[i])) {
             return false;
         }
@@ -728,19 +728,19 @@ static TOKEN_KIND match_token(Ctx ctx) {
     }
 }
 
-static string_t get_match(Ctx ctx, size_t match_at, size_t match_size) {
+static string_t get_match(Ctx ctx, unsigned long match_at, unsigned long match_size) {
     string_t match = str_new("");
     str_resize(match, match_size);
-    for (size_t i = 0; i < match_size; ++i) {
+    for (unsigned long i = 0; i < match_size; ++i) {
         match[i] = ctx->line[match_at + i];
     }
     return match;
 }
 
-static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, bool is_empty);
+static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, unsigned long linenum, bool is_empty);
 
-static size_t push_token_info(Ctx ctx) {
-    TokenInfo token_info = {(int)ctx->match_at, (int)ctx->match_size, ctx->total_linenum};
+static unsigned long push_token_info(Ctx ctx) {
+    struct TokenInfo token_info = {(int)ctx->match_at, (int)ctx->match_size, ctx->total_linenum};
     vec_push_back(ctx->errors->token_infos, token_info);
     return vec_size(ctx->errors->token_infos) - 1;
 }
@@ -748,7 +748,7 @@ static size_t push_token_info(Ctx ctx) {
 static error_t tokenize_file(Ctx ctx) {
     string_t match = str_new(NULL);
     CATCH_ENTER;
-    for (size_t linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
+    for (unsigned long linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
         bool is_empty = true;
 
@@ -777,8 +777,8 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_close_paren: {
                     if (ctx->paren_depth == 0) {
                         match = get_match(ctx, ctx->match_at, ctx->match_size);
-                        size_t info_at = push_token_info(ctx);
-                        THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_unmatched_close, match));
+                        unsigned long info_at = push_token_info(ctx);
+                        THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_unmatched_close, match));
                     }
                     ctx->paren_depth--;
                     goto Lpass;
@@ -797,13 +797,13 @@ static error_t tokenize_file(Ctx ctx) {
                 }
                 case TOK_m4_prefix: {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
-                    size_t info_at = push_token_info(ctx);
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_preproc_macro, match));
+                    unsigned long info_at = push_token_info(ctx);
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_preproc_macro, match));
                 }
                 case TOK_error: {
                     match = get_match(ctx, ctx->match_at, ctx->match_size);
-                    size_t info_at = push_token_info(ctx);
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_invalid_tok, match));
+                    unsigned long info_at = push_token_info(ctx);
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_invalid_tok, match));
                 }
                 default:
                     goto Lpass;
@@ -813,8 +813,8 @@ static error_t tokenize_file(Ctx ctx) {
         Lcontinue:
             continue;
         Lpass:;
-            size_t info_at = push_token_info(ctx);
-            Token token = {match_kind, match_tok, info_at};
+            unsigned long info_at = push_token_info(ctx);
+            struct Token token = {match_kind, match_tok, info_at};
             vec_push_back(*ctx->p_toks, token);
             if (match_kind == TOK_line_break) {
                 break;
@@ -827,8 +827,8 @@ static error_t tokenize_file(Ctx ctx) {
     CATCH_EXIT;
 }
 
-static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
-    for (size_t i = 0; i < vec_size(dirnames); ++i) {
+static bool find_include(vector_t(char*) dirnames, string_t* filename) {
+    for (unsigned long i = 0; i < vec_size(dirnames); ++i) {
         string_t dirname = str_new(dirnames[i]);
         str_append(dirname, *filename);
         if (find_file(dirname)) {
@@ -841,26 +841,26 @@ static bool find_include(vector_t(const char*) dirnames, string_t* filename) {
 }
 
 // <include> ::= ( "import" | "use" ) [ "!" ] "\"" <header-file> "\""
-static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, bool is_empty) {
+static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, unsigned long linenum, bool is_empty) {
     string_t filename = str_new(NULL);
     string_t fopen_name = str_new(NULL);
     CATCH_ENTER;
     char* line;
-    size_t line_size;
-    size_t match_at;
-    size_t match_size;
+    unsigned long line_size;
+    unsigned long match_at;
+    unsigned long match_size;
 
     filename = get_match(ctx, ctx->match_at + 1, ctx->match_size - 2);
     str_append(filename, ".etc");
     if (!is_empty) {
-        size_t info_at = push_token_info(ctx);
+        unsigned long info_at = push_token_info(ctx);
         switch (match_tok) {
             case TOK_import_file:
             case TOK_import_force:
-                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_import_in_line, filename));
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_import_in_line, filename));
             case TOK_use_file:
             case TOK_use_force:
-                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_use_in_line, filename));
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_use_in_line, filename));
             default:
                 THROW_ABORT;
         }
@@ -887,16 +887,16 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, 
         case TOK_import_file:
         case TOK_import_force: {
             if (!find_include(*ctx->p_includedirs, &filename)) {
-                size_t info_at = push_token_info(ctx);
-                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_import, filename));
+                unsigned long info_at = push_token_info(ctx);
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_failed_import, filename));
             }
             break;
         }
         case TOK_use_file:
         case TOK_use_force: {
             if (!find_include(*ctx->p_stdlibdirs, &filename)) {
-                size_t info_at = push_token_info(ctx);
-                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_use, filename));
+                unsigned long info_at = push_token_info(ctx);
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_failed_use, filename));
             }
             break;
         }
@@ -912,14 +912,14 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, 
     str_copy(vec_back(ctx->errors->fopen_lines).filename, fopen_name);
     TRY(open_fread(ctx->fileio, filename));
     {
-        FileOpenLine fopen_line = {1, ctx->total_linenum + 1, str_new(NULL)};
+        struct FileOpenLine fopen_line = {1, ctx->total_linenum + 1, str_new(NULL)};
         str_move(filename, fopen_line.filename);
         vec_push_back(ctx->errors->fopen_lines, fopen_line);
     }
     TRY(tokenize_file(ctx));
     TRY(close_fread(ctx->fileio, linenum));
     {
-        FileOpenLine fopen_line = {linenum + 1, ctx->total_linenum + 1, str_new(NULL)};
+        struct FileOpenLine fopen_line = {linenum + 1, ctx->total_linenum + 1, str_new(NULL)};
         str_move(fopen_name, fopen_line.filename);
         vec_push_back(ctx->errors->fopen_lines, fopen_line);
     }
@@ -936,8 +936,8 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, size_t linenum, 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-error_t lex_c_code(const string_t filename, vector_t(const char*) * includedirs, vector_t(const char*) * stdlibdirs,
-    ErrorsContext* errors, FileIoContext* fileio, IdentifierContext* identifiers, vector_t(Token) * tokens) {
+error_t lex_c_code(string_t filename, vector_t(char*) * includedirs, vector_t(char*) * stdlibdirs,
+    struct ErrorsContext* errors, struct FileIoContext* fileio, struct IdentifierContext* identifiers, vector_t(struct Token) * tokens) {
     LexerContext ctx;
     {
         ctx.errors = errors;
@@ -953,7 +953,7 @@ error_t lex_c_code(const string_t filename, vector_t(const char*) * includedirs,
     CATCH_ENTER;
     TRY(open_fread(ctx.fileio, filename));
     {
-        FileOpenLine fopen_line = {1, 1, str_new(NULL)};
+        struct FileOpenLine fopen_line = {1, 1, str_new(NULL)};
         str_copy(filename, fopen_line.filename);
         vec_push_back(ctx.errors->fopen_lines, fopen_line);
     }
@@ -964,7 +964,7 @@ error_t lex_c_code(const string_t filename, vector_t(const char*) * includedirs,
     FINALLY;
     set_delete(ctx.includename_set);
 
-    for (size_t i = 0; i < vec_size(fileio->file_reads); ++i) {
+    for (unsigned long i = 0; i < vec_size(fileio->file_reads); ++i) {
         str_delete(fileio->file_reads[i].filename);
     }
     vec_delete(fileio->file_reads);
