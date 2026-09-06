@@ -16,7 +16,8 @@ CC_FLAGS_RELEASE="-O3 -DNDEBUG -Werror -pedantic-errors"
 CC_FLAGS="-std=c17 ${CC_FLAGS} ${CC_FLAGS_RELEASE}"
 
 BUILD_DIR="$(dirname ${PACKAGE_DIR})/build"
-SELFHOST_DIR="$(readlink -f ../selfhost)"
+# SELFHOST_DIR="$(readlink -f ../selfhost)"
+SELFHOST_DIR="$(readlink -f ../selfhost/wheelcc)"
 
 SOURCE_FILES="${SELFHOST_DIR}/lib/main.c"
 SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/3rdparty/sds.c"
