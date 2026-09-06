@@ -10,7 +10,7 @@
 
 ElementKey(hash_t);
 
-typedef struct LexerContext {
+struct LexerContext {
     struct ErrorsContext* errors;
     struct FileIoContext* fileio;
     struct IdentifierContext* identifiers;
@@ -25,13 +25,13 @@ typedef struct LexerContext {
     vector_t(struct Token) * p_toks;
     unsigned long paren_depth;
     unsigned long total_linenum;
-} LexerContext;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Lexer
 
-typedef LexerContext* Ctx;
+#define Ctx struct LexerContext*
 
 static char get_char(Ctx ctx) {
     unsigned long i = ctx->match_at + ctx->match_size;
@@ -939,7 +939,7 @@ static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, unsigned long li
 error_t lex_c_code(string_t filename, vector_t(char*) * includedirs, vector_t(char*) * stdlibdirs,
     struct ErrorsContext* errors, struct FileIoContext* fileio, struct IdentifierContext* identifiers,
     vector_t(struct Token) * tokens) {
-    LexerContext ctx;
+    struct LexerContext ctx;
     {
         ctx.errors = errors;
         ctx.fileio = fileio;
