@@ -129,8 +129,7 @@ static TOKEN_KIND match_error(Ctx ctx) {
 
 // <header-file> ::= ? Path to a ".etc" header file without extension ?
 static TOKEN_KIND match_include(Ctx ctx, TOKEN_KIND tok_kind) {
-    while (match_space(ctx)) {
-    }
+    while (match_space(ctx));
 
     if (match_char(ctx, '!')) {
         switch (tok_kind) {
@@ -146,16 +145,14 @@ static TOKEN_KIND match_include(Ctx ctx, TOKEN_KIND tok_kind) {
                 THROW_ABORT;
         }
 
-        while (match_space(ctx)) {
-        }
+        while (match_space(ctx));
     }
 
     if (match_char(ctx, '"')) {
         ctx->match_at += ctx->match_size - 1;
         ctx->match_size = 1;
 
-        while (match_invert(ctx, '"')) {
-        }
+        while (match_invert(ctx, '"'));
         if (get_char(ctx) == '"') {
             ctx->match_size++;
             return tok_kind;
@@ -246,14 +243,12 @@ static TOKEN_KIND match_dbl_exponent(Ctx ctx) {
     if (!match_digit(ctx)) {
         return TOK_error;
     }
-    while (match_digit(ctx)) {
-    }
+    while (match_digit(ctx));
     return match_const_end(ctx, TOK_dbl_const);
 }
 
 static TOKEN_KIND match_dbl_fraction(Ctx ctx) {
-    while (match_digit(ctx)) {
-    }
+    while (match_digit(ctx));
 
     if (match_char(ctx, 'e')) {
         return match_dbl_exponent(ctx);
@@ -264,8 +259,7 @@ static TOKEN_KIND match_dbl_fraction(Ctx ctx) {
 }
 
 static TOKEN_KIND match_const(Ctx ctx) {
-    while (match_digit(ctx)) {
-    }
+    while (match_digit(ctx));
 
     switch (get_char(ctx)) {
         case 'l': {
@@ -424,8 +418,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
                 }
             }
             else if (match_chars(ctx, "4_", 2)) {
-                while (match_word(ctx)) {
-                }
+                while (match_word(ctx));
                 return TOK_m4_prefix;
             }
             break;
@@ -539,8 +532,7 @@ static TOKEN_KIND match_identifier(Ctx ctx) {
             break;
     }
 
-    while (match_word(ctx)) {
-    }
+    while (match_word(ctx));
 
     return TOK_identifier;
 }
