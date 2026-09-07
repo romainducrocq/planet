@@ -98,18 +98,18 @@
 #define stbds_arrmaybegrow(a, n) \
     ((!(a) || stbds_header(a)->length + (n) > stbds_header(a)->capacity) ? (stbds_arrgrow(a, n, 0) && 0) : 0)
 
-#define stbds_arrgrow(a, b, c) ((a) = stbds_arrgrowf((a), sizeof *(a), (b), (c)))
+#define stbds_arrgrow(a, b, c) ((a) = stbds_arrgrowf((a), sizeof(*(a)), (b), (c)))
 
 #define stbds_hmput(t, k, v)                                                                               \
     do {                                                                                                   \
-        (t) = stbds_hmput_key((t), sizeof *(t), (void*)STBDS_ADDRESSOF((t)->key, (k)), sizeof(t)->key, 0); \
+        (t) = stbds_hmput_key((t), sizeof(*(t)), (void*)STBDS_ADDRESSOF((t)->key, (k)), sizeof((t)->key), 0); \
         (t)[stbds_temp((t)-1)].key = (k);                                                                  \
         (t)[stbds_temp((t)-1)].value = (v);                                                                \
     }                                                                                                      \
     while (0)
 
 #define stbds_hmgeti(t, k)                                                                                      \
-    (((t) = stbds_hmget_key((t), sizeof *(t), (void*)STBDS_ADDRESSOF((t)->key, (k)), sizeof(t)->key, 0)) && 0 ? \
+    (((t) = stbds_hmget_key((t), sizeof(*(t)), (void*)STBDS_ADDRESSOF((t)->key, (k)), sizeof((t)->key), 0)) && 0 ? \
             0 :                                                                                                 \
             stbds_temp((t)-1))
 
@@ -117,13 +117,13 @@
 
 #define stbds_hmdel(t, k)                                                                                          \
     (((t) = stbds_hmdel_key(                                                                                       \
-          (t), sizeof *(t), (void*)STBDS_ADDRESSOF((t)->key, (k)), sizeof(t)->key, STBDS_OFFSETOF((t), key), 0)) ? \
+          (t), sizeof(*(t)), (void*)STBDS_ADDRESSOF((t)->key, (k)), sizeof((t)->key), STBDS_OFFSETOF((t), key), 0)) ? \
             stbds_temp((t)-1) :                                                                                    \
             0)
 
 #define stbds_hmfree(p)                                                        \
     do {                                                                       \
-        (void)((p) != NULL ? stbds_hmfree_func((p)-1, sizeof *(p)) : (void)0); \
+        (void)((p) != NULL ? stbds_hmfree_func((p)-1, sizeof(*(p))) : (void)0); \
         (p) = NULL;                                                            \
     }                                                                          \
     while (0)
