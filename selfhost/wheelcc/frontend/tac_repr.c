@@ -1004,7 +1004,7 @@ static void if_only_statement_instr(Ctx ctx, struct CIf* node) {
         shared_ptr_t(TacValue) condition = repr_exp_instr(ctx, node->condition);
         push_instr(ctx, make_TacJumpIfZero(target_false, &condition));
     }
-    statement_instr(ctx, node->then);
+    statement_instr(ctx, node->then_fi);
     push_instr(ctx, make_TacLabel(target_false));
 }
 
@@ -1015,7 +1015,7 @@ static void if_else_statement_instr(Ctx ctx, struct CIf* node) {
         shared_ptr_t(TacValue) condition = repr_exp_instr(ctx, node->condition);
         push_instr(ctx, make_TacJumpIfZero(target_else, &condition));
     }
-    statement_instr(ctx, node->then);
+    statement_instr(ctx, node->then_fi);
     push_instr(ctx, make_TacJump(target_false));
     push_instr(ctx, make_TacLabel(target_else));
     statement_instr(ctx, node->else_fi);
