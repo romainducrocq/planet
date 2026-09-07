@@ -47,11 +47,12 @@ for CC_DIR in $(find ${CC_PATH} -mindepth 1 -maxdepth 1 -type d); do
         if [ ${?} -ne 0 ]; then exit 1; fi
 
         # TODO rm after rename kws
+        # --------------------------------------------------
         sed -i 's|\<get_type_fmt\>|get_type_kw_fmt|g' ${PLX_FILE}
         sed -i 's|\<type\>|type_kw|g' ${PLX_FILE}
         sed -i 's|\<match\>|match_kw|g' ${PLX_FILE}
         sed -i 's|\<string\>|string_kw|g' ${PLX_FILE}
-        #
+        # --------------------------------------------------
 
         format ${PLX_FILE}
         if [ ${?} -ne 0 ]; then exit 1; fi
@@ -59,6 +60,27 @@ for CC_DIR in $(find ${CC_PATH} -mindepth 1 -maxdepth 1 -type d); do
         # if [ ${?} -ne 0 ]; then exit 1; fi
         mv ${PLX_FILE}.transpile ${PLX_FILE}
         if [ ${?} -ne 0 ]; then exit 1; fi
+
+        # Format after transpile
+        # --------------------------------------------------
+
+        # remove extra spaces in type struc/union
+        sed -i 's|(    |(|g' ${PLX_FILE}
+        sed -i 's|    )|)|g' ${PLX_FILE}
+        sed -i 's|    , |, |g' ${PLX_FILE}
+
+        # remove lines with empty statement ;
+        # except when in files where it makes an empty block
+        case "$(basename ${PLX_FILE})" in
+            "lexer.plx"|"optim_tac.plx"|"reg_alloc.plx")
+                ;;
+            *)
+                sed -i '/^\s*;\s*$/d' ${PLX_FILE}
+                ;;
+        esac
+
+        # --------------------------------------------------
+
         echo "${PLX_FILE}"
     done
 done
