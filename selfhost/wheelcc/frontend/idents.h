@@ -12,7 +12,7 @@ struct IdentifierContext;
 
 // Identifiers
 
-TIdentifier rslv_label_identifier(struct IdentifierContext* ctx, TIdentifier label);
+TIdentifier rslv_label_identifier(struct IdentifierContext* ctx, TIdentifier target);
 TIdentifier rslv_var_identifier(struct IdentifierContext* ctx, TIdentifier variable);
 TIdentifier rslv_struct_tag(struct IdentifierContext* ctx, TIdentifier structure);
 TIdentifier repr_label_identifier(struct IdentifierContext* ctx, LABEL_KIND label_kind);
