@@ -382,7 +382,7 @@ struct CExpression {
 
 struct CIf {
     unique_ptr_t(CExp) condition;
-    unique_ptr_t(CStatement) then;
+    unique_ptr_t(CStatement) then_fi;
     unique_ptr_t(CStatement) else_fi;
 };
 
@@ -482,7 +482,7 @@ unique_ptr_t(CStatement) make_CStatement(void);
 unique_ptr_t(CStatement) make_CReturn(unique_ptr_t(CExp) * exp, unsigned long info_at);
 unique_ptr_t(CStatement) make_CExpression(unique_ptr_t(CExp) * exp);
 unique_ptr_t(CStatement)
-    make_CIf(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * then, unique_ptr_t(CStatement) * else_fi);
+    make_CIf(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * then_fi, unique_ptr_t(CStatement) * else_fi);
 unique_ptr_t(CStatement) make_CGoto(TIdentifier target, unsigned long info_at);
 unique_ptr_t(CStatement) make_CLabel(TIdentifier target, unique_ptr_t(CStatement) * jump_to, unsigned long info_at);
 unique_ptr_t(CStatement) make_CCompound(unique_ptr_t(CBlock) * block);

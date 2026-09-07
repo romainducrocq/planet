@@ -465,13 +465,13 @@ unique_ptr_t(CStatement) make_CExpression(unique_ptr_t(CExp) * exp) {
 }
 
 unique_ptr_t(CStatement)
-    make_CIf(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * then, unique_ptr_t(CStatement) * else_fi) {
+    make_CIf(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * then_fi, unique_ptr_t(CStatement) * else_fi) {
     unique_ptr_t(CStatement) self = make_CStatement();
     self->type = AST_CIf_t;
     self->get._CIf.condition = uptr_new();
     uptr_move(CExp, *condition, self->get._CIf.condition);
-    self->get._CIf.then = uptr_new();
-    uptr_move(CStatement, *then, self->get._CIf.then);
+    self->get._CIf.then_fi = uptr_new();
+    uptr_move(CStatement, *then_fi, self->get._CIf.then_fi);
     self->get._CIf.else_fi = uptr_new();
     uptr_move(CStatement, *else_fi, self->get._CIf.else_fi);
     return self;
@@ -610,7 +610,7 @@ void free_CStatement(unique_ptr_t(CStatement) * self) {
             break;
         case AST_CIf_t:
             free_CExp(&(*self)->get._CIf.condition);
-            free_CStatement(&(*self)->get._CIf.then);
+            free_CStatement(&(*self)->get._CIf.then_fi);
             free_CStatement(&(*self)->get._CIf.else_fi);
             break;
         case AST_CGoto_t:
