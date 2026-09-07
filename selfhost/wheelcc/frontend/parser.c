@@ -1190,12 +1190,12 @@ static error_t parse_compound_statement(Ctx ctx, unique_ptr_t(CStatement) * stat
 
 static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CExp) condition = uptr_new();
-    unique_ptr_t(CStatement) then = uptr_new();
+    unique_ptr_t(CStatement) then_fi = uptr_new();
     unique_ptr_t(CStatement) else_fi = uptr_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
     TRY(parse_exp(ctx, 0, &condition));
-    TRY(parse_compound_statement(ctx, &then));
+    TRY(parse_compound_statement(ctx, &then_fi));
     TRY(peek_next(ctx));
     if (ctx->peek_tok->tok_kind == TOK_line_break) {
         TRY(peek_next_i(ctx, 1));
@@ -1213,10 +1213,10 @@ static error_t parse_if_statement(Ctx ctx, unique_ptr_t(CStatement) * statement)
                 break;
         }
     }
-    *statement = make_CIf(&condition, &then, &else_fi);
+    *statement = make_CIf(&condition, &then_fi, &else_fi);
     FINALLY;
     free_CExp(&condition);
-    free_CStatement(&then);
+    free_CStatement(&then_fi);
     free_CStatement(&else_fi);
     CATCH_EXIT;
 }

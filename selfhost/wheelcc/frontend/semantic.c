@@ -3073,7 +3073,7 @@ static error_t reslv_exp_statement(Ctx ctx, struct CExpression* node) {
 static error_t reslv_if_statement(Ctx ctx, struct CIf* node) {
     CATCH_ENTER;
     TRY(reslv_typed_exp(ctx, &node->condition));
-    TRY(reslv_statement(ctx, node->then));
+    TRY(reslv_statement(ctx, node->then_fi));
     if (node->else_fi) {
         TRY(reslv_statement(ctx, node->else_fi));
     }
