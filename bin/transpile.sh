@@ -24,5 +24,10 @@ for CC_DIR in $(find ${CC_PATH} -mindepth 1 -maxdepth 1 -type d); do
     done
 done
 
+for PLX_FILE in $(find ${PLX_PATH}/optimizer/ -name "*.plx" -type f); do
+    sed -i "s|^{||g" ${PLX_FILE}
+    sed -i "s|i32 $|i32 {|g" ${PLX_FILE}
+done
+
 echo "transpile successfull"
 exit 0
