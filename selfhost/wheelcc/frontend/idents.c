@@ -13,9 +13,9 @@
 
 #define Ctx struct IdentifierContext*
 
-TIdentifier rslv_label_identifier(Ctx ctx, TIdentifier label) {
+TIdentifier rslv_label_identifier(Ctx ctx, TIdentifier target) {
     string_t name = str_new(NULL);
-    string_t value = map_get(ctx->hash_table, label);
+    string_t value = map_get(ctx->hash_table, target);
     str_copy(value, name);
     return make_label_identifier(ctx, &name);
 }
