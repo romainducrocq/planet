@@ -242,15 +242,15 @@ static unsigned long stbds_siphash_bytes(void* p, unsigned long len, unsigned lo
     unsigned long v1;
     unsigned long v2;
     unsigned long v3;
-    unsigned long data;
+    unsigned long dat;
     v0 = ((((unsigned long)1936682341 << 16) << 16) + 1886610805) ^ seed;  // 0x736f6d65, 0x70736575
     v1 = ((((unsigned long)1685025377 << 16) << 16) + 1852075885) ^ ~seed; // 0x646f7261, 0x6e646f6d
     v2 = ((((unsigned long)1819895653 << 16) << 16) + 1852142177) ^ seed;  // 0x6c796765, 0x6e657261
     v3 = ((((unsigned long)1952801890 << 16) << 16) + 2037671283) ^ ~seed; // 0x74656462, 0x79746573
     for (i = 0; i + sizeof(unsigned long) <= len; i += sizeof(unsigned long)) {
-        data = d[0] | (d[1] << 8) | (d[2] << 16) | (d[3] << 24);
-        data |= (unsigned long)(d[4] | (d[5] << 8) | (d[6] << 16) | (d[7] << 24)) << 16 << 16;
-        v3 ^= data;
+        dat = d[0] | (d[1] << 8) | (d[2] << 16) | (d[3] << 24);
+        dat |= (unsigned long)(d[4] | (d[5] << 8) | (d[6] << 16) | (d[7] << 24)) << 16 << 16;
+        v3 ^= dat;
         for (j = 0; j < 1; ++j)
             do {
                 v0 += v1;
@@ -271,29 +271,29 @@ static unsigned long stbds_siphash_bytes(void* p, unsigned long len, unsigned lo
                 v3 ^= v0;
             }
             while (0);
-        v0 ^= data;
+        v0 ^= dat;
         d += sizeof(unsigned long);
     }
-    data = len << (((sizeof(unsigned long)) * 8) - 8);
+    dat = len << (((sizeof(unsigned long)) * 8) - 8);
     switch (len - i) {
         case 7:
-            data |= ((unsigned long)d[6] << 24) << 24; // fall through
+            dat |= ((unsigned long)d[6] << 24) << 24; // fall through
         case 6:
-            data |= ((unsigned long)d[5] << 20) << 20; // fall through
+            dat |= ((unsigned long)d[5] << 20) << 20; // fall through
         case 5:
-            data |= ((unsigned long)d[4] << 16) << 16; // fall through
+            dat |= ((unsigned long)d[4] << 16) << 16; // fall through
         case 4:
-            data |= (d[3] << 24); // fall through
+            dat |= (d[3] << 24); // fall through
         case 3:
-            data |= (d[2] << 16); // fall through
+            dat |= (d[2] << 16); // fall through
         case 2:
-            data |= (d[1] << 8); // fall through
+            dat |= (d[1] << 8); // fall through
         case 1:
-            data |= d[0]; // fall through
+            dat |= d[0]; // fall through
         case 0:
             break; // fall through
     }
-    v3 ^= data;
+    v3 ^= dat;
     for (j = 0; j < 1; ++j)
         do {
             v0 += v1;
@@ -314,7 +314,7 @@ static unsigned long stbds_siphash_bytes(void* p, unsigned long len, unsigned lo
             v3 ^= v0;
         }
         while (0);
-    v0 ^= data;
+    v0 ^= dat;
     v2 ^= 255;
     for (j = 0; j < 1; ++j)
         do {
