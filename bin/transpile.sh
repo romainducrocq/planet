@@ -47,10 +47,10 @@ for CC_DIR in $(find ${CC_PATH} -mindepth 1 -maxdepth 1 -type d); do
         if [ ${?} -ne 0 ]; then exit 1; fi
 
         # TODO rm after rename kws
-        sed -i 's/\<get_type_fmt\>/get_type_kw_fmt/' ${PLX_FILE}
-        sed -i 's/\<type\>/type_kw/' ${PLX_FILE}
-        sed -i 's/\<match\>/match_kw/' ${PLX_FILE}
-        sed -i 's/\<string\>/string_kw/' ${PLX_FILE}
+        sed -i 's|\<get_type_fmt\>|get_type_kw_fmt|g' ${PLX_FILE}
+        sed -i 's|\<type\>|type_kw|g' ${PLX_FILE}
+        sed -i 's|\<match\>|match_kw|g' ${PLX_FILE}
+        sed -i 's|\<string\>|string_kw|g' ${PLX_FILE}
         #
 
         format ${PLX_FILE}
