@@ -506,9 +506,6 @@ char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type, string_t* t
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// TODO rm
-#define RET_ERRNO return "(no. %i) "
-
 #define EM_CSTR(X) "‘" X "’"
 #define EM_VARG "‘%s’"
 #define PAD_ERR_0 "%s%s%s"
