@@ -492,7 +492,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -514,7 +514,7 @@ pub fn make_CUnaryOp(tag: i32) struc CUnaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 26, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -564,7 +564,7 @@ pub fn make_CBinaryOp(tag: i32) struc CBinaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 55, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -575,7 +575,7 @@ pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator {
         free_CAbstractDeclarator(@self)
         self = cast<*struc CAbstractDeclarator>(malloc(sizeof<struc CAbstractDeclarator>))
         if not self {
-            panic_sigabrt("alloc "                 "CAbstractDeclarator",                 61, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CAbstractDeclarator")
         }
     }    
     self[].tag = 81
@@ -633,7 +633,7 @@ pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 104, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -648,7 +648,7 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
         free_CParam(@self)
         self = cast<*struc CParam>(malloc(sizeof<struc CParam>))
         if not self {
-            panic_sigabrt("alloc "                 "CParam",                 111, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CParam")
         }
     }    
     self[].tag = 85
@@ -676,7 +676,7 @@ pub fn free_CParam(self: **struc CParam) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 126, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     free_CDeclarator(@(self[])[].decltor)
@@ -693,7 +693,7 @@ pub fn make_CDeclarator(none) *struc CDeclarator {
         free_CDeclarator(@self)
         self = cast<*struc CDeclarator>(malloc(sizeof<struc CDeclarator>))
         if not self {
-            panic_sigabrt("alloc "                 "CDeclarator",                 135, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CDeclarator")
         }
     }    
     self[].tag = 86
@@ -790,7 +790,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
         free_CDeclarator(@(self[])[].get._CFunDeclarator.decltor)
         break
         otherwise {
-            panic_sigabrt("abort", 196, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -805,7 +805,7 @@ pub fn make_CExp(info_at: u64) *struc CExp {
         free_CExp(@self)
         self = cast<*struc CExp>(malloc(sizeof<struc CExp>))
         if not self {
-            panic_sigabrt("alloc "                 "CExp",                 203, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CExp")
         }
     }    
     self[].tag = 91
@@ -1152,7 +1152,7 @@ pub fn free_CExp(self: **struc CExp) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 437, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     free_Type(@(self[])[].exp_type)
@@ -1168,7 +1168,7 @@ pub fn make_CStatement(none) *struc CStatement {
         free_CStatement(@self)
         self = cast<*struc CStatement>(malloc(sizeof<struc CStatement>))
         if not self {
-            panic_sigabrt("alloc "                 "CStatement",                 445, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CStatement")
         }
     }    
     self[].tag = 108
@@ -1487,7 +1487,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 660, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1502,7 +1502,7 @@ pub fn make_CForInit(none) *struc CForInit {
         free_CForInit(@self)
         self = cast<*struc CForInit>(malloc(sizeof<struc CForInit>))
         if not self {
-            panic_sigabrt("alloc "                 "CForInit",                 667, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CForInit")
         }
     }    
     self[].tag = 124
@@ -1550,7 +1550,7 @@ pub fn free_CForInit(self: **struc CForInit) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 700, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1565,7 +1565,7 @@ pub fn make_CBlock(none) *struc CBlock {
         free_CBlock(@self)
         self = cast<*struc CBlock>(malloc(sizeof<struc CBlock>))
         if not self {
-            panic_sigabrt("alloc "                 "CBlock",                 707, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CBlock")
         }
     }    
     self[].tag = 127
@@ -1612,7 +1612,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 732, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1627,7 +1627,7 @@ pub fn make_CBlockItem(none) *struc CBlockItem {
         free_CBlockItem(@self)
         self = cast<*struc CBlockItem>(malloc(sizeof<struc CBlockItem>))
         if not self {
-            panic_sigabrt("alloc "                 "CBlockItem",                 739, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CBlockItem")
         }
     }    
     self[].tag = 129
@@ -1675,7 +1675,7 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 772, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1695,7 +1695,7 @@ pub fn make_CStorageClass(tag: i32) struc CStorageClass {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 785, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1706,7 +1706,7 @@ pub fn make_CInitializer(none) *struc CInitializer {
         free_CInitializer(@self)
         self = cast<*struc CInitializer>(malloc(sizeof<struc CInitializer>))
         if not self {
-            panic_sigabrt("alloc "                 "CInitializer",                 791, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CInitializer")
         }
     }    
     self[].tag = 135
@@ -1772,7 +1772,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 830, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     free_Type(@(self[])[].init_type)
@@ -1788,7 +1788,7 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info
         free_CMemberDeclaration(@self)
         self = cast<*struc CMemberDeclaration>(malloc(sizeof<struc CMemberDeclaration>))
         if not self {
-            panic_sigabrt("alloc "                 "CMemberDeclaration",                 839, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CMemberDeclaration")
         }
     }    
     self[].tag = 138
@@ -1812,7 +1812,7 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 854, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     free_Type(@(self[])[].member_type)
@@ -1828,7 +1828,7 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc C
         free_CStructDeclaration(@self)
         self = cast<*struc CStructDeclaration>(malloc(sizeof<struc CStructDeclaration>))
         if not self {
-            panic_sigabrt("alloc "                 "CStructDeclaration",                 863, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CStructDeclaration")
         }
     }    
     self[].tag = 139
@@ -1859,7 +1859,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 879, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     loop i: u64 = 0 while i < (? ((self[])[].members) then (cast<*struc stbds_array_header>(((self[])[].members)) - 1)[].length else 0) .. ++i {
@@ -1884,7 +1884,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock,
         free_CFunctionDeclaration(@self)
         self = cast<*struc CFunctionDeclaration>(malloc(sizeof<struc CFunctionDeclaration>))
         if not self {
-            panic_sigabrt("alloc "                 "CFunctionDeclaration",                 892, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CFunctionDeclaration")
         }
     }    
     self[].tag = 140
@@ -1927,7 +1927,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 912, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if (self[])[].params {
@@ -1951,7 +1951,7 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
         free_CVariableDeclaration(@self)
         self = cast<*struc CVariableDeclaration>(malloc(sizeof<struc CVariableDeclaration>))
         if not self {
-            panic_sigabrt("alloc "                 "CVariableDeclaration",                 923, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CVariableDeclaration")
         }
     }    
     self[].tag = 141
@@ -1982,7 +1982,7 @@ pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 941, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     free_CInitializer(@(self[])[].init)
@@ -1999,7 +1999,7 @@ pub fn make_CDeclaration(none) *struc CDeclaration {
         free_CDeclaration(@self)
         self = cast<*struc CDeclaration>(malloc(sizeof<struc CDeclaration>))
         if not self {
-            panic_sigabrt("alloc "                 "CDeclaration",                 950, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CDeclaration")
         }
     }    
     self[].tag = 142
@@ -2063,7 +2063,7 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 994, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -2078,7 +2078,7 @@ pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
         free_CProgram(@self)
         self = cast<*struc CProgram>(malloc(sizeof<struc CProgram>))
         if not self {
-            panic_sigabrt("alloc "                 "CProgram",                 1001, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("alloc "                 "CProgram")
         }
     }    
     self[].tag = 146
@@ -2106,7 +2106,7 @@ pub fn free_CProgram(self: **struc CProgram) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 1014, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_ast.c")
+            panic_sigabrt("abort")
         }
     }
     loop i: u64 = 0 while i < (? ((self[])[].declarations) then (cast<*struc stbds_array_header>(((self[])[].declarations)) - 1)[].length else 0) .. ++i {

@@ -374,7 +374,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -392,7 +392,7 @@ pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 24, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -438,7 +438,7 @@ pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 51, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -450,7 +450,7 @@ pub fn make_TacValue(none) *struc TacValue {
             free_TacValue(@self)
             self = cast<*struc TacValue>(malloc(sizeof<struc TacValue>))
             if not self {
-                panic_sigabrt("alloc "                     "TacValue",                     57, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+                panic_sigabrt("alloc "                     "TacValue")
             }
         }        
         (self)[]._ref_count = 1
@@ -499,7 +499,7 @@ pub fn free_TacValue(self: **struc TacValue) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 88, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -514,7 +514,7 @@ pub fn make_TacExpResult(none) *struc TacExpResult {
         free_TacExpResult(@self)
         self = cast<*struc TacExpResult>(malloc(sizeof<struc TacExpResult>))
         if not self {
-            panic_sigabrt("alloc "                 "TacExpResult",                 95, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("alloc "                 "TacExpResult")
         }
     }    
     self[].tag = 172
@@ -573,7 +573,7 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 138, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -588,7 +588,7 @@ pub fn make_TacInstruction(none) *struc TacInstruction {
         free_TacInstruction(@self)
         self = cast<*struc TacInstruction>(malloc(sizeof<struc TacInstruction>))
         if not self {
-            panic_sigabrt("alloc "                 "TacInstruction",                 145, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("alloc "                 "TacInstruction")
         }
     }    
     self[].tag = 176
@@ -1088,7 +1088,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 462, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1103,7 +1103,7 @@ pub fn make_TacTopLevel(none) *struc TacTopLevel {
         free_TacTopLevel(@self)
         self = cast<*struc TacTopLevel>(malloc(sizeof<struc TacTopLevel>))
         if not self {
-            panic_sigabrt("alloc "                 "TacTopLevel",                 469, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("alloc "                 "TacTopLevel")
         }
     }    
     self[].tag = 199
@@ -1235,7 +1235,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         free_StaticInit(@(self[])[].get._TacStaticConstant.static_init)
         break
         otherwise {
-            panic_sigabrt("abort", 536, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1250,7 +1250,7 @@ pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_to
         free_TacProgram(@self)
         self = cast<*struc TacProgram>(malloc(sizeof<struc TacProgram>))
         if not self {
-            panic_sigabrt("alloc "                 "TacProgram",                 544, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("alloc "                 "TacProgram")
         }
     }    
     self[].tag = 203
@@ -1302,7 +1302,7 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 561, "/home/romain/proj/planet/selfhost/wheelcc/ast/interm_ast.c")
+            panic_sigabrt("abort")
         }
     }
     loop i: u64 = 0 while i < (? ((self[])[].static_const_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)[].length else 0) .. ++i {

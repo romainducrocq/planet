@@ -61,7 +61,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -528,7 +528,7 @@ fn gen_reg(reg_kind: i32) struc AsmReg {
             return make_AsmReg(236)
         }
         otherwise {
-            panic_sigabrt("abort", 82, "/home/romain/proj/planet/selfhost/wheelcc/backend/registers.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -638,13 +638,13 @@ pub fn register_mask_kind(node: *struc AsmReg) i32 {
             -> 214 {
                 -> 235 {
                     -> 236 {
-                        panic_sigabrt("abort", 163, "/home/romain/proj/planet/selfhost/wheelcc/backend/registers.c")
+                        panic_sigabrt("abort")
                     }
                 }
             }
         }
         otherwise {
-            panic_sigabrt("abort", 166, "/home/romain/proj/planet/selfhost/wheelcc/backend/registers.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -735,7 +735,7 @@ pub fn register_mask_bit(reg_kind: i32) u64 {
                     -> 15 {
                         -> 30 {
                             -> 31 {
-                                panic_sigabrt("abort", 230, "/home/romain/proj/planet/selfhost/wheelcc/backend/registers.c")
+                                panic_sigabrt("abort")
                             }
                         }
                     }
@@ -743,7 +743,7 @@ pub fn register_mask_bit(reg_kind: i32) u64 {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 233, "/home/romain/proj/planet/selfhost/wheelcc/backend/registers.c")
+            panic_sigabrt("abort")
         }
     }
 }

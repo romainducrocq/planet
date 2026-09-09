@@ -60,7 +60,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -454,7 +454,7 @@ fn get_scalar_alignment(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 41, "/home/romain/proj/planet/selfhost/wheelcc/backend/symt_cvt.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -552,7 +552,7 @@ pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc Assem
             return struct_asm_type(ctx, @symbol_type[].get._Structure)
         }
         otherwise {
-            panic_sigabrt("abort", 125, "/home/romain/proj/planet/selfhost/wheelcc/backend/symt_cvt.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -590,7 +590,7 @@ fn cvt_static_const_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmStaticCon
         }
         break
         otherwise {
-            panic_sigabrt("abort", 153, "/home/romain/proj/planet/selfhost/wheelcc/backend/symt_cvt.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -600,7 +600,7 @@ fn cvt_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmTopLevel) none {
         cvt_static_const_toplvl(ctx, @node[].get._AsmStaticConstant)
     }
     else {
-        panic_sigabrt("abort", 162, "/home/romain/proj/planet/selfhost/wheelcc/backend/symt_cvt.c")
+        panic_sigabrt("abort")
     }
 }
 
