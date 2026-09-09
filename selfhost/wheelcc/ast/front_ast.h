@@ -641,14 +641,14 @@ void free_CMemberDeclaration(unique_ptr_t(CMemberDeclaration) * self);
 
 struct CStructDeclaration {
     unique_ptr_impl(AST_T);
-    TIdentifier tag;
+    TIdentifier tag_name;
     bool is_union;
     vector_t(unique_ptr_t(CMemberDeclaration)) members;
     unsigned long info_at;
 };
 
 unique_ptr_t(CStructDeclaration) make_CStructDeclaration(
-    TIdentifier tag, bool is_union, vector_t(unique_ptr_t(CMemberDeclaration)) * members, unsigned long info_at);
+    TIdentifier tag_name, bool is_union, vector_t(unique_ptr_t(CMemberDeclaration)) * members, unsigned long info_at);
 void free_CStructDeclaration(unique_ptr_t(CStructDeclaration) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

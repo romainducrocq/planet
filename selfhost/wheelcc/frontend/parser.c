@@ -341,7 +341,7 @@ static error_t parse_binop(Ctx ctx, struct CBinaryOp* binop) {
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name);
 
 // <datatype-specifier> ::= ( "struc" | "union" ) <identifier>
-static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_union) {
+static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag_name, bool* is_union) {
     CATCH_ENTER;
     switch (ctx->next_tok->tok_kind) {
         case TOK_key_struc: {
@@ -358,7 +358,7 @@ static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag, bool* is_unio
     }
     TRY(peek_next(ctx));
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
-    TRY(parse_identifier(ctx, tag));
+    TRY(parse_identifier(ctx, tag_name));
     FINALLY;
     CATCH_EXIT;
 }
@@ -412,9 +412,9 @@ static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier
         case TOK_key_struc:
         case TOK_key_union: {
             bool is_union;
-            TIdentifier tag;
-            TRY(parse_datatype_specifier(ctx, &tag, &is_union));
-            *type_specifier = make_Structure(tag, is_union);
+            TIdentifier tag_name;
+            TRY(parse_datatype_specifier(ctx, &tag_name, &is_union));
+            *type_specifier = make_Structure(tag_name, is_union);
             break;
         }
         default:
@@ -1837,11 +1837,11 @@ static error_t parse_type_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) 
     vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
     CATCH_ENTER;
     bool is_union;
-    TIdentifier tag;
+    TIdentifier tag_name;
     unsigned long info_at = ctx->peek_tok->info_at;
     TRY(pop_next(ctx));
     TRY(pop_next(ctx));
-    TRY(parse_datatype_specifier(ctx, &tag, &is_union));
+    TRY(parse_datatype_specifier(ctx, &tag_name, &is_union));
     TRY(pop_next(ctx));
     switch (ctx->next_tok->tok_kind) {
         case TOK_semicolon:
@@ -1852,7 +1852,7 @@ static error_t parse_type_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) 
         default:
             THROW_AT_TOKEN(ctx->next_tok->info_at, GET_PARSER_MSG(1, MSG_expect_datatype, str_fmt_tok(ctx->next_tok)));
     }
-    *struct_decl = make_CStructDeclaration(tag, is_union, &members, info_at);
+    *struct_decl = make_CStructDeclaration(tag_name, is_union, &members, info_at);
     FINALLY;
     for (unsigned long i = 0; i < vec_size(members); ++i) {
         free_CMemberDeclaration(&members[i]);

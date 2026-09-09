@@ -57,7 +57,7 @@ static bool is_same_arr(struct Array* arr_type_1, struct Array* arr_type_2) {
 }
 
 static bool is_same_struct(struct Structure* struct_type_1, struct Structure* struct_type_2) {
-    return struct_type_1->tag == struct_type_2->tag;
+    return struct_type_1->tag_name == struct_type_2->tag_name;
 }
 
 static bool is_same_type(struct Type* type_1, struct Type* type_2) {
@@ -165,7 +165,7 @@ static bool is_type_scalar(struct Type* type_t) {
 }
 
 static bool is_struct_complete(Ctx ctx, struct Structure* struct_type) {
-    return map_find(ctx->frontend->struct_typedef_table, struct_type->tag) != map_end();
+    return map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) != map_end();
 }
 
 static bool is_type_complete(Ctx ctx, struct Type* type_t) {
@@ -287,8 +287,8 @@ static TLong get_arr_scale(Ctx ctx, struct Array* arr_type) {
 }
 
 static TLong get_struct_scale(Ctx ctx, struct Structure* struct_type) {
-    THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag) == map_end());
-    return map_get(ctx->frontend->struct_typedef_table, struct_type->tag)->size;
+    THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) == map_end());
+    return map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name)->size;
 }
 
 static TLong get_type_scale(Ctx ctx, struct Type* type_t) {
@@ -307,8 +307,8 @@ static TInt get_type_alignment(Ctx ctx, struct Type* type_t);
 static TInt get_arr_alignment(Ctx ctx, struct Array* arr_type) { return get_type_alignment(ctx, arr_type->elem_type); }
 
 static TInt get_struct_alignment(Ctx ctx, struct Structure* struct_type) {
-    THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag) == map_end());
-    return map_get(ctx->frontend->struct_typedef_table, struct_type->tag)->alignment;
+    THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) == map_end());
+    return map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name)->alignment;
 }
 
 static TInt get_type_alignment(Ctx ctx, struct Type* type_t) {
@@ -1312,7 +1312,7 @@ static error_t check_dot_exp(Ctx ctx, struct CDot* node) {
                                       str_fmt_type(node->structure->exp_type, &type_fmt)));
     }
     struct_type = &node->structure->exp_type->get._Structure;
-    struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag);
+    struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     map_it = map_find(struct_typedef->members, node->member);
     if (map_it == map_end()) {
         THROW_AT_TOKEN(
@@ -1348,7 +1348,7 @@ static error_t check_arrow_exp(Ctx ctx, struct CArrow* node) {
                                       str_fmt_type(node->pointer->exp_type, &type_fmt)));
     }
     struct_type = &ptr_type->ref_type->get._Structure;
-    map_it = map_find(ctx->frontend->struct_typedef_table, struct_type->tag);
+    map_it = map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     if (map_it == map_end()) {
         THROW_AT_TOKEN(
             node->_base->info_at, GET_SEMANTIC_MSG(2, MSG_arrow_incomplete, str_fmt_name(node->member, &name_fmt),
@@ -1715,10 +1715,10 @@ static unique_ptr_t(CInitializer) check_arr_zero_init(Ctx ctx, struct Array* arr
 
 static unique_ptr_t(CInitializer) check_struct_zero_init(Ctx ctx, struct Structure* struct_type) {
     vector_t(unique_ptr_t(CInitializer)) zero_inits = vec_new();
-    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag);
+    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     vec_reserve(zero_inits, vec_size(struct_typedef->member_names));
     for (unsigned long i = 0; i < vec_size(struct_typedef->member_names); ++i) {
-        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag, i);
+        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i);
         unique_ptr_t(CInitializer) initializer = check_zero_init(ctx, member->member_type);
         vec_move_back(zero_inits, initializer);
     }
@@ -1759,7 +1759,7 @@ static error_t check_bound_struct_init(Ctx ctx, struct CCompoundInit* node, stru
     string_t strto_fmt_1 = str_new(NULL);
     string_t strto_fmt_2 = str_new(NULL);
     CATCH_ENTER;
-    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag);
+    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     unsigned long bound = struct_type->is_union ? 1 : map_size(struct_typedef->members);
     if (vec_size(node->initializers) > bound) {
         strto_fmt_1 = str_to_string(vec_size(node->initializers));
@@ -1786,9 +1786,9 @@ static void check_arr_init(
 
 static void check_struct_init(
     Ctx ctx, struct CCompoundInit* node, struct Structure* struct_type, shared_ptr_t(Type) * init_type) {
-    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag);
+    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     for (unsigned long i = vec_size(node->initializers); i < map_size(struct_typedef->members); ++i) {
-        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag, i);
+        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i);
         unique_ptr_t(CInitializer) zero_init = check_zero_init(ctx, member->member_type);
         vec_move_back(node->initializers, zero_init);
     }
@@ -2205,7 +2205,7 @@ static error_t check_static_struct_init(Ctx ctx, struct CCompoundInit* node, str
 
     size = 0l;
     for (unsigned long i = 0; i < vec_size(node->initializers); ++i) {
-        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag, i);
+        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i);
         if (member->offset != size) {
             check_static_no_init(ctx, NULL, member->offset - size);
             size = member->offset;
@@ -2213,7 +2213,7 @@ static error_t check_static_struct_init(Ctx ctx, struct CCompoundInit* node, str
         TRY(check_static_init(ctx, node->initializers[i], member->member_type));
         size += get_type_scale(ctx, member->member_type);
     }
-    size -= map_get(ctx->frontend->struct_typedef_table, struct_type->tag)->size;
+    size -= map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name)->size;
     if (size != 0l) {
         check_static_no_init(ctx, NULL, -1l * size);
     }
@@ -2494,7 +2494,7 @@ static error_t check_struct_members_decl(Ctx ctx, struct CStructDeclaration* nod
             if (node->members[i]->member_name == node->members[j]->member_name) {
                 THROW_AT_TOKEN(
                     node->members[i]->info_at, GET_SEMANTIC_MSG(2, MSG_duplicate_member_decl,
-                                                   str_fmt_struct_name(node->tag, node->is_union, &struct_fmt),
+                                                   str_fmt_struct_name(node->tag_name, node->is_union, &struct_fmt),
                                                    str_fmt_name(node->members[i]->member_name, &name_fmt)));
             }
         }
@@ -2503,7 +2503,7 @@ static error_t check_struct_members_decl(Ctx ctx, struct CStructDeclaration* nod
         TRY(reslv_struct_type(ctx, node->members[i]->member_type));
         if (!is_type_complete(ctx, node->members[i]->member_type)) {
             THROW_AT_TOKEN(node->members[i]->info_at, GET_SEMANTIC_MSG(3, MSG_incomplete_member_decl,
-                                                          str_fmt_struct_name(node->tag, node->is_union, &struct_fmt),
+                                                          str_fmt_struct_name(node->tag_name, node->is_union, &struct_fmt),
                                                           str_fmt_name(node->members[i]->member_name, &name_fmt),
                                                           str_fmt_type(node->members[i]->member_type, &type_fmt)));
         }
@@ -2526,9 +2526,9 @@ static error_t check_struct_decl(Ctx ctx, struct CStructDeclaration* node) {
     CATCH_ENTER;
     TInt alignment;
     TLong size;
-    if (map_find(ctx->frontend->struct_typedef_table, node->tag) != map_end()) {
+    if (map_find(ctx->frontend->struct_typedef_table, node->tag_name) != map_end()) {
         THROW_AT_TOKEN(node->info_at, GET_SEMANTIC_MSG(1, MSG_redecl_struct_in_scope,
-                                          str_fmt_struct_name(node->tag, node->is_union, &struct_fmt)));
+                                          str_fmt_struct_name(node->tag_name, node->is_union, &struct_fmt)));
     }
     alignment = 0;
     size = 0l;
@@ -2572,7 +2572,7 @@ static error_t check_struct_decl(Ctx ctx, struct CStructDeclaration* node) {
         }
     }
     struct_typedef = make_StructTypedef(alignment, size, &member_names, &members);
-    map_move_add(ctx->frontend->struct_typedef_table, node->tag, struct_typedef);
+    map_move_add(ctx->frontend->struct_typedef_table, node->tag_name, struct_typedef);
     FINALLY;
     str_delete(struct_fmt);
     free_StructMember(&struct_member);
@@ -2741,23 +2741,23 @@ static error_t reslv_struct(Ctx ctx, struct Structure* struct_type) {
     string_t type_fmt = str_new(NULL);
     CATCH_ENTER;
     if (struct_type->is_union) {
-        if (set_find(ctx->union_def_set, struct_type->tag) != set_end()) {
+        if (set_find(ctx->union_def_set, struct_type->tag_name) != set_end()) {
             EARLY_EXIT;
         }
     }
-    else if (set_find(ctx->struct_def_set, struct_type->tag) != set_end()) {
+    else if (set_find(ctx->struct_def_set, struct_type->tag_name) != set_end()) {
         EARLY_EXIT;
     }
     for (unsigned long i = vec_size(ctx->scoped_identifier_maps); i-- > 0;) {
-        long map_it = map_find(ctx->scoped_struct_maps[i], struct_type->tag);
+        long map_it = map_find(ctx->scoped_struct_maps[i], struct_type->tag_name);
         if (map_it != map_end()) {
             struct Structure* structure = &pair_second(ctx->scoped_struct_maps[i][map_it]);
             if (structure->is_union != struct_type->is_union) {
                 THROW_AT_TOKEN(ctx->errors->info_at_buf,
                     GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict, str_fmt_struct(struct_type, &type_fmt),
-                        str_fmt_struct_name(struct_type->tag, !struct_type->is_union, &struct_fmt)));
+                        str_fmt_struct_name(struct_type->tag_name, !struct_type->is_union, &struct_fmt)));
             }
-            struct_type->tag = structure->tag;
+            struct_type->tag_name = structure->tag_name;
             EARLY_EXIT;
         }
     }
@@ -3331,7 +3331,7 @@ static error_t reslv_struct_init(
     TRY(check_bound_struct_init(ctx, node, struct_type));
 
     for (unsigned long i = 0; i < vec_size(node->initializers); ++i) {
-        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag, i);
+        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i);
         TRY(reslv_initializer(ctx, node->initializers[i], &member->member_type));
     }
     check_struct_init(ctx, node, struct_type, init_type);
@@ -3487,33 +3487,33 @@ static error_t reslv_struct_declaration(Ctx ctx, struct CStructDeclaration* node
     string_t struct_fmt_1 = str_new(NULL);
     string_t struct_fmt_2 = str_new(NULL);
     CATCH_ENTER;
-    long map_it = map_find(vec_back(ctx->scoped_struct_maps), node->tag);
+    long map_it = map_find(vec_back(ctx->scoped_struct_maps), node->tag_name);
     if (map_it != map_end()) {
-        node->tag = pair_second(vec_back(ctx->scoped_struct_maps)[map_it]).tag;
+        node->tag_name = pair_second(vec_back(ctx->scoped_struct_maps)[map_it]).tag_name;
         if (node->is_union) {
-            if (set_find(ctx->union_def_set, node->tag) == set_end()) {
+            if (set_find(ctx->union_def_set, node->tag_name) == set_end()) {
                 THROW_AT_TOKEN(node->info_at, GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict,
-                                                  str_fmt_struct_name(node->tag, node->is_union, &struct_fmt_1),
-                                                  str_fmt_struct_name(node->tag, !node->is_union, &struct_fmt_2)));
+                                                  str_fmt_struct_name(node->tag_name, node->is_union, &struct_fmt_1),
+                                                  str_fmt_struct_name(node->tag_name, !node->is_union, &struct_fmt_2)));
             }
         }
-        else if (set_find(ctx->struct_def_set, node->tag) == set_end()) {
+        else if (set_find(ctx->struct_def_set, node->tag_name) == set_end()) {
             THROW_AT_TOKEN(node->info_at, GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict,
-                                              str_fmt_struct_name(node->tag, node->is_union, &struct_fmt_1),
-                                              str_fmt_struct_name(node->tag, !node->is_union, &struct_fmt_2)));
+                                              str_fmt_struct_name(node->tag_name, node->is_union, &struct_fmt_1),
+                                              str_fmt_struct_name(node->tag_name, !node->is_union, &struct_fmt_2)));
         }
     }
     else {
         {
-            struct Structure structure = {rslv_struct_tag(ctx->identifiers, node->tag), node->is_union};
-            map_add(vec_back(ctx->scoped_struct_maps), node->tag, structure);
-            node->tag = structure.tag;
+            struct Structure structure = {rslv_struct_tag(ctx->identifiers, node->tag_name), node->is_union};
+            map_add(vec_back(ctx->scoped_struct_maps), node->tag_name, structure);
+            node->tag_name = structure.tag_name;
         }
         if (node->is_union) {
-            set_insert(ctx->union_def_set, node->tag);
+            set_insert(ctx->union_def_set, node->tag_name);
         }
         else {
-            set_insert(ctx->struct_def_set, node->tag);
+            set_insert(ctx->struct_def_set, node->tag_name);
         }
     }
     if (!vec_empty(node->members)) {
