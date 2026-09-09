@@ -1367,15 +1367,15 @@ Lbreak:
 }
 
 static error_t parse_match_statement(Ctx ctx, unique_ptr_t(CStatement) * statement) {
-    unique_ptr_t(CExp) match = uptr_new();
+    unique_ptr_t(CExp) lookup = uptr_new();
     unique_ptr_t(CStatement) body = uptr_new();
     CATCH_ENTER;
     TRY(pop_next(ctx));
-    TRY(parse_exp(ctx, 0, &match));
+    TRY(parse_exp(ctx, 0, &lookup));
     TRY(parse_compound_statement(ctx, &body));
-    *statement = make_CSwitch(&match, &body);
+    *statement = make_CSwitch(&lookup, &body);
     FINALLY;
-    free_CExp(&match);
+    free_CExp(&lookup);
     free_CStatement(&body);
     CATCH_EXIT;
 }
@@ -1455,7 +1455,7 @@ static error_t parse_null_statement(Ctx ctx, unique_ptr_t(CStatement) * statemen
 // <statement> ::=  "return" ( <exp> | "none" ) | "jump" <identifier> | "label" <identifier>
 //               | <block> | "if" <exp> <block> { "\n" "elif" <block> } [ "\n" "else" <block> ]
 //               | "loop" ( <loop-init> | ".." while <exp> ) <block> | "continue" | "break"
-//               | "match" <exp> <block> | "->" <const> <block> | "otherwise" <block> | <exp>
+//               | "lookup" <exp> <block> | "->" <const> <block> | "otherwise" <block> | <exp>
 // statement = Return(exp?) | Expression(exp) | If(exp, statement, statement?) | Goto(identifier)
 //           | Label(identifier, target) | Compound(block) | While(exp, statement, identifier)
 //           | DoWhile(statement, exp, identifier) | For(for_init, exp?, exp?, statement, identifier)

@@ -1501,7 +1501,7 @@ static error_t check_switch_int_cases(Ctx ctx, struct CSwitch* node) {
         }
         free_CConst(&esac->constant);
         esac->constant = make_CConstInt(values[i]);
-        sptr_copy(Type, node->match->exp_type, esac->_base->exp_type);
+        sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type);
     }
     FINALLY;
     str_delete(strto_fmt);
@@ -1526,7 +1526,7 @@ static error_t check_switch_long_cases(Ctx ctx, struct CSwitch* node) {
         }
         free_CConst(&esac->constant);
         esac->constant = make_CConstLong(values[i]);
-        sptr_copy(Type, node->match->exp_type, esac->_base->exp_type);
+        sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type);
     }
     FINALLY;
     str_delete(strto_fmt);
@@ -1551,7 +1551,7 @@ static error_t check_switch_uint_cases(Ctx ctx, struct CSwitch* node) {
         }
         free_CConst(&esac->constant);
         esac->constant = make_CConstUInt(values[i]);
-        sptr_copy(Type, node->match->exp_type, esac->_base->exp_type);
+        sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type);
     }
     FINALLY;
     str_delete(strto_fmt);
@@ -1576,7 +1576,7 @@ static error_t check_switch_ulong_cases(Ctx ctx, struct CSwitch* node) {
         }
         free_CConst(&esac->constant);
         esac->constant = make_CConstULong(values[i]);
-        sptr_copy(Type, node->match->exp_type, esac->_base->exp_type);
+        sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type);
     }
     FINALLY;
     str_delete(strto_fmt);
@@ -1587,20 +1587,20 @@ static error_t check_switch_ulong_cases(Ctx ctx, struct CSwitch* node) {
 static error_t check_switch_statement(Ctx ctx, struct CSwitch* node) {
     string_t type_fmt = str_new(NULL);
     CATCH_ENTER;
-    if (!is_type_int(node->match->exp_type)) {
-        THROW_AT_TOKEN(node->match->info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_switch, str_fmt_type(node->match->exp_type, &type_fmt)));
+    if (!is_type_int(node->lookup->exp_type)) {
+        THROW_AT_TOKEN(node->lookup->info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_switch, str_fmt_type(node->lookup->exp_type, &type_fmt)));
     }
-    switch (node->match->exp_type->tag) {
+    switch (node->lookup->exp_type->tag) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_UChar_t:
-            TRY(promote_char_to_int(ctx, &node->match));
+            TRY(promote_char_to_int(ctx, &node->lookup));
             break;
         default:
             break;
     }
-    switch (node->match->exp_type->tag) {
+    switch (node->lookup->exp_type->tag) {
         case AST_Int_t:
             TRY(check_switch_int_cases(ctx, node));
             break;
@@ -3168,7 +3168,7 @@ static error_t reslv_switch_statement(Ctx ctx, struct CSwitch* node) {
     CATCH_ENTER;
     annotate_switch_lookup(ctx, node);
     enter_scope(ctx);
-    TRY(reslv_typed_exp(ctx, &node->match));
+    TRY(reslv_typed_exp(ctx, &node->lookup));
     {
         struct CSwitch* p_switch_statement = ctx->p_switch_statement;
         ctx->p_switch_statement = node;

@@ -1120,23 +1120,23 @@ static void for_statement_instr(Ctx ctx, struct CFor* node) {
 static void switch_statement_instr(Ctx ctx, struct CSwitch* node) {
     TIdentifier target_break = repr_loop_identifier(ctx->identifiers, LBL_Lbreak, node->target);
     {
-        shared_ptr_t(TacValue) match = repr_exp_instr(ctx, node->match);
+        shared_ptr_t(TacValue) lookup = repr_exp_instr(ctx, node->lookup);
         for (unsigned long i = 0; i < vec_size(node->cases); ++i) {
             TIdentifier target_case = repr_case_identifier(ctx->identifiers, node->target, true, i);
             shared_ptr_t(TacValue) case_match = sptr_new();
             {
-                shared_ptr_t(TacValue) match_cp = sptr_new();
-                sptr_copy(TacValue, match, match_cp);
+                shared_ptr_t(TacValue) lookup_cp = sptr_new();
+                sptr_copy(TacValue, lookup, lookup_cp);
                 shared_ptr_t(TacValue) esac = repr_exp_instr(ctx, node->cases[i]);
                 case_match = plain_inner_value(ctx, node->cases[i]);
                 shared_ptr_t(TacValue) case_match_cp = sptr_new();
                 sptr_copy(TacValue, case_match, case_match_cp);
                 struct TacBinaryOp binop = init_TacEqual();
-                push_instr(ctx, make_TacBinary(&binop, &match_cp, &esac, &case_match_cp));
+                push_instr(ctx, make_TacBinary(&binop, &lookup_cp, &esac, &case_match_cp));
             }
             push_instr(ctx, make_TacJumpIfNotZero(target_case, &case_match));
         }
-        free_TacValue(&match);
+        free_TacValue(&lookup);
     }
     if (node->is_default) {
         TIdentifier target_default = repr_loop_identifier(ctx->identifiers, LBL_Ldefault, node->target);
