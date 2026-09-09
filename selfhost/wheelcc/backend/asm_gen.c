@@ -158,7 +158,7 @@ static shared_ptr_t(AsmOperand) dbl_const_op(Ctx ctx, struct CConstDouble* node)
 }
 
 static shared_ptr_t(AsmOperand) const_op(Ctx ctx, struct TacConstant* node) {
-    switch (node->constant->type) {
+    switch (node->constant->tag) {
         case AST_CConstChar_t:
             return char_imm_op(&node->constant->get._CConstChar);
         case AST_CConstInt_t:
@@ -189,7 +189,7 @@ static shared_ptr_t(AsmOperand) pseudo_mem_op(struct TacVariable* node) {
 }
 
 static shared_ptr_t(AsmOperand) var_op(Ctx ctx, struct TacVariable* node) {
-    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->type) {
+    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->tag) {
         case AST_Array_t:
         case AST_Structure_t:
             return pseudo_mem_op(node);
@@ -201,7 +201,7 @@ static shared_ptr_t(AsmOperand) var_op(Ctx ctx, struct TacVariable* node) {
 // operand = Imm(int, bool, bool, bool) | Reg(reg) | Pseudo(identifier) | Memory(int, reg) | Data(identifier, int)
 //         | PseudoMem(identifier, int) | Indexed(int, reg, reg)
 static shared_ptr_t(AsmOperand) gen_op(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacConstant_t:
             return const_op(ctx, &node->get._TacConstant);
         case AST_TacVariable_t:
@@ -213,7 +213,7 @@ static shared_ptr_t(AsmOperand) gen_op(Ctx ctx, struct TacValue* node) {
 
 // (signed) cond_code = E | NE | L | LE | G | GE
 static struct AsmCondCode gen_signed_cond_code(struct TacBinaryOp* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacEqual_t:
             return init_AsmE();
         case AST_TacNotEqual_t:
@@ -233,7 +233,7 @@ static struct AsmCondCode gen_signed_cond_code(struct TacBinaryOp* node) {
 
 // (unsigned) cond_code = E | NE | B | BE | A | AE
 static struct AsmCondCode gen_unsigned_cond_code(struct TacBinaryOp* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacEqual_t:
             return init_AsmE();
         case AST_TacNotEqual_t:
@@ -253,7 +253,7 @@ static struct AsmCondCode gen_unsigned_cond_code(struct TacBinaryOp* node) {
 
 // unary_operator = Not | Neg | Shr
 static struct AsmUnaryOp gen_unop(struct TacUnaryOp* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacComplement_t:
             return init_AsmNot();
         case AST_TacNegate_t:
@@ -266,7 +266,7 @@ static struct AsmUnaryOp gen_unop(struct TacUnaryOp* node) {
 // binary_operator = Add | Sub | Mult | DivDouble | BitAnd | BitOr | BitXor | BitShiftLeft | BitShiftRight |
 //                 BitShrArithmetic
 static struct AsmBinaryOp gen_binop(struct TacBinaryOp* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacAdd_t:
             return init_AsmAdd();
         case AST_TacSubtract_t:
@@ -293,7 +293,7 @@ static struct AsmBinaryOp gen_binop(struct TacBinaryOp* node) {
 }
 
 static bool is_const_signed(struct TacConstant* node) {
-    switch (node->constant->type) {
+    switch (node->constant->tag) {
         case AST_CConstChar_t:
         case AST_CConstInt_t:
         case AST_CConstLong_t:
@@ -304,7 +304,7 @@ static bool is_const_signed(struct TacConstant* node) {
 }
 
 static bool is_var_signed(Ctx ctx, struct TacVariable* node) {
-    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->type) {
+    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->tag) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_Int_t:
@@ -317,7 +317,7 @@ static bool is_var_signed(Ctx ctx, struct TacVariable* node) {
 }
 
 static bool is_value_signed(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacConstant_t:
             return is_const_signed(&node->get._TacConstant);
         case AST_TacVariable_t:
@@ -328,7 +328,7 @@ static bool is_value_signed(Ctx ctx, struct TacValue* node) {
 }
 
 static bool is_const_1b(struct TacConstant* node) {
-    switch (node->constant->type) {
+    switch (node->constant->tag) {
         case AST_CConstChar_t:
         case AST_CConstUChar_t:
             return true;
@@ -338,7 +338,7 @@ static bool is_const_1b(struct TacConstant* node) {
 }
 
 static bool is_var_1b(Ctx ctx, struct TacVariable* node) {
-    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->type) {
+    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->tag) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_UChar_t:
@@ -349,7 +349,7 @@ static bool is_var_1b(Ctx ctx, struct TacVariable* node) {
 }
 
 static bool is_value_1b(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacConstant_t:
             return is_const_1b(&node->get._TacConstant);
         case AST_TacVariable_t:
@@ -360,7 +360,7 @@ static bool is_value_1b(Ctx ctx, struct TacValue* node) {
 }
 
 static bool is_const_4b(struct TacConstant* node) {
-    switch (node->constant->type) {
+    switch (node->constant->tag) {
         case AST_CConstInt_t:
         case AST_CConstUInt_t:
             return true;
@@ -370,7 +370,7 @@ static bool is_const_4b(struct TacConstant* node) {
 }
 
 static bool is_var_4b(Ctx ctx, struct TacVariable* node) {
-    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->type) {
+    switch (map_get(ctx->frontend->symbol_table, node->name)->type_t->tag) {
         case AST_Int_t:
         case AST_UInt_t:
             return true;
@@ -380,7 +380,7 @@ static bool is_var_4b(Ctx ctx, struct TacVariable* node) {
 }
 
 static bool is_value_4b(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacConstant_t:
             return is_const_4b(&node->get._TacConstant);
         case AST_TacVariable_t:
@@ -390,14 +390,14 @@ static bool is_value_4b(Ctx ctx, struct TacValue* node) {
     }
 }
 
-static bool is_const_dbl(struct TacConstant* node) { return node->constant->type == AST_CConstDouble_t; }
+static bool is_const_dbl(struct TacConstant* node) { return node->constant->tag == AST_CConstDouble_t; }
 
 static bool is_var_dbl(Ctx ctx, struct TacVariable* node) {
-    return map_get(ctx->frontend->symbol_table, node->name)->type_t->type == AST_Double_t;
+    return map_get(ctx->frontend->symbol_table, node->name)->type_t->tag == AST_Double_t;
 }
 
 static bool is_value_dbl(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacConstant_t:
             return is_const_dbl(&node->get._TacConstant);
         case AST_TacVariable_t:
@@ -408,11 +408,11 @@ static bool is_value_dbl(Ctx ctx, struct TacValue* node) {
 }
 
 static bool is_var_struct(Ctx ctx, struct TacVariable* node) {
-    return map_get(ctx->frontend->symbol_table, node->name)->type_t->type == AST_Structure_t;
+    return map_get(ctx->frontend->symbol_table, node->name)->type_t->tag == AST_Structure_t;
 }
 
 static bool is_value_struct(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacVariable_t:
             return is_var_struct(ctx, &node->get._TacVariable);
         case AST_TacConstant_t:
@@ -423,7 +423,7 @@ static bool is_value_struct(Ctx ctx, struct TacValue* node) {
 }
 
 static shared_ptr_t(AssemblyType) const_asm_type(struct TacConstant* node) {
-    switch (node->constant->type) {
+    switch (node->constant->tag) {
         case AST_CConstChar_t:
         case AST_CConstUChar_t:
             return make_Byte();
@@ -445,7 +445,7 @@ static shared_ptr_t(AssemblyType) var_asm_type(Ctx ctx, struct TacVariable* node
 }
 
 static shared_ptr_t(AssemblyType) gen_asm_type(Ctx ctx, struct TacValue* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacConstant_t:
             return const_asm_type(&node->get._TacConstant);
         case AST_TacVariable_t:
@@ -481,17 +481,17 @@ static void struct_1_reg_8b_class(Ctx ctx, struct Structure* struct_type) {
             break;
         }
         struct Type* member_type = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i)->member_type;
-        while (member_type->type == AST_Array_t) {
+        while (member_type->tag == AST_Array_t) {
             member_type = member_type->get._Array.elem_type;
         }
-        if (member_type->type == AST_Structure_t) {
+        if (member_type->tag == AST_Structure_t) {
             struct Structure* member_struct_type = &member_type->get._Structure;
             struct_8b_class(ctx, member_struct_type);
             if (map_get(ctx->struct_8b_map, member_struct_type->tag_name).clss[0] == CLS_integer) {
                 struct_8b.clss[0] = CLS_integer;
             }
         }
-        else if (member_type->type != AST_Double_t) {
+        else if (member_type->tag != AST_Double_t) {
             struct_8b.clss[0] = CLS_integer;
         }
     }
@@ -508,22 +508,22 @@ static void struct_2_reg_8b_class(Ctx ctx, struct Structure* struct_type) {
         }
         TLong size = 1l;
         struct Type* member_type = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i)->member_type;
-        if (member_type->type == AST_Array_t) {
+        if (member_type->tag == AST_Array_t) {
             do {
                 struct Array* member_arr_type = &member_type->get._Array;
                 member_type = member_arr_type->elem_type;
                 size *= member_arr_type->size;
             }
-            while (member_type->type == AST_Array_t);
+            while (member_type->tag == AST_Array_t);
         }
-        if (member_type->type == AST_Structure_t) {
+        if (member_type->tag == AST_Structure_t) {
             size *= map_get(ctx->frontend->struct_typedef_table, member_type->get._Structure.tag_name)->size;
         }
         else {
             size *= gen_type_alignment(ctx->frontend, member_type);
         }
         if (size > 8l) {
-            if (member_type->type == AST_Structure_t) {
+            if (member_type->tag == AST_Structure_t) {
                 struct Structure* member_struct_type = &member_type->get._Structure;
                 struct_8b_class(ctx, member_struct_type);
                 struct Struct8Bytes* member_struct_8b = &map_get(ctx->struct_8b_map, member_struct_type->tag_name);
@@ -540,35 +540,35 @@ static void struct_2_reg_8b_class(Ctx ctx, struct Structure* struct_type) {
                     struct_8b.clss[1] = CLS_integer;
                 }
             }
-            else if (member_type->type != AST_Double_t) {
+            else if (member_type->tag != AST_Double_t) {
                 struct_8b.clss[0] = CLS_integer;
                 struct_8b.clss[1] = CLS_integer;
             }
         }
         else {
-            if (member_type->type == AST_Structure_t) {
+            if (member_type->tag == AST_Structure_t) {
                 struct Structure* member_struct_type = &member_type->get._Structure;
                 struct_8b_class(ctx, member_struct_type);
                 if (map_get(ctx->struct_8b_map, member_struct_type->tag_name).clss[0] == CLS_integer) {
                     struct_8b.clss[0] = CLS_integer;
                 }
             }
-            else if (member_type->type != AST_Double_t) {
+            else if (member_type->tag != AST_Double_t) {
                 struct_8b.clss[0] = CLS_integer;
             }
             if (!struct_type->is_union) {
                 member_type = get_struct_typedef_back(ctx->frontend, struct_type->tag_name)->member_type;
-                while (member_type->type == AST_Array_t) {
+                while (member_type->tag == AST_Array_t) {
                     member_type = member_type->get._Array.elem_type;
                 }
-                if (member_type->type == AST_Structure_t) {
+                if (member_type->tag == AST_Structure_t) {
                     struct Structure* member_struct_type = &member_type->get._Structure;
                     struct_8b_class(ctx, member_struct_type);
                     if (map_get(ctx->struct_8b_map, member_struct_type->tag_name).clss[0] == CLS_integer) {
                         struct_8b.clss[1] = CLS_integer;
                     }
                 }
-                else if (member_type->type != AST_Double_t) {
+                else if (member_type->tag != AST_Double_t) {
                     struct_8b.clss[1] = CLS_integer;
                 }
             }
@@ -655,7 +655,7 @@ static void ret_8b_instr(
     shared_ptr_t(AsmOperand) dst = gen_register(arg_reg);
     shared_ptr_t(AssemblyType) asm_type_src =
         struct_type ? asm_type_8b(ctx, struct_type, offset) : make_BackendDouble();
-    if (asm_type_src->type == AST_ByteArray_t) {
+    if (asm_type_src->tag == AST_ByteArray_t) {
         TLong size = offset + 2l;
         offset += asm_type_src->get._ByteArray.size - 1l;
         free_AssemblyType(&asm_type_src);
@@ -731,7 +731,7 @@ static void ret_struct_instr(Ctx ctx, struct TacReturn* node) {
             TLong offset = 0l;
             while (size > 0l) {
                 shared_ptr_t(AsmOperand) src = gen_op(ctx, node->val);
-                THROW_ABORT_IF(src->type != AST_AsmPseudoMem_t);
+                THROW_ABORT_IF(src->tag != AST_AsmPseudoMem_t);
                 src->get._AsmPseudoMem.offset = offset;
                 shared_ptr_t(AsmOperand) dst = gen_memory(REG_Ax, offset);
                 shared_ptr_t(AssemblyType) asm_type_src = sptr_new();
@@ -826,7 +826,7 @@ static void truncate_byte_instr(Ctx ctx, struct TacTruncate* node) {
     shared_ptr_t(AsmOperand) src = gen_op(ctx, node->src);
     shared_ptr_t(AsmOperand) dst = gen_op(ctx, node->dst);
     shared_ptr_t(AssemblyType) asm_type_dst = make_Byte();
-    if (src->type == AST_AsmImm_t) {
+    if (src->tag == AST_AsmImm_t) {
         truncate_imm_byte_instr(&src->get._AsmImm);
     }
     push_instr(ctx, make_AsmMov(&asm_type_dst, &src, &dst));
@@ -842,7 +842,7 @@ static void truncate_long_instr(Ctx ctx, struct TacTruncate* node) {
     shared_ptr_t(AsmOperand) src = gen_op(ctx, node->src);
     shared_ptr_t(AsmOperand) dst = gen_op(ctx, node->dst);
     shared_ptr_t(AssemblyType) asm_type_dst = make_LongWord();
-    if (src->type == AST_AsmImm_t) {
+    if (src->tag == AST_AsmImm_t) {
         truncate_imm_long_instr(&src->get._AsmImm);
     }
     push_instr(ctx, make_AsmMov(&asm_type_dst, &src, &dst));
@@ -1200,7 +1200,7 @@ static void reg_arg_call_instr(Ctx ctx, struct TacValue* node, REGISTER_KIND arg
 
 static void stack_arg_call_instr(Ctx ctx, struct TacValue* node) {
     shared_ptr_t(AsmOperand) src = gen_op(ctx, node);
-    switch (src->type) {
+    switch (src->tag) {
         case AST_AsmRegister_t:
         case AST_AsmImm_t:
             push_instr(ctx, make_AsmPush(&src));
@@ -1209,7 +1209,7 @@ static void stack_arg_call_instr(Ctx ctx, struct TacValue* node) {
             break;
     }
     shared_ptr_t(AssemblyType) asm_type_src = gen_asm_type(ctx, node);
-    switch (asm_type_src->type) {
+    switch (asm_type_src->tag) {
         case AST_QuadWord_t:
         case AST_BackendDouble_t:
             push_instr(ctx, make_AsmPush(&src));
@@ -1304,7 +1304,7 @@ static void bytearr_stack_arg_call_instr(Ctx ctx, TIdentifier name, TLong offset
 
 static void stack_8b_arg_call_instr(Ctx ctx, TIdentifier name, TLong offset, struct Structure* struct_type) {
     shared_ptr_t(AssemblyType) asm_type = asm_type_8b(ctx, struct_type, offset);
-    switch (asm_type->type) {
+    switch (asm_type->tag) {
         case AST_QuadWord_t:
             quad_stack_arg_call_instr(ctx, name, offset);
             break;
@@ -1422,7 +1422,7 @@ static void ret_8b_call_instr(
     shared_ptr_t(AsmOperand) src = gen_register(arg_reg);
     shared_ptr_t(AssemblyType) asm_type_dst =
         struct_type ? asm_type_8b(ctx, struct_type, offset) : make_BackendDouble();
-    if (asm_type_dst->type == AST_ByteArray_t) {
+    if (asm_type_dst->tag == AST_ByteArray_t) {
         TLong size = asm_type_dst->get._ByteArray.size + offset - 2l;
         free_AssemblyType(&asm_type_dst);
         asm_type_dst = make_Byte();
@@ -1674,7 +1674,7 @@ static void unop_conditional_instr(Ctx ctx, struct TacUnary* node) {
 }
 
 static void unary_instr(Ctx ctx, struct TacUnary* node) {
-    switch (node->unop.type) {
+    switch (node->unop.tag) {
         case AST_TacComplement_t:
             unop_int_arithmetic_instr(ctx, node);
             break;
@@ -1892,7 +1892,7 @@ static void binop_dbl_conditional_instr(Ctx ctx, struct TacBinary* node) {
     }
     {
         struct AsmCondCode cond_code = gen_unsigned_cond_code(&node->binop);
-        if (cond_code.type == AST_AsmNE_t) {
+        if (cond_code.tag == AST_AsmNE_t) {
             TIdentifier target_nan_ne = repr_asm_label(ctx, LBL_Lcomisd_nan);
             {
                 shared_ptr_t(AsmOperand) cmp_dst_cp = sptr_new();
@@ -1924,7 +1924,7 @@ static void binop_conditional_instr(Ctx ctx, struct TacBinary* node) {
 }
 
 static void binary_instr(Ctx ctx, struct TacBinary* node) {
-    switch (node->binop.type) {
+    switch (node->binop.tag) {
         case AST_TacAdd_t:
         case AST_TacSubtract_t:
         case AST_TacMultiply_t:
@@ -2003,12 +2003,12 @@ static void copy_instr(Ctx ctx, struct TacCopy* node) {
 static void getaddr_instr(Ctx ctx, struct TacGetAddress* node) {
     shared_ptr_t(AsmOperand) src = sptr_new();
     {
-        if (node->src->type == AST_TacVariable_t) {
+        if (node->src->tag == AST_TacVariable_t) {
             TIdentifier name = node->src->get._TacVariable.name;
             set_insert(ctx->frontend->addressed_set, name);
             long map_it = map_find(ctx->frontend->symbol_table, name);
             if (map_it != map_end()
-                && pair_second(ctx->frontend->symbol_table[map_it])->attrs->type == AST_ConstantAttr_t) {
+                && pair_second(ctx->frontend->symbol_table[map_it])->attrs->tag == AST_ConstantAttr_t) {
                 src = make_AsmData(name, 0l);
                 goto Lpass;
             }
@@ -2151,7 +2151,7 @@ static void const_idx_add_ptr_instr(Ctx ctx, struct TacAddPtr* node) {
         shared_ptr_t(AsmOperand) src = sptr_new();
         {
             struct CConst* constant = node->idx->get._TacConstant.constant;
-            THROW_ABORT_IF(constant->type != AST_CConstLong_t);
+            THROW_ABORT_IF(constant->tag != AST_CConstLong_t);
             src = gen_memory(REG_Ax, constant->get._CConstLong.value * node->scale);
         }
         shared_ptr_t(AsmOperand) dst = gen_op(ctx, node->dst);
@@ -2232,7 +2232,7 @@ static void var_idx_add_ptr_instr(Ctx ctx, struct TacAddPtr* node) {
 }
 
 static void add_ptr_instr(Ctx ctx, struct TacAddPtr* node) {
-    switch (node->idx->type) {
+    switch (node->idx->tag) {
         case AST_TacConstant_t:
             const_idx_add_ptr_instr(ctx, node);
             break;
@@ -2458,7 +2458,7 @@ static void label_instr(Ctx ctx, struct TacLabel* node) {
 }
 
 static void gen_instr(Ctx ctx, struct TacInstruction* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacReturn_t:
             ret_instr(ctx, &node->get._TacReturn);
             break;
@@ -2575,7 +2575,7 @@ static void reg_8b_fun_param_instr(
 static void stack_8b_fun_param_instr(
     Ctx ctx, TIdentifier name, TLong stack_bytes, TLong offset, struct Structure* struct_type) {
     shared_ptr_t(AssemblyType) asm_type_dst = asm_type_8b(ctx, struct_type, offset);
-    if (asm_type_dst->type == AST_ByteArray_t) {
+    if (asm_type_dst->tag == AST_ByteArray_t) {
         TLong size = asm_type_dst->get._ByteArray.size;
         free_AssemblyType(&asm_type_dst);
         while (size > 0l) {
@@ -2615,7 +2615,7 @@ static void fun_param_toplvl(Ctx ctx, struct TacFunction* node, struct FunType* 
     for (unsigned long i = 0; i < vec_size(node->params); ++i) {
         TIdentifier param = node->params[i];
         struct Type* param_type = map_get(ctx->frontend->symbol_table, param)->type_t;
-        if (param_type->type == AST_Double_t) {
+        if (param_type->tag == AST_Double_t) {
             if (sse_size < 8) {
                 reg_fun_param_instr(ctx, param, ctx->sse_arg_regs[sse_size]);
                 sse_size++;
@@ -2625,7 +2625,7 @@ static void fun_param_toplvl(Ctx ctx, struct TacFunction* node, struct FunType* 
                 stack_bytes += 8l;
             }
         }
-        else if (param_type->type != AST_Structure_t) {
+        else if (param_type->tag != AST_Structure_t) {
             if (reg_size < 6) {
                 reg_fun_param_instr(ctx, param, ctx->arg_regs[reg_size]);
                 reg_size++;
@@ -2691,7 +2691,7 @@ static unique_ptr_t(AsmTopLevel) gen_fun_toplvl(Ctx ctx, struct TacFunction* nod
         ctx->p_instrs = &body;
 
         struct FunType* fun_type = &map_get(ctx->frontend->symbol_table, node->name)->type_t->get._FunType;
-        if (fun_type->ret_type->type == AST_Structure_t) {
+        if (fun_type->ret_type->tag == AST_Structure_t) {
             struct Structure* struct_type = &fun_type->ret_type->get._Structure;
             struct_8b_class(ctx, struct_type);
             if (map_get(ctx->struct_8b_map, struct_type->tag_name).clss[0] == CLS_memory) {
@@ -2751,7 +2751,7 @@ static unique_ptr_t(AsmTopLevel) gen_static_const_toplvl(Ctx ctx, struct TacStat
 // top_level = Function(identifier, bool, bool, instruction*) | StaticVariable(identifier, bool, int, static_init*)
 //           | StaticConstant(identifier, int, static_init)
 static unique_ptr_t(AsmTopLevel) gen_toplvl(Ctx ctx, struct TacTopLevel* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_TacFunction_t:
             return gen_fun_toplvl(ctx, &node->get._TacFunction);
         case AST_TacStaticVariable_t:

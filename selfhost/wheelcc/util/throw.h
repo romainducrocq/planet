@@ -11,7 +11,7 @@ struct FileIoContext;
 
 #ifdef __GCC_BOOTSTRAP__
 #ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wreturn-type"
+#pragma GCC diagnostic ignored "-Wreturn-tag"
 #endif
 #endif
 

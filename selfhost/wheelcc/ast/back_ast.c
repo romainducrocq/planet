@@ -14,8 +14,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct AsmReg make_AsmReg(tagged_def_impl(AST_T)) {
-    struct AsmReg self = {type};
-    switch (type) {
+    struct AsmReg self = {tag};
+    switch (tag) {
         case AST_AsmReg_t:
         case AST_AsmAx_t:
         case AST_AsmBx_t:
@@ -56,8 +56,8 @@ struct AsmReg make_AsmReg(tagged_def_impl(AST_T)) {
 }
 
 struct AsmCondCode make_AsmCondCode(tagged_def_impl(AST_T)) {
-    struct AsmCondCode self = {type};
-    switch (type) {
+    struct AsmCondCode self = {tag};
+    switch (tag) {
         case AST_AsmCondCode_t:
         case AST_AsmE_t:
         case AST_AsmNE_t:
@@ -79,13 +79,13 @@ struct AsmCondCode make_AsmCondCode(tagged_def_impl(AST_T)) {
 shared_ptr_t(AsmOperand) make_AsmOperand(void) {
     shared_ptr_t(AsmOperand) self = sptr_new();
     sptr_alloc(AsmOperand, self);
-    self->type = AST_AsmOperand_t;
+    self->tag = AST_AsmOperand_t;
     return self;
 }
 
 shared_ptr_t(AsmOperand) make_AsmImm(TULong value, bool is_byte, bool is_quad, bool is_neg) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmImm_t;
+    self->tag = AST_AsmImm_t;
     self->get._AsmImm.value = value;
     self->get._AsmImm.is_byte = is_byte;
     self->get._AsmImm.is_quad = is_quad;
@@ -95,21 +95,21 @@ shared_ptr_t(AsmOperand) make_AsmImm(TULong value, bool is_byte, bool is_quad, b
 
 shared_ptr_t(AsmOperand) make_AsmRegister(struct AsmReg* reg) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmRegister_t;
+    self->tag = AST_AsmRegister_t;
     self->get._AsmRegister.reg = *reg;
     return self;
 }
 
 shared_ptr_t(AsmOperand) make_AsmPseudo(TIdentifier name) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmPseudo_t;
+    self->tag = AST_AsmPseudo_t;
     self->get._AsmPseudo.name = name;
     return self;
 }
 
 shared_ptr_t(AsmOperand) make_AsmMemory(TLong value, struct AsmReg* reg) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmMemory_t;
+    self->tag = AST_AsmMemory_t;
     self->get._AsmMemory.value = value;
     self->get._AsmMemory.reg = *reg;
     return self;
@@ -117,7 +117,7 @@ shared_ptr_t(AsmOperand) make_AsmMemory(TLong value, struct AsmReg* reg) {
 
 shared_ptr_t(AsmOperand) make_AsmData(TIdentifier name, TLong offset) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmData_t;
+    self->tag = AST_AsmData_t;
     self->get._AsmData.name = name;
     self->get._AsmData.offset = offset;
     return self;
@@ -125,7 +125,7 @@ shared_ptr_t(AsmOperand) make_AsmData(TIdentifier name, TLong offset) {
 
 shared_ptr_t(AsmOperand) make_AsmPseudoMem(TIdentifier name, TLong offset) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmPseudoMem_t;
+    self->tag = AST_AsmPseudoMem_t;
     self->get._AsmPseudoMem.name = name;
     self->get._AsmPseudoMem.offset = offset;
     return self;
@@ -133,7 +133,7 @@ shared_ptr_t(AsmOperand) make_AsmPseudoMem(TIdentifier name, TLong offset) {
 
 shared_ptr_t(AsmOperand) make_AsmIndexed(TLong scale, struct AsmReg* reg_base, struct AsmReg* reg_index) {
     shared_ptr_t(AsmOperand) self = make_AsmOperand();
-    self->type = AST_AsmIndexed_t;
+    self->tag = AST_AsmIndexed_t;
     self->get._AsmIndexed.scale = scale;
     self->get._AsmIndexed.reg_base = *reg_base;
     self->get._AsmIndexed.reg_index = *reg_index;
@@ -142,7 +142,7 @@ shared_ptr_t(AsmOperand) make_AsmIndexed(TLong scale, struct AsmReg* reg_base, s
 
 void free_AsmOperand(shared_ptr_t(AsmOperand) * self) {
     sptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_AsmOperand_t:
         case AST_AsmImm_t:
             break;
@@ -165,8 +165,8 @@ void free_AsmOperand(shared_ptr_t(AsmOperand) * self) {
 }
 
 struct AsmBinaryOp make_AsmBinaryOp(tagged_def_impl(AST_T)) {
-    struct AsmBinaryOp self = {type};
-    switch (type) {
+    struct AsmBinaryOp self = {tag};
+    switch (tag) {
         case AST_AsmBinaryOp_t:
         case AST_AsmAdd_t:
         case AST_AsmSub_t:
@@ -185,8 +185,8 @@ struct AsmBinaryOp make_AsmBinaryOp(tagged_def_impl(AST_T)) {
 }
 
 struct AsmUnaryOp make_AsmUnaryOp(tagged_def_impl(AST_T)) {
-    struct AsmUnaryOp self = {type};
-    switch (type) {
+    struct AsmUnaryOp self = {tag};
+    switch (tag) {
         case AST_AsmUnaryOp_t:
         case AST_AsmNot_t:
         case AST_AsmNeg_t:
@@ -200,14 +200,14 @@ struct AsmUnaryOp make_AsmUnaryOp(tagged_def_impl(AST_T)) {
 unique_ptr_t(AsmInstruction) make_AsmInstruction(void) {
     unique_ptr_t(AsmInstruction) self = uptr_new();
     uptr_alloc(AsmInstruction, self);
-    self->type = AST_AsmInstruction_t;
+    self->tag = AST_AsmInstruction_t;
     return self;
 }
 
 unique_ptr_t(AsmInstruction)
     make_AsmMov(shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmMov_t;
+    self->tag = AST_AsmMov_t;
     self->get._AsmMov.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmMov.asm_type);
     self->get._AsmMov.src = sptr_new();
@@ -220,7 +220,7 @@ unique_ptr_t(AsmInstruction)
 unique_ptr_t(AsmInstruction) make_AsmMovSx(shared_ptr_t(AssemblyType) * asm_type_src,
     shared_ptr_t(AssemblyType) * asm_type_dst, shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmMovSx_t;
+    self->tag = AST_AsmMovSx_t;
     self->get._AsmMovSx.asm_type_src = sptr_new();
     sptr_move(AssemblyType, *asm_type_src, self->get._AsmMovSx.asm_type_src);
     self->get._AsmMovSx.asm_type_dst = sptr_new();
@@ -235,7 +235,7 @@ unique_ptr_t(AsmInstruction) make_AsmMovSx(shared_ptr_t(AssemblyType) * asm_type
 unique_ptr_t(AsmInstruction) make_AsmMovZeroExtend(shared_ptr_t(AssemblyType) * asm_type_src,
     shared_ptr_t(AssemblyType) * asm_type_dst, shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmMovZeroExtend_t;
+    self->tag = AST_AsmMovZeroExtend_t;
     self->get._AsmMovZeroExtend.asm_type_src = sptr_new();
     sptr_move(AssemblyType, *asm_type_src, self->get._AsmMovZeroExtend.asm_type_src);
     self->get._AsmMovZeroExtend.asm_type_dst = sptr_new();
@@ -249,7 +249,7 @@ unique_ptr_t(AsmInstruction) make_AsmMovZeroExtend(shared_ptr_t(AssemblyType) * 
 
 unique_ptr_t(AsmInstruction) make_AsmLea(shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmLea_t;
+    self->tag = AST_AsmLea_t;
     self->get._AsmLea.src = sptr_new();
     sptr_move(AsmOperand, *src, self->get._AsmLea.src);
     self->get._AsmLea.dst = sptr_new();
@@ -260,7 +260,7 @@ unique_ptr_t(AsmInstruction) make_AsmLea(shared_ptr_t(AsmOperand) * src, shared_
 unique_ptr_t(AsmInstruction) make_AsmCvttsd2si(
     shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmCvttsd2si_t;
+    self->tag = AST_AsmCvttsd2si_t;
     self->get._AsmCvttsd2si.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmCvttsd2si.asm_type);
     self->get._AsmCvttsd2si.src = sptr_new();
@@ -273,7 +273,7 @@ unique_ptr_t(AsmInstruction) make_AsmCvttsd2si(
 unique_ptr_t(AsmInstruction) make_AsmCvtsi2sd(
     shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmCvtsi2sd_t;
+    self->tag = AST_AsmCvtsi2sd_t;
     self->get._AsmCvtsi2sd.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmCvtsi2sd.asm_type);
     self->get._AsmCvtsi2sd.src = sptr_new();
@@ -286,7 +286,7 @@ unique_ptr_t(AsmInstruction) make_AsmCvtsi2sd(
 unique_ptr_t(AsmInstruction)
     make_AsmUnary(struct AsmUnaryOp* unop, shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmUnary_t;
+    self->tag = AST_AsmUnary_t;
     self->get._AsmUnary.unop = *unop;
     self->get._AsmUnary.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmUnary.asm_type);
@@ -298,7 +298,7 @@ unique_ptr_t(AsmInstruction)
 unique_ptr_t(AsmInstruction) make_AsmBinary(struct AsmBinaryOp* binop, shared_ptr_t(AssemblyType) * asm_type,
     shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmBinary_t;
+    self->tag = AST_AsmBinary_t;
     self->get._AsmBinary.binop = *binop;
     self->get._AsmBinary.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmBinary.asm_type);
@@ -312,7 +312,7 @@ unique_ptr_t(AsmInstruction) make_AsmBinary(struct AsmBinaryOp* binop, shared_pt
 unique_ptr_t(AsmInstruction)
     make_AsmCmp(shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * src, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmCmp_t;
+    self->tag = AST_AsmCmp_t;
     self->get._AsmCmp.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmCmp.asm_type);
     self->get._AsmCmp.src = sptr_new();
@@ -324,7 +324,7 @@ unique_ptr_t(AsmInstruction)
 
 unique_ptr_t(AsmInstruction) make_AsmIdiv(shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * src) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmIdiv_t;
+    self->tag = AST_AsmIdiv_t;
     self->get._AsmIdiv.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmIdiv.asm_type);
     self->get._AsmIdiv.src = sptr_new();
@@ -334,7 +334,7 @@ unique_ptr_t(AsmInstruction) make_AsmIdiv(shared_ptr_t(AssemblyType) * asm_type,
 
 unique_ptr_t(AsmInstruction) make_AsmDiv(shared_ptr_t(AssemblyType) * asm_type, shared_ptr_t(AsmOperand) * src) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmDiv_t;
+    self->tag = AST_AsmDiv_t;
     self->get._AsmDiv.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmDiv.asm_type);
     self->get._AsmDiv.src = sptr_new();
@@ -344,7 +344,7 @@ unique_ptr_t(AsmInstruction) make_AsmDiv(shared_ptr_t(AssemblyType) * asm_type, 
 
 unique_ptr_t(AsmInstruction) make_AsmCdq(shared_ptr_t(AssemblyType) * asm_type) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmCdq_t;
+    self->tag = AST_AsmCdq_t;
     self->get._AsmCdq.asm_type = sptr_new();
     sptr_move(AssemblyType, *asm_type, self->get._AsmCdq.asm_type);
     return self;
@@ -352,14 +352,14 @@ unique_ptr_t(AsmInstruction) make_AsmCdq(shared_ptr_t(AssemblyType) * asm_type) 
 
 unique_ptr_t(AsmInstruction) make_AsmJmp(TIdentifier target) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmJmp_t;
+    self->tag = AST_AsmJmp_t;
     self->get._AsmJmp.target = target;
     return self;
 }
 
 unique_ptr_t(AsmInstruction) make_AsmJmpCC(TIdentifier target, struct AsmCondCode* cond_code) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmJmpCC_t;
+    self->tag = AST_AsmJmpCC_t;
     self->get._AsmJmpCC.target = target;
     self->get._AsmJmpCC.cond_code = *cond_code;
     return self;
@@ -367,7 +367,7 @@ unique_ptr_t(AsmInstruction) make_AsmJmpCC(TIdentifier target, struct AsmCondCod
 
 unique_ptr_t(AsmInstruction) make_AsmSetCC(struct AsmCondCode* cond_code, shared_ptr_t(AsmOperand) * dst) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmSetCC_t;
+    self->tag = AST_AsmSetCC_t;
     self->get._AsmSetCC.cond_code = *cond_code;
     self->get._AsmSetCC.dst = sptr_new();
     sptr_move(AsmOperand, *dst, self->get._AsmSetCC.dst);
@@ -376,14 +376,14 @@ unique_ptr_t(AsmInstruction) make_AsmSetCC(struct AsmCondCode* cond_code, shared
 
 unique_ptr_t(AsmInstruction) make_AsmLabel(TIdentifier name) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmLabel_t;
+    self->tag = AST_AsmLabel_t;
     self->get._AsmLabel.name = name;
     return self;
 }
 
 unique_ptr_t(AsmInstruction) make_AsmPush(shared_ptr_t(AsmOperand) * src) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmPush_t;
+    self->tag = AST_AsmPush_t;
     self->get._AsmPush.src = sptr_new();
     sptr_move(AsmOperand, *src, self->get._AsmPush.src);
     return self;
@@ -391,27 +391,27 @@ unique_ptr_t(AsmInstruction) make_AsmPush(shared_ptr_t(AsmOperand) * src) {
 
 unique_ptr_t(AsmInstruction) make_AsmPop(struct AsmReg* reg) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmPop_t;
+    self->tag = AST_AsmPop_t;
     self->get._AsmPop.reg = *reg;
     return self;
 }
 
 unique_ptr_t(AsmInstruction) make_AsmCall(TIdentifier name) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmCall_t;
+    self->tag = AST_AsmCall_t;
     self->get._AsmCall.name = name;
     return self;
 }
 
 unique_ptr_t(AsmInstruction) make_AsmRet(void) {
     unique_ptr_t(AsmInstruction) self = make_AsmInstruction();
-    self->type = AST_AsmRet_t;
+    self->tag = AST_AsmRet_t;
     return self;
 }
 
 void free_AsmInstruction(unique_ptr_t(AsmInstruction) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_AsmInstruction_t:
             break;
         case AST_AsmMov_t:
@@ -497,14 +497,14 @@ void free_AsmInstruction(unique_ptr_t(AsmInstruction) * self) {
 unique_ptr_t(AsmTopLevel) make_AsmTopLevel(void) {
     unique_ptr_t(AsmTopLevel) self = uptr_new();
     uptr_alloc(AsmTopLevel, self);
-    self->type = AST_AsmTopLevel_t;
+    self->tag = AST_AsmTopLevel_t;
     return self;
 }
 
 unique_ptr_t(AsmTopLevel) make_AsmFunction(
     TIdentifier name, bool is_glob, bool is_ret_memory, vector_t(unique_ptr_t(AsmInstruction)) * instructions) {
     unique_ptr_t(AsmTopLevel) self = make_AsmTopLevel();
-    self->type = AST_AsmFunction_t;
+    self->tag = AST_AsmFunction_t;
     self->get._AsmFunction.name = name;
     self->get._AsmFunction.is_glob = is_glob;
     self->get._AsmFunction.is_ret_memory = is_ret_memory;
@@ -516,7 +516,7 @@ unique_ptr_t(AsmTopLevel) make_AsmFunction(
 unique_ptr_t(AsmTopLevel) make_AsmStaticVariable(
     TIdentifier name, TInt alignment, bool is_glob, vector_t(shared_ptr_t(StaticInit)) * static_inits) {
     unique_ptr_t(AsmTopLevel) self = make_AsmTopLevel();
-    self->type = AST_AsmStaticVariable_t;
+    self->tag = AST_AsmStaticVariable_t;
     self->get._AsmStaticVariable.name = name;
     self->get._AsmStaticVariable.alignment = alignment;
     self->get._AsmStaticVariable.is_glob = is_glob;
@@ -528,7 +528,7 @@ unique_ptr_t(AsmTopLevel) make_AsmStaticVariable(
 unique_ptr_t(AsmTopLevel)
     make_AsmStaticConstant(TIdentifier name, TInt alignment, shared_ptr_t(StaticInit) * static_init) {
     unique_ptr_t(AsmTopLevel) self = make_AsmTopLevel();
-    self->type = AST_AsmStaticConstant_t;
+    self->tag = AST_AsmStaticConstant_t;
     self->get._AsmStaticConstant.name = name;
     self->get._AsmStaticConstant.alignment = alignment;
     self->get._AsmStaticConstant.static_init = sptr_new();
@@ -538,7 +538,7 @@ unique_ptr_t(AsmTopLevel)
 
 void free_AsmTopLevel(unique_ptr_t(AsmTopLevel) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_AsmTopLevel_t:
             break;
         case AST_AsmFunction_t:
@@ -566,7 +566,7 @@ unique_ptr_t(AsmProgram) make_AsmProgram(
     vector_t(unique_ptr_t(AsmTopLevel)) * static_const_toplvls, vector_t(unique_ptr_t(AsmTopLevel)) * top_levels) {
     unique_ptr_t(AsmProgram) self = uptr_new();
     uptr_alloc(AsmProgram, self);
-    self->type = AST_AsmProgram_t;
+    self->tag = AST_AsmProgram_t;
     self->static_const_toplvls = vec_new();
     vec_move(*static_const_toplvls, self->static_const_toplvls);
     self->top_levels = vec_new();
@@ -576,7 +576,7 @@ unique_ptr_t(AsmProgram) make_AsmProgram(
 
 void free_AsmProgram(unique_ptr_t(AsmProgram) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_AsmProgram_t:
             break;
         default:

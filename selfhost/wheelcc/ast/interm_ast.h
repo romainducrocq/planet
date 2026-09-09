@@ -346,8 +346,8 @@ void free_TacInstruction(unique_ptr_t(TacInstruction) * self);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // top_level = Function(identifier, bool, identifier*, instruction*)
-//           | StaticVariable(identifier, bool, type, static_init*)
-//           | StaticConstant(identifier, type, static_init)
+//           | StaticVariable(identifier, bool, tag, static_init*)
+//           | StaticConstant(identifier, tag, static_init)
 
 struct TacFunction {
     TIdentifier name;

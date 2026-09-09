@@ -114,7 +114,7 @@ static void emit_ulong(Ctx ctx, TULong value) {
 // Reg(XMM14) -> $ %xmm14
 // Reg(XMM15) -> $ %xmm15
 static char* get_reg_rsp_sse(struct AsmReg* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmSp_t:
             return "%rsp";
         case AST_AsmBp_t:
@@ -171,7 +171,7 @@ static char* get_reg_rsp_sse(struct AsmReg* node) {
 // Reg(R14) -> $ %r14b
 // Reg(R15) -> $ %r15b
 static char* get_reg_1b(struct AsmReg* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmAx_t:
             return "%al";
         case AST_AsmBx_t:
@@ -220,7 +220,7 @@ static char* get_reg_1b(struct AsmReg* node) {
 // Reg(R14) -> $ %r14d
 // Reg(R15) -> $ %r15d
 static char* get_reg_4b(struct AsmReg* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmAx_t:
             return "%eax";
         case AST_AsmBx_t:
@@ -269,7 +269,7 @@ static char* get_reg_4b(struct AsmReg* node) {
 // Reg(R14) -> $ %r14
 // Reg(R15) -> $ %r15
 static char* get_reg_8b(struct AsmReg* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmAx_t:
             return "%rax";
         case AST_AsmBx_t:
@@ -315,7 +315,7 @@ static char* get_reg_8b(struct AsmReg* node) {
 // AE -> $ ae
 // P  -> $ p
 static char* get_cond_code(struct AsmCondCode* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmE_t:
             return "e";
         case AST_AsmNE_t:
@@ -349,7 +349,7 @@ static char* get_cond_code(struct AsmCondCode* node) {
 // Double    -> $ 8
 // ByteArray -> $ alignment
 static TInt type_align_bytes(struct AssemblyType* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_Byte_t:
             return 1;
         case AST_LongWord_t:
@@ -370,7 +370,7 @@ static TInt type_align_bytes(struct AssemblyType* node) {
 // Double if packed -> $ pd
 //             else -> $ sd
 static char* get_type_suffix(struct AssemblyType* node, bool is_packed) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_Byte_t:
             return "b";
         case AST_LongWord_t:
@@ -423,7 +423,7 @@ static void data_op(Ctx ctx, struct AsmData* node) {
     long map_it = map_find(ctx->backend->symbol_table, node->name);
     if (map_it != map_end()) {
         struct BackendSymbol* backend_obj_symbol = pair_second(ctx->backend->symbol_table[map_it]);
-        if (backend_obj_symbol->type == AST_BackendObj_t && backend_obj_symbol->get._BackendObj.is_const) {
+        if (backend_obj_symbol->tag == AST_BackendObj_t && backend_obj_symbol->get._BackendObj.is_const) {
             emit(ctx, LBL);
         }
     }
@@ -451,7 +451,7 @@ static void indexed_op(Ctx ctx, struct AsmIndexed* node) {
 // Data(identifier, int)    -> $ <identifier>+<int>(%rip)
 // Indexed(reg1, reg2, int) -> $ (<reg1>, <reg2>, <int>)
 static void emit_op(Ctx ctx, struct AsmOperand* node, TInt byte) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmImm_t:
             imm_op(ctx, &node->get._AsmImm);
             break;
@@ -476,7 +476,7 @@ static void emit_op(Ctx ctx, struct AsmOperand* node, TInt byte) {
 // Not -> $ not
 // Shr -> $ shr
 static char* get_unop(struct AsmUnaryOp* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmNeg_t:
             return "neg";
         case AST_AsmNot_t:
@@ -500,7 +500,7 @@ static char* get_unop(struct AsmUnaryOp* node) {
 // BitShiftRight    -> $ shr
 // BitShrArithmetic -> $ sar
 static char* get_binop(struct AsmBinaryOp* node, bool is_dbl) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmAdd_t:
             return "add";
         case AST_AsmSub_t:
@@ -618,15 +618,15 @@ static void unary_instr(Ctx ctx, struct AsmUnary* node) {
 static void binary_instr(Ctx ctx, struct AsmBinary* node) {
     emit(ctx, TAB TAB);
     {
-        bool is_dbl = node->asm_type->type == AST_BackendDouble_t;
+        bool is_dbl = node->asm_type->tag == AST_BackendDouble_t;
         emit(ctx, get_binop(&node->binop, is_dbl));
-        bool is_packed = node->binop.type == AST_AsmBitXor_t && is_dbl;
+        bool is_packed = node->binop.tag == AST_AsmBitXor_t && is_dbl;
         emit(ctx, get_type_suffix(node->asm_type, is_packed));
     }
     emit(ctx, " ");
     {
         TInt byte = type_align_bytes(node->asm_type);
-        switch (node->binop.type) {
+        switch (node->binop.tag) {
             case AST_AsmBitShiftLeft_t:
             case AST_AsmBitShiftRight_t:
             case AST_AsmBitShrArithmetic_t:
@@ -643,7 +643,7 @@ static void binary_instr(Ctx ctx, struct AsmBinary* node) {
 }
 
 static void cmp_instr(Ctx ctx, struct AsmCmp* node) {
-    if (node->asm_type->type == AST_BackendDouble_t) {
+    if (node->asm_type->tag == AST_BackendDouble_t) {
         emit(ctx, TAB TAB "comi");
     }
     else {
@@ -683,7 +683,7 @@ static void div_instr(Ctx ctx, struct AsmDiv* node) {
 }
 
 static void cdq_instr(Ctx ctx, struct AsmCdq* node) {
-    switch (node->asm_type->type) {
+    switch (node->asm_type->tag) {
         case AST_LongWord_t:
             emit(ctx, TAB TAB "cdq" LF);
             break;
@@ -740,7 +740,7 @@ static void call_instr(Ctx ctx, struct AsmCall* node) {
     emit_identifier(ctx, node->name);
 #ifndef __APPLE__
     struct BackendSymbol* backend_fun_symbol = map_get(ctx->backend->symbol_table, node->name);
-    THROW_ABORT_IF(backend_fun_symbol->type != AST_BackendFun_t);
+    THROW_ABORT_IF(backend_fun_symbol->tag != AST_BackendFun_t);
     if (!backend_fun_symbol->get._BackendFun.is_def) {
         emit(ctx, "@PLT");
     }
@@ -775,7 +775,7 @@ static void ret_instr(Ctx ctx) { emit(ctx, TAB "movq %rbp, %rsp" LF TAB "popq %r
 //                                          $ popq %rbp
 //                                          $ ret
 static void emit_instr(Ctx ctx, struct AsmInstruction* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmMov_t:
             mov_instr(ctx, &node->get._AsmMov);
             break;
@@ -873,7 +873,7 @@ static void emit_fun_toplvl(Ctx ctx, struct AsmFunction* node) {
 // -> if zero initialized $ .bss
 // ->                else $ .data
 static void static_section_toplvl(Ctx ctx, vector_t(shared_ptr_t(StaticInit)) node_list) {
-    if (vec_size(node_list) == 1 && node_list[0]->type == AST_ZeroInit_t) {
+    if (vec_size(node_list) == 1 && node_list[0]->tag == AST_ZeroInit_t) {
         emit(ctx, TAB ".bss" LF);
     }
     else {
@@ -901,7 +901,7 @@ static void align_directive_toplvl(Ctx ctx, TInt alignment) {
 //                                else -> .ascii "<s>"
 // PointerInit(label)                  -> .quad .L<label>
 static void static_init_toplvl(Ctx ctx, struct StaticInit* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_CharInit_t:
             emit(ctx, TAB TAB ".byte ");
             emit_char(ctx, node->get._CharInit.value);
@@ -984,7 +984,7 @@ static void emit_static_var_toplvl(Ctx ctx, struct AsmStaticVariable* node) {
 //                                      $     <init>
 static void emit_static_const_toplvl(Ctx ctx, struct AsmStaticConstant* node) {
 #ifdef __APPLE__
-    switch (node->static_init->type) {
+    switch (node->static_init->tag) {
         case AST_DoubleInit_t:
             switch (node->alignment) {
                 case 8:
@@ -1014,7 +1014,7 @@ static void emit_static_const_toplvl(Ctx ctx, struct AsmStaticConstant* node) {
     emit(ctx, ":" LF);
     static_init_toplvl(ctx, node->static_init);
 #ifdef __APPLE__
-    if (node->static_init->type == AST_DoubleInit_t && node->alignment == 16) {
+    if (node->static_init->tag == AST_DoubleInit_t && node->alignment == 16) {
         emit(ctx, TAB TAB ".quad 0" LF);
     }
 #endif
@@ -1025,7 +1025,7 @@ static void emit_static_const_toplvl(Ctx ctx, struct AsmStaticConstant* node) {
 // StaticConstant(name, align, init)                   -> $ <static-constant-top-level-directives>
 static void emit_toplvl(Ctx ctx, struct AsmTopLevel* node) {
     emit(ctx, LF);
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmFunction_t:
             emit_fun_toplvl(ctx, &node->get._AsmFunction);
             break;
