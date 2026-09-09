@@ -315,7 +315,7 @@ static void cfg_init_label_block(Ctx ctx, struct AsmLabel* node) {
 
 static void cfg_init_block(Ctx ctx, unsigned long instr_idx, unsigned long* instrs_back_idx) {
     struct AstInstruction* node = GET_INSTR(instr_idx);
-    switch (node->type) {
+    switch (node->tag) {
 #if __OPTIM_LEVEL__ == 1
         case AST_TacLabel_t:
 #elif __OPTIM_LEVEL__ == 2
@@ -384,7 +384,7 @@ static void cfg_init_jmp_cc_edges(Ctx ctx, struct AsmJmpCC* node, unsigned long 
 
 static void cfg_init_edges(Ctx ctx, unsigned long block_id) {
     struct AstInstruction* node = GET_INSTR(GET_CFG_BLOCK(block_id).instrs_back_idx);
-    switch (node->type) {
+    switch (node->tag) {
 #if __OPTIM_LEVEL__ == 1
         case AST_TacReturn_t:
 #elif __OPTIM_LEVEL__ == 2
@@ -502,7 +502,7 @@ static bool is_transfer_instr(Ctx ctx, unsigned long instr_idx
     bool is_store_elim
 #endif
 ) {
-    switch (GET_INSTR(instr_idx)->type) {
+    switch (GET_INSTR(instr_idx)->tag) {
 #if __OPTIM_LEVEL__ == 1
         case AST_TacSignExtend_t:
         case AST_TacTruncate_t:
@@ -877,13 +877,13 @@ static void dfa_backward_open_block(Ctx ctx, unsigned long block_id, unsigned lo
 }
 
 static bool is_aliased_name(Ctx ctx, TIdentifier name) {
-    return map_get(ctx->frontend->symbol_table, name)->attrs->type == AST_StaticAttr_t
+    return map_get(ctx->frontend->symbol_table, name)->attrs->tag == AST_StaticAttr_t
            || set_find(ctx->frontend->addressed_set, name) != set_end();
 }
 
 #if __OPTIM_LEVEL__ == 1
 static void dfa_add_aliased_value(Ctx ctx, struct TacValue* node) {
-    if (node->type == AST_TacVariable_t) {
+    if (node->tag == AST_TacVariable_t) {
         set_insert(ctx->frontend->addressed_set, node->get._TacVariable.name);
     }
 }
@@ -891,7 +891,7 @@ static void dfa_add_aliased_value(Ctx ctx, struct TacValue* node) {
 static bool is_same_value(struct TacValue* node_1, struct TacValue* node_2);
 
 static bool prop_add_data_idx(Ctx ctx, struct TacCopy* node, unsigned long instr_idx, unsigned long block_id) {
-    THROW_ABORT_IF(node->dst->type != AST_TacVariable_t);
+    THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
     if (is_same_value(node->src, node->dst)) {
         cfg_rm_block_instr(ctx, instr_idx, block_id);
         return false;
@@ -916,7 +916,7 @@ static void elim_add_data_name(Ctx ctx, TIdentifier name) {
 }
 
 static void elim_add_data_value(Ctx ctx, struct TacValue* node) {
-    if (node->type == AST_TacVariable_t) {
+    if (node->tag == AST_TacVariable_t) {
         elim_add_data_name(ctx, node->get._TacVariable.name);
     }
 }
@@ -929,7 +929,7 @@ static void infer_add_data_name(Ctx ctx, TIdentifier name) {
 }
 
 static void infer_add_data_op(Ctx ctx, struct AsmOperand* node) {
-    if (node->type == AST_AsmPseudo_t) {
+    if (node->tag == AST_AsmPseudo_t) {
         infer_add_data_name(ctx, node->get._AsmPseudo.name);
     }
 }
@@ -984,7 +984,7 @@ static bool init_data_flow_analysis(Ctx ctx,
                  instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx; ++instr_idx) {
                 if (GET_INSTR(instr_idx)) {
                     struct AstInstruction* node = GET_INSTR(instr_idx);
-                    switch (node->type) {
+                    switch (node->tag) {
 #if __OPTIM_LEVEL__ == 1
                         case AST_TacReturn_t: {
                             if (is_copy_prop) {
@@ -1358,7 +1358,7 @@ static bool init_data_flow_analysis(Ctx ctx,
         for (unsigned long i = 0; i < map_size(ctx->cfg->identifier_id_map); ++i) {
             pair_t(TIdentifier, ulong_t)* name_id = &ctx->cfg->identifier_id_map[i];
 #if __OPTIM_LEVEL__ == 1
-            if (map_get(ctx->frontend->symbol_table, pair_first(*name_id))->attrs->type == AST_StaticAttr_t) {
+            if (map_get(ctx->frontend->symbol_table, pair_first(*name_id))->attrs->tag == AST_StaticAttr_t) {
                 SET_DFA_INSTR_SET_AT(ctx->dfa->static_idx, pair_second(*name_id), true);
             }
             if (set_find(ctx->frontend->addressed_set, pair_first(*name_id)) != set_end()) {

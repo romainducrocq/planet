@@ -46,7 +46,7 @@
 // Memory
 
 #define tagged_def_t(E, T) E##_##T##_t
-#define tagged_def_impl(T) T type
+#define tagged_def_impl(T) T tag
 #define tagged_def_init(E, T1, T2) make_##T1(tagged_def_t(E, T2))
 
 #define unique_ptr_t(T) struct T*

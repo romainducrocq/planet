@@ -21,7 +21,7 @@ struct StructTypedef;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// type = Char
+// tag = Char
 //      | SChar
 //      | UChar
 //      | Int
@@ -30,9 +30,9 @@ struct StructTypedef;
 //      | ULong
 //      | Double
 //      | Void
-//      | FunType(int, int, type*, type)
-//      | Pointer(type)
-//      | Array(int, type)
+//      | FunType(int, int, tag*, tag)
+//      | Pointer(tag)
+//      | Array(int, tag)
 //      | Structure(identifier, bool)
 
 struct Char {
@@ -297,7 +297,7 @@ void free_IdentifierAttr(unique_ptr_t(IdentifierAttr) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// symbol = Symbol(type, identifier_attrs)
+// symbol = Symbol(tag, identifier_attrs)
 
 struct Symbol {
     unique_ptr_impl(AST_T);
@@ -310,7 +310,7 @@ void free_Symbol(unique_ptr_t(Symbol) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// struct_member = StructMember(int, type)
+// struct_member = StructMember(int, tag)
 
 struct StructMember {
     unique_ptr_impl(AST_T);

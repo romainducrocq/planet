@@ -363,7 +363,7 @@ static error_t parse_datatype_specifier(Ctx ctx, TIdentifier* tag_name, bool* is
     CATCH_EXIT;
 }
 
-// <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "bool" | "char"
+// <tag-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "bool" | "char"
 //                    | "string" | "*" "any" | <datatype-specifier>
 static error_t parse_type_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier) {
     CATCH_ENTER;
@@ -448,7 +448,7 @@ static error_t parse_arr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
     }
     TRY(pop_next(ctx));
     TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket));
-    switch (constant->type) {
+    switch (constant->tag) {
         case AST_CConstInt_t: {
             size = (TLong)constant->get._CConstInt.value;
             break;
@@ -498,7 +498,7 @@ static error_t parse_ptr_specifier(Ctx ctx, shared_ptr_t(Type) * type_specifier)
     CATCH_EXIT;
 }
 
-// <type-name> ::= ( "*" | "[" <const> "]" ) <type-name> | <type-specifier>
+// <tag-name> ::= ( "*" | "[" <const> "]" ) <tag-name> | <tag-specifier>
 static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -517,7 +517,7 @@ static error_t parse_type_name(Ctx ctx, shared_ptr_t(Type) * type_name) {
     CATCH_EXIT;
 }
 
-// <maybe-type-name> ::= "none" | <type-name>
+// <maybe-tag-name> ::= "none" | <tag-name>
 static error_t parse_maybe_type(Ctx ctx, shared_ptr_t(Type) * maybe_type) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -847,7 +847,7 @@ static error_t parse_sizeof_unary_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// <primary-exp> ::= <const> | { <string> }+ | "cast" "<" <maybe-type-name> ">" "(" <exp> ")"
+// <primary-exp> ::= <const> | { <string> }+ | "cast" "<" <maybe-tag-name> ">" "(" <exp> ")"
 //                 | <identifier> | <identifier> "(" [ <exp> { "," <exp> } ] ")" | "(" <exp> ")"
 static error_t parse_primary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
@@ -933,7 +933,7 @@ static error_t parse_postfix_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_EXIT;
 }
 
-// <unary-exp> ::= <unop> <unary-exp> | "sizeof" ( "<" <type-name> ">" | "(" <exp> ")" )
+// <unary-exp> ::= <unop> <unary-exp> | "sizeof" ( "<" <tag-name> ">" | "(" <exp> ")" )
 //               | <primary-exp> { <postfix-op> }
 static error_t parse_unary_exp_factor(Ctx ctx, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
@@ -1076,12 +1076,12 @@ static int32_t get_tok_precedence(TOKEN_KIND tok_kind) {
 }
 
 // <exp> ::= <unary-exp> | <exp> <binop> <exp> | "?" <exp> "then" <exp> "else" <exp>
-// exp = Constant(const, type) | String(string, type) | Var(identifier, type) | Cast(type, exp, type)
-//     | Unary(unary_operator, exp, type) | Binary(binary_operator, exp, exp, type)
-//     | Assignment(unary_operator, exp, exp, type) | Conditional(exp, exp, exp, type)
-//     | FunctionCall(identifier, exp*, type) | Dereference(exp, type) | AddrOf(exp, type)
-//     | Subscript(exp, exp, type) | SizeOf(exp, type) | SizeOfT(type, type) | Dot(exp, identifier, type)
-//     | Arrow(exp, identifier, type)
+// exp = Constant(const, tag) | String(string, tag) | Var(identifier, tag) | Cast(tag, exp, tag)
+//     | Unary(unary_operator, exp, tag) | Binary(binary_operator, exp, exp, tag)
+//     | Assignment(unary_operator, exp, exp, tag) | Conditional(exp, exp, exp, tag)
+//     | FunctionCall(identifier, exp*, tag) | Dereference(exp, tag) | AddrOf(exp, tag)
+//     | Subscript(exp, exp, tag) | SizeOf(exp, tag) | SizeOfT(tag, tag) | Dot(exp, identifier, tag)
+//     | Arrow(exp, identifier, tag)
 static error_t parse_exp(Ctx ctx, int32_t min_precedence, unique_ptr_t(CExp) * exp) {
     CATCH_ENTER;
     TRY(peek_next(ctx));
@@ -1673,7 +1673,7 @@ static error_t parse_initializer(Ctx ctx, unique_ptr_t(CInitializer) * initializ
     CATCH_EXIT;
 }
 
-// <declarator> ::= <identifier> ":" <type-name>
+// <declarator> ::= <identifier> ":" <tag-name>
 static error_t parse_decltor(Ctx ctx, TIdentifier* name, shared_ptr_t(Type) * derived_type) {
     CATCH_ENTER;
     TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier));
@@ -1723,7 +1723,7 @@ static error_t parse_decltor_list(Ctx ctx, vector_t(TIdentifier) * params, vecto
     CATCH_EXIT;
 }
 
-// <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) <maybe-type-name>
+// <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) <maybe-tag-name>
 static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_t(TIdentifier) * params) {
     vector_t(shared_ptr_t(Type)) param_types = vec_new();
     CATCH_ENTER;
@@ -1749,7 +1749,7 @@ static error_t parse_fun_decltor(Ctx ctx, shared_ptr_t(Type) * fun_type, vector_
 }
 
 // <function-declaration> ::= [ <storage-class> ] "fn" <identifier> <function-declarator> <block>
-// function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
+// function_declaration = FunctionDeclaration(identifier, identifier*, block?, tag, storage_class?)
 static error_t parse_fun_declaration(
     Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CFunctionDeclaration) * fun_decl) {
     unique_ptr_t(CBlock) body = uptr_new();
@@ -1773,7 +1773,7 @@ static error_t parse_fun_declaration(
 }
 
 // <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
-// variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
+// variable_declaration = VariableDeclaration(identifier, initializer?, tag, storage_class?)
 static error_t parse_var_declaration(
     Ctx ctx, struct CStorageClass* storage_class, unique_ptr_t(CVariableDeclaration) * var_decl) {
     unique_ptr_t(CInitializer) initializer = uptr_new();
@@ -1799,7 +1799,7 @@ static error_t parse_var_declaration(
     CATCH_EXIT;
 }
 
-// member_declaration = MemberDeclaration(identifier, type)
+// member_declaration = MemberDeclaration(identifier, tag)
 static error_t parse_member_declaration(Ctx ctx, unique_ptr_t(CMemberDeclaration) * member_decl) {
     shared_ptr_t(Type) member_type = sptr_new();
     CATCH_ENTER;
@@ -1831,7 +1831,7 @@ static error_t parse_member_list(Ctx ctx, vector_t(unique_ptr_t(CMemberDeclarati
     CATCH_EXIT;
 }
 
-// <datatype-declaration> ::= "type" <datatype-specifier> ( <declarator-list> | ";" )
+// <datatype-declaration> ::= "tag" <datatype-specifier> ( <declarator-list> | ";" )
 // struct_declaration = StructDeclaration(identifier, bool, member_declaration*)
 static error_t parse_type_declaration(Ctx ctx, unique_ptr_t(CStructDeclaration) * struct_decl) {
     vector_t(unique_ptr_t(CMemberDeclaration)) members = vec_new();
