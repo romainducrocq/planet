@@ -83,7 +83,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -817,7 +817,7 @@ pub fn get_tok_kind_fmt(tok_kind: i32) string {
             return "const f64"
         }
         otherwise {
-            panic_sigabrt("abort", 205, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -871,7 +871,7 @@ pub fn get_const_fmt(node: *struc CConst) string {
             return "u8"
         }
         otherwise {
-            panic_sigabrt("abort", 242, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -885,7 +885,7 @@ pub fn get_storage_class_fmt(node: *struc CStorageClass) string {
             return "extrn"
         }
         otherwise {
-            panic_sigabrt("abort", 253, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -902,7 +902,7 @@ pub fn get_unop_fmt(node: *struc CUnaryOp) string {
             return "not"
         }
         otherwise {
-            panic_sigabrt("abort", 266, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -967,7 +967,7 @@ pub fn get_binop_fmt(node: *struc CBinaryOp) string {
             return ">="
         }
         otherwise {
-            panic_sigabrt("abort", 311, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -989,7 +989,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
                     return "prefix --"
                 }
                 otherwise {
-                    panic_sigabrt("abort", 329, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+                    panic_sigabrt("abort")
                 }
             }
         }
@@ -1002,12 +1002,12 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
                     return "postfix --"
                 }
                 otherwise {
-                    panic_sigabrt("abort", 340, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+                    panic_sigabrt("abort")
                 }
             }
         }
         otherwise {
-            panic_sigabrt("abort", 345, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
     match node[].tag {
@@ -1045,7 +1045,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
             return ">>="
         }
         otherwise {
-            panic_sigabrt("abort", 371, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1255,7 +1255,7 @@ pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt
             return get_struct_fmt(ctx, @type_t[].get._Structure, type_fmt)
         }
         otherwise {
-            panic_sigabrt("abort", 503, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1275,7 +1275,7 @@ pub fn get_fatal_msg(msg: i32) string {
             return "(no. %s) "             ""             "‘"             "gcc"             "’"             " %s.%s.%s is not supported, requires "             "‘"             "gcc"             "’"             " >= 8.1.0"
         }
         otherwise {
-            panic_sigabrt("abort", 542, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1313,7 +1313,7 @@ pub fn get_arg_msg(msg: i32) string {
             return "(no. %s) "             "%s%s%s"             "no include directories passed in sixth argument, see "             "‘"             "--help"             "’"
         }
         otherwise {
-            panic_sigabrt("abort", 580, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1336,7 +1336,7 @@ pub fn get_util_msg(msg: i32) string {
             return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to a floating point value"
         }
         otherwise {
-            panic_sigabrt("abort", 597, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1365,7 +1365,7 @@ pub fn get_lexer_msg(msg: i32) string {
             return "(no. %s) "             "%s%s"             "found unmatched bracket "             "‘%s’"
         }
         otherwise {
-            panic_sigabrt("abort", 618, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1454,7 +1454,7 @@ pub fn get_parser_msg(msg: i32) string {
             return "(no. %s) "             "%s%s%s"             "illegal storage class, cannot use "             "‘"             "data"             "’"             " declaration at top level"
         }
         otherwise {
-            panic_sigabrt("abort", 709, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1675,7 +1675,7 @@ pub fn get_semantic_msg(msg: i32) string {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " already declared in this scope"
         }
         otherwise {
-            panic_sigabrt("abort", 886, "/home/romain/proj/planet/selfhost/wheelcc/frontend/errors.c")
+            panic_sigabrt("abort")
         }
     }
 }

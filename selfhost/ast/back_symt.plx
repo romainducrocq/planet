@@ -415,7 +415,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -427,7 +427,7 @@ pub fn make_AssemblyType(none) *struc AssemblyType {
             free_AssemblyType(@self)
             self = cast<*struc AssemblyType>(malloc(sizeof<struc AssemblyType>))
             if not self {
-                panic_sigabrt("alloc "                     "AssemblyType",                     17, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_symt.c")
+                panic_sigabrt("alloc "                     "AssemblyType")
             }
         }        
         (self)[]._ref_count = 1
@@ -492,7 +492,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 65, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -507,7 +507,7 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol {
         free_BackendSymbol(@self)
         self = cast<*struc BackendSymbol>(malloc(sizeof<struc BackendSymbol>))
         if not self {
-            panic_sigabrt("alloc "                 "BackendSymbol",                 72, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_symt.c")
+            panic_sigabrt("alloc "                 "BackendSymbol")
         }
     }    
     self[].tag = 43
@@ -562,7 +562,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 110, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {

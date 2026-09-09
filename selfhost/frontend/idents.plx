@@ -61,7 +61,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -609,7 +609,7 @@ pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: i32) u64
             break
         }
         otherwise {
-            panic_sigabrt("abort", 101, "/home/romain/proj/planet/selfhost/wheelcc/frontend/idents.c")
+            panic_sigabrt("abort")
         }
     }
     return make_label_identifier(ctx, @name)
@@ -635,7 +635,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
             break
         }
         otherwise {
-            panic_sigabrt("abort", 126, "/home/romain/proj/planet/selfhost/wheelcc/frontend/idents.c")
+            panic_sigabrt("abort")
         }
     }
     loop .. while 0 {
@@ -722,7 +722,7 @@ pub fn repr_var_identifier(ctx: *struc IdentifierContext, node: *struc CExp) u64
             break
         }
         otherwise {
-            panic_sigabrt("abort", 203, "/home/romain/proj/planet/selfhost/wheelcc/frontend/idents.c")
+            panic_sigabrt("abort")
         }
     }
     return make_var_identifier(ctx, @name)

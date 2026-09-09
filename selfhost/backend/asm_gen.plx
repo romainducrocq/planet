@@ -79,7 +79,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -663,7 +663,7 @@ fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 125, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
     return make_label_identifier(ctx[].identifiers, @name)
@@ -727,7 +727,7 @@ fn const_op(ctx: *struc AsmGenContext, node: *struc TacConstant) *struc AsmOpera
             return ulong_imm_op(@node[].constant[].get._CConstULong)
         }
         otherwise {
-            panic_sigabrt("abort", 177, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -764,7 +764,7 @@ fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AsmOperand {
             return var_op(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort", 210, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -790,7 +790,7 @@ fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
             return make_AsmCondCode(241)
         }
         otherwise {
-            panic_sigabrt("abort", 230, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -816,7 +816,7 @@ fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
             return make_AsmCondCode(245)
         }
         otherwise {
-            panic_sigabrt("abort", 250, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -830,7 +830,7 @@ fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
             return make_AsmUnaryOp(270)
         }
         otherwise {
-            panic_sigabrt("abort", 262, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -868,7 +868,7 @@ fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
             return make_AsmBinaryOp(267)
         }
         otherwise {
-            panic_sigabrt("abort", 291, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -916,7 +916,7 @@ fn is_value_signed(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_signed(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort", 326, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -958,7 +958,7 @@ fn is_value_1b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_1b(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort", 358, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -998,7 +998,7 @@ fn is_value_4b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_4b(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort", 389, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1020,7 +1020,7 @@ fn is_value_dbl(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_dbl(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort", 406, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1038,7 +1038,7 @@ fn is_value_struct(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return 0
         }
         otherwise {
-            panic_sigabrt("abort", 421, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1064,7 +1064,7 @@ fn const_asm_type(node: *struc TacConstant) *struc AssemblyType {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 439, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1082,7 +1082,7 @@ fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) *struc Assembl
             return var_asm_type(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort", 454, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1451,7 +1451,7 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
             }
             break
             otherwise {
-                panic_sigabrt("abort", 769, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+                panic_sigabrt("abort")
             }
         }
         if struct_8b[].size == 2 {
@@ -1467,7 +1467,7 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
                     break
                 }
                 otherwise {
-                    panic_sigabrt("abort", 783, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+                    panic_sigabrt("abort")
                 }
             }
             ret_2_reg_mask(ctx[].p_fun_type, reg_size, sse_size)
@@ -2462,7 +2462,7 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
             }
             break
             otherwise {
-                panic_sigabrt("abort", 1540, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+                panic_sigabrt("abort")
             }
         }
         if struct_8b[].size == 2 {
@@ -2478,7 +2478,7 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
                     break
                 }
                 otherwise {
-                    panic_sigabrt("abort", 1554, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+                    panic_sigabrt("abort")
                 }
             }
             ret_2_reg_mask(fun_type, reg_size, sse_size)
@@ -2654,7 +2654,7 @@ fn unary_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1688, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -3030,7 +3030,7 @@ fn binary_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1954, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -3348,7 +3348,7 @@ fn add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 2243, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -3659,7 +3659,7 @@ fn gen_instr(ctx: *struc AsmGenContext, node: *struc TacInstruction) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 2529, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -3905,7 +3905,7 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
             return gen_static_const_toplvl(ctx, @node[].get._TacStaticConstant)
         }
         otherwise {
-            panic_sigabrt("abort", 2762, "/home/romain/proj/planet/selfhost/wheelcc/backend/asm_gen.c")
+            panic_sigabrt("abort")
         }
     }
 }

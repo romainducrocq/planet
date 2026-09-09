@@ -243,7 +243,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -255,7 +255,7 @@ pub fn make_Type(none) *struc Type {
             free_Type(@self)
             self = cast<*struc Type>(malloc(sizeof<struc Type>))
             if not self {
-                panic_sigabrt("alloc "                     "Type",                     18, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+                panic_sigabrt("alloc "                     "Type")
             }
         }        
         (self)[]._ref_count = 1
@@ -436,7 +436,7 @@ pub fn free_Type(self: **struc Type) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 146, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -452,7 +452,7 @@ pub fn make_StaticInit(none) *struc StaticInit {
             free_StaticInit(@self)
             self = cast<*struc StaticInit>(malloc(sizeof<struc StaticInit>))
             if not self {
-                panic_sigabrt("alloc "                     "StaticInit",                     153, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+                panic_sigabrt("alloc "                     "StaticInit")
             }
         }        
         (self)[]._ref_count = 1
@@ -577,7 +577,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 253, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -593,7 +593,7 @@ pub fn make_InitialValue(none) *struc InitialValue {
             free_InitialValue(@self)
             self = cast<*struc InitialValue>(malloc(sizeof<struc InitialValue>))
             if not self {
-                panic_sigabrt("alloc "                     "InitialValue",                     260, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+                panic_sigabrt("alloc "                     "InitialValue")
             }
         }        
         (self)[]._ref_count = 1
@@ -664,7 +664,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 300, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -679,7 +679,7 @@ pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
         free_IdentifierAttr(@self)
         self = cast<*struc IdentifierAttr>(malloc(sizeof<struc IdentifierAttr>))
         if not self {
-            panic_sigabrt("alloc "                 "IdentifierAttr",                 307, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("alloc "                 "IdentifierAttr")
         }
     }    
     self[].tag = 29
@@ -747,7 +747,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 358, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -762,7 +762,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
         free_Symbol(@self)
         self = cast<*struc Symbol>(malloc(sizeof<struc Symbol>))
         if not self {
-            panic_sigabrt("alloc "                 "Symbol",                 365, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("alloc "                 "Symbol")
         }
     }    
     self[].tag = 34
@@ -790,7 +790,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 380, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     free_Type(@(self[])[].type_t)
@@ -807,7 +807,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
         free_StructMember(@self)
         self = cast<*struc StructMember>(malloc(sizeof<struc StructMember>))
         if not self {
-            panic_sigabrt("alloc "                 "StructMember",                 389, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("alloc "                 "StructMember")
         }
     }    
     self[].tag = 35
@@ -830,7 +830,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 403, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     free_Type(@(self[])[].member_type)
@@ -846,7 +846,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
         free_StructTypedef(@self)
         self = cast<*struc StructTypedef>(malloc(sizeof<struc StructTypedef>))
         if not self {
-            panic_sigabrt("alloc "                 "StructTypedef",                 412, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("alloc "                 "StructTypedef")
         }
     }    
     self[].tag = 36
@@ -888,7 +888,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 429, "/home/romain/proj/planet/selfhost/wheelcc/ast/front_symt.c")
+            panic_sigabrt("abort")
         }
     }
     if (self[])[].member_names {

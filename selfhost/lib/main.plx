@@ -52,7 +52,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -917,7 +917,7 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
             return none
         }
     }
-    panic_sigabrt("abort", 59, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+    panic_sigabrt("abort")
 }
 
 fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc FileIoContext) i32 {
@@ -1094,56 +1094,56 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(101), "101", "", "", argv[0]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 214, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(101), "101", "", "", argv[0]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if not argv[++i] {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(102), "102", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 218, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(102), "102", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(103), "103", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 221, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(103), "103", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if not argv[++i] {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(104), "104", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 225, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(104), "104", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(105), "105", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 228, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(105), "105", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if not argv[++i] {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(106), "106", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 232, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(106), "106", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(107), "107", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 235, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(107), "107", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if not argv[++i] {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(108), "108", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 239, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(108), "108", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1151,7 +1151,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     ctx[].filename = ? argv[i] then sdsnew(argv[i]) else 0
     if not argv[++i] {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(109), "109", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 244, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(109), "109", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1162,7 +1162,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }    
     if not argv[++i] {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(110), "110", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort", 249, "/home/romain/proj/planet/selfhost/wheelcc/lib/main.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_arg_msg(110), "110", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        

@@ -92,7 +92,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -584,7 +584,7 @@ fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32 {
                 return is_same_struct(@type_1[].get._Structure, @type_2[].get._Structure)
             }
             -> 10 {
-                panic_sigabrt("abort", 73, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                panic_sigabrt("abort")
             }
             otherwise {
                 return 1
@@ -753,7 +753,7 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
     _errval: i32 = 0
     if not is_type_complete(ctx, arr_type[].elem_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(501), "501", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, arr_type[].elem_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort", 196, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(501), "501", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, arr_type[].elem_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -798,7 +798,7 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         }
         break
         -> 10 {
-            panic_sigabrt("abort", 217, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
         otherwise {
             break
@@ -880,7 +880,7 @@ fn get_scalar_size(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 274, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1051,7 +1051,7 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(502), "502", "", get_type_fmt(ctx[].identifiers, node_1[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node_2[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node_1[].info_at)) else panic_sigabrt("abort", 388, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(502), "502", "", get_type_fmt(ctx[].identifiers, node_1[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node_2[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node_1[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1092,7 +1092,7 @@ fn get_const_char_value(node: *struc CConstant) i8 {
             return cast<i8>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort", 415, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1121,7 +1121,7 @@ fn get_const_int_value(node: *struc CConstant) i32 {
             return cast<i32>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort", 436, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1150,7 +1150,7 @@ fn get_const_long_value(node: *struc CConstant) i64 {
             return cast<i64>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort", 457, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1179,7 +1179,7 @@ fn get_const_dbl_value(node: *struc CConstant) f64 {
             return cast<f64>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort", 478, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1208,7 +1208,7 @@ fn get_const_uchar_value(node: *struc CConstant) u8 {
             return cast<u8>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort", 499, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1237,7 +1237,7 @@ fn get_const_uint_value(node: *struc CConstant) u32 {
             return cast<u32>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort", 520, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1266,7 +1266,7 @@ fn get_const_ulong_value(node: *struc CConstant) u64 {
             return node[].constant[].get._CConstULong.value
         }
         otherwise {
-            panic_sigabrt("abort", 541, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1286,7 +1286,7 @@ fn get_const_ptr_value(node: *struc CConstant) u64 {
             return node[].constant[].get._CConstULong.value
         }
         otherwise {
-            panic_sigabrt("abort", 556, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1333,7 +1333,7 @@ fn check_const_exp(node: *struc CConstant) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 605, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1350,7 +1350,7 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     var_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
     if var_type[].tag == 10 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(503), "503", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 620, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(503), "503", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1381,7 +1381,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     }    
     if node[].target_type[].tag ~= 9 and ((node[].exp[].exp_type[].tag == 8 and node[].target_type[].tag == 11) or (node[].exp[].exp_type[].tag == 11 and node[].target_type[].tag == 8) or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type)) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(504), "504", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 639, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(504), "504", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1444,7 +1444,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(504), "504", "", get_type_fmt(ctx[].identifiers, (exp[])[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, exp_type[], @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, (exp[])[].info_at)) else panic_sigabrt("abort", 677, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(504), "504", "", get_type_fmt(ctx[].identifiers, (exp[])[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, exp_type[], @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, (exp[])[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1481,7 +1481,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 701, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1489,7 +1489,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     match node[].exp[].exp_type[].tag {
         -> 8 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 707, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -1529,7 +1529,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 727, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1570,7 +1570,7 @@ fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     _errval: i32 = 0
     if not is_type_scalar(node[].exp[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 750, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(505), "505", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1615,7 +1615,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 773, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -1666,7 +1666,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 807, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1742,7 +1742,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
         else {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 851, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -1750,7 +1750,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 858, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1796,7 +1796,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 883, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1843,7 +1843,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 909, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1872,7 +1872,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     if node[]._base[].exp_type[].tag == 8 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(506), "506", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 923, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(506), "506", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1896,7 +1896,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_int(node[].exp_right[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 938, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1924,7 +1924,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if node[]._base[].exp_type[].tag == 8 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(506), "506", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 951, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(506), "506", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1962,7 +1962,7 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 975, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -1998,7 +1998,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 999, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2040,7 +2040,7 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == 11 and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == 92 and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == 92 and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1029, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(507), "507", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2179,7 +2179,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1089, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -2191,14 +2191,14 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
     if node[].exp_left {
         if node[].exp_left[].exp_type[].tag == 9 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(508), "508", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1099, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(508), "508", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         elif not is_exp_lvalue(node[].exp_left) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(509), "509", "", "", get_assign_fmt(0, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1102, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(509), "509", "", "", get_assign_fmt(0, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -2224,7 +2224,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
         }
         if not is_exp_lvalue(exp_left) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(509), "509", "", "", get_assign_fmt(@node[].exp_right[].get._CBinary.binop, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1117, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(509), "509", "", "", get_assign_fmt(@node[].exp_right[].get._CBinary.binop, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -2254,7 +2254,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     _errval: i32 = 0
     if not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(510), "510", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1136, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(510), "510", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2270,7 +2270,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     elif node[].exp_middle[].exp_type[].tag == 13 or node[].exp_right[].exp_type[].tag == 13 {
         if not is_same_type(node[].exp_middle[].exp_type, node[].exp_right[].exp_type) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(511), "511", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1146, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(511), "511", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -2295,7 +2295,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(511), "511", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1161, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(511), "511", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2343,7 +2343,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
     if fun_symbol[].type_t[].tag ~= 10 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(512), "512", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1187, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(512), "512", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2352,7 +2352,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         strto_fmt_1 = ? ((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0))))
         strto_fmt_2 = ? ((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0))))
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(513), "513", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1193, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(513), "513", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2393,7 +2393,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
     _errval: i32 = 0
     if node[].exp[].exp_type[].tag ~= 11 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(514), "514", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1213, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(514), "514", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2416,7 +2416,7 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
     _errval: i32 = 0
     if not is_exp_lvalue(node[].exp) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(515), "515", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1226, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(515), "515", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2472,7 +2472,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
     }
     else {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(516), "516", "", get_type_fmt(ctx[].identifiers, node[].primary_exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].subscript_exp[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1259, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(516), "516", "", get_type_fmt(ctx[].identifiers, node[].primary_exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].subscript_exp[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2501,7 +2501,7 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     _errval: i32 = 0
     if not is_type_complete(ctx, node[].exp[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(517), "517", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1276, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(517), "517", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2527,7 +2527,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     }    
     if not is_type_complete(ctx, node[].target_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(517), "517", "", "", get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1291, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(517), "517", "", "", get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2557,7 +2557,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     map_it: i64;
     if node[].structure[].exp_type[].tag ~= 13 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(518), "518", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].structure[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1310, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(518), "518", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].structure[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2567,7 +2567,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     map_it = (? ((struct_typedef[].members) = stbds_hmget_key((struct_typedef[].members), sizeof((struct_typedef[].members)[]), cast<*any>(@((node[].member))), sizeof((struct_typedef[].members)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp)
     if map_it == -1 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(519), "519", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1318, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(519), "519", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2601,7 +2601,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     map_it: i64;
     if node[].pointer[].exp_type[].tag ~= 11 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(520), "520", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1340, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(520), "520", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2609,7 +2609,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     ptr_type = @node[].pointer[].exp_type[].get._Pointer
     if ptr_type[].ref_type[].tag ~= 13 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(520), "520", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1346, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(520), "520", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2618,7 +2618,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     map_it = (? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)
     if map_it == -1 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(521), "521", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1353, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(521), "521", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2627,7 +2627,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     map_it = (? ((struct_typedef[].members) = stbds_hmget_key((struct_typedef[].members), sizeof((struct_typedef[].members)[]), cast<*any>(@((node[].member))), sizeof((struct_typedef[].members)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp)
     if map_it == -1 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(519), "519", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1360, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(519), "519", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2675,7 +2675,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
     _errval: i32 = 0
     if not is_struct_complete(ctx, @node[].exp_type[].get._Structure) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(522), "522", "", "", get_type_fmt(ctx[].identifiers, node[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1388, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(522), "522", "", "", get_type_fmt(ctx[].identifiers, node[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2720,7 +2720,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     if fun_type[].ret_type[].tag == 9 {
         if node[].exp {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(523), "523", "", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1418, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(523), "523", "", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -2729,7 +2729,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     }
     elif not node[].exp {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(524), "524", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1424, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(524), "524", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2765,7 +2765,7 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(525), "525", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort", 1443, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(525), "525", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2783,7 +2783,7 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(526), "526", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort", 1455, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(526), "526", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2801,7 +2801,7 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(527), "527", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort", 1467, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(527), "527", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2819,7 +2819,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(528), "528", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort", 1479, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(528), "528", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -2847,7 +2847,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort", 1499, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -2891,7 +2891,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort", 1524, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -2935,7 +2935,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort", 1549, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -2979,7 +2979,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort", 1574, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(530), "530", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -3013,7 +3013,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     _errval: i32 = 0
     if not is_type_int(node[].lookup[].exp_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(529), "529", "", "", get_type_fmt(ctx[].identifiers, node[].lookup[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].lookup[].info_at)) else panic_sigabrt("abort", 1591, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(529), "529", "", "", get_type_fmt(ctx[].identifiers, node[].lookup[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].lookup[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3074,7 +3074,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1617, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -3092,7 +3092,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
     _errval: i32 = 0
     if not is_type_char(arr_type[].elem_type) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(531), "531", "", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1630, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(531), "531", "", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3101,7 +3101,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
         strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
         strto_fmt_2 = ? ((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))))
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(532), "532", "", strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 1636, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(532), "532", "", strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3193,7 +3193,7 @@ fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
                 }
             }
             otherwise {
-                panic_sigabrt("abort", 1698, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                panic_sigabrt("abort")
             }
         }
         exp = make_CConstant(@constant, 0)
@@ -3260,7 +3260,7 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
         strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
         strto_fmt_2 = ? ((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))))
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(533), "533", strto_fmt_1, get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt), strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort", 1747, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(533), "533", strto_fmt_1, get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt), strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3292,7 +3292,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
         strto_fmt_1 = ? ((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))))
         strto_fmt_2 = ? (bound) > 0 then sdsfromunsignedlong(cast<u64>((bound))) else sdsfromlong(cast<i64>((bound)))
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(534), "534", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort", 1767, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(534), "534", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3372,7 +3372,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
     match fun_type[].ret_type[].tag {
         -> 12 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(535), "535", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1809, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(535), "535", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -3380,7 +3380,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
         -> 13 {
             if node[].body and not is_struct_complete(ctx, @fun_type[].ret_type[].get._Structure) {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(536), "536", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1813, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(536), "536", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -3433,7 +3433,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }        
         if fun_type[].param_types[i][].tag == 9 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(537), "537", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1848, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(537), "537", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -3450,7 +3450,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         if node[].body {
             if fun_type[].param_types[i][].tag == 13 and not is_struct_complete(ctx, @fun_type[].param_types[i][].get._Structure) {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(538), "538", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2), get_type_fmt(ctx[].identifiers, fun_type[].param_types[i], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1859, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(538), "538", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2), get_type_fmt(ctx[].identifiers, fun_type[].param_types[i], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -3507,14 +3507,14 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
         if not (fun_symbol[].type_t[].tag == 10 and (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) == (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(539), "539", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, fun_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1899, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(539), "539", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, fun_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         elif is_def and node[].body {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(540), "540", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1904, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(540), "540", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -3522,7 +3522,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         fun_attrs: *struc FunAttr = @fun_symbol[].attrs[].get._FunAttr
         if not is_glob and fun_attrs[].is_glob {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(541), "541", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 1910, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(541), "541", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -3700,7 +3700,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
                     -> 51 {
                         -> 53 {
                             loop .. while 0 {
-                                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(542), "542", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), get_const_fmt(node[].constant)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 2055, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(542), "542", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), get_const_fmt(node[].constant)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                                 _errval = 1
                                 jump _Lfinally
                             }                        
@@ -3715,7 +3715,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
             if value ~= 0ul {
                 strto_fmt = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(543), "543", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 2064, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(543), "543", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -3725,7 +3725,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(544), "544", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 2071, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(544), "544", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -3748,7 +3748,7 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
     _errval: i32 = 0
     if static_ptr_type[].ref_type[].tag ~= 1 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(545), "545", "", "", get_ptr_fmt(ctx[].identifiers, static_ptr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 2084, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(545), "545", "", "", get_ptr_fmt(ctx[].identifiers, static_ptr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3870,7 +3870,7 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
         }
         break
         otherwise {
-            panic_sigabrt("abort", 2162, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -3901,7 +3901,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(546), "546", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].exp[].info_at)) else panic_sigabrt("abort", 2179, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(546), "546", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].exp[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -3994,7 +3994,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(547), "547", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort", 2235, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(547), "547", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -4030,7 +4030,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
         }
         break
         otherwise {
-            panic_sigabrt("abort", 2253, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -4085,7 +4085,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }    
     if node[].var_type[].tag == 9 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(548), "548", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2291, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(548), "548", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4100,7 +4100,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     if node[].init {
         if node[].var_type[].tag == 13 and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(549), "549", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2299, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(549), "549", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -4119,7 +4119,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         else {
             if node[].var_type[].tag == 13 and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(549), "549", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2311, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(549), "549", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -4132,7 +4132,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         var_symbol: *struc Symbol = (ctx[].frontend[].symbol_table[map_it]).value
         if not is_same_type(var_symbol[].type_t, node[].var_type) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(550), "550", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2323, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(550), "550", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -4143,7 +4143,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         }
         elif is_glob ~= var_attrs[].is_glob {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(551), "551", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2333, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(551), "551", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -4151,7 +4151,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         if var_attrs[].init[].tag == 27 {
             if init_value[].tag == 27 {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(551), "551", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2339, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(551), "551", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -4213,7 +4213,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     map_it: i64;
     if node[].init {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(552), "552", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2375, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(552), "552", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4223,7 +4223,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
         var_type: *struc Type = (ctx[].frontend[].symbol_table[map_it]).value[].type_t
         if not is_same_type(var_type, node[].var_type) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(550), "550", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2381, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(550), "550", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -4315,7 +4315,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     _errval: i32 = 0
     if node[].var_type[].tag == 13 and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(549), "549", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2441, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(549), "549", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4362,7 +4362,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }    
     if node[].var_type[].tag == 9 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(548), "548", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2465, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(548), "548", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4402,7 +4402,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         }
         break
         otherwise {
-            panic_sigabrt("abort", 2480, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -4422,7 +4422,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
         loop j: u64 = i + 1 while j < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++j {
             if node[].members[i][].member_name == node[].members[j][].member_name {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(553), "553", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort", 2495, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(553), "553", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -4437,7 +4437,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
         }        
         if not is_type_complete(ctx, node[].members[i][].member_type) {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(554), "554", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].members[i][].member_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort", 2505, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(554), "554", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].members[i][].member_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -4477,7 +4477,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     size: i64;
     if (? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp) ~= -1 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(555), "555", "", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2530, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(555), "555", "", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4577,7 +4577,7 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     _errval: i32 = 0
     if (? ((ctx[].label_set) = stbds_hmget_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@((node[].target))), sizeof((ctx[].label_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp) ~= -1 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(567), "567", "", "", get_name_fmt(ctx[].identifiers, node[].target, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2597, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(567), "567", "", "", get_name_fmt(ctx[].identifiers, node[].target, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4644,7 +4644,7 @@ fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) i32 {
     _errval: i32 = 0
     if not ctx[].p_switch_statement {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(556), "556", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].value[].info_at)) else panic_sigabrt("abort", 2633, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(556), "556", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].value[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4658,14 +4658,14 @@ fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) i32
     _errval: i32 = 0
     if not ctx[].p_switch_statement {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(557), "557", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2644, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(557), "557", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     elif ctx[].p_switch_statement[].is_default {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(558), "558", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2647, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(558), "558", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4680,7 +4680,7 @@ fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
     _errval: i32 = 0
     if ((? (ctx[].break_loop_labels) then (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(559), "559", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2658, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(559), "559", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4694,7 +4694,7 @@ fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) i
     _errval: i32 = 0
     if ((? (ctx[].continue_loop_labels) then (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(560), "560", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 2668, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(560), "560", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4761,7 +4761,7 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
     loop i: u64 = 0 while i < (? (ctx[].goto_map) then (cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if (? ((ctx[].label_set) = stbds_hmget_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@(((ctx[].goto_map[i]).key))), sizeof((ctx[].label_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp) == -1 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(561), "561", "", get_name_fmt(ctx[].identifiers, (ctx[].goto_map[i]).key, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ((? ((? ((ctx[].errors[].info_at_map) = stbds_hmget_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@(((ctx[].goto_map[i]).value))), sizeof((ctx[].errors[].info_at_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp])[].value))) else panic_sigabrt("abort", 2714, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(561), "561", "", get_name_fmt(ctx[].identifiers, (ctx[].goto_map[i]).key, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ((? ((? ((ctx[].errors[].info_at_map) = stbds_hmget_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@(((ctx[].goto_map[i]).value))), sizeof((ctx[].errors[].info_at_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp])[].value))) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -4821,7 +4821,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
             structure: *struc Structure = @(ctx[].scoped_struct_maps[i][map_it]).value
             if structure[].is_union ~= struct_type[].is_union {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(562), "562", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_struct_name_fmt(ctx[].identifiers, struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort", 2756, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(562), "562", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_struct_name_fmt(ctx[].identifiers, struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -4831,7 +4831,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
         }
     }
     loop .. while 0 {
-        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(563), "563", "", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort", 2764, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(563), "563", "", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
         _errval = 1
         jump _Lfinally
     }    
@@ -4878,7 +4878,7 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         }
         break
         -> 10 {
-            panic_sigabrt("abort", 2785, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
         otherwise {
             break
@@ -4910,7 +4910,7 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
         }
     }
     loop .. while 0 {
-        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(564), "564", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 2810, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(564), "564", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
         _errval = 1
         jump _Lfinally
     }    
@@ -5056,7 +5056,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         }
     }
     loop .. while 0 {
-        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(565), "565", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort", 2876, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(565), "565", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
         _errval = 1
         jump _Lfinally
     }    
@@ -5347,7 +5347,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 2997, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -5381,7 +5381,7 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
     _errval: i32 = 0
     if node[].init[].storage_class.tag ~= 132 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(566), "566", "", get_name_fmt(ctx[].identifiers, node[].init[].name, @name_fmt), get_storage_class_fmt(@node[].init[].storage_class)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].init[].info_at)) else panic_sigabrt("abort", 3020, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(566), "566", "", get_name_fmt(ctx[].identifiers, node[].init[].name, @name_fmt), get_storage_class_fmt(@node[].init[].storage_class)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].init[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -5436,7 +5436,7 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) i32 {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 3050, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -5909,7 +5909,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 3265, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -5941,7 +5941,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: **struc CBlockItem)
             }
             break
             otherwise {
-                panic_sigabrt("abort", 3284, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                panic_sigabrt("abort")
             }
         }
     }
@@ -6059,7 +6059,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(547), "547", "", "", get_type_fmt(ctx[].identifiers, init_type[], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort", 3353, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(547), "547", "", "", get_type_fmt(ctx[].identifiers, init_type[], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -6095,7 +6095,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
         }
         break
         otherwise {
-            panic_sigabrt("abort", 3371, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
@@ -6109,7 +6109,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         param: u64 = node[].params[i]
         if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((param))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(568), "568", "", "", get_name_fmt(ctx[].identifiers, param, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3383, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(568), "568", "", "", get_name_fmt(ctx[].identifiers, param, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -6142,14 +6142,14 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     if not is_file_scope(ctx) {
         if node[].body {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(569), "569", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3400, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(569), "569", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         elif node[].storage_class.tag == 133 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(570), "570", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3403, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(570), "570", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -6158,7 +6158,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     if (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp) == -1 {
         if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(571), "571", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3410, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(571), "571", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -6251,7 +6251,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     _errval: i32 = 0
     if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 and not ((? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp) ~= -1 and node[].storage_class.tag == 134) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(568), "568", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3456, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(568), "568", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -6318,7 +6318,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         if node[].is_union {
             if (? ((ctx[].union_def_set) = stbds_hmget_key((ctx[].union_def_set), sizeof((ctx[].union_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].union_def_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp) == -1 {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(562), "562", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3495, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(562), "562", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
@@ -6326,7 +6326,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         }
         elif (? ((ctx[].struct_def_set) = stbds_hmget_key((ctx[].struct_def_set), sizeof((ctx[].struct_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].struct_def_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp) == -1 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(562), "562", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort", 3501, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_semantic_msg(562), "562", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -6491,7 +6491,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
         }
         break
         otherwise {
-            panic_sigabrt("abort", 3578, "/home/romain/proj/planet/selfhost/wheelcc/frontend/semantic.c")
+            panic_sigabrt("abort")
         }
     }
     label _Lfinally
