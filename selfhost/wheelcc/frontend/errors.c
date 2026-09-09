@@ -144,7 +144,7 @@ char* get_tok_kind_fmt(TOKEN_KIND tok_kind) {
         case TOK_key_union:
             return "union";
         case TOK_key_type:
-            return "tag";
+            return "type";
         case TOK_key_sizeof:
             return "sizeof";
         case TOK_key_return:
@@ -648,13 +648,13 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
                 EM_CSTR("union") " next";
         case MSG_expect_specifier:
             RET_ERR(1)
-            "found token " EM_VARG ", but expected tag specifier " EM_CSTR("char") ", " EM_CSTR("string")          //
+            "found token " EM_VARG ", but expected type specifier " EM_CSTR("char") ", " EM_CSTR("string")          //
                 ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64") //
                 ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", "               //
                 EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next";
         case MSG_expect_maybe_type:
             RET_ERR(1)
-            "found token " EM_VARG ", but expected maybe tag specifier " EM_CSTR("none") ", "                      //
+            "found token " EM_VARG ", but expected maybe type specifier " EM_CSTR("none") ", "                      //
                 EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") //
                 ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8")   //
                 ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or "           //
@@ -678,13 +678,13 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_expect_declaration:
             RET_ERR(1)
             "found token " EM_VARG ", but expected declaration " EM_CSTR("identifier") ", " EM_CSTR("fn") //
-                " or " EM_CSTR("tag") " next";
+                " or " EM_CSTR("type") " next";
         case MSG_expect_storage_class:
             RET_ERR(1)
             "found token " EM_VARG ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " //
-                EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("tag") " next";
+                EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next";
         case MSG_incomplete_any:
-            RET_ERR(0) "incomplete tag " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
+            RET_ERR(0) "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead";
         case MSG_arr_size_not_int_const:
             RET_ERR(1) "illegal array size " EM_VARG ", requires a constant integer";
         case MSG_case_value_not_int_const:
@@ -700,7 +700,7 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
         case MSG_list_decl_not_auto:
             RET_ERR(1) "illegal storage " EM_VARG ", cannot use storage class in list declaration";
         case MSG_type_decl_not_auto:
-            RET_ERR(1) "illegal storage " EM_VARG ", cannot use storage class in tag declaration";
+            RET_ERR(1) "illegal storage " EM_VARG ", cannot use storage class in type declaration";
         case MSG_pub_in_block:
             RET_ERR(0) "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block";
         case MSG_data_at_toplvl:
@@ -713,25 +713,25 @@ char* get_parser_msg(MESSAGE_PARSER msg) {
 char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
     switch (msg) {
         case MSG_incomplete_arr:
-            RET_ERR(2) "array tag " EM_VARG " of incomplete tag " EM_VARG ", requires a complete tag";
+            RET_ERR(2) "array type " EM_VARG " of incomplete type " EM_VARG ", requires a complete type";
         case MSG_joint_ptr_mismatch:
-            RET_ERR(2) "pointer tag mismatch " EM_VARG " and " EM_VARG " in operator";
+            RET_ERR(2) "pointer type mismatch " EM_VARG " and " EM_VARG " in operator";
         case MSG_fun_used_as_var:
             RET_ERR(1) "function " EM_VARG " used as a variable";
         case MSG_illegal_cast:
-            RET_ERR(2) "illegal cast, cannot convert expression from tag " EM_VARG " to " EM_VARG;
+            RET_ERR(2) "illegal cast, cannot convert expression from type " EM_VARG " to " EM_VARG;
         case MSG_invalid_unary_op:
-            RET_ERR(2) "cannot apply unary operator " EM_VARG " on operand tag " EM_VARG;
+            RET_ERR(2) "cannot apply unary operator " EM_VARG " on operand type " EM_VARG;
         case MSG_invalid_binary_op:
-            RET_ERR(2) "cannot apply binary operator " EM_VARG " on operand tag " EM_VARG;
+            RET_ERR(2) "cannot apply binary operator " EM_VARG " on operand type " EM_VARG;
         case MSG_invalid_binary_ops:
             RET_ERR(3) "cannot apply binary operator " EM_VARG " on operand types " EM_VARG " and " EM_VARG;
         case MSG_assign_to_void:
-            RET_ERR(0) "cannot assign " EM_CSTR("=") " to left operand tag " EM_CSTR("none");
+            RET_ERR(0) "cannot assign " EM_CSTR("=") " to left operand type " EM_CSTR("none");
         case MSG_assign_to_rvalue:
             RET_ERR(1) "assignment " EM_VARG " requires lvalue left operand, but got rvalue";
         case MSG_invalid_condition:
-            RET_ERR(1) "cannot apply conditional " EM_CSTR("then") " on condition operand tag " EM_VARG;
+            RET_ERR(1) "cannot apply conditional " EM_CSTR("then") " on condition operand type " EM_VARG;
         case MSG_invalid_ternary_op:
             RET_ERR(2) "cannot apply ternary operator " EM_CSTR("else") " on operand types " EM_VARG " and " EM_VARG;
         case MSG_var_used_as_fun:
@@ -739,7 +739,7 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_call_with_wrong_argc:
             RET_ERR(3) "function " EM_VARG " called with " EM_VARG " arguments instead of " EM_VARG;
         case MSG_deref_not_ptr:
-            RET_ERR(1) "cannot apply dereference operator " EM_CSTR("[]") " on non-pointer tag " EM_VARG;
+            RET_ERR(1) "cannot apply dereference operator " EM_CSTR("[]") " on non-pointer type " EM_VARG;
         case MSG_addrof_rvalue:
             RET_ERR(0) "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue";
         case MSG_invalid_subscript:
@@ -747,7 +747,7 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
             "cannot subscript array with operand types " EM_VARG " and " //
                 EM_VARG ", requires a complete pointer and an integer types";
         case MSG_sizeof_incomplete:
-            RET_ERR(1) "cannot get size with " EM_CSTR("sizeof") " operator on incomplete tag " EM_VARG;
+            RET_ERR(1) "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " EM_VARG;
         case MSG_dot_not_struct:
             RET_ERR(2)
             "cannot access datatype member " EM_VARG " with dot operator " EM_CSTR(".") //
@@ -765,71 +765,71 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_exp_incomplete:
             RET_ERR(1) "incomplete datatype " EM_VARG " in expression";
         case MSG_ret_value_in_void_fun:
-            RET_ERR(1) "found " EM_CSTR("return") " value in function " EM_VARG " returning tag " EM_CSTR("none");
+            RET_ERR(1) "found " EM_CSTR("return") " value in function " EM_VARG " returning type " EM_CSTR("none");
         case MSG_no_ret_value_in_fun:
-            RET_ERR(2) "found " EM_CSTR("return") " with no value in function " EM_VARG " returning tag " EM_VARG;
+            RET_ERR(2) "found " EM_CSTR("return") " with no value in function " EM_VARG " returning type " EM_VARG;
         case MSG_invalid_if:
-            RET_ERR(1) "cannot use " EM_CSTR("if") " statement with condition expression tag " EM_VARG;
+            RET_ERR(1) "cannot use " EM_CSTR("if") " statement with condition expression type " EM_VARG;
         case MSG_invalid_while:
-            RET_ERR(1) "cannot use " EM_CSTR("loop while") " statement with condition expression tag " EM_VARG;
+            RET_ERR(1) "cannot use " EM_CSTR("loop while") " statement with condition expression type " EM_VARG;
         case MSG_invalid_do_while:
-            RET_ERR(1) "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression tag " EM_VARG;
+            RET_ERR(1) "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " EM_VARG;
         case MSG_invalid_for:
             RET_ERR(1)
             "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") //
-                " condition expression tag " EM_VARG;
+                " condition expression type " EM_VARG;
         case MSG_invalid_switch:
             RET_ERR(1)
-            "cannot use " EM_CSTR("match") " statement with match expression tag " //
-                EM_VARG ", requires an integer tag";
+            "cannot use " EM_CSTR("match") " statement with match expression type " //
+                EM_VARG ", requires an integer type";
         case MSG_duplicate_case_value:
             RET_ERR(1) "found duplicate " EM_CSTR("->") " value " EM_VARG " in " EM_CSTR("match") " statement";
         case MSG_string_init_not_char_arr:
-            RET_ERR(1) "non-character array tag " EM_VARG " initialized from string constant";
+            RET_ERR(1) "non-character array type " EM_VARG " initialized from string constant";
         case MSG_string_init_overflow:
             RET_ERR(2) "size " EM_VARG " string constant initialized with " EM_VARG " characters";
         case MSG_arr_init_overflow:
-            RET_ERR(3) "size " EM_VARG " array tag " EM_VARG " initialized with " EM_VARG " initializers";
+            RET_ERR(3) "size " EM_VARG " array type " EM_VARG " initialized with " EM_VARG " initializers";
         case MSG_struct_init_overflow:
             RET_ERR(3) "datatype " EM_VARG " initialized with " EM_VARG " members instead of " EM_VARG;
         case MSG_ret_arr:
-            RET_ERR(2) "function " EM_VARG " returns array tag " EM_VARG ", instead of pointer tag";
+            RET_ERR(2) "function " EM_VARG " returns array type " EM_VARG ", instead of pointer type";
         case MSG_ret_incomplete:
             RET_ERR(2) "function " EM_VARG " returns incomplete datatype " EM_VARG;
         case MSG_void_param:
-            RET_ERR(2) "function " EM_VARG " declared with parameter " EM_VARG " with tag " EM_CSTR("none");
+            RET_ERR(2) "function " EM_VARG " declared with parameter " EM_VARG " with type " EM_CSTR("none");
         case MSG_incomplete_param:
             RET_ERR(3) "function " EM_VARG " defined with parameter " EM_VARG " with incomplete datatype " EM_VARG;
         case MSG_redecl_fun_conflict:
             RET_ERR(3)
-            "function " EM_VARG " redeclared with function tag " //
-                EM_VARG ", but previous declaration has function tag " EM_VARG;
+            "function " EM_VARG " redeclared with function type " //
+                EM_VARG ", but previous declaration has function type " EM_VARG;
         case MSG_redef_fun:
-            RET_ERR(2) "function " EM_VARG " already defined with function tag " EM_VARG;
+            RET_ERR(2) "function " EM_VARG " already defined with function type " EM_VARG;
         case MSG_redecl_static_conflict:
             RET_ERR(1) "function " EM_VARG " with " EM_CSTR("data") " storage class already declared non-static";
         case MSG_static_ptr_init_not_int:
             RET_ERR(2)
-            "cannot statically initialize pointer tag " EM_VARG " from constant " //
+            "cannot statically initialize pointer type " EM_VARG " from constant " //
                 EM_VARG ", requires a constant integer";
         case MSG_static_ptr_init_not_null:
-            RET_ERR(2) "cannot statically initialize pointer tag " EM_VARG " from non-zero value " EM_VARG;
+            RET_ERR(2) "cannot statically initialize pointer type " EM_VARG " from non-zero value " EM_VARG;
         case MSG_agg_init_with_single:
-            RET_ERR(1) "aggregate tag " EM_VARG " statically initialized with single initializer";
+            RET_ERR(1) "aggregate type " EM_VARG " statically initialized with single initializer";
         case MSG_static_ptr_init_string:
-            RET_ERR(1) "non-character pointer tag " EM_VARG " statically initialized from string constant";
+            RET_ERR(1) "non-character pointer type " EM_VARG " statically initialized from string constant";
         case MSG_static_init_not_const:
-            RET_ERR(1) "cannot statically initialize variable from non-constant tag " EM_VARG ", requires a constant";
+            RET_ERR(1) "cannot statically initialize variable from non-constant type " EM_VARG ", requires a constant";
         case MSG_scalar_init_with_compound:
-            RET_ERR(1) "cannot initialize scalar tag " EM_VARG " with compound initializer";
+            RET_ERR(1) "cannot initialize scalar type " EM_VARG " with compound initializer";
         case MSG_void_var_decl:
-            RET_ERR(1) "variable " EM_VARG " declared with tag " EM_CSTR("none");
+            RET_ERR(1) "variable " EM_VARG " declared with type " EM_CSTR("none");
         case MSG_incomplete_var_decl:
             RET_ERR(2) "variable " EM_VARG " declared with incomplete datatype " EM_VARG;
         case MSG_redecl_var_conflict:
             RET_ERR(3)
-            "variable " EM_VARG " redeclared with conflicting tag " //
-                EM_VARG ", but previously declared with tag " EM_VARG;
+            "variable " EM_VARG " redeclared with conflicting type " //
+                EM_VARG ", but previously declared with type " EM_VARG;
         case MSG_redecl_var_storage:
             RET_ERR(1) "variable " EM_VARG " redeclared with conflicting storage class";
         case MSG_redef_extern_var:
@@ -839,7 +839,7 @@ char* get_semantic_msg(MESSAGE_SEMANTIC msg) {
         case MSG_duplicate_member_decl:
             RET_ERR(2) "datatype " EM_VARG " declared with duplicate member name " EM_VARG;
         case MSG_incomplete_member_decl:
-            RET_ERR(3) "datatype " EM_VARG " declared with member " EM_VARG " with incomplete tag " EM_VARG;
+            RET_ERR(3) "datatype " EM_VARG " declared with member " EM_VARG " with incomplete type " EM_VARG;
         case MSG_redecl_struct_in_scope:
             RET_ERR(1) "datatype " EM_VARG " already declared in this scope";
         case MSG_case_out_of_switch:
