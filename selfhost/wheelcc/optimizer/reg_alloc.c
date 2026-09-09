@@ -1231,8 +1231,8 @@ static void reallocate_registers(Ctx ctx) {
 
 // Register coalescing
 
-static TInt get_type_size(struct Type* type) {
-    switch (type->type) {
+static TInt get_type_size(struct Type* type_t) {
+    switch (type_t->type) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_UChar_t:

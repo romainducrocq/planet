@@ -185,8 +185,8 @@ static unique_ptr_t(TacExpResult) var_res_instr(struct CVar* node) {
     return make_TacPlainOperand(&val);
 }
 
-static bool is_type_signed(struct Type* type) {
-    switch (type->type) {
+static bool is_type_signed(struct Type* type_t) {
+    switch (type_t->type) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_Int_t:
@@ -198,8 +198,8 @@ static bool is_type_signed(struct Type* type) {
     }
 }
 
-static TInt get_scalar_size(struct Type* type) {
-    switch (type->type) {
+static TInt get_scalar_size(struct Type* type_t) {
+    switch (type_t->type) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_UChar_t:
@@ -217,7 +217,7 @@ static TInt get_scalar_size(struct Type* type) {
     }
 }
 
-static TLong get_type_scale(Ctx ctx, struct Type* type);
+static TLong get_type_scale(Ctx ctx, struct Type* type_t);
 
 static TLong get_arr_scale(Ctx ctx, struct Array* arr_type) {
     TLong size = arr_type->size;
@@ -232,14 +232,14 @@ static TLong get_struct_scale(Ctx ctx, struct Structure* struct_type) {
     return map_get(ctx->frontend->struct_typedef_table, struct_type->tag)->size;
 }
 
-static TLong get_type_scale(Ctx ctx, struct Type* type) {
-    switch (type->type) {
+static TLong get_type_scale(Ctx ctx, struct Type* type_t) {
+    switch (type_t->type) {
         case AST_Array_t:
-            return get_arr_scale(ctx, &type->get._Array);
+            return get_arr_scale(ctx, &type_t->get._Array);
         case AST_Structure_t:
-            return get_struct_scale(ctx, &type->get._Structure);
+            return get_struct_scale(ctx, &type_t->get._Structure);
         default:
-            return get_scalar_size(type);
+            return get_scalar_size(type_t);
     }
 }
 
