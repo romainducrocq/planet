@@ -35,27 +35,27 @@
 #include "../lib/c_lib.h"
 
 /* Note: sdshdr5 is never used, we just access the flags byte directly.
- * However is here to document the layout of type 5 SDS strings. */
+ * However is here to document the layout of stype 5 SDS strings. */
 struct sdshdr5 {
-    unsigned char flags; /* 3 lsb of type, and 5 msb of string length */
+    unsigned char flags; /* 3 lsb of stype, and 5 msb of string length */
     // char buf[];
 };
 struct sdshdr8 {
     uint8_t len;         /* used */
     uint8_t alloc;       /* excluding the header and null terminator */
-    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    unsigned char flags; /* 3 lsb of stype, 5 unused bits */
     // char buf[];
 };
 struct sdshdr32 {
     uint32_t len;        /* used */
     uint32_t alloc;      /* excluding the header and null terminator */
-    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    unsigned char flags; /* 3 lsb of stype, 5 unused bits */
     // char buf[];
 };
 struct sdshdr64 {
     uint64_t len;        /* used */
     uint64_t alloc;      /* excluding the header and null terminator */
-    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    unsigned char flags; /* 3 lsb of stype, 5 unused bits */
     // char buf[];
 };
 
@@ -131,7 +131,7 @@ static void sdssetalloc(sds s, unsigned long newlen) {
     unsigned char flags = s[-1];
     switch (flags & SDS_TYPE_MASK) {
         case SDS_TYPE_5:
-            /* Nothing to do, this type has no total allocation info. */
+            /* Nothing to do, this stype has no total allocation info. */
             break;
         case SDS_TYPE_8:
             SDS_HDR(8, s)->alloc = newlen;
@@ -145,8 +145,8 @@ static void sdssetalloc(sds s, unsigned long newlen) {
     }
 }
 
-static int sdsHdrSize(char type) {
-    switch (type & SDS_TYPE_MASK) {
+static int sdsHdrSize(char stype) {
+    switch (stype & SDS_TYPE_MASK) {
         case SDS_TYPE_5:
             return sizeof(struct sdshdr5);
         case SDS_TYPE_8:
@@ -185,12 +185,12 @@ static char sdsReqType(unsigned long string_size) {
 static sds sdsnewlen(void* init, unsigned long initlen) {
     void* sh;
     sds s;
-    char type = sdsReqType(initlen);
-    /* Empty strings are usually created in order to append. Use type 8
-     * since type 5 is not good at this. */
-    if (type == SDS_TYPE_5 && initlen == 0)
-        type = SDS_TYPE_8;
-    int hdrlen = sdsHdrSize(type);
+    char stype = sdsReqType(initlen);
+    /* Empty strings are usually created in order to append. Use stype 8
+     * since stype 5 is not good at this. */
+    if (stype == SDS_TYPE_5 && initlen == 0)
+        stype = SDS_TYPE_8;
+    int hdrlen = sdsHdrSize(stype);
     unsigned char* fp; /* flags pointer. */
 
     sh = malloc(hdrlen + initlen + 1);
@@ -202,30 +202,30 @@ static sds sdsnewlen(void* init, unsigned long initlen) {
         memset(sh, 0, hdrlen + initlen + 1);
     s = (char*)sh + hdrlen;
     fp = ((unsigned char*)s) - 1;
-    switch (type) {
+    switch (stype) {
         case SDS_TYPE_5: {
-            *fp = type | (initlen << SDS_TYPE_BITS);
+            *fp = stype | (initlen << SDS_TYPE_BITS);
             break;
         }
         case SDS_TYPE_8: {
             SDS_HDR_VAR(8, s);
             sh->len = initlen;
             sh->alloc = initlen;
-            *fp = type;
+            *fp = stype;
             break;
         }
         case SDS_TYPE_32: {
             SDS_HDR_VAR(32, s);
             sh->len = initlen;
             sh->alloc = initlen;
-            *fp = type;
+            *fp = stype;
             break;
         }
         case SDS_TYPE_64: {
             SDS_HDR_VAR(64, s);
             sh->len = initlen;
             sh->alloc = initlen;
-            *fp = type;
+            *fp = stype;
             break;
         }
     }
@@ -273,8 +273,8 @@ sds sdsMakeRoomFor(sds s, unsigned long addlen) {
     unsigned long avail = sdsavail(s);
     unsigned long len;
     unsigned long newlen;
-    char type;
-    char oldtype = s[-1] & SDS_TYPE_MASK;
+    char stype;
+    char oldstype = s[-1] & SDS_TYPE_MASK;
     int hdrlen;
 
     /* Return ASAP if there is enough space left. */
@@ -282,24 +282,24 @@ sds sdsMakeRoomFor(sds s, unsigned long addlen) {
         return s;
 
     len = sdslen(s);
-    sh = (char*)s - sdsHdrSize(oldtype);
+    sh = (char*)s - sdsHdrSize(oldstype);
     newlen = (len + addlen);
     if (newlen < SDS_MAX_PREALLOC)
         newlen *= 2;
     else
         newlen += SDS_MAX_PREALLOC;
 
-    type = sdsReqType(newlen);
+    stype = sdsReqType(newlen);
 
-    /* Don't use type 5: the user is appending to the string and type 5 is
+    /* Don't use stype 5: the user is appending to the string and stype 5 is
      * not able to remember empty space, so sdsMakeRoomFor() must be called
      * at every appending operation. */
-    if (type == SDS_TYPE_5)
-        type = SDS_TYPE_8;
+    if (stype == SDS_TYPE_5)
+        stype = SDS_TYPE_8;
 
-    hdrlen = sdsHdrSize(type);
+    hdrlen = sdsHdrSize(stype);
     // assert(hdrlen + newlen + 1 > (len + addlen)); /* Catch unsigned long overflow */
-    if (oldtype == type) {
+    if (oldstype == stype) {
         newsh = realloc(sh, hdrlen + newlen + 1);
         if (newsh == 0)
             return 0;
@@ -314,7 +314,7 @@ sds sdsMakeRoomFor(sds s, unsigned long addlen) {
         memcpy((char*)newsh + hdrlen, s, len + 1);
         free(sh);
         s = (char*)newsh + hdrlen;
-        s[-1] = type;
+        s[-1] = stype;
         sdssetlen(s, len);
     }
     sdssetalloc(s, newlen);
@@ -425,7 +425,7 @@ static int sdsll2str(char* s, long value) {
     return l;
 }
 
-/* Identical sdsll2str(), but for unsigned long type. */
+/* Identical sdsll2str(), but for unsigned long stype. */
 static int sdsull2str(char* s, unsigned long v) {
     char* p;
     char aux;
