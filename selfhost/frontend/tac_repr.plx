@@ -66,7 +66,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -667,7 +667,7 @@ fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
             return make_TacUnaryOp(150)
         }
         otherwise {
-            panic_sigabrt("abort", 39, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -726,7 +726,7 @@ fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
             return make_TacBinaryOp(168)
         }
         otherwise {
-            panic_sigabrt("abort", 83, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -791,7 +791,7 @@ fn repr_value(node: *struc CExp) *struc TacValue {
             return var_value(@node[].get._CVar)
         }
         otherwise {
-            panic_sigabrt("abort", 129, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -919,7 +919,7 @@ fn get_scalar_size(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 216, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1419,7 +1419,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                     }
                     break
                     otherwise {
-                        panic_sigabrt("abort", 611, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+                        panic_sigabrt("abort")
                     }
                 }
                 res_postfix = make_TacPlainOperand(@dst)
@@ -1440,7 +1440,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
         }
         break
         otherwise {
-            panic_sigabrt("abort", 628, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
     if node[].unop.tag == 60 {
@@ -1639,7 +1639,7 @@ fn addrof_res_instr(ctx: *struc TacReprContext, node: *struc CAddrOf) *struc Tac
         }
         break
         otherwise {
-            panic_sigabrt("abort", 772, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
     return res
@@ -1751,7 +1751,7 @@ fn dot_res_instr(ctx: *struc TacReprContext, node: *struc CDot) *struc TacExpRes
         }
         break
         otherwise {
-            panic_sigabrt("abort", 865, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
     return res
@@ -1838,7 +1838,7 @@ fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacExpRe
             return arrow_res_instr(ctx, @node[].get._CArrow)
         }
         otherwise {
-            panic_sigabrt("abort", 929, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1902,7 +1902,7 @@ fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue
             break
         }
         otherwise {
-            panic_sigabrt("abort", 977, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
     free_TacExpResult(@res)
@@ -2025,7 +2025,7 @@ fn for_init_statement_instr(ctx: *struc TacReprContext, node: *struc CForInit) n
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1096, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2177,7 +2177,7 @@ fn statement_instr(ctx: *struc TacReprContext, node: *struc CStatement) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 1222, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2309,7 +2309,7 @@ fn aggr_compound_init_instr(ctx: *struc TacReprContext, node: *struc CCompoundIn
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1353, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2325,7 +2325,7 @@ fn compound_init_instr(ctx: *struc TacReprContext, node: *struc CInitializer, in
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1367, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2343,7 +2343,7 @@ fn var_decl_instr(ctx: *struc TacReprContext, node: *struc CVariableDeclaration)
             break
         }
         otherwise {
-            panic_sigabrt("abort", 1383, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2366,7 +2366,7 @@ fn declaration_instr(ctx: *struc TacReprContext, node: *struc CDeclaration) none
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1403, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2383,7 +2383,7 @@ fn repr_instr_list(ctx: *struc TacReprContext, node_list: **struc CBlockItem) no
             }
             break
             otherwise {
-                panic_sigabrt("abort", 1424, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+                panic_sigabrt("abort")
             }
         }
     }
@@ -2394,7 +2394,7 @@ fn repr_block(ctx: *struc TacReprContext, node: *struc CBlock) none {
         repr_instr_list(ctx, node[].get._CB.block_items)
     }
     else {
-        panic_sigabrt("abort", 1434, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+        panic_sigabrt("abort")
     }
 }
 
@@ -2451,7 +2451,7 @@ fn declaration_toplvl(ctx: *struc TacReprContext, node: *struc CDeclaration) non
             }
         }
         otherwise {
-            panic_sigabrt("abort", 1479, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -2518,7 +2518,7 @@ fn repr_static_var_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbo
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1523, "/home/romain/proj/planet/selfhost/wheelcc/frontend/tac_repr.c")
+            panic_sigabrt("abort")
         }
     }
     push_toplvl(ctx, make_TacStaticVariable(name, is_glob, @static_init_type, @static_inits))

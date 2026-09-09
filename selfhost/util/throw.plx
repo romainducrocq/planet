@@ -52,7 +52,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -76,35 +76,13 @@ esc_reset: [5]char = $(27, '[', '0', 'm', 0)
 esc_bold: [5]char = $(27, '[', '1', 'm', 0)
 esc_red: [8]char = $(27, '[', '0', ';', '3', '1', 'm', 0)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none {
+pub fn panic_sigabrt(msg: string) none {
     fflush(0)
     {
-        strto_line: string = ? (line) > 0 then sdsfromunsignedlong(cast<u64>((line))) else sdsfromlong(cast<i64>((line)))
         stderr_buf: string = ? "" then sdsnew("") else 0
-        stderr_buf_size: u64 = strlen("::\ninternal error: \n") + 4 + strlen(file) + sdslen(strto_line) + 4 + 7 + 4 + strlen(msg)
+        stderr_buf_size: u64 = strlen("internal error: \n") + 7 + 4 + strlen(msg)
         loop .. while 0 {
             stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, esc_bold)
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, file)
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, ":")
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, strto_line)
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, ":")
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, esc_reset)
-        }        
-        loop .. while 0 {
-            stderr_buf = sdscat(stderr_buf, "\n")
         }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_red)
@@ -125,10 +103,6 @@ pub fn panic_sigabrt(msg: string, line: i32, file: string) none {
             stderr_buf = sdscat(stderr_buf, "\n")
         }        
         write(2, stderr_buf, sdslen(stderr_buf))
-        if strto_line {
-            sdsfree(strto_line)
-            strto_line = ? 0 then sdsnew(0) else 0
-        }
         if stderr_buf {
             sdsfree(stderr_buf)
             stderr_buf = ? 0 then sdsnew(0) else 0

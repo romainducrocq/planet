@@ -52,7 +52,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -153,7 +153,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or sdslen(filename) >= 4096 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 58, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -179,7 +179,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or sdslen(filename) >= 4096 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(202), "202", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 73, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(202), "202", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -236,7 +236,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd = fopen((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename, "rb")
         if not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 123, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -244,7 +244,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         loop i: u64 = 0 while i < linenum .. ++i {
             if getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd) == -1 {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 128, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                

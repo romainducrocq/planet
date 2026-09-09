@@ -56,7 +56,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -496,7 +496,7 @@ fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
         free_InferenceGraph(@self)
         self = cast<*struc InferenceGraph>(malloc(sizeof<struc InferenceGraph>))
         if not self {
-            panic_sigabrt("alloc "                 "InferenceGraph",                 73, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+            panic_sigabrt("alloc "                 "InferenceGraph")
         }
     }    
     self[].hard_reg_mask = 0ul
@@ -624,7 +624,7 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
         free_ControlFlowGraph(@self)
         self = cast<*struc ControlFlowGraph>(malloc(sizeof<struc ControlFlowGraph>))
         if not self {
-            panic_sigabrt("alloc "                 "ControlFlowGraph",                 83, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+            panic_sigabrt("alloc "                 "ControlFlowGraph")
         }
     }    
     self[].entry_id = 0
@@ -687,7 +687,7 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
         free_DataFlowAnalysis(@self)
         self = cast<*struc DataFlowAnalysis>(malloc(sizeof<struc DataFlowAnalysis>))
         if not self {
-            panic_sigabrt("alloc "                 "DataFlowAnalysis",                 105, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+            panic_sigabrt("alloc "                 "DataFlowAnalysis")
         }
     }    
     self[].set_size = 0
@@ -727,7 +727,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
         free_DataFlowAnalysisO2(@self)
         self = cast<*struc DataFlowAnalysisO2>(malloc(sizeof<struc DataFlowAnalysisO2>))
         if not self {
-            panic_sigabrt("alloc "                 "DataFlowAnalysisO2",                 145, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+            panic_sigabrt("alloc "                 "DataFlowAnalysisO2")
         }
     }    
     self[].data_name_map = 0
@@ -780,7 +780,7 @@ fn cfg_add_succ_edge(ctx: *struc RegAllocContext, block_id: u64, succ_id: u64) n
         cfg_add_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id)
     }
     else {
-        panic_sigabrt("abort", 194, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+        panic_sigabrt("abort")
     }
 }
 
@@ -792,7 +792,7 @@ fn cfg_add_pred_edge(ctx: *struc RegAllocContext, block_id: u64, pred_id: u64) n
         cfg_add_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id)
     }
     else {
-        panic_sigabrt("abort", 206, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+        panic_sigabrt("abort")
     }
 }
 
@@ -827,7 +827,7 @@ fn cfg_rm_succ_edge(ctx: *struc RegAllocContext, block_id: u64, succ_id: u64, is
         cfg_rm_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id, is_reachable)
     }
     else {
-        panic_sigabrt("abort", 237, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+        panic_sigabrt("abort")
     }
 }
 
@@ -839,7 +839,7 @@ fn cfg_rm_pred_edge(ctx: *struc RegAllocContext, block_id: u64, pred_id: u64) no
         cfg_rm_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, 1)
     }
     else {
-        panic_sigabrt("abort", 249, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+        panic_sigabrt("abort")
     }
 }
 
@@ -1157,7 +1157,7 @@ fn dfa_backward_meet_block(ctx: *struc RegAllocContext, block_id: u64) i32 {
             break
         }
         else {
-            panic_sigabrt("abort", 754, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/impl_olvl.h")
+            panic_sigabrt("abort")
         }
     }
     if instr_idx < ctx[].dfa[].incoming_idx {
@@ -1541,7 +1541,7 @@ fn infer_transfer_updated_op(ctx: *struc RegAllocContext, node: *struc AsmOperan
             break
         }
         -> 256 {
-            panic_sigabrt("abort", 233, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+            panic_sigabrt("abort")
         }
         otherwise {
             break
@@ -1657,7 +1657,7 @@ fn infer_transfer_live_regs(ctx: *struc RegAllocContext, instr_idx: u64, next_in
         infer_transfer_used_call(ctx, @node[].get._AsmCall, next_instr_idx)
         break
         otherwise {
-            panic_sigabrt("abort", 340, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1720,7 +1720,7 @@ fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
             return none
         }
     }
-    panic_sigabrt("abort", 390, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+    panic_sigabrt("abort")
 }
 
 fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
@@ -1733,7 +1733,7 @@ fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
             return none
         }
     }
-    panic_sigabrt("abort", 400, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+    panic_sigabrt("abort")
 }
 
 fn infer_init_used_name_edges(ctx: *struc RegAllocContext, name: u64) none {
@@ -1854,7 +1854,7 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
                 break
             }
             -> 256 {
-                panic_sigabrt("abort", 525, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+                panic_sigabrt("abort")
             }
             otherwise {
                 is_mov = 0
@@ -2396,7 +2396,7 @@ fn get_op_reg_kind(ctx: *struc RegAllocContext, node: *struc AsmOperand) i32 {
             return 14
         }
         -> 256 {
-            panic_sigabrt("abort", 983, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+            panic_sigabrt("abort")
         }
         otherwise {
             return 14
@@ -2789,7 +2789,7 @@ fn get_type_size(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 1249, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -3452,7 +3452,7 @@ fn alloc_toplvl(ctx: *struc RegAllocContext, node: *struc AsmTopLevel) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 1808, "/home/romain/proj/planet/selfhost/wheelcc/optimizer/reg_alloc.c")
+            panic_sigabrt("abort")
         }
     }
 }

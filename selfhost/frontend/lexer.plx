@@ -83,7 +83,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -397,7 +397,7 @@ fn match_include(ctx: *struc LexerContext, tok_kind: i32) i32 {
                 break
             }
             otherwise {
-                panic_sigabrt("abort", 145, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                panic_sigabrt("abort")
             }
         }
         loop while match_space(ctx) {
@@ -1358,7 +1358,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                         smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                         info_at: u64 = push_token_info(ctx)
                         loop .. while 0 {
-                            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(307), "307", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 773, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(307), "307", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                             _errval = 1
                             jump _Lfinally
                         }                        
@@ -1389,7 +1389,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(306), "306", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 793, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(306), "306", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                    
@@ -1398,7 +1398,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(301), "301", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 798, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(301), "301", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                    
@@ -1481,7 +1481,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             -> 95 {
                 -> 96 {
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(302), "302", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 852, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(302), "302", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                
@@ -1490,14 +1490,14 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             -> 97 {
                 -> 98 {
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(303), "303", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 855, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(303), "303", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                
                 }
             }
             otherwise {
-                panic_sigabrt("abort", 857, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                panic_sigabrt("abort")
             }
         }
     }
@@ -1516,7 +1516,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                     }
                 }
                 otherwise {
-                    panic_sigabrt("abort", 871, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                    panic_sigabrt("abort")
                 }
             }
         }
@@ -1534,7 +1534,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                 if not find_include(ctx[].p_includedirs[], @filename) {
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(304), "304", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 883, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(304), "304", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                    
@@ -1547,7 +1547,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                 if not find_include(ctx[].p_stdlibdirs[], @filename) {
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(305), "305", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 891, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_lexer_msg(305), "305", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                    
@@ -1556,7 +1556,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             }
         }
         otherwise {
-            panic_sigabrt("abort", 896, "/home/romain/proj/planet/selfhost/wheelcc/frontend/lexer.c")
+            panic_sigabrt("abort")
         }
     }
     line = ctx[].line

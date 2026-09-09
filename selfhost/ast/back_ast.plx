@@ -415,7 +415,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -491,7 +491,7 @@ pub fn make_AsmReg(tag: i32) struc AsmReg {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 54, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -525,7 +525,7 @@ pub fn make_AsmCondCode(tag: i32) struc AsmCondCode {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 75, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -537,7 +537,7 @@ pub fn make_AsmOperand(none) *struc AsmOperand {
             free_AsmOperand(@self)
             self = cast<*struc AsmOperand>(malloc(sizeof<struc AsmOperand>))
             if not self {
-                panic_sigabrt("alloc "                     "AsmOperand",                     81, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+                panic_sigabrt("alloc "                     "AsmOperand")
             }
         }        
         (self)[]._ref_count = 1
@@ -637,7 +637,7 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 162, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -673,7 +673,7 @@ pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 183, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -691,7 +691,7 @@ pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 196, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -702,7 +702,7 @@ pub fn make_AsmInstruction(none) *struc AsmInstruction {
         free_AsmInstruction(@self)
         self = cast<*struc AsmInstruction>(malloc(sizeof<struc AsmInstruction>))
         if not self {
-            panic_sigabrt("alloc "                 "AsmInstruction",                 202, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("alloc "                 "AsmInstruction")
         }
     }    
     self[].tag = 272
@@ -1145,7 +1145,7 @@ pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 492, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1160,7 +1160,7 @@ pub fn make_AsmTopLevel(none) *struc AsmTopLevel {
         free_AsmTopLevel(@self)
         self = cast<*struc AsmTopLevel>(malloc(sizeof<struc AsmTopLevel>))
         if not self {
-            panic_sigabrt("alloc "                 "AsmTopLevel",                 499, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("alloc "                 "AsmTopLevel")
         }
     }    
     self[].tag = 293
@@ -1262,7 +1262,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 560, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -1277,7 +1277,7 @@ pub fn make_AsmProgram(static_const_toplvls: ***struc AsmTopLevel, top_levels: *
         free_AsmProgram(@self)
         self = cast<*struc AsmProgram>(malloc(sizeof<struc AsmProgram>))
         if not self {
-            panic_sigabrt("alloc "                 "AsmProgram",                 568, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("alloc "                 "AsmProgram")
         }
     }    
     self[].tag = 297
@@ -1317,7 +1317,7 @@ pub fn free_AsmProgram(self: **struc AsmProgram) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 583, "/home/romain/proj/planet/selfhost/wheelcc/ast/back_ast.c")
+            panic_sigabrt("abort")
         }
     }
     loop i: u64 = 0 while i < (? ((self[])[].static_const_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)[].length else 0) .. ++i {

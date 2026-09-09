@@ -52,7 +52,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -189,7 +189,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 }
                 break
                 otherwise {
-                    panic_sigabrt("abort", 59, "/home/romain/proj/planet/selfhost/wheelcc/util/str2t.c")
+                    panic_sigabrt("abort")
                 }
             }
         }
@@ -241,7 +241,7 @@ pub fn string_to_char_ascii(str_char: string) i32 {
                 return 11
             }
             otherwise {
-                panic_sigabrt("abort", 97, "/home/romain/proj/planet/selfhost/wheelcc/util/str2t.c")
+                panic_sigabrt("abort")
             }
         }
     }
@@ -400,7 +400,7 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
     value[] = strtoimax(str_int, @end_ptr, 10)
     if end_ptr == str_int {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(203), "203", "", "", str_int) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 205, "/home/romain/proj/planet/selfhost/wheelcc/util/str2t.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(203), "203", "", "", str_int) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -415,7 +415,7 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
     value[] = strtoumax(str_uint, @end_ptr, 10)
     if end_ptr == str_uint {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(204), "204", "", "", str_uint) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 216, "/home/romain/proj/planet/selfhost/wheelcc/util/str2t.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(204), "204", "", "", str_uint) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -430,7 +430,7 @@ pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, v
     value[] = strtod(str_dbl, @end_ptr)
     if end_ptr == str_dbl {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(205), "205", "", "", str_dbl) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort", 227, "/home/romain/proj/planet/selfhost/wheelcc/util/str2t.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(205), "205", "", "", str_dbl) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        

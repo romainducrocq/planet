@@ -57,7 +57,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -573,7 +573,7 @@ fn get_reg_rsp_sse(node: *struc AsmReg) string {
             return "%xmm15"
         }
         otherwise {
-            panic_sigabrt("abort", 155, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -764,7 +764,7 @@ fn get_cond_code(node: *struc AsmCondCode) string {
             return "p"
         }
         otherwise {
-            panic_sigabrt("abort", 342, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -786,7 +786,7 @@ fn type_align_bytes(node: *struc AssemblyType) i32 {
             return node[].get._ByteArray.alignment
         }
         otherwise {
-            panic_sigabrt("abort", 363, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -806,7 +806,7 @@ fn get_type_suffix(node: *struc AssemblyType, is_packed: i32) string {
             return ? is_packed then "pd" else "sd"
         }
         otherwise {
-            panic_sigabrt("abort", 383, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -836,7 +836,7 @@ fn reg_op(ctx: *struc GasCodeContext, node: *struc AsmRegister, byte: i32) none 
         }
         break
         otherwise {
-            panic_sigabrt("abort", 409, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -899,7 +899,7 @@ fn emit_op(ctx: *struc GasCodeContext, node: *struc AsmOperand, byte: i32) none 
         }
         break
         otherwise {
-            panic_sigabrt("abort", 471, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -916,7 +916,7 @@ fn get_unop(node: *struc AsmUnaryOp) string {
             return "shr"
         }
         otherwise {
-            panic_sigabrt("abort", 487, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -954,7 +954,7 @@ fn get_binop(node: *struc AsmBinaryOp, is_dbl: i32) string {
             return "sar"
         }
         otherwise {
-            panic_sigabrt("abort", 525, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1130,7 +1130,7 @@ fn cdq_instr(ctx: *struc GasCodeContext, node: *struc AsmCdq) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 694, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1272,7 +1272,7 @@ fn emit_instr(ctx: *struc GasCodeContext, node: *struc AsmInstruction) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 840, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1384,7 +1384,7 @@ fn static_init_toplvl(ctx: *struc GasCodeContext, node: *struc StaticInit) none 
         emit(ctx, "\n")
         break
         otherwise {
-            panic_sigabrt("abort", 961, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }
@@ -1425,7 +1425,7 @@ fn emit_toplvl(ctx: *struc GasCodeContext, node: *struc AsmTopLevel) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort", 1039, "/home/romain/proj/planet/selfhost/wheelcc/backend/gas_code.c")
+            panic_sigabrt("abort")
         }
     }
 }

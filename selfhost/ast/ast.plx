@@ -94,7 +94,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -106,7 +106,7 @@ pub fn make_CConst(none) *struc CConst {
             free_CConst(@self)
             self = cast<*struc CConst>(malloc(sizeof<struc CConst>))
             if not self {
-                panic_sigabrt("alloc "                     "CConst",                     15, "/home/romain/proj/planet/selfhost/wheelcc/ast/ast.c")
+                panic_sigabrt("alloc "                     "CConst")
             }
         }        
         (self)[]._ref_count = 1
@@ -192,7 +192,7 @@ pub fn free_CConst(self: **struc CConst) none {
             }
         }
         otherwise {
-            panic_sigabrt("abort", 82, "/home/romain/proj/planet/selfhost/wheelcc/ast/ast.c")
+            panic_sigabrt("abort")
         }
     }
     if self[] {
@@ -208,7 +208,7 @@ pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
             free_CStringLiteral(@self)
             self = cast<*struc CStringLiteral>(malloc(sizeof<struc CStringLiteral>))
             if not self {
-                panic_sigabrt("alloc "                     "CStringLiteral",                     89, "/home/romain/proj/planet/selfhost/wheelcc/ast/ast.c")
+                panic_sigabrt("alloc "                     "CStringLiteral")
             }
         }        
         (self)[]._ref_count = 1
@@ -243,7 +243,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort", 102, "/home/romain/proj/planet/selfhost/wheelcc/ast/ast.c")
+            panic_sigabrt("abort")
         }
     }
     if (self[])[].value {

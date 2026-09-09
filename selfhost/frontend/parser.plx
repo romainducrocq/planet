@@ -92,7 +92,7 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
-pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
+pub fn panic_sigabrt(msg: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
@@ -566,7 +566,7 @@ fn expect_next(ctx: *struc ParserContext, next_tok: *struc Token, expect_tok: i3
     _errval: i32 = 0
     if next_tok[].tok_kind ~= expect_tok {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(401), "401", "", get_tok_fmt(ctx[].identifiers, next_tok), get_tok_kind_fmt(expect_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, next_tok[].info_at)) else panic_sigabrt("abort", 35, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(401), "401", "", get_tok_fmt(ctx[].identifiers, next_tok), get_tok_kind_fmt(expect_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, next_tok[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -579,7 +579,7 @@ fn pop_next(ctx: *struc ParserContext) i32 {
     _errval: i32 = 0
     if ctx[].pop_idx >= (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(402), "402", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort", 45, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(402), "402", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -594,7 +594,7 @@ fn peek_next(ctx: *struc ParserContext) i32 {
     _errval: i32 = 0
     if ctx[].pop_idx >= (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(402), "402", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort", 57, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(402), "402", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -618,7 +618,7 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
     }
     if ctx[].pop_idx + i >= (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(402), "402", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort", 73, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(402), "402", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -762,7 +762,7 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
     }    
     if value > 9223372036854775807l {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(403), "403", "", "", strto_value) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 180, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(403), "403", "", "", strto_value) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -796,7 +796,7 @@ fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32
     }    
     if value > 18446744073709551615ul {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(404), "404", "", "", strto_value) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 203, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(404), "404", "", "", strto_value) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -834,7 +834,7 @@ fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) i32 {
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(405), "405", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 234, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(405), "405", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -951,7 +951,7 @@ fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) i32 {
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(406), "406", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 335, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(406), "406", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -976,7 +976,7 @@ fn parse_datatype_specifier(ctx: *struc ParserContext, tag_name: *u64, is_union:
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(407), "407", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 356, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(407), "407", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -1052,7 +1052,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
         }
         -> 60 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(417), "417", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 410, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(417), "417", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -1073,7 +1073,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(408), "408", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 421, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(408), "408", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -1130,7 +1130,7 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(418), "418", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 446, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(418), "418", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -1166,7 +1166,7 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
             break
         }
         otherwise {
-            panic_sigabrt("abort", 469, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            panic_sigabrt("abort")
         }
     }
     loop .. while 0 {
@@ -1331,7 +1331,7 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(409), "409", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 547, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(409), "409", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -1976,7 +1976,7 @@ fn parse_sizeof_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(410), "410", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 843, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(410), "410", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -2079,7 +2079,7 @@ fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(411), "411", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 888, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(411), "411", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -2574,7 +2574,7 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
             break
             otherwise {
                 loop .. while 0 {
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(406), "406", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1137, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(406), "406", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }            
@@ -2871,7 +2871,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
         -> 9 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(422), "422", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1288, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(422), "422", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -2970,7 +2970,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
             -> 82 {
                 -> 83 {
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(423), "423", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1322, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(423), "423", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                
@@ -3066,7 +3066,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }        
         if ctx[].peek_tok[].tok_kind == 9 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(422), "422", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1356, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(422), "422", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
@@ -3165,7 +3165,7 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(419), "419", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1404, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(419), "419", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -3412,7 +3412,7 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
     match ctx[].peek_tok[].tok_kind {
         -> 81 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(426), "426", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1541, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(426), "426", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -3490,7 +3490,7 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     }
     if ctx[].peek_tok[].tok_kind == 5 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(420), "420", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1574, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(420), "420", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3598,7 +3598,7 @@ fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(414), "414", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 1615, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(414), "414", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -3654,7 +3654,7 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
     }    
     if ctx[].peek_tok[].tok_kind == 3 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(421), "421", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1641, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(421), "421", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -3791,7 +3791,7 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
             -> 82 {
                 -> 83 {
                     loop .. while 0 {
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(424), "424", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1694, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                        ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(424), "424", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
                     }                
@@ -4041,7 +4041,7 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(412), "412", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 1793, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(412), "412", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -4177,7 +4177,7 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(413), "413", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort", 1853, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(413), "413", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -4267,7 +4267,7 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
         }
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(416), "416", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1916, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(416), "416", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -4287,7 +4287,7 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
     }    
     if ctx[].peek_tok[].tok_kind == 65 {
         loop .. while 0 {
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(425), "425", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1922, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(425), "425", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
@@ -4334,7 +4334,7 @@ fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageCl
         break
         otherwise {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(415), "415", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1945, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(415), "415", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }        
@@ -4358,7 +4358,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
         }        
         if ctx[].peek_tok[].tok_kind == 82 {
             loop .. while 0 {
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(427), "427", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort", 1962, "/home/romain/proj/planet/selfhost/wheelcc/frontend/parser.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_parser_msg(427), "427", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
