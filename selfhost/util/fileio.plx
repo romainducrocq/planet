@@ -33,26 +33,35 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
-type struc stbds_array_header(    length: u64    , capacity: u64    , hash_table: *any    , temp: i64    )
+
+type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+
 extrn fn stbds_hash_string(str: string, seed: u64) u64;
 extrn fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any;
 extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
-
 type struc FileIoContext;
+
 type struc Pairhash_thash_t(key: u64, value: u64)
-type struc FileOpenLine(    linenum: u64    , total_linenum: u64    , filename: string    )
-type struc TokenInfo(    tok_pos: i32    , tok_len: i32    , total_linenum: u64    )
-type struc ErrorsContext(    errors: *struc ErrorsContext    , fileio: *struc FileIoContext    , msg: [1024]char    , is_stdout: i32    , info_at_buf: u64    , info_at_map: *struc Pairhash_thash_t    , fopen_lines: *struc FileOpenLine    , token_infos: *struc TokenInfo    )
+
+type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
+
+type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
+
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+
 pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 type struc ErrorsContext;
-type struc FileRead(    len: u64    , buf: string    , fd: *struc FILE    , filename: string    )
-type struc FileIoContext(    errors: *struc ErrorsContext    , fd_write: *struc FILE    , write_buf: string    , filename: string    , file_reads: *struc FileRead    )
+
+type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string)
+
+type struc FileIoContext(errors: *struc ErrorsContext, fd_write: *struc FILE, write_buf: string, filename: string, file_reads: *struc FileRead)
+
 pub fn find_file(filename: string) i32;
 pub fn get_filename(ctx: *struc FileIoContext) string;
 pub fn set_filename(ctx: *struc FileIoContext, filename: string) none;
@@ -87,13 +96,14 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
 pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_fmt: *string) string;
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string;
 pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string) string;
-pub fn get_type_fmt(ctx: *struc IdentifierContext, type: *struc Type, type_fmt: *string) string;
+pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string) string;
 pub fn get_fatal_msg(msg: i32) string;
 pub fn get_arg_msg(msg: i32) string;
 pub fn get_util_msg(msg: i32) string;
 pub fn get_lexer_msg(msg: i32) string;
 pub fn get_parser_msg(msg: i32) string;
 pub fn get_semantic_msg(msg: i32) string;
+
 pub fn find_file(filename: string) i32 {
     fd: *struc FILE = fopen(filename, "rb")
     if fd {
@@ -104,6 +114,7 @@ pub fn find_file(filename: string) i32 {
         return 0
     }
 }
+
 pub fn get_filename(ctx: *struc FileIoContext) string {
     if not ((? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) == 0) {
         return (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename
@@ -112,23 +123,22 @@ pub fn get_filename(ctx: *struc FileIoContext) string {
         return ctx[].filename
     }
 }
+
 pub fn set_filename(ctx: *struc FileIoContext, filename: string) none {
     if filename ~= ctx[].filename {
         if ctx[].filename {
             sdsfree(ctx[].filename)
             ctx[].filename = ? 0 then sdsnew(0) else 0
         }
-        ;
         ctx[].filename = sdsdup(filename)
     }
-    ;
 }
+
 pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     _errval: i32 = 0
     loop i: u64 = 0 while i < (? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) .. ++i {
         if ctx[].file_reads[i].fd {
             n_fopens: u64 = (? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - i
-            ;
             if n_fopens == 8 - 1 {
                 ctx[].file_reads[i].len = 0
                 free(ctx[].file_reads[i].buf)
@@ -143,50 +153,47 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or sdslen(filename) >= 4096 {
         loop .. while 0 {
-            ?             snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 58, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 58, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
             _errval = 1
             jump _Lfinally
-        }
+        }        
     }
     if filename ~= file_read.filename {
         if file_read.filename {
             sdsfree(file_read.filename)
             file_read.filename = ? 0 then sdsnew(0) else 0
         }
-        ;
         file_read.filename = sdsdup(filename)
     }
-    ;
     loop .. while 0 {
         (? (not (ctx[].file_reads) or (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].capacity) then (((ctx[].file_reads) = stbds_arrgrowf((ctx[].file_reads), sizeof((ctx[].file_reads)[]), (1), (0))) and 0) else 0)
         (ctx[].file_reads)[(cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length++] = (file_read)
-    }
+    }    
     label _Lfinally
-    ;
     return _errval
 }
+
 pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     _errval: i32 = 0
-    ;
     ctx[].fd_write = 0
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or sdslen(filename) >= 4096 {
         loop .. while 0 {
-            ?             snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(202), "202", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 73, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+            ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(202), "202", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 73, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
             _errval = 1
             jump _Lfinally
-        }
+        }        
     }
     ctx[].write_buf = ? "" then sdsnew("") else 0
     loop .. while 0 {
         ctx[].write_buf = sdsMakeRoomFor(ctx[].write_buf, 4096)
-    }
+    }    
     label _Lfinally
-    ;
     return _errval
 }
+
 pub fn read_line(ctx: *struc FileIoContext, line: *string, line_size: *u64) i32 {
-    line_ssize: i64 =     getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd)
+    line_ssize: i64 = getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd)
     if line_ssize == -1 {
         line = 0
         line_size[] = 0
@@ -201,18 +208,21 @@ pub fn read_line(ctx: *struc FileIoContext, line: *string, line_size: *u64) i32 
         return 1
     }
 }
+
 fn write_chunk(ctx: *struc FileIoContext, buf: string, buf_size: u64) none {
     fwrite(buf, sizeof<char>, buf_size, ctx[].fd_write)
 }
+
 pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     loop .. while 0 {
         ctx[].write_buf = sdscat(ctx[].write_buf, buf)
-    }
+    }    
     loop while sdslen(ctx[].write_buf) >= 4096 {
         write_chunk(ctx, ctx[].write_buf, 4096)
         sdsrange(ctx[].write_buf, 4096, -1)
     }
 }
+
 pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
     _errval: i32 = 0
     fclose((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd)
@@ -221,38 +231,37 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         sdsfree((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename)
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename = ? 0 then sdsnew(0) else 0
     }
-    ;
     ((cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length--)
     if not ((? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) == 0) and not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
-        ;
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd = fopen((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename, "rb")
         if not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
             loop .. while 0 {
-                ?                 snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 123, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+                ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 123, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
                 _errval = 1
                 jump _Lfinally
-            }
+            }            
         }
         loop i: u64 = 0 while i < linenum .. ++i {
-            if getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd)             == -1 {
+            if getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd) == -1 {
                 loop .. while 0 {
-                    ?                     snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 128, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
+                    ? snprintf(ctx[].errors[].msg, sizeof<char> * 1024, get_util_msg(201), "201", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort", 128, "/home/romain/proj/planet/selfhost/wheelcc/util/fileio.c")
                     _errval = 1
                     jump _Lfinally
-                }
+                }                
             }
         }
     }
     label _Lfinally
-    ;
     return _errval
 }
+
 pub fn close_fwrite(ctx: *struc FileIoContext) none {
     write_chunk(ctx, ctx[].write_buf, sdslen(ctx[].write_buf))
     sdsclear(ctx[].write_buf)
     fclose(ctx[].fd_write)
     ctx[].fd_write = 0
 }
+
 pub fn free_fileio(ctx: *struc FileIoContext) none {
     loop i: u64 = 0 while i < (? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) .. ++i {
         file_read: *struc FileRead = @ctx[].file_reads[i]

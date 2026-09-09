@@ -33,26 +33,35 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
-type struc stbds_array_header(    length: u64    , capacity: u64    , hash_table: *any    , temp: i64    )
+
+type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+
 extrn fn stbds_hash_string(str: string, seed: u64) u64;
 extrn fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any;
 extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
-
 type struc FileIoContext;
+
 type struc Pairhash_thash_t(key: u64, value: u64)
-type struc FileOpenLine(    linenum: u64    , total_linenum: u64    , filename: string    )
-type struc TokenInfo(    tok_pos: i32    , tok_len: i32    , total_linenum: u64    )
-type struc ErrorsContext(    errors: *struc ErrorsContext    , fileio: *struc FileIoContext    , msg: [1024]char    , is_stdout: i32    , info_at_buf: u64    , info_at_map: *struc Pairhash_thash_t    , fopen_lines: *struc FileOpenLine    , token_infos: *struc TokenInfo    )
+
+type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
+
+type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
+
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+
 pub fn panic_sigabrt(msg: string, line: i32, file: string) none;
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 type struc ErrorsContext;
-type struc FileRead(    len: u64    , buf: string    , fd: *struc FILE    , filename: string    )
-type struc FileIoContext(    errors: *struc ErrorsContext    , fd_write: *struc FILE    , write_buf: string    , filename: string    , file_reads: *struc FileRead    )
+
+type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string)
+
+type struc FileIoContext(errors: *struc ErrorsContext, fd_write: *struc FILE, write_buf: string, filename: string, file_reads: *struc FileRead)
+
 pub fn find_file(filename: string) i32;
 pub fn get_filename(ctx: *struc FileIoContext) string;
 pub fn set_filename(ctx: *struc FileIoContext, filename: string) none;
@@ -66,68 +75,68 @@ pub fn free_fileio(ctx: *struc FileIoContext) none;
 esc_reset: [5]char = $(27, '[', '0', 'm', 0)
 esc_bold: [5]char = $(27, '[', '1', 'm', 0)
 esc_red: [8]char = $(27, '[', '0', ';', '3', '1', 'm', 0)
+
 pub fn panic_sigabrt(msg: string, line: i32, file: string) none {
     fflush(0)
     {
         strto_line: string = ? (line) > 0 then sdsfromunsignedlong(cast<u64>((line))) else sdsfromlong(cast<i64>((line)))
         stderr_buf: string = ? "" then sdsnew("") else 0
-        stderr_buf_size: u64 = strlen("::\ninternal error: \n") + 4 + strlen(file)         + sdslen(strto_line) + 4 + 7 + 4         + strlen(msg)
+        stderr_buf_size: u64 = strlen("::\ninternal error: \n") + 4 + strlen(file) + sdslen(strto_line) + 4 + 7 + 4 + strlen(msg)
         loop .. while 0 {
             stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_bold)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, file)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ":")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, strto_line)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ":")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_reset)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "\n")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_red)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "internal error:")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_reset)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, " ")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, msg)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "\n")
-        }
+        }        
         write(2, stderr_buf, sdslen(stderr_buf))
         if strto_line {
             sdsfree(strto_line)
             strto_line = ? 0 then sdsnew(0) else 0
         }
-        ;
         if stderr_buf {
             sdsfree(stderr_buf)
             stderr_buf = ? 0 then sdsnew(0) else 0
         }
-        ;
     }
     abort()
 }
+
 pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     if ctx[].is_stdout {
         printf("%s", "\n")
@@ -137,33 +146,32 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     stderr_buf_size: u64 = strlen("error: \n") + 7 + 4 + strlen(ctx[].msg)
     loop .. while 0 {
         stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, esc_red)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, "error:")
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, esc_reset)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, " ")
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, ctx[].msg)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, "\n")
-    }
-    ;
+    }    
     write(2, stderr_buf, sdslen(stderr_buf))
     if stderr_buf {
         sdsfree(stderr_buf)
         stderr_buf = ? 0 then sdsnew(0) else 0
     }
-    ;
 }
+
 pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     free_fileio(ctx[].fileio)
     filename: string = get_filename(ctx[].fileio)
@@ -175,51 +183,50 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
         fflush(0)
     }
     stderr_buf: string = ? "" then sdsnew("") else 0
-    stderr_buf_size: u64 = strlen(":\nerror: \n") + 4 + strlen(filename) + 4     + 7 + 4 + strlen(ctx[].msg)
+    stderr_buf_size: u64 = strlen(":\nerror: \n") + 4 + strlen(filename) + 4 + 7 + 4 + strlen(ctx[].msg)
     loop .. while 0 {
         stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, esc_bold)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, filename)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, ":")
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, esc_reset)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, "\n")
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, esc_red)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, "error:")
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, esc_reset)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, " ")
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, ctx[].msg)
-    }
+    }    
     loop .. while 0 {
         stderr_buf = sdscat(stderr_buf, "\n")
-    }
-    ;
+    }    
     write(2, stderr_buf, sdslen(stderr_buf))
     if stderr_buf {
         sdsfree(stderr_buf)
         stderr_buf = ? 0 then sdsnew(0) else 0
     }
-    ;
 }
+
 fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
     loop i: u64 = 0 while i < (? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1 .. ++i {
         if total_linenum < ctx[].fopen_lines[i + 1].total_linenum {
@@ -230,8 +237,8 @@ fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
     set_filename(ctx[].fileio, (ctx[].fopen_lines)[(? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1].filename)
     return total_linenum - (ctx[].fopen_lines)[(? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1].total_linenum + (ctx[].fopen_lines)[(? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1].linenum
 }
+
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
-    ;
     token_info: *struc TokenInfo = @ctx[].errors[].token_infos[info_at]
     tok_linenum: u64 = get_token_linenum(ctx, token_info[].total_linenum)
     free_fileio(ctx[].fileio)
@@ -276,7 +283,7 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
             if token_info[].tok_len > 1 {
                 loop .. while 0 {
                     tok_overline = sdsgrowzero(tok_overline, token_info[].tok_len - 1)
-                }
+                }                
                 loop i: u64 = 0 while i < sdslen(tok_overline) .. ++i {
                     tok_overline[i] = '~'
                 }
@@ -288,150 +295,142 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         strto_linenum: string = ? (tok_linenum) > 0 then sdsfromunsignedlong(cast<u64>((tok_linenum))) else sdsfromlong(cast<i64>((tok_linenum)))
         loop .. while 0 {
             pad_tok = sdsgrowzero(pad_tok, tok_pos - 1)
-        }
+        }        
         loop i: u64 = 0 while i < sdslen(pad_tok) .. ++i {
             pad_tok[i] = ' '
         }
         loop .. while 0 {
             pad_linenum = sdsgrowzero(pad_linenum, sdslen(strto_linenum))
-        }
+        }        
         loop i: u64 = 0 while i < sdslen(pad_linenum) .. ++i {
             pad_linenum[i] = ' '
         }
         stderr_buf: string = ? "" then sdsnew("") else 0
-        stderr_buf_size: u64 =         strlen(":::\nerror: \nat line : v\n        | \n") + 4 + strlen(filename)         + sdslen(strto_linenum) + sdslen(strto_pos) + 4 + 7 + 4         + strlen(ctx[].msg) + sdslen(strto_linenum) + 7 + sdslen(pad_tok) + sdslen(tok_overline)         + 4 + sdslen(pad_linenum) + 4 + sdslen(line) + 4
+        stderr_buf_size: u64 = strlen(":::\nerror: \nat line : v\n        | \n") + 4 + strlen(filename) + sdslen(strto_linenum) + sdslen(strto_pos) + 4 + 7 + 4 + strlen(ctx[].msg) + sdslen(strto_linenum) + 7 + sdslen(pad_tok) + sdslen(tok_overline) + 4 + sdslen(pad_linenum) + 4 + sdslen(line) + 4
         loop .. while 0 {
             stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_bold)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, filename)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ":")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, strto_linenum)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ":")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, strto_pos)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ":")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_reset)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "\n")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_red)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "error:")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_reset)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, " ")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ctx[].msg)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "\n")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "at line ")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, strto_linenum)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, ": ")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_red)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, pad_tok)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "v")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, tok_overline)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_reset)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "\n")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "        ")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, pad_linenum)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "| ")
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_bold)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, line)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, esc_reset)
-        }
+        }        
         loop .. while 0 {
             stderr_buf = sdscat(stderr_buf, "\n")
-        }
-        ;
+        }        
         write(2, stderr_buf, sdslen(stderr_buf))
         if pad_tok {
             sdsfree(pad_tok)
             pad_tok = ? 0 then sdsnew(0) else 0
         }
-        ;
         if pad_linenum {
             sdsfree(pad_linenum)
             pad_linenum = ? 0 then sdsnew(0) else 0
         }
-        ;
         if strto_linenum {
             sdsfree(strto_linenum)
             strto_linenum = ? 0 then sdsnew(0) else 0
         }
-        ;
         if strto_pos {
             sdsfree(strto_pos)
             strto_pos = ? 0 then sdsnew(0) else 0
         }
-        ;
         if tok_overline {
             sdsfree(tok_overline)
             tok_overline = ? 0 then sdsnew(0) else 0
         }
-        ;
         if stderr_buf {
             sdsfree(stderr_buf)
             stderr_buf = ? 0 then sdsnew(0) else 0
         }
-        ;
     }
     if line {
         sdsfree(line)
         line = ? 0 then sdsnew(0) else 0
     }
-    ;
 }
