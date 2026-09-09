@@ -100,7 +100,7 @@ struct stbds_hash_index {
     unsigned long tombstone_count_threshold;
     unsigned long seed;
     unsigned long slot_count_log2;
-    struct stbds_string_arena string;
+    struct stbds_string_arena string_arena;
     struct stbds_hash_bucket* storage;
 };
 
@@ -137,14 +137,14 @@ static struct stbds_hash_index* stbds_make_hash_index(unsigned long slot_count, 
     if (slot_count <= 8)
         t->used_count_shrink_threshold = 0;
     if (ot) {
-        t->string = ot->string;
+        t->string_arena = ot->string_arena;
         t->seed = ot->seed;
     }
     else {
         unsigned long a;
         unsigned long b;
         unsigned long temp;
-        memset(&t->string, 0, sizeof(t->string));
+        memset(&t->string_arena, 0, sizeof(t->string_arena));
         t->seed = stbds_hash_seed;
         temp = 2276503805 ^ 2147001325; // 0x87b0b0fd
         temp <<= 16;
@@ -385,12 +385,12 @@ void stbds_hmfree_func(void* a, unsigned long elemsize) {
     if (a == ((void*)0))
         return;
     if (((struct stbds_hash_index*)((struct stbds_array_header*)(a)-1)->hash_table) != ((void*)0)) {
-        if (((struct stbds_hash_index*)((struct stbds_array_header*)(a)-1)->hash_table)->string.mode == 2) {
+        if (((struct stbds_hash_index*)((struct stbds_array_header*)(a)-1)->hash_table)->string_arena.mode == 2) {
             unsigned long i;
             for (i = 1; i < ((struct stbds_array_header*)(a)-1)->length; ++i)
                 free(*(char**)((char*)a + elemsize * i));
         }
-        stbds_strreset(&((struct stbds_hash_index*)((struct stbds_array_header*)(a)-1)->hash_table)->string);
+        stbds_strreset(&((struct stbds_hash_index*)((struct stbds_array_header*)(a)-1)->hash_table)->string_arena);
     }
     free(((struct stbds_array_header*)(a)-1)->hash_table);
     free(((struct stbds_array_header*)(a)-1));
@@ -500,7 +500,7 @@ void* stbds_hmput_key(void* a, unsigned long elemsize, void* key, unsigned long 
         if (table)
             free(table);
         else
-            nt->string.mode = mode >= 1 ? 1 : 0;
+            nt->string_arena.mode = mode >= 1 ? 1 : 0;
         ((struct stbds_array_header*)(a)-1)->hash_table = table = nt;
     }
     {
@@ -573,14 +573,14 @@ void* stbds_hmput_key(void* a, unsigned long elemsize, void* key, unsigned long 
             bucket->hash[pos & (8 - 1)] = hash;
             bucket->index[pos & (8 - 1)] = i - 1;
             ((struct stbds_array_header*)(a)-1)->temp = i - 1;
-            switch (table->string.mode) {
+            switch (table->string_arena.mode) {
                 case STBDS_SH_STRDUP:
                     (*(char**)((struct stbds_array_header*)(a)-1)->hash_table) = *(char**)((char*)a + elemsize * i) =
                         stbds_strdup((char*)key);
                     break;
                 case STBDS_SH_ARENA:
                     (*(char**)((struct stbds_array_header*)(a)-1)->hash_table) = *(char**)((char*)a + elemsize * i) =
-                        stbds_stralloc(&table->string, (char*)key);
+                        stbds_stralloc(&table->string_arena, (char*)key);
                     break;
                 case STBDS_SH_DEFAULT:
                     (*(char**)((struct stbds_array_header*)(a)-1)->hash_table) = *(char**)((char*)a + elemsize * i) =
@@ -623,7 +623,7 @@ void* stbds_hmdel_key(
                 ((struct stbds_array_header*)(raw_a)-1)->temp = 1;
                 b->hash[i] = 1;
                 b->index[i] = -2;
-                if (mode == 1 && table->string.mode == 2)
+                if (mode == 1 && table->string_arena.mode == 2)
                     free(*(char**)((char*)a + elemsize * old_index));
                 if (old_index != final_index) {
                     memmove((char*)a + elemsize * old_index, (char*)a + elemsize * final_index, elemsize);
