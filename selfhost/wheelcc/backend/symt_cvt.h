@@ -15,7 +15,7 @@ struct FrontEndContext;
 
 // Symbol table conversion
 
-TInt gen_type_alignment(struct FrontEndContext* ctx, struct Type* type);
+TInt gen_type_alignment(struct FrontEndContext* ctx, struct Type* type_t);
 shared_ptr_t(AssemblyType) cvt_backend_asm_type(struct FrontEndContext* ctx, TIdentifier name);
 void convert_symbol_table(struct AsmProgram* node, struct BackEndContext* backend, struct FrontEndContext* frontend);
 

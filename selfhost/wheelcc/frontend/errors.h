@@ -37,7 +37,7 @@ char* get_fun_fmt(struct IdentifierContext* ctx, struct FunType* fun_type, strin
 char* get_ptr_fmt(struct IdentifierContext* ctx, struct Pointer* ptr_type, string_t* ptr_fmt);
 char* get_arr_fmt(struct IdentifierContext* ctx, struct Array* arr_type, string_t* arr_fmt);
 char* get_struct_fmt(struct IdentifierContext* ctx, struct Structure* struct_type, string_t* struct_fmt);
-char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type, string_t* type_fmt);
+char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type_t, string_t* type_fmt);
 #define str_get_fmt(T, ...) get_##T##_fmt(ctx->identifiers, __VA_ARGS__)
 #define str_fmt_tok(X) str_get_fmt(tok, X)
 #define str_fmt_name(X, Y) str_get_fmt(name, X, Y)

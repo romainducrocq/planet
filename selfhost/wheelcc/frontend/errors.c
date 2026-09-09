@@ -471,8 +471,8 @@ char* get_struct_fmt(struct IdentifierContext* ctx, struct Structure* struct_typ
     return get_struct_name_fmt(ctx, struct_type->tag, struct_type->is_union, struct_fmt);
 }
 
-char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type, string_t* type_fmt) {
-    switch (type->type) {
+char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type_t, string_t* type_fmt) {
+    switch (type_t->type) {
         case AST_Char_t:
             return "char";
         case AST_SChar_t:
@@ -492,13 +492,13 @@ char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type, string_t* t
         case AST_Void_t:
             return "none";
         case AST_FunType_t:
-            return get_fun_fmt(ctx, &type->get._FunType, type_fmt);
+            return get_fun_fmt(ctx, &type_t->get._FunType, type_fmt);
         case AST_Pointer_t:
-            return get_ptr_fmt(ctx, &type->get._Pointer, type_fmt);
+            return get_ptr_fmt(ctx, &type_t->get._Pointer, type_fmt);
         case AST_Array_t:
-            return get_arr_fmt(ctx, &type->get._Array, type_fmt);
+            return get_arr_fmt(ctx, &type_t->get._Array, type_fmt);
         case AST_Structure_t:
-            return get_struct_fmt(ctx, &type->get._Structure, type_fmt);
+            return get_struct_fmt(ctx, &type_t->get._Structure, type_fmt);
         default:
             THROW_ABORT;
     }

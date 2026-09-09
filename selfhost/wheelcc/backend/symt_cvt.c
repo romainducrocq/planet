@@ -23,8 +23,8 @@ struct SymtCvtContext {
 
 #define Ctx struct SymtCvtContext*
 
-static TInt get_scalar_alignment(struct Type* type) {
-    switch (type->type) {
+static TInt get_scalar_alignment(struct Type* type_t) {
+    switch (type_t->type) {
         case AST_Char_t:
         case AST_SChar_t:
         case AST_UChar_t:
@@ -66,16 +66,16 @@ static TInt get_struct_alignment(struct FrontEndContext* ctx, struct Structure* 
     return map_get(ctx->struct_typedef_table, struct_type->tag)->alignment;
 }
 
-TInt gen_type_alignment(struct FrontEndContext* ctx, struct Type* type) {
-    switch (type->type) {
+TInt gen_type_alignment(struct FrontEndContext* ctx, struct Type* type_t) {
+    switch (type_t->type) {
         case AST_Array_t: {
             TLong size;
-            return get_arr_alignment(ctx, &type->get._Array, &size);
+            return get_arr_alignment(ctx, &type_t->get._Array, &size);
         }
         case AST_Structure_t:
-            return get_struct_alignment(ctx, &type->get._Structure);
+            return get_struct_alignment(ctx, &type_t->get._Structure);
         default:
-            return get_scalar_alignment(type);
+            return get_scalar_alignment(type_t);
     }
 }
 
