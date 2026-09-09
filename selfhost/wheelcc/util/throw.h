@@ -42,8 +42,8 @@ struct ErrorsContext {
     vector_t(struct TokenInfo) token_infos;
 };
 
-void panic_sigabrt(char* msg, int line, char* file);
-#define PANIC_FUNC(X, ...) panic_sigabrt(X, __VA_ARGS__)
+void panic_sigabrt(char* msg);
+#define PANIC_FUNC(X) panic_sigabrt(X)
 #define THROW_ABORT THROW_PANIC("abort")
 #define THROW_ALLOC(T) THROW_PANIC("alloc " #T)
 #if 0
