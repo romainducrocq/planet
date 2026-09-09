@@ -424,7 +424,7 @@ struct CFor {
 struct CSwitch {
     TIdentifier target;
     bool is_default;
-    unique_ptr_t(CExp) match;
+    unique_ptr_t(CExp) lookup;
     unique_ptr_t(CStatement) body;
     vector_t(unique_ptr_t(CExp)) cases;
 };
@@ -490,7 +490,7 @@ unique_ptr_t(CStatement) make_CWhile(unique_ptr_t(CExp) * condition, unique_ptr_
 unique_ptr_t(CStatement) make_CDoWhile(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * body);
 unique_ptr_t(CStatement) make_CFor(unique_ptr_t(CForInit) * init, unique_ptr_t(CExp) * condition,
     unique_ptr_t(CExp) * post, unique_ptr_t(CStatement) * body);
-unique_ptr_t(CStatement) make_CSwitch(unique_ptr_t(CExp) * match, unique_ptr_t(CStatement) * body);
+unique_ptr_t(CStatement) make_CSwitch(unique_ptr_t(CExp) * lookup, unique_ptr_t(CStatement) * body);
 unique_ptr_t(CStatement) make_CCase(unique_ptr_t(CExp) * value, unique_ptr_t(CStatement) * jump_to);
 unique_ptr_t(CStatement) make_CDefault(unique_ptr_t(CStatement) * jump_to, unsigned long info_at);
 unique_ptr_t(CStatement) make_CBreak(unsigned long info_at);
