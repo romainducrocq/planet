@@ -858,11 +858,11 @@ void free_CMemberDeclaration(unique_ptr_t(CMemberDeclaration) * self) {
 }
 
 unique_ptr_t(CStructDeclaration) make_CStructDeclaration(
-    TIdentifier tag, bool is_union, vector_t(unique_ptr_t(CMemberDeclaration)) * members, unsigned long info_at) {
+    TIdentifier tag_name, bool is_union, vector_t(unique_ptr_t(CMemberDeclaration)) * members, unsigned long info_at) {
     unique_ptr_t(CStructDeclaration) self = uptr_new();
     uptr_alloc(CStructDeclaration, self);
     self->type = AST_CStructDeclaration_t;
-    self->tag = tag;
+    self->tag_name = tag_name;
     self->is_union = is_union;
     self->members = vec_new();
     vec_move(*members, self->members);
