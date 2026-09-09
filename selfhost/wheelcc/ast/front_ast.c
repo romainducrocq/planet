@@ -541,13 +541,13 @@ unique_ptr_t(CStatement) make_CFor(unique_ptr_t(CForInit) * init, unique_ptr_t(C
     return self;
 }
 
-unique_ptr_t(CStatement) make_CSwitch(unique_ptr_t(CExp) * match, unique_ptr_t(CStatement) * body) {
+unique_ptr_t(CStatement) make_CSwitch(unique_ptr_t(CExp) * lookup, unique_ptr_t(CStatement) * body) {
     unique_ptr_t(CStatement) self = make_CStatement();
     self->tag = AST_CSwitch_t;
     self->get._CSwitch.target = 0;
     self->get._CSwitch.is_default = false;
-    self->get._CSwitch.match = uptr_new();
-    uptr_move(CExp, *match, self->get._CSwitch.match);
+    self->get._CSwitch.lookup = uptr_new();
+    uptr_move(CExp, *lookup, self->get._CSwitch.lookup);
     self->get._CSwitch.body = uptr_new();
     uptr_move(CStatement, *body, self->get._CSwitch.body);
     self->get._CSwitch.cases = vec_new();
@@ -636,7 +636,7 @@ void free_CStatement(unique_ptr_t(CStatement) * self) {
             free_CStatement(&(*self)->get._CFor.body);
             break;
         case AST_CSwitch_t:
-            free_CExp(&(*self)->get._CSwitch.match);
+            free_CExp(&(*self)->get._CSwitch.lookup);
             free_CStatement(&(*self)->get._CSwitch.body);
             for (unsigned long i = 0; i < vec_size((*self)->get._CSwitch.cases); ++i) {
                 free_CExp(&(*self)->get._CSwitch.cases[i]);
