@@ -137,7 +137,7 @@ void free_CAbstractDeclarator(unique_ptr_t(CAbstractDeclarator) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// param_info = Param(type, declarator)
+// param_info = Param(tag, declarator)
 
 struct CParam {
     unique_ptr_impl(AST_T);
@@ -195,22 +195,22 @@ void free_CDeclarator(unique_ptr_t(CDeclarator) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// exp = Constant(const, type)
-//     | String(string, type)
-//     | Var(identifier, type)
-//     | Cast(type, exp, type)
-//     | Unary(unary_operator, exp, type)
-//     | Binary(binary_operator, exp, exp, type)
-//     | Assignment(unary_operator, exp, exp, type)
-//     | Conditional(exp, exp, exp, type)
-//     | FunctionCall(identifier, exp*, type)
-//     | Dereference(exp, type)
-//     | AddrOf(exp, type)
-//     | Subscript(exp, exp, type)
-//     | SizeOf(exp, type)
-//     | SizeOfT(type, type)
-//     | Dot(exp, identifier, type)
-//     | Arrow(exp, identifier, type)
+// exp = Constant(const, tag)
+//     | String(string, tag)
+//     | Var(identifier, tag)
+//     | Cast(tag, exp, tag)
+//     | Unary(unary_operator, exp, tag)
+//     | Binary(binary_operator, exp, exp, tag)
+//     | Assignment(unary_operator, exp, exp, tag)
+//     | Conditional(exp, exp, exp, tag)
+//     | FunctionCall(identifier, exp*, tag)
+//     | Dereference(exp, tag)
+//     | AddrOf(exp, tag)
+//     | Subscript(exp, exp, tag)
+//     | SizeOf(exp, tag)
+//     | SizeOfT(tag, tag)
+//     | Dot(exp, identifier, tag)
+//     | Arrow(exp, identifier, tag)
 
 struct CConstant {
     shared_ptr_t(CConst) constant;
@@ -622,7 +622,7 @@ void free_CInitializer(unique_ptr_t(CInitializer) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// member_declaration = MemberDeclaration(identifier, type)
+// member_declaration = MemberDeclaration(identifier, tag)
 
 struct CMemberDeclaration {
     unique_ptr_impl(AST_T);
@@ -653,7 +653,7 @@ void free_CStructDeclaration(unique_ptr_t(CStructDeclaration) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
+// function_declaration = FunctionDeclaration(identifier, identifier*, block?, tag, storage_class?)
 
 struct CFunctionDeclaration {
     unique_ptr_impl(AST_T);
@@ -672,7 +672,7 @@ void free_CFunctionDeclaration(unique_ptr_t(CFunctionDeclaration) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
+// variable_declaration = VariableDeclaration(identifier, initializer?, tag, storage_class?)
 
 struct CVariableDeclaration {
     unique_ptr_impl(AST_T);

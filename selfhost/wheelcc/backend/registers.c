@@ -100,7 +100,7 @@ shared_ptr_t(AsmOperand) gen_indexed(REGISTER_KIND reg_kind_base, REGISTER_KIND 
 }
 
 REGISTER_KIND register_mask_kind(struct AsmReg* node) {
-    switch (node->type) {
+    switch (node->tag) {
         case AST_AsmAx_t:
             return REG_Ax;
         case AST_AsmBx_t:

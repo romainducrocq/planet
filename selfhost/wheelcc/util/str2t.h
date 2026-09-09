@@ -9,7 +9,7 @@ struct ErrorsContext;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// String to type
+// String to tag
 
 uint64_t dbl_to_binary(double decimal);
 void string_to_literal(string_t str_string, vector_t(int8_t) * string_literal);

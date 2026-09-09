@@ -13,8 +13,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct CUnaryOp make_CUnaryOp(tagged_def_impl(AST_T)) {
-    struct CUnaryOp self = {type};
-    switch (type) {
+    struct CUnaryOp self = {tag};
+    switch (tag) {
         case AST_CUnaryOp_t:
         case AST_CComplement_t:
         case AST_CNegate_t:
@@ -28,8 +28,8 @@ struct CUnaryOp make_CUnaryOp(tagged_def_impl(AST_T)) {
 }
 
 struct CBinaryOp make_CBinaryOp(tagged_def_impl(AST_T)) {
-    struct CBinaryOp self = {type};
-    switch (type) {
+    struct CBinaryOp self = {tag};
+    switch (tag) {
         case AST_CBinaryOp_t:
         case AST_CAdd_t:
         case AST_CSubtract_t:
@@ -59,13 +59,13 @@ struct CBinaryOp make_CBinaryOp(tagged_def_impl(AST_T)) {
 unique_ptr_t(CAbstractDeclarator) make_CAbstractDeclarator(void) {
     unique_ptr_t(CAbstractDeclarator) self = uptr_new();
     uptr_alloc(CAbstractDeclarator, self);
-    self->type = AST_CAbstractDeclarator_t;
+    self->tag = AST_CAbstractDeclarator_t;
     return self;
 }
 
 unique_ptr_t(CAbstractDeclarator) make_CAbstractPointer(unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
     unique_ptr_t(CAbstractDeclarator) self = make_CAbstractDeclarator();
-    self->type = AST_CAbstractPointer_t;
+    self->tag = AST_CAbstractPointer_t;
     self->get._CAbstractPointer.abstract_decltor = uptr_new();
     uptr_move(CAbstractDeclarator, *abstract_decltor, self->get._CAbstractPointer.abstract_decltor);
     return self;
@@ -74,7 +74,7 @@ unique_ptr_t(CAbstractDeclarator) make_CAbstractPointer(unique_ptr_t(CAbstractDe
 unique_ptr_t(CAbstractDeclarator)
     make_CAbstractArray(TLong size, unique_ptr_t(CAbstractDeclarator) * abstract_decltor) {
     unique_ptr_t(CAbstractDeclarator) self = make_CAbstractDeclarator();
-    self->type = AST_CAbstractArray_t;
+    self->tag = AST_CAbstractArray_t;
     self->get._CAbstractArray.size = size;
     self->get._CAbstractArray.abstract_decltor = uptr_new();
     uptr_move(CAbstractDeclarator, *abstract_decltor, self->get._CAbstractArray.abstract_decltor);
@@ -83,13 +83,13 @@ unique_ptr_t(CAbstractDeclarator)
 
 unique_ptr_t(CAbstractDeclarator) make_CAbstractBase(void) {
     unique_ptr_t(CAbstractDeclarator) self = make_CAbstractDeclarator();
-    self->type = AST_CAbstractBase_t;
+    self->tag = AST_CAbstractBase_t;
     return self;
 }
 
 void free_CAbstractDeclarator(unique_ptr_t(CAbstractDeclarator) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CAbstractDeclarator_t:
             break;
         case AST_CAbstractPointer_t:
@@ -109,7 +109,7 @@ void free_CAbstractDeclarator(unique_ptr_t(CAbstractDeclarator) * self) {
 unique_ptr_t(CParam) make_CParam(unique_ptr_t(CDeclarator) * decltor, shared_ptr_t(Type) * param_type) {
     unique_ptr_t(CParam) self = uptr_new();
     uptr_alloc(CParam, self);
-    self->type = AST_CParam_t;
+    self->tag = AST_CParam_t;
     self->decltor = uptr_new();
     uptr_move(CDeclarator, *decltor, self->decltor);
     self->param_type = sptr_new();
@@ -119,7 +119,7 @@ unique_ptr_t(CParam) make_CParam(unique_ptr_t(CDeclarator) * decltor, shared_ptr
 
 void free_CParam(unique_ptr_t(CParam) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CParam_t:
             break;
         default:
@@ -133,20 +133,20 @@ void free_CParam(unique_ptr_t(CParam) * self) {
 unique_ptr_t(CDeclarator) make_CDeclarator(void) {
     unique_ptr_t(CDeclarator) self = uptr_new();
     uptr_alloc(CDeclarator, self);
-    self->type = AST_CDeclarator_t;
+    self->tag = AST_CDeclarator_t;
     return self;
 }
 
 unique_ptr_t(CDeclarator) make_CIdent(TIdentifier name) {
     unique_ptr_t(CDeclarator) self = make_CDeclarator();
-    self->type = AST_CIdent_t;
+    self->tag = AST_CIdent_t;
     self->get._CIdent.name = name;
     return self;
 }
 
 unique_ptr_t(CDeclarator) make_CPointerDeclarator(unique_ptr_t(CDeclarator) * decltor) {
     unique_ptr_t(CDeclarator) self = make_CDeclarator();
-    self->type = AST_CPointerDeclarator_t;
+    self->tag = AST_CPointerDeclarator_t;
     self->get._CPointerDeclarator.decltor = uptr_new();
     uptr_move(CDeclarator, *decltor, self->get._CPointerDeclarator.decltor);
     return self;
@@ -154,7 +154,7 @@ unique_ptr_t(CDeclarator) make_CPointerDeclarator(unique_ptr_t(CDeclarator) * de
 
 unique_ptr_t(CDeclarator) make_CArrayDeclarator(TLong size, unique_ptr_t(CDeclarator) * decltor) {
     unique_ptr_t(CDeclarator) self = make_CDeclarator();
-    self->type = AST_CArrayDeclarator_t;
+    self->tag = AST_CArrayDeclarator_t;
     self->get._CArrayDeclarator.size = size;
     self->get._CArrayDeclarator.decltor = uptr_new();
     uptr_move(CDeclarator, *decltor, self->get._CArrayDeclarator.decltor);
@@ -164,7 +164,7 @@ unique_ptr_t(CDeclarator) make_CArrayDeclarator(TLong size, unique_ptr_t(CDeclar
 unique_ptr_t(CDeclarator)
     make_CFunDeclarator(vector_t(unique_ptr_t(CParam)) * param_list, unique_ptr_t(CDeclarator) * decltor) {
     unique_ptr_t(CDeclarator) self = make_CDeclarator();
-    self->type = AST_CFunDeclarator_t;
+    self->tag = AST_CFunDeclarator_t;
     self->get._CFunDeclarator.param_list = vec_new();
     vec_move(*param_list, self->get._CFunDeclarator.param_list);
     self->get._CFunDeclarator.decltor = uptr_new();
@@ -174,7 +174,7 @@ unique_ptr_t(CDeclarator)
 
 void free_CDeclarator(unique_ptr_t(CDeclarator) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CDeclarator_t:
             break;
         case AST_CIdent_t:
@@ -201,7 +201,7 @@ void free_CDeclarator(unique_ptr_t(CDeclarator) * self) {
 unique_ptr_t(CExp) make_CExp(unsigned long info_at) {
     unique_ptr_t(CExp) self = uptr_new();
     uptr_alloc(CExp, self);
-    self->type = AST_CExp_t;
+    self->tag = AST_CExp_t;
     self->exp_type = sptr_new();
     self->info_at = info_at;
     return self;
@@ -209,7 +209,7 @@ unique_ptr_t(CExp) make_CExp(unsigned long info_at) {
 
 unique_ptr_t(CExp) make_CConstant(shared_ptr_t(CConst) * constant, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CConstant_t;
+    self->tag = AST_CConstant_t;
     self->get._CConstant.constant = sptr_new();
     sptr_move(CConst, *constant, self->get._CConstant.constant);
     self->get._CConstant._base = self;
@@ -218,7 +218,7 @@ unique_ptr_t(CExp) make_CConstant(shared_ptr_t(CConst) * constant, unsigned long
 
 unique_ptr_t(CExp) make_CString(shared_ptr_t(CStringLiteral) * literal, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CString_t;
+    self->tag = AST_CString_t;
     self->get._CString.literal = sptr_new();
     sptr_move(CStringLiteral, *literal, self->get._CString.literal);
     self->get._CString._base = self;
@@ -227,7 +227,7 @@ unique_ptr_t(CExp) make_CString(shared_ptr_t(CStringLiteral) * literal, unsigned
 
 unique_ptr_t(CExp) make_CVar(TIdentifier name, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CVar_t;
+    self->tag = AST_CVar_t;
     self->get._CVar.name = name;
     self->get._CVar._base = self;
     return self;
@@ -235,7 +235,7 @@ unique_ptr_t(CExp) make_CVar(TIdentifier name, unsigned long info_at) {
 
 unique_ptr_t(CExp) make_CCast(unique_ptr_t(CExp) * exp, shared_ptr_t(Type) * target_type, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CCast_t;
+    self->tag = AST_CCast_t;
     self->get._CCast.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CCast.exp);
     self->get._CCast.target_type = sptr_new();
@@ -246,7 +246,7 @@ unique_ptr_t(CExp) make_CCast(unique_ptr_t(CExp) * exp, shared_ptr_t(Type) * tar
 
 unique_ptr_t(CExp) make_CUnary(struct CUnaryOp* unop, unique_ptr_t(CExp) * exp, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CUnary_t;
+    self->tag = AST_CUnary_t;
     self->get._CUnary.unop = *unop;
     self->get._CUnary.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CUnary.exp);
@@ -257,7 +257,7 @@ unique_ptr_t(CExp) make_CUnary(struct CUnaryOp* unop, unique_ptr_t(CExp) * exp, 
 unique_ptr_t(CExp) make_CBinary(
     struct CBinaryOp* binop, unique_ptr_t(CExp) * exp_left, unique_ptr_t(CExp) * exp_right, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CBinary_t;
+    self->tag = AST_CBinary_t;
     self->get._CBinary.binop = *binop;
     self->get._CBinary.exp_left = uptr_new();
     uptr_move(CExp, *exp_left, self->get._CBinary.exp_left);
@@ -270,7 +270,7 @@ unique_ptr_t(CExp) make_CBinary(
 unique_ptr_t(CExp) make_CAssignment(
     struct CUnaryOp* unop, unique_ptr_t(CExp) * exp_left, unique_ptr_t(CExp) * exp_right, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CAssignment_t;
+    self->tag = AST_CAssignment_t;
     self->get._CAssignment.unop = *unop;
     self->get._CAssignment.exp_left = uptr_new();
     uptr_move(CExp, *exp_left, self->get._CAssignment.exp_left);
@@ -283,7 +283,7 @@ unique_ptr_t(CExp) make_CAssignment(
 unique_ptr_t(CExp) make_CConditional(unique_ptr_t(CExp) * condition, unique_ptr_t(CExp) * exp_middle,
     unique_ptr_t(CExp) * exp_right, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CConditional_t;
+    self->tag = AST_CConditional_t;
     self->get._CConditional.condition = uptr_new();
     uptr_move(CExp, *condition, self->get._CConditional.condition);
     self->get._CConditional.exp_middle = uptr_new();
@@ -296,7 +296,7 @@ unique_ptr_t(CExp) make_CConditional(unique_ptr_t(CExp) * condition, unique_ptr_
 
 unique_ptr_t(CExp) make_CFunctionCall(TIdentifier name, vector_t(unique_ptr_t(CExp)) * args, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CFunctionCall_t;
+    self->tag = AST_CFunctionCall_t;
     self->get._CFunctionCall.name = name;
     self->get._CFunctionCall.args = vec_new();
     vec_move(*args, self->get._CFunctionCall.args);
@@ -306,7 +306,7 @@ unique_ptr_t(CExp) make_CFunctionCall(TIdentifier name, vector_t(unique_ptr_t(CE
 
 unique_ptr_t(CExp) make_CDereference(unique_ptr_t(CExp) * exp, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CDereference_t;
+    self->tag = AST_CDereference_t;
     self->get._CDereference.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CDereference.exp);
     self->get._CDereference._base = self;
@@ -315,7 +315,7 @@ unique_ptr_t(CExp) make_CDereference(unique_ptr_t(CExp) * exp, unsigned long inf
 
 unique_ptr_t(CExp) make_CAddrOf(unique_ptr_t(CExp) * exp, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CAddrOf_t;
+    self->tag = AST_CAddrOf_t;
     self->get._CAddrOf.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CAddrOf.exp);
     self->get._CAddrOf._base = self;
@@ -325,7 +325,7 @@ unique_ptr_t(CExp) make_CAddrOf(unique_ptr_t(CExp) * exp, unsigned long info_at)
 unique_ptr_t(CExp)
     make_CSubscript(unique_ptr_t(CExp) * primary_exp, unique_ptr_t(CExp) * subscript_exp, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CSubscript_t;
+    self->tag = AST_CSubscript_t;
     self->get._CSubscript.primary_exp = uptr_new();
     uptr_move(CExp, *primary_exp, self->get._CSubscript.primary_exp);
     self->get._CSubscript.subscript_exp = uptr_new();
@@ -336,7 +336,7 @@ unique_ptr_t(CExp)
 
 unique_ptr_t(CExp) make_CSizeOf(unique_ptr_t(CExp) * exp, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CSizeOf_t;
+    self->tag = AST_CSizeOf_t;
     self->get._CSizeOf.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CSizeOf.exp);
     self->get._CSizeOf._base = self;
@@ -345,7 +345,7 @@ unique_ptr_t(CExp) make_CSizeOf(unique_ptr_t(CExp) * exp, unsigned long info_at)
 
 unique_ptr_t(CExp) make_CSizeOfT(shared_ptr_t(Type) * target_type, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CSizeOfT_t;
+    self->tag = AST_CSizeOfT_t;
     self->get._CSizeOfT.target_type = sptr_new();
     sptr_move(Type, *target_type, self->get._CSizeOfT.target_type);
     self->get._CSizeOfT._base = self;
@@ -354,7 +354,7 @@ unique_ptr_t(CExp) make_CSizeOfT(shared_ptr_t(Type) * target_type, unsigned long
 
 unique_ptr_t(CExp) make_CDot(TIdentifier member, unique_ptr_t(CExp) * structure, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CDot_t;
+    self->tag = AST_CDot_t;
     self->get._CDot.member = member;
     self->get._CDot.structure = uptr_new();
     uptr_move(CExp, *structure, self->get._CDot.structure);
@@ -364,7 +364,7 @@ unique_ptr_t(CExp) make_CDot(TIdentifier member, unique_ptr_t(CExp) * structure,
 
 unique_ptr_t(CExp) make_CArrow(TIdentifier member, unique_ptr_t(CExp) * pointer, unsigned long info_at) {
     unique_ptr_t(CExp) self = make_CExp(info_at);
-    self->type = AST_CArrow_t;
+    self->tag = AST_CArrow_t;
     self->get._CArrow.member = member;
     self->get._CArrow.pointer = uptr_new();
     uptr_move(CExp, *pointer, self->get._CArrow.pointer);
@@ -374,7 +374,7 @@ unique_ptr_t(CExp) make_CArrow(TIdentifier member, unique_ptr_t(CExp) * pointer,
 
 void free_CExp(unique_ptr_t(CExp) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CExp_t:
             break;
         case AST_CConstant_t:
@@ -443,13 +443,13 @@ void free_CExp(unique_ptr_t(CExp) * self) {
 unique_ptr_t(CStatement) make_CStatement(void) {
     unique_ptr_t(CStatement) self = uptr_new();
     uptr_alloc(CStatement, self);
-    self->type = AST_CStatement_t;
+    self->tag = AST_CStatement_t;
     return self;
 }
 
 unique_ptr_t(CStatement) make_CReturn(unique_ptr_t(CExp) * exp, unsigned long info_at) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CReturn_t;
+    self->tag = AST_CReturn_t;
     self->get._CReturn.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CReturn.exp);
     self->get._CReturn.info_at = info_at;
@@ -458,7 +458,7 @@ unique_ptr_t(CStatement) make_CReturn(unique_ptr_t(CExp) * exp, unsigned long in
 
 unique_ptr_t(CStatement) make_CExpression(unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CExpression_t;
+    self->tag = AST_CExpression_t;
     self->get._CExpression.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CExpression.exp);
     return self;
@@ -467,7 +467,7 @@ unique_ptr_t(CStatement) make_CExpression(unique_ptr_t(CExp) * exp) {
 unique_ptr_t(CStatement)
     make_CIf(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * then_fi, unique_ptr_t(CStatement) * else_fi) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CIf_t;
+    self->tag = AST_CIf_t;
     self->get._CIf.condition = uptr_new();
     uptr_move(CExp, *condition, self->get._CIf.condition);
     self->get._CIf.then_fi = uptr_new();
@@ -479,7 +479,7 @@ unique_ptr_t(CStatement)
 
 unique_ptr_t(CStatement) make_CGoto(TIdentifier target, unsigned long info_at) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CGoto_t;
+    self->tag = AST_CGoto_t;
     self->get._CGoto.target = target;
     self->get._CGoto.info_at = info_at;
     return self;
@@ -487,7 +487,7 @@ unique_ptr_t(CStatement) make_CGoto(TIdentifier target, unsigned long info_at) {
 
 unique_ptr_t(CStatement) make_CLabel(TIdentifier target, unique_ptr_t(CStatement) * jump_to, unsigned long info_at) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CLabel_t;
+    self->tag = AST_CLabel_t;
     self->get._CLabel.target = target;
     self->get._CLabel.jump_to = uptr_new();
     uptr_move(CStatement, *jump_to, self->get._CLabel.jump_to);
@@ -497,7 +497,7 @@ unique_ptr_t(CStatement) make_CLabel(TIdentifier target, unique_ptr_t(CStatement
 
 unique_ptr_t(CStatement) make_CCompound(unique_ptr_t(CBlock) * block) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CCompound_t;
+    self->tag = AST_CCompound_t;
     self->get._CCompound.block = uptr_new();
     uptr_move(CBlock, *block, self->get._CCompound.block);
     return self;
@@ -505,7 +505,7 @@ unique_ptr_t(CStatement) make_CCompound(unique_ptr_t(CBlock) * block) {
 
 unique_ptr_t(CStatement) make_CWhile(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * body) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CWhile_t;
+    self->tag = AST_CWhile_t;
     self->get._CWhile.target = 0;
     self->get._CWhile.condition = uptr_new();
     uptr_move(CExp, *condition, self->get._CWhile.condition);
@@ -516,7 +516,7 @@ unique_ptr_t(CStatement) make_CWhile(unique_ptr_t(CExp) * condition, unique_ptr_
 
 unique_ptr_t(CStatement) make_CDoWhile(unique_ptr_t(CExp) * condition, unique_ptr_t(CStatement) * body) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CDoWhile_t;
+    self->tag = AST_CDoWhile_t;
     self->get._CDoWhile.target = 0;
     self->get._CDoWhile.condition = uptr_new();
     uptr_move(CExp, *condition, self->get._CDoWhile.condition);
@@ -528,7 +528,7 @@ unique_ptr_t(CStatement) make_CDoWhile(unique_ptr_t(CExp) * condition, unique_pt
 unique_ptr_t(CStatement) make_CFor(unique_ptr_t(CForInit) * init, unique_ptr_t(CExp) * condition,
     unique_ptr_t(CExp) * post, unique_ptr_t(CStatement) * body) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CFor_t;
+    self->tag = AST_CFor_t;
     self->get._CFor.target = 0;
     self->get._CFor.init = uptr_new();
     uptr_move(CForInit, *init, self->get._CFor.init);
@@ -543,7 +543,7 @@ unique_ptr_t(CStatement) make_CFor(unique_ptr_t(CForInit) * init, unique_ptr_t(C
 
 unique_ptr_t(CStatement) make_CSwitch(unique_ptr_t(CExp) * match, unique_ptr_t(CStatement) * body) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CSwitch_t;
+    self->tag = AST_CSwitch_t;
     self->get._CSwitch.target = 0;
     self->get._CSwitch.is_default = false;
     self->get._CSwitch.match = uptr_new();
@@ -556,7 +556,7 @@ unique_ptr_t(CStatement) make_CSwitch(unique_ptr_t(CExp) * match, unique_ptr_t(C
 
 unique_ptr_t(CStatement) make_CCase(unique_ptr_t(CExp) * value, unique_ptr_t(CStatement) * jump_to) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CCase_t;
+    self->tag = AST_CCase_t;
     self->get._CCase.target = 0;
     self->get._CCase.value = uptr_new();
     uptr_move(CExp, *value, self->get._CCase.value);
@@ -567,7 +567,7 @@ unique_ptr_t(CStatement) make_CCase(unique_ptr_t(CExp) * value, unique_ptr_t(CSt
 
 unique_ptr_t(CStatement) make_CDefault(unique_ptr_t(CStatement) * jump_to, unsigned long info_at) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CDefault_t;
+    self->tag = AST_CDefault_t;
     self->get._CDefault.target = 0;
     self->get._CDefault.jump_to = uptr_new();
     uptr_move(CStatement, *jump_to, self->get._CDefault.jump_to);
@@ -577,7 +577,7 @@ unique_ptr_t(CStatement) make_CDefault(unique_ptr_t(CStatement) * jump_to, unsig
 
 unique_ptr_t(CStatement) make_CBreak(unsigned long info_at) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CBreak_t;
+    self->tag = AST_CBreak_t;
     self->get._CBreak.target = 0;
     self->get._CBreak.info_at = info_at;
     return self;
@@ -585,7 +585,7 @@ unique_ptr_t(CStatement) make_CBreak(unsigned long info_at) {
 
 unique_ptr_t(CStatement) make_CContinue(unsigned long info_at) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CContinue_t;
+    self->tag = AST_CContinue_t;
     self->get._CContinue.target = 0;
     self->get._CContinue.info_at = info_at;
     return self;
@@ -593,13 +593,13 @@ unique_ptr_t(CStatement) make_CContinue(unsigned long info_at) {
 
 unique_ptr_t(CStatement) make_CNull(void) {
     unique_ptr_t(CStatement) self = make_CStatement();
-    self->type = AST_CNull_t;
+    self->tag = AST_CNull_t;
     return self;
 }
 
 void free_CStatement(unique_ptr_t(CStatement) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CStatement_t:
             break;
         case AST_CReturn_t:
@@ -665,13 +665,13 @@ void free_CStatement(unique_ptr_t(CStatement) * self) {
 unique_ptr_t(CForInit) make_CForInit(void) {
     unique_ptr_t(CForInit) self = uptr_new();
     uptr_alloc(CForInit, self);
-    self->type = AST_CForInit_t;
+    self->tag = AST_CForInit_t;
     return self;
 }
 
 unique_ptr_t(CForInit) make_CInitDecl(unique_ptr_t(CVariableDeclaration) * init) {
     unique_ptr_t(CForInit) self = make_CForInit();
-    self->type = AST_CInitDecl_t;
+    self->tag = AST_CInitDecl_t;
     self->get._CInitDecl.init = uptr_new();
     uptr_move(CVariableDeclaration, *init, self->get._CInitDecl.init);
     return self;
@@ -679,7 +679,7 @@ unique_ptr_t(CForInit) make_CInitDecl(unique_ptr_t(CVariableDeclaration) * init)
 
 unique_ptr_t(CForInit) make_CInitExp(unique_ptr_t(CExp) * init) {
     unique_ptr_t(CForInit) self = make_CForInit();
-    self->type = AST_CInitExp_t;
+    self->tag = AST_CInitExp_t;
     self->get._CInitExp.init = uptr_new();
     uptr_move(CExp, *init, self->get._CInitExp.init);
     return self;
@@ -687,7 +687,7 @@ unique_ptr_t(CForInit) make_CInitExp(unique_ptr_t(CExp) * init) {
 
 void free_CForInit(unique_ptr_t(CForInit) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CForInit_t:
             break;
         case AST_CInitDecl_t:
@@ -705,13 +705,13 @@ void free_CForInit(unique_ptr_t(CForInit) * self) {
 unique_ptr_t(CBlock) make_CBlock(void) {
     unique_ptr_t(CBlock) self = uptr_new();
     uptr_alloc(CBlock, self);
-    self->type = AST_CBlock_t;
+    self->tag = AST_CBlock_t;
     return self;
 }
 
 unique_ptr_t(CBlock) make_CB(vector_t(unique_ptr_t(CBlockItem)) * block_items) {
     unique_ptr_t(CBlock) self = make_CBlock();
-    self->type = AST_CB_t;
+    self->tag = AST_CB_t;
     self->get._CB.block_items = vec_new();
     vec_move(*block_items, self->get._CB.block_items);
     return self;
@@ -719,7 +719,7 @@ unique_ptr_t(CBlock) make_CB(vector_t(unique_ptr_t(CBlockItem)) * block_items) {
 
 void free_CBlock(unique_ptr_t(CBlock) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CBlock_t:
             break;
         case AST_CB_t:
@@ -737,13 +737,13 @@ void free_CBlock(unique_ptr_t(CBlock) * self) {
 unique_ptr_t(CBlockItem) make_CBlockItem(void) {
     unique_ptr_t(CBlockItem) self = uptr_new();
     uptr_alloc(CBlockItem, self);
-    self->type = AST_CBlockItem_t;
+    self->tag = AST_CBlockItem_t;
     return self;
 }
 
 unique_ptr_t(CBlockItem) make_CS(unique_ptr_t(CStatement) * statement) {
     unique_ptr_t(CBlockItem) self = make_CBlockItem();
-    self->type = AST_CS_t;
+    self->tag = AST_CS_t;
     self->get._CS.statement = uptr_new();
     uptr_move(CStatement, *statement, self->get._CS.statement);
     return self;
@@ -751,7 +751,7 @@ unique_ptr_t(CBlockItem) make_CS(unique_ptr_t(CStatement) * statement) {
 
 unique_ptr_t(CBlockItem) make_CD(unique_ptr_t(CDeclaration) * declaration) {
     unique_ptr_t(CBlockItem) self = make_CBlockItem();
-    self->type = AST_CD_t;
+    self->tag = AST_CD_t;
     self->get._CD.declaration = uptr_new();
     uptr_move(CDeclaration, *declaration, self->get._CD.declaration);
     return self;
@@ -759,7 +759,7 @@ unique_ptr_t(CBlockItem) make_CD(unique_ptr_t(CDeclaration) * declaration) {
 
 void free_CBlockItem(unique_ptr_t(CBlockItem) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CBlockItem_t:
             break;
         case AST_CS_t:
@@ -775,8 +775,8 @@ void free_CBlockItem(unique_ptr_t(CBlockItem) * self) {
 }
 
 struct CStorageClass make_CStorageClass(tagged_def_impl(AST_T)) {
-    struct CStorageClass self = {type};
-    switch (type) {
+    struct CStorageClass self = {tag};
+    switch (tag) {
         case AST_CStorageClass_t:
         case AST_CStatic_t:
         case AST_CExtern_t:
@@ -789,14 +789,14 @@ struct CStorageClass make_CStorageClass(tagged_def_impl(AST_T)) {
 unique_ptr_t(CInitializer) make_CInitializer(void) {
     unique_ptr_t(CInitializer) self = uptr_new();
     uptr_alloc(CInitializer, self);
-    self->type = AST_CInitializer_t;
+    self->tag = AST_CInitializer_t;
     self->init_type = sptr_new();
     return self;
 }
 
 unique_ptr_t(CInitializer) make_CSingleInit(unique_ptr_t(CExp) * exp) {
     unique_ptr_t(CInitializer) self = make_CInitializer();
-    self->type = AST_CSingleInit_t;
+    self->tag = AST_CSingleInit_t;
     self->get._CSingleInit.exp = uptr_new();
     uptr_move(CExp, *exp, self->get._CSingleInit.exp);
     self->get._CSingleInit._base = self;
@@ -805,7 +805,7 @@ unique_ptr_t(CInitializer) make_CSingleInit(unique_ptr_t(CExp) * exp) {
 
 unique_ptr_t(CInitializer) make_CCompoundInit(vector_t(unique_ptr_t(CInitializer)) * initializers) {
     unique_ptr_t(CInitializer) self = make_CInitializer();
-    self->type = AST_CCompoundInit_t;
+    self->tag = AST_CCompoundInit_t;
     self->get._CCompoundInit.initializers = vec_new();
     vec_move(*initializers, self->get._CCompoundInit.initializers);
     self->get._CCompoundInit._base = self;
@@ -814,7 +814,7 @@ unique_ptr_t(CInitializer) make_CCompoundInit(vector_t(unique_ptr_t(CInitializer
 
 void free_CInitializer(unique_ptr_t(CInitializer) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CInitializer_t:
             break;
         case AST_CSingleInit_t:
@@ -837,7 +837,7 @@ unique_ptr_t(CMemberDeclaration)
     make_CMemberDeclaration(TIdentifier member_name, shared_ptr_t(Type) * member_type, unsigned long info_at) {
     unique_ptr_t(CMemberDeclaration) self = uptr_new();
     uptr_alloc(CMemberDeclaration, self);
-    self->type = AST_CMemberDeclaration_t;
+    self->tag = AST_CMemberDeclaration_t;
     self->member_name = member_name;
     self->member_type = sptr_new();
     sptr_move(Type, *member_type, self->member_type);
@@ -847,7 +847,7 @@ unique_ptr_t(CMemberDeclaration)
 
 void free_CMemberDeclaration(unique_ptr_t(CMemberDeclaration) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CMemberDeclaration_t:
             break;
         default:
@@ -861,7 +861,7 @@ unique_ptr_t(CStructDeclaration) make_CStructDeclaration(
     TIdentifier tag_name, bool is_union, vector_t(unique_ptr_t(CMemberDeclaration)) * members, unsigned long info_at) {
     unique_ptr_t(CStructDeclaration) self = uptr_new();
     uptr_alloc(CStructDeclaration, self);
-    self->type = AST_CStructDeclaration_t;
+    self->tag = AST_CStructDeclaration_t;
     self->tag_name = tag_name;
     self->is_union = is_union;
     self->members = vec_new();
@@ -872,7 +872,7 @@ unique_ptr_t(CStructDeclaration) make_CStructDeclaration(
 
 void free_CStructDeclaration(unique_ptr_t(CStructDeclaration) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CStructDeclaration_t:
             break;
         default:
@@ -890,7 +890,7 @@ unique_ptr_t(CFunctionDeclaration)
         shared_ptr_t(Type) * fun_type, struct CStorageClass* storage_class, unsigned long info_at) {
     unique_ptr_t(CFunctionDeclaration) self = uptr_new();
     uptr_alloc(CFunctionDeclaration, self);
-    self->type = AST_CFunctionDeclaration_t;
+    self->tag = AST_CFunctionDeclaration_t;
     self->name = name;
     self->params = vec_new();
     vec_move(*params, self->params);
@@ -905,7 +905,7 @@ unique_ptr_t(CFunctionDeclaration)
 
 void free_CFunctionDeclaration(unique_ptr_t(CFunctionDeclaration) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CFunctionDeclaration_t:
             break;
         default:
@@ -921,7 +921,7 @@ unique_ptr_t(CVariableDeclaration) make_CVariableDeclaration(TIdentifier name, u
     shared_ptr_t(Type) * var_type, struct CStorageClass* storage_class, unsigned long info_at) {
     unique_ptr_t(CVariableDeclaration) self = uptr_new();
     uptr_alloc(CVariableDeclaration, self);
-    self->type = AST_CVariableDeclaration_t;
+    self->tag = AST_CVariableDeclaration_t;
     self->name = name;
     self->init = uptr_new();
     uptr_move(CInitializer, *init, self->init);
@@ -934,7 +934,7 @@ unique_ptr_t(CVariableDeclaration) make_CVariableDeclaration(TIdentifier name, u
 
 void free_CVariableDeclaration(unique_ptr_t(CVariableDeclaration) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CVariableDeclaration_t:
             break;
         default:
@@ -948,13 +948,13 @@ void free_CVariableDeclaration(unique_ptr_t(CVariableDeclaration) * self) {
 unique_ptr_t(CDeclaration) make_CDeclaration(void) {
     unique_ptr_t(CDeclaration) self = uptr_new();
     uptr_alloc(CDeclaration, self);
-    self->type = AST_CDeclaration_t;
+    self->tag = AST_CDeclaration_t;
     return self;
 }
 
 unique_ptr_t(CDeclaration) make_CFunDecl(unique_ptr_t(CFunctionDeclaration) * fun_decl) {
     unique_ptr_t(CDeclaration) self = make_CDeclaration();
-    self->type = AST_CFunDecl_t;
+    self->tag = AST_CFunDecl_t;
     self->get._CFunDecl.fun_decl = uptr_new();
     uptr_move(CFunctionDeclaration, *fun_decl, self->get._CFunDecl.fun_decl);
     return self;
@@ -962,7 +962,7 @@ unique_ptr_t(CDeclaration) make_CFunDecl(unique_ptr_t(CFunctionDeclaration) * fu
 
 unique_ptr_t(CDeclaration) make_CVarDecl(unique_ptr_t(CVariableDeclaration) * var_decl) {
     unique_ptr_t(CDeclaration) self = make_CDeclaration();
-    self->type = AST_CVarDecl_t;
+    self->tag = AST_CVarDecl_t;
     self->get._CVarDecl.var_decl = uptr_new();
     uptr_move(CVariableDeclaration, *var_decl, self->get._CVarDecl.var_decl);
     return self;
@@ -970,7 +970,7 @@ unique_ptr_t(CDeclaration) make_CVarDecl(unique_ptr_t(CVariableDeclaration) * va
 
 unique_ptr_t(CDeclaration) make_CStructDecl(unique_ptr_t(CStructDeclaration) * struct_decl) {
     unique_ptr_t(CDeclaration) self = make_CDeclaration();
-    self->type = AST_CStructDecl_t;
+    self->tag = AST_CStructDecl_t;
     self->get._CStructDecl.struct_decl = uptr_new();
     uptr_move(CStructDeclaration, *struct_decl, self->get._CStructDecl.struct_decl);
     return self;
@@ -978,7 +978,7 @@ unique_ptr_t(CDeclaration) make_CStructDecl(unique_ptr_t(CStructDeclaration) * s
 
 void free_CDeclaration(unique_ptr_t(CDeclaration) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CDeclaration_t:
             break;
         case AST_CFunDecl_t:
@@ -999,7 +999,7 @@ void free_CDeclaration(unique_ptr_t(CDeclaration) * self) {
 unique_ptr_t(CProgram) make_CProgram(vector_t(unique_ptr_t(CDeclaration)) * declarations) {
     unique_ptr_t(CProgram) self = uptr_new();
     uptr_alloc(CProgram, self);
-    self->type = AST_CProgram_t;
+    self->tag = AST_CProgram_t;
     self->declarations = vec_new();
     vec_move(*declarations, self->declarations);
     return self;
@@ -1007,7 +1007,7 @@ unique_ptr_t(CProgram) make_CProgram(vector_t(unique_ptr_t(CDeclaration)) * decl
 
 void free_CProgram(unique_ptr_t(CProgram) * self) {
     uptr_delete(*self);
-    switch ((*self)->type) {
+    switch ((*self)->tag) {
         case AST_CProgram_t:
             break;
         default:
