@@ -1,11 +1,11 @@
-type struc stbds_array_header(    length: u64    , capacity: u64    , hash_table: *any    , temp: i64    )
+type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+
 extrn fn stbds_hash_string(str: string, seed: u64) u64;
 extrn fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any;
 extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
-
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
 type struc FILE;
@@ -30,6 +30,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+
 pub fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any {
     temp: struc stbds_array_header = $(0)
     b: *any;
@@ -57,17 +58,24 @@ pub fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any {
     (cast<*struc stbds_array_header>((b)) - 1)[].capacity = min_cap
     return b
 }
-type struc stbds_string_block(    next: *struc stbds_string_block    , storage: [8]char    )
-type struc stbds_string_arena(    storage: *struc stbds_string_block    , remaining: u64    , block: u8    , mode: u8    )
-type struc stbds_hash_bucket(    hash: [8]u64    , index: [8]i64    )
-type struc stbds_hash_index(    temp_key: string    , slot_count: u64    , used_count: u64    , used_count_threshold: u64    , used_count_shrink_threshold: u64    , tombstone_count: u64    , tombstone_count_threshold: u64    , seed: u64    , slot_count_log2: u64    , string: struc stbds_string_arena    , storage: *struc stbds_hash_bucket    )
+
+type struc stbds_string_block(next: *struc stbds_string_block, storage: [8]char)
+
+type struc stbds_string_arena(storage: *struc stbds_string_block, remaining: u64, block: u8, mode: u8)
+
+type struc stbds_hash_bucket(hash: [8]u64, index: [8]i64)
+
+type struc stbds_hash_index(temp_key: string, slot_count: u64, used_count: u64, used_count_threshold: u64, used_count_shrink_threshold: u64, tombstone_count: u64, tombstone_count_threshold: u64, seed: u64, slot_count_log2: u64, string_arena: struc stbds_string_arena, storage: *struc stbds_hash_bucket)
+
 stbds_hash_seed: u64 = 826366246
+
 fn stbds_probe_position(hash: u64, slot_count: u64, slot_log2: u64) u64 {
     pos: u64;
     cast<none>(sizeof(slot_log2))
     pos = hash & (slot_count - 1)
     return pos
 }
+
 fn stbds_log2(slot_count: u64) u64 {
     n: u64 = 0
     loop while slot_count > 1 {
@@ -76,9 +84,10 @@ fn stbds_log2(slot_count: u64) u64 {
     }
     return n
 }
+
 fn stbds_make_hash_index(slot_count: u64, ot: *struc stbds_hash_index) *struc stbds_hash_index {
     t: *struc stbds_hash_index;
-    t = cast<*struc stbds_hash_index>(realloc(0,         (slot_count >> (? 8 == 8 then 3 else 2)) * sizeof<struc stbds_hash_bucket> + sizeof<struc stbds_hash_index> + 64 - 1))
+    t = cast<*struc stbds_hash_index>(realloc(0, (slot_count >> (? 8 == 8 then 3 else 2)) * sizeof<struc stbds_hash_bucket> + sizeof<struc stbds_hash_index> + 64 - 1))
     t[].storage = cast<*struc stbds_hash_bucket>((((cast<u64>((t + 1))) + (64) - 1) & ~((64) - 1)))
     t[].slot_count = slot_count
     t[].slot_count_log2 = stbds_log2(slot_count)
@@ -91,14 +100,14 @@ fn stbds_make_hash_index(slot_count: u64, ot: *struc stbds_hash_index) *struc st
         t[].used_count_shrink_threshold = 0
     }
     if ot {
-        t[].string = ot[].string
+        t[].string_arena = ot[].string_arena
         t[].seed = ot[].seed
     }
     else {
         a: u64;
         b: u64;
         temp: u64;
-        memset(@t[].string, 0, sizeof(t[].string))
+        memset(@t[].string_arena, 0, sizeof(t[].string_arena))
         t[].seed = stbds_hash_seed
         temp = 2276503805 ^ 2147001325
         temp <<= 16
@@ -170,12 +179,12 @@ fn stbds_make_hash_index(slot_count: u64, ot: *struc stbds_hash_index) *struc st
                     }
                 }
                 label done
-                ;
             }
         }
     }
     return t
 }
+
 pub fn stbds_hash_string(str: string, seed: u64) u64 {
     hash: u64 = seed
     loop while str[] {
@@ -190,6 +199,7 @@ pub fn stbds_hash_string(str: string, seed: u64) u64 {
     hash ^= (((hash) >> (22)) | ((hash) << (((sizeof<u64>) * 8) - (22))))
     return hash + seed
 }
+
 fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
     d: *u8 = cast<*u8>(p)
     i: u64;
@@ -198,97 +208,97 @@ fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
     v1: u64;
     v2: u64;
     v3: u64;
-    data: u64;
+    dat: u64;
     v0 = (((cast<u64>(1936682341) << 16) << 16) + 1886610805) ^ seed
     v1 = (((cast<u64>(1685025377) << 16) << 16) + 1852075885) ^ ~seed
     v2 = (((cast<u64>(1819895653) << 16) << 16) + 1852142177) ^ seed
     v3 = (((cast<u64>(1952801890) << 16) << 16) + 2037671283) ^ ~seed
     loop i = 0 while i + sizeof<u64> <= len .. i += sizeof<u64> {
-        data = d[0] | (d[1] << 8) | (d[2] << 16) | (d[3] << 24)
-        data |= cast<u64>((d[4] | (d[5] << 8) | (d[6] << 16) | (d[7] << 24))) << 16 << 16
-        v3 ^= data
+        dat = d[0] | (d[1] << 8) | (d[2] << 16) | (d[3] << 24)
+        dat |= cast<u64>((d[4] | (d[5] << 8) | (d[6] << 16) | (d[7] << 24))) << 16 << 16
+        v3 ^= dat
         loop j = 0 while j < 1 .. ++j {
             loop .. while 0 {
                 v0 += v1
                 v1 = (((v1) << (13)) | ((v1) >> (((sizeof<u64>) * 8) - (13))))
                 v1 ^= v0
-                v0 = (((v0) << (((sizeof<u64>) * 8) / 2))                     | ((v0) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
+                v0 = (((v0) << (((sizeof<u64>) * 8) / 2)) | ((v0) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
                 v2 += v3
                 v3 = (((v3) << (16)) | ((v3) >> (((sizeof<u64>) * 8) - (16))))
                 v3 ^= v2
                 v2 += v1
                 v1 = (((v1) << (17)) | ((v1) >> (((sizeof<u64>) * 8) - (17))))
                 v1 ^= v2
-                v2 = (((v2) << (((sizeof<u64>) * 8) / 2))                     | ((v2) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
+                v2 = (((v2) << (((sizeof<u64>) * 8) / 2)) | ((v2) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
                 v0 += v3
                 v3 = (((v3) << (21)) | ((v3) >> (((sizeof<u64>) * 8) - (21))))
                 v3 ^= v0
             }        
         }
-        v0 ^= data
+        v0 ^= dat
         d += sizeof<u64>
     }
-    data = len << (((sizeof<u64>) * 8) - 8)
+    dat = len << (((sizeof<u64>) * 8) - 8)
     match len - i {
         -> 7 {
-            data |= (cast<u64>(d[6]) << 24) << 24
+            dat |= (cast<u64>(d[6]) << 24) << 24
         }
         -> 6 {
-            data |= (cast<u64>(d[5]) << 20) << 20
+            dat |= (cast<u64>(d[5]) << 20) << 20
         }
         -> 5 {
-            data |= (cast<u64>(d[4]) << 16) << 16
+            dat |= (cast<u64>(d[4]) << 16) << 16
         }
         -> 4 {
-            data |= (d[3] << 24)
+            dat |= (d[3] << 24)
         }
         -> 3 {
-            data |= (d[2] << 16)
+            dat |= (d[2] << 16)
         }
         -> 2 {
-            data |= (d[1] << 8)
+            dat |= (d[1] << 8)
         }
         -> 1 {
-            data |= d[0]
+            dat |= d[0]
         }
         -> 0 {
             break
         }
     }
-    v3 ^= data
+    v3 ^= dat
     loop j = 0 while j < 1 .. ++j {
         loop .. while 0 {
             v0 += v1
             v1 = (((v1) << (13)) | ((v1) >> (((sizeof<u64>) * 8) - (13))))
             v1 ^= v0
-            v0 = (((v0) << (((sizeof<u64>) * 8) / 2))                 | ((v0) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
+            v0 = (((v0) << (((sizeof<u64>) * 8) / 2)) | ((v0) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
             v2 += v3
             v3 = (((v3) << (16)) | ((v3) >> (((sizeof<u64>) * 8) - (16))))
             v3 ^= v2
             v2 += v1
             v1 = (((v1) << (17)) | ((v1) >> (((sizeof<u64>) * 8) - (17))))
             v1 ^= v2
-            v2 = (((v2) << (((sizeof<u64>) * 8) / 2))                 | ((v2) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
+            v2 = (((v2) << (((sizeof<u64>) * 8) / 2)) | ((v2) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
             v0 += v3
             v3 = (((v3) << (21)) | ((v3) >> (((sizeof<u64>) * 8) - (21))))
             v3 ^= v0
         }    
     }
-    v0 ^= data
+    v0 ^= dat
     v2 ^= 255
     loop j = 0 while j < 1 .. ++j {
         loop .. while 0 {
             v0 += v1
             v1 = (((v1) << (13)) | ((v1) >> (((sizeof<u64>) * 8) - (13))))
             v1 ^= v0
-            v0 = (((v0) << (((sizeof<u64>) * 8) / 2))                 | ((v0) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
+            v0 = (((v0) << (((sizeof<u64>) * 8) / 2)) | ((v0) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
             v2 += v3
             v3 = (((v3) << (16)) | ((v3) >> (((sizeof<u64>) * 8) - (16))))
             v3 ^= v2
             v2 += v1
             v1 = (((v1) << (17)) | ((v1) >> (((sizeof<u64>) * 8) - (17))))
             v1 ^= v2
-            v2 = (((v2) << (((sizeof<u64>) * 8) / 2))                 | ((v2) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
+            v2 = (((v2) << (((sizeof<u64>) * 8) / 2)) | ((v2) >> (((sizeof<u64>) * 8) - (((sizeof<u64>) * 8) / 2))))
             v0 += v3
             v3 = (((v3) << (21)) | ((v3) >> (((sizeof<u64>) * 8) - (21))))
             v3 ^= v0
@@ -296,6 +306,7 @@ fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
     }
     return v1 ^ v2 ^ v3
 }
+
 fn stbds_hash_bytes(p: *any, len: u64, seed: u64) u64 {
     d: *u8 = cast<*u8>(p)
     if len == 4 {
@@ -328,6 +339,7 @@ fn stbds_hash_bytes(p: *any, len: u64, seed: u64) u64 {
         return stbds_siphash_bytes(p, len, seed)
     }
 }
+
 fn stbds_is_key_equal(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32, i: u64) i32 {
     if mode >= 1 {
         return 0 == strcmp(cast<string>(key), cast<*string>((cast<string>(a) + elemsize * i + keyoffset))[])
@@ -336,23 +348,26 @@ fn stbds_is_key_equal(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset
         return 0 == memcmp(key, cast<string>(a) + elemsize * i + keyoffset, keysize)
     }
 }
+
 fn stbds_strreset(a: *struc stbds_string_arena) none;
+
 pub fn stbds_hmfree_func(a: *any, elemsize: u64) none {
     if a == (cast<*any>(0)) {
         return none
     }
     if (cast<*struc stbds_hash_index>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)) ~= (cast<*any>(0)) {
-        if (cast<*struc stbds_hash_index>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table))[].string.mode == 2 {
+        if (cast<*struc stbds_hash_index>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table))[].string_arena.mode == 2 {
             i: u64;
             loop i = 1 while i < (cast<*struc stbds_array_header>((a)) - 1)[].length .. ++i {
                 free(cast<*string>((cast<string>(a) + elemsize * i))[])
             }
         }
-        stbds_strreset(@(cast<*struc stbds_hash_index>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table))[].string)
+        stbds_strreset(@(cast<*struc stbds_hash_index>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table))[].string_arena)
     }
     free((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)
     free((cast<*struc stbds_array_header>((a)) - 1))
 }
+
 fn stbds_hm_find_slot(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) i64 {
     raw_a: *any = (cast<string>((a)) - (elemsize))
     table: *struc stbds_hash_index = (cast<*struc stbds_hash_index>((cast<*struc stbds_array_header>((raw_a)) - 1)[].hash_table))
@@ -394,6 +409,7 @@ fn stbds_hm_find_slot(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset
         pos &= (table[].slot_count - 1)
     }
 }
+
 fn stbds_hmget_key_ts(a: *any, elemsize: u64, key: *any, keysize: u64, temp: *i64, mode: i32) *any {
     keyoffset: u64 = 0
     if a == (cast<*any>(0)) {
@@ -423,14 +439,17 @@ fn stbds_hmget_key_ts(a: *any, elemsize: u64, key: *any, keysize: u64, temp: *i6
         return a
     }
 }
+
 pub fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any {
     temp: i64;
     p: *any = stbds_hmget_key_ts(a, elemsize, key, keysize, @temp, mode)
     (cast<*struc stbds_array_header>(((cast<string>((p)) - (elemsize)))) - 1)[].temp = temp
     return p
 }
+
 fn stbds_strdup(str: string) string;
 fn stbds_stralloc(a: *struc stbds_string_arena, str: string) string;
+
 pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any {
     keyoffset: u64 = 0
     raw_a: *any;
@@ -453,7 +472,7 @@ pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i3
             free(table)
         }
         else {
-            nt[].string.mode = ? mode >= 1 then 1 else 0
+            nt[].string_arena.mode = ? mode >= 1 then 1 else 0
         }
         (cast<*struc stbds_array_header>((a)) - 1)[].hash_table = table = nt
     }
@@ -476,7 +495,7 @@ pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i3
                     if stbds_is_key_equal(raw_a, elemsize, key, keysize, keyoffset, mode, bucket[].index[i]) {
                         (cast<*struc stbds_array_header>((a)) - 1)[].temp = bucket[].index[i]
                         if mode >= 1 {
-                            (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) =                             cast<*string>((cast<string>(raw_a) + elemsize * bucket[].index[i] + keyoffset))[]
+                            (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(raw_a) + elemsize * bucket[].index[i] + keyoffset))[]
                         }
                         return (cast<string>((a)) + (elemsize))
                     }
@@ -530,17 +549,17 @@ pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i3
             bucket[].hash[pos & (8 - 1)] = hash
             bucket[].index[pos & (8 - 1)] = i - 1
             (cast<*struc stbds_array_header>((a)) - 1)[].temp = i - 1
-            match table[].string.mode {
+            match table[].string_arena.mode {
                 -> 2 {
-                    (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] =                     stbds_strdup(cast<string>(key))
+                    (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = stbds_strdup(cast<string>(key))
                 }
                 break
                 -> 3 {
-                    (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] =                     stbds_stralloc(@table[].string, cast<string>(key))
+                    (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = stbds_stralloc(@table[].string_arena, cast<string>(key))
                 }
                 break
                 -> 1 {
-                    (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] =                     cast<string>(key)
+                    (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = cast<string>(key)
                 }
                 break
                 otherwise {
@@ -552,6 +571,7 @@ pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i3
         return (cast<string>((a)) + (elemsize))
     }
 }
+
 pub fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any {
     if a == (cast<*any>(0)) {
         return 0
@@ -580,16 +600,16 @@ pub fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffse
                 (cast<*struc stbds_array_header>((raw_a)) - 1)[].temp = 1
                 b[].hash[i] = 1
                 b[].index[i] = -2
-                if mode == 1 and table[].string.mode == 2 {
+                if mode == 1 and table[].string_arena.mode == 2 {
                     free(cast<*string>((cast<string>(a) + elemsize * old_index))[])
                 }
                 if old_index ~= final_index {
                     memmove(cast<string>(a) + elemsize * old_index, cast<string>(a) + elemsize * final_index, elemsize)
                     if mode == 1 {
-                        slot = stbds_hm_find_slot(a, elemsize, cast<*string>((cast<string>(a) + elemsize * old_index + keyoffset))[],                             keysize, keyoffset, mode)
+                        slot = stbds_hm_find_slot(a, elemsize, cast<*string>((cast<string>(a) + elemsize * old_index + keyoffset))[], keysize, keyoffset, mode)
                     }
                     else {
-                        slot = stbds_hm_find_slot(                            a, elemsize, cast<string>(a) + elemsize * old_index + keyoffset, keysize, keyoffset, mode)
+                        slot = stbds_hm_find_slot(a, elemsize, cast<string>(a) + elemsize * old_index + keyoffset, keysize, keyoffset, mode)
                     }
                     b = @table[].storage[slot >> (? 8 == 8 then 3 else 2)]
                     i = slot & (8 - 1)
@@ -597,11 +617,11 @@ pub fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffse
                 }
                 (cast<*struc stbds_array_header>((raw_a)) - 1)[].length -= 1
                 if table[].used_count < table[].used_count_shrink_threshold and table[].slot_count > 8 {
-                    (cast<*struc stbds_array_header>((raw_a)) - 1)[].hash_table =                     stbds_make_hash_index(table[].slot_count >> 1, table)
+                    (cast<*struc stbds_array_header>((raw_a)) - 1)[].hash_table = stbds_make_hash_index(table[].slot_count >> 1, table)
                     free(table)
                 }
                 elif table[].tombstone_count > table[].tombstone_count_threshold {
-                    (cast<*struc stbds_array_header>((raw_a)) - 1)[].hash_table =                     stbds_make_hash_index(table[].slot_count, table)
+                    (cast<*struc stbds_array_header>((raw_a)) - 1)[].hash_table = stbds_make_hash_index(table[].slot_count, table)
                     free(table)
                 }
                 return a
@@ -609,12 +629,14 @@ pub fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffse
         }
     }
 }
+
 fn stbds_strdup(str: string) string {
     len: u64 = strlen(str) + 1
     p: string = cast<string>(realloc(0, len))
     memmove(p, str, len)
     return p
 }
+
 fn stbds_stralloc(a: *struc stbds_string_arena, str: string) string {
     p: string;
     len: u64 = strlen(str) + 1
@@ -650,6 +672,7 @@ fn stbds_stralloc(a: *struc stbds_string_arena, str: string) string {
     memmove(p, str, len)
     return p
 }
+
 fn stbds_strreset(a: *struc stbds_string_arena) none {
     x: *struc stbds_string_block;
     y: *struc stbds_string_block;

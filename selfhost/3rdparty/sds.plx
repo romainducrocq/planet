@@ -33,11 +33,17 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
-type struc sdshdr5(    flags: u8    )
-type struc sdshdr8(    len: u8    , alloc: u8    , flags: u8    )
-type struc sdshdr32(    len: u32    , alloc: u32    , flags: u8    )
-type struc sdshdr64(    len: u64    , alloc: u64    , flags: u8    )
+
+type struc sdshdr5(flags: u8)
+
+type struc sdshdr8(len: u8, alloc: u8, flags: u8)
+
+type struc sdshdr32(len: u32, alloc: u32, flags: u8)
+
+type struc sdshdr64(len: u64, alloc: u64, flags: u8)
+
 pub SDS_NOINIT: string = "SDS_NOINIT"
+
 pub fn sdslen(s: string) u64 {
     flags: u8 = s[-1]
     match flags & 7 {
@@ -56,6 +62,7 @@ pub fn sdslen(s: string) u64 {
     }
     return 0
 }
+
 fn sdsavail(s: string) u64 {
     flags: u8 = s[-1]
     match flags & 7 {
@@ -64,22 +71,20 @@ fn sdsavail(s: string) u64 {
         }
         -> 1 {
             sh: *struc sdshdr8 = cast<*any>(((s) - (sizeof<struc sdshdr8>)))
-            ;
             return sh[].alloc - sh[].len
         }
         -> 3 {
             sh: *struc sdshdr32 = cast<*any>(((s) - (sizeof<struc sdshdr32>)))
-            ;
             return sh[].alloc - sh[].len
         }
         -> 4 {
             sh: *struc sdshdr64 = cast<*any>(((s) - (sizeof<struc sdshdr64>)))
-            ;
             return sh[].alloc - sh[].len
         }
     }
     return 0
 }
+
 fn sdssetlen(s: string, newlen: u64) none {
     flags: u8 = s[-1]
     match flags & 7 {
@@ -102,6 +107,7 @@ fn sdssetlen(s: string, newlen: u64) none {
         break
     }
 }
+
 fn sdssetalloc(s: string, newlen: u64) none {
     flags: u8 = s[-1]
     match flags & 7 {
@@ -122,8 +128,9 @@ fn sdssetalloc(s: string, newlen: u64) none {
         break
     }
 }
-fn sdsHdrSize(type: char) i32 {
-    match type & 7 {
+
+fn sdsHdrSize(stype: char) i32 {
+    match stype & 7 {
         -> 0 {
             return sizeof<struc sdshdr5>
         }
@@ -139,6 +146,7 @@ fn sdsHdrSize(type: char) i32 {
     }
     return 0
 }
+
 fn sdsReqType(string_size: u64) char {
     if string_size < 1 << 5 {
         return 0
@@ -151,14 +159,15 @@ fn sdsReqType(string_size: u64) char {
     }
     return 4
 }
+
 fn sdsnewlen(init: *any, initlen: u64) string {
     sh: *any;
     s: string;
-    type: char = sdsReqType(initlen)
-    if type == 0 and initlen == 0 {
-        type = 1
+    stype: char = sdsReqType(initlen)
+    if stype == 0 and initlen == 0 {
+        stype = 1
     }
-    hdrlen: i32 = sdsHdrSize(type)
+    hdrlen: i32 = sdsHdrSize(stype)
     fp: *u8;
     sh = malloc(hdrlen + initlen + 1)
     if sh == 0 {
@@ -172,33 +181,30 @@ fn sdsnewlen(init: *any, initlen: u64) string {
     }
     s = cast<string>(sh) + hdrlen
     fp = (cast<*u8>(s)) - 1
-    match type {
+    match stype {
         -> 0 {
-            fp[] = type | (initlen << 3)
+            fp[] = stype | (initlen << 3)
             break
         }
         -> 1 {
             sh: *struc sdshdr8 = cast<*any>(((s) - (sizeof<struc sdshdr8>)))
-            ;
             sh[].len = initlen
             sh[].alloc = initlen
-            fp[] = type
+            fp[] = stype
             break
         }
         -> 3 {
             sh: *struc sdshdr32 = cast<*any>(((s) - (sizeof<struc sdshdr32>)))
-            ;
             sh[].len = initlen
             sh[].alloc = initlen
-            fp[] = type
+            fp[] = stype
             break
         }
         -> 4 {
             sh: *struc sdshdr64 = cast<*any>(((s) - (sizeof<struc sdshdr64>)))
-            ;
             sh[].len = initlen
             sh[].alloc = initlen
-            fp[] = type
+            fp[] = stype
             break
         }
     }
@@ -208,37 +214,42 @@ fn sdsnewlen(init: *any, initlen: u64) string {
     s[initlen] = 0
     return s
 }
+
 pub fn sdsnew(init: string) string {
     initlen: u64 = ? (init == 0) then 0 else strlen(init)
     return sdsnewlen(init, initlen)
 }
+
 pub fn sdsdup(s: string) string {
     return sdsnewlen(s, sdslen(s))
 }
+
 pub fn sdsfree(s: string) none {
     if s == 0 {
         return none
     }
     free(cast<string>(s) - sdsHdrSize(s[-1]))
 }
+
 pub fn sdsclear(s: string) none {
     sdssetlen(s, 0)
     s[0] = 0
 }
+
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
     sh: *any;
     newsh: *any;
     avail: u64 = sdsavail(s)
     len: u64;
     newlen: u64;
-    type: char;
-    oldtype: char = s[-1] & 7
+    stype: char;
+    oldstype: char = s[-1] & 7
     hdrlen: i32;
     if avail >= addlen {
         return s
     }
     len = sdslen(s)
-    sh = cast<string>(s) - sdsHdrSize(oldtype)
+    sh = cast<string>(s) - sdsHdrSize(oldstype)
     newlen = (len + addlen)
     if newlen < (1024 * 1024) {
         newlen *= 2
@@ -246,12 +257,12 @@ pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
     else {
         newlen += (1024 * 1024)
     }
-    type = sdsReqType(newlen)
-    if type == 0 {
-        type = 1
+    stype = sdsReqType(newlen)
+    if stype == 0 {
+        stype = 1
     }
-    hdrlen = sdsHdrSize(type)
-    if oldtype == type {
+    hdrlen = sdsHdrSize(stype)
+    if oldstype == stype {
         newsh = realloc(sh, hdrlen + newlen + 1)
         if newsh == 0 {
             return 0
@@ -266,12 +277,13 @@ pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
         memcpy(cast<string>(newsh) + hdrlen, s, len + 1)
         free(sh)
         s = cast<string>(newsh) + hdrlen
-        s[-1] = type
+        s[-1] = stype
         sdssetlen(s, len)
     }
     sdssetalloc(s, newlen)
     return s
 }
+
 pub fn sdsgrowzero(s: string, len: u64) string {
     curlen: u64 = sdslen(s)
     if len <= curlen {
@@ -285,6 +297,7 @@ pub fn sdsgrowzero(s: string, len: u64) string {
     sdssetlen(s, len)
     return s
 }
+
 fn sdscatlen(s: string, t: *any, len: u64) string {
     curlen: u64 = sdslen(s)
     s = sdsMakeRoomFor(s, len)
@@ -296,9 +309,11 @@ fn sdscatlen(s: string, t: *any, len: u64) string {
     s[curlen + len] = 0
     return s
 }
+
 pub fn sdscat(s: string, t: string) string {
     return sdscatlen(s, t, strlen(t))
 }
+
 fn sdsll2str(s: string, value: i64) i32 {
     p: string;
     aux: char;
@@ -335,6 +350,7 @@ fn sdsll2str(s: string, value: i64) i32 {
     }
     return l
 }
+
 fn sdsull2str(s: string, v: u64) i32 {
     p: string;
     aux: char;
@@ -356,16 +372,19 @@ fn sdsull2str(s: string, v: u64) i32 {
     }
     return l
 }
+
 pub fn sdsfromlong(value: i64) string {
     buf: [21]char;
     len: i32 = sdsll2str(buf, value)
     return sdsnewlen(buf, len)
 }
+
 pub fn sdsfromunsignedlong(value: u64) string {
     buf: [21]char;
     len: i32 = sdsull2str(buf, value)
     return sdsnewlen(buf, len)
 }
+
 pub fn sdsrange(s: string, start: i64, end: i64) none {
     newlen: u64;
     len: u64 = sdslen(s)
