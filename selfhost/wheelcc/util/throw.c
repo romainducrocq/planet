@@ -17,24 +17,13 @@ static char esc_reset[5] = {ESC, '[', '0', 'm', 0};
 static char esc_bold[5] = {ESC, '[', '1', 'm', 0};
 static char esc_red[8] = {ESC, '[', '0', ';', '3', '1', 'm', 0};
 
-void panic_sigabrt(char* msg, int line, char* file) {
+void panic_sigabrt(char* msg) {
     fflush(NULL);
     {
-        string_t strto_line = str_to_string(line);
-
         string_t stderr_buf = str_new("");
-        unsigned long stderr_buf_size = strlen("::\ninternal error: \n") + ESC_BOLD_SIZE + strlen(file)
-                                        + str_size(strto_line) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE
-                                        + strlen(msg);
+        unsigned long stderr_buf_size = strlen("internal error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(msg);
         str_reserve(stderr_buf, stderr_buf_size);
 
-        str_append(stderr_buf, esc_bold);
-        str_append(stderr_buf, file);
-        str_append(stderr_buf, ":");
-        str_append(stderr_buf, strto_line);
-        str_append(stderr_buf, ":");
-        str_append(stderr_buf, esc_reset);
-        str_append(stderr_buf, "\n");
         str_append(stderr_buf, esc_red);
         str_append(stderr_buf, "internal error:");
         str_append(stderr_buf, esc_reset);
@@ -44,7 +33,6 @@ void panic_sigabrt(char* msg, int line, char* file) {
 
         write(STDERR_FILENO, stderr_buf, str_size(stderr_buf));
 
-        str_delete(strto_line);
         str_delete(stderr_buf);
     }
     abort();
