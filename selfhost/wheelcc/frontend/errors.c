@@ -468,7 +468,7 @@ char* get_arr_fmt(struct IdentifierContext* ctx, struct Array* arr_type, string_
 }
 
 char* get_struct_fmt(struct IdentifierContext* ctx, struct Structure* struct_type, string_t* struct_fmt) {
-    return get_struct_name_fmt(ctx, struct_type->tag, struct_type->is_union, struct_fmt);
+    return get_struct_name_fmt(ctx, struct_type->tag_name, struct_type->is_union, struct_fmt);
 }
 
 char* get_type_fmt(struct IdentifierContext* ctx, struct Type* type_t, string_t* type_fmt) {

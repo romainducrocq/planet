@@ -88,7 +88,7 @@ struct Array {
 };
 
 struct Structure {
-    TIdentifier tag;
+    TIdentifier tag_name;
     bool is_union;
 };
 
@@ -126,7 +126,7 @@ shared_ptr_t(Type) make_Void(void);
 shared_ptr_t(Type) make_FunType(vector_t(shared_ptr_t(Type)) * param_types, shared_ptr_t(Type) * ret_type);
 shared_ptr_t(Type) make_Pointer(shared_ptr_t(Type) * ref_type);
 shared_ptr_t(Type) make_Array(TLong size, shared_ptr_t(Type) * elem_type);
-shared_ptr_t(Type) make_Structure(TIdentifier tag, bool is_union);
+shared_ptr_t(Type) make_Structure(TIdentifier tag_name, bool is_union);
 void free_Type(shared_ptr_t(Type) * self);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -358,7 +358,7 @@ struct FrontEndContext {
     hashset_t(TIdentifier) addressed_set;
 };
 
-struct StructMember* get_struct_typedef_member(struct FrontEndContext* ctx, TIdentifier tag, TIdentifier member_name);
-struct StructMember* get_struct_typedef_back(struct FrontEndContext* ctx, TIdentifier tag);
+struct StructMember* get_struct_typedef_member(struct FrontEndContext* ctx, TIdentifier tag_name, TIdentifier member_name);
+struct StructMember* get_struct_typedef_back(struct FrontEndContext* ctx, TIdentifier tag_name);
 
 #endif

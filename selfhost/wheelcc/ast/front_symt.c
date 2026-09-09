@@ -105,10 +105,10 @@ shared_ptr_t(Type) make_Array(TLong size, shared_ptr_t(Type) * elem_type) {
     return self;
 }
 
-shared_ptr_t(Type) make_Structure(TIdentifier tag, bool is_union) {
+shared_ptr_t(Type) make_Structure(TIdentifier tag_name, bool is_union) {
     shared_ptr_t(Type) self = make_Type();
     self->type = AST_Structure_t;
-    self->get._Structure.tag = tag;
+    self->get._Structure.tag_name = tag_name;
     self->get._Structure.is_union = is_union;
     return self;
 }
@@ -440,12 +440,12 @@ void free_StructTypedef(unique_ptr_t(StructTypedef) * self) {
 
 #define Ctx struct FrontEndContext*
 
-struct StructMember* get_struct_typedef_member(Ctx ctx, TIdentifier tag, TIdentifier member_name) {
-    struct StructTypedef* struct_typedef = map_get(ctx->struct_typedef_table, tag);
+struct StructMember* get_struct_typedef_member(Ctx ctx, TIdentifier tag_name, TIdentifier member_name) {
+    struct StructTypedef* struct_typedef = map_get(ctx->struct_typedef_table, tag_name);
     return map_get(struct_typedef->members, struct_typedef->member_names[member_name]);
 }
 
-struct StructMember* get_struct_typedef_back(Ctx ctx, TIdentifier tag) {
-    struct StructTypedef* struct_typedef = map_get(ctx->struct_typedef_table, tag);
+struct StructMember* get_struct_typedef_back(Ctx ctx, TIdentifier tag_name) {
+    struct StructTypedef* struct_typedef = map_get(ctx->struct_typedef_table, tag_name);
     return map_get(struct_typedef->members, vec_back(struct_typedef->member_names));
 }

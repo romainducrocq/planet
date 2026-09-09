@@ -51,7 +51,7 @@ static TInt get_arr_alignment(struct FrontEndContext* ctx, struct Array* arr_typ
     TInt alignment = gen_type_alignment(ctx, arr_type->elem_type);
     if (arr_type->elem_type->type == AST_Structure_t) {
         struct Structure* struct_type = &arr_type->elem_type->get._Structure;
-        *size *= map_get(ctx->struct_typedef_table, struct_type->tag)->size;
+        *size *= map_get(ctx->struct_typedef_table, struct_type->tag_name)->size;
     }
     else {
         *size *= alignment;
@@ -63,7 +63,7 @@ static TInt get_arr_alignment(struct FrontEndContext* ctx, struct Array* arr_typ
 }
 
 static TInt get_struct_alignment(struct FrontEndContext* ctx, struct Structure* struct_type) {
-    return map_get(ctx->struct_typedef_table, struct_type->tag)->alignment;
+    return map_get(ctx->struct_typedef_table, struct_type->tag_name)->alignment;
 }
 
 TInt gen_type_alignment(struct FrontEndContext* ctx, struct Type* type_t) {
@@ -88,7 +88,7 @@ static shared_ptr_t(AssemblyType) arr_asm_type(struct FrontEndContext* ctx, stru
 static shared_ptr_t(AssemblyType) struct_asm_type(struct FrontEndContext* ctx, struct Structure* struct_type) {
     TLong size;
     TInt alignment;
-    long map_it = map_find(ctx->struct_typedef_table, struct_type->tag);
+    long map_it = map_find(ctx->struct_typedef_table, struct_type->tag_name);
     if (map_it != map_end()) {
         struct StructTypedef* struct_typedef = pair_second(ctx->struct_typedef_table[map_it]);
         size = struct_typedef->size;

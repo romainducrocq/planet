@@ -229,7 +229,7 @@ static TLong get_arr_scale(Ctx ctx, struct Array* arr_type) {
 }
 
 static TLong get_struct_scale(Ctx ctx, struct Structure* struct_type) {
-    return map_get(ctx->frontend->struct_typedef_table, struct_type->tag)->size;
+    return map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name)->size;
 }
 
 static TLong get_type_scale(Ctx ctx, struct Type* type_t) {
@@ -848,7 +848,7 @@ static void sub_obj_dot_res_instr(struct TacSubObject* res, TLong member_offset)
 static unique_ptr_t(TacExpResult) dot_res_instr(Ctx ctx, struct CDot* node) {
     THROW_ABORT_IF(node->structure->exp_type->type != AST_Structure_t);
     struct Structure* struct_type = &node->structure->exp_type->get._Structure;
-    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag);
+    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     TLong member_offset = map_get(struct_typedef->members, node->member)->offset;
     unique_ptr_t(TacExpResult) res = repr_res_instr(ctx, node->structure);
     switch (res->type) {
@@ -872,7 +872,7 @@ static unique_ptr_t(TacExpResult) arrow_res_instr(Ctx ctx, struct CArrow* node) 
     struct Pointer* ptr_type = &node->pointer->exp_type->get._Pointer;
     THROW_ABORT_IF(ptr_type->ref_type->type != AST_Structure_t);
     struct Structure* struct_type = &ptr_type->ref_type->get._Structure;
-    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag);
+    struct StructTypedef* struct_typedef = map_get(ctx->frontend->struct_typedef_table, struct_type->tag_name);
     TLong member_offset = map_get(struct_typedef->members, node->member)->offset;
     shared_ptr_t(TacValue) val = repr_exp_instr(ctx, node->pointer);
     if (member_offset > 0l) {
@@ -1333,7 +1333,7 @@ static void arr_compound_init_instr(
 static void struct_compound_init_instr(
     Ctx ctx, struct CCompoundInit* node, struct Structure* struct_type, TIdentifier symbol, TLong* size) {
     for (unsigned long i = vec_size(node->initializers); i-- > 0;) {
-        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag, i);
+        struct StructMember* member = get_struct_typedef_member(ctx->frontend, struct_type->tag_name, i);
         TLong offset = *size + member->offset;
         compound_init_instr(ctx, node->initializers[i], member->member_type, symbol, &offset);
     }
