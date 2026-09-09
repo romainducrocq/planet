@@ -721,12 +721,12 @@ static TOKEN_KIND match_token(Ctx ctx) {
 }
 
 static string_t get_match(Ctx ctx, unsigned long match_at, unsigned long match_size) {
-    string_t match = str_new("");
-    str_resize(match, match_size);
+    string_t smatch = str_new("");
+    str_resize(smatch, match_size);
     for (unsigned long i = 0; i < match_size; ++i) {
-        match[i] = ctx->line[match_at + i];
+        smatch[i] = ctx->line[match_at + i];
     }
-    return match;
+    return smatch;
 }
 
 static error_t tokenize_include(Ctx ctx, TIdentifier match_tok, unsigned long linenum, bool is_empty);
@@ -738,7 +738,7 @@ static unsigned long push_token_info(Ctx ctx) {
 }
 
 static error_t tokenize_file(Ctx ctx) {
-    string_t match = str_new(NULL);
+    string_t smatch = str_new(NULL);
     CATCH_ENTER;
     for (unsigned long linenum = 1; read_line(ctx->fileio, &ctx->line, &ctx->line_size); ++linenum) {
         ctx->total_linenum++;
@@ -768,9 +768,9 @@ static error_t tokenize_file(Ctx ctx) {
                 }
                 case TOK_close_paren: {
                     if (ctx->paren_depth == 0) {
-                        match = get_match(ctx, ctx->match_at, ctx->match_size);
+                        smatch = get_match(ctx, ctx->match_at, ctx->match_size);
                         unsigned long info_at = push_token_info(ctx);
-                        THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_unmatched_close, match));
+                        THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_unmatched_close, smatch));
                     }
                     ctx->paren_depth--;
                     goto Lpass;
@@ -783,19 +783,19 @@ static error_t tokenize_file(Ctx ctx) {
                 case TOK_uint_const:
                 case TOK_ulong_const:
                 case TOK_dbl_const: {
-                    match = get_match(ctx, ctx->match_at, ctx->match_size);
-                    match_tok = make_string_identifier(ctx->identifiers, &match);
+                    smatch = get_match(ctx, ctx->match_at, ctx->match_size);
+                    match_tok = make_string_identifier(ctx->identifiers, &smatch);
                     goto Lpass;
                 }
                 case TOK_m4_prefix: {
-                    match = get_match(ctx, ctx->match_at, ctx->match_size);
+                    smatch = get_match(ctx, ctx->match_at, ctx->match_size);
                     unsigned long info_at = push_token_info(ctx);
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_preproc_macro, match));
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_preproc_macro, smatch));
                 }
                 case TOK_error: {
-                    match = get_match(ctx, ctx->match_at, ctx->match_size);
+                    smatch = get_match(ctx, ctx->match_at, ctx->match_size);
                     unsigned long info_at = push_token_info(ctx);
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_invalid_tok, match));
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_invalid_tok, smatch));
                 }
                 default:
                     goto Lpass;
@@ -815,7 +815,7 @@ static error_t tokenize_file(Ctx ctx) {
         }
     }
     FINALLY;
-    str_delete(match);
+    str_delete(smatch);
     CATCH_EXIT;
 }
 
