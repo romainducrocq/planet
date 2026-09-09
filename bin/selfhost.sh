@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # TODO rm
-BUILD_PLX=0
+BUILD_PLX=1
 
 # TODO review this file
 KERNEL_NAME="$(uname -s)"
