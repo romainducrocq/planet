@@ -1,617 +1,617 @@
-TOK_skip 0
-TOK_line_break 1
-TOK_open_paren 2
-TOK_close_paren 3
-TOK_open_brace 4
-TOK_close_brace 5
-TOK_open_bracket 6
-TOK_close_bracket 7
-TOK_comma_separator 8
-TOK_semicolon 9
-TOK_unop_complement 10
-TOK_unop_neg 11
-TOK_unop_not 12
-TOK_unop_addrof 13
-TOK_unop_incr 14
-TOK_unop_decr 15
-TOK_binop_add 16
-TOK_binop_multiply 17
-TOK_binop_divide 18
-TOK_binop_remainder 19
-TOK_binop_bitand 20
-TOK_binop_bitor 21
-TOK_binop_xor 22
-TOK_binop_shiftleft 23
-TOK_binop_shiftright 24
-TOK_binop_and 25
-TOK_binop_or 26
-TOK_binop_eq 27
-TOK_binop_ne 28
-TOK_binop_lt 29
-TOK_binop_le 30
-TOK_binop_gt 31
-TOK_binop_ge 32
-TOK_assign 33
-TOK_assign_type 34
-TOK_assign_add 35
-TOK_assign_subtract 36
-TOK_assign_multiply 37
-TOK_assign_divide 38
-TOK_assign_remainder 39
-TOK_assign_bitand 40
-TOK_assign_bitor 41
-TOK_assign_xor 42
-TOK_assign_shiftleft 43
-TOK_assign_shiftright 44
-TOK_force_exec 45
-TOK_ternary_if 46
-TOK_compound_init 47
-TOK_typeop_member 48
-TOK_loop_post 49
-TOK_match_with 50
-TOK_key_char 51
-TOK_key_string 52
-TOK_key_i32 53
-TOK_key_i64 54
-TOK_key_i8 55
-TOK_key_f64 56
-TOK_key_u32 57
-TOK_key_u64 58
-TOK_key_u8 59
-TOK_key_any 60
-TOK_key_none 61
-TOK_key_fn 62
-TOK_key_struc 63
-TOK_key_union 64
-TOK_key_type 65
-TOK_key_sizeof 66
-TOK_key_return 67
-TOK_key_cast 68
-TOK_key_if 69
-TOK_key_elif 70
-TOK_key_else 71
-TOK_key_then 72
-TOK_key_jump 73
-TOK_key_label 74
-TOK_key_loop 75
-TOK_key_while 76
-TOK_key_match 77
-TOK_key_otherwise 78
-TOK_key_break 79
-TOK_key_continue 80
-TOK_key_pub 81
-TOK_key_data 82
-TOK_key_extrn 83
-TOK_key_true 84
-TOK_key_false 85
-TOK_identifier 86
-TOK_string_literal 87
-TOK_char_const 88
-TOK_int_const 89
-TOK_long_const 90
-TOK_uint_const 91
-TOK_ulong_const 92
-TOK_dbl_const 93
-TOK_m4_prefix 94
-TOK_import_file 95
-TOK_import_force 96
-TOK_use_file 97
-TOK_use_force 98
-TOK_error 99
-MSG_unhandled_fatal_error 0
-MSG_unsupported_os 1
-MSG_unsupported_arch 2
-MSG_unsupported_compiler 3
-MSG_unsupported_cc_ver 4
-MSG_unhandled_arg_error 100
-MSG_print_help 101
-MSG_no_debug_arg 102
-MSG_invalid_debug_arg 103
-MSG_no_optim_1_arg 104
-MSG_invalid_optim_1_arg 105
-MSG_no_optim_2_arg 106
-MSG_invalid_optim_2_arg 107
-MSG_no_input_files_arg 108
-MSG_no_stdlib_dir_arg 109
-MSG_no_include_dir_arg 110
-MSG_unhandled_util_error 200
-MSG_failed_fread 201
-MSG_failed_fwrite 202
-MSG_failed_strtoi 203
-MSG_failed_strtou 204
-MSG_failed_strtod 205
-MSG_unhandled_lexer_error 300
-MSG_invalid_tok 301
-MSG_import_in_line 302
-MSG_use_in_line 303
-MSG_failed_import 304
-MSG_failed_use 305
-MSG_preproc_macro 306
-MSG_unmatched_close 307
-MSG_unhandled_parser_error 400
-MSG_unexpected_next_tok 401
-MSG_reached_eof 402
-MSG_overflow_long_const 403
-MSG_overflow_ulong_const 404
-MSG_expect_unop 405
-MSG_expect_binop 406
-MSG_expect_data_specifier 407
-MSG_expect_specifier 408
-MSG_expect_maybe_type 409
-MSG_expect_open_sizeof 410
-MSG_expect_expression 411
-MSG_expect_assign 412
-MSG_expect_datatype 413
-MSG_expect_block 414
-MSG_expect_declaration 415
-MSG_expect_storage_class 416
-MSG_incomplete_any 417
-MSG_arr_size_not_int_const 418
-MSG_case_value_not_int_const 419
-MSG_empty_block 420
-MSG_empty_compound_init 421
-MSG_infinite_loop 422
-MSG_loop_decl_not_auto 423
-MSG_list_decl_not_auto 424
-MSG_type_decl_not_auto 425
-MSG_pub_in_block 426
-MSG_data_at_toplvl 427
-MSG_unhandled_semantic_error 500
-MSG_incomplete_arr 501
-MSG_joint_ptr_mismatch 502
-MSG_fun_used_as_var 503
-MSG_illegal_cast 504
-MSG_invalid_unary_op 505
-MSG_invalid_binary_op 506
-MSG_invalid_binary_ops 507
-MSG_assign_to_void 508
-MSG_assign_to_rvalue 509
-MSG_invalid_condition 510
-MSG_invalid_ternary_op 511
-MSG_var_used_as_fun 512
-MSG_call_with_wrong_argc 513
-MSG_deref_not_ptr 514
-MSG_addrof_rvalue 515
-MSG_invalid_subscript 516
-MSG_sizeof_incomplete 517
-MSG_dot_not_struct 518
-MSG_member_not_in_struct 519
-MSG_arrow_not_struct_ptr 520
-MSG_arrow_incomplete 521
-MSG_exp_incomplete 522
-MSG_ret_value_in_void_fun 523
-MSG_no_ret_value_in_fun 524
-MSG_invalid_if 525
-MSG_invalid_while 526
-MSG_invalid_do_while 527
-MSG_invalid_for 528
-MSG_invalid_switch 529
-MSG_duplicate_case_value 530
-MSG_string_init_not_char_arr 531
-MSG_string_init_overflow 532
-MSG_arr_init_overflow 533
-MSG_struct_init_overflow 534
-MSG_ret_arr 535
-MSG_ret_incomplete 536
-MSG_void_param 537
-MSG_incomplete_param 538
-MSG_redecl_fun_conflict 539
-MSG_redef_fun 540
-MSG_redecl_static_conflict 541
-MSG_static_ptr_init_not_int 542
-MSG_static_ptr_init_not_null 543
-MSG_agg_init_with_single 544
-MSG_static_ptr_init_string 545
-MSG_static_init_not_const 546
-MSG_scalar_init_with_compound 547
-MSG_void_var_decl 548
-MSG_incomplete_var_decl 549
-MSG_redecl_var_conflict 550
-MSG_redecl_var_storage 551
-MSG_redef_extern_var 552
-MSG_duplicate_member_decl 553
-MSG_incomplete_member_decl 554
-MSG_redecl_struct_in_scope 555
-MSG_case_out_of_switch 556
-MSG_default_out_of_switch 557
-MSG_multiple_default 558
-MSG_break_out_of_loop 559
-MSG_continue_out_of_loop 560
-MSG_undef_goto_target 561
-MSG_redecl_struct_conflict 562
-MSG_undef_struct_in_scope 563
-MSG_undecl_var_in_scope 564
-MSG_undecl_fun_in_scope 565
-MSG_for_init_decl_not_auto 566
-MSG_redef_label_in_scope 567
-MSG_redecl_var_in_scope 568
-MSG_def_nested_fun 569
-MSG_decl_nested_static_fun 570
-MSG_redecl_fun_in_scope 571
-LBL_Land_false 0
-LBL_Land_true 1
-LBL_Lbreak 2
-LBL_Lcase 3
-LBL_Lcontinue 4
-LBL_Ldefault 5
-LBL_Ldo_while 6
-LBL_Ldo_while_start 7
-LBL_Lfor 8
-LBL_Lfor_start 9
-LBL_Lif_else 10
-LBL_Lif_false 11
-LBL_Lor_false 12
-LBL_Lor_true 13
-LBL_Lstring 14
-LBL_Lswitch 15
-LBL_Lternary_else 16
-LBL_Lternary_false 17
-LBL_Lwhile 18
-WRITE_BUF_SIZE 4096
-ESC 27
-ESC_RESET_SIZE 4
-ESC_BOLD_SIZE 4
-ESC_RED_SIZE 7
-false 0
-true 1
-NULL 0
-FOPEN_MAX 8
-STDERR_FILENO 2
-ERROR_MSG_SIZE 1024
-LBL_Lcomisd_nan 0
-LBL_Ldouble 1
-LBL_Lsd2si_after 2
-LBL_Lsd2si_out_of_range 3
-LBL_Lsi2sd_after 4
-LBL_Lsi2sd_out_of_range 5
-CLS_integer 0
-CLS_sse 1
-CLS_memory 2
-REG_Ax 0
-REG_Bx 1
-REG_Cx 2
-REG_Dx 3
-REG_Di 4
-REG_Si 5
-REG_R8 6
-REG_R9 7
-REG_R10 8
-REG_R11 9
-REG_R12 10
-REG_R13 11
-REG_R14 12
-REG_R15 13
-REG_Sp 14
-REG_Bp 15
-REG_Xmm0 16
-REG_Xmm1 17
-REG_Xmm2 18
-REG_Xmm3 19
-REG_Xmm4 20
-REG_Xmm5 21
-REG_Xmm6 22
-REG_Xmm7 23
-REG_Xmm8 24
-REG_Xmm9 25
-REG_Xmm10 26
-REG_Xmm11 27
-REG_Xmm12 28
-REG_Xmm13 29
-REG_Xmm14 30
-REG_Xmm15 31
-REGISTER_MASK_SIZE 26
-SDS_TYPE_5 0
-SDS_TYPE_8 1
-SDS_TYPE_32 3
-SDS_TYPE_64 4
-SDS_TYPE_MASK 7
-SDS_TYPE_BITS 3
-SDS_LLSTR_SIZE 21
-STBDS_SH_DEFAULT 1
-STBDS_SH_STRDUP 2
-STBDS_SH_ARENA 3
-AST_Type_t 0
-AST_Char_t 1
-AST_SChar_t 2
-AST_UChar_t 3
-AST_Int_t 4
-AST_Long_t 5
-AST_UInt_t 6
-AST_ULong_t 7
-AST_Double_t 8
-AST_Void_t 9
-AST_FunType_t 10
-AST_Pointer_t 11
-AST_Array_t 12
-AST_Structure_t 13
-AST_StaticInit_t 14
-AST_IntInit_t 15
-AST_LongInit_t 16
-AST_UIntInit_t 17
-AST_ULongInit_t 18
-AST_CharInit_t 19
-AST_UCharInit_t 20
-AST_DoubleInit_t 21
-AST_ZeroInit_t 22
-AST_StringInit_t 23
-AST_PointerInit_t 24
-AST_InitialValue_t 25
-AST_Tentative_t 26
-AST_Initial_t 27
-AST_NoInitializer_t 28
-AST_IdentifierAttr_t 29
-AST_FunAttr_t 30
-AST_StaticAttr_t 31
-AST_ConstantAttr_t 32
-AST_LocalAttr_t 33
-AST_Symbol_t 34
-AST_StructMember_t 35
-AST_StructTypedef_t 36
-AST_AssemblyType_t 37
-AST_Byte_t 38
-AST_LongWord_t 39
-AST_QuadWord_t 40
-AST_BackendDouble_t 41
-AST_ByteArray_t 42
-AST_BackendSymbol_t 43
-AST_BackendObj_t 44
-AST_BackendFun_t 45
-AST_CConst_t 46
-AST_CConstInt_t 47
-AST_CConstLong_t 48
-AST_CConstUInt_t 49
-AST_CConstULong_t 50
-AST_CConstDouble_t 51
-AST_CConstChar_t 52
-AST_CConstUChar_t 53
-AST_CStringLiteral_t 54
-AST_CUnaryOp_t 55
-AST_CComplement_t 56
-AST_CNegate_t 57
-AST_CNot_t 58
-AST_CPrefix_t 59
-AST_CPostfix_t 60
-AST_CBinaryOp_t 61
-AST_CAdd_t 62
-AST_CSubtract_t 63
-AST_CMultiply_t 64
-AST_CDivide_t 65
-AST_CRemainder_t 66
-AST_CBitAnd_t 67
-AST_CBitOr_t 68
-AST_CBitXor_t 69
-AST_CBitShiftLeft_t 70
-AST_CBitShiftRight_t 71
-AST_CBitShrArithmetic_t 72
-AST_CAnd_t 73
-AST_COr_t 74
-AST_CEqual_t 75
-AST_CNotEqual_t 76
-AST_CLessThan_t 77
-AST_CLessOrEqual_t 78
-AST_CGreaterThan_t 79
-AST_CGreaterOrEqual_t 80
-AST_CAbstractDeclarator_t 81
-AST_CAbstractPointer_t 82
-AST_CAbstractArray_t 83
-AST_CAbstractBase_t 84
-AST_CParam_t 85
-AST_CDeclarator_t 86
-AST_CIdent_t 87
-AST_CPointerDeclarator_t 88
-AST_CArrayDeclarator_t 89
-AST_CFunDeclarator_t 90
-AST_CExp_t 91
-AST_CConstant_t 92
-AST_CString_t 93
-AST_CVar_t 94
-AST_CCast_t 95
-AST_CUnary_t 96
-AST_CBinary_t 97
-AST_CAssignment_t 98
-AST_CConditional_t 99
-AST_CFunctionCall_t 100
-AST_CDereference_t 101
-AST_CAddrOf_t 102
-AST_CSubscript_t 103
-AST_CSizeOf_t 104
-AST_CSizeOfT_t 105
-AST_CDot_t 106
-AST_CArrow_t 107
-AST_CStatement_t 108
-AST_CReturn_t 109
-AST_CExpression_t 110
-AST_CIf_t 111
-AST_CGoto_t 112
-AST_CLabel_t 113
-AST_CCompound_t 114
-AST_CWhile_t 115
-AST_CDoWhile_t 116
-AST_CFor_t 117
-AST_CSwitch_t 118
-AST_CCase_t 119
-AST_CDefault_t 120
-AST_CBreak_t 121
-AST_CContinue_t 122
-AST_CNull_t 123
-AST_CForInit_t 124
-AST_CInitDecl_t 125
-AST_CInitExp_t 126
-AST_CBlock_t 127
-AST_CB_t 128
-AST_CBlockItem_t 129
-AST_CS_t 130
-AST_CD_t 131
-AST_CStorageClass_t 132
-AST_CStatic_t 133
-AST_CExtern_t 134
-AST_CInitializer_t 135
-AST_CSingleInit_t 136
-AST_CCompoundInit_t 137
-AST_CMemberDeclaration_t 138
-AST_CStructDeclaration_t 139
-AST_CFunctionDeclaration_t 140
-AST_CVariableDeclaration_t 141
-AST_CDeclaration_t 142
-AST_CFunDecl_t 143
-AST_CVarDecl_t 144
-AST_CStructDecl_t 145
-AST_CProgram_t 146
-AST_TacUnaryOp_t 147
-AST_TacComplement_t 148
-AST_TacNegate_t 149
-AST_TacNot_t 150
-AST_TacBinaryOp_t 151
-AST_TacAdd_t 152
-AST_TacSubtract_t 153
-AST_TacMultiply_t 154
-AST_TacDivide_t 155
-AST_TacRemainder_t 156
-AST_TacBitAnd_t 157
-AST_TacBitOr_t 158
-AST_TacBitXor_t 159
-AST_TacBitShiftLeft_t 160
-AST_TacBitShiftRight_t 161
-AST_TacBitShrArithmetic_t 162
-AST_TacEqual_t 163
-AST_TacNotEqual_t 164
-AST_TacLessThan_t 165
-AST_TacLessOrEqual_t 166
-AST_TacGreaterThan_t 167
-AST_TacGreaterOrEqual_t 168
-AST_TacValue_t 169
-AST_TacConstant_t 170
-AST_TacVariable_t 171
-AST_TacExpResult_t 172
-AST_TacPlainOperand_t 173
-AST_TacDereferencedPointer_t 174
-AST_TacSubObject_t 175
-AST_TacInstruction_t 176
-AST_TacReturn_t 177
-AST_TacSignExtend_t 178
-AST_TacTruncate_t 179
-AST_TacZeroExtend_t 180
-AST_TacDoubleToInt_t 181
-AST_TacDoubleToUInt_t 182
-AST_TacIntToDouble_t 183
-AST_TacUIntToDouble_t 184
-AST_TacFunCall_t 185
-AST_TacUnary_t 186
-AST_TacBinary_t 187
-AST_TacCopy_t 188
-AST_TacGetAddress_t 189
-AST_TacLoad_t 190
-AST_TacStore_t 191
-AST_TacAddPtr_t 192
-AST_TacCopyToOffset_t 193
-AST_TacCopyFromOffset_t 194
-AST_TacJump_t 195
-AST_TacJumpIfZero_t 196
-AST_TacJumpIfNotZero_t 197
-AST_TacLabel_t 198
-AST_TacTopLevel_t 199
-AST_TacFunction_t 200
-AST_TacStaticVariable_t 201
-AST_TacStaticConstant_t 202
-AST_TacProgram_t 203
-AST_AsmReg_t 204
-AST_AsmAx_t 205
-AST_AsmBx_t 206
-AST_AsmCx_t 207
-AST_AsmDx_t 208
-AST_AsmDi_t 209
-AST_AsmSi_t 210
-AST_AsmR8_t 211
-AST_AsmR9_t 212
-AST_AsmR10_t 213
-AST_AsmR11_t 214
-AST_AsmR12_t 215
-AST_AsmR13_t 216
-AST_AsmR14_t 217
-AST_AsmR15_t 218
-AST_AsmSp_t 219
-AST_AsmBp_t 220
-AST_AsmXMM0_t 221
-AST_AsmXMM1_t 222
-AST_AsmXMM2_t 223
-AST_AsmXMM3_t 224
-AST_AsmXMM4_t 225
-AST_AsmXMM5_t 226
-AST_AsmXMM6_t 227
-AST_AsmXMM7_t 228
-AST_AsmXMM8_t 229
-AST_AsmXMM9_t 230
-AST_AsmXMM10_t 231
-AST_AsmXMM11_t 232
-AST_AsmXMM12_t 233
-AST_AsmXMM13_t 234
-AST_AsmXMM14_t 235
-AST_AsmXMM15_t 236
-AST_AsmCondCode_t 237
-AST_AsmE_t 238
-AST_AsmNE_t 239
-AST_AsmG_t 240
-AST_AsmGE_t 241
-AST_AsmL_t 242
-AST_AsmLE_t 243
-AST_AsmA_t 244
-AST_AsmAE_t 245
-AST_AsmB_t 246
-AST_AsmBE_t 247
-AST_AsmP_t 248
-AST_AsmOperand_t 249
-AST_AsmImm_t 250
-AST_AsmRegister_t 251
-AST_AsmPseudo_t 252
-AST_AsmMemory_t 253
-AST_AsmData_t 254
-AST_AsmPseudoMem_t 255
-AST_AsmIndexed_t 256
-AST_AsmBinaryOp_t 257
-AST_AsmAdd_t 258
-AST_AsmSub_t 259
-AST_AsmMult_t 260
-AST_AsmDivDouble_t 261
-AST_AsmBitAnd_t 262
-AST_AsmBitOr_t 263
-AST_AsmBitXor_t 264
-AST_AsmBitShiftLeft_t 265
-AST_AsmBitShiftRight_t 266
-AST_AsmBitShrArithmetic_t 267
-AST_AsmUnaryOp_t 268
-AST_AsmNot_t 269
-AST_AsmNeg_t 270
-AST_AsmShr_t 271
-AST_AsmInstruction_t 272
-AST_AsmMov_t 273
-AST_AsmMovSx_t 274
-AST_AsmMovZeroExtend_t 275
-AST_AsmLea_t 276
-AST_AsmCvttsd2si_t 277
-AST_AsmCvtsi2sd_t 278
-AST_AsmUnary_t 279
-AST_AsmBinary_t 280
-AST_AsmCmp_t 281
-AST_AsmIdiv_t 282
-AST_AsmDiv_t 283
-AST_AsmCdq_t 284
-AST_AsmJmp_t 285
-AST_AsmJmpCC_t 286
-AST_AsmSetCC_t 287
-AST_AsmLabel_t 288
-AST_AsmPush_t 289
-AST_AsmPop_t 290
-AST_AsmCall_t 291
-AST_AsmRet_t 292
-AST_AsmTopLevel_t 293
-AST_AsmFunction_t 294
-AST_AsmStaticVariable_t 295
-AST_AsmStaticConstant_t 296
-AST_AsmProgram_t 297
-__OPTIM_LEVEL__ 1
-CONSTANT_FOLDING 0
-COPY_PROPAGATION 1
-UNREACHABLE_CODE_ELIMINATION 2
-DEAD_STORE_ELIMINATION 3
-CONTROL_FLOW_GRAPH 4
-__OPTIM_LEVEL__ 2
+     1	./frontend/tokens.h:9:#define TOK_skip 0
+     2	./frontend/tokens.h:11:#define TOK_line_break 1
+     3	./frontend/tokens.h:12:#define TOK_open_paren 2
+     4	./frontend/tokens.h:13:#define TOK_close_paren 3
+     5	./frontend/tokens.h:14:#define TOK_open_brace 4
+     6	./frontend/tokens.h:15:#define TOK_close_brace 5
+     7	./frontend/tokens.h:16:#define TOK_open_bracket 6
+     8	./frontend/tokens.h:17:#define TOK_close_bracket 7
+     9	./frontend/tokens.h:18:#define TOK_comma_separator 8
+    10	./frontend/tokens.h:19:#define TOK_semicolon 9
+    11	./frontend/tokens.h:21:#define TOK_unop_complement 10
+    12	./frontend/tokens.h:22:#define TOK_unop_neg 11
+    13	./frontend/tokens.h:23:#define TOK_unop_not 12
+    14	./frontend/tokens.h:24:#define TOK_unop_addrof 13
+    15	./frontend/tokens.h:25:#define TOK_unop_incr 14
+    16	./frontend/tokens.h:26:#define TOK_unop_decr 15
+    17	./frontend/tokens.h:28:#define TOK_binop_add 16
+    18	./frontend/tokens.h:29:#define TOK_binop_multiply 17
+    19	./frontend/tokens.h:30:#define TOK_binop_divide 18
+    20	./frontend/tokens.h:31:#define TOK_binop_remainder 19
+    21	./frontend/tokens.h:32:#define TOK_binop_bitand 20
+    22	./frontend/tokens.h:33:#define TOK_binop_bitor 21
+    23	./frontend/tokens.h:34:#define TOK_binop_xor 22
+    24	./frontend/tokens.h:35:#define TOK_binop_shiftleft 23
+    25	./frontend/tokens.h:36:#define TOK_binop_shiftright 24
+    26	./frontend/tokens.h:37:#define TOK_binop_and 25
+    27	./frontend/tokens.h:38:#define TOK_binop_or 26
+    28	./frontend/tokens.h:39:#define TOK_binop_eq 27
+    29	./frontend/tokens.h:40:#define TOK_binop_ne 28
+    30	./frontend/tokens.h:41:#define TOK_binop_lt 29
+    31	./frontend/tokens.h:42:#define TOK_binop_le 30
+    32	./frontend/tokens.h:43:#define TOK_binop_gt 31
+    33	./frontend/tokens.h:44:#define TOK_binop_ge 32
+    34	./frontend/tokens.h:46:#define TOK_assign 33
+    35	./frontend/tokens.h:47:#define TOK_assign_type 34
+    36	./frontend/tokens.h:48:#define TOK_assign_add 35
+    37	./frontend/tokens.h:49:#define TOK_assign_subtract 36
+    38	./frontend/tokens.h:50:#define TOK_assign_multiply 37
+    39	./frontend/tokens.h:51:#define TOK_assign_divide 38
+    40	./frontend/tokens.h:52:#define TOK_assign_remainder 39
+    41	./frontend/tokens.h:53:#define TOK_assign_bitand 40
+    42	./frontend/tokens.h:54:#define TOK_assign_bitor 41
+    43	./frontend/tokens.h:55:#define TOK_assign_xor 42
+    44	./frontend/tokens.h:56:#define TOK_assign_shiftleft 43
+    45	./frontend/tokens.h:57:#define TOK_assign_shiftright 44
+    46	./frontend/tokens.h:59:#define TOK_force_exec 45
+    47	./frontend/tokens.h:60:#define TOK_ternary_if 46
+    48	./frontend/tokens.h:61:#define TOK_compound_init 47
+    49	./frontend/tokens.h:62:#define TOK_typeop_member 48
+    50	./frontend/tokens.h:63:#define TOK_loop_post 49
+    51	./frontend/tokens.h:64:#define TOK_match_with 50
+    52	./frontend/tokens.h:66:#define TOK_key_char 51
+    53	./frontend/tokens.h:67:#define TOK_key_string 52
+    54	./frontend/tokens.h:68:#define TOK_key_i32 53
+    55	./frontend/tokens.h:69:#define TOK_key_i64 54
+    56	./frontend/tokens.h:70:#define TOK_key_i8 55
+    57	./frontend/tokens.h:71:#define TOK_key_f64 56
+    58	./frontend/tokens.h:72:#define TOK_key_u32 57
+    59	./frontend/tokens.h:73:#define TOK_key_u64 58
+    60	./frontend/tokens.h:74:#define TOK_key_u8 59
+    61	./frontend/tokens.h:75:#define TOK_key_any 60
+    62	./frontend/tokens.h:76:#define TOK_key_none 61
+    63	./frontend/tokens.h:77:#define TOK_key_fn 62
+    64	./frontend/tokens.h:78:#define TOK_key_struc 63
+    65	./frontend/tokens.h:79:#define TOK_key_union 64
+    66	./frontend/tokens.h:80:#define TOK_key_type 65
+    67	./frontend/tokens.h:81:#define TOK_key_sizeof 66
+    68	./frontend/tokens.h:82:#define TOK_key_return 67
+    69	./frontend/tokens.h:83:#define TOK_key_cast 68
+    70	./frontend/tokens.h:84:#define TOK_key_if 69
+    71	./frontend/tokens.h:85:#define TOK_key_elif 70
+    72	./frontend/tokens.h:86:#define TOK_key_else 71
+    73	./frontend/tokens.h:87:#define TOK_key_then 72
+    74	./frontend/tokens.h:88:#define TOK_key_jump 73
+    75	./frontend/tokens.h:89:#define TOK_key_label 74
+    76	./frontend/tokens.h:90:#define TOK_key_loop 75
+    77	./frontend/tokens.h:91:#define TOK_key_while 76
+    78	./frontend/tokens.h:92:#define TOK_key_match 77
+    79	./frontend/tokens.h:93:#define TOK_key_otherwise 78
+    80	./frontend/tokens.h:94:#define TOK_key_break 79
+    81	./frontend/tokens.h:95:#define TOK_key_continue 80
+    82	./frontend/tokens.h:96:#define TOK_key_pub 81
+    83	./frontend/tokens.h:97:#define TOK_key_data 82
+    84	./frontend/tokens.h:98:#define TOK_key_extrn 83
+    85	./frontend/tokens.h:99:#define TOK_key_true 84
+    86	./frontend/tokens.h:100:#define TOK_key_false 85
+    87	./frontend/tokens.h:102:#define TOK_identifier 86
+    88	./frontend/tokens.h:103:#define TOK_string_literal 87
+    89	./frontend/tokens.h:104:#define TOK_char_const 88
+    90	./frontend/tokens.h:105:#define TOK_int_const 89
+    91	./frontend/tokens.h:106:#define TOK_long_const 90
+    92	./frontend/tokens.h:107:#define TOK_uint_const 91
+    93	./frontend/tokens.h:108:#define TOK_ulong_const 92
+    94	./frontend/tokens.h:109:#define TOK_dbl_const 93
+    95	./frontend/tokens.h:111:#define TOK_m4_prefix 94
+    96	./frontend/tokens.h:112:#define TOK_import_file 95
+    97	./frontend/tokens.h:113:#define TOK_import_force 96
+    98	./frontend/tokens.h:114:#define TOK_use_file 97
+    99	./frontend/tokens.h:115:#define TOK_use_force 98
+   100	./frontend/tokens.h:117:#define TOK_error 99
+   101	./frontend/messages.h:9:#define MSG_unhandled_fatal_error 0
+   102	./frontend/messages.h:10:#define MSG_unsupported_os 1
+   103	./frontend/messages.h:11:#define MSG_unsupported_arch 2
+   104	./frontend/messages.h:12:#define MSG_unsupported_compiler 3
+   105	./frontend/messages.h:13:#define MSG_unsupported_cc_ver 4
+   106	./frontend/messages.h:16:#define MSG_unhandled_arg_error 100
+   107	./frontend/messages.h:17:#define MSG_print_help 101
+   108	./frontend/messages.h:18:#define MSG_no_debug_arg 102
+   109	./frontend/messages.h:19:#define MSG_invalid_debug_arg 103
+   110	./frontend/messages.h:20:#define MSG_no_optim_1_arg 104
+   111	./frontend/messages.h:21:#define MSG_invalid_optim_1_arg 105
+   112	./frontend/messages.h:22:#define MSG_no_optim_2_arg 106
+   113	./frontend/messages.h:23:#define MSG_invalid_optim_2_arg 107
+   114	./frontend/messages.h:24:#define MSG_no_input_files_arg 108
+   115	./frontend/messages.h:25:#define MSG_no_stdlib_dir_arg 109
+   116	./frontend/messages.h:26:#define MSG_no_include_dir_arg 110
+   117	./frontend/messages.h:29:#define MSG_unhandled_util_error 200
+   118	./frontend/messages.h:30:#define MSG_failed_fread 201
+   119	./frontend/messages.h:31:#define MSG_failed_fwrite 202
+   120	./frontend/messages.h:32:#define MSG_failed_strtoi 203
+   121	./frontend/messages.h:33:#define MSG_failed_strtou 204
+   122	./frontend/messages.h:34:#define MSG_failed_strtod 205
+   123	./frontend/messages.h:37:#define MSG_unhandled_lexer_error 300
+   124	./frontend/messages.h:38:#define MSG_invalid_tok 301
+   125	./frontend/messages.h:39:#define MSG_import_in_line 302
+   126	./frontend/messages.h:40:#define MSG_use_in_line 303
+   127	./frontend/messages.h:41:#define MSG_failed_import 304
+   128	./frontend/messages.h:42:#define MSG_failed_use 305
+   129	./frontend/messages.h:43:#define MSG_preproc_macro 306
+   130	./frontend/messages.h:44:#define MSG_unmatched_close 307
+   131	./frontend/messages.h:47:#define MSG_unhandled_parser_error 400
+   132	./frontend/messages.h:48:#define MSG_unexpected_next_tok 401
+   133	./frontend/messages.h:49:#define MSG_reached_eof 402
+   134	./frontend/messages.h:50:#define MSG_overflow_long_const 403
+   135	./frontend/messages.h:51:#define MSG_overflow_ulong_const 404
+   136	./frontend/messages.h:52:#define MSG_expect_unop 405
+   137	./frontend/messages.h:53:#define MSG_expect_binop 406
+   138	./frontend/messages.h:54:#define MSG_expect_data_specifier 407
+   139	./frontend/messages.h:55:#define MSG_expect_specifier 408
+   140	./frontend/messages.h:56:#define MSG_expect_maybe_type 409
+   141	./frontend/messages.h:57:#define MSG_expect_open_sizeof 410
+   142	./frontend/messages.h:58:#define MSG_expect_expression 411
+   143	./frontend/messages.h:59:#define MSG_expect_assign 412
+   144	./frontend/messages.h:60:#define MSG_expect_datatype 413
+   145	./frontend/messages.h:61:#define MSG_expect_block 414
+   146	./frontend/messages.h:62:#define MSG_expect_declaration 415
+   147	./frontend/messages.h:63:#define MSG_expect_storage_class 416
+   148	./frontend/messages.h:64:#define MSG_incomplete_any 417
+   149	./frontend/messages.h:65:#define MSG_arr_size_not_int_const 418
+   150	./frontend/messages.h:66:#define MSG_case_value_not_int_const 419
+   151	./frontend/messages.h:67:#define MSG_empty_block 420
+   152	./frontend/messages.h:68:#define MSG_empty_compound_init 421
+   153	./frontend/messages.h:69:#define MSG_infinite_loop 422
+   154	./frontend/messages.h:70:#define MSG_loop_decl_not_auto 423
+   155	./frontend/messages.h:71:#define MSG_list_decl_not_auto 424
+   156	./frontend/messages.h:72:#define MSG_type_decl_not_auto 425
+   157	./frontend/messages.h:73:#define MSG_pub_in_block 426
+   158	./frontend/messages.h:74:#define MSG_data_at_toplvl 427
+   159	./frontend/messages.h:77:#define MSG_unhandled_semantic_error 500
+   160	./frontend/messages.h:78:#define MSG_incomplete_arr 501
+   161	./frontend/messages.h:79:#define MSG_joint_ptr_mismatch 502
+   162	./frontend/messages.h:80:#define MSG_fun_used_as_var 503
+   163	./frontend/messages.h:81:#define MSG_illegal_cast 504
+   164	./frontend/messages.h:82:#define MSG_invalid_unary_op 505
+   165	./frontend/messages.h:83:#define MSG_invalid_binary_op 506
+   166	./frontend/messages.h:84:#define MSG_invalid_binary_ops 507
+   167	./frontend/messages.h:85:#define MSG_assign_to_void 508
+   168	./frontend/messages.h:86:#define MSG_assign_to_rvalue 509
+   169	./frontend/messages.h:87:#define MSG_invalid_condition 510
+   170	./frontend/messages.h:88:#define MSG_invalid_ternary_op 511
+   171	./frontend/messages.h:89:#define MSG_var_used_as_fun 512
+   172	./frontend/messages.h:90:#define MSG_call_with_wrong_argc 513
+   173	./frontend/messages.h:91:#define MSG_deref_not_ptr 514
+   174	./frontend/messages.h:92:#define MSG_addrof_rvalue 515
+   175	./frontend/messages.h:93:#define MSG_invalid_subscript 516
+   176	./frontend/messages.h:94:#define MSG_sizeof_incomplete 517
+   177	./frontend/messages.h:95:#define MSG_dot_not_struct 518
+   178	./frontend/messages.h:96:#define MSG_member_not_in_struct 519
+   179	./frontend/messages.h:97:#define MSG_arrow_not_struct_ptr 520
+   180	./frontend/messages.h:98:#define MSG_arrow_incomplete 521
+   181	./frontend/messages.h:99:#define MSG_exp_incomplete 522
+   182	./frontend/messages.h:100:#define MSG_ret_value_in_void_fun 523
+   183	./frontend/messages.h:101:#define MSG_no_ret_value_in_fun 524
+   184	./frontend/messages.h:102:#define MSG_invalid_if 525
+   185	./frontend/messages.h:103:#define MSG_invalid_while 526
+   186	./frontend/messages.h:104:#define MSG_invalid_do_while 527
+   187	./frontend/messages.h:105:#define MSG_invalid_for 528
+   188	./frontend/messages.h:106:#define MSG_invalid_switch 529
+   189	./frontend/messages.h:107:#define MSG_duplicate_case_value 530
+   190	./frontend/messages.h:108:#define MSG_string_init_not_char_arr 531
+   191	./frontend/messages.h:109:#define MSG_string_init_overflow 532
+   192	./frontend/messages.h:110:#define MSG_arr_init_overflow 533
+   193	./frontend/messages.h:111:#define MSG_struct_init_overflow 534
+   194	./frontend/messages.h:112:#define MSG_ret_arr 535
+   195	./frontend/messages.h:113:#define MSG_ret_incomplete 536
+   196	./frontend/messages.h:114:#define MSG_void_param 537
+   197	./frontend/messages.h:115:#define MSG_incomplete_param 538
+   198	./frontend/messages.h:116:#define MSG_redecl_fun_conflict 539
+   199	./frontend/messages.h:117:#define MSG_redef_fun 540
+   200	./frontend/messages.h:118:#define MSG_redecl_static_conflict 541
+   201	./frontend/messages.h:119:#define MSG_static_ptr_init_not_int 542
+   202	./frontend/messages.h:120:#define MSG_static_ptr_init_not_null 543
+   203	./frontend/messages.h:121:#define MSG_agg_init_with_single 544
+   204	./frontend/messages.h:122:#define MSG_static_ptr_init_string 545
+   205	./frontend/messages.h:123:#define MSG_static_init_not_const 546
+   206	./frontend/messages.h:124:#define MSG_scalar_init_with_compound 547
+   207	./frontend/messages.h:125:#define MSG_void_var_decl 548
+   208	./frontend/messages.h:126:#define MSG_incomplete_var_decl 549
+   209	./frontend/messages.h:127:#define MSG_redecl_var_conflict 550
+   210	./frontend/messages.h:128:#define MSG_redecl_var_storage 551
+   211	./frontend/messages.h:129:#define MSG_redef_extern_var 552
+   212	./frontend/messages.h:130:#define MSG_duplicate_member_decl 553
+   213	./frontend/messages.h:131:#define MSG_incomplete_member_decl 554
+   214	./frontend/messages.h:132:#define MSG_redecl_struct_in_scope 555
+   215	./frontend/messages.h:133:#define MSG_case_out_of_switch 556
+   216	./frontend/messages.h:134:#define MSG_default_out_of_switch 557
+   217	./frontend/messages.h:135:#define MSG_multiple_default 558
+   218	./frontend/messages.h:136:#define MSG_break_out_of_loop 559
+   219	./frontend/messages.h:137:#define MSG_continue_out_of_loop 560
+   220	./frontend/messages.h:138:#define MSG_undef_goto_target 561
+   221	./frontend/messages.h:139:#define MSG_redecl_struct_conflict 562
+   222	./frontend/messages.h:140:#define MSG_undef_struct_in_scope 563
+   223	./frontend/messages.h:141:#define MSG_undecl_var_in_scope 564
+   224	./frontend/messages.h:142:#define MSG_undecl_fun_in_scope 565
+   225	./frontend/messages.h:143:#define MSG_for_init_decl_not_auto 566
+   226	./frontend/messages.h:144:#define MSG_redef_label_in_scope 567
+   227	./frontend/messages.h:145:#define MSG_redecl_var_in_scope 568
+   228	./frontend/messages.h:146:#define MSG_def_nested_fun 569
+   229	./frontend/messages.h:147:#define MSG_decl_nested_static_fun 570
+   230	./frontend/messages.h:148:#define MSG_redecl_fun_in_scope 571
+   231	./frontend/labels.h:9:#define LBL_Land_false 0
+   232	./frontend/labels.h:10:#define LBL_Land_true 1
+   233	./frontend/labels.h:11:#define LBL_Lbreak 2
+   234	./frontend/labels.h:12:#define LBL_Lcase 3
+   235	./frontend/labels.h:13:#define LBL_Lcontinue 4
+   236	./frontend/labels.h:14:#define LBL_Ldefault 5
+   237	./frontend/labels.h:15:#define LBL_Ldo_while 6
+   238	./frontend/labels.h:16:#define LBL_Ldo_while_start 7
+   239	./frontend/labels.h:17:#define LBL_Lfor 8
+   240	./frontend/labels.h:18:#define LBL_Lfor_start 9
+   241	./frontend/labels.h:19:#define LBL_Lif_else 10
+   242	./frontend/labels.h:20:#define LBL_Lif_false 11
+   243	./frontend/labels.h:21:#define LBL_Lor_false 12
+   244	./frontend/labels.h:22:#define LBL_Lor_true 13
+   245	./frontend/labels.h:23:#define LBL_Lstring 14
+   246	./frontend/labels.h:24:#define LBL_Lswitch 15
+   247	./frontend/labels.h:25:#define LBL_Lternary_else 16
+   248	./frontend/labels.h:26:#define LBL_Lternary_false 17
+   249	./frontend/labels.h:27:#define LBL_Lwhile 18
+   250	./util/fileio.c:14:#define WRITE_BUF_SIZE 4096
+   251	./util/throw.c:12:#define ESC 27
+   252	./util/throw.c:13:#define ESC_RESET_SIZE 4
+   253	./util/throw.c:14:#define ESC_BOLD_SIZE 4
+   254	./util/throw.c:15:#define ESC_RED_SIZE 7
+   255	./lib/c_lib.h:28:#define false 0
+   256	./lib/c_lib.h:29:#define true 1
+   257	./lib/c_lib.h:44:#define NULL 0
+   258	./lib/c_lib.h:45:#define FOPEN_MAX 8
+   259	./lib/c_lib.h:56:#define STDERR_FILENO 2
+   260	./lib/c_std.h:18:#define ERROR_MSG_SIZE 1024
+   261	./backend/asm_gen.c:18:#define LBL_Lcomisd_nan 0
+   262	./backend/asm_gen.c:19:#define LBL_Ldouble 1
+   263	./backend/asm_gen.c:20:#define LBL_Lsd2si_after 2
+   264	./backend/asm_gen.c:21:#define LBL_Lsd2si_out_of_range 3
+   265	./backend/asm_gen.c:22:#define LBL_Lsi2sd_after 4
+   266	./backend/asm_gen.c:23:#define LBL_Lsi2sd_out_of_range 5
+   267	./backend/asm_gen.c:26:#define CLS_integer 0
+   268	./backend/asm_gen.c:27:#define CLS_sse 1
+   269	./backend/asm_gen.c:28:#define CLS_memory 2
+   270	./backend/regs.h:11:#define REG_Ax 0
+   271	./backend/regs.h:12:#define REG_Bx 1
+   272	./backend/regs.h:13:#define REG_Cx 2
+   273	./backend/regs.h:14:#define REG_Dx 3
+   274	./backend/regs.h:15:#define REG_Di 4
+   275	./backend/regs.h:16:#define REG_Si 5
+   276	./backend/regs.h:17:#define REG_R8 6
+   277	./backend/regs.h:18:#define REG_R9 7
+   278	./backend/regs.h:19:#define REG_R10 8
+   279	./backend/regs.h:20:#define REG_R11 9
+   280	./backend/regs.h:21:#define REG_R12 10
+   281	./backend/regs.h:22:#define REG_R13 11
+   282	./backend/regs.h:23:#define REG_R14 12
+   283	./backend/regs.h:24:#define REG_R15 13
+   284	./backend/regs.h:25:#define REG_Sp 14
+   285	./backend/regs.h:26:#define REG_Bp 15
+   286	./backend/regs.h:27:#define REG_Xmm0 16
+   287	./backend/regs.h:28:#define REG_Xmm1 17
+   288	./backend/regs.h:29:#define REG_Xmm2 18
+   289	./backend/regs.h:30:#define REG_Xmm3 19
+   290	./backend/regs.h:31:#define REG_Xmm4 20
+   291	./backend/regs.h:32:#define REG_Xmm5 21
+   292	./backend/regs.h:33:#define REG_Xmm6 22
+   293	./backend/regs.h:34:#define REG_Xmm7 23
+   294	./backend/regs.h:35:#define REG_Xmm8 24
+   295	./backend/regs.h:36:#define REG_Xmm9 25
+   296	./backend/regs.h:37:#define REG_Xmm10 26
+   297	./backend/regs.h:38:#define REG_Xmm11 27
+   298	./backend/regs.h:39:#define REG_Xmm12 28
+   299	./backend/regs.h:40:#define REG_Xmm13 29
+   300	./backend/regs.h:41:#define REG_Xmm14 30
+   301	./backend/regs.h:42:#define REG_Xmm15 31
+   302	./backend/regs.h:44:#define REGISTER_MASK_SIZE 26
+   303	./3rdparty/sds.c:62:#define SDS_TYPE_5 0
+   304	./3rdparty/sds.c:63:#define SDS_TYPE_8 1
+   305	./3rdparty/sds.c:64:#define SDS_TYPE_32 3
+   306	./3rdparty/sds.c:65:#define SDS_TYPE_64 4
+   307	./3rdparty/sds.c:66:#define SDS_TYPE_MASK 7
+   308	./3rdparty/sds.c:67:#define SDS_TYPE_BITS 3
+   309	./3rdparty/sds.c:380:#define SDS_LLSTR_SIZE 21
+   310	./3rdparty/stb_ds.c:48:#define STBDS_SH_DEFAULT 1
+   311	./3rdparty/stb_ds.c:49:#define STBDS_SH_STRDUP 2
+   312	./3rdparty/stb_ds.c:50:#define STBDS_SH_ARENA 3
+   313	./ast/ast_t.h:22:#define AST_Type_t 0
+   314	./ast/ast_t.h:23:#define AST_Char_t 1
+   315	./ast/ast_t.h:24:#define AST_SChar_t 2
+   316	./ast/ast_t.h:25:#define AST_UChar_t 3
+   317	./ast/ast_t.h:26:#define AST_Int_t 4
+   318	./ast/ast_t.h:27:#define AST_Long_t 5
+   319	./ast/ast_t.h:28:#define AST_UInt_t 6
+   320	./ast/ast_t.h:29:#define AST_ULong_t 7
+   321	./ast/ast_t.h:30:#define AST_Double_t 8
+   322	./ast/ast_t.h:31:#define AST_Void_t 9
+   323	./ast/ast_t.h:32:#define AST_FunType_t 10
+   324	./ast/ast_t.h:33:#define AST_Pointer_t 11
+   325	./ast/ast_t.h:34:#define AST_Array_t 12
+   326	./ast/ast_t.h:35:#define AST_Structure_t 13
+   327	./ast/ast_t.h:36:#define AST_StaticInit_t 14
+   328	./ast/ast_t.h:37:#define AST_IntInit_t 15
+   329	./ast/ast_t.h:38:#define AST_LongInit_t 16
+   330	./ast/ast_t.h:39:#define AST_UIntInit_t 17
+   331	./ast/ast_t.h:40:#define AST_ULongInit_t 18
+   332	./ast/ast_t.h:41:#define AST_CharInit_t 19
+   333	./ast/ast_t.h:42:#define AST_UCharInit_t 20
+   334	./ast/ast_t.h:43:#define AST_DoubleInit_t 21
+   335	./ast/ast_t.h:44:#define AST_ZeroInit_t 22
+   336	./ast/ast_t.h:45:#define AST_StringInit_t 23
+   337	./ast/ast_t.h:46:#define AST_PointerInit_t 24
+   338	./ast/ast_t.h:47:#define AST_InitialValue_t 25
+   339	./ast/ast_t.h:48:#define AST_Tentative_t 26
+   340	./ast/ast_t.h:49:#define AST_Initial_t 27
+   341	./ast/ast_t.h:50:#define AST_NoInitializer_t 28
+   342	./ast/ast_t.h:51:#define AST_IdentifierAttr_t 29
+   343	./ast/ast_t.h:52:#define AST_FunAttr_t 30
+   344	./ast/ast_t.h:53:#define AST_StaticAttr_t 31
+   345	./ast/ast_t.h:54:#define AST_ConstantAttr_t 32
+   346	./ast/ast_t.h:55:#define AST_LocalAttr_t 33
+   347	./ast/ast_t.h:56:#define AST_Symbol_t 34
+   348	./ast/ast_t.h:57:#define AST_StructMember_t 35
+   349	./ast/ast_t.h:58:#define AST_StructTypedef_t 36
+   350	./ast/ast_t.h:61:#define AST_AssemblyType_t 37
+   351	./ast/ast_t.h:62:#define AST_Byte_t 38
+   352	./ast/ast_t.h:63:#define AST_LongWord_t 39
+   353	./ast/ast_t.h:64:#define AST_QuadWord_t 40
+   354	./ast/ast_t.h:65:#define AST_BackendDouble_t 41
+   355	./ast/ast_t.h:66:#define AST_ByteArray_t 42
+   356	./ast/ast_t.h:67:#define AST_BackendSymbol_t 43
+   357	./ast/ast_t.h:68:#define AST_BackendObj_t 44
+   358	./ast/ast_t.h:69:#define AST_BackendFun_t 45
+   359	./ast/ast_t.h:72:#define AST_CConst_t 46
+   360	./ast/ast_t.h:73:#define AST_CConstInt_t 47
+   361	./ast/ast_t.h:74:#define AST_CConstLong_t 48
+   362	./ast/ast_t.h:75:#define AST_CConstUInt_t 49
+   363	./ast/ast_t.h:76:#define AST_CConstULong_t 50
+   364	./ast/ast_t.h:77:#define AST_CConstDouble_t 51
+   365	./ast/ast_t.h:78:#define AST_CConstChar_t 52
+   366	./ast/ast_t.h:79:#define AST_CConstUChar_t 53
+   367	./ast/ast_t.h:80:#define AST_CStringLiteral_t 54
+   368	./ast/ast_t.h:81:#define AST_CUnaryOp_t 55
+   369	./ast/ast_t.h:82:#define AST_CComplement_t 56
+   370	./ast/ast_t.h:83:#define AST_CNegate_t 57
+   371	./ast/ast_t.h:84:#define AST_CNot_t 58
+   372	./ast/ast_t.h:85:#define AST_CPrefix_t 59
+   373	./ast/ast_t.h:86:#define AST_CPostfix_t 60
+   374	./ast/ast_t.h:87:#define AST_CBinaryOp_t 61
+   375	./ast/ast_t.h:88:#define AST_CAdd_t 62
+   376	./ast/ast_t.h:89:#define AST_CSubtract_t 63
+   377	./ast/ast_t.h:90:#define AST_CMultiply_t 64
+   378	./ast/ast_t.h:91:#define AST_CDivide_t 65
+   379	./ast/ast_t.h:92:#define AST_CRemainder_t 66
+   380	./ast/ast_t.h:93:#define AST_CBitAnd_t 67
+   381	./ast/ast_t.h:94:#define AST_CBitOr_t 68
+   382	./ast/ast_t.h:95:#define AST_CBitXor_t 69
+   383	./ast/ast_t.h:96:#define AST_CBitShiftLeft_t 70
+   384	./ast/ast_t.h:97:#define AST_CBitShiftRight_t 71
+   385	./ast/ast_t.h:98:#define AST_CBitShrArithmetic_t 72
+   386	./ast/ast_t.h:99:#define AST_CAnd_t 73
+   387	./ast/ast_t.h:100:#define AST_COr_t 74
+   388	./ast/ast_t.h:101:#define AST_CEqual_t 75
+   389	./ast/ast_t.h:102:#define AST_CNotEqual_t 76
+   390	./ast/ast_t.h:103:#define AST_CLessThan_t 77
+   391	./ast/ast_t.h:104:#define AST_CLessOrEqual_t 78
+   392	./ast/ast_t.h:105:#define AST_CGreaterThan_t 79
+   393	./ast/ast_t.h:106:#define AST_CGreaterOrEqual_t 80
+   394	./ast/ast_t.h:107:#define AST_CAbstractDeclarator_t 81
+   395	./ast/ast_t.h:108:#define AST_CAbstractPointer_t 82
+   396	./ast/ast_t.h:109:#define AST_CAbstractArray_t 83
+   397	./ast/ast_t.h:110:#define AST_CAbstractBase_t 84
+   398	./ast/ast_t.h:111:#define AST_CParam_t 85
+   399	./ast/ast_t.h:112:#define AST_CDeclarator_t 86
+   400	./ast/ast_t.h:113:#define AST_CIdent_t 87
+   401	./ast/ast_t.h:114:#define AST_CPointerDeclarator_t 88
+   402	./ast/ast_t.h:115:#define AST_CArrayDeclarator_t 89
+   403	./ast/ast_t.h:116:#define AST_CFunDeclarator_t 90
+   404	./ast/ast_t.h:117:#define AST_CExp_t 91
+   405	./ast/ast_t.h:118:#define AST_CConstant_t 92
+   406	./ast/ast_t.h:119:#define AST_CString_t 93
+   407	./ast/ast_t.h:120:#define AST_CVar_t 94
+   408	./ast/ast_t.h:121:#define AST_CCast_t 95
+   409	./ast/ast_t.h:122:#define AST_CUnary_t 96
+   410	./ast/ast_t.h:123:#define AST_CBinary_t 97
+   411	./ast/ast_t.h:124:#define AST_CAssignment_t 98
+   412	./ast/ast_t.h:125:#define AST_CConditional_t 99
+   413	./ast/ast_t.h:126:#define AST_CFunctionCall_t 100
+   414	./ast/ast_t.h:127:#define AST_CDereference_t 101
+   415	./ast/ast_t.h:128:#define AST_CAddrOf_t 102
+   416	./ast/ast_t.h:129:#define AST_CSubscript_t 103
+   417	./ast/ast_t.h:130:#define AST_CSizeOf_t 104
+   418	./ast/ast_t.h:131:#define AST_CSizeOfT_t 105
+   419	./ast/ast_t.h:132:#define AST_CDot_t 106
+   420	./ast/ast_t.h:133:#define AST_CArrow_t 107
+   421	./ast/ast_t.h:134:#define AST_CStatement_t 108
+   422	./ast/ast_t.h:135:#define AST_CReturn_t 109
+   423	./ast/ast_t.h:136:#define AST_CExpression_t 110
+   424	./ast/ast_t.h:137:#define AST_CIf_t 111
+   425	./ast/ast_t.h:138:#define AST_CGoto_t 112
+   426	./ast/ast_t.h:139:#define AST_CLabel_t 113
+   427	./ast/ast_t.h:140:#define AST_CCompound_t 114
+   428	./ast/ast_t.h:141:#define AST_CWhile_t 115
+   429	./ast/ast_t.h:142:#define AST_CDoWhile_t 116
+   430	./ast/ast_t.h:143:#define AST_CFor_t 117
+   431	./ast/ast_t.h:144:#define AST_CSwitch_t 118
+   432	./ast/ast_t.h:145:#define AST_CCase_t 119
+   433	./ast/ast_t.h:146:#define AST_CDefault_t 120
+   434	./ast/ast_t.h:147:#define AST_CBreak_t 121
+   435	./ast/ast_t.h:148:#define AST_CContinue_t 122
+   436	./ast/ast_t.h:149:#define AST_CNull_t 123
+   437	./ast/ast_t.h:150:#define AST_CForInit_t 124
+   438	./ast/ast_t.h:151:#define AST_CInitDecl_t 125
+   439	./ast/ast_t.h:152:#define AST_CInitExp_t 126
+   440	./ast/ast_t.h:153:#define AST_CBlock_t 127
+   441	./ast/ast_t.h:154:#define AST_CB_t 128
+   442	./ast/ast_t.h:155:#define AST_CBlockItem_t 129
+   443	./ast/ast_t.h:156:#define AST_CS_t 130
+   444	./ast/ast_t.h:157:#define AST_CD_t 131
+   445	./ast/ast_t.h:158:#define AST_CStorageClass_t 132
+   446	./ast/ast_t.h:159:#define AST_CStatic_t 133
+   447	./ast/ast_t.h:160:#define AST_CExtern_t 134
+   448	./ast/ast_t.h:161:#define AST_CInitializer_t 135
+   449	./ast/ast_t.h:162:#define AST_CSingleInit_t 136
+   450	./ast/ast_t.h:163:#define AST_CCompoundInit_t 137
+   451	./ast/ast_t.h:164:#define AST_CMemberDeclaration_t 138
+   452	./ast/ast_t.h:165:#define AST_CStructDeclaration_t 139
+   453	./ast/ast_t.h:166:#define AST_CFunctionDeclaration_t 140
+   454	./ast/ast_t.h:167:#define AST_CVariableDeclaration_t 141
+   455	./ast/ast_t.h:168:#define AST_CDeclaration_t 142
+   456	./ast/ast_t.h:169:#define AST_CFunDecl_t 143
+   457	./ast/ast_t.h:170:#define AST_CVarDecl_t 144
+   458	./ast/ast_t.h:171:#define AST_CStructDecl_t 145
+   459	./ast/ast_t.h:172:#define AST_CProgram_t 146
+   460	./ast/ast_t.h:175:#define AST_TacUnaryOp_t 147
+   461	./ast/ast_t.h:176:#define AST_TacComplement_t 148
+   462	./ast/ast_t.h:177:#define AST_TacNegate_t 149
+   463	./ast/ast_t.h:178:#define AST_TacNot_t 150
+   464	./ast/ast_t.h:179:#define AST_TacBinaryOp_t 151
+   465	./ast/ast_t.h:180:#define AST_TacAdd_t 152
+   466	./ast/ast_t.h:181:#define AST_TacSubtract_t 153
+   467	./ast/ast_t.h:182:#define AST_TacMultiply_t 154
+   468	./ast/ast_t.h:183:#define AST_TacDivide_t 155
+   469	./ast/ast_t.h:184:#define AST_TacRemainder_t 156
+   470	./ast/ast_t.h:185:#define AST_TacBitAnd_t 157
+   471	./ast/ast_t.h:186:#define AST_TacBitOr_t 158
+   472	./ast/ast_t.h:187:#define AST_TacBitXor_t 159
+   473	./ast/ast_t.h:188:#define AST_TacBitShiftLeft_t 160
+   474	./ast/ast_t.h:189:#define AST_TacBitShiftRight_t 161
+   475	./ast/ast_t.h:190:#define AST_TacBitShrArithmetic_t 162
+   476	./ast/ast_t.h:191:#define AST_TacEqual_t 163
+   477	./ast/ast_t.h:192:#define AST_TacNotEqual_t 164
+   478	./ast/ast_t.h:193:#define AST_TacLessThan_t 165
+   479	./ast/ast_t.h:194:#define AST_TacLessOrEqual_t 166
+   480	./ast/ast_t.h:195:#define AST_TacGreaterThan_t 167
+   481	./ast/ast_t.h:196:#define AST_TacGreaterOrEqual_t 168
+   482	./ast/ast_t.h:197:#define AST_TacValue_t 169
+   483	./ast/ast_t.h:198:#define AST_TacConstant_t 170
+   484	./ast/ast_t.h:199:#define AST_TacVariable_t 171
+   485	./ast/ast_t.h:200:#define AST_TacExpResult_t 172
+   486	./ast/ast_t.h:201:#define AST_TacPlainOperand_t 173
+   487	./ast/ast_t.h:202:#define AST_TacDereferencedPointer_t 174
+   488	./ast/ast_t.h:203:#define AST_TacSubObject_t 175
+   489	./ast/ast_t.h:204:#define AST_TacInstruction_t 176
+   490	./ast/ast_t.h:205:#define AST_TacReturn_t 177
+   491	./ast/ast_t.h:206:#define AST_TacSignExtend_t 178
+   492	./ast/ast_t.h:207:#define AST_TacTruncate_t 179
+   493	./ast/ast_t.h:208:#define AST_TacZeroExtend_t 180
+   494	./ast/ast_t.h:209:#define AST_TacDoubleToInt_t 181
+   495	./ast/ast_t.h:210:#define AST_TacDoubleToUInt_t 182
+   496	./ast/ast_t.h:211:#define AST_TacIntToDouble_t 183
+   497	./ast/ast_t.h:212:#define AST_TacUIntToDouble_t 184
+   498	./ast/ast_t.h:213:#define AST_TacFunCall_t 185
+   499	./ast/ast_t.h:214:#define AST_TacUnary_t 186
+   500	./ast/ast_t.h:215:#define AST_TacBinary_t 187
+   501	./ast/ast_t.h:216:#define AST_TacCopy_t 188
+   502	./ast/ast_t.h:217:#define AST_TacGetAddress_t 189
+   503	./ast/ast_t.h:218:#define AST_TacLoad_t 190
+   504	./ast/ast_t.h:219:#define AST_TacStore_t 191
+   505	./ast/ast_t.h:220:#define AST_TacAddPtr_t 192
+   506	./ast/ast_t.h:221:#define AST_TacCopyToOffset_t 193
+   507	./ast/ast_t.h:222:#define AST_TacCopyFromOffset_t 194
+   508	./ast/ast_t.h:223:#define AST_TacJump_t 195
+   509	./ast/ast_t.h:224:#define AST_TacJumpIfZero_t 196
+   510	./ast/ast_t.h:225:#define AST_TacJumpIfNotZero_t 197
+   511	./ast/ast_t.h:226:#define AST_TacLabel_t 198
+   512	./ast/ast_t.h:227:#define AST_TacTopLevel_t 199
+   513	./ast/ast_t.h:228:#define AST_TacFunction_t 200
+   514	./ast/ast_t.h:229:#define AST_TacStaticVariable_t 201
+   515	./ast/ast_t.h:230:#define AST_TacStaticConstant_t 202
+   516	./ast/ast_t.h:231:#define AST_TacProgram_t 203
+   517	./ast/ast_t.h:234:#define AST_AsmReg_t 204
+   518	./ast/ast_t.h:235:#define AST_AsmAx_t 205
+   519	./ast/ast_t.h:236:#define AST_AsmBx_t 206
+   520	./ast/ast_t.h:237:#define AST_AsmCx_t 207
+   521	./ast/ast_t.h:238:#define AST_AsmDx_t 208
+   522	./ast/ast_t.h:239:#define AST_AsmDi_t 209
+   523	./ast/ast_t.h:240:#define AST_AsmSi_t 210
+   524	./ast/ast_t.h:241:#define AST_AsmR8_t 211
+   525	./ast/ast_t.h:242:#define AST_AsmR9_t 212
+   526	./ast/ast_t.h:243:#define AST_AsmR10_t 213
+   527	./ast/ast_t.h:244:#define AST_AsmR11_t 214
+   528	./ast/ast_t.h:245:#define AST_AsmR12_t 215
+   529	./ast/ast_t.h:246:#define AST_AsmR13_t 216
+   530	./ast/ast_t.h:247:#define AST_AsmR14_t 217
+   531	./ast/ast_t.h:248:#define AST_AsmR15_t 218
+   532	./ast/ast_t.h:249:#define AST_AsmSp_t 219
+   533	./ast/ast_t.h:250:#define AST_AsmBp_t 220
+   534	./ast/ast_t.h:251:#define AST_AsmXMM0_t 221
+   535	./ast/ast_t.h:252:#define AST_AsmXMM1_t 222
+   536	./ast/ast_t.h:253:#define AST_AsmXMM2_t 223
+   537	./ast/ast_t.h:254:#define AST_AsmXMM3_t 224
+   538	./ast/ast_t.h:255:#define AST_AsmXMM4_t 225
+   539	./ast/ast_t.h:256:#define AST_AsmXMM5_t 226
+   540	./ast/ast_t.h:257:#define AST_AsmXMM6_t 227
+   541	./ast/ast_t.h:258:#define AST_AsmXMM7_t 228
+   542	./ast/ast_t.h:259:#define AST_AsmXMM8_t 229
+   543	./ast/ast_t.h:260:#define AST_AsmXMM9_t 230
+   544	./ast/ast_t.h:261:#define AST_AsmXMM10_t 231
+   545	./ast/ast_t.h:262:#define AST_AsmXMM11_t 232
+   546	./ast/ast_t.h:263:#define AST_AsmXMM12_t 233
+   547	./ast/ast_t.h:264:#define AST_AsmXMM13_t 234
+   548	./ast/ast_t.h:265:#define AST_AsmXMM14_t 235
+   549	./ast/ast_t.h:266:#define AST_AsmXMM15_t 236
+   550	./ast/ast_t.h:267:#define AST_AsmCondCode_t 237
+   551	./ast/ast_t.h:268:#define AST_AsmE_t 238
+   552	./ast/ast_t.h:269:#define AST_AsmNE_t 239
+   553	./ast/ast_t.h:270:#define AST_AsmG_t 240
+   554	./ast/ast_t.h:271:#define AST_AsmGE_t 241
+   555	./ast/ast_t.h:272:#define AST_AsmL_t 242
+   556	./ast/ast_t.h:273:#define AST_AsmLE_t 243
+   557	./ast/ast_t.h:274:#define AST_AsmA_t 244
+   558	./ast/ast_t.h:275:#define AST_AsmAE_t 245
+   559	./ast/ast_t.h:276:#define AST_AsmB_t 246
+   560	./ast/ast_t.h:277:#define AST_AsmBE_t 247
+   561	./ast/ast_t.h:278:#define AST_AsmP_t 248
+   562	./ast/ast_t.h:279:#define AST_AsmOperand_t 249
+   563	./ast/ast_t.h:280:#define AST_AsmImm_t 250
+   564	./ast/ast_t.h:281:#define AST_AsmRegister_t 251
+   565	./ast/ast_t.h:282:#define AST_AsmPseudo_t 252
+   566	./ast/ast_t.h:283:#define AST_AsmMemory_t 253
+   567	./ast/ast_t.h:284:#define AST_AsmData_t 254
+   568	./ast/ast_t.h:285:#define AST_AsmPseudoMem_t 255
+   569	./ast/ast_t.h:286:#define AST_AsmIndexed_t 256
+   570	./ast/ast_t.h:287:#define AST_AsmBinaryOp_t 257
+   571	./ast/ast_t.h:288:#define AST_AsmAdd_t 258
+   572	./ast/ast_t.h:289:#define AST_AsmSub_t 259
+   573	./ast/ast_t.h:290:#define AST_AsmMult_t 260
+   574	./ast/ast_t.h:291:#define AST_AsmDivDouble_t 261
+   575	./ast/ast_t.h:292:#define AST_AsmBitAnd_t 262
+   576	./ast/ast_t.h:293:#define AST_AsmBitOr_t 263
+   577	./ast/ast_t.h:294:#define AST_AsmBitXor_t 264
+   578	./ast/ast_t.h:295:#define AST_AsmBitShiftLeft_t 265
+   579	./ast/ast_t.h:296:#define AST_AsmBitShiftRight_t 266
+   580	./ast/ast_t.h:297:#define AST_AsmBitShrArithmetic_t 267
+   581	./ast/ast_t.h:298:#define AST_AsmUnaryOp_t 268
+   582	./ast/ast_t.h:299:#define AST_AsmNot_t 269
+   583	./ast/ast_t.h:300:#define AST_AsmNeg_t 270
+   584	./ast/ast_t.h:301:#define AST_AsmShr_t 271
+   585	./ast/ast_t.h:302:#define AST_AsmInstruction_t 272
+   586	./ast/ast_t.h:303:#define AST_AsmMov_t 273
+   587	./ast/ast_t.h:304:#define AST_AsmMovSx_t 274
+   588	./ast/ast_t.h:305:#define AST_AsmMovZeroExtend_t 275
+   589	./ast/ast_t.h:306:#define AST_AsmLea_t 276
+   590	./ast/ast_t.h:307:#define AST_AsmCvttsd2si_t 277
+   591	./ast/ast_t.h:308:#define AST_AsmCvtsi2sd_t 278
+   592	./ast/ast_t.h:309:#define AST_AsmUnary_t 279
+   593	./ast/ast_t.h:310:#define AST_AsmBinary_t 280
+   594	./ast/ast_t.h:311:#define AST_AsmCmp_t 281
+   595	./ast/ast_t.h:312:#define AST_AsmIdiv_t 282
+   596	./ast/ast_t.h:313:#define AST_AsmDiv_t 283
+   597	./ast/ast_t.h:314:#define AST_AsmCdq_t 284
+   598	./ast/ast_t.h:315:#define AST_AsmJmp_t 285
+   599	./ast/ast_t.h:316:#define AST_AsmJmpCC_t 286
+   600	./ast/ast_t.h:317:#define AST_AsmSetCC_t 287
+   601	./ast/ast_t.h:318:#define AST_AsmLabel_t 288
+   602	./ast/ast_t.h:319:#define AST_AsmPush_t 289
+   603	./ast/ast_t.h:320:#define AST_AsmPop_t 290
+   604	./ast/ast_t.h:321:#define AST_AsmCall_t 291
+   605	./ast/ast_t.h:322:#define AST_AsmRet_t 292
+   606	./ast/ast_t.h:323:#define AST_AsmTopLevel_t 293
+   607	./ast/ast_t.h:324:#define AST_AsmFunction_t 294
+   608	./ast/ast_t.h:325:#define AST_AsmStaticVariable_t 295
+   609	./ast/ast_t.h:326:#define AST_AsmStaticConstant_t 296
+   610	./ast/ast_t.h:327:#define AST_AsmProgram_t 297
+   611	./optimizer/optim_tac.c:36:#define __OPTIM_LEVEL__ 1
+   612	./optimizer/optim_tac.c:2630:#define CONSTANT_FOLDING 0
+   613	./optimizer/optim_tac.c:2631:#define COPY_PROPAGATION 1
+   614	./optimizer/optim_tac.c:2632:#define UNREACHABLE_CODE_ELIMINATION 2
+   615	./optimizer/optim_tac.c:2633:#define DEAD_STORE_ELIMINATION 3
+   616	./optimizer/optim_tac.c:2634:#define CONTROL_FLOW_GRAPH 4
+   617	./optimizer/reg_alloc.c:120:#define __OPTIM_LEVEL__ 2
