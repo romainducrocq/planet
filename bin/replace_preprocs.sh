@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ../selfhost/wheelcc/
+
 # replace all enums (617)
 # sed -i 's|#define _NAME |char* m4_string__LINE = '"\"m4_define(\`_NAME', \`TODO')\""'\n#define _NAME |g' FILE
 sed -i 's|#define TOK_skip |char* m4_string_1 = '"\"m4_define(\`TOK_skip', 0)\""'\n#define TOK_skip |g' frontend/tokens.h
