@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# TODO manually replace
+
+# include
+# #elif
+# #else
+# #endif
+# #if
+# #ifdef
+# #ifndef
+# #undef
+
 cd ../selfhost/wheelcc/
 
 # replace all enums (617)
