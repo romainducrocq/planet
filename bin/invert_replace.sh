@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../selfhost/
+FILE="${1}"
 
 sed -i 's|0000000|nil|g' lib/c_lib.h
 
