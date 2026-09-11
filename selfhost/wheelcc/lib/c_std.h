@@ -12,6 +12,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO(@ARG@"#A"@ARG@)
+// TODO(@ARG@"#A"@ARG@"#B"@ARG@)
+// TODO(@ARG@"#A"@ARG@"#B"@ARG@"#C"@ARG@)
+
 // Errors
 
 #define error_t int
@@ -36,6 +40,7 @@
 #define SET_ERROR_MSG(...) snprintf(ERROR_MSG_BUF, sizeof(char) * ERROR_MSG_SIZE, __VA_ARGS__)
 #define THROW_ERROR(X, Y, ...)                                  \
     do {                                                        \
+        "@MACRO@:THROW_ERROR(@ARG@"#X"@ARG@"#Y"@ARG@)"; \
         SET_ERROR_MSG(__VA_ARGS__) > 0 ? (void)Y : THROW_ABORT; \
         _errval = X;                                            \
         EARLY_EXIT;                                             \
@@ -55,10 +60,12 @@
 #define uptr_new() NULL
 #define uptr_delete(X) \
     if (!X) {          \
+        "@MACRO@:uptr_delete(@ARG@"#X"@ARG@)"; \
         return;        \
     }
 #define uptr_alloc(T, X)                         \
     do {                                         \
+        "@MACRO@:uptr_alloc(@ARG@"#T"@ARG@"#X"@ARG@)"; \
         free_##T(&X);                            \
         X = (struct T*)malloc(sizeof(struct T)); \
         if (!X) {                                \
@@ -68,11 +75,13 @@
     while (0)
 #define uptr_free(X)    \
     if (X) {            \
+        "@MACRO@:uptr_free(@ARG@"#X"@ARG@)"; \
         free(X);        \
         X = uptr_new(); \
     }
 #define uptr_move(T, X, Y) \
     if (X != Y) {          \
+        "@MACRO@:uptr_move(@ARG@"#T"@ARG@"#X"@ARG@"#Y"@ARG@)"; \
         free_##T(&Y);      \
         Y = X;             \
         X = uptr_new();    \
@@ -88,21 +97,37 @@
     unique_ptr_impl(T)
 #define sptr_new() uptr_new()
 #define sptr_delete(X)                             \
+    do {                                           \
+    "@MACRO@:sptr_delete(@ARG@"#X"@ARG@)"; \
     uptr_delete(X) else if ((X)->_ref_count > 1) { \
         (X)->_ref_count--;                         \
         X = sptr_new();                            \
         return;                                    \
-    }
+    }                                              \
+    }                                              \
+    while (0)
 #define sptr_alloc(T, X)     \
     do {                     \
+        "@MACRO@:sptr_alloc(@ARG@"#T"@ARG@"#X"@ARG@)"; \
         uptr_alloc(T, X);    \
         (X)->_ref_count = 1; \
     }                        \
     while (0)
-#define sptr_free(X) uptr_free(X)
-#define sptr_move(T, X, Y) uptr_move(T, X, Y)
+#define sptr_free(X) \
+    do { \
+    "@MACRO@:sptr_free(@ARG@"#X"@ARG@)"; \
+    uptr_free(X) \
+    } \
+    while (0)
+#define sptr_move(T, X, Y) \
+    do { \
+    "@MACRO@:sptr_move(@ARG@"#T"@ARG@"#X"@ARG@"#Y"@ARG@)"; \
+    uptr_move(T, X, Y) \
+    } \
+    while (0)
 #define sptr_copy(T, X, Y) \
     if (X != Y) {          \
+        "@MACRO@:sptr_copy(@ARG@"#T"@ARG@"#X"@ARG@"#Y"@ARG@)"; \
         free_##T(&Y);      \
         Y = X;             \
         (Y)->_ref_count++; \
