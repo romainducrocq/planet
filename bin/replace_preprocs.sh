@@ -13,7 +13,14 @@
 
 cd ../selfhost/wheelcc/
 
-# replace all enums (617)
+# unique suffix is 9876
+
+# 3 constants become reserved keywords
+sed -i 's|#define NULL 0|#define NULL 0000000|g' lib/c_lib.h
+sed -i 's|#define false 0|#define false 9876255|g' lib/c_lib.h
+sed -i 's|#define true 1|#define true 9876256|g' lib/c_lib.h
+
+# replace all enums and constants (617-3)
 # sed -i 's|#define _NAME |char* m4_string__LINE = '"\"m4_define(\`_NAME', \`TODO')m4_dnl\";"'\n#define _NAME |g' FILE
 sed -i 's|#define TOK_skip |char* m4_string_1 = '"\"m4_define(\`TOK_skip', \`0')m4_dnl\";"'\n#define TOK_skip |g' frontend/tokens.h
 sed -i 's|#define TOK_line_break |char* m4_string_2 = '"\"m4_define(\`TOK_line_break', \`1')m4_dnl\";"'\n#define TOK_line_break |g' frontend/tokens.h
@@ -269,9 +276,6 @@ sed -i 's|#define ESC |char* m4_string_251 = '"\"m4_define(\`ESC', \`27')m4_dnl\
 sed -i 's|#define ESC_RESET_SIZE |char* m4_string_252 = '"\"m4_define(\`ESC_RESET_SIZE', \`4')m4_dnl\";"'\n#define ESC_RESET_SIZE |g' util/throw.c
 sed -i 's|#define ESC_BOLD_SIZE |char* m4_string_253 = '"\"m4_define(\`ESC_BOLD_SIZE', \`4')m4_dnl\";"'\n#define ESC_BOLD_SIZE |g' util/throw.c
 sed -i 's|#define ESC_RED_SIZE |char* m4_string_254 = '"\"m4_define(\`ESC_RED_SIZE', \`7')m4_dnl\";"'\n#define ESC_RED_SIZE |g' util/throw.c
-sed -i 's|#define false |char* m4_string_255 = '"\"m4_define(\`false', \`0')m4_dnl\";"'\n#define false |g' lib/c_lib.h
-sed -i 's|#define true |char* m4_string_256 = '"\"m4_define(\`true', \`1')m4_dnl\";"'\n#define true |g' lib/c_lib.h
-sed -i 's|#define NULL |char* m4_string_257 = '"\"m4_define(\`NULL', \`0')m4_dnl\";"'\n#define NULL |g' lib/c_lib.h
 sed -i 's|#define FOPEN_MAX |char* m4_string_258 = '"\"m4_define(\`FOPEN_MAX', \`8')m4_dnl\";"'\n#define FOPEN_MAX |g' lib/c_lib.h
 sed -i 's|#define STDERR_FILENO |char* m4_string_259 = '"\"m4_define(\`STDERR_FILENO', \`2')m4_dnl\";"'\n#define STDERR_FILENO |g' lib/c_lib.h
 sed -i 's|#define ERROR_MSG_SIZE |char* m4_string_260 = '"\"m4_define(\`ERROR_MSG_SIZE', \`1024')m4_dnl\";"'\n#define ERROR_MSG_SIZE |g' lib/c_std.h
