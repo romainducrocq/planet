@@ -1,5 +1,13 @@
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+m4_define(`bool', `TODO')m4_dnl
+m4_define(`int8_t', `TODO')m4_dnl
+m4_define(`int32_t', `TODO')m4_dnl
+m4_define(`int64_t', `TODO')m4_dnl
+m4_define(`uint8_t', `TODO')m4_dnl
+m4_define(`uint32_t', `TODO')m4_dnl
+m4_define(`uint64_t', `TODO')m4_dnl
+m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;
 extrn fn fflush(stream: *struc FILE) i32;
@@ -8,6 +16,7 @@ extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
 extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+m4_define(`STDERR_FILENO', `2')m4_dnl
 extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 extrn fn strtod(nptr: string, endptr: *string) f64;
@@ -22,6 +31,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+m4_define(`sds', `TODO')m4_dnl
 pub fn sdslen(s: string) u64;
 pub fn sdsnew(init: string) string;
 pub fn sdsdup(s: string) string;
@@ -33,6 +43,19 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+m4_define(`arrlenu', `TODO')m4_dnl
+m4_define(`arrput', `TODO')m4_dnl
+m4_define(`arrpop', `TODO')m4_dnl
+m4_define(`arrfree', `TODO')m4_dnl
+m4_define(`arrsetlen', `TODO')m4_dnl
+m4_define(`arrdelswap', `TODO')m4_dnl
+m4_define(`arrsetcap', `TODO')m4_dnl
+m4_define(`hmput', `TODO')m4_dnl
+m4_define(`hmget', `TODO')m4_dnl
+m4_define(`hmgeti', `TODO')m4_dnl
+m4_define(`hmdel', `TODO')m4_dnl
+m4_define(`hmlenu', `TODO')m4_dnl
+m4_define(`hmfree', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -42,11 +65,361 @@ extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
+m4_define(`error_t', `TODO')m4_dnl
+m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
+m4_define(`CATCH_ENTER', `TODO')m4_dnl
+m4_define(`CATCH_EXIT', `TODO')m4_dnl
+m4_define(`EARLY_EXIT', `TODO')m4_dnl
+m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`string_t', `TODO')m4_dnl
 type struc TacProgram;
 type struc AsmProgram;
 type struc FrontEndContext;
 type struc IdentifierContext;
 pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram;
+m4_define(`TIdentifier', `TODO')m4_dnl
+m4_define(`TChar', `TODO')m4_dnl
+m4_define(`TInt', `TODO')m4_dnl
+m4_define(`TLong', `TODO')m4_dnl
+m4_define(`TUChar', `TODO')m4_dnl
+m4_define(`TUInt', `TODO')m4_dnl
+m4_define(`TULong', `TODO')m4_dnl
+m4_define(`TDouble', `TODO')m4_dnl
+m4_define(`AST_T', `TODO')m4_dnl
+m4_define(`AST_Type_t', `0')m4_dnl
+m4_define(`AST_Char_t', `1')m4_dnl
+m4_define(`AST_SChar_t', `2')m4_dnl
+m4_define(`AST_UChar_t', `3')m4_dnl
+m4_define(`AST_Int_t', `4')m4_dnl
+m4_define(`AST_Long_t', `5')m4_dnl
+m4_define(`AST_UInt_t', `6')m4_dnl
+m4_define(`AST_ULong_t', `7')m4_dnl
+m4_define(`AST_Double_t', `8')m4_dnl
+m4_define(`AST_Void_t', `9')m4_dnl
+m4_define(`AST_FunType_t', `10')m4_dnl
+m4_define(`AST_Pointer_t', `11')m4_dnl
+m4_define(`AST_Array_t', `12')m4_dnl
+m4_define(`AST_Structure_t', `13')m4_dnl
+m4_define(`AST_StaticInit_t', `14')m4_dnl
+m4_define(`AST_IntInit_t', `15')m4_dnl
+m4_define(`AST_LongInit_t', `16')m4_dnl
+m4_define(`AST_UIntInit_t', `17')m4_dnl
+m4_define(`AST_ULongInit_t', `18')m4_dnl
+m4_define(`AST_CharInit_t', `19')m4_dnl
+m4_define(`AST_UCharInit_t', `20')m4_dnl
+m4_define(`AST_DoubleInit_t', `21')m4_dnl
+m4_define(`AST_ZeroInit_t', `22')m4_dnl
+m4_define(`AST_StringInit_t', `23')m4_dnl
+m4_define(`AST_PointerInit_t', `24')m4_dnl
+m4_define(`AST_InitialValue_t', `25')m4_dnl
+m4_define(`AST_Tentative_t', `26')m4_dnl
+m4_define(`AST_Initial_t', `27')m4_dnl
+m4_define(`AST_NoInitializer_t', `28')m4_dnl
+m4_define(`AST_IdentifierAttr_t', `29')m4_dnl
+m4_define(`AST_FunAttr_t', `30')m4_dnl
+m4_define(`AST_StaticAttr_t', `31')m4_dnl
+m4_define(`AST_ConstantAttr_t', `32')m4_dnl
+m4_define(`AST_LocalAttr_t', `33')m4_dnl
+m4_define(`AST_Symbol_t', `34')m4_dnl
+m4_define(`AST_StructMember_t', `35')m4_dnl
+m4_define(`AST_StructTypedef_t', `36')m4_dnl
+m4_define(`AST_AssemblyType_t', `37')m4_dnl
+m4_define(`AST_Byte_t', `38')m4_dnl
+m4_define(`AST_LongWord_t', `39')m4_dnl
+m4_define(`AST_QuadWord_t', `40')m4_dnl
+m4_define(`AST_BackendDouble_t', `41')m4_dnl
+m4_define(`AST_ByteArray_t', `42')m4_dnl
+m4_define(`AST_BackendSymbol_t', `43')m4_dnl
+m4_define(`AST_BackendObj_t', `44')m4_dnl
+m4_define(`AST_BackendFun_t', `45')m4_dnl
+m4_define(`AST_CConst_t', `46')m4_dnl
+m4_define(`AST_CConstInt_t', `47')m4_dnl
+m4_define(`AST_CConstLong_t', `48')m4_dnl
+m4_define(`AST_CConstUInt_t', `49')m4_dnl
+m4_define(`AST_CConstULong_t', `50')m4_dnl
+m4_define(`AST_CConstDouble_t', `51')m4_dnl
+m4_define(`AST_CConstChar_t', `52')m4_dnl
+m4_define(`AST_CConstUChar_t', `53')m4_dnl
+m4_define(`AST_CStringLiteral_t', `54')m4_dnl
+m4_define(`AST_CUnaryOp_t', `55')m4_dnl
+m4_define(`AST_CComplement_t', `56')m4_dnl
+m4_define(`AST_CNegate_t', `57')m4_dnl
+m4_define(`AST_CNot_t', `58')m4_dnl
+m4_define(`AST_CPrefix_t', `59')m4_dnl
+m4_define(`AST_CPostfix_t', `60')m4_dnl
+m4_define(`AST_CBinaryOp_t', `61')m4_dnl
+m4_define(`AST_CAdd_t', `62')m4_dnl
+m4_define(`AST_CSubtract_t', `63')m4_dnl
+m4_define(`AST_CMultiply_t', `64')m4_dnl
+m4_define(`AST_CDivide_t', `65')m4_dnl
+m4_define(`AST_CRemainder_t', `66')m4_dnl
+m4_define(`AST_CBitAnd_t', `67')m4_dnl
+m4_define(`AST_CBitOr_t', `68')m4_dnl
+m4_define(`AST_CBitXor_t', `69')m4_dnl
+m4_define(`AST_CBitShiftLeft_t', `70')m4_dnl
+m4_define(`AST_CBitShiftRight_t', `71')m4_dnl
+m4_define(`AST_CBitShrArithmetic_t', `72')m4_dnl
+m4_define(`AST_CAnd_t', `73')m4_dnl
+m4_define(`AST_COr_t', `74')m4_dnl
+m4_define(`AST_CEqual_t', `75')m4_dnl
+m4_define(`AST_CNotEqual_t', `76')m4_dnl
+m4_define(`AST_CLessThan_t', `77')m4_dnl
+m4_define(`AST_CLessOrEqual_t', `78')m4_dnl
+m4_define(`AST_CGreaterThan_t', `79')m4_dnl
+m4_define(`AST_CGreaterOrEqual_t', `80')m4_dnl
+m4_define(`AST_CAbstractDeclarator_t', `81')m4_dnl
+m4_define(`AST_CAbstractPointer_t', `82')m4_dnl
+m4_define(`AST_CAbstractArray_t', `83')m4_dnl
+m4_define(`AST_CAbstractBase_t', `84')m4_dnl
+m4_define(`AST_CParam_t', `85')m4_dnl
+m4_define(`AST_CDeclarator_t', `86')m4_dnl
+m4_define(`AST_CIdent_t', `87')m4_dnl
+m4_define(`AST_CPointerDeclarator_t', `88')m4_dnl
+m4_define(`AST_CArrayDeclarator_t', `89')m4_dnl
+m4_define(`AST_CFunDeclarator_t', `90')m4_dnl
+m4_define(`AST_CExp_t', `91')m4_dnl
+m4_define(`AST_CConstant_t', `92')m4_dnl
+m4_define(`AST_CString_t', `93')m4_dnl
+m4_define(`AST_CVar_t', `94')m4_dnl
+m4_define(`AST_CCast_t', `95')m4_dnl
+m4_define(`AST_CUnary_t', `96')m4_dnl
+m4_define(`AST_CBinary_t', `97')m4_dnl
+m4_define(`AST_CAssignment_t', `98')m4_dnl
+m4_define(`AST_CConditional_t', `99')m4_dnl
+m4_define(`AST_CFunctionCall_t', `100')m4_dnl
+m4_define(`AST_CDereference_t', `101')m4_dnl
+m4_define(`AST_CAddrOf_t', `102')m4_dnl
+m4_define(`AST_CSubscript_t', `103')m4_dnl
+m4_define(`AST_CSizeOf_t', `104')m4_dnl
+m4_define(`AST_CSizeOfT_t', `105')m4_dnl
+m4_define(`AST_CDot_t', `106')m4_dnl
+m4_define(`AST_CArrow_t', `107')m4_dnl
+m4_define(`AST_CStatement_t', `108')m4_dnl
+m4_define(`AST_CReturn_t', `109')m4_dnl
+m4_define(`AST_CExpression_t', `110')m4_dnl
+m4_define(`AST_CIf_t', `111')m4_dnl
+m4_define(`AST_CGoto_t', `112')m4_dnl
+m4_define(`AST_CLabel_t', `113')m4_dnl
+m4_define(`AST_CCompound_t', `114')m4_dnl
+m4_define(`AST_CWhile_t', `115')m4_dnl
+m4_define(`AST_CDoWhile_t', `116')m4_dnl
+m4_define(`AST_CFor_t', `117')m4_dnl
+m4_define(`AST_CSwitch_t', `118')m4_dnl
+m4_define(`AST_CCase_t', `119')m4_dnl
+m4_define(`AST_CDefault_t', `120')m4_dnl
+m4_define(`AST_CBreak_t', `121')m4_dnl
+m4_define(`AST_CContinue_t', `122')m4_dnl
+m4_define(`AST_CNull_t', `123')m4_dnl
+m4_define(`AST_CForInit_t', `124')m4_dnl
+m4_define(`AST_CInitDecl_t', `125')m4_dnl
+m4_define(`AST_CInitExp_t', `126')m4_dnl
+m4_define(`AST_CBlock_t', `127')m4_dnl
+m4_define(`AST_CB_t', `128')m4_dnl
+m4_define(`AST_CBlockItem_t', `129')m4_dnl
+m4_define(`AST_CS_t', `130')m4_dnl
+m4_define(`AST_CD_t', `131')m4_dnl
+m4_define(`AST_CStorageClass_t', `132')m4_dnl
+m4_define(`AST_CStatic_t', `133')m4_dnl
+m4_define(`AST_CExtern_t', `134')m4_dnl
+m4_define(`AST_CInitializer_t', `135')m4_dnl
+m4_define(`AST_CSingleInit_t', `136')m4_dnl
+m4_define(`AST_CCompoundInit_t', `137')m4_dnl
+m4_define(`AST_CMemberDeclaration_t', `138')m4_dnl
+m4_define(`AST_CStructDeclaration_t', `139')m4_dnl
+m4_define(`AST_CFunctionDeclaration_t', `140')m4_dnl
+m4_define(`AST_CVariableDeclaration_t', `141')m4_dnl
+m4_define(`AST_CDeclaration_t', `142')m4_dnl
+m4_define(`AST_CFunDecl_t', `143')m4_dnl
+m4_define(`AST_CVarDecl_t', `144')m4_dnl
+m4_define(`AST_CStructDecl_t', `145')m4_dnl
+m4_define(`AST_CProgram_t', `146')m4_dnl
+m4_define(`AST_TacUnaryOp_t', `147')m4_dnl
+m4_define(`AST_TacComplement_t', `148')m4_dnl
+m4_define(`AST_TacNegate_t', `149')m4_dnl
+m4_define(`AST_TacNot_t', `150')m4_dnl
+m4_define(`AST_TacBinaryOp_t', `151')m4_dnl
+m4_define(`AST_TacAdd_t', `152')m4_dnl
+m4_define(`AST_TacSubtract_t', `153')m4_dnl
+m4_define(`AST_TacMultiply_t', `154')m4_dnl
+m4_define(`AST_TacDivide_t', `155')m4_dnl
+m4_define(`AST_TacRemainder_t', `156')m4_dnl
+m4_define(`AST_TacBitAnd_t', `157')m4_dnl
+m4_define(`AST_TacBitOr_t', `158')m4_dnl
+m4_define(`AST_TacBitXor_t', `159')m4_dnl
+m4_define(`AST_TacBitShiftLeft_t', `160')m4_dnl
+m4_define(`AST_TacBitShiftRight_t', `161')m4_dnl
+m4_define(`AST_TacBitShrArithmetic_t', `162')m4_dnl
+m4_define(`AST_TacEqual_t', `163')m4_dnl
+m4_define(`AST_TacNotEqual_t', `164')m4_dnl
+m4_define(`AST_TacLessThan_t', `165')m4_dnl
+m4_define(`AST_TacLessOrEqual_t', `166')m4_dnl
+m4_define(`AST_TacGreaterThan_t', `167')m4_dnl
+m4_define(`AST_TacGreaterOrEqual_t', `168')m4_dnl
+m4_define(`AST_TacValue_t', `169')m4_dnl
+m4_define(`AST_TacConstant_t', `170')m4_dnl
+m4_define(`AST_TacVariable_t', `171')m4_dnl
+m4_define(`AST_TacExpResult_t', `172')m4_dnl
+m4_define(`AST_TacPlainOperand_t', `173')m4_dnl
+m4_define(`AST_TacDereferencedPointer_t', `174')m4_dnl
+m4_define(`AST_TacSubObject_t', `175')m4_dnl
+m4_define(`AST_TacInstruction_t', `176')m4_dnl
+m4_define(`AST_TacReturn_t', `177')m4_dnl
+m4_define(`AST_TacSignExtend_t', `178')m4_dnl
+m4_define(`AST_TacTruncate_t', `179')m4_dnl
+m4_define(`AST_TacZeroExtend_t', `180')m4_dnl
+m4_define(`AST_TacDoubleToInt_t', `181')m4_dnl
+m4_define(`AST_TacDoubleToUInt_t', `182')m4_dnl
+m4_define(`AST_TacIntToDouble_t', `183')m4_dnl
+m4_define(`AST_TacUIntToDouble_t', `184')m4_dnl
+m4_define(`AST_TacFunCall_t', `185')m4_dnl
+m4_define(`AST_TacUnary_t', `186')m4_dnl
+m4_define(`AST_TacBinary_t', `187')m4_dnl
+m4_define(`AST_TacCopy_t', `188')m4_dnl
+m4_define(`AST_TacGetAddress_t', `189')m4_dnl
+m4_define(`AST_TacLoad_t', `190')m4_dnl
+m4_define(`AST_TacStore_t', `191')m4_dnl
+m4_define(`AST_TacAddPtr_t', `192')m4_dnl
+m4_define(`AST_TacCopyToOffset_t', `193')m4_dnl
+m4_define(`AST_TacCopyFromOffset_t', `194')m4_dnl
+m4_define(`AST_TacJump_t', `195')m4_dnl
+m4_define(`AST_TacJumpIfZero_t', `196')m4_dnl
+m4_define(`AST_TacJumpIfNotZero_t', `197')m4_dnl
+m4_define(`AST_TacLabel_t', `198')m4_dnl
+m4_define(`AST_TacTopLevel_t', `199')m4_dnl
+m4_define(`AST_TacFunction_t', `200')m4_dnl
+m4_define(`AST_TacStaticVariable_t', `201')m4_dnl
+m4_define(`AST_TacStaticConstant_t', `202')m4_dnl
+m4_define(`AST_TacProgram_t', `203')m4_dnl
+m4_define(`AST_AsmReg_t', `204')m4_dnl
+m4_define(`AST_AsmAx_t', `205')m4_dnl
+m4_define(`AST_AsmBx_t', `206')m4_dnl
+m4_define(`AST_AsmCx_t', `207')m4_dnl
+m4_define(`AST_AsmDx_t', `208')m4_dnl
+m4_define(`AST_AsmDi_t', `209')m4_dnl
+m4_define(`AST_AsmSi_t', `210')m4_dnl
+m4_define(`AST_AsmR8_t', `211')m4_dnl
+m4_define(`AST_AsmR9_t', `212')m4_dnl
+m4_define(`AST_AsmR10_t', `213')m4_dnl
+m4_define(`AST_AsmR11_t', `214')m4_dnl
+m4_define(`AST_AsmR12_t', `215')m4_dnl
+m4_define(`AST_AsmR13_t', `216')m4_dnl
+m4_define(`AST_AsmR14_t', `217')m4_dnl
+m4_define(`AST_AsmR15_t', `218')m4_dnl
+m4_define(`AST_AsmSp_t', `219')m4_dnl
+m4_define(`AST_AsmBp_t', `220')m4_dnl
+m4_define(`AST_AsmXMM0_t', `221')m4_dnl
+m4_define(`AST_AsmXMM1_t', `222')m4_dnl
+m4_define(`AST_AsmXMM2_t', `223')m4_dnl
+m4_define(`AST_AsmXMM3_t', `224')m4_dnl
+m4_define(`AST_AsmXMM4_t', `225')m4_dnl
+m4_define(`AST_AsmXMM5_t', `226')m4_dnl
+m4_define(`AST_AsmXMM6_t', `227')m4_dnl
+m4_define(`AST_AsmXMM7_t', `228')m4_dnl
+m4_define(`AST_AsmXMM8_t', `229')m4_dnl
+m4_define(`AST_AsmXMM9_t', `230')m4_dnl
+m4_define(`AST_AsmXMM10_t', `231')m4_dnl
+m4_define(`AST_AsmXMM11_t', `232')m4_dnl
+m4_define(`AST_AsmXMM12_t', `233')m4_dnl
+m4_define(`AST_AsmXMM13_t', `234')m4_dnl
+m4_define(`AST_AsmXMM14_t', `235')m4_dnl
+m4_define(`AST_AsmXMM15_t', `236')m4_dnl
+m4_define(`AST_AsmCondCode_t', `237')m4_dnl
+m4_define(`AST_AsmE_t', `238')m4_dnl
+m4_define(`AST_AsmNE_t', `239')m4_dnl
+m4_define(`AST_AsmG_t', `240')m4_dnl
+m4_define(`AST_AsmGE_t', `241')m4_dnl
+m4_define(`AST_AsmL_t', `242')m4_dnl
+m4_define(`AST_AsmLE_t', `243')m4_dnl
+m4_define(`AST_AsmA_t', `244')m4_dnl
+m4_define(`AST_AsmAE_t', `245')m4_dnl
+m4_define(`AST_AsmB_t', `246')m4_dnl
+m4_define(`AST_AsmBE_t', `247')m4_dnl
+m4_define(`AST_AsmP_t', `248')m4_dnl
+m4_define(`AST_AsmOperand_t', `249')m4_dnl
+m4_define(`AST_AsmImm_t', `250')m4_dnl
+m4_define(`AST_AsmRegister_t', `251')m4_dnl
+m4_define(`AST_AsmPseudo_t', `252')m4_dnl
+m4_define(`AST_AsmMemory_t', `253')m4_dnl
+m4_define(`AST_AsmData_t', `254')m4_dnl
+m4_define(`AST_AsmPseudoMem_t', `255')m4_dnl
+m4_define(`AST_AsmIndexed_t', `256')m4_dnl
+m4_define(`AST_AsmBinaryOp_t', `257')m4_dnl
+m4_define(`AST_AsmAdd_t', `258')m4_dnl
+m4_define(`AST_AsmSub_t', `259')m4_dnl
+m4_define(`AST_AsmMult_t', `260')m4_dnl
+m4_define(`AST_AsmDivDouble_t', `261')m4_dnl
+m4_define(`AST_AsmBitAnd_t', `262')m4_dnl
+m4_define(`AST_AsmBitOr_t', `263')m4_dnl
+m4_define(`AST_AsmBitXor_t', `264')m4_dnl
+m4_define(`AST_AsmBitShiftLeft_t', `265')m4_dnl
+m4_define(`AST_AsmBitShiftRight_t', `266')m4_dnl
+m4_define(`AST_AsmBitShrArithmetic_t', `267')m4_dnl
+m4_define(`AST_AsmUnaryOp_t', `268')m4_dnl
+m4_define(`AST_AsmNot_t', `269')m4_dnl
+m4_define(`AST_AsmNeg_t', `270')m4_dnl
+m4_define(`AST_AsmShr_t', `271')m4_dnl
+m4_define(`AST_AsmInstruction_t', `272')m4_dnl
+m4_define(`AST_AsmMov_t', `273')m4_dnl
+m4_define(`AST_AsmMovSx_t', `274')m4_dnl
+m4_define(`AST_AsmMovZeroExtend_t', `275')m4_dnl
+m4_define(`AST_AsmLea_t', `276')m4_dnl
+m4_define(`AST_AsmCvttsd2si_t', `277')m4_dnl
+m4_define(`AST_AsmCvtsi2sd_t', `278')m4_dnl
+m4_define(`AST_AsmUnary_t', `279')m4_dnl
+m4_define(`AST_AsmBinary_t', `280')m4_dnl
+m4_define(`AST_AsmCmp_t', `281')m4_dnl
+m4_define(`AST_AsmIdiv_t', `282')m4_dnl
+m4_define(`AST_AsmDiv_t', `283')m4_dnl
+m4_define(`AST_AsmCdq_t', `284')m4_dnl
+m4_define(`AST_AsmJmp_t', `285')m4_dnl
+m4_define(`AST_AsmJmpCC_t', `286')m4_dnl
+m4_define(`AST_AsmSetCC_t', `287')m4_dnl
+m4_define(`AST_AsmLabel_t', `288')m4_dnl
+m4_define(`AST_AsmPush_t', `289')m4_dnl
+m4_define(`AST_AsmPop_t', `290')m4_dnl
+m4_define(`AST_AsmCall_t', `291')m4_dnl
+m4_define(`AST_AsmRet_t', `292')m4_dnl
+m4_define(`AST_AsmTopLevel_t', `293')m4_dnl
+m4_define(`AST_AsmFunction_t', `294')m4_dnl
+m4_define(`AST_AsmStaticVariable_t', `295')m4_dnl
+m4_define(`AST_AsmStaticConstant_t', `296')m4_dnl
+m4_define(`AST_AsmProgram_t', `297')m4_dnl
+m4_define(`REGISTER_KIND', `TODO')m4_dnl
+m4_define(`REG_Ax', `0')m4_dnl
+m4_define(`REG_Bx', `1')m4_dnl
+m4_define(`REG_Cx', `2')m4_dnl
+m4_define(`REG_Dx', `3')m4_dnl
+m4_define(`REG_Di', `4')m4_dnl
+m4_define(`REG_Si', `5')m4_dnl
+m4_define(`REG_R8', `6')m4_dnl
+m4_define(`REG_R9', `7')m4_dnl
+m4_define(`REG_R10', `8')m4_dnl
+m4_define(`REG_R11', `9')m4_dnl
+m4_define(`REG_R12', `10')m4_dnl
+m4_define(`REG_R13', `11')m4_dnl
+m4_define(`REG_R14', `12')m4_dnl
+m4_define(`REG_R15', `13')m4_dnl
+m4_define(`REG_Sp', `14')m4_dnl
+m4_define(`REG_Bp', `15')m4_dnl
+m4_define(`REG_Xmm0', `16')m4_dnl
+m4_define(`REG_Xmm1', `17')m4_dnl
+m4_define(`REG_Xmm2', `18')m4_dnl
+m4_define(`REG_Xmm3', `19')m4_dnl
+m4_define(`REG_Xmm4', `20')m4_dnl
+m4_define(`REG_Xmm5', `21')m4_dnl
+m4_define(`REG_Xmm6', `22')m4_dnl
+m4_define(`REG_Xmm7', `23')m4_dnl
+m4_define(`REG_Xmm8', `24')m4_dnl
+m4_define(`REG_Xmm9', `25')m4_dnl
+m4_define(`REG_Xmm10', `26')m4_dnl
+m4_define(`REG_Xmm11', `27')m4_dnl
+m4_define(`REG_Xmm12', `28')m4_dnl
+m4_define(`REG_Xmm13', `29')m4_dnl
+m4_define(`REG_Xmm14', `30')m4_dnl
+m4_define(`REG_Xmm15', `31')m4_dnl
+m4_define(`REGISTER_MASK_SIZE', `26')m4_dnl
+m4_define(`REGISTER_MASK_FALSE', `TODO')m4_dnl
+m4_define(`NULL_REGISTER_MASK', `TODO')m4_dnl
 type struc AsmReg;
 type struc AsmOperand;
 pub fn gen_register(reg_kind: i32) *struc AsmOperand;
@@ -70,6 +443,7 @@ pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) i32;
 pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc AssemblyType;
 pub fn convert_symbol_table(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext) none;
 type struc FileIoContext;
+m4_define(`hash_t', `TODO')m4_dnl
 
 type struc Pairhash_thash_t(key: u64, value: u64)
 
@@ -77,12 +451,14 @@ type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
 
 type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
-type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`THROW_ABORT', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
+m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
 type struc ErrorsContext;
 pub fn dbl_to_binary(decimal: f64) u64;
 pub fn string_to_literal(str_string: string, string_literal: **i8) none;
@@ -136,6 +512,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
+m4_define(`UID_SEPARATOR', `TODO')m4_dnl
 type struc AssemblyType;
 type struc BackendSymbol;
 type struc AsmOperand;
@@ -172,6 +549,7 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol;
 pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc AssemblyType) *struc BackendSymbol;
 pub fn make_BackendFun(is_def: i32) *struc BackendSymbol;
 pub fn free_BackendSymbol(self: **struc BackendSymbol) none;
+m4_define(`UPtrBackendSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrBackendSymbol(key: u64, value: *struc BackendSymbol)
 
@@ -305,18 +683,24 @@ pub fn free_Symbol(self: **struc Symbol) none;
 type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
+m4_define(`UPtrStructMember', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
 
 type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: *u64, members: *struc PairTIdentifierUPtrStructMember)
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
+m4_define(`ulong_t', `TODO')m4_dnl
 
 type struc PairTIdentifierulong_t(key: u64, value: u64)
 
 type struc PairTIdentifierTIdentifier(key: u64, value: u64)
 
+m4_define(`UPtrStructTypedef', `TODO')m4_dnl
+
 type struc PairTIdentifierUPtrStructTypedef(key: u64, value: *struc StructTypedef)
+
+m4_define(`UPtrSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrSymbol(key: u64, value: *struc Symbol)
 
@@ -588,24 +972,39 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none;
 type struc TacProgram(tag: i32, static_const_toplvls: **struc TacTopLevel, static_var_toplvls: **struc TacTopLevel, fun_toplvls: **struc TacTopLevel)
 pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_toplvls: ***struc TacTopLevel, fun_toplvls: ***struc TacTopLevel) *struc TacProgram;
 pub fn free_TacProgram(self: **struc TacProgram) none;
+m4_define(`ASM_LABEL_KIND', `TODO')m4_dnl
+m4_define(`LBL_Lcomisd_nan', `0')m4_dnl
+m4_define(`LBL_Ldouble', `1')m4_dnl
+m4_define(`LBL_Lsd2si_after', `2')m4_dnl
+m4_define(`LBL_Lsd2si_out_of_range', `3')m4_dnl
+m4_define(`LBL_Lsi2sd_after', `4')m4_dnl
+m4_define(`LBL_Lsi2sd_out_of_range', `5')m4_dnl
+m4_define(`STRUCT8B_CLASS', `TODO')m4_dnl
+m4_define(`CLS_integer', `0')m4_dnl
+m4_define(`CLS_sse', `1')m4_dnl
+m4_define(`CLS_memory', `2')m4_dnl
 
 type struc Struct8Bytes(size: u64, clss: [2]i32)
+
+m4_define(`StStruct8Bytes', `TODO')m4_dnl
 
 type struc PairTIdentifierStStruct8Bytes(key: u64, value: struc Struct8Bytes)
 
 type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]i32, sse_arg_regs: [8]i32, dbl_const_table: *struc PairTIdentifierTIdentifier, struct_8b_map: *struc PairTIdentifierStStruct8Bytes, p_instrs: ***struc AsmInstruction, p_static_consts: ***struc AsmTopLevel)
 
+m4_define(`Ctx', `TODO')m4_dnl
+
 fn char_imm_op(node: *struc CConstChar) *struc AsmOperand {
     value: u64 = cast<u64>(node[].value)
     is_neg: i32 = node[].value < 0
-    return make_AsmImm(value, 1, 0, is_neg)
+    return make_AsmImm(value, true, false, is_neg)
 }
 
 fn int_imm_op(node: *struc CConstInt) *struc AsmOperand {
     value: u64 = cast<u64>(node[].value)
     is_byte: i32 = node[].value <= 127 and node[].value >= -128
     is_neg: i32 = node[].value < 0
-    return make_AsmImm(value, is_byte, 0, is_neg)
+    return make_AsmImm(value, is_byte, false, is_neg)
 }
 
 fn long_imm_op(node: *struc CConstLong) *struc AsmOperand {
@@ -618,48 +1017,48 @@ fn long_imm_op(node: *struc CConstLong) *struc AsmOperand {
 
 fn uchar_imm(node: *struc CConstUChar) *struc AsmOperand {
     value: u64 = cast<u64>(node[].value)
-    return make_AsmImm(value, 1, 0, 0)
+    return make_AsmImm(value, true, false, false)
 }
 
 fn uint_imm_op(node: *struc CConstUInt) *struc AsmOperand {
     value: u64 = cast<u64>(node[].value)
     is_byte: i32 = node[].value <= 255u
     is_quad: i32 = node[].value > 2147483647u
-    return make_AsmImm(value, is_byte, is_quad, 0)
+    return make_AsmImm(value, is_byte, is_quad, false)
 }
 
 fn ulong_imm_op(node: *struc CConstULong) *struc AsmOperand {
     value: u64 = node[].value
     is_byte: i32 = node[].value <= 255ul
     is_quad: i32 = node[].value > 2147483647ul
-    return make_AsmImm(value, is_byte, is_quad, 0)
+    return make_AsmImm(value, is_byte, is_quad, false)
 }
 
 fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
-    name: string = ? 0 then sdsnew(0) else 0
+    name: string = ? nil then sdsnew(nil) else nil
     match asm_label_kind {
-        -> 0 {
-            name = ? "comisd_nan" then sdsnew("comisd_nan") else 0
+        -> LBL_Lcomisd_nan {
+            name = ? "comisd_nan" then sdsnew("comisd_nan") else nil
             break
         }
-        -> 1 {
-            name = ? "double" then sdsnew("double") else 0
+        -> LBL_Ldouble {
+            name = ? "double" then sdsnew("double") else nil
             break
         }
-        -> 2 {
-            name = ? "sd2si_after" then sdsnew("sd2si_after") else 0
+        -> LBL_Lsd2si_after {
+            name = ? "sd2si_after" then sdsnew("sd2si_after") else nil
             break
         }
-        -> 3 {
-            name = ? "sd2si_out_of_range" then sdsnew("sd2si_out_of_range") else 0
+        -> LBL_Lsd2si_out_of_range {
+            name = ? "sd2si_out_of_range" then sdsnew("sd2si_out_of_range") else nil
             break
         }
-        -> 4 {
-            name = ? "si2sd_after" then sdsnew("si2sd_after") else 0
+        -> LBL_Lsi2sd_after {
+            name = ? "si2sd_after" then sdsnew("si2sd_after") else nil
             break
         }
-        -> 5 {
-            name = ? "si2sd_out_of_range" then sdsnew("si2sd_out_of_range") else 0
+        -> LBL_Lsi2sd_out_of_range {
+            name = ? "si2sd_out_of_range" then sdsnew("si2sd_out_of_range") else nil
             break
         }
         otherwise {
@@ -685,7 +1084,7 @@ fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc
             dbl_const_label = (ctx[].dbl_const_table[map_it]).value
         }
         else {
-            dbl_const_label = repr_asm_label(ctx, 1)
+            dbl_const_label = repr_asm_label(ctx, LBL_Ldouble)
             loop .. while 0 {
                 (ctx[].dbl_const_table) = stbds_hmput_key((ctx[].dbl_const_table), sizeof((ctx[].dbl_const_table)[]), cast<*any>(@((dbl_const))), sizeof((ctx[].dbl_const_table)[].key), 0)
                 (ctx[].dbl_const_table)[(cast<*struc stbds_array_header>(((ctx[].dbl_const_table) - 1)) - 1)[].temp].key = (dbl_const)
@@ -705,25 +1104,25 @@ fn dbl_const_op(ctx: *struc AsmGenContext, node: *struc CConstDouble) *struc Asm
 
 fn const_op(ctx: *struc AsmGenContext, node: *struc TacConstant) *struc AsmOperand {
     match node[].constant[].tag {
-        -> 52 {
+        -> AST_CConstChar_t {
             return char_imm_op(@node[].constant[].get._CConstChar)
         }
-        -> 47 {
+        -> AST_CConstInt_t {
             return int_imm_op(@node[].constant[].get._CConstInt)
         }
-        -> 48 {
+        -> AST_CConstLong_t {
             return long_imm_op(@node[].constant[].get._CConstLong)
         }
-        -> 51 {
+        -> AST_CConstDouble_t {
             return dbl_const_op(ctx, @node[].constant[].get._CConstDouble)
         }
-        -> 53 {
+        -> AST_CConstUChar_t {
             return uchar_imm(@node[].constant[].get._CConstUChar)
         }
-        -> 49 {
+        -> AST_CConstUInt_t {
             return uint_imm_op(@node[].constant[].get._CConstUInt)
         }
-        -> 50 {
+        -> AST_CConstULong_t {
             return ulong_imm_op(@node[].constant[].get._CConstULong)
         }
         otherwise {
@@ -744,8 +1143,8 @@ fn pseudo_mem_op(node: *struc TacVariable) *struc AsmOperand {
 
 fn var_op(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc AsmOperand {
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
-        -> 12 {
-            -> 13 {
+        -> AST_Array_t {
+            -> AST_Structure_t {
                 return pseudo_mem_op(node)
             }
         }
@@ -757,10 +1156,10 @@ fn var_op(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc AsmOperand
 
 fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AsmOperand {
     match node[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             return const_op(ctx, @node[].get._TacConstant)
         }
-        -> 171 {
+        -> AST_TacVariable_t {
             return var_op(ctx, @node[].get._TacVariable)
         }
         otherwise {
@@ -771,23 +1170,23 @@ fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AsmOperand {
 
 fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
-        -> 163 {
-            return make_AsmCondCode(238)
+        -> AST_TacEqual_t {
+            return make_AsmCondCode(AST_AsmE_t)
         }
-        -> 164 {
-            return make_AsmCondCode(239)
+        -> AST_TacNotEqual_t {
+            return make_AsmCondCode(AST_AsmNE_t)
         }
-        -> 165 {
-            return make_AsmCondCode(242)
+        -> AST_TacLessThan_t {
+            return make_AsmCondCode(AST_AsmL_t)
         }
-        -> 166 {
-            return make_AsmCondCode(243)
+        -> AST_TacLessOrEqual_t {
+            return make_AsmCondCode(AST_AsmLE_t)
         }
-        -> 167 {
-            return make_AsmCondCode(240)
+        -> AST_TacGreaterThan_t {
+            return make_AsmCondCode(AST_AsmG_t)
         }
-        -> 168 {
-            return make_AsmCondCode(241)
+        -> AST_TacGreaterOrEqual_t {
+            return make_AsmCondCode(AST_AsmGE_t)
         }
         otherwise {
             panic_sigabrt("abort")
@@ -797,23 +1196,23 @@ fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
 
 fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
-        -> 163 {
-            return make_AsmCondCode(238)
+        -> AST_TacEqual_t {
+            return make_AsmCondCode(AST_AsmE_t)
         }
-        -> 164 {
-            return make_AsmCondCode(239)
+        -> AST_TacNotEqual_t {
+            return make_AsmCondCode(AST_AsmNE_t)
         }
-        -> 165 {
-            return make_AsmCondCode(246)
+        -> AST_TacLessThan_t {
+            return make_AsmCondCode(AST_AsmB_t)
         }
-        -> 166 {
-            return make_AsmCondCode(247)
+        -> AST_TacLessOrEqual_t {
+            return make_AsmCondCode(AST_AsmBE_t)
         }
-        -> 167 {
-            return make_AsmCondCode(244)
+        -> AST_TacGreaterThan_t {
+            return make_AsmCondCode(AST_AsmA_t)
         }
-        -> 168 {
-            return make_AsmCondCode(245)
+        -> AST_TacGreaterOrEqual_t {
+            return make_AsmCondCode(AST_AsmAE_t)
         }
         otherwise {
             panic_sigabrt("abort")
@@ -823,11 +1222,11 @@ fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
 
 fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
     match node[].tag {
-        -> 148 {
-            return make_AsmUnaryOp(269)
+        -> AST_TacComplement_t {
+            return make_AsmUnaryOp(AST_AsmNot_t)
         }
-        -> 149 {
-            return make_AsmUnaryOp(270)
+        -> AST_TacNegate_t {
+            return make_AsmUnaryOp(AST_AsmNeg_t)
         }
         otherwise {
             panic_sigabrt("abort")
@@ -837,35 +1236,35 @@ fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
 
 fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
     match node[].tag {
-        -> 152 {
-            return make_AsmBinaryOp(258)
+        -> AST_TacAdd_t {
+            return make_AsmBinaryOp(AST_AsmAdd_t)
         }
-        -> 153 {
-            return make_AsmBinaryOp(259)
+        -> AST_TacSubtract_t {
+            return make_AsmBinaryOp(AST_AsmSub_t)
         }
-        -> 154 {
-            return make_AsmBinaryOp(260)
+        -> AST_TacMultiply_t {
+            return make_AsmBinaryOp(AST_AsmMult_t)
         }
-        -> 155 {
-            return make_AsmBinaryOp(261)
+        -> AST_TacDivide_t {
+            return make_AsmBinaryOp(AST_AsmDivDouble_t)
         }
-        -> 157 {
-            return make_AsmBinaryOp(262)
+        -> AST_TacBitAnd_t {
+            return make_AsmBinaryOp(AST_AsmBitAnd_t)
         }
-        -> 158 {
-            return make_AsmBinaryOp(263)
+        -> AST_TacBitOr_t {
+            return make_AsmBinaryOp(AST_AsmBitOr_t)
         }
-        -> 159 {
-            return make_AsmBinaryOp(264)
+        -> AST_TacBitXor_t {
+            return make_AsmBinaryOp(AST_AsmBitXor_t)
         }
-        -> 160 {
-            return make_AsmBinaryOp(265)
+        -> AST_TacBitShiftLeft_t {
+            return make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
         }
-        -> 161 {
-            return make_AsmBinaryOp(266)
+        -> AST_TacBitShiftRight_t {
+            return make_AsmBinaryOp(AST_AsmBitShiftRight_t)
         }
-        -> 162 {
-            return make_AsmBinaryOp(267)
+        -> AST_TacBitShrArithmetic_t {
+            return make_AsmBinaryOp(AST_AsmBitShrArithmetic_t)
         }
         otherwise {
             panic_sigabrt("abort")
@@ -875,44 +1274,44 @@ fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
 
 fn is_const_signed(node: *struc TacConstant) i32 {
     match node[].constant[].tag {
-        -> 52 {
-            -> 47 {
-                -> 48 {
-                    return 1
+        -> AST_CConstChar_t {
+            -> AST_CConstInt_t {
+                -> AST_CConstLong_t {
+                    return true
                 }
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn is_var_signed(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
-        -> 1 {
-            -> 2 {
-                -> 4 {
-                    -> 5 {
-                        -> 8 {
-                            return 1
+        -> AST_Char_t {
+            -> AST_SChar_t {
+                -> AST_Int_t {
+                    -> AST_Long_t {
+                        -> AST_Double_t {
+                            return true
                         }
                     }
                 }
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn is_value_signed(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
     match node[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             return is_const_signed(@node[].get._TacConstant)
         }
-        -> 171 {
+        -> AST_TacVariable_t {
             return is_var_signed(ctx, @node[].get._TacVariable)
         }
         otherwise {
@@ -923,38 +1322,38 @@ fn is_value_signed(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
 
 fn is_const_1b(node: *struc TacConstant) i32 {
     match node[].constant[].tag {
-        -> 52 {
-            -> 53 {
-                return 1
+        -> AST_CConstChar_t {
+            -> AST_CConstUChar_t {
+                return true
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn is_var_1b(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
-        -> 1 {
-            -> 2 {
-                -> 3 {
-                    return 1
+        -> AST_Char_t {
+            -> AST_SChar_t {
+                -> AST_UChar_t {
+                    return true
                 }
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn is_value_1b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
     match node[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             return is_const_1b(@node[].get._TacConstant)
         }
-        -> 171 {
+        -> AST_TacVariable_t {
             return is_var_1b(ctx, @node[].get._TacVariable)
         }
         otherwise {
@@ -965,36 +1364,36 @@ fn is_value_1b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
 
 fn is_const_4b(node: *struc TacConstant) i32 {
     match node[].constant[].tag {
-        -> 47 {
-            -> 49 {
-                return 1
+        -> AST_CConstInt_t {
+            -> AST_CConstUInt_t {
+                return true
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn is_var_4b(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
-        -> 4 {
-            -> 6 {
-                return 1
+        -> AST_Int_t {
+            -> AST_UInt_t {
+                return true
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn is_value_4b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
     match node[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             return is_const_4b(@node[].get._TacConstant)
         }
-        -> 171 {
+        -> AST_TacVariable_t {
             return is_var_4b(ctx, @node[].get._TacVariable)
         }
         otherwise {
@@ -1004,19 +1403,19 @@ fn is_value_4b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
 }
 
 fn is_const_dbl(node: *struc TacConstant) i32 {
-    return node[].constant[].tag == 51
+    return node[].constant[].tag == AST_CConstDouble_t
 }
 
 fn is_var_dbl(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8
+    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
 }
 
 fn is_value_dbl(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
     match node[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             return is_const_dbl(@node[].get._TacConstant)
         }
-        -> 171 {
+        -> AST_TacVariable_t {
             return is_var_dbl(ctx, @node[].get._TacVariable)
         }
         otherwise {
@@ -1026,16 +1425,16 @@ fn is_value_dbl(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
 }
 
 fn is_var_struct(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 13
+    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Structure_t
 }
 
 fn is_value_struct(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
     match node[].tag {
-        -> 171 {
+        -> AST_TacVariable_t {
             return is_var_struct(ctx, @node[].get._TacVariable)
         }
-        -> 170 {
-            return 0
+        -> AST_TacConstant_t {
+            return false
         }
         otherwise {
             panic_sigabrt("abort")
@@ -1045,21 +1444,21 @@ fn is_value_struct(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
 
 fn const_asm_type(node: *struc TacConstant) *struc AssemblyType {
     match node[].constant[].tag {
-        -> 52 {
-            -> 53 {
+        -> AST_CConstChar_t {
+            -> AST_CConstUChar_t {
                 return make_Byte()
             }
         }
-        -> 47 {
-            -> 49 {
+        -> AST_CConstInt_t {
+            -> AST_CConstUInt_t {
                 return make_LongWord()
             }
         }
-        -> 51 {
+        -> AST_CConstDouble_t {
             return make_BackendDouble()
         }
-        -> 48 {
-            -> 50 {
+        -> AST_CConstLong_t {
+            -> AST_CConstULong_t {
                 return make_QuadWord()
             }
         }
@@ -1075,10 +1474,10 @@ fn var_asm_type(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc Asse
 
 fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AssemblyType {
     match node[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             return const_asm_type(@node[].get._TacConstant)
         }
-        -> 171 {
+        -> AST_TacVariable_t {
             return var_asm_type(ctx, @node[].get._TacVariable)
         }
         otherwise {
@@ -1108,26 +1507,26 @@ fn asm_type_8b(ctx: *struc AsmGenContext, struct_type: *struc Structure, offset:
 fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none;
 
 fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
-    struct_8b: struc Struct8Bytes = $(1, $(1, 2))
+    struct_8b: struc Struct8Bytes = $(1, $(CLS_sse, CLS_memory))
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
     members_front: u64 = ? struct_type[].is_union then (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) else 1
     loop i: u64 = 0 while i < members_front .. ++i {
-        if struct_8b.clss[0] == 0 {
+        if struct_8b.clss[0] == CLS_integer {
             break
         }
         member_type: *struc Type = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)[].member_type
-        loop while member_type[].tag == 12 {
+        loop while member_type[].tag == AST_Array_t {
             member_type = member_type[].get._Array.elem_type
         }
-        if member_type[].tag == 13 {
+        if member_type[].tag == AST_Structure_t {
             member_struct_type: *struc Structure = @member_type[].get._Structure
             struct_8b_class(ctx, member_struct_type)
-            if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == 0 {
-                struct_8b.clss[0] = 0
+            if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_integer {
+                struct_8b.clss[0] = CLS_integer
             }
         }
-        elif member_type[].tag ~= 8 {
-            struct_8b.clss[0] = 0
+        elif member_type[].tag ~= AST_Double_t {
+            struct_8b.clss[0] = CLS_integer
         }
     }
     loop .. while 0 {
@@ -1138,76 +1537,76 @@ fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
 }
 
 fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
-    struct_8b: struc Struct8Bytes = $(2, $(1, 1))
+    struct_8b: struc Struct8Bytes = $(2, $(CLS_sse, CLS_sse))
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
     members_front: u64 = ? struct_type[].is_union then (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) else 1
     loop i: u64 = 0 while i < members_front .. ++i {
-        if struct_8b.clss[0] == 0 and struct_8b.clss[1] == 0 {
+        if struct_8b.clss[0] == CLS_integer and struct_8b.clss[1] == CLS_integer {
             break
         }
         size: i64 = 1l
         member_type: *struc Type = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)[].member_type
-        if member_type[].tag == 12 {
-            loop .. while member_type[].tag == 12 {
+        if member_type[].tag == AST_Array_t {
+            loop .. while member_type[].tag == AST_Array_t {
                 member_arr_type: *struc Array = @member_type[].get._Array
                 member_type = member_arr_type[].elem_type
                 size *= member_arr_type[].size
             }            
         }
-        if member_type[].tag == 13 {
+        if member_type[].tag == AST_Structure_t {
             size *= ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((member_type[].get._Structure.tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
         }
         else {
             size *= gen_type_alignment(ctx[].frontend, member_type)
         }
         if size > 8l {
-            if member_type[].tag == 13 {
+            if member_type[].tag == AST_Structure_t {
                 member_struct_type: *struc Structure = @member_type[].get._Structure
                 struct_8b_class(ctx, member_struct_type)
                 member_struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
                 if member_struct_8b[].size > 1 {
-                    if member_struct_8b[].clss[0] == 0 {
-                        struct_8b.clss[0] = 0
+                    if member_struct_8b[].clss[0] == CLS_integer {
+                        struct_8b.clss[0] = CLS_integer
                     }
-                    if member_struct_8b[].clss[1] == 0 {
-                        struct_8b.clss[1] = 0
+                    if member_struct_8b[].clss[1] == CLS_integer {
+                        struct_8b.clss[1] = CLS_integer
                     }
                 }
-                elif member_struct_8b[].clss[0] == 0 {
-                    struct_8b.clss[0] = 0
-                    struct_8b.clss[1] = 0
+                elif member_struct_8b[].clss[0] == CLS_integer {
+                    struct_8b.clss[0] = CLS_integer
+                    struct_8b.clss[1] = CLS_integer
                 }
             }
-            elif member_type[].tag ~= 8 {
-                struct_8b.clss[0] = 0
-                struct_8b.clss[1] = 0
+            elif member_type[].tag ~= AST_Double_t {
+                struct_8b.clss[0] = CLS_integer
+                struct_8b.clss[1] = CLS_integer
             }
         }
         else {
-            if member_type[].tag == 13 {
+            if member_type[].tag == AST_Structure_t {
                 member_struct_type: *struc Structure = @member_type[].get._Structure
                 struct_8b_class(ctx, member_struct_type)
-                if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == 0 {
-                    struct_8b.clss[0] = 0
+                if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_integer {
+                    struct_8b.clss[0] = CLS_integer
                 }
             }
-            elif member_type[].tag ~= 8 {
-                struct_8b.clss[0] = 0
+            elif member_type[].tag ~= AST_Double_t {
+                struct_8b.clss[0] = CLS_integer
             }
             if not struct_type[].is_union {
                 member_type = get_struct_typedef_back(ctx[].frontend, struct_type[].tag_name)[].member_type
-                loop while member_type[].tag == 12 {
+                loop while member_type[].tag == AST_Array_t {
                     member_type = member_type[].get._Array.elem_type
                 }
-                if member_type[].tag == 13 {
+                if member_type[].tag == AST_Structure_t {
                     member_struct_type: *struc Structure = @member_type[].get._Structure
                     struct_8b_class(ctx, member_struct_type)
-                    if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == 0 {
-                        struct_8b.clss[1] = 0
+                    if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_integer {
+                        struct_8b.clss[1] = CLS_integer
                     }
                 }
-                elif member_type[].tag ~= 8 {
-                    struct_8b.clss[1] = 0
+                elif member_type[].tag ~= AST_Double_t {
+                    struct_8b.clss[1] = CLS_integer
                 }
             }
         }
@@ -1223,7 +1622,7 @@ fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) non
     if (? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp) == -1 {
         size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
         if size > 16l {
-            struct_8b: struc Struct8Bytes = $(3, $(2, 2))
+            struct_8b: struc Struct8Bytes = $(3, $(CLS_memory, CLS_memory))
             size -= 24l
             loop while size > 0l {
                 struct_8b.size += 1
@@ -1245,34 +1644,34 @@ fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) non
 }
 
 fn fun_param_reg_mask(ctx: *struc AsmGenContext, fun_type: *struc FunType, reg_size: u64, sse_size: u64) none {
-    if fun_type[].param_reg_mask == (cast<u8>(1u)) << 26 {
+    if fun_type[].param_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
         fun_type[].param_reg_mask = 0ul
         loop i: u64 = 0 while i < reg_size .. ++i {
-            register_mask_set(@fun_type[].param_reg_mask, ctx[].arg_regs[i], 1)
+            register_mask_set(@fun_type[].param_reg_mask, ctx[].arg_regs[i], true)
         }
         loop i: u64 = 0 while i < sse_size .. ++i {
-            register_mask_set(@fun_type[].param_reg_mask, ctx[].sse_arg_regs[i], 1)
+            register_mask_set(@fun_type[].param_reg_mask, ctx[].sse_arg_regs[i], true)
         }
     }
 }
 
 fn ret_1_reg_mask(fun_type: *struc FunType, reg_size: i32) none {
-    if fun_type[].ret_reg_mask == (cast<u8>(1u)) << 26 {
+    if fun_type[].ret_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
         fun_type[].ret_reg_mask = 0ul
-        register_mask_set(@fun_type[].ret_reg_mask, ? reg_size then 0 else 16, 1)
+        register_mask_set(@fun_type[].ret_reg_mask, ? reg_size then REG_Ax else REG_Xmm0, true)
     }
 }
 
 fn ret_2_reg_mask(fun_type: *struc FunType, reg_size: i32, sse_size: i32) none {
-    if fun_type[].ret_reg_mask == (cast<u8>(1u)) << 26 {
+    if fun_type[].ret_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
         fun_type[].ret_reg_mask = 0ul
         if reg_size {
-            register_mask_set(@fun_type[].ret_reg_mask, 0, 1)
-            register_mask_set(@fun_type[].ret_reg_mask, ? sse_size then 16 else 3, 1)
+            register_mask_set(@fun_type[].ret_reg_mask, REG_Ax, true)
+            register_mask_set(@fun_type[].ret_reg_mask, ? sse_size then REG_Xmm0 else REG_Dx, true)
         }
         elif sse_size {
-            register_mask_set(@fun_type[].ret_reg_mask, 16, 1)
-            register_mask_set(@fun_type[].ret_reg_mask, 17, 1)
+            register_mask_set(@fun_type[].ret_reg_mask, REG_Xmm0, true)
+            register_mask_set(@fun_type[].ret_reg_mask, REG_Xmm1, true)
         }
     }
 }
@@ -1283,47 +1682,47 @@ fn push_instr(ctx: *struc AsmGenContext, instr: *struc AsmInstruction) none {
             (? (not (ctx[].p_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].capacity) then (((ctx[].p_instrs[]) = stbds_arrgrowf((ctx[].p_instrs[]), sizeof((ctx[].p_instrs[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length++] = (instr)
         }        
-        instr = 0
+        instr = nil
     }    
 }
 
 fn ret_int_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
     src: *struc AsmOperand = gen_op(ctx, node[].val)
-    dst: *struc AsmOperand = gen_register(0)
+    dst: *struc AsmOperand = gen_register(REG_Ax)
     asm_type_val: *struc AssemblyType = gen_asm_type(ctx, node[].val)
     push_instr(ctx, make_AsmMov(@asm_type_val, @src, @dst))
-    ret_1_reg_mask(ctx[].p_fun_type, 1)
+    ret_1_reg_mask(ctx[].p_fun_type, true)
 }
 
 fn ret_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
     src: *struc AsmOperand = gen_op(ctx, node[].val)
-    dst: *struc AsmOperand = gen_register(16)
+    dst: *struc AsmOperand = gen_register(REG_Xmm0)
     asm_type_val: *struc AssemblyType = make_BackendDouble()
     push_instr(ctx, make_AsmMov(@asm_type_val, @src, @dst))
-    ret_1_reg_mask(ctx[].p_fun_type, 0)
+    ret_1_reg_mask(ctx[].p_fun_type, false)
 }
 
 fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: i32) none {
     src_name: u64 = name
     dst: *struc AsmOperand = gen_register(arg_reg)
     asm_type_src: *struc AssemblyType = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
-    if asm_type_src[].tag == 42 {
+    if asm_type_src[].tag == AST_ByteArray_t {
         size: i64 = offset + 2l
         offset += asm_type_src[].get._ByteArray.size - 1l
         free_AssemblyType(@asm_type_src)
         asm_type_src = make_Byte()
-        src_shl: *struc AsmOperand = make_AsmImm(8ul, 1, 0, 0)
+        src_shl: *struc AsmOperand = make_AsmImm(8ul, true, false, false)
         asm_type_shl: *struc AssemblyType = make_QuadWord()
         loop while offset >= size {
             {
                 src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
-                dst_cp: *struc AsmOperand = 0
+                dst_cp: *struc AsmOperand = nil
                 if dst ~= dst_cp {
                     free_AsmOperand(@dst_cp)
                     dst_cp = dst
                     (dst_cp)[]._ref_count++
                 }
-                asm_type_src_cp: *struc AssemblyType = 0
+                asm_type_src_cp: *struc AssemblyType = nil
                 if asm_type_src ~= asm_type_src_cp {
                     free_AssemblyType(@asm_type_src_cp)
                     asm_type_src_cp = asm_type_src
@@ -1332,20 +1731,20 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
                 push_instr(ctx, make_AsmMov(@asm_type_src_cp, @src, @dst_cp))
             }
             {
-                binop: struc AsmBinaryOp = make_AsmBinaryOp(265)
-                asm_type_shl_cp: *struc AssemblyType = 0
+                binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
+                asm_type_shl_cp: *struc AssemblyType = nil
                 if asm_type_shl ~= asm_type_shl_cp {
                     free_AssemblyType(@asm_type_shl_cp)
                     asm_type_shl_cp = asm_type_shl
                     (asm_type_shl_cp)[]._ref_count++
                 }
-                src_shl_cp: *struc AsmOperand = 0
+                src_shl_cp: *struc AsmOperand = nil
                 if src_shl ~= src_shl_cp {
                     free_AsmOperand(@src_shl_cp)
                     src_shl_cp = src_shl
                     (src_shl_cp)[]._ref_count++
                 }
-                dst_cp: *struc AsmOperand = 0
+                dst_cp: *struc AsmOperand = nil
                 if dst ~= dst_cp {
                     free_AsmOperand(@dst_cp)
                     dst_cp = dst
@@ -1357,13 +1756,13 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
         }
         {
             src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
-            dst_cp: *struc AsmOperand = 0
+            dst_cp: *struc AsmOperand = nil
             if dst ~= dst_cp {
                 free_AsmOperand(@dst_cp)
                 dst_cp = dst
                 (dst_cp)[]._ref_count++
             }
-            asm_type_src_cp: *struc AssemblyType = 0
+            asm_type_src_cp: *struc AssemblyType = nil
             if asm_type_src ~= asm_type_src_cp {
                 free_AssemblyType(@asm_type_src_cp)
                 asm_type_src_cp = asm_type_src
@@ -1372,8 +1771,8 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
             push_instr(ctx, make_AsmMov(@asm_type_src_cp, @src, @dst_cp))
         }
         {
-            binop: struc AsmBinaryOp = make_AsmBinaryOp(265)
-            dst_cp: *struc AsmOperand = 0
+            binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
+            dst_cp: *struc AsmOperand = nil
             if dst ~= dst_cp {
                 free_AsmOperand(@dst_cp)
                 dst_cp = dst
@@ -1388,7 +1787,7 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
         }
     }
     else {
-        src: *struc AsmOperand = 0
+        src: *struc AsmOperand = nil
         {
             from_offset: i64 = offset
             src = make_AsmPseudoMem(src_name, from_offset)
@@ -1403,13 +1802,13 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
     struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
     struct_8b_class(ctx, struct_type)
     struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
-    if struct_8b[].clss[0] == 2 {
+    if struct_8b[].clss[0] == CLS_memory {
         {
-            src: *struc AsmOperand = gen_memory(15, -8l)
-            dst: *struc AsmOperand = gen_register(0)
+            src: *struc AsmOperand = gen_memory(REG_Bp, -8l)
+            dst: *struc AsmOperand = gen_register(REG_Ax)
             asm_type_src: *struc AssemblyType = make_QuadWord()
             push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
-            ret_1_reg_mask(ctx[].p_fun_type, 1)
+            ret_1_reg_mask(ctx[].p_fun_type, true)
         }
         {
             size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
@@ -1417,8 +1816,8 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
             loop while size > 0l {
                 src: *struc AsmOperand = gen_op(ctx, node[].val)
                 src[].get._AsmPseudoMem.offset = offset
-                dst: *struc AsmOperand = gen_memory(0, offset)
-                asm_type_src: *struc AssemblyType = 0
+                dst: *struc AsmOperand = gen_memory(REG_Ax, offset)
+                asm_type_src: *struc AssemblyType = nil
                 if size >= 8l {
                     asm_type_src = make_QuadWord()
                     size -= 8l
@@ -1439,15 +1838,15 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
         }
     }
     else {
-        reg_size: i32 = 0
+        reg_size: i32 = false
         match struct_8b[].clss[0] {
-            -> 0 {
-                ret_8b_instr(ctx, name, 0l, struct_type, 0)
-                reg_size = 1
+            -> CLS_integer {
+                ret_8b_instr(ctx, name, 0l, struct_type, REG_Ax)
+                reg_size = true
                 break
             }
-            -> 1 {
-                ret_8b_instr(ctx, name, 0l, 0, 16)
+            -> CLS_sse {
+                ret_8b_instr(ctx, name, 0l, nil, REG_Xmm0)
             }
             break
             otherwise {
@@ -1457,13 +1856,13 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
         if struct_8b[].size == 2 {
             sse_size: i32 = not reg_size
             match struct_8b[].clss[1] {
-                -> 0 {
-                    ret_8b_instr(ctx, name, 8l, struct_type, ? reg_size then 3 else 0)
+                -> CLS_integer {
+                    ret_8b_instr(ctx, name, 8l, struct_type, ? reg_size then REG_Dx else REG_Ax)
                 }
                 break
-                -> 1 {
-                    ret_8b_instr(ctx, name, 8l, 0, ? sse_size then 17 else 16)
-                    sse_size = 1
+                -> CLS_sse {
+                    ret_8b_instr(ctx, name, 8l, nil, ? sse_size then REG_Xmm1 else REG_Xmm0)
+                    sse_size = true
                     break
                 }
                 otherwise {
@@ -1491,7 +1890,7 @@ fn ret_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
         }
     }
     else {
-        ret_2_reg_mask(ctx[].p_fun_type, 0, 0)
+        ret_2_reg_mask(ctx[].p_fun_type, false, false)
     }
     push_instr(ctx, make_AsmRet())
 }
@@ -1514,7 +1913,7 @@ fn truncate_byte_instr(ctx: *struc AsmGenContext, node: *struc TacTruncate) none
     src: *struc AsmOperand = gen_op(ctx, node[].src)
     dst: *struc AsmOperand = gen_op(ctx, node[].dst)
     asm_type_dst: *struc AssemblyType = make_Byte()
-    if src[].tag == 250 {
+    if src[].tag == AST_AsmImm_t {
         truncate_imm_byte_instr(@src[].get._AsmImm)
     }
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
@@ -1530,7 +1929,7 @@ fn truncate_long_instr(ctx: *struc AsmGenContext, node: *struc TacTruncate) none
     src: *struc AsmOperand = gen_op(ctx, node[].src)
     dst: *struc AsmOperand = gen_op(ctx, node[].dst)
     asm_type_dst: *struc AssemblyType = make_LongWord()
-    if src[].tag == 250 {
+    if src[].tag == AST_AsmImm_t {
         truncate_imm_long_instr(@src[].get._AsmImm)
     }
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
@@ -1554,10 +1953,10 @@ fn zero_extend_instr(ctx: *struc AsmGenContext, node: *struc TacZeroExtend) none
 }
 
 fn dbl_to_char_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToInt) none {
-    src_dst: *struc AsmOperand = gen_register(0)
+    src_dst: *struc AsmOperand = gen_register(REG_Ax)
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
@@ -1591,10 +1990,10 @@ fn dbl_to_signed_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToInt) n
 }
 
 fn dbl_to_uchar_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) none {
-    src_dst: *struc AsmOperand = gen_register(0)
+    src_dst: *struc AsmOperand = gen_register(REG_Ax)
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
@@ -1612,10 +2011,10 @@ fn dbl_to_uchar_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
 }
 
 fn dbl_to_uint_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) none {
-    src_dst: *struc AsmOperand = gen_register(0)
+    src_dst: *struc AsmOperand = gen_register(REG_Ax)
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
@@ -1633,29 +2032,29 @@ fn dbl_to_uint_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) no
 }
 
 fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) none {
-    target_out_of_range: u64 = repr_asm_label(ctx, 3)
-    target_after: u64 = repr_asm_label(ctx, 2)
+    target_out_of_range: u64 = repr_asm_label(ctx, LBL_Lsd2si_out_of_range)
+    target_after: u64 = repr_asm_label(ctx, LBL_Lsd2si_after)
     upper_bound_sd: *struc AsmOperand = dbl_static_const_op(ctx, 4890909195324358656ul, 8)
     src: *struc AsmOperand = gen_op(ctx, node[].src)
     dst: *struc AsmOperand = gen_op(ctx, node[].dst)
-    dst_out_of_range_sd: *struc AsmOperand = gen_register(17)
+    dst_out_of_range_sd: *struc AsmOperand = gen_register(REG_Xmm1)
     asm_type_sd: *struc AssemblyType = make_BackendDouble()
 
     asm_type_si: *struc AssemblyType = make_QuadWord()
     {
-        src_cp: *struc AsmOperand = 0
+        src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
-        upper_bound_sd_cp: *struc AsmOperand = 0
+        upper_bound_sd_cp: *struc AsmOperand = nil
         if upper_bound_sd ~= upper_bound_sd_cp {
             free_AsmOperand(@upper_bound_sd_cp)
             upper_bound_sd_cp = upper_bound_sd
             (upper_bound_sd_cp)[]._ref_count++
         }
-        asm_type_sd_cp: *struc AssemblyType = 0
+        asm_type_sd_cp: *struc AssemblyType = nil
         if asm_type_sd ~= asm_type_sd_cp {
             free_AssemblyType(@asm_type_sd_cp)
             asm_type_sd_cp = asm_type_sd
@@ -1665,23 +2064,23 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     }
 
     {
-        cond_code_ae: struc AsmCondCode = make_AsmCondCode(245)
+        cond_code_ae: struc AsmCondCode = make_AsmCondCode(AST_AsmAE_t)
         push_instr(ctx, make_AsmJmpCC(target_out_of_range, @cond_code_ae))
     }
     {
-        src_cp: *struc AsmOperand = 0
+        src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
-        dst_cp: *struc AsmOperand = 0
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1692,13 +2091,13 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     push_instr(ctx, make_AsmJmp(target_after))
     push_instr(ctx, make_AsmLabel(target_out_of_range))
     {
-        dst_out_of_range_sd_cp: *struc AsmOperand = 0
+        dst_out_of_range_sd_cp: *struc AsmOperand = nil
         if dst_out_of_range_sd ~= dst_out_of_range_sd_cp {
             free_AsmOperand(@dst_out_of_range_sd_cp)
             dst_out_of_range_sd_cp = dst_out_of_range_sd
             (dst_out_of_range_sd_cp)[]._ref_count++
         }
-        asm_type_sd_cp: *struc AssemblyType = 0
+        asm_type_sd_cp: *struc AssemblyType = nil
         if asm_type_sd ~= asm_type_sd_cp {
             free_AssemblyType(@asm_type_sd_cp)
             asm_type_sd_cp = asm_type_sd
@@ -1707,8 +2106,8 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         push_instr(ctx, make_AsmMov(@asm_type_sd_cp, @src, @dst_out_of_range_sd_cp))
     }
     {
-        binop_out_of_range_sd_sub: struc AsmBinaryOp = make_AsmBinaryOp(259)
-        dst_out_of_range_sd_cp: *struc AsmOperand = 0
+        binop_out_of_range_sd_sub: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
+        dst_out_of_range_sd_cp: *struc AsmOperand = nil
         if dst_out_of_range_sd ~= dst_out_of_range_sd_cp {
             free_AsmOperand(@dst_out_of_range_sd_cp)
             dst_out_of_range_sd_cp = dst_out_of_range_sd
@@ -1717,13 +2116,13 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         push_instr(ctx, make_AsmBinary(@binop_out_of_range_sd_sub, @asm_type_sd, @upper_bound_sd, @dst_out_of_range_sd_cp))
     }
     {
-        dst_cp: *struc AsmOperand = 0
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1732,8 +2131,8 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         push_instr(ctx, make_AsmCvttsd2si(@asm_type_si_cp, @dst_out_of_range_sd, @dst_cp))
     }
     {
-        binop_out_of_range_si_add: struc AsmBinaryOp = make_AsmBinaryOp(258)
-        upper_bound_si: *struc AsmOperand = make_AsmImm(9223372036854775808ul, 0, 1, 0)
+        binop_out_of_range_si_add: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
+        upper_bound_si: *struc AsmOperand = make_AsmImm(9223372036854775808ul, false, true, false)
         push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_add, @asm_type_si, @upper_bound_si, @dst))
     }
     push_instr(ctx, make_AsmLabel(target_after))
@@ -1752,19 +2151,19 @@ fn dbl_to_unsigned_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt
 }
 
 fn char_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacIntToDouble) none {
-    src_dst: *struc AsmOperand = gen_register(0)
+    src_dst: *struc AsmOperand = gen_register(REG_Ax)
 
     asm_type_dst: *struc AssemblyType = make_LongWord()
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
         asm_type_src: *struc AssemblyType = make_Byte()
-        asm_type_dst_cp: *struc AssemblyType = 0
+        asm_type_dst_cp: *struc AssemblyType = nil
         if asm_type_dst ~= asm_type_dst_cp {
             free_AssemblyType(@asm_type_dst_cp)
             asm_type_dst_cp = asm_type_dst
@@ -1796,19 +2195,19 @@ fn signed_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacIntToDouble) n
 }
 
 fn uchar_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) none {
-    src_dst: *struc AsmOperand = gen_register(0)
+    src_dst: *struc AsmOperand = gen_register(REG_Ax)
 
     asm_type_dst: *struc AssemblyType = make_LongWord()
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
         asm_type_src: *struc AssemblyType = make_Byte()
-        asm_type_dst_cp: *struc AssemblyType = 0
+        asm_type_dst_cp: *struc AssemblyType = nil
         if asm_type_dst ~= asm_type_dst_cp {
             free_AssemblyType(@asm_type_dst_cp)
             asm_type_dst_cp = asm_type_dst
@@ -1824,19 +2223,19 @@ fn uchar_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
 }
 
 fn uint_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) none {
-    src_dst: *struc AsmOperand = gen_register(0)
+    src_dst: *struc AsmOperand = gen_register(REG_Ax)
 
     asm_type_dst: *struc AssemblyType = make_QuadWord()
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
         asm_type_src: *struc AssemblyType = make_LongWord()
-        asm_type_dst_cp: *struc AssemblyType = 0
+        asm_type_dst_cp: *struc AssemblyType = nil
         if asm_type_dst ~= asm_type_dst_cp {
             free_AssemblyType(@asm_type_dst_cp)
             asm_type_dst_cp = asm_type_dst
@@ -1852,23 +2251,23 @@ fn uint_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) no
 }
 
 fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) none {
-    target_out_of_range: u64 = repr_asm_label(ctx, 5)
-    target_after: u64 = repr_asm_label(ctx, 4)
+    target_out_of_range: u64 = repr_asm_label(ctx, LBL_Lsi2sd_out_of_range)
+    target_after: u64 = repr_asm_label(ctx, LBL_Lsi2sd_after)
     src: *struc AsmOperand = gen_op(ctx, node[].src)
     dst: *struc AsmOperand = gen_op(ctx, node[].dst)
-    dst_out_of_range_si: *struc AsmOperand = gen_register(0)
-    dst_out_of_range_si_shr: *struc AsmOperand = gen_register(3)
+    dst_out_of_range_si: *struc AsmOperand = gen_register(REG_Ax)
+    dst_out_of_range_si_shr: *struc AsmOperand = gen_register(REG_Dx)
 
     asm_type_si: *struc AssemblyType = make_QuadWord()
     {
-        lower_bound_si: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
-        src_cp: *struc AsmOperand = 0
+        lower_bound_si: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
+        src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1878,23 +2277,23 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     }
 
     {
-        cond_code_l: struc AsmCondCode = make_AsmCondCode(242)
+        cond_code_l: struc AsmCondCode = make_AsmCondCode(AST_AsmL_t)
         push_instr(ctx, make_AsmJmpCC(target_out_of_range, @cond_code_l))
     }
     {
-        src_cp: *struc AsmOperand = 0
+        src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
-        dst_cp: *struc AsmOperand = 0
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1905,13 +2304,13 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     push_instr(ctx, make_AsmJmp(target_after))
     push_instr(ctx, make_AsmLabel(target_out_of_range))
     {
-        dst_out_of_range_si_cp: *struc AsmOperand = 0
+        dst_out_of_range_si_cp: *struc AsmOperand = nil
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
             free_AsmOperand(@dst_out_of_range_si_cp)
             dst_out_of_range_si_cp = dst_out_of_range_si
             (dst_out_of_range_si_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1920,19 +2319,19 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmMov(@asm_type_si_cp, @src, @dst_out_of_range_si_cp))
     }
     {
-        dst_out_of_range_si_cp: *struc AsmOperand = 0
+        dst_out_of_range_si_cp: *struc AsmOperand = nil
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
             free_AsmOperand(@dst_out_of_range_si_cp)
             dst_out_of_range_si_cp = dst_out_of_range_si
             (dst_out_of_range_si_cp)[]._ref_count++
         }
-        dst_out_of_range_si_shr_cp: *struc AsmOperand = 0
+        dst_out_of_range_si_shr_cp: *struc AsmOperand = nil
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
             free_AsmOperand(@dst_out_of_range_si_shr_cp)
             dst_out_of_range_si_shr_cp = dst_out_of_range_si_shr
             (dst_out_of_range_si_shr_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1941,14 +2340,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmMov(@asm_type_si_cp, @dst_out_of_range_si_cp, @dst_out_of_range_si_shr_cp))
     }
     {
-        unop_out_of_range_si_shr: struc AsmUnaryOp = make_AsmUnaryOp(271)
-        dst_out_of_range_si_shr_cp: *struc AsmOperand = 0
+        unop_out_of_range_si_shr: struc AsmUnaryOp = make_AsmUnaryOp(AST_AsmShr_t)
+        dst_out_of_range_si_shr_cp: *struc AsmOperand = nil
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
             free_AsmOperand(@dst_out_of_range_si_shr_cp)
             dst_out_of_range_si_shr_cp = dst_out_of_range_si_shr
             (dst_out_of_range_si_shr_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1957,15 +2356,15 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmUnary(@unop_out_of_range_si_shr, @asm_type_si_cp, @dst_out_of_range_si_shr_cp))
     }
     {
-        binop_out_of_range_si_and: struc AsmBinaryOp = make_AsmBinaryOp(262)
-        set_bit_si: *struc AsmOperand = make_AsmImm(1ul, 1, 0, 0)
-        dst_out_of_range_si_cp: *struc AsmOperand = 0
+        binop_out_of_range_si_and: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitAnd_t)
+        set_bit_si: *struc AsmOperand = make_AsmImm(1ul, true, false, false)
+        dst_out_of_range_si_cp: *struc AsmOperand = nil
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
             free_AsmOperand(@dst_out_of_range_si_cp)
             dst_out_of_range_si_cp = dst_out_of_range_si
             (dst_out_of_range_si_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1974,14 +2373,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_and, @asm_type_si_cp, @set_bit_si, @dst_out_of_range_si_cp))
     }
     {
-        binop_out_of_range_si_or: struc AsmBinaryOp = make_AsmBinaryOp(263)
-        dst_out_of_range_si_shr_cp: *struc AsmOperand = 0
+        binop_out_of_range_si_or: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitOr_t)
+        dst_out_of_range_si_shr_cp: *struc AsmOperand = nil
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
             free_AsmOperand(@dst_out_of_range_si_shr_cp)
             dst_out_of_range_si_shr_cp = dst_out_of_range_si_shr
             (dst_out_of_range_si_shr_cp)[]._ref_count++
         }
-        asm_type_si_cp: *struc AssemblyType = 0
+        asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
@@ -1990,7 +2389,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_or, @asm_type_si_cp, @dst_out_of_range_si, @dst_out_of_range_si_shr_cp))
     }
     {
-        dst_cp: *struc AsmOperand = 0
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
@@ -1999,8 +2398,8 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmCvtsi2sd(@asm_type_si, @dst_out_of_range_si_shr, @dst_cp))
     }
     {
-        binop_out_of_range_sq_add: struc AsmBinaryOp = make_AsmBinaryOp(258)
-        dst_cp: *struc AsmOperand = 0
+        binop_out_of_range_sq_add: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
@@ -2029,10 +2428,10 @@ fn alloc_stack_instr(ctx: *struc AsmGenContext, byte: i64) none {
 }
 
 fn dealloc_stack_instr(ctx: *struc AsmGenContext, byte: i64) none {
-    binop: struc AsmBinaryOp = make_AsmBinaryOp(258)
+    binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
     asm_type: *struc AssemblyType = make_QuadWord()
 
-    src: *struc AsmOperand = 0
+    src: *struc AsmOperand = nil
     {
         value: u64 = cast<u64>(byte)
         is_byte: i32 = byte <= 127l and byte >= -128l
@@ -2040,7 +2439,7 @@ fn dealloc_stack_instr(ctx: *struc AsmGenContext, byte: i64) none {
         is_neg: i32 = byte < 0l
         src = make_AsmImm(value, is_byte, is_quad, is_neg)
     }
-    dst: *struc AsmOperand = gen_register(14)
+    dst: *struc AsmOperand = gen_register(REG_Sp)
     push_instr(ctx, make_AsmBinary(@binop, @asm_type, @src, @dst))
 }
 
@@ -2054,8 +2453,8 @@ fn reg_arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacValue, arg_reg:
 fn stack_arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacValue) none {
     src: *struc AsmOperand = gen_op(ctx, node)
     match src[].tag {
-        -> 251 {
-            -> 250 {
+        -> AST_AsmRegister_t {
+            -> AST_AsmImm_t {
                 push_instr(ctx, make_AsmPush(@src))
             }
         }
@@ -2066,8 +2465,8 @@ fn stack_arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacValue) none {
     }
     asm_type_src: *struc AssemblyType = gen_asm_type(ctx, node)
     match asm_type_src[].tag {
-        -> 40 {
-            -> 41 {
+        -> AST_QuadWord_t {
+            -> AST_BackendDouble_t {
                 push_instr(ctx, make_AsmPush(@src))
             }
         }
@@ -2078,9 +2477,9 @@ fn stack_arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacValue) none {
         }
     }
 
-    dst: *struc AsmOperand = gen_register(0)
+    dst: *struc AsmOperand = gen_register(REG_Ax)
     {
-        dst_cp: *struc AsmOperand = 0
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
@@ -2097,7 +2496,7 @@ fn reg_8b_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, stru
 }
 
 fn quad_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64) none {
-    src: *struc AsmOperand = 0
+    src: *struc AsmOperand = nil
     {
         src_name: u64 = name
         from_offset: i64 = offset
@@ -2108,16 +2507,16 @@ fn quad_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64) 
 }
 
 fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, asm_type: **struc AssemblyType) none {
-    src: *struc AsmOperand = 0
+    src: *struc AsmOperand = nil
     {
         src_name: u64 = name
         from_offset: i64 = offset
         src = make_AsmPseudoMem(src_name, from_offset)
     }
 
-    dst: *struc AsmOperand = gen_register(0)
+    dst: *struc AsmOperand = gen_register(REG_Ax)
     {
-        dst_cp: *struc AsmOperand = 0
+        dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
             free_AsmOperand(@dst_cp)
             dst_cp = dst
@@ -2125,11 +2524,11 @@ fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, 
         }
         push_instr(ctx, make_AsmPush(@dst_cp))
     }
-    asm_type_src: *struc AssemblyType = 0
+    asm_type_src: *struc AssemblyType = nil
     if asm_type[] ~= asm_type_src {
         free_AssemblyType(@asm_type_src)
         asm_type_src = asm_type[]
-        asm_type[] = 0
+        asm_type[] = nil
     }
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
@@ -2138,13 +2537,13 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
     {
         to_offset: i64 = 0l
         size: i64 = bytearr_type[].size
-        byte_instrs: **struc AsmInstruction = 0
+        byte_instrs: **struc AsmInstruction = nil
         loop while size > 0l {
-            byte_instr: *struc AsmInstruction = 0
+            byte_instr: *struc AsmInstruction = nil
             {
                 src: *struc AsmOperand = make_AsmPseudoMem(name, offset)
-                dst: *struc AsmOperand = gen_memory(14, to_offset)
-                asm_type_src: *struc AssemblyType = 0
+                dst: *struc AsmOperand = gen_memory(REG_Sp, to_offset)
+                asm_type_src: *struc AssemblyType = nil
                 if size >= 4l {
                     asm_type_src = make_LongWord()
                     size -= 4l
@@ -2165,25 +2564,25 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
                     (? (not (byte_instrs) or (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].capacity) then (((byte_instrs) = stbds_arrgrowf((byte_instrs), sizeof((byte_instrs)[]), (1), (0))) and 0) else 0)
                     (byte_instrs)[(cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length++] = (byte_instr)
                 }                
-                byte_instr = 0
+                byte_instr = nil
             }            
         }
         loop i: u64 = (? (byte_instrs) then (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length else 0) while i-- > 0 {
             push_instr(ctx, byte_instrs[i])
-            byte_instrs[i] = 0
+            byte_instrs[i] = nil
         }
         if byte_instrs {
             loop .. while 0 {
                 cast<none>((? (byte_instrs) then free((cast<*struc stbds_array_header>((byte_instrs)) - 1)) else cast<none>(0)))
-                (byte_instrs) = 0
+                (byte_instrs) = nil
             }            
-            byte_instrs = 0
+            byte_instrs = nil
         }
     }
     {
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(259)
-        src: *struc AsmOperand = make_AsmImm(8ul, 1, 0, 0)
-        dst: *struc AsmOperand = gen_register(14)
+        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
+        src: *struc AsmOperand = make_AsmImm(8ul, true, false, false)
+        dst: *struc AsmOperand = gen_register(REG_Sp)
         asm_type_src: *struc AssemblyType = make_QuadWord()
         push_instr(ctx, make_AsmBinary(@binop, @asm_type_src, @src, @dst))
     }
@@ -2192,11 +2591,11 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
 fn stack_8b_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: *struc Structure) none {
     asm_type: *struc AssemblyType = asm_type_8b(ctx, struct_type, offset)
     match asm_type[].tag {
-        -> 40 {
+        -> AST_QuadWord_t {
             quad_stack_arg_call_instr(ctx, name, offset)
         }
         break
-        -> 42 {
+        -> AST_ByteArray_t {
             bytearr_stack_arg_call_instr(ctx, name, offset, @asm_type[].get._ByteArray)
         }
         break
@@ -2212,7 +2611,7 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
     stack_padding: i64 = 0l
-    stack_instrs: **struc AsmInstruction = 0
+    stack_instrs: **struc AsmInstruction = nil
     p_instrs: ***struc AsmInstruction = ctx[].p_instrs
     loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
         arg: *struc TacValue = node[].args[i]
@@ -2247,11 +2646,11 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
             struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
             struct_8b_class(ctx, struct_type)
             struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
-            if struct_8b[].clss[0] ~= 2 {
+            if struct_8b[].clss[0] ~= CLS_memory {
                 struct_reg_size = 0
                 struct_sse_size = 0
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
-                    if struct_8b[].clss[j] == 1 {
+                    if struct_8b[].clss[j] == CLS_sse {
                         struct_sse_size++
                     }
                     else {
@@ -2262,8 +2661,8 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
             if struct_reg_size + reg_size <= 6 and struct_sse_size + sse_size <= 8 {
                 offset: i64 = 0l
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
-                    if struct_8b[].clss[j] == 1 {
-                        reg_8b_arg_call_instr(ctx, name, offset, 0, ctx[].sse_arg_regs[sse_size])
+                    if struct_8b[].clss[j] == CLS_sse {
+                        reg_8b_arg_call_instr(ctx, name, offset, nil, ctx[].sse_arg_regs[sse_size])
                         sse_size++
                     }
                     else {
@@ -2293,14 +2692,14 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
     stack_padding *= 8l
     loop i: u64 = (? (stack_instrs) then (cast<*struc stbds_array_header>((stack_instrs)) - 1)[].length else 0) while i-- > 0 {
         push_instr(ctx, stack_instrs[i])
-        stack_instrs[i] = 0
+        stack_instrs[i] = nil
     }
     if stack_instrs {
         loop .. while 0 {
             cast<none>((? (stack_instrs) then free((cast<*struc stbds_array_header>((stack_instrs)) - 1)) else cast<none>(0)))
-            (stack_instrs) = 0
+            (stack_instrs) = nil
         }        
-        stack_instrs = 0
+        stack_instrs = nil
     }
     return stack_padding
 }
@@ -2316,22 +2715,22 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
     dst_name: u64 = name
     src: *struc AsmOperand = gen_register(arg_reg)
     asm_type_dst: *struc AssemblyType = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
-    if asm_type_dst[].tag == 42 {
+    if asm_type_dst[].tag == AST_ByteArray_t {
         size: i64 = asm_type_dst[].get._ByteArray.size + offset - 2l
         free_AssemblyType(@asm_type_dst)
         asm_type_dst = make_Byte()
-        src_shr2op: *struc AsmOperand = make_AsmImm(8ul, 1, 0, 0)
+        src_shr2op: *struc AsmOperand = make_AsmImm(8ul, true, false, false)
         asm_type_shr2op: *struc AssemblyType = make_QuadWord()
         loop while offset < size {
             {
-                src_cp: *struc AsmOperand = 0
+                src_cp: *struc AsmOperand = nil
                 if src ~= src_cp {
                     free_AsmOperand(@src_cp)
                     src_cp = src
                     (src_cp)[]._ref_count++
                 }
                 dst: *struc AsmOperand = make_AsmPseudoMem(dst_name, offset)
-                asm_type_dst_cp: *struc AssemblyType = 0
+                asm_type_dst_cp: *struc AssemblyType = nil
                 if asm_type_dst ~= asm_type_dst_cp {
                     free_AssemblyType(@asm_type_dst_cp)
                     asm_type_dst_cp = asm_type_dst
@@ -2340,20 +2739,20 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
                 push_instr(ctx, make_AsmMov(@asm_type_dst_cp, @src_cp, @dst))
             }
             {
-                binop: struc AsmBinaryOp = make_AsmBinaryOp(266)
-                src_shr2op_cp: *struc AsmOperand = 0
+                binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftRight_t)
+                src_shr2op_cp: *struc AsmOperand = nil
                 if src_shr2op ~= src_shr2op_cp {
                     free_AsmOperand(@src_shr2op_cp)
                     src_shr2op_cp = src_shr2op
                     (src_shr2op_cp)[]._ref_count++
                 }
-                src_cp: *struc AsmOperand = 0
+                src_cp: *struc AsmOperand = nil
                 if src ~= src_cp {
                     free_AsmOperand(@src_cp)
                     src_cp = src
                     (src_cp)[]._ref_count++
                 }
-                asm_type_shr2op_cp: *struc AssemblyType = 0
+                asm_type_shr2op_cp: *struc AssemblyType = nil
                 if asm_type_shr2op ~= asm_type_shr2op_cp {
                     free_AssemblyType(@asm_type_shr2op_cp)
                     asm_type_shr2op_cp = asm_type_shr2op
@@ -2364,14 +2763,14 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
             offset++
         }
         {
-            src_cp: *struc AsmOperand = 0
+            src_cp: *struc AsmOperand = nil
             if src ~= src_cp {
                 free_AsmOperand(@src_cp)
                 src_cp = src
                 (src_cp)[]._ref_count++
             }
             dst: *struc AsmOperand = make_AsmPseudoMem(dst_name, offset)
-            asm_type_dst_cp: *struc AssemblyType = 0
+            asm_type_dst_cp: *struc AssemblyType = nil
             if asm_type_dst ~= asm_type_dst_cp {
                 free_AssemblyType(@asm_type_dst_cp)
                 asm_type_dst_cp = asm_type_dst
@@ -2380,8 +2779,8 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
             push_instr(ctx, make_AsmMov(@asm_type_dst_cp, @src_cp, @dst))
         }
         {
-            binop: struc AsmBinaryOp = make_AsmBinaryOp(266)
-            src_cp: *struc AsmOperand = 0
+            binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftRight_t)
+            src_cp: *struc AsmOperand = nil
             if src ~= src_cp {
                 free_AsmOperand(@src_cp)
                 src_cp = src
@@ -2396,7 +2795,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
         }
     }
     else {
-        dst: *struc AsmOperand = 0
+        dst: *struc AsmOperand = nil
         {
             to_offset: i64 = offset
             dst = make_AsmPseudoMem(dst_name, to_offset)
@@ -2407,17 +2806,17 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
 }
 
 fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
-    is_ret_memory: i32 = 0
+    is_ret_memory: i32 = false
     fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
     if node[].dst and is_value_struct(ctx, node[].dst) {
         name: u64 = node[].dst[].get._TacVariable.name
         struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
         struct_8b_class(ctx, struct_type)
-        if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == 2 {
-            is_ret_memory = 1
+        if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_memory {
+            is_ret_memory = true
             {
                 src: *struc AsmOperand = gen_op(ctx, node[].dst)
-                dst: *struc AsmOperand = gen_register(4)
+                dst: *struc AsmOperand = gen_register(REG_Di)
                 push_instr(ctx, make_AsmLea(@src, @dst))
             }
         }
@@ -2433,32 +2832,32 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
         }
     }
     if not node[].dst {
-        ret_2_reg_mask(fun_type, 0, 0)
+        ret_2_reg_mask(fun_type, false, false)
     }
     elif is_ret_memory {
-        ret_1_reg_mask(fun_type, 1)
+        ret_1_reg_mask(fun_type, true)
     }
     elif is_value_dbl(ctx, node[].dst) {
-        ret_call_instr(ctx, node[].dst, 16)
-        ret_1_reg_mask(fun_type, 0)
+        ret_call_instr(ctx, node[].dst, REG_Xmm0)
+        ret_1_reg_mask(fun_type, false)
     }
     elif not is_value_struct(ctx, node[].dst) {
-        ret_call_instr(ctx, node[].dst, 0)
-        ret_1_reg_mask(fun_type, 1)
+        ret_call_instr(ctx, node[].dst, REG_Ax)
+        ret_1_reg_mask(fun_type, true)
     }
     else {
-        reg_size: i32 = 0
+        reg_size: i32 = false
         name: u64 = node[].dst[].get._TacVariable.name
         struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
         struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
         match struct_8b[].clss[0] {
-            -> 0 {
-                ret_8b_call_instr(ctx, name, 0l, struct_type, 0)
-                reg_size = 1
+            -> CLS_integer {
+                ret_8b_call_instr(ctx, name, 0l, struct_type, REG_Ax)
+                reg_size = true
                 break
             }
-            -> 1 {
-                ret_8b_call_instr(ctx, name, 0l, 0, 16)
+            -> CLS_sse {
+                ret_8b_call_instr(ctx, name, 0l, nil, REG_Xmm0)
             }
             break
             otherwise {
@@ -2468,13 +2867,13 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
         if struct_8b[].size == 2 {
             sse_size: i32 = not reg_size
             match struct_8b[].clss[1] {
-                -> 0 {
-                    ret_8b_call_instr(ctx, name, 8l, struct_type, ? reg_size then 3 else 0)
+                -> CLS_integer {
+                    ret_8b_call_instr(ctx, name, 8l, struct_type, ? reg_size then REG_Dx else REG_Ax)
                 }
                 break
-                -> 1 {
-                    ret_8b_call_instr(ctx, name, 8l, 0, ? sse_size then 17 else 16)
-                    sse_size = 1
+                -> CLS_sse {
+                    ret_8b_call_instr(ctx, name, 8l, nil, ? sse_size then REG_Xmm1 else REG_Xmm0)
+                    sse_size = true
                     break
                 }
                 otherwise {
@@ -2490,9 +2889,9 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
 }
 
 fn zero_xmm_reg_instr(ctx: *struc AsmGenContext) none {
-    binop: struc AsmBinaryOp = make_AsmBinaryOp(264)
-    src: *struc AsmOperand = gen_register(16)
-    src_cp: *struc AsmOperand = 0
+    binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitXor_t)
+    src: *struc AsmOperand = gen_register(REG_Xmm0)
+    src_cp: *struc AsmOperand = nil
     if src ~= src_cp {
         free_AsmOperand(@src_cp)
         src_cp = src
@@ -2508,13 +2907,13 @@ fn unop_int_arithmetic_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) n
     asm_type_src: *struc AssemblyType = gen_asm_type(ctx, node[].src)
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
-        asm_type_src_cp: *struc AssemblyType = 0
+        asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
@@ -2535,13 +2934,13 @@ fn unop_dbl_neg_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
     asm_type_src1: *struc AssemblyType = make_BackendDouble()
     {
         src1: *struc AsmOperand = gen_op(ctx, node[].src)
-        src1_dst_cp: *struc AsmOperand = 0
+        src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2551,7 +2950,7 @@ fn unop_dbl_neg_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
     }
 
     {
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(264)
+        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitXor_t)
         src2: *struc AsmOperand = dbl_static_const_op(ctx, 9223372036854775808ul, 16)
         push_instr(ctx, make_AsmBinary(@binop, @asm_type_src1, @src2, @src1_dst))
     }
@@ -2567,12 +2966,12 @@ fn unop_neg_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
 }
 
 fn unop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
-    imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
+    imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
 
     cmp_dst: *struc AsmOperand = gen_op(ctx, node[].dst)
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        imm_zero_cp: *struc AsmOperand = 0
+        imm_zero_cp: *struc AsmOperand = nil
         if imm_zero ~= imm_zero_cp {
             free_AsmOperand(@imm_zero_cp)
             imm_zero_cp = imm_zero
@@ -2583,7 +2982,7 @@ fn unop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
     }
 
     {
-        cmp_dst_cp: *struc AsmOperand = 0
+        cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
@@ -2593,24 +2992,24 @@ fn unop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(238)
+        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
         push_instr(ctx, make_AsmSetCC(@cond_code_e, @cmp_dst))
     }
 }
 
 fn unop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
-    target_nan: u64 = repr_asm_label(ctx, 0)
+    target_nan: u64 = repr_asm_label(ctx, LBL_Lcomisd_nan)
     cmp_dst: *struc AsmOperand = gen_op(ctx, node[].dst)
     zero_xmm_reg_instr(ctx)
     {
-        reg_zero: *struc AsmOperand = gen_register(16)
+        reg_zero: *struc AsmOperand = gen_register(REG_Xmm0)
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         asm_type_src: *struc AssemblyType = make_BackendDouble()
         push_instr(ctx, make_AsmCmp(@asm_type_src, @reg_zero, @src))
     }
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
-        cmp_dst_cp: *struc AsmOperand = 0
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
+        cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
@@ -2620,11 +3019,11 @@ fn unop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(248)
+        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(238)
+        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
         push_instr(ctx, make_AsmSetCC(@cond_code_e, @cmp_dst))
     }
     push_instr(ctx, make_AsmLabel(target_nan))
@@ -2641,15 +3040,15 @@ fn unop_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none
 
 fn unary_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
     match node[].unop.tag {
-        -> 148 {
+        -> AST_TacComplement_t {
             unop_int_arithmetic_instr(ctx, node)
         }
         break
-        -> 149 {
+        -> AST_TacNegate_t {
             unop_neg_instr(ctx, node)
         }
         break
-        -> 150 {
+        -> AST_TacNot_t {
             unop_conditional_instr(ctx, node)
         }
         break
@@ -2665,13 +3064,13 @@ fn binop_arithmetic_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
     asm_type_src1: *struc AssemblyType = gen_asm_type(ctx, node[].src1)
     {
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
-        src1_dst_cp: *struc AsmOperand = 0
+        src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2688,18 +3087,18 @@ fn binop_arithmetic_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
 }
 
 fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
-    src1_dst: *struc AsmOperand = gen_register(0)
+    src1_dst: *struc AsmOperand = gen_register(REG_Ax)
 
     asm_type_src1: *struc AssemblyType = gen_asm_type(ctx, node[].src1)
     {
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
-        src1_dst_cp: *struc AsmOperand = 0
+        src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2709,7 +3108,7 @@ fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
     }
 
     {
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2719,7 +3118,7 @@ fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
     }
     {
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2734,18 +3133,18 @@ fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
 }
 
 fn unsigned_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
-    src1_dst: *struc AsmOperand = gen_register(0)
+    src1_dst: *struc AsmOperand = gen_register(REG_Ax)
 
     asm_type_src1: *struc AssemblyType = gen_asm_type(ctx, node[].src1)
     {
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
-        src1_dst_cp: *struc AsmOperand = 0
+        src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2755,9 +3154,9 @@ fn unsigned_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none
     }
 
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
-        imm_zero_dst: *struc AsmOperand = gen_register(3)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
+        imm_zero_dst: *struc AsmOperand = gen_register(REG_Dx)
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2767,7 +3166,7 @@ fn unsigned_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none
     }
     {
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2797,8 +3196,8 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
     asm_type_src1: *struc AssemblyType = gen_asm_type(ctx, node[].src1)
     {
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
-        src1_dst: *struc AsmOperand = gen_register(0)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        src1_dst: *struc AsmOperand = gen_register(REG_Ax)
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2808,7 +3207,7 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
     }
 
     {
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2818,7 +3217,7 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
     }
     {
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2827,20 +3226,20 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
         push_instr(ctx, make_AsmIdiv(@asm_type_src1_cp, @src2))
     }
     {
-        dst_src: *struc AsmOperand = gen_register(3)
+        dst_src: *struc AsmOperand = gen_register(REG_Dx)
         dst: *struc AsmOperand = gen_op(ctx, node[].dst)
         push_instr(ctx, make_AsmMov(@asm_type_src1, @dst_src, @dst))
     }
 }
 
 fn unsigned_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
-    dst_src: *struc AsmOperand = gen_register(3)
+    dst_src: *struc AsmOperand = gen_register(REG_Dx)
 
     asm_type_src1: *struc AssemblyType = gen_asm_type(ctx, node[].src1)
     {
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
-        src1_dst: *struc AsmOperand = gen_register(0)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        src1_dst: *struc AsmOperand = gen_register(REG_Ax)
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2850,14 +3249,14 @@ fn unsigned_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) n
     }
 
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
-        dst_src_cp: *struc AsmOperand = 0
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
+        dst_src_cp: *struc AsmOperand = nil
         if dst_src ~= dst_src_cp {
             free_AsmOperand(@dst_src_cp)
             dst_src_cp = dst_src
             (dst_src_cp)[]._ref_count++
         }
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2867,7 +3266,7 @@ fn unsigned_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) n
     }
     {
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
-        asm_type_src1_cp: *struc AssemblyType = 0
+        asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
@@ -2900,8 +3299,8 @@ fn binop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
     }
 
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
-        cmp_dst_cp: *struc AsmOperand = 0
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
+        cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
@@ -2911,7 +3310,7 @@ fn binop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code: struc AsmCondCode = make_AsmCondCode(237)
+        cond_code: struc AsmCondCode = make_AsmCondCode(AST_AsmCondCode_t)
         if is_value_signed(ctx, node[].src1) {
             cond_code = gen_signed_cond_code(@node[].binop)
         }
@@ -2923,7 +3322,7 @@ fn binop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
 }
 
 fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
-    target_nan: u64 = repr_asm_label(ctx, 0)
+    target_nan: u64 = repr_asm_label(ctx, LBL_Lcomisd_nan)
 
     cmp_dst: *struc AsmOperand = gen_op(ctx, node[].dst)
     {
@@ -2934,8 +3333,8 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
     }
 
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
-        cmp_dst_cp: *struc AsmOperand = 0
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
+        cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
@@ -2945,15 +3344,15 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(248)
+        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
         cond_code: struc AsmCondCode = gen_unsigned_cond_code(@node[].binop)
-        if cond_code.tag == 239 {
-            target_nan_ne: u64 = repr_asm_label(ctx, 0)
+        if cond_code.tag == AST_AsmNE_t {
+            target_nan_ne: u64 = repr_asm_label(ctx, LBL_Lcomisd_nan)
             {
-                cmp_dst_cp: *struc AsmOperand = 0
+                cmp_dst_cp: *struc AsmOperand = nil
                 if cmp_dst ~= cmp_dst_cp {
                     free_AsmOperand(@cmp_dst_cp)
                     cmp_dst_cp = cmp_dst
@@ -2964,7 +3363,7 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
             push_instr(ctx, make_AsmJmp(target_nan_ne))
             push_instr(ctx, make_AsmLabel(target_nan))
             {
-                cond_code_e: struc AsmCondCode = make_AsmCondCode(238)
+                cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
                 push_instr(ctx, make_AsmSetCC(@cond_code_e, @cmp_dst))
             }
             push_instr(ctx, make_AsmLabel(target_nan_ne))
@@ -2987,15 +3386,15 @@ fn binop_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) no
 
 fn binary_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
     match node[].binop.tag {
-        -> 152 {
-            -> 153 {
-                -> 154 {
-                    -> 157 {
-                        -> 158 {
-                            -> 159 {
-                                -> 160 {
-                                    -> 161 {
-                                        -> 162 {
+        -> AST_TacAdd_t {
+            -> AST_TacSubtract_t {
+                -> AST_TacMultiply_t {
+                    -> AST_TacBitAnd_t {
+                        -> AST_TacBitOr_t {
+                            -> AST_TacBitXor_t {
+                                -> AST_TacBitShiftLeft_t {
+                                    -> AST_TacBitShiftRight_t {
+                                        -> AST_TacBitShrArithmetic_t {
                                             binop_arithmetic_instr(ctx, node)
                                         }
                                     }
@@ -3007,20 +3406,20 @@ fn binary_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
             }
         }
         break
-        -> 155 {
+        -> AST_TacDivide_t {
             binop_divide_instr(ctx, node)
         }
         break
-        -> 156 {
+        -> AST_TacRemainder_t {
             binop_remainder_instr(ctx, node)
         }
         break
-        -> 163 {
-            -> 164 {
-                -> 165 {
-                    -> 166 {
-                        -> 167 {
-                            -> 168 {
+        -> AST_TacEqual_t {
+            -> AST_TacNotEqual_t {
+                -> AST_TacLessThan_t {
+                    -> AST_TacLessOrEqual_t {
+                        -> AST_TacGreaterThan_t {
+                            -> AST_TacGreaterOrEqual_t {
                                 binop_conditional_instr(ctx, node)
                             }
                         }
@@ -3044,7 +3443,7 @@ fn copy_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopy) none {
     loop while size > 0l {
         src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
         dst: *struc AsmOperand = make_AsmPseudoMem(dst_name, offset)
-        asm_type_src: *struc AssemblyType = 0
+        asm_type_src: *struc AssemblyType = nil
         if size >= 8l {
             asm_type_src = make_QuadWord()
             size -= 8l
@@ -3081,9 +3480,9 @@ fn copy_instr(ctx: *struc AsmGenContext, node: *struc TacCopy) none {
 }
 
 fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
-    src: *struc AsmOperand = 0
+    src: *struc AsmOperand = nil
     {
-        if node[].src[].tag == 171 {
+        if node[].src[].tag == AST_TacVariable_t {
             name: u64 = node[].src[].get._TacVariable.name
             loop .. while 0 {
                 (ctx[].frontend[].addressed_set) = stbds_hmput_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)
@@ -3091,7 +3490,7 @@ fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
                 (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].value = (0)
             }            
             map_it: i64 = (? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)
-            if map_it ~= -1 and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == 32 {
+            if map_it ~= -1 and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == AST_ConstantAttr_t {
                 src = make_AsmData(name, 0l)
                 jump Lpass
             }
@@ -3106,7 +3505,7 @@ fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
 fn load_struct_instr(ctx: *struc AsmGenContext, node: *struc TacLoad) none {
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src_ptr)
-        dst: *struc AsmOperand = gen_register(0)
+        dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src: *struc AssemblyType = make_QuadWord()
         push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
     }
@@ -3116,9 +3515,9 @@ fn load_struct_instr(ctx: *struc AsmGenContext, node: *struc TacLoad) none {
         size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
         offset: i64 = 0l
         loop while size > 0l {
-            src: *struc AsmOperand = gen_memory(0, offset)
+            src: *struc AsmOperand = gen_memory(REG_Ax, offset)
             dst: *struc AsmOperand = make_AsmPseudoMem(name, offset)
-            asm_type_dst: *struc AssemblyType = 0
+            asm_type_dst: *struc AssemblyType = nil
             if size >= 8l {
                 asm_type_dst = make_QuadWord()
                 size -= 8l
@@ -3142,12 +3541,12 @@ fn load_struct_instr(ctx: *struc AsmGenContext, node: *struc TacLoad) none {
 fn load_scalar_instr(ctx: *struc AsmGenContext, node: *struc TacLoad) none {
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src_ptr)
-        dst: *struc AsmOperand = gen_register(0)
+        dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src: *struc AssemblyType = make_QuadWord()
         push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
     }
     {
-        src: *struc AsmOperand = gen_memory(0, 0l)
+        src: *struc AsmOperand = gen_memory(REG_Ax, 0l)
         dst: *struc AsmOperand = gen_op(ctx, node[].dst)
         asm_type_dst: *struc AssemblyType = gen_asm_type(ctx, node[].dst)
         push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
@@ -3166,7 +3565,7 @@ fn load_instr(ctx: *struc AsmGenContext, node: *struc TacLoad) none {
 fn store_struct_instr(ctx: *struc AsmGenContext, node: *struc TacStore) none {
     {
         src: *struc AsmOperand = gen_op(ctx, node[].dst_ptr)
-        dst: *struc AsmOperand = gen_register(0)
+        dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src: *struc AssemblyType = make_QuadWord()
         push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
     }
@@ -3177,8 +3576,8 @@ fn store_struct_instr(ctx: *struc AsmGenContext, node: *struc TacStore) none {
         offset: i64 = 0l
         loop while size > 0l {
             src: *struc AsmOperand = make_AsmPseudoMem(name, offset)
-            dst: *struc AsmOperand = gen_memory(0, offset)
-            asm_type_dst: *struc AssemblyType = 0
+            dst: *struc AsmOperand = gen_memory(REG_Ax, offset)
+            asm_type_dst: *struc AssemblyType = nil
             if size >= 8l {
                 asm_type_dst = make_QuadWord()
                 size -= 8l
@@ -3202,13 +3601,13 @@ fn store_struct_instr(ctx: *struc AsmGenContext, node: *struc TacStore) none {
 fn store_scalar_instr(ctx: *struc AsmGenContext, node: *struc TacStore) none {
     {
         src: *struc AsmOperand = gen_op(ctx, node[].dst_ptr)
-        dst: *struc AsmOperand = gen_register(0)
+        dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src: *struc AssemblyType = make_QuadWord()
         push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
     }
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src)
-        dst: *struc AsmOperand = gen_memory(0, 0l)
+        dst: *struc AsmOperand = gen_memory(REG_Ax, 0l)
         asm_type_dst: *struc AssemblyType = gen_asm_type(ctx, node[].src)
         push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
     }
@@ -3226,15 +3625,15 @@ fn store_instr(ctx: *struc AsmGenContext, node: *struc TacStore) none {
 fn const_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none {
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src_ptr)
-        dst: *struc AsmOperand = gen_register(0)
+        dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src: *struc AssemblyType = make_QuadWord()
         push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
     }
     {
-        src: *struc AsmOperand = 0
+        src: *struc AsmOperand = nil
         {
             constant: *struc CConst = node[].idx[].get._TacConstant.constant
-            src = gen_memory(0, constant[].get._CConstLong.value * node[].scale)
+            src = gen_memory(REG_Ax, constant[].get._CConstLong.value * node[].scale)
         }
         dst: *struc AsmOperand = gen_op(ctx, node[].dst)
         push_instr(ctx, make_AsmLea(@src, @dst))
@@ -3245,8 +3644,8 @@ fn scalar_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) n
     asm_type_src: *struc AssemblyType = make_QuadWord()
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src_ptr)
-        dst: *struc AsmOperand = gen_register(0)
-        asm_type_src_cp: *struc AssemblyType = 0
+        dst: *struc AsmOperand = gen_register(REG_Ax)
+        asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
@@ -3257,11 +3656,11 @@ fn scalar_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) n
 
     {
         src: *struc AsmOperand = gen_op(ctx, node[].idx)
-        dst: *struc AsmOperand = gen_register(3)
+        dst: *struc AsmOperand = gen_register(REG_Dx)
         push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
     }
     {
-        src: *struc AsmOperand = gen_indexed(0, 3, node[].scale)
+        src: *struc AsmOperand = gen_indexed(REG_Ax, REG_Dx, node[].scale)
         dst: *struc AsmOperand = gen_op(ctx, node[].dst)
         push_instr(ctx, make_AsmLea(@src, @dst))
     }
@@ -3270,11 +3669,11 @@ fn scalar_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) n
 fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none {
     asm_type_src: *struc AssemblyType = make_QuadWord()
 
-    src_dst: *struc AsmOperand = gen_register(3)
+    src_dst: *struc AsmOperand = gen_register(REG_Dx)
     {
         src: *struc AsmOperand = gen_op(ctx, node[].src_ptr)
-        dst: *struc AsmOperand = gen_register(0)
-        asm_type_src_cp: *struc AssemblyType = 0
+        dst: *struc AsmOperand = gen_register(REG_Ax)
+        asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
@@ -3285,13 +3684,13 @@ fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) non
 
     {
         src: *struc AsmOperand = gen_op(ctx, node[].idx)
-        src_dst_cp: *struc AsmOperand = 0
+        src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
-        asm_type_src_cp: *struc AssemblyType = 0
+        asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
@@ -3300,7 +3699,7 @@ fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) non
         push_instr(ctx, make_AsmMov(@asm_type_src_cp, @src, @src_dst_cp))
     }
     {
-        src: *struc AsmOperand = 0
+        src: *struc AsmOperand = nil
         {
             value: u64 = cast<u64>(node[].scale)
             is_byte: i32 = node[].scale <= 127l and node[].scale >= -128l
@@ -3308,11 +3707,11 @@ fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) non
             is_neg: i32 = node[].scale < 0l
             src = make_AsmImm(value, is_byte, is_quad, is_neg)
         }
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(260)
+        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmMult_t)
         push_instr(ctx, make_AsmBinary(@binop, @asm_type_src, @src, @src_dst))
     }
     {
-        src: *struc AsmOperand = gen_indexed(0, 3, 1l)
+        src: *struc AsmOperand = gen_indexed(REG_Ax, REG_Dx, 1l)
         dst: *struc AsmOperand = gen_op(ctx, node[].dst)
         push_instr(ctx, make_AsmLea(@src, @dst))
     }
@@ -3339,11 +3738,11 @@ fn var_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none
 
 fn add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none {
     match node[].idx[].tag {
-        -> 170 {
+        -> AST_TacConstant_t {
             const_idx_add_ptr_instr(ctx, node)
         }
         break
-        -> 171 {
+        -> AST_TacVariable_t {
             var_idx_add_ptr_instr(ctx, node)
         }
         break
@@ -3361,13 +3760,13 @@ fn cp_to_offset_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopyToOf
     loop while size > 0l {
         src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
 
-        dst: *struc AsmOperand = 0
+        dst: *struc AsmOperand = nil
         {
             dst_name: u64 = node[].dst_name
             to_offset: i64 = offset + node[].offset
             dst = make_AsmPseudoMem(dst_name, to_offset)
         }
-        asm_type_src: *struc AssemblyType = 0
+        asm_type_src: *struc AssemblyType = nil
         if size >= 8l {
             asm_type_src = make_QuadWord()
             size -= 8l
@@ -3390,7 +3789,7 @@ fn cp_to_offset_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopyToOf
 fn cp_to_offset_scalar_instr(ctx: *struc AsmGenContext, node: *struc TacCopyToOffset) none {
     src: *struc AsmOperand = gen_op(ctx, node[].src)
 
-    dst: *struc AsmOperand = 0
+    dst: *struc AsmOperand = nil
     {
         dst_name: u64 = node[].dst_name
         to_offset: i64 = node[].offset
@@ -3415,14 +3814,14 @@ fn cp_from_offset_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopyFr
     size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
     offset: i64 = 0l
     loop while size > 0l {
-        src: *struc AsmOperand = 0
+        src: *struc AsmOperand = nil
         {
             src_name: u64 = node[].src_name
             from_offset: i64 = offset + node[].offset
             src = make_AsmPseudoMem(src_name, from_offset)
         }
         dst: *struc AsmOperand = make_AsmPseudoMem(dst_name, offset)
-        asm_type_dst: *struc AssemblyType = 0
+        asm_type_dst: *struc AssemblyType = nil
         if size >= 8l {
             asm_type_dst = make_QuadWord()
             size -= 8l
@@ -3443,7 +3842,7 @@ fn cp_from_offset_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopyFr
 }
 
 fn cp_from_offset_scalar_instr(ctx: *struc AsmGenContext, node: *struc TacCopyFromOffset) none {
-    src: *struc AsmOperand = 0
+    src: *struc AsmOperand = nil
     {
         src_name: u64 = node[].src_name
         from_offset: i64 = node[].offset
@@ -3470,34 +3869,34 @@ fn jump_instr(ctx: *struc AsmGenContext, node: *struc TacJump) none {
 
 fn jmp_eq_0_int_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfZero) none {
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         condition: *struc AsmOperand = gen_op(ctx, node[].condition)
         asm_type_cond: *struc AssemblyType = gen_asm_type(ctx, node[].condition)
         push_instr(ctx, make_AsmCmp(@asm_type_cond, @imm_zero, @condition))
     }
     {
         target: u64 = node[].target
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(238)
+        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_e))
     }
 }
 
 fn jmp_eq_0_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfZero) none {
-    target_nan: u64 = repr_asm_label(ctx, 0)
+    target_nan: u64 = repr_asm_label(ctx, LBL_Lcomisd_nan)
     zero_xmm_reg_instr(ctx)
     {
         condition: *struc AsmOperand = gen_op(ctx, node[].condition)
-        reg_zero: *struc AsmOperand = gen_register(16)
+        reg_zero: *struc AsmOperand = gen_register(REG_Xmm0)
         asm_type_cond: *struc AssemblyType = make_BackendDouble()
         push_instr(ctx, make_AsmCmp(@asm_type_cond, @condition, @reg_zero))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(248)
+        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
         target: u64 = node[].target
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(238)
+        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_e))
     }
     push_instr(ctx, make_AsmLabel(target_nan))
@@ -3514,41 +3913,41 @@ fn jmp_eq_0_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfZero) none {
 
 fn jmp_ne_0_int_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfNotZero) none {
     {
-        imm_zero: *struc AsmOperand = make_AsmImm(0ul, 1, 0, 0)
+        imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         condition: *struc AsmOperand = gen_op(ctx, node[].condition)
         asm_type_cond: *struc AssemblyType = gen_asm_type(ctx, node[].condition)
         push_instr(ctx, make_AsmCmp(@asm_type_cond, @imm_zero, @condition))
     }
     {
         target: u64 = node[].target
-        cond_code_ne: struc AsmCondCode = make_AsmCondCode(239)
+        cond_code_ne: struc AsmCondCode = make_AsmCondCode(AST_AsmNE_t)
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_ne))
     }
 }
 
 fn jmp_ne_0_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfNotZero) none {
     target: u64 = node[].target
-    target_nan: u64 = repr_asm_label(ctx, 0)
-    target_nan_ne: u64 = repr_asm_label(ctx, 0)
+    target_nan: u64 = repr_asm_label(ctx, LBL_Lcomisd_nan)
+    target_nan_ne: u64 = repr_asm_label(ctx, LBL_Lcomisd_nan)
     zero_xmm_reg_instr(ctx)
     {
         condition: *struc AsmOperand = gen_op(ctx, node[].condition)
-        reg_zero: *struc AsmOperand = gen_register(16)
+        reg_zero: *struc AsmOperand = gen_register(REG_Xmm0)
         asm_type_cond: *struc AssemblyType = make_BackendDouble()
         push_instr(ctx, make_AsmCmp(@asm_type_cond, @condition, @reg_zero))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(248)
+        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
-        cond_code_ne: struc AsmCondCode = make_AsmCondCode(239)
+        cond_code_ne: struc AsmCondCode = make_AsmCondCode(AST_AsmNE_t)
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_ne))
     }
     push_instr(ctx, make_AsmJmp(target_nan_ne))
     push_instr(ctx, make_AsmLabel(target_nan))
     {
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(238)
+        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_e))
     }
     push_instr(ctx, make_AsmLabel(target_nan_ne))
@@ -3570,91 +3969,91 @@ fn label_instr(ctx: *struc AsmGenContext, node: *struc TacLabel) none {
 
 fn gen_instr(ctx: *struc AsmGenContext, node: *struc TacInstruction) none {
     match node[].tag {
-        -> 177 {
+        -> AST_TacReturn_t {
             ret_instr(ctx, @node[].get._TacReturn)
         }
         break
-        -> 178 {
+        -> AST_TacSignExtend_t {
             sign_extend_instr(ctx, @node[].get._TacSignExtend)
         }
         break
-        -> 179 {
+        -> AST_TacTruncate_t {
             truncate_instr(ctx, @node[].get._TacTruncate)
         }
         break
-        -> 180 {
+        -> AST_TacZeroExtend_t {
             zero_extend_instr(ctx, @node[].get._TacZeroExtend)
         }
         break
-        -> 181 {
+        -> AST_TacDoubleToInt_t {
             dbl_to_signed_instr(ctx, @node[].get._TacDoubleToInt)
         }
         break
-        -> 182 {
+        -> AST_TacDoubleToUInt_t {
             dbl_to_unsigned_instr(ctx, @node[].get._TacDoubleToUInt)
         }
         break
-        -> 183 {
+        -> AST_TacIntToDouble_t {
             signed_to_dbl_instr(ctx, @node[].get._TacIntToDouble)
         }
         break
-        -> 184 {
+        -> AST_TacUIntToDouble_t {
             unsigned_to_dbl_instr(ctx, @node[].get._TacUIntToDouble)
         }
         break
-        -> 185 {
+        -> AST_TacFunCall_t {
             call_instr(ctx, @node[].get._TacFunCall)
         }
         break
-        -> 186 {
+        -> AST_TacUnary_t {
             unary_instr(ctx, @node[].get._TacUnary)
         }
         break
-        -> 187 {
+        -> AST_TacBinary_t {
             binary_instr(ctx, @node[].get._TacBinary)
         }
         break
-        -> 188 {
+        -> AST_TacCopy_t {
             copy_instr(ctx, @node[].get._TacCopy)
         }
         break
-        -> 189 {
+        -> AST_TacGetAddress_t {
             getaddr_instr(ctx, @node[].get._TacGetAddress)
         }
         break
-        -> 190 {
+        -> AST_TacLoad_t {
             load_instr(ctx, @node[].get._TacLoad)
         }
         break
-        -> 191 {
+        -> AST_TacStore_t {
             store_instr(ctx, @node[].get._TacStore)
         }
         break
-        -> 192 {
+        -> AST_TacAddPtr_t {
             add_ptr_instr(ctx, @node[].get._TacAddPtr)
         }
         break
-        -> 193 {
+        -> AST_TacCopyToOffset_t {
             cp_to_offset_instr(ctx, @node[].get._TacCopyToOffset)
         }
         break
-        -> 194 {
+        -> AST_TacCopyFromOffset_t {
             cp_from_offset_instr(ctx, @node[].get._TacCopyFromOffset)
         }
         break
-        -> 195 {
+        -> AST_TacJump_t {
             jump_instr(ctx, @node[].get._TacJump)
         }
         break
-        -> 196 {
+        -> AST_TacJumpIfZero_t {
             jmp_eq_0_instr(ctx, @node[].get._TacJumpIfZero)
         }
         break
-        -> 197 {
+        -> AST_TacJumpIfNotZero_t {
             jmp_ne_0_instr(ctx, @node[].get._TacJumpIfNotZero)
         }
         break
-        -> 198 {
+        -> AST_TacLabel_t {
             label_instr(ctx, @node[].get._TacLabel)
         }
         break
@@ -3675,7 +4074,7 @@ fn gen_instr_list(ctx: *struc AsmGenContext, node_list: **struc TacInstruction) 
 fn reg_fun_param_instr(ctx: *struc AsmGenContext, name: u64, arg_reg: i32) none {
     src: *struc AsmOperand = gen_register(arg_reg)
 
-    dst: *struc AsmOperand = 0
+    dst: *struc AsmOperand = nil
     {
         dst_name: u64 = name
         dst = make_AsmPseudo(dst_name)
@@ -3685,9 +4084,9 @@ fn reg_fun_param_instr(ctx: *struc AsmGenContext, name: u64, arg_reg: i32) none 
 }
 
 fn stack_fun_param_instr(ctx: *struc AsmGenContext, name: u64, stack_bytes: i64) none {
-    src: *struc AsmOperand = gen_memory(15, stack_bytes)
+    src: *struc AsmOperand = gen_memory(REG_Bp, stack_bytes)
 
-    dst: *struc AsmOperand = 0
+    dst: *struc AsmOperand = nil
     {
         dst_name: u64 = name
         dst = make_AsmPseudo(dst_name)
@@ -3702,11 +4101,11 @@ fn reg_8b_fun_param_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, str
 
 fn stack_8b_fun_param_instr(ctx: *struc AsmGenContext, name: u64, stack_bytes: i64, offset: i64, struct_type: *struc Structure) none {
     asm_type_dst: *struc AssemblyType = asm_type_8b(ctx, struct_type, offset)
-    if asm_type_dst[].tag == 42 {
+    if asm_type_dst[].tag == AST_ByteArray_t {
         size: i64 = asm_type_dst[].get._ByteArray.size
         free_AssemblyType(@asm_type_dst)
         loop while size > 0l {
-            src: *struc AsmOperand = gen_memory(15, stack_bytes)
+            src: *struc AsmOperand = gen_memory(REG_Bp, stack_bytes)
             dst: *struc AsmOperand = make_AsmPseudoMem(name, offset)
             if size >= 4l {
                 asm_type_dst = make_LongWord()
@@ -3724,9 +4123,9 @@ fn stack_8b_fun_param_instr(ctx: *struc AsmGenContext, name: u64, stack_bytes: i
         }
     }
     else {
-        src: *struc AsmOperand = gen_memory(15, stack_bytes)
+        src: *struc AsmOperand = gen_memory(REG_Bp, stack_bytes)
 
-        dst: *struc AsmOperand = 0
+        dst: *struc AsmOperand = nil
         {
             dst_name: u64 = name
             to_offset: i64 = offset
@@ -3744,7 +4143,7 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
     loop i: u64 = 0 while i < (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) .. ++i {
         param: u64 = node[].params[i]
         param_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((param))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
-        if param_type[].tag == 8 {
+        if param_type[].tag == AST_Double_t {
             if sse_size < 8 {
                 reg_fun_param_instr(ctx, param, ctx[].sse_arg_regs[sse_size])
                 sse_size++
@@ -3754,7 +4153,7 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
                 stack_bytes += 8l
             }
         }
-        elif param_type[].tag ~= 13 {
+        elif param_type[].tag ~= AST_Structure_t {
             if reg_size < 6 {
                 reg_fun_param_instr(ctx, param, ctx[].arg_regs[reg_size])
                 reg_size++
@@ -3770,11 +4169,11 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
             struct_type: *struc Structure = @param_type[].get._Structure
             struct_8b_class(ctx, struct_type)
             struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
-            if struct_8b[].clss[0] ~= 2 {
+            if struct_8b[].clss[0] ~= CLS_memory {
                 struct_reg_size = 0
                 struct_sse_size = 0
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
-                    if struct_8b[].clss[j] == 1 {
+                    if struct_8b[].clss[j] == CLS_sse {
                         struct_sse_size++
                     }
                     else {
@@ -3785,8 +4184,8 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
             if struct_reg_size + reg_size <= 6 and struct_sse_size + sse_size <= 8 {
                 offset: i64 = 0l
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
-                    if struct_8b[].clss[j] == 1 {
-                        reg_8b_fun_param_instr(ctx, param, offset, 0, ctx[].sse_arg_regs[sse_size])
+                    if struct_8b[].clss[j] == CLS_sse {
+                        reg_8b_fun_param_instr(ctx, param, offset, nil, ctx[].sse_arg_regs[sse_size])
                         sse_size++
                     }
                     else {
@@ -3812,20 +4211,20 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
 fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc AsmTopLevel {
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
-    is_ret_memory: i32 = 0
-    body: **struc AsmInstruction = 0
+    is_ret_memory: i32 = false
+    body: **struc AsmInstruction = nil
     (((body) = stbds_arrgrowf((body), sizeof((body)[]), (0), ((? (node[].body) then (cast<*struc stbds_array_header>((node[].body)) - 1)[].length else 0)))))
     {
         ctx[].p_instrs = @body
         fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
-        if fun_type[].ret_type[].tag == 13 {
+        if fun_type[].ret_type[].tag == AST_Structure_t {
             struct_type: *struc Structure = @fun_type[].ret_type[].get._Structure
             struct_8b_class(ctx, struct_type)
-            if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == 2 {
-                is_ret_memory = 1
+            if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_memory {
+                is_ret_memory = true
                 {
-                    src: *struc AsmOperand = gen_register(4)
-                    dst: *struc AsmOperand = gen_memory(15, -8l)
+                    src: *struc AsmOperand = gen_register(REG_Di)
+                    dst: *struc AsmOperand = gen_memory(REG_Bp, -8l)
                     asm_type_dst: *struc AssemblyType = make_QuadWord()
                     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
                 }
@@ -3834,8 +4233,8 @@ fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc As
         fun_param_toplvl(ctx, node, fun_type, is_ret_memory)
         ctx[].p_fun_type = fun_type
         gen_instr_list(ctx, node[].body)
-        ctx[].p_fun_type = 0
-        ctx[].p_instrs = 0
+        ctx[].p_fun_type = nil
+        ctx[].p_instrs = nil
     }
     return make_AsmFunction(name, is_glob, is_ret_memory, @body)
 }
@@ -3844,10 +4243,10 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
-    static_inits: **struc StaticInit = 0
+    static_inits: **struc StaticInit = nil
     (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (0), ((? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0)))))
     loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
-        static_init: *struc StaticInit = 0
+        static_init: *struc StaticInit = nil
         if node[].static_inits[i] ~= static_init {
             free_StaticInit(@static_init)
             static_init = node[].static_inits[i]
@@ -3858,7 +4257,7 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
                 (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
                 (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
             }            
-            static_init = 0
+            static_init = nil
         }        
     }
     return make_AsmStaticVariable(name, alignment, is_glob, @static_inits)
@@ -3870,7 +4269,7 @@ fn push_static_const_toplvl(ctx: *struc AsmGenContext, static_const_toplvls: *st
             (? (not (ctx[].p_static_consts[]) or (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].capacity) then (((ctx[].p_static_consts[]) = stbds_arrgrowf((ctx[].p_static_consts[]), sizeof((ctx[].p_static_consts[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_static_consts[])[(cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length++] = (static_const_toplvls)
         }        
-        static_const_toplvls = 0
+        static_const_toplvls = nil
     }    
 }
 
@@ -3884,7 +4283,7 @@ fn dbl_static_const_toplvl(ctx: *struc AsmGenContext, identifier: u64, dbl_const
 fn gen_static_const_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticConstant) *struc AsmTopLevel {
     name: u64 = node[].name
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
-    static_init: *struc StaticInit = 0
+    static_init: *struc StaticInit = nil
     if node[].static_init ~= static_init {
         free_StaticInit(@static_init)
         static_init = node[].static_init
@@ -3895,13 +4294,13 @@ fn gen_static_const_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticCons
 
 fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTopLevel {
     match node[].tag {
-        -> 200 {
+        -> AST_TacFunction_t {
             return gen_fun_toplvl(ctx, @node[].get._TacFunction)
         }
-        -> 201 {
+        -> AST_TacStaticVariable_t {
             return gen_static_var_toplvl(ctx, @node[].get._TacStaticVariable)
         }
-        -> 202 {
+        -> AST_TacStaticConstant_t {
             return gen_static_const_toplvl(ctx, @node[].get._TacStaticConstant)
         }
         otherwise {
@@ -3911,7 +4310,7 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
 }
 
 fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmProgram {
-    static_const_toplvls: **struc AsmTopLevel = 0
+    static_const_toplvls: **struc AsmTopLevel = nil
     (((static_const_toplvls) = stbds_arrgrowf((static_const_toplvls), sizeof((static_const_toplvls)[]), (0), ((? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0)))))
     loop i: u64 = 0 while i < (? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
         static_const_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_const_toplvls[i])
@@ -3920,10 +4319,10 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
                 (? (not (static_const_toplvls) or (cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].capacity) then (((static_const_toplvls) = stbds_arrgrowf((static_const_toplvls), sizeof((static_const_toplvls)[]), (1), (0))) and 0) else 0)
                 (static_const_toplvls)[(cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].length++] = (static_const_toplvl)
             }            
-            static_const_toplvl = 0
+            static_const_toplvl = nil
         }        
     }
-    top_levels: **struc AsmTopLevel = 0
+    top_levels: **struc AsmTopLevel = nil
     (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (0), ((? (node[].static_var_toplvls) then (cast<*struc stbds_array_header>((node[].static_var_toplvls)) - 1)[].length else 0) + (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0)))))
     {
         ctx[].p_static_consts = @static_const_toplvls
@@ -3934,7 +4333,7 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
                     (? (not (top_levels) or (cast<*struc stbds_array_header>((top_levels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((top_levels)) - 1)[].capacity) then (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (1), (0))) and 0) else 0)
                     (top_levels)[(cast<*struc stbds_array_header>((top_levels)) - 1)[].length++] = (static_var_toplvl)
                 }                
-                static_var_toplvl = 0
+                static_var_toplvl = nil
             }            
         }
         loop i: u64 = 0 while i < (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0) .. ++i {
@@ -3944,10 +4343,10 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
                     (? (not (top_levels) or (cast<*struc stbds_array_header>((top_levels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((top_levels)) - 1)[].capacity) then (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (1), (0))) and 0) else 0)
                     (top_levels)[(cast<*struc stbds_array_header>((top_levels)) - 1)[].length++] = (fun_toplvl)
                 }                
-                fun_toplvl = 0
+                fun_toplvl = nil
             }            
         }
-        ctx[].p_static_consts = 0
+        ctx[].p_static_consts = nil
     }
     return make_AsmProgram(@static_const_toplvls, @top_levels)
 }
@@ -3957,38 +4356,38 @@ pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndC
     {
         ctx.frontend = frontend
         ctx.identifiers = identifiers
-        ctx.arg_regs[0] = 4
-        ctx.arg_regs[1] = 5
-        ctx.arg_regs[2] = 3
-        ctx.arg_regs[3] = 2
-        ctx.arg_regs[4] = 6
-        ctx.arg_regs[5] = 7
-        ctx.sse_arg_regs[0] = 16
-        ctx.sse_arg_regs[1] = 17
-        ctx.sse_arg_regs[2] = 18
-        ctx.sse_arg_regs[3] = 19
-        ctx.sse_arg_regs[4] = 20
-        ctx.sse_arg_regs[5] = 21
-        ctx.sse_arg_regs[6] = 22
-        ctx.sse_arg_regs[7] = 23
-        ctx.dbl_const_table = 0
-        ctx.struct_8b_map = 0
+        ctx.arg_regs[0] = REG_Di
+        ctx.arg_regs[1] = REG_Si
+        ctx.arg_regs[2] = REG_Dx
+        ctx.arg_regs[3] = REG_Cx
+        ctx.arg_regs[4] = REG_R8
+        ctx.arg_regs[5] = REG_R9
+        ctx.sse_arg_regs[0] = REG_Xmm0
+        ctx.sse_arg_regs[1] = REG_Xmm1
+        ctx.sse_arg_regs[2] = REG_Xmm2
+        ctx.sse_arg_regs[3] = REG_Xmm3
+        ctx.sse_arg_regs[4] = REG_Xmm4
+        ctx.sse_arg_regs[5] = REG_Xmm5
+        ctx.sse_arg_regs[6] = REG_Xmm6
+        ctx.sse_arg_regs[7] = REG_Xmm7
+        ctx.dbl_const_table = nil
+        ctx.struct_8b_map = nil
     }
     asm_ast: *struc AsmProgram = gen_program(@ctx, tac_ast[])
     free_TacProgram(tac_ast)
     if ctx.dbl_const_table {
         loop .. while 0 {
-            cast<none>((? (ctx.dbl_const_table) ~= 0 then stbds_hmfree_func((ctx.dbl_const_table) - 1, sizeof((ctx.dbl_const_table)[])) else cast<none>(0)))
-            (ctx.dbl_const_table) = 0
+            cast<none>((? (ctx.dbl_const_table) ~= nil then stbds_hmfree_func((ctx.dbl_const_table) - 1, sizeof((ctx.dbl_const_table)[])) else cast<none>(0)))
+            (ctx.dbl_const_table) = nil
         }        
-        ctx.dbl_const_table = 0
+        ctx.dbl_const_table = nil
     }
     if ctx.struct_8b_map {
         loop .. while 0 {
-            cast<none>((? (ctx.struct_8b_map) ~= 0 then stbds_hmfree_func((ctx.struct_8b_map) - 1, sizeof((ctx.struct_8b_map)[])) else cast<none>(0)))
-            (ctx.struct_8b_map) = 0
+            cast<none>((? (ctx.struct_8b_map) ~= nil then stbds_hmfree_func((ctx.struct_8b_map) - 1, sizeof((ctx.struct_8b_map)[])) else cast<none>(0)))
+            (ctx.struct_8b_map) = nil
         }        
-        ctx.struct_8b_map = 0
+        ctx.struct_8b_map = nil
     }
     return asm_ast
 }

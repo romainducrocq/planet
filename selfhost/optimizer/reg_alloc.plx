@@ -1,5 +1,13 @@
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+m4_define(`bool', `TODO')m4_dnl
+m4_define(`int8_t', `TODO')m4_dnl
+m4_define(`int32_t', `TODO')m4_dnl
+m4_define(`int64_t', `TODO')m4_dnl
+m4_define(`uint8_t', `TODO')m4_dnl
+m4_define(`uint32_t', `TODO')m4_dnl
+m4_define(`uint64_t', `TODO')m4_dnl
+m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;
 extrn fn fflush(stream: *struc FILE) i32;
@@ -8,6 +16,7 @@ extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
 extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+m4_define(`STDERR_FILENO', `2')m4_dnl
 extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 extrn fn strtod(nptr: string, endptr: *string) f64;
@@ -22,6 +31,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+m4_define(`sds', `TODO')m4_dnl
 pub fn sdslen(s: string) u64;
 pub fn sdsnew(init: string) string;
 pub fn sdsdup(s: string) string;
@@ -33,6 +43,19 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+m4_define(`arrlenu', `TODO')m4_dnl
+m4_define(`arrput', `TODO')m4_dnl
+m4_define(`arrpop', `TODO')m4_dnl
+m4_define(`arrfree', `TODO')m4_dnl
+m4_define(`arrsetlen', `TODO')m4_dnl
+m4_define(`arrdelswap', `TODO')m4_dnl
+m4_define(`arrsetcap', `TODO')m4_dnl
+m4_define(`hmput', `TODO')m4_dnl
+m4_define(`hmget', `TODO')m4_dnl
+m4_define(`hmgeti', `TODO')m4_dnl
+m4_define(`hmdel', `TODO')m4_dnl
+m4_define(`hmlenu', `TODO')m4_dnl
+m4_define(`hmfree', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -42,11 +65,19 @@ extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
+m4_define(`error_t', `TODO')m4_dnl
+m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
+m4_define(`CATCH_ENTER', `TODO')m4_dnl
+m4_define(`CATCH_EXIT', `TODO')m4_dnl
+m4_define(`EARLY_EXIT', `TODO')m4_dnl
+m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`string_t', `TODO')m4_dnl
 type struc AsmProgram;
 type struc BackEndContext;
 type struc FrontEndContext;
 pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none;
 type struc FileIoContext;
+m4_define(`hash_t', `TODO')m4_dnl
 
 type struc Pairhash_thash_t(key: u64, value: u64)
 
@@ -54,12 +85,321 @@ type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
 
 type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
-type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`THROW_ABORT', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
+m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`TIdentifier', `TODO')m4_dnl
+m4_define(`TChar', `TODO')m4_dnl
+m4_define(`TInt', `TODO')m4_dnl
+m4_define(`TLong', `TODO')m4_dnl
+m4_define(`TUChar', `TODO')m4_dnl
+m4_define(`TUInt', `TODO')m4_dnl
+m4_define(`TULong', `TODO')m4_dnl
+m4_define(`TDouble', `TODO')m4_dnl
+m4_define(`AST_T', `TODO')m4_dnl
+m4_define(`AST_Type_t', `0')m4_dnl
+m4_define(`AST_Char_t', `1')m4_dnl
+m4_define(`AST_SChar_t', `2')m4_dnl
+m4_define(`AST_UChar_t', `3')m4_dnl
+m4_define(`AST_Int_t', `4')m4_dnl
+m4_define(`AST_Long_t', `5')m4_dnl
+m4_define(`AST_UInt_t', `6')m4_dnl
+m4_define(`AST_ULong_t', `7')m4_dnl
+m4_define(`AST_Double_t', `8')m4_dnl
+m4_define(`AST_Void_t', `9')m4_dnl
+m4_define(`AST_FunType_t', `10')m4_dnl
+m4_define(`AST_Pointer_t', `11')m4_dnl
+m4_define(`AST_Array_t', `12')m4_dnl
+m4_define(`AST_Structure_t', `13')m4_dnl
+m4_define(`AST_StaticInit_t', `14')m4_dnl
+m4_define(`AST_IntInit_t', `15')m4_dnl
+m4_define(`AST_LongInit_t', `16')m4_dnl
+m4_define(`AST_UIntInit_t', `17')m4_dnl
+m4_define(`AST_ULongInit_t', `18')m4_dnl
+m4_define(`AST_CharInit_t', `19')m4_dnl
+m4_define(`AST_UCharInit_t', `20')m4_dnl
+m4_define(`AST_DoubleInit_t', `21')m4_dnl
+m4_define(`AST_ZeroInit_t', `22')m4_dnl
+m4_define(`AST_StringInit_t', `23')m4_dnl
+m4_define(`AST_PointerInit_t', `24')m4_dnl
+m4_define(`AST_InitialValue_t', `25')m4_dnl
+m4_define(`AST_Tentative_t', `26')m4_dnl
+m4_define(`AST_Initial_t', `27')m4_dnl
+m4_define(`AST_NoInitializer_t', `28')m4_dnl
+m4_define(`AST_IdentifierAttr_t', `29')m4_dnl
+m4_define(`AST_FunAttr_t', `30')m4_dnl
+m4_define(`AST_StaticAttr_t', `31')m4_dnl
+m4_define(`AST_ConstantAttr_t', `32')m4_dnl
+m4_define(`AST_LocalAttr_t', `33')m4_dnl
+m4_define(`AST_Symbol_t', `34')m4_dnl
+m4_define(`AST_StructMember_t', `35')m4_dnl
+m4_define(`AST_StructTypedef_t', `36')m4_dnl
+m4_define(`AST_AssemblyType_t', `37')m4_dnl
+m4_define(`AST_Byte_t', `38')m4_dnl
+m4_define(`AST_LongWord_t', `39')m4_dnl
+m4_define(`AST_QuadWord_t', `40')m4_dnl
+m4_define(`AST_BackendDouble_t', `41')m4_dnl
+m4_define(`AST_ByteArray_t', `42')m4_dnl
+m4_define(`AST_BackendSymbol_t', `43')m4_dnl
+m4_define(`AST_BackendObj_t', `44')m4_dnl
+m4_define(`AST_BackendFun_t', `45')m4_dnl
+m4_define(`AST_CConst_t', `46')m4_dnl
+m4_define(`AST_CConstInt_t', `47')m4_dnl
+m4_define(`AST_CConstLong_t', `48')m4_dnl
+m4_define(`AST_CConstUInt_t', `49')m4_dnl
+m4_define(`AST_CConstULong_t', `50')m4_dnl
+m4_define(`AST_CConstDouble_t', `51')m4_dnl
+m4_define(`AST_CConstChar_t', `52')m4_dnl
+m4_define(`AST_CConstUChar_t', `53')m4_dnl
+m4_define(`AST_CStringLiteral_t', `54')m4_dnl
+m4_define(`AST_CUnaryOp_t', `55')m4_dnl
+m4_define(`AST_CComplement_t', `56')m4_dnl
+m4_define(`AST_CNegate_t', `57')m4_dnl
+m4_define(`AST_CNot_t', `58')m4_dnl
+m4_define(`AST_CPrefix_t', `59')m4_dnl
+m4_define(`AST_CPostfix_t', `60')m4_dnl
+m4_define(`AST_CBinaryOp_t', `61')m4_dnl
+m4_define(`AST_CAdd_t', `62')m4_dnl
+m4_define(`AST_CSubtract_t', `63')m4_dnl
+m4_define(`AST_CMultiply_t', `64')m4_dnl
+m4_define(`AST_CDivide_t', `65')m4_dnl
+m4_define(`AST_CRemainder_t', `66')m4_dnl
+m4_define(`AST_CBitAnd_t', `67')m4_dnl
+m4_define(`AST_CBitOr_t', `68')m4_dnl
+m4_define(`AST_CBitXor_t', `69')m4_dnl
+m4_define(`AST_CBitShiftLeft_t', `70')m4_dnl
+m4_define(`AST_CBitShiftRight_t', `71')m4_dnl
+m4_define(`AST_CBitShrArithmetic_t', `72')m4_dnl
+m4_define(`AST_CAnd_t', `73')m4_dnl
+m4_define(`AST_COr_t', `74')m4_dnl
+m4_define(`AST_CEqual_t', `75')m4_dnl
+m4_define(`AST_CNotEqual_t', `76')m4_dnl
+m4_define(`AST_CLessThan_t', `77')m4_dnl
+m4_define(`AST_CLessOrEqual_t', `78')m4_dnl
+m4_define(`AST_CGreaterThan_t', `79')m4_dnl
+m4_define(`AST_CGreaterOrEqual_t', `80')m4_dnl
+m4_define(`AST_CAbstractDeclarator_t', `81')m4_dnl
+m4_define(`AST_CAbstractPointer_t', `82')m4_dnl
+m4_define(`AST_CAbstractArray_t', `83')m4_dnl
+m4_define(`AST_CAbstractBase_t', `84')m4_dnl
+m4_define(`AST_CParam_t', `85')m4_dnl
+m4_define(`AST_CDeclarator_t', `86')m4_dnl
+m4_define(`AST_CIdent_t', `87')m4_dnl
+m4_define(`AST_CPointerDeclarator_t', `88')m4_dnl
+m4_define(`AST_CArrayDeclarator_t', `89')m4_dnl
+m4_define(`AST_CFunDeclarator_t', `90')m4_dnl
+m4_define(`AST_CExp_t', `91')m4_dnl
+m4_define(`AST_CConstant_t', `92')m4_dnl
+m4_define(`AST_CString_t', `93')m4_dnl
+m4_define(`AST_CVar_t', `94')m4_dnl
+m4_define(`AST_CCast_t', `95')m4_dnl
+m4_define(`AST_CUnary_t', `96')m4_dnl
+m4_define(`AST_CBinary_t', `97')m4_dnl
+m4_define(`AST_CAssignment_t', `98')m4_dnl
+m4_define(`AST_CConditional_t', `99')m4_dnl
+m4_define(`AST_CFunctionCall_t', `100')m4_dnl
+m4_define(`AST_CDereference_t', `101')m4_dnl
+m4_define(`AST_CAddrOf_t', `102')m4_dnl
+m4_define(`AST_CSubscript_t', `103')m4_dnl
+m4_define(`AST_CSizeOf_t', `104')m4_dnl
+m4_define(`AST_CSizeOfT_t', `105')m4_dnl
+m4_define(`AST_CDot_t', `106')m4_dnl
+m4_define(`AST_CArrow_t', `107')m4_dnl
+m4_define(`AST_CStatement_t', `108')m4_dnl
+m4_define(`AST_CReturn_t', `109')m4_dnl
+m4_define(`AST_CExpression_t', `110')m4_dnl
+m4_define(`AST_CIf_t', `111')m4_dnl
+m4_define(`AST_CGoto_t', `112')m4_dnl
+m4_define(`AST_CLabel_t', `113')m4_dnl
+m4_define(`AST_CCompound_t', `114')m4_dnl
+m4_define(`AST_CWhile_t', `115')m4_dnl
+m4_define(`AST_CDoWhile_t', `116')m4_dnl
+m4_define(`AST_CFor_t', `117')m4_dnl
+m4_define(`AST_CSwitch_t', `118')m4_dnl
+m4_define(`AST_CCase_t', `119')m4_dnl
+m4_define(`AST_CDefault_t', `120')m4_dnl
+m4_define(`AST_CBreak_t', `121')m4_dnl
+m4_define(`AST_CContinue_t', `122')m4_dnl
+m4_define(`AST_CNull_t', `123')m4_dnl
+m4_define(`AST_CForInit_t', `124')m4_dnl
+m4_define(`AST_CInitDecl_t', `125')m4_dnl
+m4_define(`AST_CInitExp_t', `126')m4_dnl
+m4_define(`AST_CBlock_t', `127')m4_dnl
+m4_define(`AST_CB_t', `128')m4_dnl
+m4_define(`AST_CBlockItem_t', `129')m4_dnl
+m4_define(`AST_CS_t', `130')m4_dnl
+m4_define(`AST_CD_t', `131')m4_dnl
+m4_define(`AST_CStorageClass_t', `132')m4_dnl
+m4_define(`AST_CStatic_t', `133')m4_dnl
+m4_define(`AST_CExtern_t', `134')m4_dnl
+m4_define(`AST_CInitializer_t', `135')m4_dnl
+m4_define(`AST_CSingleInit_t', `136')m4_dnl
+m4_define(`AST_CCompoundInit_t', `137')m4_dnl
+m4_define(`AST_CMemberDeclaration_t', `138')m4_dnl
+m4_define(`AST_CStructDeclaration_t', `139')m4_dnl
+m4_define(`AST_CFunctionDeclaration_t', `140')m4_dnl
+m4_define(`AST_CVariableDeclaration_t', `141')m4_dnl
+m4_define(`AST_CDeclaration_t', `142')m4_dnl
+m4_define(`AST_CFunDecl_t', `143')m4_dnl
+m4_define(`AST_CVarDecl_t', `144')m4_dnl
+m4_define(`AST_CStructDecl_t', `145')m4_dnl
+m4_define(`AST_CProgram_t', `146')m4_dnl
+m4_define(`AST_TacUnaryOp_t', `147')m4_dnl
+m4_define(`AST_TacComplement_t', `148')m4_dnl
+m4_define(`AST_TacNegate_t', `149')m4_dnl
+m4_define(`AST_TacNot_t', `150')m4_dnl
+m4_define(`AST_TacBinaryOp_t', `151')m4_dnl
+m4_define(`AST_TacAdd_t', `152')m4_dnl
+m4_define(`AST_TacSubtract_t', `153')m4_dnl
+m4_define(`AST_TacMultiply_t', `154')m4_dnl
+m4_define(`AST_TacDivide_t', `155')m4_dnl
+m4_define(`AST_TacRemainder_t', `156')m4_dnl
+m4_define(`AST_TacBitAnd_t', `157')m4_dnl
+m4_define(`AST_TacBitOr_t', `158')m4_dnl
+m4_define(`AST_TacBitXor_t', `159')m4_dnl
+m4_define(`AST_TacBitShiftLeft_t', `160')m4_dnl
+m4_define(`AST_TacBitShiftRight_t', `161')m4_dnl
+m4_define(`AST_TacBitShrArithmetic_t', `162')m4_dnl
+m4_define(`AST_TacEqual_t', `163')m4_dnl
+m4_define(`AST_TacNotEqual_t', `164')m4_dnl
+m4_define(`AST_TacLessThan_t', `165')m4_dnl
+m4_define(`AST_TacLessOrEqual_t', `166')m4_dnl
+m4_define(`AST_TacGreaterThan_t', `167')m4_dnl
+m4_define(`AST_TacGreaterOrEqual_t', `168')m4_dnl
+m4_define(`AST_TacValue_t', `169')m4_dnl
+m4_define(`AST_TacConstant_t', `170')m4_dnl
+m4_define(`AST_TacVariable_t', `171')m4_dnl
+m4_define(`AST_TacExpResult_t', `172')m4_dnl
+m4_define(`AST_TacPlainOperand_t', `173')m4_dnl
+m4_define(`AST_TacDereferencedPointer_t', `174')m4_dnl
+m4_define(`AST_TacSubObject_t', `175')m4_dnl
+m4_define(`AST_TacInstruction_t', `176')m4_dnl
+m4_define(`AST_TacReturn_t', `177')m4_dnl
+m4_define(`AST_TacSignExtend_t', `178')m4_dnl
+m4_define(`AST_TacTruncate_t', `179')m4_dnl
+m4_define(`AST_TacZeroExtend_t', `180')m4_dnl
+m4_define(`AST_TacDoubleToInt_t', `181')m4_dnl
+m4_define(`AST_TacDoubleToUInt_t', `182')m4_dnl
+m4_define(`AST_TacIntToDouble_t', `183')m4_dnl
+m4_define(`AST_TacUIntToDouble_t', `184')m4_dnl
+m4_define(`AST_TacFunCall_t', `185')m4_dnl
+m4_define(`AST_TacUnary_t', `186')m4_dnl
+m4_define(`AST_TacBinary_t', `187')m4_dnl
+m4_define(`AST_TacCopy_t', `188')m4_dnl
+m4_define(`AST_TacGetAddress_t', `189')m4_dnl
+m4_define(`AST_TacLoad_t', `190')m4_dnl
+m4_define(`AST_TacStore_t', `191')m4_dnl
+m4_define(`AST_TacAddPtr_t', `192')m4_dnl
+m4_define(`AST_TacCopyToOffset_t', `193')m4_dnl
+m4_define(`AST_TacCopyFromOffset_t', `194')m4_dnl
+m4_define(`AST_TacJump_t', `195')m4_dnl
+m4_define(`AST_TacJumpIfZero_t', `196')m4_dnl
+m4_define(`AST_TacJumpIfNotZero_t', `197')m4_dnl
+m4_define(`AST_TacLabel_t', `198')m4_dnl
+m4_define(`AST_TacTopLevel_t', `199')m4_dnl
+m4_define(`AST_TacFunction_t', `200')m4_dnl
+m4_define(`AST_TacStaticVariable_t', `201')m4_dnl
+m4_define(`AST_TacStaticConstant_t', `202')m4_dnl
+m4_define(`AST_TacProgram_t', `203')m4_dnl
+m4_define(`AST_AsmReg_t', `204')m4_dnl
+m4_define(`AST_AsmAx_t', `205')m4_dnl
+m4_define(`AST_AsmBx_t', `206')m4_dnl
+m4_define(`AST_AsmCx_t', `207')m4_dnl
+m4_define(`AST_AsmDx_t', `208')m4_dnl
+m4_define(`AST_AsmDi_t', `209')m4_dnl
+m4_define(`AST_AsmSi_t', `210')m4_dnl
+m4_define(`AST_AsmR8_t', `211')m4_dnl
+m4_define(`AST_AsmR9_t', `212')m4_dnl
+m4_define(`AST_AsmR10_t', `213')m4_dnl
+m4_define(`AST_AsmR11_t', `214')m4_dnl
+m4_define(`AST_AsmR12_t', `215')m4_dnl
+m4_define(`AST_AsmR13_t', `216')m4_dnl
+m4_define(`AST_AsmR14_t', `217')m4_dnl
+m4_define(`AST_AsmR15_t', `218')m4_dnl
+m4_define(`AST_AsmSp_t', `219')m4_dnl
+m4_define(`AST_AsmBp_t', `220')m4_dnl
+m4_define(`AST_AsmXMM0_t', `221')m4_dnl
+m4_define(`AST_AsmXMM1_t', `222')m4_dnl
+m4_define(`AST_AsmXMM2_t', `223')m4_dnl
+m4_define(`AST_AsmXMM3_t', `224')m4_dnl
+m4_define(`AST_AsmXMM4_t', `225')m4_dnl
+m4_define(`AST_AsmXMM5_t', `226')m4_dnl
+m4_define(`AST_AsmXMM6_t', `227')m4_dnl
+m4_define(`AST_AsmXMM7_t', `228')m4_dnl
+m4_define(`AST_AsmXMM8_t', `229')m4_dnl
+m4_define(`AST_AsmXMM9_t', `230')m4_dnl
+m4_define(`AST_AsmXMM10_t', `231')m4_dnl
+m4_define(`AST_AsmXMM11_t', `232')m4_dnl
+m4_define(`AST_AsmXMM12_t', `233')m4_dnl
+m4_define(`AST_AsmXMM13_t', `234')m4_dnl
+m4_define(`AST_AsmXMM14_t', `235')m4_dnl
+m4_define(`AST_AsmXMM15_t', `236')m4_dnl
+m4_define(`AST_AsmCondCode_t', `237')m4_dnl
+m4_define(`AST_AsmE_t', `238')m4_dnl
+m4_define(`AST_AsmNE_t', `239')m4_dnl
+m4_define(`AST_AsmG_t', `240')m4_dnl
+m4_define(`AST_AsmGE_t', `241')m4_dnl
+m4_define(`AST_AsmL_t', `242')m4_dnl
+m4_define(`AST_AsmLE_t', `243')m4_dnl
+m4_define(`AST_AsmA_t', `244')m4_dnl
+m4_define(`AST_AsmAE_t', `245')m4_dnl
+m4_define(`AST_AsmB_t', `246')m4_dnl
+m4_define(`AST_AsmBE_t', `247')m4_dnl
+m4_define(`AST_AsmP_t', `248')m4_dnl
+m4_define(`AST_AsmOperand_t', `249')m4_dnl
+m4_define(`AST_AsmImm_t', `250')m4_dnl
+m4_define(`AST_AsmRegister_t', `251')m4_dnl
+m4_define(`AST_AsmPseudo_t', `252')m4_dnl
+m4_define(`AST_AsmMemory_t', `253')m4_dnl
+m4_define(`AST_AsmData_t', `254')m4_dnl
+m4_define(`AST_AsmPseudoMem_t', `255')m4_dnl
+m4_define(`AST_AsmIndexed_t', `256')m4_dnl
+m4_define(`AST_AsmBinaryOp_t', `257')m4_dnl
+m4_define(`AST_AsmAdd_t', `258')m4_dnl
+m4_define(`AST_AsmSub_t', `259')m4_dnl
+m4_define(`AST_AsmMult_t', `260')m4_dnl
+m4_define(`AST_AsmDivDouble_t', `261')m4_dnl
+m4_define(`AST_AsmBitAnd_t', `262')m4_dnl
+m4_define(`AST_AsmBitOr_t', `263')m4_dnl
+m4_define(`AST_AsmBitXor_t', `264')m4_dnl
+m4_define(`AST_AsmBitShiftLeft_t', `265')m4_dnl
+m4_define(`AST_AsmBitShiftRight_t', `266')m4_dnl
+m4_define(`AST_AsmBitShrArithmetic_t', `267')m4_dnl
+m4_define(`AST_AsmUnaryOp_t', `268')m4_dnl
+m4_define(`AST_AsmNot_t', `269')m4_dnl
+m4_define(`AST_AsmNeg_t', `270')m4_dnl
+m4_define(`AST_AsmShr_t', `271')m4_dnl
+m4_define(`AST_AsmInstruction_t', `272')m4_dnl
+m4_define(`AST_AsmMov_t', `273')m4_dnl
+m4_define(`AST_AsmMovSx_t', `274')m4_dnl
+m4_define(`AST_AsmMovZeroExtend_t', `275')m4_dnl
+m4_define(`AST_AsmLea_t', `276')m4_dnl
+m4_define(`AST_AsmCvttsd2si_t', `277')m4_dnl
+m4_define(`AST_AsmCvtsi2sd_t', `278')m4_dnl
+m4_define(`AST_AsmUnary_t', `279')m4_dnl
+m4_define(`AST_AsmBinary_t', `280')m4_dnl
+m4_define(`AST_AsmCmp_t', `281')m4_dnl
+m4_define(`AST_AsmIdiv_t', `282')m4_dnl
+m4_define(`AST_AsmDiv_t', `283')m4_dnl
+m4_define(`AST_AsmCdq_t', `284')m4_dnl
+m4_define(`AST_AsmJmp_t', `285')m4_dnl
+m4_define(`AST_AsmJmpCC_t', `286')m4_dnl
+m4_define(`AST_AsmSetCC_t', `287')m4_dnl
+m4_define(`AST_AsmLabel_t', `288')m4_dnl
+m4_define(`AST_AsmPush_t', `289')m4_dnl
+m4_define(`AST_AsmPop_t', `290')m4_dnl
+m4_define(`AST_AsmCall_t', `291')m4_dnl
+m4_define(`AST_AsmRet_t', `292')m4_dnl
+m4_define(`AST_AsmTopLevel_t', `293')m4_dnl
+m4_define(`AST_AsmFunction_t', `294')m4_dnl
+m4_define(`AST_AsmStaticVariable_t', `295')m4_dnl
+m4_define(`AST_AsmStaticConstant_t', `296')m4_dnl
+m4_define(`AST_AsmProgram_t', `297')m4_dnl
 type struc CConst;
 type struc CStringLiteral;
 
@@ -102,6 +442,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
+m4_define(`UID_SEPARATOR', `TODO')m4_dnl
 type struc AssemblyType;
 type struc BackendSymbol;
 type struc AsmOperand;
@@ -138,6 +479,7 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol;
 pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc AssemblyType) *struc BackendSymbol;
 pub fn make_BackendFun(is_def: i32) *struc BackendSymbol;
 pub fn free_BackendSymbol(self: **struc BackendSymbol) none;
+m4_define(`UPtrBackendSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrBackendSymbol(key: u64, value: *struc BackendSymbol)
 
@@ -271,18 +613,24 @@ pub fn free_Symbol(self: **struc Symbol) none;
 type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
+m4_define(`UPtrStructMember', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
 
 type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: *u64, members: *struc PairTIdentifierUPtrStructMember)
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
+m4_define(`ulong_t', `TODO')m4_dnl
 
 type struc PairTIdentifierulong_t(key: u64, value: u64)
 
 type struc PairTIdentifierTIdentifier(key: u64, value: u64)
 
+m4_define(`UPtrStructTypedef', `TODO')m4_dnl
+
 type struc PairTIdentifierUPtrStructTypedef(key: u64, value: *struc StructTypedef)
+
+m4_define(`UPtrSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrSymbol(key: u64, value: *struc Symbol)
 
@@ -423,6 +771,42 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none;
 type struc AsmProgram(tag: i32, static_const_toplvls: **struc AsmTopLevel, top_levels: **struc AsmTopLevel)
 pub fn make_AsmProgram(static_const_toplvls: ***struc AsmTopLevel, top_levels: ***struc AsmTopLevel) *struc AsmProgram;
 pub fn free_AsmProgram(self: **struc AsmProgram) none;
+m4_define(`REGISTER_KIND', `TODO')m4_dnl
+m4_define(`REG_Ax', `0')m4_dnl
+m4_define(`REG_Bx', `1')m4_dnl
+m4_define(`REG_Cx', `2')m4_dnl
+m4_define(`REG_Dx', `3')m4_dnl
+m4_define(`REG_Di', `4')m4_dnl
+m4_define(`REG_Si', `5')m4_dnl
+m4_define(`REG_R8', `6')m4_dnl
+m4_define(`REG_R9', `7')m4_dnl
+m4_define(`REG_R10', `8')m4_dnl
+m4_define(`REG_R11', `9')m4_dnl
+m4_define(`REG_R12', `10')m4_dnl
+m4_define(`REG_R13', `11')m4_dnl
+m4_define(`REG_R14', `12')m4_dnl
+m4_define(`REG_R15', `13')m4_dnl
+m4_define(`REG_Sp', `14')m4_dnl
+m4_define(`REG_Bp', `15')m4_dnl
+m4_define(`REG_Xmm0', `16')m4_dnl
+m4_define(`REG_Xmm1', `17')m4_dnl
+m4_define(`REG_Xmm2', `18')m4_dnl
+m4_define(`REG_Xmm3', `19')m4_dnl
+m4_define(`REG_Xmm4', `20')m4_dnl
+m4_define(`REG_Xmm5', `21')m4_dnl
+m4_define(`REG_Xmm6', `22')m4_dnl
+m4_define(`REG_Xmm7', `23')m4_dnl
+m4_define(`REG_Xmm8', `24')m4_dnl
+m4_define(`REG_Xmm9', `25')m4_dnl
+m4_define(`REG_Xmm10', `26')m4_dnl
+m4_define(`REG_Xmm11', `27')m4_dnl
+m4_define(`REG_Xmm12', `28')m4_dnl
+m4_define(`REG_Xmm13', `29')m4_dnl
+m4_define(`REG_Xmm14', `30')m4_dnl
+m4_define(`REG_Xmm15', `31')m4_dnl
+m4_define(`REGISTER_MASK_SIZE', `26')m4_dnl
+m4_define(`REGISTER_MASK_FALSE', `TODO')m4_dnl
+m4_define(`NULL_REGISTER_MASK', `TODO')m4_dnl
 type struc AsmReg;
 type struc AsmOperand;
 pub fn gen_register(reg_kind: i32) *struc AsmOperand;
@@ -432,11 +816,14 @@ pub fn register_mask_kind(node: *struc AsmReg) i32;
 pub fn register_mask_bit(reg_kind: i32) u64;
 pub fn register_mask_get(reg_mask: u64, reg_kind: i32) i32;
 pub fn register_mask_set(reg_mask: *u64, reg_kind: i32, value: i32) none;
+m4_define(`mask_t', `TODO')m4_dnl
 type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO2;
 
 type struc InferenceRegister(color: i32, reg_kind: i32, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: *u64)
+
+m4_define(`StInferenceRegister', `TODO')m4_dnl
 
 type struc PairTIdentifierStInferenceRegister(key: u64, value: struc InferenceRegister)
 
@@ -452,46 +839,46 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
     if (self[])[].unpruned_hard_mask_bits {
         loop .. while 0 {
             cast<none>((? ((self[])[].unpruned_hard_mask_bits) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_hard_mask_bits)) - 1)) else cast<none>(0)))
-            ((self[])[].unpruned_hard_mask_bits) = 0
+            ((self[])[].unpruned_hard_mask_bits) = nil
         }        
-        (self[])[].unpruned_hard_mask_bits = 0
+        (self[])[].unpruned_hard_mask_bits = nil
     }
     ;
     if (self[])[].unpruned_pseudo_names {
         loop .. while 0 {
             cast<none>((? ((self[])[].unpruned_pseudo_names) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_pseudo_names)) - 1)) else cast<none>(0)))
-            ((self[])[].unpruned_pseudo_names) = 0
+            ((self[])[].unpruned_pseudo_names) = nil
         }        
-        (self[])[].unpruned_pseudo_names = 0
+        (self[])[].unpruned_pseudo_names = nil
     }
     ;
     loop i: u64 = 0 while i < (? ((self[])[].pseudo_reg_map) then (cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names {
             loop .. while 0 {
                 cast<none>((? (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
-                (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) = 0
+                (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
             }            
-            ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names = 0
+            ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
         }
         ;
     }
     if (self[])[].pseudo_reg_map {
         loop .. while 0 {
-            cast<none>((? ((self[])[].pseudo_reg_map) ~= 0 then stbds_hmfree_func(((self[])[].pseudo_reg_map) - 1, sizeof(((self[])[].pseudo_reg_map)[])) else cast<none>(0)))
-            ((self[])[].pseudo_reg_map) = 0
+            cast<none>((? ((self[])[].pseudo_reg_map) ~= nil then stbds_hmfree_func(((self[])[].pseudo_reg_map) - 1, sizeof(((self[])[].pseudo_reg_map)[])) else cast<none>(0)))
+            ((self[])[].pseudo_reg_map) = nil
         }        
-        (self[])[].pseudo_reg_map = 0
+        (self[])[].pseudo_reg_map = nil
     }
     ;
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
     ;
 }
 
 fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
-    self: *struc InferenceGraph = 0
+    self: *struc InferenceGraph = nil
     loop .. while 0 {
         free_InferenceGraph(@self)
         self = cast<*struc InferenceGraph>(malloc(sizeof<struc InferenceGraph>))
@@ -500,45 +887,50 @@ fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
         }
     }    
     self[].hard_reg_mask = 0ul
-    self[].unpruned_hard_mask_bits = 0
-    self[].unpruned_pseudo_names = 0
-    self[].pseudo_reg_map = 0
+    self[].unpruned_hard_mask_bits = nil
+    self[].unpruned_pseudo_names = nil
+    self[].pseudo_reg_map = nil
     if is_sse {
         self[].k = 14
         self[].offset = 12
-        register_mask_set(@self[].hard_reg_mask, 16, 1)
-        register_mask_set(@self[].hard_reg_mask, 17, 1)
-        register_mask_set(@self[].hard_reg_mask, 18, 1)
-        register_mask_set(@self[].hard_reg_mask, 19, 1)
-        register_mask_set(@self[].hard_reg_mask, 20, 1)
-        register_mask_set(@self[].hard_reg_mask, 21, 1)
-        register_mask_set(@self[].hard_reg_mask, 22, 1)
-        register_mask_set(@self[].hard_reg_mask, 23, 1)
-        register_mask_set(@self[].hard_reg_mask, 24, 1)
-        register_mask_set(@self[].hard_reg_mask, 25, 1)
-        register_mask_set(@self[].hard_reg_mask, 26, 1)
-        register_mask_set(@self[].hard_reg_mask, 27, 1)
-        register_mask_set(@self[].hard_reg_mask, 28, 1)
-        register_mask_set(@self[].hard_reg_mask, 29, 1)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm0, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm1, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm2, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm3, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm4, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm5, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm6, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm7, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm8, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm9, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm10, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm11, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm12, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Xmm13, true)
     }
     else {
         self[].k = 12
         self[].offset = 0
-        register_mask_set(@self[].hard_reg_mask, 0, 1)
-        register_mask_set(@self[].hard_reg_mask, 1, 1)
-        register_mask_set(@self[].hard_reg_mask, 2, 1)
-        register_mask_set(@self[].hard_reg_mask, 3, 1)
-        register_mask_set(@self[].hard_reg_mask, 4, 1)
-        register_mask_set(@self[].hard_reg_mask, 5, 1)
-        register_mask_set(@self[].hard_reg_mask, 6, 1)
-        register_mask_set(@self[].hard_reg_mask, 7, 1)
-        register_mask_set(@self[].hard_reg_mask, 10, 1)
-        register_mask_set(@self[].hard_reg_mask, 11, 1)
-        register_mask_set(@self[].hard_reg_mask, 12, 1)
-        register_mask_set(@self[].hard_reg_mask, 13, 1)
+        register_mask_set(@self[].hard_reg_mask, REG_Ax, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Bx, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Cx, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Dx, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Di, true)
+        register_mask_set(@self[].hard_reg_mask, REG_Si, true)
+        register_mask_set(@self[].hard_reg_mask, REG_R8, true)
+        register_mask_set(@self[].hard_reg_mask, REG_R9, true)
+        register_mask_set(@self[].hard_reg_mask, REG_R12, true)
+        register_mask_set(@self[].hard_reg_mask, REG_R13, true)
+        register_mask_set(@self[].hard_reg_mask, REG_R14, true)
+        register_mask_set(@self[].hard_reg_mask, REG_R15, true)
     }
     return self
 }
+
+m4_define(`AstInstruction', `TODO')m4_dnl
+m4_define(`AstInstruction', `TODO')m4_dnl
+m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `TODO')m4_dnl
 
 type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: *u64, succ_ids: *u64)
 
@@ -556,70 +948,70 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     if (self[])[].entry_succ_ids {
         loop .. while 0 {
             cast<none>((? ((self[])[].entry_succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].entry_succ_ids)) - 1)) else cast<none>(0)))
-            ((self[])[].entry_succ_ids) = 0
+            ((self[])[].entry_succ_ids) = nil
         }        
-        (self[])[].entry_succ_ids = 0
+        (self[])[].entry_succ_ids = nil
     }
     ;
     if (self[])[].exit_pred_ids {
         loop .. while 0 {
             cast<none>((? ((self[])[].exit_pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].exit_pred_ids)) - 1)) else cast<none>(0)))
-            ((self[])[].exit_pred_ids) = 0
+            ((self[])[].exit_pred_ids) = nil
         }        
-        (self[])[].exit_pred_ids = 0
+        (self[])[].exit_pred_ids = nil
     }
     ;
     if (self[])[].reaching_code {
         loop .. while 0 {
             cast<none>((? ((self[])[].reaching_code) then free((cast<*struc stbds_array_header>(((self[])[].reaching_code)) - 1)) else cast<none>(0)))
-            ((self[])[].reaching_code) = 0
+            ((self[])[].reaching_code) = nil
         }        
-        (self[])[].reaching_code = 0
+        (self[])[].reaching_code = nil
     }
     ;
     loop i: u64 = 0 while i < (? ((self[])[].blocks) then (cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)[].length else 0) .. ++i {
         if (self[])[].blocks[i].pred_ids {
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].pred_ids)) - 1)) else cast<none>(0)))
-                ((self[])[].blocks[i].pred_ids) = 0
+                ((self[])[].blocks[i].pred_ids) = nil
             }            
-            (self[])[].blocks[i].pred_ids = 0
+            (self[])[].blocks[i].pred_ids = nil
         }
         ;
         if (self[])[].blocks[i].succ_ids {
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].succ_ids)) - 1)) else cast<none>(0)))
-                ((self[])[].blocks[i].succ_ids) = 0
+                ((self[])[].blocks[i].succ_ids) = nil
             }            
-            (self[])[].blocks[i].succ_ids = 0
+            (self[])[].blocks[i].succ_ids = nil
         }
         ;
     }
     if (self[])[].blocks {
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks) then free((cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)) else cast<none>(0)))
-            ((self[])[].blocks) = 0
+            ((self[])[].blocks) = nil
         }        
-        (self[])[].blocks = 0
+        (self[])[].blocks = nil
     }
     ;
     if (self[])[].identifier_id_map {
         loop .. while 0 {
-            cast<none>((? ((self[])[].identifier_id_map) ~= 0 then stbds_hmfree_func(((self[])[].identifier_id_map) - 1, sizeof(((self[])[].identifier_id_map)[])) else cast<none>(0)))
-            ((self[])[].identifier_id_map) = 0
+            cast<none>((? ((self[])[].identifier_id_map) ~= nil then stbds_hmfree_func(((self[])[].identifier_id_map) - 1, sizeof(((self[])[].identifier_id_map)[])) else cast<none>(0)))
+            ((self[])[].identifier_id_map) = nil
         }        
-        (self[])[].identifier_id_map = 0
+        (self[])[].identifier_id_map = nil
     }
     ;
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
     ;
 }
 
 fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
-    self: *struc ControlFlowGraph = 0
+    self: *struc ControlFlowGraph = nil
     loop .. while 0 {
         free_ControlFlowGraph(@self)
         self = cast<*struc ControlFlowGraph>(malloc(sizeof<struc ControlFlowGraph>))
@@ -629,11 +1021,11 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
     }    
     self[].entry_id = 0
     self[].exit_id = 0
-    self[].entry_succ_ids = 0
-    self[].exit_pred_ids = 0
-    self[].reaching_code = 0
-    self[].blocks = 0
-    self[].identifier_id_map = 0
+    self[].entry_succ_ids = nil
+    self[].exit_pred_ids = nil
+    self[].reaching_code = nil
+    self[].blocks = nil
+    self[].identifier_id_map = nil
     return self
 }
 
@@ -645,44 +1037,44 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     if (self[])[].open_data_map {
         loop .. while 0 {
             cast<none>((? ((self[])[].open_data_map) then free((cast<*struc stbds_array_header>(((self[])[].open_data_map)) - 1)) else cast<none>(0)))
-            ((self[])[].open_data_map) = 0
+            ((self[])[].open_data_map) = nil
         }        
-        (self[])[].open_data_map = 0
+        (self[])[].open_data_map = nil
     }
     ;
     if (self[])[].instr_idx_map {
         loop .. while 0 {
             cast<none>((? ((self[])[].instr_idx_map) then free((cast<*struc stbds_array_header>(((self[])[].instr_idx_map)) - 1)) else cast<none>(0)))
-            ((self[])[].instr_idx_map) = 0
+            ((self[])[].instr_idx_map) = nil
         }        
-        (self[])[].instr_idx_map = 0
+        (self[])[].instr_idx_map = nil
     }
     ;
     if (self[])[].blocks_mask_sets {
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].blocks_mask_sets)) - 1)) else cast<none>(0)))
-            ((self[])[].blocks_mask_sets) = 0
+            ((self[])[].blocks_mask_sets) = nil
         }        
-        (self[])[].blocks_mask_sets = 0
+        (self[])[].blocks_mask_sets = nil
     }
     ;
     if (self[])[].instrs_mask_sets {
         loop .. while 0 {
             cast<none>((? ((self[])[].instrs_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].instrs_mask_sets)) - 1)) else cast<none>(0)))
-            ((self[])[].instrs_mask_sets) = 0
+            ((self[])[].instrs_mask_sets) = nil
         }        
-        (self[])[].instrs_mask_sets = 0
+        (self[])[].instrs_mask_sets = nil
     }
     ;
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
     ;
 }
 
 fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
-    self: *struc DataFlowAnalysis = 0
+    self: *struc DataFlowAnalysis = nil
     loop .. while 0 {
         free_DataFlowAnalysis(@self)
         self = cast<*struc DataFlowAnalysis>(malloc(sizeof<struc DataFlowAnalysis>))
@@ -694,10 +1086,10 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
     self[].mask_size = 0
     self[].incoming_idx = 0
     self[].static_idx = 0
-    self[].open_data_map = 0
-    self[].instr_idx_map = 0
-    self[].blocks_mask_sets = 0
-    self[].instrs_mask_sets = 0
+    self[].open_data_map = nil
+    self[].instr_idx_map = nil
+    self[].blocks_mask_sets = nil
+    self[].instrs_mask_sets = nil
     return self
 }
 
@@ -709,20 +1101,20 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
     if (self[])[].data_name_map {
         loop .. while 0 {
             cast<none>((? ((self[])[].data_name_map) then free((cast<*struc stbds_array_header>(((self[])[].data_name_map)) - 1)) else cast<none>(0)))
-            ((self[])[].data_name_map) = 0
+            ((self[])[].data_name_map) = nil
         }        
-        (self[])[].data_name_map = 0
+        (self[])[].data_name_map = nil
     }
     ;
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
     ;
 }
 
 fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
-    self: *struc DataFlowAnalysisO2 = 0
+    self: *struc DataFlowAnalysisO2 = nil
     loop .. while 0 {
         free_DataFlowAnalysisO2(@self)
         self = cast<*struc DataFlowAnalysisO2>(malloc(sizeof<struc DataFlowAnalysisO2>))
@@ -730,7 +1122,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
             panic_sigabrt("alloc "                 "DataFlowAnalysisO2")
         }
     }    
-    self[].data_name_map = 0
+    self[].data_name_map = nil
     return self
 }
 
@@ -739,7 +1131,7 @@ fn set_instr(ctx: *struc RegAllocContext, instr: *struc AsmInstruction, instr_id
         if instr ~= (ctx[].p_instrs[])[instr_idx] {
             free_AsmInstruction(@(ctx[].p_instrs[])[instr_idx])
             (ctx[].p_instrs[])[instr_idx] = instr
-            instr = 0
+            instr = nil
         }
         ;
     }
@@ -751,10 +1143,10 @@ fn set_instr(ctx: *struc RegAllocContext, instr: *struc AsmInstruction, instr_id
 fn find_size_t(xs: *u64, x: u64) i32 {
     loop i: u64 = 0 while i < (? (xs) then (cast<*struc stbds_array_header>((xs)) - 1)[].length else 0) .. ++i {
         if xs[i] == x {
-            return 1
+            return true
         }
     }
-    return 0
+    return false
 }
 
 fn cfg_add_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64) none {
@@ -833,10 +1225,10 @@ fn cfg_rm_succ_edge(ctx: *struc RegAllocContext, block_id: u64, succ_id: u64, is
 
 fn cfg_rm_pred_edge(ctx: *struc RegAllocContext, block_id: u64, pred_id: u64) none {
     if pred_id < ctx[].cfg[].exit_id {
-        cfg_rm_edge(@ctx[].cfg[].blocks[pred_id].succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, 1)
+        cfg_rm_edge(@ctx[].cfg[].blocks[pred_id].succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, true)
     }
     elif pred_id == ctx[].cfg[].entry_id {
-        cfg_rm_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, 1)
+        cfg_rm_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, true)
     }
     else {
         panic_sigabrt("abort")
@@ -871,10 +1263,10 @@ fn cfg_rm_empty_block(ctx: *struc RegAllocContext, block_id: u64, is_reachable: 
 
 fn cfg_rm_block_instr(ctx: *struc RegAllocContext, instr_idx: u64, block_id: u64) none {
     if (ctx[].p_instrs[])[instr_idx] {
-        set_instr(ctx, 0, instr_idx)
+        set_instr(ctx, nil, instr_idx)
         ctx[].cfg[].blocks[block_id].size--
         if ctx[].cfg[].blocks[block_id].size == 0 {
-            cfg_rm_empty_block(ctx, block_id, 1)
+            cfg_rm_empty_block(ctx, block_id, true)
         }
         elif instr_idx == ctx[].cfg[].blocks[block_id].instrs_front_idx {
             loop  while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
@@ -907,10 +1299,10 @@ fn cfg_init_label_block(ctx: *struc RegAllocContext, node: *struc AsmLabel) none
 fn cfg_init_block(ctx: *struc RegAllocContext, instr_idx: u64, instrs_back_idx: *u64) none {
     node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
-        -> 288 {
+        -> AST_AsmLabel_t {
             if instrs_back_idx[] ~= (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx[]
-                block: struc ControlFlowBlock = $(0, instr_idx, 0, 0, 0)
+                block: struc ControlFlowBlock = $(0, instr_idx, 0, nil, nil)
                 loop .. while 0 {
                     (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
                     (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
@@ -920,9 +1312,9 @@ fn cfg_init_block(ctx: *struc RegAllocContext, instr_idx: u64, instrs_back_idx: 
             instrs_back_idx[] = instr_idx
             break
         }
-        -> 285 {
-            -> 286 {
-                -> 292 {
+        -> AST_AsmJmp_t {
+            -> AST_AsmJmpCC_t {
+                -> AST_AsmRet_t {
                     (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instr_idx
                     instrs_back_idx[] = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
                     break
@@ -948,15 +1340,15 @@ fn cfg_init_jmp_cc_edges(ctx: *struc RegAllocContext, node: *struc AsmJmpCC, blo
 fn cfg_init_edges(ctx: *struc RegAllocContext, block_id: u64) none {
     node: *struc AsmInstruction = (ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_back_idx]
     match node[].tag {
-        -> 292 {
+        -> AST_AsmRet_t {
             cfg_add_succ_edge(ctx, block_id, ctx[].cfg[].exit_id)
         }
         break
-        -> 285 {
+        -> AST_AsmJmp_t {
             cfg_init_jmp_edges(ctx, @node[].get._AsmJmp, block_id)
         }
         break
-        -> 286 {
+        -> AST_AsmJmpCC_t {
             cfg_init_jmp_cc_edges(ctx, @node[].get._AsmJmpCC, block_id)
         }
         break
@@ -972,17 +1364,17 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
         if ctx[].cfg[].blocks[block_id].pred_ids {
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].pred_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)) else cast<none>(0)))
-                (ctx[].cfg[].blocks[block_id].pred_ids) = 0
+                (ctx[].cfg[].blocks[block_id].pred_ids) = nil
             }            
-            ctx[].cfg[].blocks[block_id].pred_ids = 0
+            ctx[].cfg[].blocks[block_id].pred_ids = nil
         }
         ;
         if ctx[].cfg[].blocks[block_id].succ_ids {
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].succ_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)) else cast<none>(0)))
-                (ctx[].cfg[].blocks[block_id].succ_ids) = 0
+                (ctx[].cfg[].blocks[block_id].succ_ids) = nil
             }            
-            ctx[].cfg[].blocks[block_id].succ_ids = 0
+            ctx[].cfg[].blocks[block_id].succ_ids = nil
         }
         ;
     }
@@ -992,10 +1384,10 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
     ;
     if ctx[].cfg[].identifier_id_map {
         loop .. while 0 {
-            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= 0 then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-            (ctx[].cfg[].identifier_id_map) = 0
+            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
+            (ctx[].cfg[].identifier_id_map) = nil
         }        
-        ctx[].cfg[].identifier_id_map = 0
+        ctx[].cfg[].identifier_id_map = nil
     }
     ;
     {
@@ -1003,7 +1395,7 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
         loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
             if (ctx[].p_instrs[])[instr_idx] {
                 if instrs_back_idx == (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
-                    block: struc ControlFlowBlock = $(0, instr_idx, 0, 0, 0)
+                    block: struc ControlFlowBlock = $(0, instr_idx, 0, nil, nil)
                     loop .. while 0 {
                         (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
                         (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
@@ -1054,24 +1446,26 @@ fn mask_set(mask: *u64, bit: u64, value: i32) none {
     }
 }
 
+m4_define(`MASK_FALSE', `TODO')m4_dnl
+
 fn is_transfer_instr(ctx: *struc RegAllocContext, instr_idx: u64) i32 {
     match (ctx[].p_instrs[])[instr_idx][].tag {
-        -> 273 {
-            -> 274 {
-                -> 275 {
-                    -> 276 {
-                        -> 277 {
-                            -> 278 {
-                                -> 279 {
-                                    -> 280 {
-                                        -> 281 {
-                                            -> 282 {
-                                                -> 283 {
-                                                    -> 284 {
-                                                        -> 287 {
-                                                            -> 289 {
-                                                                -> 291 {
-                                                                    return 1
+        -> AST_AsmMov_t {
+            -> AST_AsmMovSx_t {
+                -> AST_AsmMovZeroExtend_t {
+                    -> AST_AsmLea_t {
+                        -> AST_AsmCvttsd2si_t {
+                            -> AST_AsmCvtsi2sd_t {
+                                -> AST_AsmUnary_t {
+                                    -> AST_AsmBinary_t {
+                                        -> AST_AsmCmp_t {
+                                            -> AST_AsmIdiv_t {
+                                                -> AST_AsmDiv_t {
+                                                    -> AST_AsmCdq_t {
+                                                        -> AST_AsmSetCC_t {
+                                                            -> AST_AsmPush_t {
+                                                                -> AST_AsmCall_t {
+                                                                    return true
                                                                 }
                                                             }
                                                         }
@@ -1088,7 +1482,7 @@ fn is_transfer_instr(ctx: *struc RegAllocContext, instr_idx: u64) i32 {
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
@@ -1115,12 +1509,12 @@ fn dfa_backward_transfer_block(ctx: *struc RegAllocContext, instr_idx: u64, bloc
 }
 
 fn dfa_after_meet_block(ctx: *struc RegAllocContext, block_id: u64) i32 {
-    is_fixed_point: i32 = 1
+    is_fixed_point: i32 = true
     {
         i: u64 = 0
         loop  while i < ctx[].dfa[].mask_size .. ++i {
             if ctx[].dfa[].blocks_mask_sets[(block_id) * ctx[].dfa[].mask_size + (i)] ~= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)] {
-                is_fixed_point = 0
+                is_fixed_point = false
                 break
             }
         }
@@ -1217,7 +1611,7 @@ fn dfa_backward_succ_open_block(ctx: *struc RegAllocContext, block_id: u64, i: *
 
 fn dfa_backward_open_block(ctx: *struc RegAllocContext, block_id: u64, i: *u64) none {
     if block_id < ctx[].cfg[].exit_id and not ctx[].cfg[].reaching_code[block_id] {
-        ctx[].cfg[].reaching_code[block_id] = 1
+        ctx[].cfg[].reaching_code[block_id] = true
         dfa_backward_succ_open_block(ctx, block_id, i)
         ctx[].dfa[].open_data_map[i[]] = block_id
         (i[])++
@@ -1225,7 +1619,7 @@ fn dfa_backward_open_block(ctx: *struc RegAllocContext, block_id: u64, i: *u64) 
 }
 
 fn is_aliased_name(ctx: *struc RegAllocContext, name: u64) i32 {
-    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == 31 or (? ((ctx[].frontend[].addressed_set) = stbds_hmget_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp) ~= -1
+    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == AST_StaticAttr_t or (? ((ctx[].frontend[].addressed_set) = stbds_hmget_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp) ~= -1
 }
 
 fn infer_add_data_name(ctx: *struc RegAllocContext, name: u64) none {
@@ -1233,14 +1627,14 @@ fn infer_add_data_name(ctx: *struc RegAllocContext, name: u64) none {
         loop .. while 0 {
             (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
             (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (26 + ctx[].dfa[].set_size)
+            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
         }        
         ctx[].dfa[].set_size++
     }
 }
 
 fn infer_add_data_op(ctx: *struc RegAllocContext, node: *struc AsmOperand) none {
-    if node[].tag == 252 {
+    if node[].tag == AST_AsmPseudo_t {
         infer_add_data_name(ctx, node[].get._AsmPseudo.name)
     }
 }
@@ -1270,14 +1664,14 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
         }        
     }
-    memset(ctx[].cfg[].reaching_code, 0, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
+    memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
     instrs_mask_sets_size: u64 = 0
     if ctx[].cfg[].identifier_id_map {
         loop .. while 0 {
-            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= 0 then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-            (ctx[].cfg[].identifier_id_map) = 0
+            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
+            (ctx[].cfg[].identifier_id_map) = nil
         }        
-        ctx[].cfg[].identifier_id_map = 0
+        ctx[].cfg[].identifier_id_map = nil
     }
     ;
     ctx[].dfa[].static_idx = ctx[].dfa[].incoming_idx + 1
@@ -1287,76 +1681,76 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
                 if (ctx[].p_instrs[])[instr_idx] {
                     node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
                     match node[].tag {
-                        -> 273 {
+                        -> AST_AsmMov_t {
                             p_node: *struc AsmMov = @node[].get._AsmMov
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 274 {
+                        -> AST_AsmMovSx_t {
                             p_node: *struc AsmMovSx = @node[].get._AsmMovSx
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 275 {
+                        -> AST_AsmMovZeroExtend_t {
                             p_node: *struc AsmMovZeroExtend = @node[].get._AsmMovZeroExtend
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 276 {
+                        -> AST_AsmLea_t {
                             p_node: *struc AsmLea = @node[].get._AsmLea
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 277 {
+                        -> AST_AsmCvttsd2si_t {
                             p_node: *struc AsmCvttsd2si = @node[].get._AsmCvttsd2si
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 278 {
+                        -> AST_AsmCvtsi2sd_t {
                             p_node: *struc AsmCvtsi2sd = @node[].get._AsmCvtsi2sd
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 279 {
+                        -> AST_AsmUnary_t {
                             infer_add_data_op(ctx, node[].get._AsmUnary.dst)
                         }
                         break
-                        -> 280 {
+                        -> AST_AsmBinary_t {
                             p_node: *struc AsmBinary = @node[].get._AsmBinary
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 281 {
+                        -> AST_AsmCmp_t {
                             p_node: *struc AsmCmp = @node[].get._AsmCmp
                             infer_add_data_op(ctx, p_node[].src)
                             infer_add_data_op(ctx, p_node[].dst)
                             break
                         }
-                        -> 282 {
+                        -> AST_AsmIdiv_t {
                             infer_add_data_op(ctx, node[].get._AsmIdiv.src)
                         }
                         break
-                        -> 283 {
+                        -> AST_AsmDiv_t {
                             infer_add_data_op(ctx, node[].get._AsmDiv.src)
                         }
                         break
-                        -> 287 {
+                        -> AST_AsmSetCC_t {
                             infer_add_data_op(ctx, node[].get._AsmSetCC.dst)
                         }
                         break
-                        -> 289 {
+                        -> AST_AsmPush_t {
                             infer_add_data_op(ctx, node[].get._AsmPush.src)
                         }
                         break
-                        -> 284 {
-                            -> 291 {
+                        -> AST_AsmCdq_t {
+                            -> AST_AsmCall_t {
                                 break
                             }
                         }
@@ -1372,11 +1766,11 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             }
         }
         else {
-            ctx[].cfg[].reaching_code[block_id] = 1
+            ctx[].cfg[].reaching_code[block_id] = true
         }
     }
     if ctx[].dfa[].set_size == 0 {
-        return 0
+        return false
     }
     if (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length else 0) < ctx[].dfa[].set_size {
         loop .. while 0 {
@@ -1384,7 +1778,7 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
         }        
     }
-    ctx[].dfa[].set_size += 26
+    ctx[].dfa[].set_size += REGISTER_MASK_SIZE
     ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] = instrs_mask_sets_size
     instrs_mask_sets_size++
     ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] = instrs_mask_sets_size
@@ -1424,23 +1818,23 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         name_id: *struc PairTIdentifierulong_t = @ctx[].cfg[].identifier_id_map[i]
-        ctx[].dfa_o2[].data_name_map[(name_id[]).value - 26] = (name_id[]).key
+        ctx[].dfa_o2[].data_name_map[(name_id[]).value - REGISTER_MASK_SIZE] = (name_id[]).key
     }
     memset(ctx[].dfa[].blocks_mask_sets, 0ul, sizeof<u64> * blocks_mask_sets_size)
-    return 1
+    return true
 }
 
 fn is_bitshift_cl(node: *struc AsmBinary) i32 {
     match node[].binop.tag {
-        -> 265 {
-            -> 266 {
-                -> 267 {
-                    return node[].src[].tag ~= 250
+        -> AST_AsmBitShiftLeft_t {
+            -> AST_AsmBitShiftRight_t {
+                -> AST_AsmBitShrArithmetic_t {
+                    return node[].src[].tag ~= AST_AsmImm_t
                 }
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
@@ -1448,44 +1842,44 @@ fn is_bitshift_cl(node: *struc AsmBinary) i32 {
 fn find_identifier(xs: *u64, x: u64) i32 {
     loop i: u64 = 0 while i < (? (xs) then (cast<*struc stbds_array_header>((xs)) - 1)[].length else 0) .. ++i {
         if xs[i] == x {
-            return 1
+            return true
         }
     }
-    return 0
+    return false
 }
 
 fn infer_transfer_used_reg(ctx: *struc RegAllocContext, reg_kind: i32, next_instr_idx: u64) none {
-    mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), 1)
+    mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), true)
 }
 
 fn infer_transfer_used_name(ctx: *struc RegAllocContext, name: u64, next_instr_idx: u64) none {
     if not is_aliased_name(ctx, name) {
         i: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
-        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, 1)
+        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, true)
     }
 }
 
 fn infer_transfer_used_op(ctx: *struc RegAllocContext, node: *struc AsmOperand, next_instr_idx: u64) none {
     match node[].tag {
-        -> 251 {
+        -> AST_AsmRegister_t {
             reg_kind: i32 = register_mask_kind(@node[].get._AsmRegister.reg)
-            if reg_kind ~= 14 {
+            if reg_kind ~= REG_Sp {
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
             break
         }
-        -> 252 {
+        -> AST_AsmPseudo_t {
             infer_transfer_used_name(ctx, node[].get._AsmPseudo.name, next_instr_idx)
         }
         break
-        -> 253 {
+        -> AST_AsmMemory_t {
             reg_kind: i32 = register_mask_kind(@node[].get._AsmMemory.reg)
-            if reg_kind ~= 14 {
+            if reg_kind ~= REG_Sp {
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
             break
         }
-        -> 256 {
+        -> AST_AsmIndexed_t {
             p_node: *struc AsmIndexed = @node[].get._AsmIndexed
             {
                 reg_kind: i32 = register_mask_kind(@p_node[].reg_base)
@@ -1510,37 +1904,37 @@ fn infer_transfer_used_call(ctx: *struc RegAllocContext, node: *struc AsmCall, n
 }
 
 fn infer_transfer_updated_reg(ctx: *struc RegAllocContext, reg_kind: i32, next_instr_idx: u64) none {
-    mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), 0)
+    mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), false)
 }
 
 fn infer_transfer_updated_name(ctx: *struc RegAllocContext, name: u64, next_instr_idx: u64) none {
     if not is_aliased_name(ctx, name) {
         i: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
-        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, 0)
+        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
     }
 }
 
 fn infer_transfer_updated_op(ctx: *struc RegAllocContext, node: *struc AsmOperand, next_instr_idx: u64) none {
     match node[].tag {
-        -> 251 {
+        -> AST_AsmRegister_t {
             reg_kind: i32 = register_mask_kind(@node[].get._AsmRegister.reg)
-            if reg_kind ~= 14 {
+            if reg_kind ~= REG_Sp {
                 infer_transfer_updated_reg(ctx, reg_kind, next_instr_idx)
             }
             break
         }
-        -> 252 {
+        -> AST_AsmPseudo_t {
             infer_transfer_updated_name(ctx, node[].get._AsmPseudo.name, next_instr_idx)
         }
         break
-        -> 253 {
+        -> AST_AsmMemory_t {
             reg_kind: i32 = register_mask_kind(@node[].get._AsmMemory.reg)
-            if reg_kind ~= 14 {
+            if reg_kind ~= REG_Sp {
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
             break
         }
-        -> 256 {
+        -> AST_AsmIndexed_t {
             panic_sigabrt("abort")
         }
         otherwise {
@@ -1552,108 +1946,108 @@ fn infer_transfer_updated_op(ctx: *struc RegAllocContext, node: *struc AsmOperan
 fn infer_transfer_live_regs(ctx: *struc RegAllocContext, instr_idx: u64, next_instr_idx: u64) none {
     node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
-        -> 273 {
+        -> AST_AsmMov_t {
             p_node: *struc AsmMov = @node[].get._AsmMov
             infer_transfer_updated_op(ctx, p_node[].dst, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             break
         }
-        -> 274 {
+        -> AST_AsmMovSx_t {
             p_node: *struc AsmMovSx = @node[].get._AsmMovSx
             infer_transfer_updated_op(ctx, p_node[].dst, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             break
         }
-        -> 275 {
+        -> AST_AsmMovZeroExtend_t {
             p_node: *struc AsmMovZeroExtend = @node[].get._AsmMovZeroExtend
             infer_transfer_updated_op(ctx, p_node[].dst, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             break
         }
-        -> 276 {
+        -> AST_AsmLea_t {
             p_node: *struc AsmLea = @node[].get._AsmLea
             infer_transfer_updated_op(ctx, p_node[].dst, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             break
         }
-        -> 277 {
+        -> AST_AsmCvttsd2si_t {
             p_node: *struc AsmCvttsd2si = @node[].get._AsmCvttsd2si
             infer_transfer_updated_op(ctx, p_node[].dst, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             break
         }
-        -> 278 {
+        -> AST_AsmCvtsi2sd_t {
             p_node: *struc AsmCvtsi2sd = @node[].get._AsmCvtsi2sd
             infer_transfer_updated_op(ctx, p_node[].dst, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             break
         }
-        -> 279 {
+        -> AST_AsmUnary_t {
             infer_transfer_used_op(ctx, node[].get._AsmUnary.dst, next_instr_idx)
         }
         break
-        -> 280 {
+        -> AST_AsmBinary_t {
             p_node: *struc AsmBinary = @node[].get._AsmBinary
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].dst, next_instr_idx)
             if is_bitshift_cl(p_node) {
-                infer_transfer_used_reg(ctx, 2, next_instr_idx)
+                infer_transfer_used_reg(ctx, REG_Cx, next_instr_idx)
             }
             break
         }
-        -> 281 {
+        -> AST_AsmCmp_t {
             p_node: *struc AsmCmp = @node[].get._AsmCmp
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
             infer_transfer_used_op(ctx, p_node[].dst, next_instr_idx)
             break
         }
-        -> 282 {
+        -> AST_AsmIdiv_t {
             infer_transfer_used_op(ctx, node[].get._AsmIdiv.src, next_instr_idx)
         }
-        infer_transfer_used_reg(ctx, 0, next_instr_idx)
-        infer_transfer_used_reg(ctx, 3, next_instr_idx)
+        infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
+        infer_transfer_used_reg(ctx, REG_Dx, next_instr_idx)
         break
-        -> 283 {
+        -> AST_AsmDiv_t {
             infer_transfer_used_op(ctx, node[].get._AsmDiv.src, next_instr_idx)
         }
-        infer_transfer_used_reg(ctx, 0, next_instr_idx)
+        infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
         break
-        -> 284 {
-            infer_transfer_updated_reg(ctx, 3, next_instr_idx)
+        -> AST_AsmCdq_t {
+            infer_transfer_updated_reg(ctx, REG_Dx, next_instr_idx)
         }
-        infer_transfer_used_reg(ctx, 0, next_instr_idx)
+        infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
         break
-        -> 287 {
+        -> AST_AsmSetCC_t {
             infer_transfer_updated_op(ctx, node[].get._AsmSetCC.dst, next_instr_idx)
         }
         break
-        -> 289 {
+        -> AST_AsmPush_t {
             infer_transfer_used_op(ctx, node[].get._AsmPush.src, next_instr_idx)
         }
         break
-        -> 291 {
-            infer_transfer_updated_reg(ctx, 0, next_instr_idx)
+        -> AST_AsmCall_t {
+            infer_transfer_updated_reg(ctx, REG_Ax, next_instr_idx)
         }
-        infer_transfer_updated_reg(ctx, 2, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 3, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 4, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 5, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 6, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 7, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 16, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 17, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 18, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 19, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 20, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 21, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 22, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 23, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 24, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 25, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 26, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 27, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 28, next_instr_idx)
-        infer_transfer_updated_reg(ctx, 29, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Cx, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Dx, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Di, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Si, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_R8, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_R9, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm0, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm1, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm2, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm3, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm4, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm5, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm6, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm7, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm8, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm9, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm10, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm11, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm12, next_instr_idx)
+        infer_transfer_updated_reg(ctx, REG_Xmm13, next_instr_idx)
         infer_transfer_used_call(ctx, @node[].get._AsmCall, next_instr_idx)
         break
         otherwise {
@@ -1693,7 +2087,7 @@ fn infer_add_reg_edge(ctx: *struc RegAllocContext, reg_kind: i32, name: u64) non
     {
         infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if not register_mask_get(infer[].linked_hard_mask, reg_kind) {
-            register_mask_set(@infer[].linked_hard_mask, reg_kind, 1)
+            register_mask_set(@infer[].linked_hard_mask, reg_kind, true)
             infer[].degree++
         }
     }
@@ -1738,29 +2132,29 @@ fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
 
 fn infer_init_used_name_edges(ctx: *struc RegAllocContext, name: u64) none {
     if not is_aliased_name(ctx, name) {
-        set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8)
+        set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t)
         ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).spill_cost++
     }
 }
 
 fn infer_init_used_op_edges(ctx: *struc RegAllocContext, node: *struc AsmOperand) none {
-    if node[].tag == 252 {
+    if node[].tag == AST_AsmPseudo_t {
         infer_init_used_name_edges(ctx, node[].get._AsmPseudo.name)
     }
 }
 
 fn infer_init_updated_regs_edges(ctx: *struc RegAllocContext, reg_kinds: *i32, instr_idx: u64, reg_kinds_size: u64, is_dbl: i32) none {
     mov_mask_bit: u64 = ctx[].dfa[].set_size
-    is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == 273
+    is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t
     if is_mov {
         mov: *struc AsmMov = @(ctx[].p_instrs[])[instr_idx][].get._AsmMov
-        if mov[].src[].tag == 252 {
+        if mov[].src[].tag == AST_AsmPseudo_t {
             src_name: u64 = mov[].src[].get._AsmPseudo.name
             if is_aliased_name(ctx, src_name) {
-                is_mov = 0
+                is_mov = false
             }
             else {
-                is_src_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8
+                is_src_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
                 set_p_infer_graph(ctx, is_src_dbl)
                 ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((src_name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).spill_cost++
                 mov_mask_bit = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((src_name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
@@ -1768,15 +2162,15 @@ fn infer_init_updated_regs_edges(ctx: *struc RegAllocContext, reg_kinds: *i32, i
             }
         }
         else {
-            is_mov = 0
+            is_mov = false
         }
     }
     set_p_infer_graph(ctx, is_dbl)
     if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (0)] ~= 0ul {
-        loop i: u64 = ? ctx[].dfa[].set_size < 64 then ctx[].dfa[].set_size else 64 while i-- > 26 {
+        loop i: u64 = ? ctx[].dfa[].set_size < 64 then ctx[].dfa[].set_size else 64 while i-- > REGISTER_MASK_SIZE {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) and not (is_mov and i == mov_mask_bit) {
-                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - 26]
-                if is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8) {
+                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
+                if is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t) {
                     loop j: u64 = 0 while j < reg_kinds_size .. ++j {
                         infer_add_reg_edge(ctx, reg_kinds[j], pseudo_name)
                     }
@@ -1796,8 +2190,8 @@ fn infer_init_updated_regs_edges(ctx: *struc RegAllocContext, reg_kinds: *i32, i
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) and not (is_mov and i == mov_mask_bit) {
-                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - 26]
-                if is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8) {
+                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
+                if is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t) {
                     loop k: u64 = 0 while k < reg_kinds_size .. ++k {
                         infer_add_reg_edge(ctx, reg_kinds[k], pseudo_name)
                     }
@@ -1811,16 +2205,16 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
     if is_aliased_name(ctx, name) {
         return none
     }
-    is_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8
+    is_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
     mov_mask_bit: u64 = ctx[].dfa[].set_size
-    is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == 273
+    is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t
     if is_mov {
         mov: *struc AsmMov = @(ctx[].p_instrs[])[instr_idx][].get._AsmMov
         match mov[].src[].tag {
-            -> 251 {
+            -> AST_AsmRegister_t {
                 src_reg_kind: i32 = register_mask_kind(@mov[].src[].get._AsmRegister.reg)
-                if src_reg_kind == 14 {
-                    is_mov = 0
+                if src_reg_kind == REG_Sp {
+                    is_mov = false
                 }
                 else {
                     mov_mask_bit = register_mask_bit(src_reg_kind)
@@ -1828,13 +2222,13 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
                 }
                 break
             }
-            -> 252 {
+            -> AST_AsmPseudo_t {
                 src_name: u64 = mov[].src[].get._AsmPseudo.name
                 if is_aliased_name(ctx, src_name) {
-                    is_mov = 0
+                    is_mov = false
                 }
                 else {
-                    is_src_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8
+                    is_src_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
                     set_p_infer_graph(ctx, is_src_dbl)
                     ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((src_name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).spill_cost++
                     mov_mask_bit = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((src_name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
@@ -1842,10 +2236,10 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
                 }
                 break
             }
-            -> 253 {
+            -> AST_AsmMemory_t {
                 src_reg_kind: i32 = register_mask_kind(@mov[].src[].get._AsmMemory.reg)
-                if src_reg_kind == 14 {
-                    is_mov = 0
+                if src_reg_kind == REG_Sp {
+                    is_mov = false
                 }
                 else {
                     mov_mask_bit = register_mask_bit(src_reg_kind)
@@ -1853,11 +2247,11 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
                 }
                 break
             }
-            -> 256 {
+            -> AST_AsmIndexed_t {
                 panic_sigabrt("abort")
             }
             otherwise {
-                is_mov = 0
+                is_mov = false
                 break
             }
         }
@@ -1873,12 +2267,12 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
                 infer_add_reg_edge(ctx, reg_kind, name)
             }
         }
-        i = 26
+        i = REGISTER_MASK_SIZE
         mask_set_size = ? ctx[].dfa[].set_size < 64 then ctx[].dfa[].set_size else 64
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) and not (is_mov and i == mov_mask_bit) {
-                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - 26]
-                if name ~= pseudo_name and is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8) {
+                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
+                if name ~= pseudo_name and is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t) {
                     infer_add_pseudo_edges(ctx, name, pseudo_name)
                 }
             }
@@ -1896,8 +2290,8 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) and not (is_mov and i == mov_mask_bit) {
-                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - 26]
-                if name ~= pseudo_name and is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8) {
+                pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
+                if name ~= pseudo_name and is_dbl == (((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((pseudo_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t) {
                     infer_add_pseudo_edges(ctx, name, pseudo_name)
                 }
             }
@@ -1907,15 +2301,15 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
 
 fn infer_init_updated_op_edges(ctx: *struc RegAllocContext, node: *struc AsmOperand, instr_idx: u64) none {
     match node[].tag {
-        -> 251 {
+        -> AST_AsmRegister_t {
             reg_kinds: [1]i32 = $(register_mask_kind(@node[].get._AsmRegister.reg))
-            if reg_kinds[0] ~= 14 {
+            if reg_kinds[0] ~= REG_Sp {
                 is_dbl: i32 = register_mask_bit(reg_kinds[0]) > 11
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, is_dbl)
             }
             break
         }
-        -> 252 {
+        -> AST_AsmPseudo_t {
             infer_init_updated_name_edges(ctx, node[].get._AsmPseudo.name, instr_idx)
         }
         break
@@ -1928,83 +2322,83 @@ fn infer_init_updated_op_edges(ctx: *struc RegAllocContext, node: *struc AsmOper
 fn infer_init_edges(ctx: *struc RegAllocContext, instr_idx: u64) none {
     node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
-        -> 273 {
+        -> AST_AsmMov_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMov.dst, instr_idx)
         }
         break
-        -> 274 {
+        -> AST_AsmMovSx_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMovSx.dst, instr_idx)
         }
         break
-        -> 275 {
+        -> AST_AsmMovZeroExtend_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMovZeroExtend.dst, instr_idx)
         }
         break
-        -> 276 {
+        -> AST_AsmLea_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmLea.dst, instr_idx)
         }
         break
-        -> 277 {
+        -> AST_AsmCvttsd2si_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmCvttsd2si.dst, instr_idx)
         }
         break
-        -> 278 {
+        -> AST_AsmCvtsi2sd_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmCvtsi2sd.dst, instr_idx)
         }
         break
-        -> 279 {
+        -> AST_AsmUnary_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmUnary.dst, instr_idx)
         }
         break
-        -> 280 {
+        -> AST_AsmBinary_t {
             p_node: *struc AsmBinary = @node[].get._AsmBinary
             if is_bitshift_cl(p_node) {
-                reg_kinds: [1]i32 = $(2)
-                infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, 0)
+                reg_kinds: [1]i32 = $(REG_Cx)
+                infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, false)
             }
             infer_init_updated_op_edges(ctx, p_node[].dst, instr_idx)
             infer_init_used_op_edges(ctx, p_node[].src)
             break
         }
-        -> 281 {
+        -> AST_AsmCmp_t {
             p_node: *struc AsmCmp = @node[].get._AsmCmp
             infer_init_used_op_edges(ctx, p_node[].src)
             infer_init_used_op_edges(ctx, p_node[].dst)
             break
         }
-        -> 282 {
-            reg_kinds: [2]i32 = $(0, 3)
-            infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 2, 0)
+        -> AST_AsmIdiv_t {
+            reg_kinds: [2]i32 = $(REG_Ax, REG_Dx)
+            infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 2, false)
             infer_init_used_op_edges(ctx, node[].get._AsmIdiv.src)
             break
         }
-        -> 283 {
-            reg_kinds: [1]i32 = $(0)
-            infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, 0)
+        -> AST_AsmDiv_t {
+            reg_kinds: [1]i32 = $(REG_Ax)
+            infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, false)
             infer_init_used_op_edges(ctx, node[].get._AsmDiv.src)
             break
         }
-        -> 284 {
-            reg_kinds: [1]i32 = $(3)
-            infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, 0)
+        -> AST_AsmCdq_t {
+            reg_kinds: [1]i32 = $(REG_Dx)
+            infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, false)
             break
         }
-        -> 287 {
+        -> AST_AsmSetCC_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmSetCC.dst, instr_idx)
         }
         break
-        -> 289 {
+        -> AST_AsmPush_t {
             infer_init_used_op_edges(ctx, node[].get._AsmPush.src)
         }
         break
-        -> 291 {
+        -> AST_AsmCall_t {
             {
-                reg_kinds: [7]i32 = $(0, 2, 3, 4, 5, 6, 7)
-                infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 7, 0)
+                reg_kinds: [7]i32 = $(REG_Ax, REG_Cx, REG_Dx, REG_Di, REG_Si, REG_R8, REG_R9)
+                infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 7, false)
             }
             {
-                reg_kinds: [14]i32 = $(16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29)
-                infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 14, 1)
+                reg_kinds: [14]i32 = $(REG_Xmm0, REG_Xmm1, REG_Xmm2, REG_Xmm3, REG_Xmm4, REG_Xmm5, REG_Xmm6, REG_Xmm7, REG_Xmm8, REG_Xmm9, REG_Xmm10, REG_Xmm11, REG_Xmm12, REG_Xmm13)
+                infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 14, true)
             }
             break
         }
@@ -2016,11 +2410,11 @@ fn infer_init_edges(ctx: *struc RegAllocContext, instr_idx: u64) none {
 
 fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     if not init_data_flow_analysis(ctx, fun_name) {
-        return 0
+        return false
     }
     dfa_iter_alg(ctx)
     if ((? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) == 0) {
-        return 0
+        return false
     }
     ctx[].callee_saved_reg_mask = 0ul
     if ctx[].infer_graph[].unpruned_pseudo_names {
@@ -2031,18 +2425,18 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         if (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names {
             loop .. while 0 {
                 cast<none>((? ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
-                ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = 0
+                ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
             }            
-            (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = 0
+            (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
         }
         ;
     }
     if ctx[].infer_graph[].pseudo_reg_map {
         loop .. while 0 {
-            cast<none>((? (ctx[].infer_graph[].pseudo_reg_map) ~= 0 then stbds_hmfree_func((ctx[].infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
-            (ctx[].infer_graph[].pseudo_reg_map) = 0
+            cast<none>((? (ctx[].infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
+            (ctx[].infer_graph[].pseudo_reg_map) = nil
         }        
-        ctx[].infer_graph[].pseudo_reg_map = 0
+        ctx[].infer_graph[].pseudo_reg_map = nil
     }
     ;
     if ctx[].sse_infer_graph[].unpruned_pseudo_names {
@@ -2053,24 +2447,24 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         if (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names {
             loop .. while 0 {
                 cast<none>((? ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
-                ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = 0
+                ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
             }            
-            (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = 0
+            (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
         }
         ;
     }
     if ctx[].sse_infer_graph[].pseudo_reg_map {
         loop .. while 0 {
-            cast<none>((? (ctx[].sse_infer_graph[].pseudo_reg_map) ~= 0 then stbds_hmfree_func((ctx[].sse_infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
-            (ctx[].sse_infer_graph[].pseudo_reg_map) = 0
+            cast<none>((? (ctx[].sse_infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].sse_infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
+            (ctx[].sse_infer_graph[].pseudo_reg_map) = nil
         }        
-        ctx[].sse_infer_graph[].pseudo_reg_map = 0
+        ctx[].sse_infer_graph[].pseudo_reg_map = nil
     }
     ;
     loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         name: u64 = (ctx[].cfg[].identifier_id_map[i]).key
-        infer: struc InferenceRegister = $(14, 14, 0, 0, 0ul, 0)
-        if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8 {
+        infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, nil)
+        if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t {
             loop .. while 0 {
                 (? (not (ctx[].sse_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].sse_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].sse_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].sse_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
                 (ctx[].sse_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
@@ -2102,8 +2496,8 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         }
         hard_reg_mask: u64 = ctx[].infer_graph[].hard_reg_mask
         loop i: u64 = 0 while i < 12 .. ++i {
-            ctx[].reg_color_map[i] = 14
-            ctx[].hard_regs[i].color = 14
+            ctx[].reg_color_map[i] = REG_Sp
+            ctx[].hard_regs[i].color = REG_Sp
             ctx[].hard_regs[i].degree = 11
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
@@ -2123,8 +2517,8 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         }
         hard_reg_mask: u64 = ctx[].sse_infer_graph[].hard_reg_mask
         loop i: u64 = 12 while i < 26 .. ++i {
-            ctx[].reg_color_map[i] = 14
-            ctx[].hard_regs[i].color = 14
+            ctx[].reg_color_map[i] = REG_Sp
+            ctx[].hard_regs[i].color = REG_Sp
             ctx[].hard_regs[i].degree = 13
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
@@ -2144,30 +2538,30 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             }
         }
     }
-    return 1
+    return true
 }
 
 fn is_reg_callee_saved(reg_kind: i32) i32 {
     match reg_kind {
-        -> 1 {
-            -> 10 {
-                -> 11 {
-                    -> 12 {
-                        -> 13 {
-                            return 1
+        -> REG_Bx {
+            -> REG_R12 {
+                -> REG_R13 {
+                    -> REG_R14 {
+                        -> REG_R15 {
+                            return true
                         }
                     }
                 }
             }
         }
         otherwise {
-            return 0
+            return false
         }
     }
 }
 
 fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceRegister, pruned_idx: u64) none {
-    if infer[].reg_kind == 14 {
+    if infer[].reg_kind == REG_Sp {
         loop .. while 0 {
             (ctx[].p_infer_graph[].unpruned_pseudo_names)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
             (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
@@ -2193,7 +2587,7 @@ fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceReg
 }
 
 fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceRegister, pruned_name: u64) none {
-    if infer[].reg_kind == 14 {
+    if infer[].reg_kind == REG_Sp {
         ;
         loop .. while 0 {
             (? (not (ctx[].p_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].p_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
@@ -2231,7 +2625,7 @@ fn alloc_next_color_infer_graph(ctx: *struc RegAllocContext) none {
 
 fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *struc InferenceRegister {
     pruned_idx: u64;
-    infer: *struc InferenceRegister = 0
+    infer: *struc InferenceRegister = nil
     loop i: u64 = 0 while i < (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) .. ++i {
         pruned_name[] = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
         infer = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((pruned_name[]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
@@ -2239,7 +2633,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
             pruned_idx = i
             break
         }
-        infer = 0
+        infer = nil
     }
     if not infer {
         loop i: u64 = 0 while i < (? (ctx[].p_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) .. ++i {
@@ -2249,7 +2643,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
                 pruned_idx = i
                 break
             }
-            infer = 0
+            infer = nil
         }
     }
     if not infer {
@@ -2261,7 +2655,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
                 pruned_idx = i
                 break
             }
-            infer = 0
+            infer = nil
         }
         ;
         min_spill_metric: f64 = (cast<f64>(infer[].spill_cost)) / infer[].degree
@@ -2289,16 +2683,16 @@ fn alloc_unprune_infer_graph(ctx: *struc RegAllocContext, infer: *struc Inferenc
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(infer[].linked_hard_mask, linked_infer[].reg_kind) {
-                if linked_infer[].color ~= 14 {
-                    register_mask_set(@color_reg_mask, linked_infer[].color, 0)
+                if linked_infer[].color ~= REG_Sp {
+                    register_mask_set(@color_reg_mask, linked_infer[].color, false)
                 }
             }
         }
     }
     loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
-        if linked_infer[].color ~= 14 {
-            register_mask_set(@color_reg_mask, linked_infer[].color, 0)
+        if linked_infer[].color ~= REG_Sp {
+            register_mask_set(@color_reg_mask, linked_infer[].color, false)
         }
     }
     if color_reg_mask ~= 0ul {
@@ -2334,7 +2728,7 @@ fn alloc_color_infer_graph(ctx: *struc RegAllocContext) none {
 fn alloc_color_reg_map(ctx: *struc RegAllocContext) none {
     loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
         infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
-        if infer[].color ~= 14 {
+        if infer[].color ~= REG_Sp {
             ctx[].reg_color_map[register_mask_bit(infer[].color)] = infer[].reg_kind
         }
     }
@@ -2342,16 +2736,16 @@ fn alloc_color_reg_map(ctx: *struc RegAllocContext) none {
 
 fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
     if is_aliased_name(ctx, name) {
-        return 0
+        return nil
     }
-    set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8)
+    set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t)
     color: i32 = ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).color
-    if color ~= 14 {
+    if color ~= REG_Sp {
         reg_kind: i32 = ctx[].reg_color_map[register_mask_bit(color)]
         hard_reg: *struc AsmOperand = gen_register(reg_kind)
         if is_reg_callee_saved(reg_kind) and not register_mask_get(ctx[].callee_saved_reg_mask, reg_kind) {
-            register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, 1)
-            callee_saved_reg: *struc AsmOperand = 0
+            register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, true)
+            callee_saved_reg: *struc AsmOperand = nil
             if hard_reg ~= callee_saved_reg {
                 free_AsmOperand(@callee_saved_reg)
                 callee_saved_reg = hard_reg
@@ -2363,43 +2757,43 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
                     (? (not (ctx[].p_backend_fun[].callee_saved_regs) or (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].capacity) then (((ctx[].p_backend_fun[].callee_saved_regs) = stbds_arrgrowf((ctx[].p_backend_fun[].callee_saved_regs), sizeof((ctx[].p_backend_fun[].callee_saved_regs)[]), (1), (0))) and 0) else 0)
                     (ctx[].p_backend_fun[].callee_saved_regs)[(cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length++] = (callee_saved_reg)
                 }                
-                callee_saved_reg = 0
+                callee_saved_reg = nil
             }            
         }
         return hard_reg
     }
     else {
-        return 0
+        return nil
     }
 }
 
 fn get_op_reg_kind(ctx: *struc RegAllocContext, node: *struc AsmOperand) i32 {
     match node[].tag {
-        -> 251 {
+        -> AST_AsmRegister_t {
             return register_mask_kind(@node[].get._AsmRegister.reg)
         }
-        -> 252 {
+        -> AST_AsmPseudo_t {
             name: u64 = node[].get._AsmPseudo.name
             if is_aliased_name(ctx, name) {
-                return 14
+                return REG_Sp
             }
-            set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8)
+            set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t)
             color: i32 = ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).color
-            if color == 14 {
-                return 14
+            if color == REG_Sp {
+                return REG_Sp
             }
             else {
                 return ctx[].reg_color_map[register_mask_bit(color)]
             }
         }
-        -> 253 {
-            return 14
+        -> AST_AsmMemory_t {
+            return REG_Sp
         }
-        -> 256 {
+        -> AST_AsmIndexed_t {
             panic_sigabrt("abort")
         }
         otherwise {
-            return 14
+            return REG_Sp
         }
     }
 }
@@ -2407,28 +2801,28 @@ fn get_op_reg_kind(ctx: *struc RegAllocContext, node: *struc AsmOperand) i32 {
 fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u64) none {
     src_reg_kind: i32 = get_op_reg_kind(ctx, node[].src)
     dst_reg_kind: i32 = get_op_reg_kind(ctx, node[].dst)
-    if src_reg_kind ~= 14 and src_reg_kind == dst_reg_kind {
-        set_instr(ctx, 0, instr_idx)
+    if src_reg_kind ~= REG_Sp and src_reg_kind == dst_reg_kind {
+        set_instr(ctx, nil, instr_idx)
     }
     else {
-        if node[].src[].tag == 252 {
+        if node[].src[].tag == AST_AsmPseudo_t {
             hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
             if hard_reg {
                 if hard_reg ~= node[].src {
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = 0
+                    hard_reg = nil
                 }
                 ;
             }
         }
-        if node[].dst[].tag == 252 {
+        if node[].dst[].tag == AST_AsmPseudo_t {
             hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
             if hard_reg {
                 if hard_reg ~= node[].dst {
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = 0
+                    hard_reg = nil
                 }
                 ;
             }
@@ -2437,24 +2831,24 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
 }
 
 fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2462,24 +2856,24 @@ fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
 }
 
 fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroExtend) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2487,24 +2881,24 @@ fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroE
 }
 
 fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2512,24 +2906,24 @@ fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
 }
 
 fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2537,24 +2931,24 @@ fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si)
 }
 
 fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2562,13 +2956,13 @@ fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) n
 }
 
 fn alloc_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2576,24 +2970,24 @@ fn alloc_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
 }
 
 fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2601,24 +2995,24 @@ fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none 
 }
 
 fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2626,13 +3020,13 @@ fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
 }
 
 fn alloc_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2640,13 +3034,13 @@ fn alloc_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
 }
 
 fn alloc_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2654,13 +3048,13 @@ fn alloc_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
 }
 
 fn alloc_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2668,13 +3062,13 @@ fn alloc_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
 }
 
 fn alloc_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             if hard_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = hard_reg
-                hard_reg = 0
+                hard_reg = nil
             }
             ;
         }
@@ -2684,60 +3078,60 @@ fn alloc_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
 fn alloc_instr(ctx: *struc RegAllocContext, instr_idx: u64) none {
     node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
-        -> 273 {
+        -> AST_AsmMov_t {
             alloc_mov_instr(ctx, @node[].get._AsmMov, instr_idx)
         }
         break
-        -> 274 {
+        -> AST_AsmMovSx_t {
             alloc_mov_sx_instr(ctx, @node[].get._AsmMovSx)
         }
         break
-        -> 275 {
+        -> AST_AsmMovZeroExtend_t {
             alloc_zero_extend_instr(ctx, @node[].get._AsmMovZeroExtend)
         }
         break
-        -> 276 {
+        -> AST_AsmLea_t {
             alloc_lea_instr(ctx, @node[].get._AsmLea)
         }
         break
-        -> 277 {
+        -> AST_AsmCvttsd2si_t {
             alloc_cvttsd2si_instr(ctx, @node[].get._AsmCvttsd2si)
         }
         break
-        -> 278 {
+        -> AST_AsmCvtsi2sd_t {
             alloc_cvtsi2sd_instr(ctx, @node[].get._AsmCvtsi2sd)
         }
         break
-        -> 279 {
+        -> AST_AsmUnary_t {
             alloc_unary_instr(ctx, @node[].get._AsmUnary)
         }
         break
-        -> 280 {
+        -> AST_AsmBinary_t {
             alloc_binary_instr(ctx, @node[].get._AsmBinary)
         }
         break
-        -> 281 {
+        -> AST_AsmCmp_t {
             alloc_cmp_instr(ctx, @node[].get._AsmCmp)
         }
         break
-        -> 282 {
+        -> AST_AsmIdiv_t {
             alloc_idiv_instr(ctx, @node[].get._AsmIdiv)
         }
         break
-        -> 283 {
+        -> AST_AsmDiv_t {
             alloc_div_instr(ctx, @node[].get._AsmDiv)
         }
         break
-        -> 287 {
+        -> AST_AsmSetCC_t {
             alloc_set_cc_instr(ctx, @node[].get._AsmSetCC)
         }
         break
-        -> 289 {
+        -> AST_AsmPush_t {
             alloc_push_instr(ctx, @node[].get._AsmPush)
         }
         break
-        -> 284 {
-            -> 291 {
+        -> AST_AsmCdq_t {
+            -> AST_AsmCall_t {
                 break
             }
         }
@@ -2749,12 +3143,12 @@ fn alloc_instr(ctx: *struc RegAllocContext, instr_idx: u64) none {
 
 fn reallocate_registers(ctx: *struc RegAllocContext) none {
     if not ((? (ctx[].infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) {
-        set_p_infer_graph(ctx, 0)
+        set_p_infer_graph(ctx, false)
         alloc_color_infer_graph(ctx)
         alloc_color_reg_map(ctx)
     }
     if not ((? (ctx[].sse_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) {
-        set_p_infer_graph(ctx, 1)
+        set_p_infer_graph(ctx, true)
         alloc_color_infer_graph(ctx)
         alloc_color_reg_map(ctx)
     }
@@ -2767,22 +3161,22 @@ fn reallocate_registers(ctx: *struc RegAllocContext) none {
 
 fn get_type_size(type_t: *struc Type) i32 {
     match type_t[].tag {
-        -> 1 {
-            -> 2 {
-                -> 3 {
+        -> AST_Char_t {
+            -> AST_SChar_t {
+                -> AST_UChar_t {
                     return 1
                 }
             }
         }
-        -> 4 {
-            -> 6 {
+        -> AST_Int_t {
+            -> AST_UInt_t {
                 return 4
             }
         }
-        -> 5 {
-            -> 8 {
-                -> 7 {
-                    -> 11 {
+        -> AST_Long_t {
+            -> AST_Double_t {
+                -> AST_ULong_t {
+                    -> AST_Pointer_t {
                         return 8
                     }
                 }
@@ -2797,14 +3191,14 @@ fn get_type_size(type_t: *struc Type) i32 {
 fn get_coalesced_idx(ctx: *struc RegAllocContext, node: *struc AsmOperand) u64 {
     coalesced_idx: u64 = ctx[].dfa[].set_size
     match node[].tag {
-        -> 251 {
+        -> AST_AsmRegister_t {
             reg_kind: i32 = register_mask_kind(@node[].get._AsmRegister.reg)
-            if reg_kind ~= 14 {
+            if reg_kind ~= REG_Sp {
                 coalesced_idx = register_mask_bit(reg_kind)
             }
             break
         }
-        -> 252 {
+        -> AST_AsmPseudo_t {
             name: u64 = node[].get._AsmPseudo.name
             if not is_aliased_name(ctx, name) {
                 coalesced_idx = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
@@ -2816,18 +3210,18 @@ fn get_coalesced_idx(ctx: *struc RegAllocContext, node: *struc AsmOperand) u64 {
         }
     }
     if coalesced_idx < ctx[].dfa[].set_size {
-        loop while coalesced_idx >= 26 and coalesced_idx ~= ctx[].dfa[].open_data_map[coalesced_idx - 26] {
-            coalesced_idx = ctx[].dfa[].open_data_map[coalesced_idx - 26]
+        loop while coalesced_idx >= REGISTER_MASK_SIZE and coalesced_idx ~= ctx[].dfa[].open_data_map[coalesced_idx - REGISTER_MASK_SIZE] {
+            coalesced_idx = ctx[].dfa[].open_data_map[coalesced_idx - REGISTER_MASK_SIZE]
         }
     }
     return coalesced_idx
 }
 
 fn get_coalescable_infer_regs(ctx: *struc RegAllocContext, src_infer: **struc InferenceRegister, dst_infer: **struc InferenceRegister, src_idx: u64, dst_idx: u64) i32 {
-    if src_idx ~= dst_idx and (src_idx >= 26 or dst_idx >= 26) and src_idx < ctx[].dfa[].set_size and dst_idx < ctx[].dfa[].set_size {
-        if src_idx < 26 {
-            dst_name: u64 = ctx[].dfa_o2[].data_name_map[dst_idx - 26]
-            is_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((dst_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8
+    if src_idx ~= dst_idx and (src_idx >= REGISTER_MASK_SIZE or dst_idx >= REGISTER_MASK_SIZE) and src_idx < ctx[].dfa[].set_size and dst_idx < ctx[].dfa[].set_size {
+        if src_idx < REGISTER_MASK_SIZE {
+            dst_name: u64 = ctx[].dfa_o2[].data_name_map[dst_idx - REGISTER_MASK_SIZE]
+            is_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((dst_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
             if is_dbl == (src_idx > 11) {
                 set_p_infer_graph(ctx, is_dbl)
                 src_infer[] = @ctx[].hard_regs[src_idx]
@@ -2835,9 +3229,9 @@ fn get_coalescable_infer_regs(ctx: *struc RegAllocContext, src_infer: **struc In
                 return not register_mask_get((dst_infer[])[].linked_hard_mask, (src_infer[])[].reg_kind)
             }
         }
-        elif dst_idx < 26 {
-            src_name: u64 = ctx[].dfa_o2[].data_name_map[src_idx - 26]
-            is_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8
+        elif dst_idx < REGISTER_MASK_SIZE {
+            src_name: u64 = ctx[].dfa_o2[].data_name_map[src_idx - REGISTER_MASK_SIZE]
+            is_dbl: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
             if is_dbl == (dst_idx > 11) {
                 set_p_infer_graph(ctx, is_dbl)
                 src_infer[] = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((src_name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
@@ -2846,12 +3240,12 @@ fn get_coalescable_infer_regs(ctx: *struc RegAllocContext, src_infer: **struc In
             }
         }
         else {
-            src_name: u64 = ctx[].dfa_o2[].data_name_map[src_idx - 26]
-            dst_name: u64 = ctx[].dfa_o2[].data_name_map[dst_idx - 26]
+            src_name: u64 = ctx[].dfa_o2[].data_name_map[src_idx - REGISTER_MASK_SIZE]
+            dst_name: u64 = ctx[].dfa_o2[].data_name_map[dst_idx - REGISTER_MASK_SIZE]
             src_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
             dst_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((dst_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
-            is_dbl: i32 = src_type[].tag == 8
-            if is_dbl == (dst_type[].tag == 8) and get_type_size(src_type) == get_type_size(dst_type) {
+            is_dbl: i32 = src_type[].tag == AST_Double_t
+            if is_dbl == (dst_type[].tag == AST_Double_t) and get_type_size(src_type) == get_type_size(dst_type) {
                 set_p_infer_graph(ctx, is_dbl)
                 src_infer[] = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((src_name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
                 dst_infer[] = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((dst_name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
@@ -2859,7 +3253,7 @@ fn get_coalescable_infer_regs(ctx: *struc RegAllocContext, src_infer: **struc In
             }
         }
     }
-    return 0
+    return false
 }
 
 fn coal_briggs_test(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegister, dst_infer: *struc InferenceRegister) i32 {
@@ -2887,7 +3281,7 @@ fn coal_briggs_test(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegi
     }
     loop i: u64 = 0 while i < (? (dst_infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((dst_infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
         j: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((dst_infer[].linked_pseudo_names[i]))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
-        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, 1)
+        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, true)
     }
     loop i: u64 = 0 while i < (? (src_infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((src_infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
         j: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((src_infer[].linked_pseudo_names[i]))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
@@ -2896,7 +3290,7 @@ fn coal_briggs_test(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegi
             if linked_infer[].degree > ctx[].p_infer_graph[].k {
                 degree++
             }
-            mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, 0)
+            mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, false)
         }
         elif linked_infer[].degree >= ctx[].p_infer_graph[].k {
             degree++
@@ -2918,30 +3312,30 @@ fn coal_george_test(ctx: *struc RegAllocContext, reg_kind: i32, infer: *struc In
     loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if not register_mask_get(linked_infer[].linked_hard_mask, reg_kind) and linked_infer[].degree >= ctx[].p_infer_graph[].k {
-            return 0
+            return false
         }
     }
-    return 1
+    return true
 }
 
 fn coal_conservative_tests(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegister, dst_infer: *struc InferenceRegister) i32 {
     if coal_briggs_test(ctx, src_infer, dst_infer) {
-        return 1
+        return true
     }
-    elif src_infer[].reg_kind ~= 14 {
+    elif src_infer[].reg_kind ~= REG_Sp {
         return coal_george_test(ctx, src_infer[].reg_kind, dst_infer)
     }
-    elif dst_infer[].reg_kind ~= 14 {
+    elif dst_infer[].reg_kind ~= REG_Sp {
         return coal_george_test(ctx, dst_infer[].reg_kind, src_infer)
     }
     else {
-        return 0
+        return false
     }
 }
 
 fn coal_pseudo_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceRegister, merge_idx: u64, keep_idx: u64) none {
-    merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - 26]
-    keep_name: u64 = ctx[].dfa_o2[].data_name_map[keep_idx - 26]
+    merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - REGISTER_MASK_SIZE]
+    keep_name: u64 = ctx[].dfa_o2[].data_name_map[keep_idx - REGISTER_MASK_SIZE]
     if infer[].linked_hard_mask ~= 0ul {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
@@ -2960,7 +3354,7 @@ fn coal_pseudo_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceReg
 }
 
 fn coal_hard_infer_reg(ctx: *struc RegAllocContext, reg_kind: i32, infer: *struc InferenceRegister, merge_idx: u64) none {
-    merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - 26]
+    merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - REGISTER_MASK_SIZE]
     if infer[].linked_hard_mask ~= 0ul {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
@@ -2978,46 +3372,46 @@ fn coal_hard_infer_reg(ctx: *struc RegAllocContext, reg_kind: i32, infer: *struc
 }
 
 fn coal_infer_regs(ctx: *struc RegAllocContext, node: *struc AsmMov) i32 {
-    src_infer: *struc InferenceRegister = 0
-    dst_infer: *struc InferenceRegister = 0
+    src_infer: *struc InferenceRegister = nil
+    dst_infer: *struc InferenceRegister = nil
     src_idx: u64 = get_coalesced_idx(ctx, node[].src)
     dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
     if get_coalescable_infer_regs(ctx, @src_infer, @dst_infer, src_idx, dst_idx) and coal_conservative_tests(ctx, src_infer, dst_infer) {
-        if src_idx < 26 {
+        if src_idx < REGISTER_MASK_SIZE {
             coal_hard_infer_reg(ctx, src_infer[].reg_kind, dst_infer, dst_idx)
-            ctx[].dfa[].open_data_map[dst_idx - 26] = src_idx
+            ctx[].dfa[].open_data_map[dst_idx - REGISTER_MASK_SIZE] = src_idx
         }
         else {
-            if dst_idx < 26 {
+            if dst_idx < REGISTER_MASK_SIZE {
                 coal_hard_infer_reg(ctx, dst_infer[].reg_kind, src_infer, src_idx)
             }
             else {
                 coal_pseudo_infer_reg(ctx, src_infer, src_idx, dst_idx)
             }
-            ctx[].dfa[].open_data_map[src_idx - 26] = dst_idx
+            ctx[].dfa[].open_data_map[src_idx - REGISTER_MASK_SIZE] = dst_idx
         }
-        return 1
+        return true
     }
     else {
-        return 0
+        return false
     }
 }
 
 fn coal_op_reg(ctx: *struc RegAllocContext, name: u64, coalesced_idx: u64) *struc AsmOperand {
     if coalesced_idx < ctx[].dfa[].set_size and coalesced_idx ~= ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value) {
-        if coalesced_idx < 26 {
+        if coalesced_idx < REGISTER_MASK_SIZE {
             reg_kind: i32 = ctx[].hard_regs[coalesced_idx].reg_kind
             return gen_register(reg_kind)
         }
         else {
-            set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == 8)
-            name = ctx[].dfa_o2[].data_name_map[coalesced_idx - 26]
+            set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t)
+            name = ctx[].dfa_o2[].data_name_map[coalesced_idx - REGISTER_MASK_SIZE]
             ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).spill_cost++
             return make_AsmPseudo(name)
         }
     }
     else {
-        return 0
+        return nil
     }
 }
 
@@ -3028,24 +3422,24 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
         cfg_rm_block_instr(ctx, instr_idx, block_id)
     }
     else {
-        if node[].src[].tag == 252 {
+        if node[].src[].tag == AST_AsmPseudo_t {
             op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
             if op_reg {
                 if op_reg ~= node[].src {
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = 0
+                    op_reg = nil
                 }
                 ;
             }
         }
-        if node[].dst[].tag == 252 {
+        if node[].dst[].tag == AST_AsmPseudo_t {
             op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
             if op_reg {
                 if op_reg ~= node[].dst {
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = 0
+                    op_reg = nil
                 }
                 ;
             }
@@ -3054,26 +3448,26 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
 }
 
 fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3081,26 +3475,26 @@ fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
 }
 
 fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroExtend) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3108,26 +3502,26 @@ fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroEx
 }
 
 fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3135,26 +3529,26 @@ fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
 }
 
 fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3162,26 +3556,26 @@ fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) 
 }
 
 fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3189,14 +3583,14 @@ fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) no
 }
 
 fn coal_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3204,26 +3598,26 @@ fn coal_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
 }
 
 fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3231,26 +3625,26 @@ fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
 }
 
 fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
     }
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3258,14 +3652,14 @@ fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
 }
 
 fn coal_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3273,14 +3667,14 @@ fn coal_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
 }
 
 fn coal_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3288,14 +3682,14 @@ fn coal_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
 }
 
 fn coal_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
-    if node[].dst[].tag == 252 {
+    if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             if op_reg ~= node[].dst {
                 free_AsmOperand(@node[].dst)
                 node[].dst = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3303,14 +3697,14 @@ fn coal_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
 }
 
 fn coal_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
-    if node[].src[].tag == 252 {
+    if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
         op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             if op_reg ~= node[].src {
                 free_AsmOperand(@node[].src)
                 node[].src = op_reg
-                op_reg = 0
+                op_reg = nil
             }
             ;
         }
@@ -3320,60 +3714,60 @@ fn coal_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
 fn coal_instr(ctx: *struc RegAllocContext, instr_idx: u64, block_id: u64) none {
     node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
-        -> 273 {
+        -> AST_AsmMov_t {
             coal_mov_instr(ctx, @node[].get._AsmMov, instr_idx, block_id)
         }
         break
-        -> 274 {
+        -> AST_AsmMovSx_t {
             coal_mov_sx_instr(ctx, @node[].get._AsmMovSx)
         }
         break
-        -> 275 {
+        -> AST_AsmMovZeroExtend_t {
             coal_zero_extend_instr(ctx, @node[].get._AsmMovZeroExtend)
         }
         break
-        -> 276 {
+        -> AST_AsmLea_t {
             coal_lea_instr(ctx, @node[].get._AsmLea)
         }
         break
-        -> 277 {
+        -> AST_AsmCvttsd2si_t {
             coal_cvttsd2si_instr(ctx, @node[].get._AsmCvttsd2si)
         }
         break
-        -> 278 {
+        -> AST_AsmCvtsi2sd_t {
             coal_cvtsi2sd_instr(ctx, @node[].get._AsmCvtsi2sd)
         }
         break
-        -> 279 {
+        -> AST_AsmUnary_t {
             coal_unary_instr(ctx, @node[].get._AsmUnary)
         }
         break
-        -> 280 {
+        -> AST_AsmBinary_t {
             coal_binary_instr(ctx, @node[].get._AsmBinary)
         }
         break
-        -> 281 {
+        -> AST_AsmCmp_t {
             coal_cmp_instr(ctx, @node[].get._AsmCmp)
         }
         break
-        -> 282 {
+        -> AST_AsmIdiv_t {
             coal_idiv_instr(ctx, @node[].get._AsmIdiv)
         }
         break
-        -> 283 {
+        -> AST_AsmDiv_t {
             coal_div_instr(ctx, @node[].get._AsmDiv)
         }
         break
-        -> 287 {
+        -> AST_AsmSetCC_t {
             coal_set_cc_instr(ctx, @node[].get._AsmSetCC)
         }
         break
-        -> 289 {
+        -> AST_AsmPush_t {
             coal_push_instr(ctx, @node[].get._AsmPush)
         }
         break
-        -> 284 {
-            -> 291 {
+        -> AST_AsmCdq_t {
+            -> AST_AsmCall_t {
                 break
             }
         }
@@ -3385,7 +3779,7 @@ fn coal_instr(ctx: *struc RegAllocContext, instr_idx: u64, block_id: u64) none {
 
 fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
     {
-        open_data_map_size: u64 = ctx[].dfa[].set_size - 26
+        open_data_map_size: u64 = ctx[].dfa[].set_size - REGISTER_MASK_SIZE
         if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < open_data_map_size {
             loop .. while 0 {
                 (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>((open_data_map_size)) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>((open_data_map_size)))))) and 0 else 0)
@@ -3393,18 +3787,18 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
             }            
         }
     }
-    loop i: u64 = 26 while i < ctx[].dfa[].set_size .. ++i {
-        ctx[].dfa[].open_data_map[i - 26] = i
+    loop i: u64 = REGISTER_MASK_SIZE while i < ctx[].dfa[].set_size .. ++i {
+        ctx[].dfa[].open_data_map[i - REGISTER_MASK_SIZE] = i
     }
     {
-        is_fixed_point: i32 = 1
+        is_fixed_point: i32 = true
         loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
-            if (ctx[].p_instrs[])[instr_idx] and (ctx[].p_instrs[])[instr_idx][].tag == 273 and coal_infer_regs(ctx, @(ctx[].p_instrs[])[instr_idx][].get._AsmMov) {
-                is_fixed_point = 0
+            if (ctx[].p_instrs[])[instr_idx] and (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t and coal_infer_regs(ctx, @(ctx[].p_instrs[])[instr_idx][].get._AsmMov) {
+                is_fixed_point = false
             }
         }
         if is_fixed_point {
-            return 0
+            return false
         }
     }
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
@@ -3416,7 +3810,7 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
             }
         }
     }
-    return 1
+    return true
 }
 
 fn alloc_fun_toplvl(ctx: *struc RegAllocContext, node: *struc AsmFunction) none {
@@ -3435,20 +3829,20 @@ fn alloc_fun_toplvl(ctx: *struc RegAllocContext, node: *struc AsmFunction) none 
             ctx[].p_backend_fun = backend_fun
         }
         reallocate_registers(ctx)
-        ctx[].p_backend_fun = 0
+        ctx[].p_backend_fun = nil
     }
     label Lbreak
-    ctx[].p_infer_graph = 0
-    ctx[].p_instrs = 0
+    ctx[].p_infer_graph = nil
+    ctx[].p_instrs = nil
 }
 
 fn alloc_toplvl(ctx: *struc RegAllocContext, node: *struc AsmTopLevel) none {
     match node[].tag {
-        -> 294 {
+        -> AST_AsmFunction_t {
             alloc_fun_toplvl(ctx, @node[].get._AsmFunction)
         }
         break
-        -> 295 {
+        -> AST_AsmStaticVariable_t {
             break
         }
         otherwise {
@@ -3469,40 +3863,40 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
         ctx.backend = backend
         ctx.frontend = frontend
         ctx.is_with_coal = optim_2_code > 1u
-        ctx.hard_regs[0].reg_kind = 0
-        ctx.hard_regs[1].reg_kind = 1
-        ctx.hard_regs[2].reg_kind = 2
-        ctx.hard_regs[3].reg_kind = 3
-        ctx.hard_regs[4].reg_kind = 4
-        ctx.hard_regs[5].reg_kind = 5
-        ctx.hard_regs[6].reg_kind = 6
-        ctx.hard_regs[7].reg_kind = 7
-        ctx.hard_regs[8].reg_kind = 10
-        ctx.hard_regs[9].reg_kind = 11
-        ctx.hard_regs[10].reg_kind = 12
-        ctx.hard_regs[11].reg_kind = 13
-        ctx.hard_regs[12].reg_kind = 16
-        ctx.hard_regs[13].reg_kind = 17
-        ctx.hard_regs[14].reg_kind = 18
-        ctx.hard_regs[15].reg_kind = 19
-        ctx.hard_regs[16].reg_kind = 20
-        ctx.hard_regs[17].reg_kind = 21
-        ctx.hard_regs[18].reg_kind = 22
-        ctx.hard_regs[19].reg_kind = 23
-        ctx.hard_regs[20].reg_kind = 24
-        ctx.hard_regs[21].reg_kind = 25
-        ctx.hard_regs[22].reg_kind = 26
-        ctx.hard_regs[23].reg_kind = 27
-        ctx.hard_regs[24].reg_kind = 28
-        ctx.hard_regs[25].reg_kind = 29
+        ctx.hard_regs[0].reg_kind = REG_Ax
+        ctx.hard_regs[1].reg_kind = REG_Bx
+        ctx.hard_regs[2].reg_kind = REG_Cx
+        ctx.hard_regs[3].reg_kind = REG_Dx
+        ctx.hard_regs[4].reg_kind = REG_Di
+        ctx.hard_regs[5].reg_kind = REG_Si
+        ctx.hard_regs[6].reg_kind = REG_R8
+        ctx.hard_regs[7].reg_kind = REG_R9
+        ctx.hard_regs[8].reg_kind = REG_R12
+        ctx.hard_regs[9].reg_kind = REG_R13
+        ctx.hard_regs[10].reg_kind = REG_R14
+        ctx.hard_regs[11].reg_kind = REG_R15
+        ctx.hard_regs[12].reg_kind = REG_Xmm0
+        ctx.hard_regs[13].reg_kind = REG_Xmm1
+        ctx.hard_regs[14].reg_kind = REG_Xmm2
+        ctx.hard_regs[15].reg_kind = REG_Xmm3
+        ctx.hard_regs[16].reg_kind = REG_Xmm4
+        ctx.hard_regs[17].reg_kind = REG_Xmm5
+        ctx.hard_regs[18].reg_kind = REG_Xmm6
+        ctx.hard_regs[19].reg_kind = REG_Xmm7
+        ctx.hard_regs[20].reg_kind = REG_Xmm8
+        ctx.hard_regs[21].reg_kind = REG_Xmm9
+        ctx.hard_regs[22].reg_kind = REG_Xmm10
+        ctx.hard_regs[23].reg_kind = REG_Xmm11
+        ctx.hard_regs[24].reg_kind = REG_Xmm12
+        ctx.hard_regs[25].reg_kind = REG_Xmm13
         loop i: u64 = 0 while i < 26 .. ++i {
-            ctx.hard_regs[i].linked_pseudo_names = 0
+            ctx.hard_regs[i].linked_pseudo_names = nil
         }
         ctx.cfg = make_ControlFlowGraph()
         ctx.dfa = make_DataFlowAnalysis()
         ctx.dfa_o2 = make_DataFlowAnalysisO2()
-        ctx.infer_graph = make_InferenceGraph(0)
-        ctx.sse_infer_graph = make_InferenceGraph(1)
+        ctx.infer_graph = make_InferenceGraph(false)
+        ctx.sse_infer_graph = make_InferenceGraph(true)
     }
 
     alloc_program(@ctx, node)
@@ -3510,9 +3904,9 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
         if ctx.hard_regs[i].linked_pseudo_names {
             loop .. while 0 {
                 cast<none>((? (ctx.hard_regs[i].linked_pseudo_names) then free((cast<*struc stbds_array_header>((ctx.hard_regs[i].linked_pseudo_names)) - 1)) else cast<none>(0)))
-                (ctx.hard_regs[i].linked_pseudo_names) = 0
+                (ctx.hard_regs[i].linked_pseudo_names) = nil
             }            
-            ctx.hard_regs[i].linked_pseudo_names = 0
+            ctx.hard_regs[i].linked_pseudo_names = nil
         }
         ;
     }

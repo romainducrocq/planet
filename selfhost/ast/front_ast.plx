@@ -1,5 +1,13 @@
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+m4_define(`bool', `TODO')m4_dnl
+m4_define(`int8_t', `TODO')m4_dnl
+m4_define(`int32_t', `TODO')m4_dnl
+m4_define(`int64_t', `TODO')m4_dnl
+m4_define(`uint8_t', `TODO')m4_dnl
+m4_define(`uint32_t', `TODO')m4_dnl
+m4_define(`uint64_t', `TODO')m4_dnl
+m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;
 extrn fn fflush(stream: *struc FILE) i32;
@@ -8,6 +16,7 @@ extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
 extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+m4_define(`STDERR_FILENO', `2')m4_dnl
 extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 extrn fn strtod(nptr: string, endptr: *string) f64;
@@ -22,6 +31,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+m4_define(`sds', `TODO')m4_dnl
 pub fn sdslen(s: string) u64;
 pub fn sdsnew(init: string) string;
 pub fn sdsdup(s: string) string;
@@ -33,6 +43,19 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+m4_define(`arrlenu', `TODO')m4_dnl
+m4_define(`arrput', `TODO')m4_dnl
+m4_define(`arrpop', `TODO')m4_dnl
+m4_define(`arrfree', `TODO')m4_dnl
+m4_define(`arrsetlen', `TODO')m4_dnl
+m4_define(`arrdelswap', `TODO')m4_dnl
+m4_define(`arrsetcap', `TODO')m4_dnl
+m4_define(`hmput', `TODO')m4_dnl
+m4_define(`hmget', `TODO')m4_dnl
+m4_define(`hmgeti', `TODO')m4_dnl
+m4_define(`hmdel', `TODO')m4_dnl
+m4_define(`hmlenu', `TODO')m4_dnl
+m4_define(`hmfree', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -42,6 +65,320 @@ extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
+m4_define(`error_t', `TODO')m4_dnl
+m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
+m4_define(`CATCH_ENTER', `TODO')m4_dnl
+m4_define(`CATCH_EXIT', `TODO')m4_dnl
+m4_define(`EARLY_EXIT', `TODO')m4_dnl
+m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`string_t', `TODO')m4_dnl
+m4_define(`TIdentifier', `TODO')m4_dnl
+m4_define(`TChar', `TODO')m4_dnl
+m4_define(`TInt', `TODO')m4_dnl
+m4_define(`TLong', `TODO')m4_dnl
+m4_define(`TUChar', `TODO')m4_dnl
+m4_define(`TUInt', `TODO')m4_dnl
+m4_define(`TULong', `TODO')m4_dnl
+m4_define(`TDouble', `TODO')m4_dnl
+m4_define(`AST_T', `TODO')m4_dnl
+m4_define(`AST_Type_t', `0')m4_dnl
+m4_define(`AST_Char_t', `1')m4_dnl
+m4_define(`AST_SChar_t', `2')m4_dnl
+m4_define(`AST_UChar_t', `3')m4_dnl
+m4_define(`AST_Int_t', `4')m4_dnl
+m4_define(`AST_Long_t', `5')m4_dnl
+m4_define(`AST_UInt_t', `6')m4_dnl
+m4_define(`AST_ULong_t', `7')m4_dnl
+m4_define(`AST_Double_t', `8')m4_dnl
+m4_define(`AST_Void_t', `9')m4_dnl
+m4_define(`AST_FunType_t', `10')m4_dnl
+m4_define(`AST_Pointer_t', `11')m4_dnl
+m4_define(`AST_Array_t', `12')m4_dnl
+m4_define(`AST_Structure_t', `13')m4_dnl
+m4_define(`AST_StaticInit_t', `14')m4_dnl
+m4_define(`AST_IntInit_t', `15')m4_dnl
+m4_define(`AST_LongInit_t', `16')m4_dnl
+m4_define(`AST_UIntInit_t', `17')m4_dnl
+m4_define(`AST_ULongInit_t', `18')m4_dnl
+m4_define(`AST_CharInit_t', `19')m4_dnl
+m4_define(`AST_UCharInit_t', `20')m4_dnl
+m4_define(`AST_DoubleInit_t', `21')m4_dnl
+m4_define(`AST_ZeroInit_t', `22')m4_dnl
+m4_define(`AST_StringInit_t', `23')m4_dnl
+m4_define(`AST_PointerInit_t', `24')m4_dnl
+m4_define(`AST_InitialValue_t', `25')m4_dnl
+m4_define(`AST_Tentative_t', `26')m4_dnl
+m4_define(`AST_Initial_t', `27')m4_dnl
+m4_define(`AST_NoInitializer_t', `28')m4_dnl
+m4_define(`AST_IdentifierAttr_t', `29')m4_dnl
+m4_define(`AST_FunAttr_t', `30')m4_dnl
+m4_define(`AST_StaticAttr_t', `31')m4_dnl
+m4_define(`AST_ConstantAttr_t', `32')m4_dnl
+m4_define(`AST_LocalAttr_t', `33')m4_dnl
+m4_define(`AST_Symbol_t', `34')m4_dnl
+m4_define(`AST_StructMember_t', `35')m4_dnl
+m4_define(`AST_StructTypedef_t', `36')m4_dnl
+m4_define(`AST_AssemblyType_t', `37')m4_dnl
+m4_define(`AST_Byte_t', `38')m4_dnl
+m4_define(`AST_LongWord_t', `39')m4_dnl
+m4_define(`AST_QuadWord_t', `40')m4_dnl
+m4_define(`AST_BackendDouble_t', `41')m4_dnl
+m4_define(`AST_ByteArray_t', `42')m4_dnl
+m4_define(`AST_BackendSymbol_t', `43')m4_dnl
+m4_define(`AST_BackendObj_t', `44')m4_dnl
+m4_define(`AST_BackendFun_t', `45')m4_dnl
+m4_define(`AST_CConst_t', `46')m4_dnl
+m4_define(`AST_CConstInt_t', `47')m4_dnl
+m4_define(`AST_CConstLong_t', `48')m4_dnl
+m4_define(`AST_CConstUInt_t', `49')m4_dnl
+m4_define(`AST_CConstULong_t', `50')m4_dnl
+m4_define(`AST_CConstDouble_t', `51')m4_dnl
+m4_define(`AST_CConstChar_t', `52')m4_dnl
+m4_define(`AST_CConstUChar_t', `53')m4_dnl
+m4_define(`AST_CStringLiteral_t', `54')m4_dnl
+m4_define(`AST_CUnaryOp_t', `55')m4_dnl
+m4_define(`AST_CComplement_t', `56')m4_dnl
+m4_define(`AST_CNegate_t', `57')m4_dnl
+m4_define(`AST_CNot_t', `58')m4_dnl
+m4_define(`AST_CPrefix_t', `59')m4_dnl
+m4_define(`AST_CPostfix_t', `60')m4_dnl
+m4_define(`AST_CBinaryOp_t', `61')m4_dnl
+m4_define(`AST_CAdd_t', `62')m4_dnl
+m4_define(`AST_CSubtract_t', `63')m4_dnl
+m4_define(`AST_CMultiply_t', `64')m4_dnl
+m4_define(`AST_CDivide_t', `65')m4_dnl
+m4_define(`AST_CRemainder_t', `66')m4_dnl
+m4_define(`AST_CBitAnd_t', `67')m4_dnl
+m4_define(`AST_CBitOr_t', `68')m4_dnl
+m4_define(`AST_CBitXor_t', `69')m4_dnl
+m4_define(`AST_CBitShiftLeft_t', `70')m4_dnl
+m4_define(`AST_CBitShiftRight_t', `71')m4_dnl
+m4_define(`AST_CBitShrArithmetic_t', `72')m4_dnl
+m4_define(`AST_CAnd_t', `73')m4_dnl
+m4_define(`AST_COr_t', `74')m4_dnl
+m4_define(`AST_CEqual_t', `75')m4_dnl
+m4_define(`AST_CNotEqual_t', `76')m4_dnl
+m4_define(`AST_CLessThan_t', `77')m4_dnl
+m4_define(`AST_CLessOrEqual_t', `78')m4_dnl
+m4_define(`AST_CGreaterThan_t', `79')m4_dnl
+m4_define(`AST_CGreaterOrEqual_t', `80')m4_dnl
+m4_define(`AST_CAbstractDeclarator_t', `81')m4_dnl
+m4_define(`AST_CAbstractPointer_t', `82')m4_dnl
+m4_define(`AST_CAbstractArray_t', `83')m4_dnl
+m4_define(`AST_CAbstractBase_t', `84')m4_dnl
+m4_define(`AST_CParam_t', `85')m4_dnl
+m4_define(`AST_CDeclarator_t', `86')m4_dnl
+m4_define(`AST_CIdent_t', `87')m4_dnl
+m4_define(`AST_CPointerDeclarator_t', `88')m4_dnl
+m4_define(`AST_CArrayDeclarator_t', `89')m4_dnl
+m4_define(`AST_CFunDeclarator_t', `90')m4_dnl
+m4_define(`AST_CExp_t', `91')m4_dnl
+m4_define(`AST_CConstant_t', `92')m4_dnl
+m4_define(`AST_CString_t', `93')m4_dnl
+m4_define(`AST_CVar_t', `94')m4_dnl
+m4_define(`AST_CCast_t', `95')m4_dnl
+m4_define(`AST_CUnary_t', `96')m4_dnl
+m4_define(`AST_CBinary_t', `97')m4_dnl
+m4_define(`AST_CAssignment_t', `98')m4_dnl
+m4_define(`AST_CConditional_t', `99')m4_dnl
+m4_define(`AST_CFunctionCall_t', `100')m4_dnl
+m4_define(`AST_CDereference_t', `101')m4_dnl
+m4_define(`AST_CAddrOf_t', `102')m4_dnl
+m4_define(`AST_CSubscript_t', `103')m4_dnl
+m4_define(`AST_CSizeOf_t', `104')m4_dnl
+m4_define(`AST_CSizeOfT_t', `105')m4_dnl
+m4_define(`AST_CDot_t', `106')m4_dnl
+m4_define(`AST_CArrow_t', `107')m4_dnl
+m4_define(`AST_CStatement_t', `108')m4_dnl
+m4_define(`AST_CReturn_t', `109')m4_dnl
+m4_define(`AST_CExpression_t', `110')m4_dnl
+m4_define(`AST_CIf_t', `111')m4_dnl
+m4_define(`AST_CGoto_t', `112')m4_dnl
+m4_define(`AST_CLabel_t', `113')m4_dnl
+m4_define(`AST_CCompound_t', `114')m4_dnl
+m4_define(`AST_CWhile_t', `115')m4_dnl
+m4_define(`AST_CDoWhile_t', `116')m4_dnl
+m4_define(`AST_CFor_t', `117')m4_dnl
+m4_define(`AST_CSwitch_t', `118')m4_dnl
+m4_define(`AST_CCase_t', `119')m4_dnl
+m4_define(`AST_CDefault_t', `120')m4_dnl
+m4_define(`AST_CBreak_t', `121')m4_dnl
+m4_define(`AST_CContinue_t', `122')m4_dnl
+m4_define(`AST_CNull_t', `123')m4_dnl
+m4_define(`AST_CForInit_t', `124')m4_dnl
+m4_define(`AST_CInitDecl_t', `125')m4_dnl
+m4_define(`AST_CInitExp_t', `126')m4_dnl
+m4_define(`AST_CBlock_t', `127')m4_dnl
+m4_define(`AST_CB_t', `128')m4_dnl
+m4_define(`AST_CBlockItem_t', `129')m4_dnl
+m4_define(`AST_CS_t', `130')m4_dnl
+m4_define(`AST_CD_t', `131')m4_dnl
+m4_define(`AST_CStorageClass_t', `132')m4_dnl
+m4_define(`AST_CStatic_t', `133')m4_dnl
+m4_define(`AST_CExtern_t', `134')m4_dnl
+m4_define(`AST_CInitializer_t', `135')m4_dnl
+m4_define(`AST_CSingleInit_t', `136')m4_dnl
+m4_define(`AST_CCompoundInit_t', `137')m4_dnl
+m4_define(`AST_CMemberDeclaration_t', `138')m4_dnl
+m4_define(`AST_CStructDeclaration_t', `139')m4_dnl
+m4_define(`AST_CFunctionDeclaration_t', `140')m4_dnl
+m4_define(`AST_CVariableDeclaration_t', `141')m4_dnl
+m4_define(`AST_CDeclaration_t', `142')m4_dnl
+m4_define(`AST_CFunDecl_t', `143')m4_dnl
+m4_define(`AST_CVarDecl_t', `144')m4_dnl
+m4_define(`AST_CStructDecl_t', `145')m4_dnl
+m4_define(`AST_CProgram_t', `146')m4_dnl
+m4_define(`AST_TacUnaryOp_t', `147')m4_dnl
+m4_define(`AST_TacComplement_t', `148')m4_dnl
+m4_define(`AST_TacNegate_t', `149')m4_dnl
+m4_define(`AST_TacNot_t', `150')m4_dnl
+m4_define(`AST_TacBinaryOp_t', `151')m4_dnl
+m4_define(`AST_TacAdd_t', `152')m4_dnl
+m4_define(`AST_TacSubtract_t', `153')m4_dnl
+m4_define(`AST_TacMultiply_t', `154')m4_dnl
+m4_define(`AST_TacDivide_t', `155')m4_dnl
+m4_define(`AST_TacRemainder_t', `156')m4_dnl
+m4_define(`AST_TacBitAnd_t', `157')m4_dnl
+m4_define(`AST_TacBitOr_t', `158')m4_dnl
+m4_define(`AST_TacBitXor_t', `159')m4_dnl
+m4_define(`AST_TacBitShiftLeft_t', `160')m4_dnl
+m4_define(`AST_TacBitShiftRight_t', `161')m4_dnl
+m4_define(`AST_TacBitShrArithmetic_t', `162')m4_dnl
+m4_define(`AST_TacEqual_t', `163')m4_dnl
+m4_define(`AST_TacNotEqual_t', `164')m4_dnl
+m4_define(`AST_TacLessThan_t', `165')m4_dnl
+m4_define(`AST_TacLessOrEqual_t', `166')m4_dnl
+m4_define(`AST_TacGreaterThan_t', `167')m4_dnl
+m4_define(`AST_TacGreaterOrEqual_t', `168')m4_dnl
+m4_define(`AST_TacValue_t', `169')m4_dnl
+m4_define(`AST_TacConstant_t', `170')m4_dnl
+m4_define(`AST_TacVariable_t', `171')m4_dnl
+m4_define(`AST_TacExpResult_t', `172')m4_dnl
+m4_define(`AST_TacPlainOperand_t', `173')m4_dnl
+m4_define(`AST_TacDereferencedPointer_t', `174')m4_dnl
+m4_define(`AST_TacSubObject_t', `175')m4_dnl
+m4_define(`AST_TacInstruction_t', `176')m4_dnl
+m4_define(`AST_TacReturn_t', `177')m4_dnl
+m4_define(`AST_TacSignExtend_t', `178')m4_dnl
+m4_define(`AST_TacTruncate_t', `179')m4_dnl
+m4_define(`AST_TacZeroExtend_t', `180')m4_dnl
+m4_define(`AST_TacDoubleToInt_t', `181')m4_dnl
+m4_define(`AST_TacDoubleToUInt_t', `182')m4_dnl
+m4_define(`AST_TacIntToDouble_t', `183')m4_dnl
+m4_define(`AST_TacUIntToDouble_t', `184')m4_dnl
+m4_define(`AST_TacFunCall_t', `185')m4_dnl
+m4_define(`AST_TacUnary_t', `186')m4_dnl
+m4_define(`AST_TacBinary_t', `187')m4_dnl
+m4_define(`AST_TacCopy_t', `188')m4_dnl
+m4_define(`AST_TacGetAddress_t', `189')m4_dnl
+m4_define(`AST_TacLoad_t', `190')m4_dnl
+m4_define(`AST_TacStore_t', `191')m4_dnl
+m4_define(`AST_TacAddPtr_t', `192')m4_dnl
+m4_define(`AST_TacCopyToOffset_t', `193')m4_dnl
+m4_define(`AST_TacCopyFromOffset_t', `194')m4_dnl
+m4_define(`AST_TacJump_t', `195')m4_dnl
+m4_define(`AST_TacJumpIfZero_t', `196')m4_dnl
+m4_define(`AST_TacJumpIfNotZero_t', `197')m4_dnl
+m4_define(`AST_TacLabel_t', `198')m4_dnl
+m4_define(`AST_TacTopLevel_t', `199')m4_dnl
+m4_define(`AST_TacFunction_t', `200')m4_dnl
+m4_define(`AST_TacStaticVariable_t', `201')m4_dnl
+m4_define(`AST_TacStaticConstant_t', `202')m4_dnl
+m4_define(`AST_TacProgram_t', `203')m4_dnl
+m4_define(`AST_AsmReg_t', `204')m4_dnl
+m4_define(`AST_AsmAx_t', `205')m4_dnl
+m4_define(`AST_AsmBx_t', `206')m4_dnl
+m4_define(`AST_AsmCx_t', `207')m4_dnl
+m4_define(`AST_AsmDx_t', `208')m4_dnl
+m4_define(`AST_AsmDi_t', `209')m4_dnl
+m4_define(`AST_AsmSi_t', `210')m4_dnl
+m4_define(`AST_AsmR8_t', `211')m4_dnl
+m4_define(`AST_AsmR9_t', `212')m4_dnl
+m4_define(`AST_AsmR10_t', `213')m4_dnl
+m4_define(`AST_AsmR11_t', `214')m4_dnl
+m4_define(`AST_AsmR12_t', `215')m4_dnl
+m4_define(`AST_AsmR13_t', `216')m4_dnl
+m4_define(`AST_AsmR14_t', `217')m4_dnl
+m4_define(`AST_AsmR15_t', `218')m4_dnl
+m4_define(`AST_AsmSp_t', `219')m4_dnl
+m4_define(`AST_AsmBp_t', `220')m4_dnl
+m4_define(`AST_AsmXMM0_t', `221')m4_dnl
+m4_define(`AST_AsmXMM1_t', `222')m4_dnl
+m4_define(`AST_AsmXMM2_t', `223')m4_dnl
+m4_define(`AST_AsmXMM3_t', `224')m4_dnl
+m4_define(`AST_AsmXMM4_t', `225')m4_dnl
+m4_define(`AST_AsmXMM5_t', `226')m4_dnl
+m4_define(`AST_AsmXMM6_t', `227')m4_dnl
+m4_define(`AST_AsmXMM7_t', `228')m4_dnl
+m4_define(`AST_AsmXMM8_t', `229')m4_dnl
+m4_define(`AST_AsmXMM9_t', `230')m4_dnl
+m4_define(`AST_AsmXMM10_t', `231')m4_dnl
+m4_define(`AST_AsmXMM11_t', `232')m4_dnl
+m4_define(`AST_AsmXMM12_t', `233')m4_dnl
+m4_define(`AST_AsmXMM13_t', `234')m4_dnl
+m4_define(`AST_AsmXMM14_t', `235')m4_dnl
+m4_define(`AST_AsmXMM15_t', `236')m4_dnl
+m4_define(`AST_AsmCondCode_t', `237')m4_dnl
+m4_define(`AST_AsmE_t', `238')m4_dnl
+m4_define(`AST_AsmNE_t', `239')m4_dnl
+m4_define(`AST_AsmG_t', `240')m4_dnl
+m4_define(`AST_AsmGE_t', `241')m4_dnl
+m4_define(`AST_AsmL_t', `242')m4_dnl
+m4_define(`AST_AsmLE_t', `243')m4_dnl
+m4_define(`AST_AsmA_t', `244')m4_dnl
+m4_define(`AST_AsmAE_t', `245')m4_dnl
+m4_define(`AST_AsmB_t', `246')m4_dnl
+m4_define(`AST_AsmBE_t', `247')m4_dnl
+m4_define(`AST_AsmP_t', `248')m4_dnl
+m4_define(`AST_AsmOperand_t', `249')m4_dnl
+m4_define(`AST_AsmImm_t', `250')m4_dnl
+m4_define(`AST_AsmRegister_t', `251')m4_dnl
+m4_define(`AST_AsmPseudo_t', `252')m4_dnl
+m4_define(`AST_AsmMemory_t', `253')m4_dnl
+m4_define(`AST_AsmData_t', `254')m4_dnl
+m4_define(`AST_AsmPseudoMem_t', `255')m4_dnl
+m4_define(`AST_AsmIndexed_t', `256')m4_dnl
+m4_define(`AST_AsmBinaryOp_t', `257')m4_dnl
+m4_define(`AST_AsmAdd_t', `258')m4_dnl
+m4_define(`AST_AsmSub_t', `259')m4_dnl
+m4_define(`AST_AsmMult_t', `260')m4_dnl
+m4_define(`AST_AsmDivDouble_t', `261')m4_dnl
+m4_define(`AST_AsmBitAnd_t', `262')m4_dnl
+m4_define(`AST_AsmBitOr_t', `263')m4_dnl
+m4_define(`AST_AsmBitXor_t', `264')m4_dnl
+m4_define(`AST_AsmBitShiftLeft_t', `265')m4_dnl
+m4_define(`AST_AsmBitShiftRight_t', `266')m4_dnl
+m4_define(`AST_AsmBitShrArithmetic_t', `267')m4_dnl
+m4_define(`AST_AsmUnaryOp_t', `268')m4_dnl
+m4_define(`AST_AsmNot_t', `269')m4_dnl
+m4_define(`AST_AsmNeg_t', `270')m4_dnl
+m4_define(`AST_AsmShr_t', `271')m4_dnl
+m4_define(`AST_AsmInstruction_t', `272')m4_dnl
+m4_define(`AST_AsmMov_t', `273')m4_dnl
+m4_define(`AST_AsmMovSx_t', `274')m4_dnl
+m4_define(`AST_AsmMovZeroExtend_t', `275')m4_dnl
+m4_define(`AST_AsmLea_t', `276')m4_dnl
+m4_define(`AST_AsmCvttsd2si_t', `277')m4_dnl
+m4_define(`AST_AsmCvtsi2sd_t', `278')m4_dnl
+m4_define(`AST_AsmUnary_t', `279')m4_dnl
+m4_define(`AST_AsmBinary_t', `280')m4_dnl
+m4_define(`AST_AsmCmp_t', `281')m4_dnl
+m4_define(`AST_AsmIdiv_t', `282')m4_dnl
+m4_define(`AST_AsmDiv_t', `283')m4_dnl
+m4_define(`AST_AsmCdq_t', `284')m4_dnl
+m4_define(`AST_AsmJmp_t', `285')m4_dnl
+m4_define(`AST_AsmJmpCC_t', `286')m4_dnl
+m4_define(`AST_AsmSetCC_t', `287')m4_dnl
+m4_define(`AST_AsmLabel_t', `288')m4_dnl
+m4_define(`AST_AsmPush_t', `289')m4_dnl
+m4_define(`AST_AsmPop_t', `290')m4_dnl
+m4_define(`AST_AsmCall_t', `291')m4_dnl
+m4_define(`AST_AsmRet_t', `292')m4_dnl
+m4_define(`AST_AsmTopLevel_t', `293')m4_dnl
+m4_define(`AST_AsmFunction_t', `294')m4_dnl
+m4_define(`AST_AsmStaticVariable_t', `295')m4_dnl
+m4_define(`AST_AsmStaticConstant_t', `296')m4_dnl
+m4_define(`AST_AsmProgram_t', `297')m4_dnl
 type struc CConst;
 type struc CStringLiteral;
 
@@ -84,6 +421,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
+m4_define(`UID_SEPARATOR', `TODO')m4_dnl
 type struc Type;
 type struc StaticInit;
 type struc InitialValue;
@@ -213,18 +551,24 @@ pub fn free_Symbol(self: **struc Symbol) none;
 type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
+m4_define(`UPtrStructMember', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
 
 type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: *u64, members: *struc PairTIdentifierUPtrStructMember)
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
+m4_define(`ulong_t', `TODO')m4_dnl
 
 type struc PairTIdentifierulong_t(key: u64, value: u64)
 
 type struc PairTIdentifierTIdentifier(key: u64, value: u64)
 
+m4_define(`UPtrStructTypedef', `TODO')m4_dnl
+
 type struc PairTIdentifierUPtrStructTypedef(key: u64, value: *struc StructTypedef)
+
+m4_define(`UPtrSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrSymbol(key: u64, value: *struc Symbol)
 
@@ -483,6 +827,7 @@ type struc CProgram(tag: i32, declarations: **struc CDeclaration)
 pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram;
 pub fn free_CProgram(self: **struc CProgram) none;
 type struc FileIoContext;
+m4_define(`hash_t', `TODO')m4_dnl
 
 type struc Pairhash_thash_t(key: u64, value: u64)
 
@@ -490,22 +835,24 @@ type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
 
 type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
-type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`THROW_ABORT', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
+m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
 
 pub fn make_CUnaryOp(tag: i32) struc CUnaryOp {
     self: struc CUnaryOp = $(tag)
     match tag {
-        -> 55 {
-            -> 56 {
-                -> 57 {
-                    -> 58 {
-                        -> 59 {
-                            -> 60 {
+        -> AST_CUnaryOp_t {
+            -> AST_CComplement_t {
+                -> AST_CNegate_t {
+                    -> AST_CNot_t {
+                        -> AST_CPrefix_t {
+                            -> AST_CPostfix_t {
                                 return self
                             }
                         }
@@ -522,26 +869,26 @@ pub fn make_CUnaryOp(tag: i32) struc CUnaryOp {
 pub fn make_CBinaryOp(tag: i32) struc CBinaryOp {
     self: struc CBinaryOp = $(tag)
     match tag {
-        -> 61 {
-            -> 62 {
-                -> 63 {
-                    -> 64 {
-                        -> 65 {
-                            -> 66 {
-                                -> 67 {
-                                    -> 68 {
-                                        -> 69 {
-                                            -> 70 {
-                                                -> 71 {
-                                                    -> 72 {
-                                                        -> 73 {
-                                                            -> 74 {
-                                                                -> 75 {
-                                                                    -> 76 {
-                                                                        -> 77 {
-                                                                            -> 78 {
-                                                                                -> 79 {
-                                                                                    -> 80 {
+        -> AST_CBinaryOp_t {
+            -> AST_CAdd_t {
+                -> AST_CSubtract_t {
+                    -> AST_CMultiply_t {
+                        -> AST_CDivide_t {
+                            -> AST_CRemainder_t {
+                                -> AST_CBitAnd_t {
+                                    -> AST_CBitOr_t {
+                                        -> AST_CBitXor_t {
+                                            -> AST_CBitShiftLeft_t {
+                                                -> AST_CBitShiftRight_t {
+                                                    -> AST_CBitShrArithmetic_t {
+                                                        -> AST_CAnd_t {
+                                                            -> AST_COr_t {
+                                                                -> AST_CEqual_t {
+                                                                    -> AST_CNotEqual_t {
+                                                                        -> AST_CLessThan_t {
+                                                                            -> AST_CLessOrEqual_t {
+                                                                                -> AST_CGreaterThan_t {
+                                                                                    -> AST_CGreaterOrEqual_t {
                                                                                         return self
                                                                                     }
                                                                                 }
@@ -570,7 +917,7 @@ pub fn make_CBinaryOp(tag: i32) struc CBinaryOp {
 }
 
 pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator {
-    self: *struc CAbstractDeclarator = 0
+    self: *struc CAbstractDeclarator = nil
     loop .. while 0 {
         free_CAbstractDeclarator(@self)
         self = cast<*struc CAbstractDeclarator>(malloc(sizeof<struc CAbstractDeclarator>))
@@ -578,38 +925,38 @@ pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator {
             panic_sigabrt("alloc "                 "CAbstractDeclarator")
         }
     }    
-    self[].tag = 81
+    self[].tag = AST_CAbstractDeclarator_t
     return self
 }
 
 pub fn make_CAbstractPointer(abstract_decltor: **struc CAbstractDeclarator) *struc CAbstractDeclarator {
     self: *struc CAbstractDeclarator = make_CAbstractDeclarator()
-    self[].tag = 82
-    self[].get._CAbstractPointer.abstract_decltor = 0
+    self[].tag = AST_CAbstractPointer_t
+    self[].get._CAbstractPointer.abstract_decltor = nil
     if abstract_decltor[] ~= self[].get._CAbstractPointer.abstract_decltor {
         free_CAbstractDeclarator(@self[].get._CAbstractPointer.abstract_decltor)
         self[].get._CAbstractPointer.abstract_decltor = abstract_decltor[]
-        abstract_decltor[] = 0
+        abstract_decltor[] = nil
     }
     return self
 }
 
 pub fn make_CAbstractArray(size: i64, abstract_decltor: **struc CAbstractDeclarator) *struc CAbstractDeclarator {
     self: *struc CAbstractDeclarator = make_CAbstractDeclarator()
-    self[].tag = 83
+    self[].tag = AST_CAbstractArray_t
     self[].get._CAbstractArray.size = size
-    self[].get._CAbstractArray.abstract_decltor = 0
+    self[].get._CAbstractArray.abstract_decltor = nil
     if abstract_decltor[] ~= self[].get._CAbstractArray.abstract_decltor {
         free_CAbstractDeclarator(@self[].get._CAbstractArray.abstract_decltor)
         self[].get._CAbstractArray.abstract_decltor = abstract_decltor[]
-        abstract_decltor[] = 0
+        abstract_decltor[] = nil
     }
     return self
 }
 
 pub fn make_CAbstractBase(none) *struc CAbstractDeclarator {
     self: *struc CAbstractDeclarator = make_CAbstractDeclarator()
-    self[].tag = 84
+    self[].tag = AST_CAbstractBase_t
     return self
 }
 
@@ -618,18 +965,18 @@ pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
         return none
     }
     match (self[])[].tag {
-        -> 81 {
+        -> AST_CAbstractDeclarator_t {
             break
         }
-        -> 82 {
+        -> AST_CAbstractPointer_t {
             free_CAbstractDeclarator(@(self[])[].get._CAbstractPointer.abstract_decltor)
         }
         break
-        -> 83 {
+        -> AST_CAbstractArray_t {
             free_CAbstractDeclarator(@(self[])[].get._CAbstractArray.abstract_decltor)
         }
         break
-        -> 84 {
+        -> AST_CAbstractBase_t {
             break
         }
         otherwise {
@@ -638,12 +985,12 @@ pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *struc CParam {
-    self: *struc CParam = 0
+    self: *struc CParam = nil
     loop .. while 0 {
         free_CParam(@self)
         self = cast<*struc CParam>(malloc(sizeof<struc CParam>))
@@ -651,18 +998,18 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
             panic_sigabrt("alloc "                 "CParam")
         }
     }    
-    self[].tag = 85
-    self[].decltor = 0
+    self[].tag = AST_CParam_t
+    self[].decltor = nil
     if decltor[] ~= self[].decltor {
         free_CDeclarator(@self[].decltor)
         self[].decltor = decltor[]
-        decltor[] = 0
+        decltor[] = nil
     }
-    self[].param_type = 0
+    self[].param_type = nil
     if param_type[] ~= self[].param_type {
         free_Type(@self[].param_type)
         self[].param_type = param_type[]
-        param_type[] = 0
+        param_type[] = nil
     }
     return self
 }
@@ -672,7 +1019,7 @@ pub fn free_CParam(self: **struc CParam) none {
         return none
     }
     match (self[])[].tag {
-        -> 85 {
+        -> AST_CParam_t {
             break
         }
         otherwise {
@@ -683,12 +1030,12 @@ pub fn free_CParam(self: **struc CParam) none {
     free_Type(@(self[])[].param_type)
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CDeclarator(none) *struc CDeclarator {
-    self: *struc CDeclarator = 0
+    self: *struc CDeclarator = nil
     loop .. while 0 {
         free_CDeclarator(@self)
         self = cast<*struc CDeclarator>(malloc(sizeof<struc CDeclarator>))
@@ -696,62 +1043,62 @@ pub fn make_CDeclarator(none) *struc CDeclarator {
             panic_sigabrt("alloc "                 "CDeclarator")
         }
     }    
-    self[].tag = 86
+    self[].tag = AST_CDeclarator_t
     return self
 }
 
 pub fn make_CIdent(name: u64) *struc CDeclarator {
     self: *struc CDeclarator = make_CDeclarator()
-    self[].tag = 87
+    self[].tag = AST_CIdent_t
     self[].get._CIdent.name = name
     return self
 }
 
 pub fn make_CPointerDeclarator(decltor: **struc CDeclarator) *struc CDeclarator {
     self: *struc CDeclarator = make_CDeclarator()
-    self[].tag = 88
-    self[].get._CPointerDeclarator.decltor = 0
+    self[].tag = AST_CPointerDeclarator_t
+    self[].get._CPointerDeclarator.decltor = nil
     if decltor[] ~= self[].get._CPointerDeclarator.decltor {
         free_CDeclarator(@self[].get._CPointerDeclarator.decltor)
         self[].get._CPointerDeclarator.decltor = decltor[]
-        decltor[] = 0
+        decltor[] = nil
     }
     return self
 }
 
 pub fn make_CArrayDeclarator(size: i64, decltor: **struc CDeclarator) *struc CDeclarator {
     self: *struc CDeclarator = make_CDeclarator()
-    self[].tag = 89
+    self[].tag = AST_CArrayDeclarator_t
     self[].get._CArrayDeclarator.size = size
-    self[].get._CArrayDeclarator.decltor = 0
+    self[].get._CArrayDeclarator.decltor = nil
     if decltor[] ~= self[].get._CArrayDeclarator.decltor {
         free_CDeclarator(@self[].get._CArrayDeclarator.decltor)
         self[].get._CArrayDeclarator.decltor = decltor[]
-        decltor[] = 0
+        decltor[] = nil
     }
     return self
 }
 
 pub fn make_CFunDeclarator(param_list: ***struc CParam, decltor: **struc CDeclarator) *struc CDeclarator {
     self: *struc CDeclarator = make_CDeclarator()
-    self[].tag = 90
-    self[].get._CFunDeclarator.param_list = 0
+    self[].tag = AST_CFunDeclarator_t
+    self[].get._CFunDeclarator.param_list = nil
     if param_list[] ~= self[].get._CFunDeclarator.param_list {
         if self[].get._CFunDeclarator.param_list {
             loop .. while 0 {
                 cast<none>((? (self[].get._CFunDeclarator.param_list) then free((cast<*struc stbds_array_header>((self[].get._CFunDeclarator.param_list)) - 1)) else cast<none>(0)))
-                (self[].get._CFunDeclarator.param_list) = 0
+                (self[].get._CFunDeclarator.param_list) = nil
             }            
-            self[].get._CFunDeclarator.param_list = 0
+            self[].get._CFunDeclarator.param_list = nil
         }
         self[].get._CFunDeclarator.param_list = param_list[]
-        param_list[] = 0
+        param_list[] = nil
     }
-    self[].get._CFunDeclarator.decltor = 0
+    self[].get._CFunDeclarator.decltor = nil
     if decltor[] ~= self[].get._CFunDeclarator.decltor {
         free_CDeclarator(@self[].get._CFunDeclarator.decltor)
         self[].get._CFunDeclarator.decltor = decltor[]
-        decltor[] = 0
+        decltor[] = nil
     }
     return self
 }
@@ -761,21 +1108,21 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
         return none
     }
     match (self[])[].tag {
-        -> 86 {
+        -> AST_CDeclarator_t {
             break
         }
-        -> 87 {
+        -> AST_CIdent_t {
             break
         }
-        -> 88 {
+        -> AST_CPointerDeclarator_t {
             free_CDeclarator(@(self[])[].get._CPointerDeclarator.decltor)
         }
         break
-        -> 89 {
+        -> AST_CArrayDeclarator_t {
             free_CDeclarator(@(self[])[].get._CArrayDeclarator.decltor)
         }
         break
-        -> 90 {
+        -> AST_CFunDeclarator_t {
             loop i: u64 = 0 while i < (? ((self[])[].get._CFunDeclarator.param_list) then (cast<*struc stbds_array_header>(((self[])[].get._CFunDeclarator.param_list)) - 1)[].length else 0) .. ++i {
                 free_CParam(@(self[])[].get._CFunDeclarator.param_list[i])
             }
@@ -783,9 +1130,9 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
         if (self[])[].get._CFunDeclarator.param_list {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CFunDeclarator.param_list) then free((cast<*struc stbds_array_header>(((self[])[].get._CFunDeclarator.param_list)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CFunDeclarator.param_list) = 0
+                ((self[])[].get._CFunDeclarator.param_list) = nil
             }            
-            (self[])[].get._CFunDeclarator.param_list = 0
+            (self[])[].get._CFunDeclarator.param_list = nil
         }
         free_CDeclarator(@(self[])[].get._CFunDeclarator.decltor)
         break
@@ -795,12 +1142,12 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CExp(info_at: u64) *struc CExp {
-    self: *struc CExp = 0
+    self: *struc CExp = nil
     loop .. while 0 {
         free_CExp(@self)
         self = cast<*struc CExp>(malloc(sizeof<struc CExp>))
@@ -808,20 +1155,20 @@ pub fn make_CExp(info_at: u64) *struc CExp {
             panic_sigabrt("alloc "                 "CExp")
         }
     }    
-    self[].tag = 91
-    self[].exp_type = 0
+    self[].tag = AST_CExp_t
+    self[].exp_type = nil
     self[].info_at = info_at
     return self
 }
 
 pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 92
-    self[].get._CConstant.constant = 0
+    self[].tag = AST_CConstant_t
+    self[].get._CConstant.constant = nil
     if constant[] ~= self[].get._CConstant.constant {
         free_CConst(@self[].get._CConstant.constant)
         self[].get._CConstant.constant = constant[]
-        constant[] = 0
+        constant[] = nil
     }
     self[].get._CConstant._base = self
     return self
@@ -829,12 +1176,12 @@ pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp {
 
 pub fn make_CString(literal: **struc CStringLiteral, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 93
-    self[].get._CString.literal = 0
+    self[].tag = AST_CString_t
+    self[].get._CString.literal = nil
     if literal[] ~= self[].get._CString.literal {
         free_CStringLiteral(@self[].get._CString.literal)
         self[].get._CString.literal = literal[]
-        literal[] = 0
+        literal[] = nil
     }
     self[].get._CString._base = self
     return self
@@ -842,7 +1189,7 @@ pub fn make_CString(literal: **struc CStringLiteral, info_at: u64) *struc CExp {
 
 pub fn make_CVar(name: u64, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 94
+    self[].tag = AST_CVar_t
     self[].get._CVar.name = name
     self[].get._CVar._base = self
     return self
@@ -850,18 +1197,18 @@ pub fn make_CVar(name: u64, info_at: u64) *struc CExp {
 
 pub fn make_CCast(exp: **struc CExp, target_type: **struc Type, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 95
-    self[].get._CCast.exp = 0
+    self[].tag = AST_CCast_t
+    self[].get._CCast.exp = nil
     if exp[] ~= self[].get._CCast.exp {
         free_CExp(@self[].get._CCast.exp)
         self[].get._CCast.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
-    self[].get._CCast.target_type = 0
+    self[].get._CCast.target_type = nil
     if target_type[] ~= self[].get._CCast.target_type {
         free_Type(@self[].get._CCast.target_type)
         self[].get._CCast.target_type = target_type[]
-        target_type[] = 0
+        target_type[] = nil
     }
     self[].get._CCast._base = self
     return self
@@ -869,13 +1216,13 @@ pub fn make_CCast(exp: **struc CExp, target_type: **struc Type, info_at: u64) *s
 
 pub fn make_CUnary(unop: *struc CUnaryOp, exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 96
+    self[].tag = AST_CUnary_t
     self[].get._CUnary.unop = unop[]
-    self[].get._CUnary.exp = 0
+    self[].get._CUnary.exp = nil
     if exp[] ~= self[].get._CUnary.exp {
         free_CExp(@self[].get._CUnary.exp)
         self[].get._CUnary.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     self[].get._CUnary._base = self
     return self
@@ -883,19 +1230,19 @@ pub fn make_CUnary(unop: *struc CUnaryOp, exp: **struc CExp, info_at: u64) *stru
 
 pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: **struc CExp, exp_right: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 97
+    self[].tag = AST_CBinary_t
     self[].get._CBinary.binop = binop[]
-    self[].get._CBinary.exp_left = 0
+    self[].get._CBinary.exp_left = nil
     if exp_left[] ~= self[].get._CBinary.exp_left {
         free_CExp(@self[].get._CBinary.exp_left)
         self[].get._CBinary.exp_left = exp_left[]
-        exp_left[] = 0
+        exp_left[] = nil
     }
-    self[].get._CBinary.exp_right = 0
+    self[].get._CBinary.exp_right = nil
     if exp_right[] ~= self[].get._CBinary.exp_right {
         free_CExp(@self[].get._CBinary.exp_right)
         self[].get._CBinary.exp_right = exp_right[]
-        exp_right[] = 0
+        exp_right[] = nil
     }
     self[].get._CBinary._base = self
     return self
@@ -903,19 +1250,19 @@ pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: **struc CExp, exp_right: 
 
 pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: **struc CExp, exp_right: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 98
+    self[].tag = AST_CAssignment_t
     self[].get._CAssignment.unop = unop[]
-    self[].get._CAssignment.exp_left = 0
+    self[].get._CAssignment.exp_left = nil
     if exp_left[] ~= self[].get._CAssignment.exp_left {
         free_CExp(@self[].get._CAssignment.exp_left)
         self[].get._CAssignment.exp_left = exp_left[]
-        exp_left[] = 0
+        exp_left[] = nil
     }
-    self[].get._CAssignment.exp_right = 0
+    self[].get._CAssignment.exp_right = nil
     if exp_right[] ~= self[].get._CAssignment.exp_right {
         free_CExp(@self[].get._CAssignment.exp_right)
         self[].get._CAssignment.exp_right = exp_right[]
-        exp_right[] = 0
+        exp_right[] = nil
     }
     self[].get._CAssignment._base = self
     return self
@@ -923,24 +1270,24 @@ pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: **struc CExp, exp_right
 
 pub fn make_CConditional(condition: **struc CExp, exp_middle: **struc CExp, exp_right: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 99
-    self[].get._CConditional.condition = 0
+    self[].tag = AST_CConditional_t
+    self[].get._CConditional.condition = nil
     if condition[] ~= self[].get._CConditional.condition {
         free_CExp(@self[].get._CConditional.condition)
         self[].get._CConditional.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
-    self[].get._CConditional.exp_middle = 0
+    self[].get._CConditional.exp_middle = nil
     if exp_middle[] ~= self[].get._CConditional.exp_middle {
         free_CExp(@self[].get._CConditional.exp_middle)
         self[].get._CConditional.exp_middle = exp_middle[]
-        exp_middle[] = 0
+        exp_middle[] = nil
     }
-    self[].get._CConditional.exp_right = 0
+    self[].get._CConditional.exp_right = nil
     if exp_right[] ~= self[].get._CConditional.exp_right {
         free_CExp(@self[].get._CConditional.exp_right)
         self[].get._CConditional.exp_right = exp_right[]
-        exp_right[] = 0
+        exp_right[] = nil
     }
     self[].get._CConditional._base = self
     return self
@@ -948,19 +1295,19 @@ pub fn make_CConditional(condition: **struc CExp, exp_middle: **struc CExp, exp_
 
 pub fn make_CFunctionCall(name: u64, args: ***struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 100
+    self[].tag = AST_CFunctionCall_t
     self[].get._CFunctionCall.name = name
-    self[].get._CFunctionCall.args = 0
+    self[].get._CFunctionCall.args = nil
     if args[] ~= self[].get._CFunctionCall.args {
         if self[].get._CFunctionCall.args {
             loop .. while 0 {
                 cast<none>((? (self[].get._CFunctionCall.args) then free((cast<*struc stbds_array_header>((self[].get._CFunctionCall.args)) - 1)) else cast<none>(0)))
-                (self[].get._CFunctionCall.args) = 0
+                (self[].get._CFunctionCall.args) = nil
             }            
-            self[].get._CFunctionCall.args = 0
+            self[].get._CFunctionCall.args = nil
         }
         self[].get._CFunctionCall.args = args[]
-        args[] = 0
+        args[] = nil
     }
     self[].get._CFunctionCall._base = self
     return self
@@ -968,12 +1315,12 @@ pub fn make_CFunctionCall(name: u64, args: ***struc CExp, info_at: u64) *struc C
 
 pub fn make_CDereference(exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 101
-    self[].get._CDereference.exp = 0
+    self[].tag = AST_CDereference_t
+    self[].get._CDereference.exp = nil
     if exp[] ~= self[].get._CDereference.exp {
         free_CExp(@self[].get._CDereference.exp)
         self[].get._CDereference.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     self[].get._CDereference._base = self
     return self
@@ -981,12 +1328,12 @@ pub fn make_CDereference(exp: **struc CExp, info_at: u64) *struc CExp {
 
 pub fn make_CAddrOf(exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 102
-    self[].get._CAddrOf.exp = 0
+    self[].tag = AST_CAddrOf_t
+    self[].get._CAddrOf.exp = nil
     if exp[] ~= self[].get._CAddrOf.exp {
         free_CExp(@self[].get._CAddrOf.exp)
         self[].get._CAddrOf.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     self[].get._CAddrOf._base = self
     return self
@@ -994,18 +1341,18 @@ pub fn make_CAddrOf(exp: **struc CExp, info_at: u64) *struc CExp {
 
 pub fn make_CSubscript(primary_exp: **struc CExp, subscript_exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 103
-    self[].get._CSubscript.primary_exp = 0
+    self[].tag = AST_CSubscript_t
+    self[].get._CSubscript.primary_exp = nil
     if primary_exp[] ~= self[].get._CSubscript.primary_exp {
         free_CExp(@self[].get._CSubscript.primary_exp)
         self[].get._CSubscript.primary_exp = primary_exp[]
-        primary_exp[] = 0
+        primary_exp[] = nil
     }
-    self[].get._CSubscript.subscript_exp = 0
+    self[].get._CSubscript.subscript_exp = nil
     if subscript_exp[] ~= self[].get._CSubscript.subscript_exp {
         free_CExp(@self[].get._CSubscript.subscript_exp)
         self[].get._CSubscript.subscript_exp = subscript_exp[]
-        subscript_exp[] = 0
+        subscript_exp[] = nil
     }
     self[].get._CSubscript._base = self
     return self
@@ -1013,12 +1360,12 @@ pub fn make_CSubscript(primary_exp: **struc CExp, subscript_exp: **struc CExp, i
 
 pub fn make_CSizeOf(exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 104
-    self[].get._CSizeOf.exp = 0
+    self[].tag = AST_CSizeOf_t
+    self[].get._CSizeOf.exp = nil
     if exp[] ~= self[].get._CSizeOf.exp {
         free_CExp(@self[].get._CSizeOf.exp)
         self[].get._CSizeOf.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     self[].get._CSizeOf._base = self
     return self
@@ -1026,12 +1373,12 @@ pub fn make_CSizeOf(exp: **struc CExp, info_at: u64) *struc CExp {
 
 pub fn make_CSizeOfT(target_type: **struc Type, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 105
-    self[].get._CSizeOfT.target_type = 0
+    self[].tag = AST_CSizeOfT_t
+    self[].get._CSizeOfT.target_type = nil
     if target_type[] ~= self[].get._CSizeOfT.target_type {
         free_Type(@self[].get._CSizeOfT.target_type)
         self[].get._CSizeOfT.target_type = target_type[]
-        target_type[] = 0
+        target_type[] = nil
     }
     self[].get._CSizeOfT._base = self
     return self
@@ -1039,13 +1386,13 @@ pub fn make_CSizeOfT(target_type: **struc Type, info_at: u64) *struc CExp {
 
 pub fn make_CDot(member: u64, structure: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 106
+    self[].tag = AST_CDot_t
     self[].get._CDot.member = member
-    self[].get._CDot.structure = 0
+    self[].get._CDot.structure = nil
     if structure[] ~= self[].get._CDot.structure {
         free_CExp(@self[].get._CDot.structure)
         self[].get._CDot.structure = structure[]
-        structure[] = 0
+        structure[] = nil
     }
     self[].get._CDot._base = self
     return self
@@ -1053,13 +1400,13 @@ pub fn make_CDot(member: u64, structure: **struc CExp, info_at: u64) *struc CExp
 
 pub fn make_CArrow(member: u64, pointer: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
-    self[].tag = 107
+    self[].tag = AST_CArrow_t
     self[].get._CArrow.member = member
-    self[].get._CArrow.pointer = 0
+    self[].get._CArrow.pointer = nil
     if pointer[] ~= self[].get._CArrow.pointer {
         free_CExp(@self[].get._CArrow.pointer)
         self[].get._CArrow.pointer = pointer[]
-        pointer[] = 0
+        pointer[] = nil
     }
     self[].get._CArrow._base = self
     return self
@@ -1070,46 +1417,46 @@ pub fn free_CExp(self: **struc CExp) none {
         return none
     }
     match (self[])[].tag {
-        -> 91 {
+        -> AST_CExp_t {
             break
         }
-        -> 92 {
+        -> AST_CConstant_t {
             free_CConst(@(self[])[].get._CConstant.constant)
         }
         break
-        -> 93 {
+        -> AST_CString_t {
             free_CStringLiteral(@(self[])[].get._CString.literal)
         }
         break
-        -> 94 {
+        -> AST_CVar_t {
             break
         }
-        -> 95 {
+        -> AST_CCast_t {
             free_CExp(@(self[])[].get._CCast.exp)
         }
         free_Type(@(self[])[].get._CCast.target_type)
         break
-        -> 96 {
+        -> AST_CUnary_t {
             free_CExp(@(self[])[].get._CUnary.exp)
         }
         break
-        -> 97 {
+        -> AST_CBinary_t {
             free_CExp(@(self[])[].get._CBinary.exp_left)
         }
         free_CExp(@(self[])[].get._CBinary.exp_right)
         break
-        -> 98 {
+        -> AST_CAssignment_t {
             free_CExp(@(self[])[].get._CAssignment.exp_left)
         }
         free_CExp(@(self[])[].get._CAssignment.exp_right)
         break
-        -> 99 {
+        -> AST_CConditional_t {
             free_CExp(@(self[])[].get._CConditional.condition)
         }
         free_CExp(@(self[])[].get._CConditional.exp_middle)
         free_CExp(@(self[])[].get._CConditional.exp_right)
         break
-        -> 100 {
+        -> AST_CFunctionCall_t {
             loop i: u64 = 0 while i < (? ((self[])[].get._CFunctionCall.args) then (cast<*struc stbds_array_header>(((self[])[].get._CFunctionCall.args)) - 1)[].length else 0) .. ++i {
                 free_CExp(@(self[])[].get._CFunctionCall.args[i])
             }
@@ -1117,37 +1464,37 @@ pub fn free_CExp(self: **struc CExp) none {
         if (self[])[].get._CFunctionCall.args {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CFunctionCall.args) then free((cast<*struc stbds_array_header>(((self[])[].get._CFunctionCall.args)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CFunctionCall.args) = 0
+                ((self[])[].get._CFunctionCall.args) = nil
             }            
-            (self[])[].get._CFunctionCall.args = 0
+            (self[])[].get._CFunctionCall.args = nil
         }
         break
-        -> 101 {
+        -> AST_CDereference_t {
             free_CExp(@(self[])[].get._CDereference.exp)
         }
         break
-        -> 102 {
+        -> AST_CAddrOf_t {
             free_CExp(@(self[])[].get._CAddrOf.exp)
         }
         break
-        -> 103 {
+        -> AST_CSubscript_t {
             free_CExp(@(self[])[].get._CSubscript.primary_exp)
         }
         free_CExp(@(self[])[].get._CSubscript.subscript_exp)
         break
-        -> 104 {
+        -> AST_CSizeOf_t {
             free_CExp(@(self[])[].get._CSizeOf.exp)
         }
         break
-        -> 105 {
+        -> AST_CSizeOfT_t {
             free_Type(@(self[])[].get._CSizeOfT.target_type)
         }
         break
-        -> 106 {
+        -> AST_CDot_t {
             free_CExp(@(self[])[].get._CDot.structure)
         }
         break
-        -> 107 {
+        -> AST_CArrow_t {
             free_CExp(@(self[])[].get._CArrow.pointer)
         }
         break
@@ -1158,12 +1505,12 @@ pub fn free_CExp(self: **struc CExp) none {
     free_Type(@(self[])[].exp_type)
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CStatement(none) *struc CStatement {
-    self: *struc CStatement = 0
+    self: *struc CStatement = nil
     loop .. while 0 {
         free_CStatement(@self)
         self = cast<*struc CStatement>(malloc(sizeof<struc CStatement>))
@@ -1171,18 +1518,18 @@ pub fn make_CStatement(none) *struc CStatement {
             panic_sigabrt("alloc "                 "CStatement")
         }
     }    
-    self[].tag = 108
+    self[].tag = AST_CStatement_t
     return self
 }
 
 pub fn make_CReturn(exp: **struc CExp, info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 109
-    self[].get._CReturn.exp = 0
+    self[].tag = AST_CReturn_t
+    self[].get._CReturn.exp = nil
     if exp[] ~= self[].get._CReturn.exp {
         free_CExp(@self[].get._CReturn.exp)
         self[].get._CReturn.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     self[].get._CReturn.info_at = info_at
     return self
@@ -1190,43 +1537,43 @@ pub fn make_CReturn(exp: **struc CExp, info_at: u64) *struc CStatement {
 
 pub fn make_CExpression(exp: **struc CExp) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 110
-    self[].get._CExpression.exp = 0
+    self[].tag = AST_CExpression_t
+    self[].get._CExpression.exp = nil
     if exp[] ~= self[].get._CExpression.exp {
         free_CExp(@self[].get._CExpression.exp)
         self[].get._CExpression.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     return self
 }
 
 pub fn make_CIf(condition: **struc CExp, then_fi: **struc CStatement, else_fi: **struc CStatement) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 111
-    self[].get._CIf.condition = 0
+    self[].tag = AST_CIf_t
+    self[].get._CIf.condition = nil
     if condition[] ~= self[].get._CIf.condition {
         free_CExp(@self[].get._CIf.condition)
         self[].get._CIf.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
-    self[].get._CIf.then_fi = 0
+    self[].get._CIf.then_fi = nil
     if then_fi[] ~= self[].get._CIf.then_fi {
         free_CStatement(@self[].get._CIf.then_fi)
         self[].get._CIf.then_fi = then_fi[]
-        then_fi[] = 0
+        then_fi[] = nil
     }
-    self[].get._CIf.else_fi = 0
+    self[].get._CIf.else_fi = nil
     if else_fi[] ~= self[].get._CIf.else_fi {
         free_CStatement(@self[].get._CIf.else_fi)
         self[].get._CIf.else_fi = else_fi[]
-        else_fi[] = 0
+        else_fi[] = nil
     }
     return self
 }
 
 pub fn make_CGoto(target: u64, info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 112
+    self[].tag = AST_CGoto_t
     self[].get._CGoto.target = target
     self[].get._CGoto.info_at = info_at
     return self
@@ -1234,13 +1581,13 @@ pub fn make_CGoto(target: u64, info_at: u64) *struc CStatement {
 
 pub fn make_CLabel(target: u64, jump_to: **struc CStatement, info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 113
+    self[].tag = AST_CLabel_t
     self[].get._CLabel.target = target
-    self[].get._CLabel.jump_to = 0
+    self[].get._CLabel.jump_to = nil
     if jump_to[] ~= self[].get._CLabel.jump_to {
         free_CStatement(@self[].get._CLabel.jump_to)
         self[].get._CLabel.jump_to = jump_to[]
-        jump_to[] = 0
+        jump_to[] = nil
     }
     self[].get._CLabel.info_at = info_at
     return self
@@ -1248,134 +1595,134 @@ pub fn make_CLabel(target: u64, jump_to: **struc CStatement, info_at: u64) *stru
 
 pub fn make_CCompound(block: **struc CBlock) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 114
-    self[].get._CCompound.block = 0
+    self[].tag = AST_CCompound_t
+    self[].get._CCompound.block = nil
     if block[] ~= self[].get._CCompound.block {
         free_CBlock(@self[].get._CCompound.block)
         self[].get._CCompound.block = block[]
-        block[] = 0
+        block[] = nil
     }
     return self
 }
 
 pub fn make_CWhile(condition: **struc CExp, body: **struc CStatement) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 115
+    self[].tag = AST_CWhile_t
     self[].get._CWhile.target = 0
-    self[].get._CWhile.condition = 0
+    self[].get._CWhile.condition = nil
     if condition[] ~= self[].get._CWhile.condition {
         free_CExp(@self[].get._CWhile.condition)
         self[].get._CWhile.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
-    self[].get._CWhile.body = 0
+    self[].get._CWhile.body = nil
     if body[] ~= self[].get._CWhile.body {
         free_CStatement(@self[].get._CWhile.body)
         self[].get._CWhile.body = body[]
-        body[] = 0
+        body[] = nil
     }
     return self
 }
 
 pub fn make_CDoWhile(condition: **struc CExp, body: **struc CStatement) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 116
+    self[].tag = AST_CDoWhile_t
     self[].get._CDoWhile.target = 0
-    self[].get._CDoWhile.condition = 0
+    self[].get._CDoWhile.condition = nil
     if condition[] ~= self[].get._CDoWhile.condition {
         free_CExp(@self[].get._CDoWhile.condition)
         self[].get._CDoWhile.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
-    self[].get._CDoWhile.body = 0
+    self[].get._CDoWhile.body = nil
     if body[] ~= self[].get._CDoWhile.body {
         free_CStatement(@self[].get._CDoWhile.body)
         self[].get._CDoWhile.body = body[]
-        body[] = 0
+        body[] = nil
     }
     return self
 }
 
 pub fn make_CFor(init: **struc CForInit, condition: **struc CExp, post: **struc CExp, body: **struc CStatement) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 117
+    self[].tag = AST_CFor_t
     self[].get._CFor.target = 0
-    self[].get._CFor.init = 0
+    self[].get._CFor.init = nil
     if init[] ~= self[].get._CFor.init {
         free_CForInit(@self[].get._CFor.init)
         self[].get._CFor.init = init[]
-        init[] = 0
+        init[] = nil
     }
-    self[].get._CFor.condition = 0
+    self[].get._CFor.condition = nil
     if condition[] ~= self[].get._CFor.condition {
         free_CExp(@self[].get._CFor.condition)
         self[].get._CFor.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
-    self[].get._CFor.post = 0
+    self[].get._CFor.post = nil
     if post[] ~= self[].get._CFor.post {
         free_CExp(@self[].get._CFor.post)
         self[].get._CFor.post = post[]
-        post[] = 0
+        post[] = nil
     }
-    self[].get._CFor.body = 0
+    self[].get._CFor.body = nil
     if body[] ~= self[].get._CFor.body {
         free_CStatement(@self[].get._CFor.body)
         self[].get._CFor.body = body[]
-        body[] = 0
+        body[] = nil
     }
     return self
 }
 
 pub fn make_CSwitch(lookup: **struc CExp, body: **struc CStatement) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 118
+    self[].tag = AST_CSwitch_t
     self[].get._CSwitch.target = 0
-    self[].get._CSwitch.is_default = 0
-    self[].get._CSwitch.lookup = 0
+    self[].get._CSwitch.is_default = false
+    self[].get._CSwitch.lookup = nil
     if lookup[] ~= self[].get._CSwitch.lookup {
         free_CExp(@self[].get._CSwitch.lookup)
         self[].get._CSwitch.lookup = lookup[]
-        lookup[] = 0
+        lookup[] = nil
     }
-    self[].get._CSwitch.body = 0
+    self[].get._CSwitch.body = nil
     if body[] ~= self[].get._CSwitch.body {
         free_CStatement(@self[].get._CSwitch.body)
         self[].get._CSwitch.body = body[]
-        body[] = 0
+        body[] = nil
     }
-    self[].get._CSwitch.cases = 0
+    self[].get._CSwitch.cases = nil
     return self
 }
 
 pub fn make_CCase(value: **struc CExp, jump_to: **struc CStatement) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 119
+    self[].tag = AST_CCase_t
     self[].get._CCase.target = 0
-    self[].get._CCase.value = 0
+    self[].get._CCase.value = nil
     if value[] ~= self[].get._CCase.value {
         free_CExp(@self[].get._CCase.value)
         self[].get._CCase.value = value[]
-        value[] = 0
+        value[] = nil
     }
-    self[].get._CCase.jump_to = 0
+    self[].get._CCase.jump_to = nil
     if jump_to[] ~= self[].get._CCase.jump_to {
         free_CStatement(@self[].get._CCase.jump_to)
         self[].get._CCase.jump_to = jump_to[]
-        jump_to[] = 0
+        jump_to[] = nil
     }
     return self
 }
 
 pub fn make_CDefault(jump_to: **struc CStatement, info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 120
+    self[].tag = AST_CDefault_t
     self[].get._CDefault.target = 0
-    self[].get._CDefault.jump_to = 0
+    self[].get._CDefault.jump_to = nil
     if jump_to[] ~= self[].get._CDefault.jump_to {
         free_CStatement(@self[].get._CDefault.jump_to)
         self[].get._CDefault.jump_to = jump_to[]
-        jump_to[] = 0
+        jump_to[] = nil
     }
     self[].get._CDefault.info_at = info_at
     return self
@@ -1383,7 +1730,7 @@ pub fn make_CDefault(jump_to: **struc CStatement, info_at: u64) *struc CStatemen
 
 pub fn make_CBreak(info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 121
+    self[].tag = AST_CBreak_t
     self[].get._CBreak.target = 0
     self[].get._CBreak.info_at = info_at
     return self
@@ -1391,7 +1738,7 @@ pub fn make_CBreak(info_at: u64) *struc CStatement {
 
 pub fn make_CContinue(info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 122
+    self[].tag = AST_CContinue_t
     self[].get._CContinue.target = 0
     self[].get._CContinue.info_at = info_at
     return self
@@ -1399,7 +1746,7 @@ pub fn make_CContinue(info_at: u64) *struc CStatement {
 
 pub fn make_CNull(none) *struc CStatement {
     self: *struc CStatement = make_CStatement()
-    self[].tag = 123
+    self[].tag = AST_CNull_t
     return self
 }
 
@@ -1408,52 +1755,52 @@ pub fn free_CStatement(self: **struc CStatement) none {
         return none
     }
     match (self[])[].tag {
-        -> 108 {
+        -> AST_CStatement_t {
             break
         }
-        -> 109 {
+        -> AST_CReturn_t {
             free_CExp(@(self[])[].get._CReturn.exp)
         }
         break
-        -> 110 {
+        -> AST_CExpression_t {
             free_CExp(@(self[])[].get._CExpression.exp)
         }
         break
-        -> 111 {
+        -> AST_CIf_t {
             free_CExp(@(self[])[].get._CIf.condition)
         }
         free_CStatement(@(self[])[].get._CIf.then_fi)
         free_CStatement(@(self[])[].get._CIf.else_fi)
         break
-        -> 112 {
+        -> AST_CGoto_t {
             break
         }
-        -> 113 {
+        -> AST_CLabel_t {
             free_CStatement(@(self[])[].get._CLabel.jump_to)
         }
         break
-        -> 114 {
+        -> AST_CCompound_t {
             free_CBlock(@(self[])[].get._CCompound.block)
         }
         break
-        -> 115 {
+        -> AST_CWhile_t {
             free_CExp(@(self[])[].get._CWhile.condition)
         }
         free_CStatement(@(self[])[].get._CWhile.body)
         break
-        -> 116 {
+        -> AST_CDoWhile_t {
             free_CExp(@(self[])[].get._CDoWhile.condition)
         }
         free_CStatement(@(self[])[].get._CDoWhile.body)
         break
-        -> 117 {
+        -> AST_CFor_t {
             free_CForInit(@(self[])[].get._CFor.init)
         }
         free_CExp(@(self[])[].get._CFor.condition)
         free_CExp(@(self[])[].get._CFor.post)
         free_CStatement(@(self[])[].get._CFor.body)
         break
-        -> 118 {
+        -> AST_CSwitch_t {
             free_CExp(@(self[])[].get._CSwitch.lookup)
         }
         free_CStatement(@(self[])[].get._CSwitch.body)
@@ -1463,27 +1810,27 @@ pub fn free_CStatement(self: **struc CStatement) none {
         if (self[])[].get._CSwitch.cases {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CSwitch.cases) then free((cast<*struc stbds_array_header>(((self[])[].get._CSwitch.cases)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CSwitch.cases) = 0
+                ((self[])[].get._CSwitch.cases) = nil
             }            
-            (self[])[].get._CSwitch.cases = 0
+            (self[])[].get._CSwitch.cases = nil
         }
         break
-        -> 119 {
+        -> AST_CCase_t {
             free_CExp(@(self[])[].get._CCase.value)
         }
         free_CStatement(@(self[])[].get._CCase.jump_to)
         break
-        -> 120 {
+        -> AST_CDefault_t {
             free_CStatement(@(self[])[].get._CDefault.jump_to)
         }
         break
-        -> 121 {
+        -> AST_CBreak_t {
             break
         }
-        -> 122 {
+        -> AST_CContinue_t {
             break
         }
-        -> 123 {
+        -> AST_CNull_t {
             break
         }
         otherwise {
@@ -1492,12 +1839,12 @@ pub fn free_CStatement(self: **struc CStatement) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CForInit(none) *struc CForInit {
-    self: *struc CForInit = 0
+    self: *struc CForInit = nil
     loop .. while 0 {
         free_CForInit(@self)
         self = cast<*struc CForInit>(malloc(sizeof<struc CForInit>))
@@ -1505,30 +1852,30 @@ pub fn make_CForInit(none) *struc CForInit {
             panic_sigabrt("alloc "                 "CForInit")
         }
     }    
-    self[].tag = 124
+    self[].tag = AST_CForInit_t
     return self
 }
 
 pub fn make_CInitDecl(init: **struc CVariableDeclaration) *struc CForInit {
     self: *struc CForInit = make_CForInit()
-    self[].tag = 125
-    self[].get._CInitDecl.init = 0
+    self[].tag = AST_CInitDecl_t
+    self[].get._CInitDecl.init = nil
     if init[] ~= self[].get._CInitDecl.init {
         free_CVariableDeclaration(@self[].get._CInitDecl.init)
         self[].get._CInitDecl.init = init[]
-        init[] = 0
+        init[] = nil
     }
     return self
 }
 
 pub fn make_CInitExp(init: **struc CExp) *struc CForInit {
     self: *struc CForInit = make_CForInit()
-    self[].tag = 126
-    self[].get._CInitExp.init = 0
+    self[].tag = AST_CInitExp_t
+    self[].get._CInitExp.init = nil
     if init[] ~= self[].get._CInitExp.init {
         free_CExp(@self[].get._CInitExp.init)
         self[].get._CInitExp.init = init[]
-        init[] = 0
+        init[] = nil
     }
     return self
 }
@@ -1538,14 +1885,14 @@ pub fn free_CForInit(self: **struc CForInit) none {
         return none
     }
     match (self[])[].tag {
-        -> 124 {
+        -> AST_CForInit_t {
             break
         }
-        -> 125 {
+        -> AST_CInitDecl_t {
             free_CVariableDeclaration(@(self[])[].get._CInitDecl.init)
         }
         break
-        -> 126 {
+        -> AST_CInitExp_t {
             free_CExp(@(self[])[].get._CInitExp.init)
         }
         break
@@ -1555,12 +1902,12 @@ pub fn free_CForInit(self: **struc CForInit) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CBlock(none) *struc CBlock {
-    self: *struc CBlock = 0
+    self: *struc CBlock = nil
     loop .. while 0 {
         free_CBlock(@self)
         self = cast<*struc CBlock>(malloc(sizeof<struc CBlock>))
@@ -1568,24 +1915,24 @@ pub fn make_CBlock(none) *struc CBlock {
             panic_sigabrt("alloc "                 "CBlock")
         }
     }    
-    self[].tag = 127
+    self[].tag = AST_CBlock_t
     return self
 }
 
 pub fn make_CB(block_items: ***struc CBlockItem) *struc CBlock {
     self: *struc CBlock = make_CBlock()
-    self[].tag = 128
-    self[].get._CB.block_items = 0
+    self[].tag = AST_CB_t
+    self[].get._CB.block_items = nil
     if block_items[] ~= self[].get._CB.block_items {
         if self[].get._CB.block_items {
             loop .. while 0 {
                 cast<none>((? (self[].get._CB.block_items) then free((cast<*struc stbds_array_header>((self[].get._CB.block_items)) - 1)) else cast<none>(0)))
-                (self[].get._CB.block_items) = 0
+                (self[].get._CB.block_items) = nil
             }            
-            self[].get._CB.block_items = 0
+            self[].get._CB.block_items = nil
         }
         self[].get._CB.block_items = block_items[]
-        block_items[] = 0
+        block_items[] = nil
     }
     return self
 }
@@ -1595,10 +1942,10 @@ pub fn free_CBlock(self: **struc CBlock) none {
         return none
     }
     match (self[])[].tag {
-        -> 127 {
+        -> AST_CBlock_t {
             break
         }
-        -> 128 {
+        -> AST_CB_t {
             loop i: u64 = 0 while i < (? ((self[])[].get._CB.block_items) then (cast<*struc stbds_array_header>(((self[])[].get._CB.block_items)) - 1)[].length else 0) .. ++i {
                 free_CBlockItem(@(self[])[].get._CB.block_items[i])
             }
@@ -1606,9 +1953,9 @@ pub fn free_CBlock(self: **struc CBlock) none {
         if (self[])[].get._CB.block_items {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CB.block_items) then free((cast<*struc stbds_array_header>(((self[])[].get._CB.block_items)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CB.block_items) = 0
+                ((self[])[].get._CB.block_items) = nil
             }            
-            (self[])[].get._CB.block_items = 0
+            (self[])[].get._CB.block_items = nil
         }
         break
         otherwise {
@@ -1617,12 +1964,12 @@ pub fn free_CBlock(self: **struc CBlock) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CBlockItem(none) *struc CBlockItem {
-    self: *struc CBlockItem = 0
+    self: *struc CBlockItem = nil
     loop .. while 0 {
         free_CBlockItem(@self)
         self = cast<*struc CBlockItem>(malloc(sizeof<struc CBlockItem>))
@@ -1630,30 +1977,30 @@ pub fn make_CBlockItem(none) *struc CBlockItem {
             panic_sigabrt("alloc "                 "CBlockItem")
         }
     }    
-    self[].tag = 129
+    self[].tag = AST_CBlockItem_t
     return self
 }
 
 pub fn make_CS(statement: **struc CStatement) *struc CBlockItem {
     self: *struc CBlockItem = make_CBlockItem()
-    self[].tag = 130
-    self[].get._CS.statement = 0
+    self[].tag = AST_CS_t
+    self[].get._CS.statement = nil
     if statement[] ~= self[].get._CS.statement {
         free_CStatement(@self[].get._CS.statement)
         self[].get._CS.statement = statement[]
-        statement[] = 0
+        statement[] = nil
     }
     return self
 }
 
 pub fn make_CD(declaration: **struc CDeclaration) *struc CBlockItem {
     self: *struc CBlockItem = make_CBlockItem()
-    self[].tag = 131
-    self[].get._CD.declaration = 0
+    self[].tag = AST_CD_t
+    self[].get._CD.declaration = nil
     if declaration[] ~= self[].get._CD.declaration {
         free_CDeclaration(@self[].get._CD.declaration)
         self[].get._CD.declaration = declaration[]
-        declaration[] = 0
+        declaration[] = nil
     }
     return self
 }
@@ -1663,14 +2010,14 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none {
         return none
     }
     match (self[])[].tag {
-        -> 129 {
+        -> AST_CBlockItem_t {
             break
         }
-        -> 130 {
+        -> AST_CS_t {
             free_CStatement(@(self[])[].get._CS.statement)
         }
         break
-        -> 131 {
+        -> AST_CD_t {
             free_CDeclaration(@(self[])[].get._CD.declaration)
         }
         break
@@ -1680,16 +2027,16 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CStorageClass(tag: i32) struc CStorageClass {
     self: struc CStorageClass = $(tag)
     match tag {
-        -> 132 {
-            -> 133 {
-                -> 134 {
+        -> AST_CStorageClass_t {
+            -> AST_CStatic_t {
+                -> AST_CExtern_t {
                     return self
                 }
             }
@@ -1701,7 +2048,7 @@ pub fn make_CStorageClass(tag: i32) struc CStorageClass {
 }
 
 pub fn make_CInitializer(none) *struc CInitializer {
-    self: *struc CInitializer = 0
+    self: *struc CInitializer = nil
     loop .. while 0 {
         free_CInitializer(@self)
         self = cast<*struc CInitializer>(malloc(sizeof<struc CInitializer>))
@@ -1709,19 +2056,19 @@ pub fn make_CInitializer(none) *struc CInitializer {
             panic_sigabrt("alloc "                 "CInitializer")
         }
     }    
-    self[].tag = 135
-    self[].init_type = 0
+    self[].tag = AST_CInitializer_t
+    self[].init_type = nil
     return self
 }
 
 pub fn make_CSingleInit(exp: **struc CExp) *struc CInitializer {
     self: *struc CInitializer = make_CInitializer()
-    self[].tag = 136
-    self[].get._CSingleInit.exp = 0
+    self[].tag = AST_CSingleInit_t
+    self[].get._CSingleInit.exp = nil
     if exp[] ~= self[].get._CSingleInit.exp {
         free_CExp(@self[].get._CSingleInit.exp)
         self[].get._CSingleInit.exp = exp[]
-        exp[] = 0
+        exp[] = nil
     }
     self[].get._CSingleInit._base = self
     return self
@@ -1729,18 +2076,18 @@ pub fn make_CSingleInit(exp: **struc CExp) *struc CInitializer {
 
 pub fn make_CCompoundInit(initializers: ***struc CInitializer) *struc CInitializer {
     self: *struc CInitializer = make_CInitializer()
-    self[].tag = 137
-    self[].get._CCompoundInit.initializers = 0
+    self[].tag = AST_CCompoundInit_t
+    self[].get._CCompoundInit.initializers = nil
     if initializers[] ~= self[].get._CCompoundInit.initializers {
         if self[].get._CCompoundInit.initializers {
             loop .. while 0 {
                 cast<none>((? (self[].get._CCompoundInit.initializers) then free((cast<*struc stbds_array_header>((self[].get._CCompoundInit.initializers)) - 1)) else cast<none>(0)))
-                (self[].get._CCompoundInit.initializers) = 0
+                (self[].get._CCompoundInit.initializers) = nil
             }            
-            self[].get._CCompoundInit.initializers = 0
+            self[].get._CCompoundInit.initializers = nil
         }
         self[].get._CCompoundInit.initializers = initializers[]
-        initializers[] = 0
+        initializers[] = nil
     }
     self[].get._CCompoundInit._base = self
     return self
@@ -1751,14 +2098,14 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
         return none
     }
     match (self[])[].tag {
-        -> 135 {
+        -> AST_CInitializer_t {
             break
         }
-        -> 136 {
+        -> AST_CSingleInit_t {
             free_CExp(@(self[])[].get._CSingleInit.exp)
         }
         break
-        -> 137 {
+        -> AST_CCompoundInit_t {
             loop i: u64 = 0 while i < (? ((self[])[].get._CCompoundInit.initializers) then (cast<*struc stbds_array_header>(((self[])[].get._CCompoundInit.initializers)) - 1)[].length else 0) .. ++i {
                 free_CInitializer(@(self[])[].get._CCompoundInit.initializers[i])
             }
@@ -1766,9 +2113,9 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
         if (self[])[].get._CCompoundInit.initializers {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CCompoundInit.initializers) then free((cast<*struc stbds_array_header>(((self[])[].get._CCompoundInit.initializers)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CCompoundInit.initializers) = 0
+                ((self[])[].get._CCompoundInit.initializers) = nil
             }            
-            (self[])[].get._CCompoundInit.initializers = 0
+            (self[])[].get._CCompoundInit.initializers = nil
         }
         break
         otherwise {
@@ -1778,12 +2125,12 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
     free_Type(@(self[])[].init_type)
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info_at: u64) *struc CMemberDeclaration {
-    self: *struc CMemberDeclaration = 0
+    self: *struc CMemberDeclaration = nil
     loop .. while 0 {
         free_CMemberDeclaration(@self)
         self = cast<*struc CMemberDeclaration>(malloc(sizeof<struc CMemberDeclaration>))
@@ -1791,13 +2138,13 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info
             panic_sigabrt("alloc "                 "CMemberDeclaration")
         }
     }    
-    self[].tag = 138
+    self[].tag = AST_CMemberDeclaration_t
     self[].member_name = member_name
-    self[].member_type = 0
+    self[].member_type = nil
     if member_type[] ~= self[].member_type {
         free_Type(@self[].member_type)
         self[].member_type = member_type[]
-        member_type[] = 0
+        member_type[] = nil
     }
     self[].info_at = info_at
     return self
@@ -1808,7 +2155,7 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
         return none
     }
     match (self[])[].tag {
-        -> 138 {
+        -> AST_CMemberDeclaration_t {
             break
         }
         otherwise {
@@ -1818,12 +2165,12 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
     free_Type(@(self[])[].member_type)
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc CMemberDeclaration, info_at: u64) *struc CStructDeclaration {
-    self: *struc CStructDeclaration = 0
+    self: *struc CStructDeclaration = nil
     loop .. while 0 {
         free_CStructDeclaration(@self)
         self = cast<*struc CStructDeclaration>(malloc(sizeof<struc CStructDeclaration>))
@@ -1831,20 +2178,20 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc C
             panic_sigabrt("alloc "                 "CStructDeclaration")
         }
     }    
-    self[].tag = 139
+    self[].tag = AST_CStructDeclaration_t
     self[].tag_name = tag_name
     self[].is_union = is_union
-    self[].members = 0
+    self[].members = nil
     if members[] ~= self[].members {
         if self[].members {
             loop .. while 0 {
                 cast<none>((? (self[].members) then free((cast<*struc stbds_array_header>((self[].members)) - 1)) else cast<none>(0)))
-                (self[].members) = 0
+                (self[].members) = nil
             }            
-            self[].members = 0
+            self[].members = nil
         }
         self[].members = members[]
-        members[] = 0
+        members[] = nil
     }
     self[].info_at = info_at
     return self
@@ -1855,7 +2202,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
         return none
     }
     match (self[])[].tag {
-        -> 139 {
+        -> AST_CStructDeclaration_t {
             break
         }
         otherwise {
@@ -1868,18 +2215,18 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
     if (self[])[].members {
         loop .. while 0 {
             cast<none>((? ((self[])[].members) then free((cast<*struc stbds_array_header>(((self[])[].members)) - 1)) else cast<none>(0)))
-            ((self[])[].members) = 0
+            ((self[])[].members) = nil
         }        
-        (self[])[].members = 0
+        (self[])[].members = nil
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock, fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
-    self: *struc CFunctionDeclaration = 0
+    self: *struc CFunctionDeclaration = nil
     loop .. while 0 {
         free_CFunctionDeclaration(@self)
         self = cast<*struc CFunctionDeclaration>(malloc(sizeof<struc CFunctionDeclaration>))
@@ -1887,31 +2234,31 @@ pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock,
             panic_sigabrt("alloc "                 "CFunctionDeclaration")
         }
     }    
-    self[].tag = 140
+    self[].tag = AST_CFunctionDeclaration_t
     self[].name = name
-    self[].params = 0
+    self[].params = nil
     if params[] ~= self[].params {
         if self[].params {
             loop .. while 0 {
                 cast<none>((? (self[].params) then free((cast<*struc stbds_array_header>((self[].params)) - 1)) else cast<none>(0)))
-                (self[].params) = 0
+                (self[].params) = nil
             }            
-            self[].params = 0
+            self[].params = nil
         }
         self[].params = params[]
-        params[] = 0
+        params[] = nil
     }
-    self[].body = 0
+    self[].body = nil
     if body[] ~= self[].body {
         free_CBlock(@self[].body)
         self[].body = body[]
-        body[] = 0
+        body[] = nil
     }
-    self[].fun_type = 0
+    self[].fun_type = nil
     if fun_type[] ~= self[].fun_type {
         free_Type(@self[].fun_type)
         self[].fun_type = fun_type[]
-        fun_type[] = 0
+        fun_type[] = nil
     }
     self[].storage_class = storage_class[]
     self[].info_at = info_at
@@ -1923,7 +2270,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
         return none
     }
     match (self[])[].tag {
-        -> 140 {
+        -> AST_CFunctionDeclaration_t {
             break
         }
         otherwise {
@@ -1933,20 +2280,20 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
     if (self[])[].params {
         loop .. while 0 {
             cast<none>((? ((self[])[].params) then free((cast<*struc stbds_array_header>(((self[])[].params)) - 1)) else cast<none>(0)))
-            ((self[])[].params) = 0
+            ((self[])[].params) = nil
         }        
-        (self[])[].params = 0
+        (self[])[].params = nil
     }
     free_CBlock(@(self[])[].body)
     free_Type(@(self[])[].fun_type)
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration {
-    self: *struc CVariableDeclaration = 0
+    self: *struc CVariableDeclaration = nil
     loop .. while 0 {
         free_CVariableDeclaration(@self)
         self = cast<*struc CVariableDeclaration>(malloc(sizeof<struc CVariableDeclaration>))
@@ -1954,19 +2301,19 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
             panic_sigabrt("alloc "                 "CVariableDeclaration")
         }
     }    
-    self[].tag = 141
+    self[].tag = AST_CVariableDeclaration_t
     self[].name = name
-    self[].init = 0
+    self[].init = nil
     if init[] ~= self[].init {
         free_CInitializer(@self[].init)
         self[].init = init[]
-        init[] = 0
+        init[] = nil
     }
-    self[].var_type = 0
+    self[].var_type = nil
     if var_type[] ~= self[].var_type {
         free_Type(@self[].var_type)
         self[].var_type = var_type[]
-        var_type[] = 0
+        var_type[] = nil
     }
     self[].storage_class = storage_class[]
     self[].info_at = info_at
@@ -1978,7 +2325,7 @@ pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
         return none
     }
     match (self[])[].tag {
-        -> 141 {
+        -> AST_CVariableDeclaration_t {
             break
         }
         otherwise {
@@ -1989,12 +2336,12 @@ pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
     free_Type(@(self[])[].var_type)
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CDeclaration(none) *struc CDeclaration {
-    self: *struc CDeclaration = 0
+    self: *struc CDeclaration = nil
     loop .. while 0 {
         free_CDeclaration(@self)
         self = cast<*struc CDeclaration>(malloc(sizeof<struc CDeclaration>))
@@ -2002,42 +2349,42 @@ pub fn make_CDeclaration(none) *struc CDeclaration {
             panic_sigabrt("alloc "                 "CDeclaration")
         }
     }    
-    self[].tag = 142
+    self[].tag = AST_CDeclaration_t
     return self
 }
 
 pub fn make_CFunDecl(fun_decl: **struc CFunctionDeclaration) *struc CDeclaration {
     self: *struc CDeclaration = make_CDeclaration()
-    self[].tag = 143
-    self[].get._CFunDecl.fun_decl = 0
+    self[].tag = AST_CFunDecl_t
+    self[].get._CFunDecl.fun_decl = nil
     if fun_decl[] ~= self[].get._CFunDecl.fun_decl {
         free_CFunctionDeclaration(@self[].get._CFunDecl.fun_decl)
         self[].get._CFunDecl.fun_decl = fun_decl[]
-        fun_decl[] = 0
+        fun_decl[] = nil
     }
     return self
 }
 
 pub fn make_CVarDecl(var_decl: **struc CVariableDeclaration) *struc CDeclaration {
     self: *struc CDeclaration = make_CDeclaration()
-    self[].tag = 144
-    self[].get._CVarDecl.var_decl = 0
+    self[].tag = AST_CVarDecl_t
+    self[].get._CVarDecl.var_decl = nil
     if var_decl[] ~= self[].get._CVarDecl.var_decl {
         free_CVariableDeclaration(@self[].get._CVarDecl.var_decl)
         self[].get._CVarDecl.var_decl = var_decl[]
-        var_decl[] = 0
+        var_decl[] = nil
     }
     return self
 }
 
 pub fn make_CStructDecl(struct_decl: **struc CStructDeclaration) *struc CDeclaration {
     self: *struc CDeclaration = make_CDeclaration()
-    self[].tag = 145
-    self[].get._CStructDecl.struct_decl = 0
+    self[].tag = AST_CStructDecl_t
+    self[].get._CStructDecl.struct_decl = nil
     if struct_decl[] ~= self[].get._CStructDecl.struct_decl {
         free_CStructDeclaration(@self[].get._CStructDecl.struct_decl)
         self[].get._CStructDecl.struct_decl = struct_decl[]
-        struct_decl[] = 0
+        struct_decl[] = nil
     }
     return self
 }
@@ -2047,18 +2394,18 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
         return none
     }
     match (self[])[].tag {
-        -> 142 {
+        -> AST_CDeclaration_t {
             break
         }
-        -> 143 {
+        -> AST_CFunDecl_t {
             free_CFunctionDeclaration(@(self[])[].get._CFunDecl.fun_decl)
         }
         break
-        -> 144 {
+        -> AST_CVarDecl_t {
             free_CVariableDeclaration(@(self[])[].get._CVarDecl.var_decl)
         }
         break
-        -> 145 {
+        -> AST_CStructDecl_t {
             free_CStructDeclaration(@(self[])[].get._CStructDecl.struct_decl)
         }
         break
@@ -2068,12 +2415,12 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
-    self: *struc CProgram = 0
+    self: *struc CProgram = nil
     loop .. while 0 {
         free_CProgram(@self)
         self = cast<*struc CProgram>(malloc(sizeof<struc CProgram>))
@@ -2081,18 +2428,18 @@ pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
             panic_sigabrt("alloc "                 "CProgram")
         }
     }    
-    self[].tag = 146
-    self[].declarations = 0
+    self[].tag = AST_CProgram_t
+    self[].declarations = nil
     if declarations[] ~= self[].declarations {
         if self[].declarations {
             loop .. while 0 {
                 cast<none>((? (self[].declarations) then free((cast<*struc stbds_array_header>((self[].declarations)) - 1)) else cast<none>(0)))
-                (self[].declarations) = 0
+                (self[].declarations) = nil
             }            
-            self[].declarations = 0
+            self[].declarations = nil
         }
         self[].declarations = declarations[]
-        declarations[] = 0
+        declarations[] = nil
     }
     return self
 }
@@ -2102,7 +2449,7 @@ pub fn free_CProgram(self: **struc CProgram) none {
         return none
     }
     match (self[])[].tag {
-        -> 146 {
+        -> AST_CProgram_t {
             break
         }
         otherwise {
@@ -2115,12 +2462,12 @@ pub fn free_CProgram(self: **struc CProgram) none {
     if (self[])[].declarations {
         loop .. while 0 {
             cast<none>((? ((self[])[].declarations) then free((cast<*struc stbds_array_header>(((self[])[].declarations)) - 1)) else cast<none>(0)))
-            ((self[])[].declarations) = 0
+            ((self[])[].declarations) = nil
         }        
-        (self[])[].declarations = 0
+        (self[])[].declarations = nil
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
