@@ -1,5 +1,13 @@
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+m4_define(`bool', `TODO')m4_dnl
+m4_define(`int8_t', `TODO')m4_dnl
+m4_define(`int32_t', `TODO')m4_dnl
+m4_define(`int64_t', `TODO')m4_dnl
+m4_define(`uint8_t', `TODO')m4_dnl
+m4_define(`uint32_t', `TODO')m4_dnl
+m4_define(`uint64_t', `TODO')m4_dnl
+m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;
 extrn fn fflush(stream: *struc FILE) i32;
@@ -8,6 +16,7 @@ extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
 extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+m4_define(`STDERR_FILENO', `2')m4_dnl
 extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 extrn fn strtod(nptr: string, endptr: *string) f64;
@@ -22,6 +31,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+m4_define(`sds', `TODO')m4_dnl
 pub fn sdslen(s: string) u64;
 pub fn sdsnew(init: string) string;
 pub fn sdsdup(s: string) string;
@@ -33,6 +43,19 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+m4_define(`arrlenu', `TODO')m4_dnl
+m4_define(`arrput', `TODO')m4_dnl
+m4_define(`arrpop', `TODO')m4_dnl
+m4_define(`arrfree', `TODO')m4_dnl
+m4_define(`arrsetlen', `TODO')m4_dnl
+m4_define(`arrdelswap', `TODO')m4_dnl
+m4_define(`arrsetcap', `TODO')m4_dnl
+m4_define(`hmput', `TODO')m4_dnl
+m4_define(`hmget', `TODO')m4_dnl
+m4_define(`hmgeti', `TODO')m4_dnl
+m4_define(`hmdel', `TODO')m4_dnl
+m4_define(`hmlenu', `TODO')m4_dnl
+m4_define(`hmfree', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -42,6 +65,320 @@ extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
+m4_define(`error_t', `TODO')m4_dnl
+m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
+m4_define(`CATCH_ENTER', `TODO')m4_dnl
+m4_define(`CATCH_EXIT', `TODO')m4_dnl
+m4_define(`EARLY_EXIT', `TODO')m4_dnl
+m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`string_t', `TODO')m4_dnl
+m4_define(`TIdentifier', `TODO')m4_dnl
+m4_define(`TChar', `TODO')m4_dnl
+m4_define(`TInt', `TODO')m4_dnl
+m4_define(`TLong', `TODO')m4_dnl
+m4_define(`TUChar', `TODO')m4_dnl
+m4_define(`TUInt', `TODO')m4_dnl
+m4_define(`TULong', `TODO')m4_dnl
+m4_define(`TDouble', `TODO')m4_dnl
+m4_define(`AST_T', `TODO')m4_dnl
+m4_define(`AST_Type_t', `0')m4_dnl
+m4_define(`AST_Char_t', `1')m4_dnl
+m4_define(`AST_SChar_t', `2')m4_dnl
+m4_define(`AST_UChar_t', `3')m4_dnl
+m4_define(`AST_Int_t', `4')m4_dnl
+m4_define(`AST_Long_t', `5')m4_dnl
+m4_define(`AST_UInt_t', `6')m4_dnl
+m4_define(`AST_ULong_t', `7')m4_dnl
+m4_define(`AST_Double_t', `8')m4_dnl
+m4_define(`AST_Void_t', `9')m4_dnl
+m4_define(`AST_FunType_t', `10')m4_dnl
+m4_define(`AST_Pointer_t', `11')m4_dnl
+m4_define(`AST_Array_t', `12')m4_dnl
+m4_define(`AST_Structure_t', `13')m4_dnl
+m4_define(`AST_StaticInit_t', `14')m4_dnl
+m4_define(`AST_IntInit_t', `15')m4_dnl
+m4_define(`AST_LongInit_t', `16')m4_dnl
+m4_define(`AST_UIntInit_t', `17')m4_dnl
+m4_define(`AST_ULongInit_t', `18')m4_dnl
+m4_define(`AST_CharInit_t', `19')m4_dnl
+m4_define(`AST_UCharInit_t', `20')m4_dnl
+m4_define(`AST_DoubleInit_t', `21')m4_dnl
+m4_define(`AST_ZeroInit_t', `22')m4_dnl
+m4_define(`AST_StringInit_t', `23')m4_dnl
+m4_define(`AST_PointerInit_t', `24')m4_dnl
+m4_define(`AST_InitialValue_t', `25')m4_dnl
+m4_define(`AST_Tentative_t', `26')m4_dnl
+m4_define(`AST_Initial_t', `27')m4_dnl
+m4_define(`AST_NoInitializer_t', `28')m4_dnl
+m4_define(`AST_IdentifierAttr_t', `29')m4_dnl
+m4_define(`AST_FunAttr_t', `30')m4_dnl
+m4_define(`AST_StaticAttr_t', `31')m4_dnl
+m4_define(`AST_ConstantAttr_t', `32')m4_dnl
+m4_define(`AST_LocalAttr_t', `33')m4_dnl
+m4_define(`AST_Symbol_t', `34')m4_dnl
+m4_define(`AST_StructMember_t', `35')m4_dnl
+m4_define(`AST_StructTypedef_t', `36')m4_dnl
+m4_define(`AST_AssemblyType_t', `37')m4_dnl
+m4_define(`AST_Byte_t', `38')m4_dnl
+m4_define(`AST_LongWord_t', `39')m4_dnl
+m4_define(`AST_QuadWord_t', `40')m4_dnl
+m4_define(`AST_BackendDouble_t', `41')m4_dnl
+m4_define(`AST_ByteArray_t', `42')m4_dnl
+m4_define(`AST_BackendSymbol_t', `43')m4_dnl
+m4_define(`AST_BackendObj_t', `44')m4_dnl
+m4_define(`AST_BackendFun_t', `45')m4_dnl
+m4_define(`AST_CConst_t', `46')m4_dnl
+m4_define(`AST_CConstInt_t', `47')m4_dnl
+m4_define(`AST_CConstLong_t', `48')m4_dnl
+m4_define(`AST_CConstUInt_t', `49')m4_dnl
+m4_define(`AST_CConstULong_t', `50')m4_dnl
+m4_define(`AST_CConstDouble_t', `51')m4_dnl
+m4_define(`AST_CConstChar_t', `52')m4_dnl
+m4_define(`AST_CConstUChar_t', `53')m4_dnl
+m4_define(`AST_CStringLiteral_t', `54')m4_dnl
+m4_define(`AST_CUnaryOp_t', `55')m4_dnl
+m4_define(`AST_CComplement_t', `56')m4_dnl
+m4_define(`AST_CNegate_t', `57')m4_dnl
+m4_define(`AST_CNot_t', `58')m4_dnl
+m4_define(`AST_CPrefix_t', `59')m4_dnl
+m4_define(`AST_CPostfix_t', `60')m4_dnl
+m4_define(`AST_CBinaryOp_t', `61')m4_dnl
+m4_define(`AST_CAdd_t', `62')m4_dnl
+m4_define(`AST_CSubtract_t', `63')m4_dnl
+m4_define(`AST_CMultiply_t', `64')m4_dnl
+m4_define(`AST_CDivide_t', `65')m4_dnl
+m4_define(`AST_CRemainder_t', `66')m4_dnl
+m4_define(`AST_CBitAnd_t', `67')m4_dnl
+m4_define(`AST_CBitOr_t', `68')m4_dnl
+m4_define(`AST_CBitXor_t', `69')m4_dnl
+m4_define(`AST_CBitShiftLeft_t', `70')m4_dnl
+m4_define(`AST_CBitShiftRight_t', `71')m4_dnl
+m4_define(`AST_CBitShrArithmetic_t', `72')m4_dnl
+m4_define(`AST_CAnd_t', `73')m4_dnl
+m4_define(`AST_COr_t', `74')m4_dnl
+m4_define(`AST_CEqual_t', `75')m4_dnl
+m4_define(`AST_CNotEqual_t', `76')m4_dnl
+m4_define(`AST_CLessThan_t', `77')m4_dnl
+m4_define(`AST_CLessOrEqual_t', `78')m4_dnl
+m4_define(`AST_CGreaterThan_t', `79')m4_dnl
+m4_define(`AST_CGreaterOrEqual_t', `80')m4_dnl
+m4_define(`AST_CAbstractDeclarator_t', `81')m4_dnl
+m4_define(`AST_CAbstractPointer_t', `82')m4_dnl
+m4_define(`AST_CAbstractArray_t', `83')m4_dnl
+m4_define(`AST_CAbstractBase_t', `84')m4_dnl
+m4_define(`AST_CParam_t', `85')m4_dnl
+m4_define(`AST_CDeclarator_t', `86')m4_dnl
+m4_define(`AST_CIdent_t', `87')m4_dnl
+m4_define(`AST_CPointerDeclarator_t', `88')m4_dnl
+m4_define(`AST_CArrayDeclarator_t', `89')m4_dnl
+m4_define(`AST_CFunDeclarator_t', `90')m4_dnl
+m4_define(`AST_CExp_t', `91')m4_dnl
+m4_define(`AST_CConstant_t', `92')m4_dnl
+m4_define(`AST_CString_t', `93')m4_dnl
+m4_define(`AST_CVar_t', `94')m4_dnl
+m4_define(`AST_CCast_t', `95')m4_dnl
+m4_define(`AST_CUnary_t', `96')m4_dnl
+m4_define(`AST_CBinary_t', `97')m4_dnl
+m4_define(`AST_CAssignment_t', `98')m4_dnl
+m4_define(`AST_CConditional_t', `99')m4_dnl
+m4_define(`AST_CFunctionCall_t', `100')m4_dnl
+m4_define(`AST_CDereference_t', `101')m4_dnl
+m4_define(`AST_CAddrOf_t', `102')m4_dnl
+m4_define(`AST_CSubscript_t', `103')m4_dnl
+m4_define(`AST_CSizeOf_t', `104')m4_dnl
+m4_define(`AST_CSizeOfT_t', `105')m4_dnl
+m4_define(`AST_CDot_t', `106')m4_dnl
+m4_define(`AST_CArrow_t', `107')m4_dnl
+m4_define(`AST_CStatement_t', `108')m4_dnl
+m4_define(`AST_CReturn_t', `109')m4_dnl
+m4_define(`AST_CExpression_t', `110')m4_dnl
+m4_define(`AST_CIf_t', `111')m4_dnl
+m4_define(`AST_CGoto_t', `112')m4_dnl
+m4_define(`AST_CLabel_t', `113')m4_dnl
+m4_define(`AST_CCompound_t', `114')m4_dnl
+m4_define(`AST_CWhile_t', `115')m4_dnl
+m4_define(`AST_CDoWhile_t', `116')m4_dnl
+m4_define(`AST_CFor_t', `117')m4_dnl
+m4_define(`AST_CSwitch_t', `118')m4_dnl
+m4_define(`AST_CCase_t', `119')m4_dnl
+m4_define(`AST_CDefault_t', `120')m4_dnl
+m4_define(`AST_CBreak_t', `121')m4_dnl
+m4_define(`AST_CContinue_t', `122')m4_dnl
+m4_define(`AST_CNull_t', `123')m4_dnl
+m4_define(`AST_CForInit_t', `124')m4_dnl
+m4_define(`AST_CInitDecl_t', `125')m4_dnl
+m4_define(`AST_CInitExp_t', `126')m4_dnl
+m4_define(`AST_CBlock_t', `127')m4_dnl
+m4_define(`AST_CB_t', `128')m4_dnl
+m4_define(`AST_CBlockItem_t', `129')m4_dnl
+m4_define(`AST_CS_t', `130')m4_dnl
+m4_define(`AST_CD_t', `131')m4_dnl
+m4_define(`AST_CStorageClass_t', `132')m4_dnl
+m4_define(`AST_CStatic_t', `133')m4_dnl
+m4_define(`AST_CExtern_t', `134')m4_dnl
+m4_define(`AST_CInitializer_t', `135')m4_dnl
+m4_define(`AST_CSingleInit_t', `136')m4_dnl
+m4_define(`AST_CCompoundInit_t', `137')m4_dnl
+m4_define(`AST_CMemberDeclaration_t', `138')m4_dnl
+m4_define(`AST_CStructDeclaration_t', `139')m4_dnl
+m4_define(`AST_CFunctionDeclaration_t', `140')m4_dnl
+m4_define(`AST_CVariableDeclaration_t', `141')m4_dnl
+m4_define(`AST_CDeclaration_t', `142')m4_dnl
+m4_define(`AST_CFunDecl_t', `143')m4_dnl
+m4_define(`AST_CVarDecl_t', `144')m4_dnl
+m4_define(`AST_CStructDecl_t', `145')m4_dnl
+m4_define(`AST_CProgram_t', `146')m4_dnl
+m4_define(`AST_TacUnaryOp_t', `147')m4_dnl
+m4_define(`AST_TacComplement_t', `148')m4_dnl
+m4_define(`AST_TacNegate_t', `149')m4_dnl
+m4_define(`AST_TacNot_t', `150')m4_dnl
+m4_define(`AST_TacBinaryOp_t', `151')m4_dnl
+m4_define(`AST_TacAdd_t', `152')m4_dnl
+m4_define(`AST_TacSubtract_t', `153')m4_dnl
+m4_define(`AST_TacMultiply_t', `154')m4_dnl
+m4_define(`AST_TacDivide_t', `155')m4_dnl
+m4_define(`AST_TacRemainder_t', `156')m4_dnl
+m4_define(`AST_TacBitAnd_t', `157')m4_dnl
+m4_define(`AST_TacBitOr_t', `158')m4_dnl
+m4_define(`AST_TacBitXor_t', `159')m4_dnl
+m4_define(`AST_TacBitShiftLeft_t', `160')m4_dnl
+m4_define(`AST_TacBitShiftRight_t', `161')m4_dnl
+m4_define(`AST_TacBitShrArithmetic_t', `162')m4_dnl
+m4_define(`AST_TacEqual_t', `163')m4_dnl
+m4_define(`AST_TacNotEqual_t', `164')m4_dnl
+m4_define(`AST_TacLessThan_t', `165')m4_dnl
+m4_define(`AST_TacLessOrEqual_t', `166')m4_dnl
+m4_define(`AST_TacGreaterThan_t', `167')m4_dnl
+m4_define(`AST_TacGreaterOrEqual_t', `168')m4_dnl
+m4_define(`AST_TacValue_t', `169')m4_dnl
+m4_define(`AST_TacConstant_t', `170')m4_dnl
+m4_define(`AST_TacVariable_t', `171')m4_dnl
+m4_define(`AST_TacExpResult_t', `172')m4_dnl
+m4_define(`AST_TacPlainOperand_t', `173')m4_dnl
+m4_define(`AST_TacDereferencedPointer_t', `174')m4_dnl
+m4_define(`AST_TacSubObject_t', `175')m4_dnl
+m4_define(`AST_TacInstruction_t', `176')m4_dnl
+m4_define(`AST_TacReturn_t', `177')m4_dnl
+m4_define(`AST_TacSignExtend_t', `178')m4_dnl
+m4_define(`AST_TacTruncate_t', `179')m4_dnl
+m4_define(`AST_TacZeroExtend_t', `180')m4_dnl
+m4_define(`AST_TacDoubleToInt_t', `181')m4_dnl
+m4_define(`AST_TacDoubleToUInt_t', `182')m4_dnl
+m4_define(`AST_TacIntToDouble_t', `183')m4_dnl
+m4_define(`AST_TacUIntToDouble_t', `184')m4_dnl
+m4_define(`AST_TacFunCall_t', `185')m4_dnl
+m4_define(`AST_TacUnary_t', `186')m4_dnl
+m4_define(`AST_TacBinary_t', `187')m4_dnl
+m4_define(`AST_TacCopy_t', `188')m4_dnl
+m4_define(`AST_TacGetAddress_t', `189')m4_dnl
+m4_define(`AST_TacLoad_t', `190')m4_dnl
+m4_define(`AST_TacStore_t', `191')m4_dnl
+m4_define(`AST_TacAddPtr_t', `192')m4_dnl
+m4_define(`AST_TacCopyToOffset_t', `193')m4_dnl
+m4_define(`AST_TacCopyFromOffset_t', `194')m4_dnl
+m4_define(`AST_TacJump_t', `195')m4_dnl
+m4_define(`AST_TacJumpIfZero_t', `196')m4_dnl
+m4_define(`AST_TacJumpIfNotZero_t', `197')m4_dnl
+m4_define(`AST_TacLabel_t', `198')m4_dnl
+m4_define(`AST_TacTopLevel_t', `199')m4_dnl
+m4_define(`AST_TacFunction_t', `200')m4_dnl
+m4_define(`AST_TacStaticVariable_t', `201')m4_dnl
+m4_define(`AST_TacStaticConstant_t', `202')m4_dnl
+m4_define(`AST_TacProgram_t', `203')m4_dnl
+m4_define(`AST_AsmReg_t', `204')m4_dnl
+m4_define(`AST_AsmAx_t', `205')m4_dnl
+m4_define(`AST_AsmBx_t', `206')m4_dnl
+m4_define(`AST_AsmCx_t', `207')m4_dnl
+m4_define(`AST_AsmDx_t', `208')m4_dnl
+m4_define(`AST_AsmDi_t', `209')m4_dnl
+m4_define(`AST_AsmSi_t', `210')m4_dnl
+m4_define(`AST_AsmR8_t', `211')m4_dnl
+m4_define(`AST_AsmR9_t', `212')m4_dnl
+m4_define(`AST_AsmR10_t', `213')m4_dnl
+m4_define(`AST_AsmR11_t', `214')m4_dnl
+m4_define(`AST_AsmR12_t', `215')m4_dnl
+m4_define(`AST_AsmR13_t', `216')m4_dnl
+m4_define(`AST_AsmR14_t', `217')m4_dnl
+m4_define(`AST_AsmR15_t', `218')m4_dnl
+m4_define(`AST_AsmSp_t', `219')m4_dnl
+m4_define(`AST_AsmBp_t', `220')m4_dnl
+m4_define(`AST_AsmXMM0_t', `221')m4_dnl
+m4_define(`AST_AsmXMM1_t', `222')m4_dnl
+m4_define(`AST_AsmXMM2_t', `223')m4_dnl
+m4_define(`AST_AsmXMM3_t', `224')m4_dnl
+m4_define(`AST_AsmXMM4_t', `225')m4_dnl
+m4_define(`AST_AsmXMM5_t', `226')m4_dnl
+m4_define(`AST_AsmXMM6_t', `227')m4_dnl
+m4_define(`AST_AsmXMM7_t', `228')m4_dnl
+m4_define(`AST_AsmXMM8_t', `229')m4_dnl
+m4_define(`AST_AsmXMM9_t', `230')m4_dnl
+m4_define(`AST_AsmXMM10_t', `231')m4_dnl
+m4_define(`AST_AsmXMM11_t', `232')m4_dnl
+m4_define(`AST_AsmXMM12_t', `233')m4_dnl
+m4_define(`AST_AsmXMM13_t', `234')m4_dnl
+m4_define(`AST_AsmXMM14_t', `235')m4_dnl
+m4_define(`AST_AsmXMM15_t', `236')m4_dnl
+m4_define(`AST_AsmCondCode_t', `237')m4_dnl
+m4_define(`AST_AsmE_t', `238')m4_dnl
+m4_define(`AST_AsmNE_t', `239')m4_dnl
+m4_define(`AST_AsmG_t', `240')m4_dnl
+m4_define(`AST_AsmGE_t', `241')m4_dnl
+m4_define(`AST_AsmL_t', `242')m4_dnl
+m4_define(`AST_AsmLE_t', `243')m4_dnl
+m4_define(`AST_AsmA_t', `244')m4_dnl
+m4_define(`AST_AsmAE_t', `245')m4_dnl
+m4_define(`AST_AsmB_t', `246')m4_dnl
+m4_define(`AST_AsmBE_t', `247')m4_dnl
+m4_define(`AST_AsmP_t', `248')m4_dnl
+m4_define(`AST_AsmOperand_t', `249')m4_dnl
+m4_define(`AST_AsmImm_t', `250')m4_dnl
+m4_define(`AST_AsmRegister_t', `251')m4_dnl
+m4_define(`AST_AsmPseudo_t', `252')m4_dnl
+m4_define(`AST_AsmMemory_t', `253')m4_dnl
+m4_define(`AST_AsmData_t', `254')m4_dnl
+m4_define(`AST_AsmPseudoMem_t', `255')m4_dnl
+m4_define(`AST_AsmIndexed_t', `256')m4_dnl
+m4_define(`AST_AsmBinaryOp_t', `257')m4_dnl
+m4_define(`AST_AsmAdd_t', `258')m4_dnl
+m4_define(`AST_AsmSub_t', `259')m4_dnl
+m4_define(`AST_AsmMult_t', `260')m4_dnl
+m4_define(`AST_AsmDivDouble_t', `261')m4_dnl
+m4_define(`AST_AsmBitAnd_t', `262')m4_dnl
+m4_define(`AST_AsmBitOr_t', `263')m4_dnl
+m4_define(`AST_AsmBitXor_t', `264')m4_dnl
+m4_define(`AST_AsmBitShiftLeft_t', `265')m4_dnl
+m4_define(`AST_AsmBitShiftRight_t', `266')m4_dnl
+m4_define(`AST_AsmBitShrArithmetic_t', `267')m4_dnl
+m4_define(`AST_AsmUnaryOp_t', `268')m4_dnl
+m4_define(`AST_AsmNot_t', `269')m4_dnl
+m4_define(`AST_AsmNeg_t', `270')m4_dnl
+m4_define(`AST_AsmShr_t', `271')m4_dnl
+m4_define(`AST_AsmInstruction_t', `272')m4_dnl
+m4_define(`AST_AsmMov_t', `273')m4_dnl
+m4_define(`AST_AsmMovSx_t', `274')m4_dnl
+m4_define(`AST_AsmMovZeroExtend_t', `275')m4_dnl
+m4_define(`AST_AsmLea_t', `276')m4_dnl
+m4_define(`AST_AsmCvttsd2si_t', `277')m4_dnl
+m4_define(`AST_AsmCvtsi2sd_t', `278')m4_dnl
+m4_define(`AST_AsmUnary_t', `279')m4_dnl
+m4_define(`AST_AsmBinary_t', `280')m4_dnl
+m4_define(`AST_AsmCmp_t', `281')m4_dnl
+m4_define(`AST_AsmIdiv_t', `282')m4_dnl
+m4_define(`AST_AsmDiv_t', `283')m4_dnl
+m4_define(`AST_AsmCdq_t', `284')m4_dnl
+m4_define(`AST_AsmJmp_t', `285')m4_dnl
+m4_define(`AST_AsmJmpCC_t', `286')m4_dnl
+m4_define(`AST_AsmSetCC_t', `287')m4_dnl
+m4_define(`AST_AsmLabel_t', `288')m4_dnl
+m4_define(`AST_AsmPush_t', `289')m4_dnl
+m4_define(`AST_AsmPop_t', `290')m4_dnl
+m4_define(`AST_AsmCall_t', `291')m4_dnl
+m4_define(`AST_AsmRet_t', `292')m4_dnl
+m4_define(`AST_AsmTopLevel_t', `293')m4_dnl
+m4_define(`AST_AsmFunction_t', `294')m4_dnl
+m4_define(`AST_AsmStaticVariable_t', `295')m4_dnl
+m4_define(`AST_AsmStaticConstant_t', `296')m4_dnl
+m4_define(`AST_AsmProgram_t', `297')m4_dnl
 type struc CConst;
 type struc CStringLiteral;
 
@@ -84,6 +421,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
+m4_define(`UID_SEPARATOR', `TODO')m4_dnl
 type struc Type;
 type struc StaticInit;
 type struc InitialValue;
@@ -213,18 +551,24 @@ pub fn free_Symbol(self: **struc Symbol) none;
 type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
+m4_define(`UPtrStructMember', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
 
 type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: *u64, members: *struc PairTIdentifierUPtrStructMember)
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
+m4_define(`ulong_t', `TODO')m4_dnl
 
 type struc PairTIdentifierulong_t(key: u64, value: u64)
 
 type struc PairTIdentifierTIdentifier(key: u64, value: u64)
 
+m4_define(`UPtrStructTypedef', `TODO')m4_dnl
+
 type struc PairTIdentifierUPtrStructTypedef(key: u64, value: *struc StructTypedef)
+
+m4_define(`UPtrSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrSymbol(key: u64, value: *struc Symbol)
 
@@ -365,6 +709,7 @@ type struc TacProgram(tag: i32, static_const_toplvls: **struc TacTopLevel, stati
 pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_toplvls: ***struc TacTopLevel, fun_toplvls: ***struc TacTopLevel) *struc TacProgram;
 pub fn free_TacProgram(self: **struc TacProgram) none;
 type struc FileIoContext;
+m4_define(`hash_t', `TODO')m4_dnl
 
 type struc Pairhash_thash_t(key: u64, value: u64)
 
@@ -372,20 +717,22 @@ type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
 
 type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
-type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`THROW_ABORT', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
+m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
 
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
     self: struc TacUnaryOp = $(tag)
     match tag {
-        -> 147 {
-            -> 148 {
-                -> 149 {
-                    -> 150 {
+        -> AST_TacUnaryOp_t {
+            -> AST_TacComplement_t {
+                -> AST_TacNegate_t {
+                    -> AST_TacNot_t {
                         return self
                     }
                 }
@@ -400,24 +747,24 @@ pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
 pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp {
     self: struc TacBinaryOp = $(tag)
     match tag {
-        -> 151 {
-            -> 152 {
-                -> 153 {
-                    -> 154 {
-                        -> 155 {
-                            -> 156 {
-                                -> 157 {
-                                    -> 158 {
-                                        -> 159 {
-                                            -> 160 {
-                                                -> 161 {
-                                                    -> 162 {
-                                                        -> 163 {
-                                                            -> 164 {
-                                                                -> 165 {
-                                                                    -> 166 {
-                                                                        -> 167 {
-                                                                            -> 168 {
+        -> AST_TacBinaryOp_t {
+            -> AST_TacAdd_t {
+                -> AST_TacSubtract_t {
+                    -> AST_TacMultiply_t {
+                        -> AST_TacDivide_t {
+                            -> AST_TacRemainder_t {
+                                -> AST_TacBitAnd_t {
+                                    -> AST_TacBitOr_t {
+                                        -> AST_TacBitXor_t {
+                                            -> AST_TacBitShiftLeft_t {
+                                                -> AST_TacBitShiftRight_t {
+                                                    -> AST_TacBitShrArithmetic_t {
+                                                        -> AST_TacEqual_t {
+                                                            -> AST_TacNotEqual_t {
+                                                                -> AST_TacLessThan_t {
+                                                                    -> AST_TacLessOrEqual_t {
+                                                                        -> AST_TacGreaterThan_t {
+                                                                            -> AST_TacGreaterOrEqual_t {
                                                                                 return self
                                                                             }
                                                                         }
@@ -444,7 +791,7 @@ pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp {
 }
 
 pub fn make_TacValue(none) *struc TacValue {
-    self: *struc TacValue = 0
+    self: *struc TacValue = nil
     loop .. while 0 {
         loop .. while 0 {
             free_TacValue(@self)
@@ -455,25 +802,25 @@ pub fn make_TacValue(none) *struc TacValue {
         }        
         (self)[]._ref_count = 1
     }    
-    self[].tag = 169
+    self[].tag = AST_TacValue_t
     return self
 }
 
 pub fn make_TacConstant(constant: **struc CConst) *struc TacValue {
     self: *struc TacValue = make_TacValue()
-    self[].tag = 170
-    self[].get._TacConstant.constant = 0
+    self[].tag = AST_TacConstant_t
+    self[].get._TacConstant.constant = nil
     if constant[] ~= self[].get._TacConstant.constant {
         free_CConst(@self[].get._TacConstant.constant)
         self[].get._TacConstant.constant = constant[]
-        constant[] = 0
+        constant[] = nil
     }
     return self
 }
 
 pub fn make_TacVariable(name: u64) *struc TacValue {
     self: *struc TacValue = make_TacValue()
-    self[].tag = 171
+    self[].tag = AST_TacVariable_t
     self[].get._TacVariable.name = name
     return self
 }
@@ -484,18 +831,18 @@ pub fn free_TacValue(self: **struc TacValue) none {
     }
     elif (self[])[]._ref_count > 1 {
         (self[])[]._ref_count--
-        self[] = 0
+        self[] = nil
         return none
     }
     match (self[])[].tag {
-        -> 169 {
+        -> AST_TacValue_t {
             break
         }
-        -> 170 {
+        -> AST_TacConstant_t {
             free_CConst(@(self[])[].get._TacConstant.constant)
         }
         break
-        -> 171 {
+        -> AST_TacVariable_t {
             break
         }
         otherwise {
@@ -504,12 +851,12 @@ pub fn free_TacValue(self: **struc TacValue) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_TacExpResult(none) *struc TacExpResult {
-    self: *struc TacExpResult = 0
+    self: *struc TacExpResult = nil
     loop .. while 0 {
         free_TacExpResult(@self)
         self = cast<*struc TacExpResult>(malloc(sizeof<struc TacExpResult>))
@@ -517,37 +864,37 @@ pub fn make_TacExpResult(none) *struc TacExpResult {
             panic_sigabrt("alloc "                 "TacExpResult")
         }
     }    
-    self[].tag = 172
+    self[].tag = AST_TacExpResult_t
     return self
 }
 
 pub fn make_TacPlainOperand(val: **struc TacValue) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
-    self[].tag = 173
-    self[].get._TacPlainOperand.val = 0
+    self[].tag = AST_TacPlainOperand_t
+    self[].get._TacPlainOperand.val = nil
     if val[] ~= self[].get._TacPlainOperand.val {
         free_TacValue(@self[].get._TacPlainOperand.val)
         self[].get._TacPlainOperand.val = val[]
-        val[] = 0
+        val[] = nil
     }
     return self
 }
 
 pub fn make_TacDereferencedPointer(val: **struc TacValue) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
-    self[].tag = 174
-    self[].get._TacDereferencedPointer.val = 0
+    self[].tag = AST_TacDereferencedPointer_t
+    self[].get._TacDereferencedPointer.val = nil
     if val[] ~= self[].get._TacDereferencedPointer.val {
         free_TacValue(@self[].get._TacDereferencedPointer.val)
         self[].get._TacDereferencedPointer.val = val[]
-        val[] = 0
+        val[] = nil
     }
     return self
 }
 
 pub fn make_TacSubObject(base_name: u64, offset: i64) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
-    self[].tag = 175
+    self[].tag = AST_TacSubObject_t
     self[].get._TacSubObject.base_name = base_name
     self[].get._TacSubObject.offset = offset
     return self
@@ -558,18 +905,18 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
         return none
     }
     match (self[])[].tag {
-        -> 172 {
+        -> AST_TacExpResult_t {
             break
         }
-        -> 173 {
+        -> AST_TacPlainOperand_t {
             free_TacValue(@(self[])[].get._TacPlainOperand.val)
         }
         break
-        -> 174 {
+        -> AST_TacDereferencedPointer_t {
             free_TacValue(@(self[])[].get._TacDereferencedPointer.val)
         }
         break
-        -> 175 {
+        -> AST_TacSubObject_t {
             break
         }
         otherwise {
@@ -578,12 +925,12 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_TacInstruction(none) *struc TacInstruction {
-    self: *struc TacInstruction = 0
+    self: *struc TacInstruction = nil
     loop .. while 0 {
         free_TacInstruction(@self)
         self = cast<*struc TacInstruction>(malloc(sizeof<struc TacInstruction>))
@@ -591,378 +938,378 @@ pub fn make_TacInstruction(none) *struc TacInstruction {
             panic_sigabrt("alloc "                 "TacInstruction")
         }
     }    
-    self[].tag = 176
+    self[].tag = AST_TacInstruction_t
     return self
 }
 
 pub fn make_TacReturn(val: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 177
-    self[].get._TacReturn.val = 0
+    self[].tag = AST_TacReturn_t
+    self[].get._TacReturn.val = nil
     if val[] ~= self[].get._TacReturn.val {
         free_TacValue(@self[].get._TacReturn.val)
         self[].get._TacReturn.val = val[]
-        val[] = 0
+        val[] = nil
     }
     return self
 }
 
 pub fn make_TacSignExtend(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 178
-    self[].get._TacSignExtend.src = 0
+    self[].tag = AST_TacSignExtend_t
+    self[].get._TacSignExtend.src = nil
     if src[] ~= self[].get._TacSignExtend.src {
         free_TacValue(@self[].get._TacSignExtend.src)
         self[].get._TacSignExtend.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacSignExtend.dst = 0
+    self[].get._TacSignExtend.dst = nil
     if dst[] ~= self[].get._TacSignExtend.dst {
         free_TacValue(@self[].get._TacSignExtend.dst)
         self[].get._TacSignExtend.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacTruncate(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 179
-    self[].get._TacTruncate.src = 0
+    self[].tag = AST_TacTruncate_t
+    self[].get._TacTruncate.src = nil
     if src[] ~= self[].get._TacTruncate.src {
         free_TacValue(@self[].get._TacTruncate.src)
         self[].get._TacTruncate.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacTruncate.dst = 0
+    self[].get._TacTruncate.dst = nil
     if dst[] ~= self[].get._TacTruncate.dst {
         free_TacValue(@self[].get._TacTruncate.dst)
         self[].get._TacTruncate.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacZeroExtend(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 180
-    self[].get._TacZeroExtend.src = 0
+    self[].tag = AST_TacZeroExtend_t
+    self[].get._TacZeroExtend.src = nil
     if src[] ~= self[].get._TacZeroExtend.src {
         free_TacValue(@self[].get._TacZeroExtend.src)
         self[].get._TacZeroExtend.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacZeroExtend.dst = 0
+    self[].get._TacZeroExtend.dst = nil
     if dst[] ~= self[].get._TacZeroExtend.dst {
         free_TacValue(@self[].get._TacZeroExtend.dst)
         self[].get._TacZeroExtend.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacDoubleToInt(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 181
-    self[].get._TacDoubleToInt.src = 0
+    self[].tag = AST_TacDoubleToInt_t
+    self[].get._TacDoubleToInt.src = nil
     if src[] ~= self[].get._TacDoubleToInt.src {
         free_TacValue(@self[].get._TacDoubleToInt.src)
         self[].get._TacDoubleToInt.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacDoubleToInt.dst = 0
+    self[].get._TacDoubleToInt.dst = nil
     if dst[] ~= self[].get._TacDoubleToInt.dst {
         free_TacValue(@self[].get._TacDoubleToInt.dst)
         self[].get._TacDoubleToInt.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacDoubleToUInt(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 182
-    self[].get._TacDoubleToUInt.src = 0
+    self[].tag = AST_TacDoubleToUInt_t
+    self[].get._TacDoubleToUInt.src = nil
     if src[] ~= self[].get._TacDoubleToUInt.src {
         free_TacValue(@self[].get._TacDoubleToUInt.src)
         self[].get._TacDoubleToUInt.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacDoubleToUInt.dst = 0
+    self[].get._TacDoubleToUInt.dst = nil
     if dst[] ~= self[].get._TacDoubleToUInt.dst {
         free_TacValue(@self[].get._TacDoubleToUInt.dst)
         self[].get._TacDoubleToUInt.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 183
-    self[].get._TacIntToDouble.src = 0
+    self[].tag = AST_TacIntToDouble_t
+    self[].get._TacIntToDouble.src = nil
     if src[] ~= self[].get._TacIntToDouble.src {
         free_TacValue(@self[].get._TacIntToDouble.src)
         self[].get._TacIntToDouble.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacIntToDouble.dst = 0
+    self[].get._TacIntToDouble.dst = nil
     if dst[] ~= self[].get._TacIntToDouble.dst {
         free_TacValue(@self[].get._TacIntToDouble.dst)
         self[].get._TacIntToDouble.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacUIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 184
-    self[].get._TacUIntToDouble.src = 0
+    self[].tag = AST_TacUIntToDouble_t
+    self[].get._TacUIntToDouble.src = nil
     if src[] ~= self[].get._TacUIntToDouble.src {
         free_TacValue(@self[].get._TacUIntToDouble.src)
         self[].get._TacUIntToDouble.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacUIntToDouble.dst = 0
+    self[].get._TacUIntToDouble.dst = nil
     if dst[] ~= self[].get._TacUIntToDouble.dst {
         free_TacValue(@self[].get._TacUIntToDouble.dst)
         self[].get._TacUIntToDouble.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacFunCall(name: u64, args: ***struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 185
+    self[].tag = AST_TacFunCall_t
     self[].get._TacFunCall.name = name
-    self[].get._TacFunCall.args = 0
+    self[].get._TacFunCall.args = nil
     if args[] ~= self[].get._TacFunCall.args {
         if self[].get._TacFunCall.args {
             loop .. while 0 {
                 cast<none>((? (self[].get._TacFunCall.args) then free((cast<*struc stbds_array_header>((self[].get._TacFunCall.args)) - 1)) else cast<none>(0)))
-                (self[].get._TacFunCall.args) = 0
+                (self[].get._TacFunCall.args) = nil
             }            
-            self[].get._TacFunCall.args = 0
+            self[].get._TacFunCall.args = nil
         }
         self[].get._TacFunCall.args = args[]
-        args[] = 0
+        args[] = nil
     }
-    self[].get._TacFunCall.dst = 0
+    self[].get._TacFunCall.dst = nil
     if dst[] ~= self[].get._TacFunCall.dst {
         free_TacValue(@self[].get._TacFunCall.dst)
         self[].get._TacFunCall.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacUnary(unop: *struc TacUnaryOp, src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 186
+    self[].tag = AST_TacUnary_t
     self[].get._TacUnary.unop = unop[]
-    self[].get._TacUnary.src = 0
+    self[].get._TacUnary.src = nil
     if src[] ~= self[].get._TacUnary.src {
         free_TacValue(@self[].get._TacUnary.src)
         self[].get._TacUnary.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacUnary.dst = 0
+    self[].get._TacUnary.dst = nil
     if dst[] ~= self[].get._TacUnary.dst {
         free_TacValue(@self[].get._TacUnary.dst)
         self[].get._TacUnary.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: **struc TacValue, src2: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 187
+    self[].tag = AST_TacBinary_t
     self[].get._TacBinary.binop = binop[]
-    self[].get._TacBinary.src1 = 0
+    self[].get._TacBinary.src1 = nil
     if src1[] ~= self[].get._TacBinary.src1 {
         free_TacValue(@self[].get._TacBinary.src1)
         self[].get._TacBinary.src1 = src1[]
-        src1[] = 0
+        src1[] = nil
     }
-    self[].get._TacBinary.src2 = 0
+    self[].get._TacBinary.src2 = nil
     if src2[] ~= self[].get._TacBinary.src2 {
         free_TacValue(@self[].get._TacBinary.src2)
         self[].get._TacBinary.src2 = src2[]
-        src2[] = 0
+        src2[] = nil
     }
-    self[].get._TacBinary.dst = 0
+    self[].get._TacBinary.dst = nil
     if dst[] ~= self[].get._TacBinary.dst {
         free_TacValue(@self[].get._TacBinary.dst)
         self[].get._TacBinary.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacCopy(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 188
-    self[].get._TacCopy.src = 0
+    self[].tag = AST_TacCopy_t
+    self[].get._TacCopy.src = nil
     if src[] ~= self[].get._TacCopy.src {
         free_TacValue(@self[].get._TacCopy.src)
         self[].get._TacCopy.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacCopy.dst = 0
+    self[].get._TacCopy.dst = nil
     if dst[] ~= self[].get._TacCopy.dst {
         free_TacValue(@self[].get._TacCopy.dst)
         self[].get._TacCopy.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacGetAddress(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 189
-    self[].get._TacGetAddress.src = 0
+    self[].tag = AST_TacGetAddress_t
+    self[].get._TacGetAddress.src = nil
     if src[] ~= self[].get._TacGetAddress.src {
         free_TacValue(@self[].get._TacGetAddress.src)
         self[].get._TacGetAddress.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacGetAddress.dst = 0
+    self[].get._TacGetAddress.dst = nil
     if dst[] ~= self[].get._TacGetAddress.dst {
         free_TacValue(@self[].get._TacGetAddress.dst)
         self[].get._TacGetAddress.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacLoad(src_ptr: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 190
-    self[].get._TacLoad.src_ptr = 0
+    self[].tag = AST_TacLoad_t
+    self[].get._TacLoad.src_ptr = nil
     if src_ptr[] ~= self[].get._TacLoad.src_ptr {
         free_TacValue(@self[].get._TacLoad.src_ptr)
         self[].get._TacLoad.src_ptr = src_ptr[]
-        src_ptr[] = 0
+        src_ptr[] = nil
     }
-    self[].get._TacLoad.dst = 0
+    self[].get._TacLoad.dst = nil
     if dst[] ~= self[].get._TacLoad.dst {
         free_TacValue(@self[].get._TacLoad.dst)
         self[].get._TacLoad.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacStore(src: **struc TacValue, dst_ptr: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 191
-    self[].get._TacStore.src = 0
+    self[].tag = AST_TacStore_t
+    self[].get._TacStore.src = nil
     if src[] ~= self[].get._TacStore.src {
         free_TacValue(@self[].get._TacStore.src)
         self[].get._TacStore.src = src[]
-        src[] = 0
+        src[] = nil
     }
-    self[].get._TacStore.dst_ptr = 0
+    self[].get._TacStore.dst_ptr = nil
     if dst_ptr[] ~= self[].get._TacStore.dst_ptr {
         free_TacValue(@self[].get._TacStore.dst_ptr)
         self[].get._TacStore.dst_ptr = dst_ptr[]
-        dst_ptr[] = 0
+        dst_ptr[] = nil
     }
     return self
 }
 
 pub fn make_TacAddPtr(scale: i64, src_ptr: **struc TacValue, idx: **struc TacValue, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 192
+    self[].tag = AST_TacAddPtr_t
     self[].get._TacAddPtr.scale = scale
-    self[].get._TacAddPtr.src_ptr = 0
+    self[].get._TacAddPtr.src_ptr = nil
     if src_ptr[] ~= self[].get._TacAddPtr.src_ptr {
         free_TacValue(@self[].get._TacAddPtr.src_ptr)
         self[].get._TacAddPtr.src_ptr = src_ptr[]
-        src_ptr[] = 0
+        src_ptr[] = nil
     }
-    self[].get._TacAddPtr.idx = 0
+    self[].get._TacAddPtr.idx = nil
     if idx[] ~= self[].get._TacAddPtr.idx {
         free_TacValue(@self[].get._TacAddPtr.idx)
         self[].get._TacAddPtr.idx = idx[]
-        idx[] = 0
+        idx[] = nil
     }
-    self[].get._TacAddPtr.dst = 0
+    self[].get._TacAddPtr.dst = nil
     if dst[] ~= self[].get._TacAddPtr.dst {
         free_TacValue(@self[].get._TacAddPtr.dst)
         self[].get._TacAddPtr.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 193
+    self[].tag = AST_TacCopyToOffset_t
     self[].get._TacCopyToOffset.dst_name = dst_name
     self[].get._TacCopyToOffset.offset = offset
-    self[].get._TacCopyToOffset.src = 0
+    self[].get._TacCopyToOffset.src = nil
     if src[] ~= self[].get._TacCopyToOffset.src {
         free_TacValue(@self[].get._TacCopyToOffset.src)
         self[].get._TacCopyToOffset.src = src[]
-        src[] = 0
+        src[] = nil
     }
     return self
 }
 
 pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 194
+    self[].tag = AST_TacCopyFromOffset_t
     self[].get._TacCopyFromOffset.src_name = src_name
     self[].get._TacCopyFromOffset.offset = offset
-    self[].get._TacCopyFromOffset.dst = 0
+    self[].get._TacCopyFromOffset.dst = nil
     if dst[] ~= self[].get._TacCopyFromOffset.dst {
         free_TacValue(@self[].get._TacCopyFromOffset.dst)
         self[].get._TacCopyFromOffset.dst = dst[]
-        dst[] = 0
+        dst[] = nil
     }
     return self
 }
 
 pub fn make_TacJump(target: u64) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 195
+    self[].tag = AST_TacJump_t
     self[].get._TacJump.target = target
     return self
 }
 
 pub fn make_TacJumpIfZero(target: u64, condition: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 196
+    self[].tag = AST_TacJumpIfZero_t
     self[].get._TacJumpIfZero.target = target
-    self[].get._TacJumpIfZero.condition = 0
+    self[].get._TacJumpIfZero.condition = nil
     if condition[] ~= self[].get._TacJumpIfZero.condition {
         free_TacValue(@self[].get._TacJumpIfZero.condition)
         self[].get._TacJumpIfZero.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
     return self
 }
 
 pub fn make_TacJumpIfNotZero(target: u64, condition: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 197
+    self[].tag = AST_TacJumpIfNotZero_t
     self[].get._TacJumpIfNotZero.target = target
-    self[].get._TacJumpIfNotZero.condition = 0
+    self[].get._TacJumpIfNotZero.condition = nil
     if condition[] ~= self[].get._TacJumpIfNotZero.condition {
         free_TacValue(@self[].get._TacJumpIfNotZero.condition)
         self[].get._TacJumpIfNotZero.condition = condition[]
-        condition[] = 0
+        condition[] = nil
     }
     return self
 }
 
 pub fn make_TacLabel(name: u64) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
-    self[].tag = 198
+    self[].tag = AST_TacLabel_t
     self[].get._TacLabel.name = name
     return self
 }
@@ -972,49 +1319,49 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
         return none
     }
     match (self[])[].tag {
-        -> 176 {
+        -> AST_TacInstruction_t {
             break
         }
-        -> 177 {
+        -> AST_TacReturn_t {
             free_TacValue(@(self[])[].get._TacReturn.val)
         }
         break
-        -> 178 {
+        -> AST_TacSignExtend_t {
             free_TacValue(@(self[])[].get._TacSignExtend.src)
         }
         free_TacValue(@(self[])[].get._TacSignExtend.dst)
         break
-        -> 179 {
+        -> AST_TacTruncate_t {
             free_TacValue(@(self[])[].get._TacTruncate.src)
         }
         free_TacValue(@(self[])[].get._TacTruncate.dst)
         break
-        -> 180 {
+        -> AST_TacZeroExtend_t {
             free_TacValue(@(self[])[].get._TacZeroExtend.src)
         }
         free_TacValue(@(self[])[].get._TacZeroExtend.dst)
         break
-        -> 181 {
+        -> AST_TacDoubleToInt_t {
             free_TacValue(@(self[])[].get._TacDoubleToInt.src)
         }
         free_TacValue(@(self[])[].get._TacDoubleToInt.dst)
         break
-        -> 182 {
+        -> AST_TacDoubleToUInt_t {
             free_TacValue(@(self[])[].get._TacDoubleToUInt.src)
         }
         free_TacValue(@(self[])[].get._TacDoubleToUInt.dst)
         break
-        -> 183 {
+        -> AST_TacIntToDouble_t {
             free_TacValue(@(self[])[].get._TacIntToDouble.src)
         }
         free_TacValue(@(self[])[].get._TacIntToDouble.dst)
         break
-        -> 184 {
+        -> AST_TacUIntToDouble_t {
             free_TacValue(@(self[])[].get._TacUIntToDouble.src)
         }
         free_TacValue(@(self[])[].get._TacUIntToDouble.dst)
         break
-        -> 185 {
+        -> AST_TacFunCall_t {
             loop i: u64 = 0 while i < (? ((self[])[].get._TacFunCall.args) then (cast<*struc stbds_array_header>(((self[])[].get._TacFunCall.args)) - 1)[].length else 0) .. ++i {
                 free_TacValue(@(self[])[].get._TacFunCall.args[i])
             }
@@ -1022,69 +1369,69 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
         if (self[])[].get._TacFunCall.args {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._TacFunCall.args) then free((cast<*struc stbds_array_header>(((self[])[].get._TacFunCall.args)) - 1)) else cast<none>(0)))
-                ((self[])[].get._TacFunCall.args) = 0
+                ((self[])[].get._TacFunCall.args) = nil
             }            
-            (self[])[].get._TacFunCall.args = 0
+            (self[])[].get._TacFunCall.args = nil
         }
         free_TacValue(@(self[])[].get._TacFunCall.dst)
         break
-        -> 186 {
+        -> AST_TacUnary_t {
             free_TacValue(@(self[])[].get._TacUnary.src)
         }
         free_TacValue(@(self[])[].get._TacUnary.dst)
         break
-        -> 187 {
+        -> AST_TacBinary_t {
             free_TacValue(@(self[])[].get._TacBinary.src1)
         }
         free_TacValue(@(self[])[].get._TacBinary.src2)
         free_TacValue(@(self[])[].get._TacBinary.dst)
         break
-        -> 188 {
+        -> AST_TacCopy_t {
             free_TacValue(@(self[])[].get._TacCopy.src)
         }
         free_TacValue(@(self[])[].get._TacCopy.dst)
         break
-        -> 189 {
+        -> AST_TacGetAddress_t {
             free_TacValue(@(self[])[].get._TacGetAddress.src)
         }
         free_TacValue(@(self[])[].get._TacGetAddress.dst)
         break
-        -> 190 {
+        -> AST_TacLoad_t {
             free_TacValue(@(self[])[].get._TacLoad.src_ptr)
         }
         free_TacValue(@(self[])[].get._TacLoad.dst)
         break
-        -> 191 {
+        -> AST_TacStore_t {
             free_TacValue(@(self[])[].get._TacStore.src)
         }
         free_TacValue(@(self[])[].get._TacStore.dst_ptr)
         break
-        -> 192 {
+        -> AST_TacAddPtr_t {
             free_TacValue(@(self[])[].get._TacAddPtr.src_ptr)
         }
         free_TacValue(@(self[])[].get._TacAddPtr.idx)
         free_TacValue(@(self[])[].get._TacAddPtr.dst)
         break
-        -> 193 {
+        -> AST_TacCopyToOffset_t {
             free_TacValue(@(self[])[].get._TacCopyToOffset.src)
         }
         break
-        -> 194 {
+        -> AST_TacCopyFromOffset_t {
             free_TacValue(@(self[])[].get._TacCopyFromOffset.dst)
         }
         break
-        -> 195 {
+        -> AST_TacJump_t {
             break
         }
-        -> 196 {
+        -> AST_TacJumpIfZero_t {
             free_TacValue(@(self[])[].get._TacJumpIfZero.condition)
         }
         break
-        -> 197 {
+        -> AST_TacJumpIfNotZero_t {
             free_TacValue(@(self[])[].get._TacJumpIfNotZero.condition)
         }
         break
-        -> 198 {
+        -> AST_TacLabel_t {
             break
         }
         otherwise {
@@ -1093,12 +1440,12 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_TacTopLevel(none) *struc TacTopLevel {
-    self: *struc TacTopLevel = 0
+    self: *struc TacTopLevel = nil
     loop .. while 0 {
         free_TacTopLevel(@self)
         self = cast<*struc TacTopLevel>(malloc(sizeof<struc TacTopLevel>))
@@ -1106,83 +1453,83 @@ pub fn make_TacTopLevel(none) *struc TacTopLevel {
             panic_sigabrt("alloc "                 "TacTopLevel")
         }
     }    
-    self[].tag = 199
+    self[].tag = AST_TacTopLevel_t
     return self
 }
 
 pub fn make_TacFunction(name: u64, is_glob: i32, params: **u64, body: ***struc TacInstruction) *struc TacTopLevel {
     self: *struc TacTopLevel = make_TacTopLevel()
-    self[].tag = 200
+    self[].tag = AST_TacFunction_t
     self[].get._TacFunction.name = name
     self[].get._TacFunction.is_glob = is_glob
-    self[].get._TacFunction.params = 0
+    self[].get._TacFunction.params = nil
     if params[] ~= self[].get._TacFunction.params {
         if self[].get._TacFunction.params {
             loop .. while 0 {
                 cast<none>((? (self[].get._TacFunction.params) then free((cast<*struc stbds_array_header>((self[].get._TacFunction.params)) - 1)) else cast<none>(0)))
-                (self[].get._TacFunction.params) = 0
+                (self[].get._TacFunction.params) = nil
             }            
-            self[].get._TacFunction.params = 0
+            self[].get._TacFunction.params = nil
         }
         self[].get._TacFunction.params = params[]
-        params[] = 0
+        params[] = nil
     }
-    self[].get._TacFunction.body = 0
+    self[].get._TacFunction.body = nil
     if body[] ~= self[].get._TacFunction.body {
         if self[].get._TacFunction.body {
             loop .. while 0 {
                 cast<none>((? (self[].get._TacFunction.body) then free((cast<*struc stbds_array_header>((self[].get._TacFunction.body)) - 1)) else cast<none>(0)))
-                (self[].get._TacFunction.body) = 0
+                (self[].get._TacFunction.body) = nil
             }            
-            self[].get._TacFunction.body = 0
+            self[].get._TacFunction.body = nil
         }
         self[].get._TacFunction.body = body[]
-        body[] = 0
+        body[] = nil
     }
     return self
 }
 
 pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: ***struc StaticInit) *struc TacTopLevel {
     self: *struc TacTopLevel = make_TacTopLevel()
-    self[].tag = 201
+    self[].tag = AST_TacStaticVariable_t
     self[].get._TacStaticVariable.name = name
     self[].get._TacStaticVariable.is_glob = is_glob
-    self[].get._TacStaticVariable.static_init_type = 0
+    self[].get._TacStaticVariable.static_init_type = nil
     if static_init_type[] ~= self[].get._TacStaticVariable.static_init_type {
         free_Type(@self[].get._TacStaticVariable.static_init_type)
         self[].get._TacStaticVariable.static_init_type = static_init_type[]
-        static_init_type[] = 0
+        static_init_type[] = nil
     }
-    self[].get._TacStaticVariable.static_inits = 0
+    self[].get._TacStaticVariable.static_inits = nil
     if static_inits[] ~= self[].get._TacStaticVariable.static_inits {
         if self[].get._TacStaticVariable.static_inits {
             loop .. while 0 {
                 cast<none>((? (self[].get._TacStaticVariable.static_inits) then free((cast<*struc stbds_array_header>((self[].get._TacStaticVariable.static_inits)) - 1)) else cast<none>(0)))
-                (self[].get._TacStaticVariable.static_inits) = 0
+                (self[].get._TacStaticVariable.static_inits) = nil
             }            
-            self[].get._TacStaticVariable.static_inits = 0
+            self[].get._TacStaticVariable.static_inits = nil
         }
         self[].get._TacStaticVariable.static_inits = static_inits[]
-        static_inits[] = 0
+        static_inits[] = nil
     }
     return self
 }
 
 pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_init: **struc StaticInit) *struc TacTopLevel {
     self: *struc TacTopLevel = make_TacTopLevel()
-    self[].tag = 202
+    self[].tag = AST_TacStaticConstant_t
     self[].get._TacStaticConstant.name = name
-    self[].get._TacStaticConstant.static_init_type = 0
+    self[].get._TacStaticConstant.static_init_type = nil
     if static_init_type[] ~= self[].get._TacStaticConstant.static_init_type {
         free_Type(@self[].get._TacStaticConstant.static_init_type)
         self[].get._TacStaticConstant.static_init_type = static_init_type[]
-        static_init_type[] = 0
+        static_init_type[] = nil
     }
-    self[].get._TacStaticConstant.static_init = 0
+    self[].get._TacStaticConstant.static_init = nil
     if static_init[] ~= self[].get._TacStaticConstant.static_init {
         free_StaticInit(@self[].get._TacStaticConstant.static_init)
         self[].get._TacStaticConstant.static_init = static_init[]
-        static_init[] = 0
+        static_init[] = nil
     }
     return self
 }
@@ -1192,16 +1539,16 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         return none
     }
     match (self[])[].tag {
-        -> 199 {
+        -> AST_TacTopLevel_t {
             break
         }
-        -> 200 {
+        -> AST_TacFunction_t {
             if (self[])[].get._TacFunction.params {
                 loop .. while 0 {
                     cast<none>((? ((self[])[].get._TacFunction.params) then free((cast<*struc stbds_array_header>(((self[])[].get._TacFunction.params)) - 1)) else cast<none>(0)))
-                    ((self[])[].get._TacFunction.params) = 0
+                    ((self[])[].get._TacFunction.params) = nil
                 }                
-                (self[])[].get._TacFunction.params = 0
+                (self[])[].get._TacFunction.params = nil
             }
         }
         loop i: u64 = 0 while i < (? ((self[])[].get._TacFunction.body) then (cast<*struc stbds_array_header>(((self[])[].get._TacFunction.body)) - 1)[].length else 0) .. ++i {
@@ -1210,12 +1557,12 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         if (self[])[].get._TacFunction.body {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._TacFunction.body) then free((cast<*struc stbds_array_header>(((self[])[].get._TacFunction.body)) - 1)) else cast<none>(0)))
-                ((self[])[].get._TacFunction.body) = 0
+                ((self[])[].get._TacFunction.body) = nil
             }            
-            (self[])[].get._TacFunction.body = 0
+            (self[])[].get._TacFunction.body = nil
         }
         break
-        -> 201 {
+        -> AST_TacStaticVariable_t {
             free_Type(@(self[])[].get._TacStaticVariable.static_init_type)
         }
         loop i: u64 = 0 while i < (? ((self[])[].get._TacStaticVariable.static_inits) then (cast<*struc stbds_array_header>(((self[])[].get._TacStaticVariable.static_inits)) - 1)[].length else 0) .. ++i {
@@ -1224,12 +1571,12 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         if (self[])[].get._TacStaticVariable.static_inits {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._TacStaticVariable.static_inits) then free((cast<*struc stbds_array_header>(((self[])[].get._TacStaticVariable.static_inits)) - 1)) else cast<none>(0)))
-                ((self[])[].get._TacStaticVariable.static_inits) = 0
+                ((self[])[].get._TacStaticVariable.static_inits) = nil
             }            
-            (self[])[].get._TacStaticVariable.static_inits = 0
+            (self[])[].get._TacStaticVariable.static_inits = nil
         }
         break
-        -> 202 {
+        -> AST_TacStaticConstant_t {
             free_Type(@(self[])[].get._TacStaticConstant.static_init_type)
         }
         free_StaticInit(@(self[])[].get._TacStaticConstant.static_init)
@@ -1240,12 +1587,12 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }
 
 pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_toplvls: ***struc TacTopLevel, fun_toplvls: ***struc TacTopLevel) *struc TacProgram {
-    self: *struc TacProgram = 0
+    self: *struc TacProgram = nil
     loop .. while 0 {
         free_TacProgram(@self)
         self = cast<*struc TacProgram>(malloc(sizeof<struc TacProgram>))
@@ -1253,42 +1600,42 @@ pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_to
             panic_sigabrt("alloc "                 "TacProgram")
         }
     }    
-    self[].tag = 203
-    self[].static_const_toplvls = 0
+    self[].tag = AST_TacProgram_t
+    self[].static_const_toplvls = nil
     if static_const_toplvls[] ~= self[].static_const_toplvls {
         if self[].static_const_toplvls {
             loop .. while 0 {
                 cast<none>((? (self[].static_const_toplvls) then free((cast<*struc stbds_array_header>((self[].static_const_toplvls)) - 1)) else cast<none>(0)))
-                (self[].static_const_toplvls) = 0
+                (self[].static_const_toplvls) = nil
             }            
-            self[].static_const_toplvls = 0
+            self[].static_const_toplvls = nil
         }
         self[].static_const_toplvls = static_const_toplvls[]
-        static_const_toplvls[] = 0
+        static_const_toplvls[] = nil
     }
-    self[].static_var_toplvls = 0
+    self[].static_var_toplvls = nil
     if static_var_toplvls[] ~= self[].static_var_toplvls {
         if self[].static_var_toplvls {
             loop .. while 0 {
                 cast<none>((? (self[].static_var_toplvls) then free((cast<*struc stbds_array_header>((self[].static_var_toplvls)) - 1)) else cast<none>(0)))
-                (self[].static_var_toplvls) = 0
+                (self[].static_var_toplvls) = nil
             }            
-            self[].static_var_toplvls = 0
+            self[].static_var_toplvls = nil
         }
         self[].static_var_toplvls = static_var_toplvls[]
-        static_var_toplvls[] = 0
+        static_var_toplvls[] = nil
     }
-    self[].fun_toplvls = 0
+    self[].fun_toplvls = nil
     if fun_toplvls[] ~= self[].fun_toplvls {
         if self[].fun_toplvls {
             loop .. while 0 {
                 cast<none>((? (self[].fun_toplvls) then free((cast<*struc stbds_array_header>((self[].fun_toplvls)) - 1)) else cast<none>(0)))
-                (self[].fun_toplvls) = 0
+                (self[].fun_toplvls) = nil
             }            
-            self[].fun_toplvls = 0
+            self[].fun_toplvls = nil
         }
         self[].fun_toplvls = fun_toplvls[]
-        fun_toplvls[] = 0
+        fun_toplvls[] = nil
     }
     return self
 }
@@ -1298,7 +1645,7 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
         return none
     }
     match (self[])[].tag {
-        -> 203 {
+        -> AST_TacProgram_t {
             break
         }
         otherwise {
@@ -1311,9 +1658,9 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
     if (self[])[].static_const_toplvls {
         loop .. while 0 {
             cast<none>((? ((self[])[].static_const_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].static_const_toplvls) = 0
+            ((self[])[].static_const_toplvls) = nil
         }        
-        (self[])[].static_const_toplvls = 0
+        (self[])[].static_const_toplvls = nil
     }
     loop i: u64 = 0 while i < (? ((self[])[].static_var_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_var_toplvls)) - 1)[].length else 0) .. ++i {
         free_TacTopLevel(@(self[])[].static_var_toplvls[i])
@@ -1321,9 +1668,9 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
     if (self[])[].static_var_toplvls {
         loop .. while 0 {
             cast<none>((? ((self[])[].static_var_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].static_var_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].static_var_toplvls) = 0
+            ((self[])[].static_var_toplvls) = nil
         }        
-        (self[])[].static_var_toplvls = 0
+        (self[])[].static_var_toplvls = nil
     }
     loop i: u64 = 0 while i < (? ((self[])[].fun_toplvls) then (cast<*struc stbds_array_header>(((self[])[].fun_toplvls)) - 1)[].length else 0) .. ++i {
         free_TacTopLevel(@(self[])[].fun_toplvls[i])
@@ -1331,12 +1678,12 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
     if (self[])[].fun_toplvls {
         loop .. while 0 {
             cast<none>((? ((self[])[].fun_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].fun_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].fun_toplvls) = 0
+            ((self[])[].fun_toplvls) = nil
         }        
-        (self[])[].fun_toplvls = 0
+        (self[])[].fun_toplvls = nil
     }
     if self[] {
         free(self[])
-        self[] = 0
+        self[] = nil
     }
 }

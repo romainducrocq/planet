@@ -1,3 +1,17 @@
+m4_define(`arrlenu', `TODO')m4_dnl
+m4_define(`arrput', `TODO')m4_dnl
+m4_define(`arrpop', `TODO')m4_dnl
+m4_define(`arrfree', `TODO')m4_dnl
+m4_define(`arrsetlen', `TODO')m4_dnl
+m4_define(`arrdelswap', `TODO')m4_dnl
+m4_define(`arrsetcap', `TODO')m4_dnl
+m4_define(`hmput', `TODO')m4_dnl
+m4_define(`hmget', `TODO')m4_dnl
+m4_define(`hmgeti', `TODO')m4_dnl
+m4_define(`hmdel', `TODO')m4_dnl
+m4_define(`hmlenu', `TODO')m4_dnl
+m4_define(`hmfree', `TODO')m4_dnl
+
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
 extrn fn stbds_hash_string(str: string, seed: u64) u64;
@@ -8,6 +22,14 @@ extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: 
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+m4_define(`bool', `TODO')m4_dnl
+m4_define(`int8_t', `TODO')m4_dnl
+m4_define(`int32_t', `TODO')m4_dnl
+m4_define(`int64_t', `TODO')m4_dnl
+m4_define(`uint8_t', `TODO')m4_dnl
+m4_define(`uint32_t', `TODO')m4_dnl
+m4_define(`uint64_t', `TODO')m4_dnl
+m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;
 extrn fn fflush(stream: *struc FILE) i32;
@@ -16,6 +38,7 @@ extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
 extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+m4_define(`STDERR_FILENO', `2')m4_dnl
 extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 extrn fn strtod(nptr: string, endptr: *string) f64;
@@ -30,6 +53,9 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+m4_define(`STBDS_SH_DEFAULT', `1')m4_dnl
+m4_define(`STBDS_SH_STRDUP', `2')m4_dnl
+m4_define(`STBDS_SH_ARENA', `3')m4_dnl
 
 pub fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any {
     temp: struc stbds_array_header = $(0)
@@ -550,15 +576,15 @@ pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i3
             bucket[].index[pos & (8 - 1)] = i - 1
             (cast<*struc stbds_array_header>((a)) - 1)[].temp = i - 1
             match table[].string_arena.mode {
-                -> 2 {
+                -> STBDS_SH_STRDUP {
                     (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = stbds_strdup(cast<string>(key))
                 }
                 break
-                -> 3 {
+                -> STBDS_SH_ARENA {
                     (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = stbds_stralloc(@table[].string_arena, cast<string>(key))
                 }
                 break
-                -> 1 {
+                -> STBDS_SH_DEFAULT {
                     (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = cast<string>(key)
                 }
                 break
