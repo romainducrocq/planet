@@ -2,7 +2,7 @@
 
 FILE="${1}"
 
-sed -i 's|0000000|nil|g' lib/c_lib.h
+sed -i 's|0000000|nil|g' ${FILE}
 
 # sed -i 's|9876617|__OPTIM_LEVEL__|g' ${FILE}
 sed -i 's|9876616|CONTROL_FLOW_GRAPH|g' ${FILE}
