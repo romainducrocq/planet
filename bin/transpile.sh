@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+./replace_preprocs.sh
+
 function format () {
     FMT_FILE="$(readlink -f ${1})"
     cp ${FMT_FILE} ./format.out.1
