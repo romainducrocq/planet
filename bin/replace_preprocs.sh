@@ -15,12 +15,17 @@ cd ../selfhost/wheelcc/
 
 # unique suffix is 9876
 
+# 2 compile time constants are ignored
+# TODO manually replace __OPTIM_LEVEL__
+# sed -i 's|#define __OPTIM_LEVEL__ 1|char* m4_string_611 = '"\"m4_define(\`__OPTIM_LEVEL__', \`1')m4_dnl\";"'\n#define __OPTIM_LEVEL__ 9876611|g' optimizer/optim_tac.c
+# sed -i 's|#define __OPTIM_LEVEL__ 2|char* m4_string_617 = '"\"m4_define(\`__OPTIM_LEVEL__', \`2')m4_dnl\";"'\n#define __OPTIM_LEVEL__ 9876617|g' optimizer/reg_alloc.c
+
 # 3 constants become reserved keywords
 sed -i 's|#define NULL 0|#define NULL 0000000|g' lib/c_lib.h
 sed -i 's|#define false 0|#define false 9876255|g' lib/c_lib.h
 sed -i 's|#define true 1|#define true 9876256|g' lib/c_lib.h
 
-# replace all enums and constants (617-3)
+# replace all enums and constants (617-2-3=612)
 # sed -i 's|#define _NAME |char* m4_string__LINE = '"\"m4_define(\`_NAME', \`TODO')m4_dnl\";"'\n#define _NAME |g' FILE
 sed -i 's|#define TOK_skip 0|char* m4_string_1 = '"\"m4_define(\`TOK_skip', \`0')m4_dnl\";"'\n#define TOK_skip 98761|g' frontend/tokens.h
 sed -i 's|#define TOK_line_break 1|char* m4_string_2 = '"\"m4_define(\`TOK_line_break', \`1')m4_dnl\";"'\n#define TOK_line_break 98762|g' frontend/tokens.h
@@ -629,13 +634,11 @@ sed -i 's|#define AST_AsmFunction_t 294|char* m4_string_607 = '"\"m4_define(\`AS
 sed -i 's|#define AST_AsmStaticVariable_t 295|char* m4_string_608 = '"\"m4_define(\`AST_AsmStaticVariable_t', \`295')m4_dnl\";"'\n#define AST_AsmStaticVariable_t 9876608|g' ast/ast_t.h
 sed -i 's|#define AST_AsmStaticConstant_t 296|char* m4_string_609 = '"\"m4_define(\`AST_AsmStaticConstant_t', \`296')m4_dnl\";"'\n#define AST_AsmStaticConstant_t 9876609|g' ast/ast_t.h
 sed -i 's|#define AST_AsmProgram_t 297|char* m4_string_610 = '"\"m4_define(\`AST_AsmProgram_t', \`297')m4_dnl\";"'\n#define AST_AsmProgram_t 9876610|g' ast/ast_t.h
-sed -i 's|#define __OPTIM_LEVEL__ 1|char* m4_string_611 = '"\"m4_define(\`__OPTIM_LEVEL__', \`1')m4_dnl\";"'\n#define __OPTIM_LEVEL__ 9876611|g' optimizer/optim_tac.c
 sed -i 's|#define CONSTANT_FOLDING 0|char* m4_string_612 = '"\"m4_define(\`CONSTANT_FOLDING', \`0')m4_dnl\";"'\n#define CONSTANT_FOLDING 9876612|g' optimizer/optim_tac.c
 sed -i 's|#define COPY_PROPAGATION 1|char* m4_string_613 = '"\"m4_define(\`COPY_PROPAGATION', \`1')m4_dnl\";"'\n#define COPY_PROPAGATION 9876613|g' optimizer/optim_tac.c
 sed -i 's|#define UNREACHABLE_CODE_ELIMINATION 2|char* m4_string_614 = '"\"m4_define(\`UNREACHABLE_CODE_ELIMINATION', \`2')m4_dnl\";"'\n#define UNREACHABLE_CODE_ELIMINATION 9876614|g' optimizer/optim_tac.c
 sed -i 's|#define DEAD_STORE_ELIMINATION 3|char* m4_string_615 = '"\"m4_define(\`DEAD_STORE_ELIMINATION', \`3')m4_dnl\";"'\n#define DEAD_STORE_ELIMINATION 9876615|g' optimizer/optim_tac.c
 sed -i 's|#define CONTROL_FLOW_GRAPH 4|char* m4_string_616 = '"\"m4_define(\`CONTROL_FLOW_GRAPH', \`4')m4_dnl\";"'\n#define CONTROL_FLOW_GRAPH 9876616|g' optimizer/optim_tac.c
-sed -i 's|#define __OPTIM_LEVEL__ 2|char* m4_string_617 = '"\"m4_define(\`__OPTIM_LEVEL__', \`2')m4_dnl\";"'\n#define __OPTIM_LEVEL__ 9876617|g' optimizer/reg_alloc.c
 
 # replace other macros (392)
 # sed -i 's|#define _NAME |char* m4_string__LINE = '"\"m4_define(\`_NAME', \`TODO')m4_dnl\";"'\n#define _NAME |g' FILE
