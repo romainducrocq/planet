@@ -1,5 +1,13 @@
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+m4_define(`bool', `TODO')m4_dnl
+m4_define(`int8_t', `TODO')m4_dnl
+m4_define(`int32_t', `TODO')m4_dnl
+m4_define(`int64_t', `TODO')m4_dnl
+m4_define(`uint8_t', `TODO')m4_dnl
+m4_define(`uint32_t', `TODO')m4_dnl
+m4_define(`uint64_t', `TODO')m4_dnl
+m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;
 extrn fn fflush(stream: *struc FILE) i32;
@@ -8,6 +16,7 @@ extrn fn fwrite(ptr: *any, size: u64, nmemb: u64, stream: *struc FILE) u64;
 extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+m4_define(`STDERR_FILENO', `2')m4_dnl
 extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 extrn fn strtod(nptr: string, endptr: *string) f64;
@@ -22,6 +31,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
+m4_define(`sds', `TODO')m4_dnl
 pub fn sdslen(s: string) u64;
 pub fn sdsnew(init: string) string;
 pub fn sdsdup(s: string) string;
@@ -33,6 +43,19 @@ pub fn sdsclear(s: string) none;
 pub fn sdsfromlong(value: i64) string;
 pub fn sdsfromunsignedlong(value: u64) string;
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+m4_define(`arrlenu', `TODO')m4_dnl
+m4_define(`arrput', `TODO')m4_dnl
+m4_define(`arrpop', `TODO')m4_dnl
+m4_define(`arrfree', `TODO')m4_dnl
+m4_define(`arrsetlen', `TODO')m4_dnl
+m4_define(`arrdelswap', `TODO')m4_dnl
+m4_define(`arrsetcap', `TODO')m4_dnl
+m4_define(`hmput', `TODO')m4_dnl
+m4_define(`hmget', `TODO')m4_dnl
+m4_define(`hmgeti', `TODO')m4_dnl
+m4_define(`hmdel', `TODO')m4_dnl
+m4_define(`hmlenu', `TODO')m4_dnl
+m4_define(`hmfree', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -42,6 +65,557 @@ extrn fn stbds_hmfree_func(p: *any, elemsize: u64) none;
 extrn fn stbds_hmget_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i32) *any;
 extrn fn stbds_hmdel_key(a: *any, elemsize: u64, key: *any, keysize: u64, keyoffset: u64, mode: i32) *any;
+m4_define(`error_t', `TODO')m4_dnl
+m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
+m4_define(`CATCH_ENTER', `TODO')m4_dnl
+m4_define(`CATCH_EXIT', `TODO')m4_dnl
+m4_define(`EARLY_EXIT', `TODO')m4_dnl
+m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`string_t', `TODO')m4_dnl
+m4_define(`TIdentifier', `TODO')m4_dnl
+m4_define(`TChar', `TODO')m4_dnl
+m4_define(`TInt', `TODO')m4_dnl
+m4_define(`TLong', `TODO')m4_dnl
+m4_define(`TUChar', `TODO')m4_dnl
+m4_define(`TUInt', `TODO')m4_dnl
+m4_define(`TULong', `TODO')m4_dnl
+m4_define(`TDouble', `TODO')m4_dnl
+m4_define(`AST_T', `TODO')m4_dnl
+m4_define(`AST_Type_t', `0')m4_dnl
+m4_define(`AST_Char_t', `1')m4_dnl
+m4_define(`AST_SChar_t', `2')m4_dnl
+m4_define(`AST_UChar_t', `3')m4_dnl
+m4_define(`AST_Int_t', `4')m4_dnl
+m4_define(`AST_Long_t', `5')m4_dnl
+m4_define(`AST_UInt_t', `6')m4_dnl
+m4_define(`AST_ULong_t', `7')m4_dnl
+m4_define(`AST_Double_t', `8')m4_dnl
+m4_define(`AST_Void_t', `9')m4_dnl
+m4_define(`AST_FunType_t', `10')m4_dnl
+m4_define(`AST_Pointer_t', `11')m4_dnl
+m4_define(`AST_Array_t', `12')m4_dnl
+m4_define(`AST_Structure_t', `13')m4_dnl
+m4_define(`AST_StaticInit_t', `14')m4_dnl
+m4_define(`AST_IntInit_t', `15')m4_dnl
+m4_define(`AST_LongInit_t', `16')m4_dnl
+m4_define(`AST_UIntInit_t', `17')m4_dnl
+m4_define(`AST_ULongInit_t', `18')m4_dnl
+m4_define(`AST_CharInit_t', `19')m4_dnl
+m4_define(`AST_UCharInit_t', `20')m4_dnl
+m4_define(`AST_DoubleInit_t', `21')m4_dnl
+m4_define(`AST_ZeroInit_t', `22')m4_dnl
+m4_define(`AST_StringInit_t', `23')m4_dnl
+m4_define(`AST_PointerInit_t', `24')m4_dnl
+m4_define(`AST_InitialValue_t', `25')m4_dnl
+m4_define(`AST_Tentative_t', `26')m4_dnl
+m4_define(`AST_Initial_t', `27')m4_dnl
+m4_define(`AST_NoInitializer_t', `28')m4_dnl
+m4_define(`AST_IdentifierAttr_t', `29')m4_dnl
+m4_define(`AST_FunAttr_t', `30')m4_dnl
+m4_define(`AST_StaticAttr_t', `31')m4_dnl
+m4_define(`AST_ConstantAttr_t', `32')m4_dnl
+m4_define(`AST_LocalAttr_t', `33')m4_dnl
+m4_define(`AST_Symbol_t', `34')m4_dnl
+m4_define(`AST_StructMember_t', `35')m4_dnl
+m4_define(`AST_StructTypedef_t', `36')m4_dnl
+m4_define(`AST_AssemblyType_t', `37')m4_dnl
+m4_define(`AST_Byte_t', `38')m4_dnl
+m4_define(`AST_LongWord_t', `39')m4_dnl
+m4_define(`AST_QuadWord_t', `40')m4_dnl
+m4_define(`AST_BackendDouble_t', `41')m4_dnl
+m4_define(`AST_ByteArray_t', `42')m4_dnl
+m4_define(`AST_BackendSymbol_t', `43')m4_dnl
+m4_define(`AST_BackendObj_t', `44')m4_dnl
+m4_define(`AST_BackendFun_t', `45')m4_dnl
+m4_define(`AST_CConst_t', `46')m4_dnl
+m4_define(`AST_CConstInt_t', `47')m4_dnl
+m4_define(`AST_CConstLong_t', `48')m4_dnl
+m4_define(`AST_CConstUInt_t', `49')m4_dnl
+m4_define(`AST_CConstULong_t', `50')m4_dnl
+m4_define(`AST_CConstDouble_t', `51')m4_dnl
+m4_define(`AST_CConstChar_t', `52')m4_dnl
+m4_define(`AST_CConstUChar_t', `53')m4_dnl
+m4_define(`AST_CStringLiteral_t', `54')m4_dnl
+m4_define(`AST_CUnaryOp_t', `55')m4_dnl
+m4_define(`AST_CComplement_t', `56')m4_dnl
+m4_define(`AST_CNegate_t', `57')m4_dnl
+m4_define(`AST_CNot_t', `58')m4_dnl
+m4_define(`AST_CPrefix_t', `59')m4_dnl
+m4_define(`AST_CPostfix_t', `60')m4_dnl
+m4_define(`AST_CBinaryOp_t', `61')m4_dnl
+m4_define(`AST_CAdd_t', `62')m4_dnl
+m4_define(`AST_CSubtract_t', `63')m4_dnl
+m4_define(`AST_CMultiply_t', `64')m4_dnl
+m4_define(`AST_CDivide_t', `65')m4_dnl
+m4_define(`AST_CRemainder_t', `66')m4_dnl
+m4_define(`AST_CBitAnd_t', `67')m4_dnl
+m4_define(`AST_CBitOr_t', `68')m4_dnl
+m4_define(`AST_CBitXor_t', `69')m4_dnl
+m4_define(`AST_CBitShiftLeft_t', `70')m4_dnl
+m4_define(`AST_CBitShiftRight_t', `71')m4_dnl
+m4_define(`AST_CBitShrArithmetic_t', `72')m4_dnl
+m4_define(`AST_CAnd_t', `73')m4_dnl
+m4_define(`AST_COr_t', `74')m4_dnl
+m4_define(`AST_CEqual_t', `75')m4_dnl
+m4_define(`AST_CNotEqual_t', `76')m4_dnl
+m4_define(`AST_CLessThan_t', `77')m4_dnl
+m4_define(`AST_CLessOrEqual_t', `78')m4_dnl
+m4_define(`AST_CGreaterThan_t', `79')m4_dnl
+m4_define(`AST_CGreaterOrEqual_t', `80')m4_dnl
+m4_define(`AST_CAbstractDeclarator_t', `81')m4_dnl
+m4_define(`AST_CAbstractPointer_t', `82')m4_dnl
+m4_define(`AST_CAbstractArray_t', `83')m4_dnl
+m4_define(`AST_CAbstractBase_t', `84')m4_dnl
+m4_define(`AST_CParam_t', `85')m4_dnl
+m4_define(`AST_CDeclarator_t', `86')m4_dnl
+m4_define(`AST_CIdent_t', `87')m4_dnl
+m4_define(`AST_CPointerDeclarator_t', `88')m4_dnl
+m4_define(`AST_CArrayDeclarator_t', `89')m4_dnl
+m4_define(`AST_CFunDeclarator_t', `90')m4_dnl
+m4_define(`AST_CExp_t', `91')m4_dnl
+m4_define(`AST_CConstant_t', `92')m4_dnl
+m4_define(`AST_CString_t', `93')m4_dnl
+m4_define(`AST_CVar_t', `94')m4_dnl
+m4_define(`AST_CCast_t', `95')m4_dnl
+m4_define(`AST_CUnary_t', `96')m4_dnl
+m4_define(`AST_CBinary_t', `97')m4_dnl
+m4_define(`AST_CAssignment_t', `98')m4_dnl
+m4_define(`AST_CConditional_t', `99')m4_dnl
+m4_define(`AST_CFunctionCall_t', `100')m4_dnl
+m4_define(`AST_CDereference_t', `101')m4_dnl
+m4_define(`AST_CAddrOf_t', `102')m4_dnl
+m4_define(`AST_CSubscript_t', `103')m4_dnl
+m4_define(`AST_CSizeOf_t', `104')m4_dnl
+m4_define(`AST_CSizeOfT_t', `105')m4_dnl
+m4_define(`AST_CDot_t', `106')m4_dnl
+m4_define(`AST_CArrow_t', `107')m4_dnl
+m4_define(`AST_CStatement_t', `108')m4_dnl
+m4_define(`AST_CReturn_t', `109')m4_dnl
+m4_define(`AST_CExpression_t', `110')m4_dnl
+m4_define(`AST_CIf_t', `111')m4_dnl
+m4_define(`AST_CGoto_t', `112')m4_dnl
+m4_define(`AST_CLabel_t', `113')m4_dnl
+m4_define(`AST_CCompound_t', `114')m4_dnl
+m4_define(`AST_CWhile_t', `115')m4_dnl
+m4_define(`AST_CDoWhile_t', `116')m4_dnl
+m4_define(`AST_CFor_t', `117')m4_dnl
+m4_define(`AST_CSwitch_t', `118')m4_dnl
+m4_define(`AST_CCase_t', `119')m4_dnl
+m4_define(`AST_CDefault_t', `120')m4_dnl
+m4_define(`AST_CBreak_t', `121')m4_dnl
+m4_define(`AST_CContinue_t', `122')m4_dnl
+m4_define(`AST_CNull_t', `123')m4_dnl
+m4_define(`AST_CForInit_t', `124')m4_dnl
+m4_define(`AST_CInitDecl_t', `125')m4_dnl
+m4_define(`AST_CInitExp_t', `126')m4_dnl
+m4_define(`AST_CBlock_t', `127')m4_dnl
+m4_define(`AST_CB_t', `128')m4_dnl
+m4_define(`AST_CBlockItem_t', `129')m4_dnl
+m4_define(`AST_CS_t', `130')m4_dnl
+m4_define(`AST_CD_t', `131')m4_dnl
+m4_define(`AST_CStorageClass_t', `132')m4_dnl
+m4_define(`AST_CStatic_t', `133')m4_dnl
+m4_define(`AST_CExtern_t', `134')m4_dnl
+m4_define(`AST_CInitializer_t', `135')m4_dnl
+m4_define(`AST_CSingleInit_t', `136')m4_dnl
+m4_define(`AST_CCompoundInit_t', `137')m4_dnl
+m4_define(`AST_CMemberDeclaration_t', `138')m4_dnl
+m4_define(`AST_CStructDeclaration_t', `139')m4_dnl
+m4_define(`AST_CFunctionDeclaration_t', `140')m4_dnl
+m4_define(`AST_CVariableDeclaration_t', `141')m4_dnl
+m4_define(`AST_CDeclaration_t', `142')m4_dnl
+m4_define(`AST_CFunDecl_t', `143')m4_dnl
+m4_define(`AST_CVarDecl_t', `144')m4_dnl
+m4_define(`AST_CStructDecl_t', `145')m4_dnl
+m4_define(`AST_CProgram_t', `146')m4_dnl
+m4_define(`AST_TacUnaryOp_t', `147')m4_dnl
+m4_define(`AST_TacComplement_t', `148')m4_dnl
+m4_define(`AST_TacNegate_t', `149')m4_dnl
+m4_define(`AST_TacNot_t', `150')m4_dnl
+m4_define(`AST_TacBinaryOp_t', `151')m4_dnl
+m4_define(`AST_TacAdd_t', `152')m4_dnl
+m4_define(`AST_TacSubtract_t', `153')m4_dnl
+m4_define(`AST_TacMultiply_t', `154')m4_dnl
+m4_define(`AST_TacDivide_t', `155')m4_dnl
+m4_define(`AST_TacRemainder_t', `156')m4_dnl
+m4_define(`AST_TacBitAnd_t', `157')m4_dnl
+m4_define(`AST_TacBitOr_t', `158')m4_dnl
+m4_define(`AST_TacBitXor_t', `159')m4_dnl
+m4_define(`AST_TacBitShiftLeft_t', `160')m4_dnl
+m4_define(`AST_TacBitShiftRight_t', `161')m4_dnl
+m4_define(`AST_TacBitShrArithmetic_t', `162')m4_dnl
+m4_define(`AST_TacEqual_t', `163')m4_dnl
+m4_define(`AST_TacNotEqual_t', `164')m4_dnl
+m4_define(`AST_TacLessThan_t', `165')m4_dnl
+m4_define(`AST_TacLessOrEqual_t', `166')m4_dnl
+m4_define(`AST_TacGreaterThan_t', `167')m4_dnl
+m4_define(`AST_TacGreaterOrEqual_t', `168')m4_dnl
+m4_define(`AST_TacValue_t', `169')m4_dnl
+m4_define(`AST_TacConstant_t', `170')m4_dnl
+m4_define(`AST_TacVariable_t', `171')m4_dnl
+m4_define(`AST_TacExpResult_t', `172')m4_dnl
+m4_define(`AST_TacPlainOperand_t', `173')m4_dnl
+m4_define(`AST_TacDereferencedPointer_t', `174')m4_dnl
+m4_define(`AST_TacSubObject_t', `175')m4_dnl
+m4_define(`AST_TacInstruction_t', `176')m4_dnl
+m4_define(`AST_TacReturn_t', `177')m4_dnl
+m4_define(`AST_TacSignExtend_t', `178')m4_dnl
+m4_define(`AST_TacTruncate_t', `179')m4_dnl
+m4_define(`AST_TacZeroExtend_t', `180')m4_dnl
+m4_define(`AST_TacDoubleToInt_t', `181')m4_dnl
+m4_define(`AST_TacDoubleToUInt_t', `182')m4_dnl
+m4_define(`AST_TacIntToDouble_t', `183')m4_dnl
+m4_define(`AST_TacUIntToDouble_t', `184')m4_dnl
+m4_define(`AST_TacFunCall_t', `185')m4_dnl
+m4_define(`AST_TacUnary_t', `186')m4_dnl
+m4_define(`AST_TacBinary_t', `187')m4_dnl
+m4_define(`AST_TacCopy_t', `188')m4_dnl
+m4_define(`AST_TacGetAddress_t', `189')m4_dnl
+m4_define(`AST_TacLoad_t', `190')m4_dnl
+m4_define(`AST_TacStore_t', `191')m4_dnl
+m4_define(`AST_TacAddPtr_t', `192')m4_dnl
+m4_define(`AST_TacCopyToOffset_t', `193')m4_dnl
+m4_define(`AST_TacCopyFromOffset_t', `194')m4_dnl
+m4_define(`AST_TacJump_t', `195')m4_dnl
+m4_define(`AST_TacJumpIfZero_t', `196')m4_dnl
+m4_define(`AST_TacJumpIfNotZero_t', `197')m4_dnl
+m4_define(`AST_TacLabel_t', `198')m4_dnl
+m4_define(`AST_TacTopLevel_t', `199')m4_dnl
+m4_define(`AST_TacFunction_t', `200')m4_dnl
+m4_define(`AST_TacStaticVariable_t', `201')m4_dnl
+m4_define(`AST_TacStaticConstant_t', `202')m4_dnl
+m4_define(`AST_TacProgram_t', `203')m4_dnl
+m4_define(`AST_AsmReg_t', `204')m4_dnl
+m4_define(`AST_AsmAx_t', `205')m4_dnl
+m4_define(`AST_AsmBx_t', `206')m4_dnl
+m4_define(`AST_AsmCx_t', `207')m4_dnl
+m4_define(`AST_AsmDx_t', `208')m4_dnl
+m4_define(`AST_AsmDi_t', `209')m4_dnl
+m4_define(`AST_AsmSi_t', `210')m4_dnl
+m4_define(`AST_AsmR8_t', `211')m4_dnl
+m4_define(`AST_AsmR9_t', `212')m4_dnl
+m4_define(`AST_AsmR10_t', `213')m4_dnl
+m4_define(`AST_AsmR11_t', `214')m4_dnl
+m4_define(`AST_AsmR12_t', `215')m4_dnl
+m4_define(`AST_AsmR13_t', `216')m4_dnl
+m4_define(`AST_AsmR14_t', `217')m4_dnl
+m4_define(`AST_AsmR15_t', `218')m4_dnl
+m4_define(`AST_AsmSp_t', `219')m4_dnl
+m4_define(`AST_AsmBp_t', `220')m4_dnl
+m4_define(`AST_AsmXMM0_t', `221')m4_dnl
+m4_define(`AST_AsmXMM1_t', `222')m4_dnl
+m4_define(`AST_AsmXMM2_t', `223')m4_dnl
+m4_define(`AST_AsmXMM3_t', `224')m4_dnl
+m4_define(`AST_AsmXMM4_t', `225')m4_dnl
+m4_define(`AST_AsmXMM5_t', `226')m4_dnl
+m4_define(`AST_AsmXMM6_t', `227')m4_dnl
+m4_define(`AST_AsmXMM7_t', `228')m4_dnl
+m4_define(`AST_AsmXMM8_t', `229')m4_dnl
+m4_define(`AST_AsmXMM9_t', `230')m4_dnl
+m4_define(`AST_AsmXMM10_t', `231')m4_dnl
+m4_define(`AST_AsmXMM11_t', `232')m4_dnl
+m4_define(`AST_AsmXMM12_t', `233')m4_dnl
+m4_define(`AST_AsmXMM13_t', `234')m4_dnl
+m4_define(`AST_AsmXMM14_t', `235')m4_dnl
+m4_define(`AST_AsmXMM15_t', `236')m4_dnl
+m4_define(`AST_AsmCondCode_t', `237')m4_dnl
+m4_define(`AST_AsmE_t', `238')m4_dnl
+m4_define(`AST_AsmNE_t', `239')m4_dnl
+m4_define(`AST_AsmG_t', `240')m4_dnl
+m4_define(`AST_AsmGE_t', `241')m4_dnl
+m4_define(`AST_AsmL_t', `242')m4_dnl
+m4_define(`AST_AsmLE_t', `243')m4_dnl
+m4_define(`AST_AsmA_t', `244')m4_dnl
+m4_define(`AST_AsmAE_t', `245')m4_dnl
+m4_define(`AST_AsmB_t', `246')m4_dnl
+m4_define(`AST_AsmBE_t', `247')m4_dnl
+m4_define(`AST_AsmP_t', `248')m4_dnl
+m4_define(`AST_AsmOperand_t', `249')m4_dnl
+m4_define(`AST_AsmImm_t', `250')m4_dnl
+m4_define(`AST_AsmRegister_t', `251')m4_dnl
+m4_define(`AST_AsmPseudo_t', `252')m4_dnl
+m4_define(`AST_AsmMemory_t', `253')m4_dnl
+m4_define(`AST_AsmData_t', `254')m4_dnl
+m4_define(`AST_AsmPseudoMem_t', `255')m4_dnl
+m4_define(`AST_AsmIndexed_t', `256')m4_dnl
+m4_define(`AST_AsmBinaryOp_t', `257')m4_dnl
+m4_define(`AST_AsmAdd_t', `258')m4_dnl
+m4_define(`AST_AsmSub_t', `259')m4_dnl
+m4_define(`AST_AsmMult_t', `260')m4_dnl
+m4_define(`AST_AsmDivDouble_t', `261')m4_dnl
+m4_define(`AST_AsmBitAnd_t', `262')m4_dnl
+m4_define(`AST_AsmBitOr_t', `263')m4_dnl
+m4_define(`AST_AsmBitXor_t', `264')m4_dnl
+m4_define(`AST_AsmBitShiftLeft_t', `265')m4_dnl
+m4_define(`AST_AsmBitShiftRight_t', `266')m4_dnl
+m4_define(`AST_AsmBitShrArithmetic_t', `267')m4_dnl
+m4_define(`AST_AsmUnaryOp_t', `268')m4_dnl
+m4_define(`AST_AsmNot_t', `269')m4_dnl
+m4_define(`AST_AsmNeg_t', `270')m4_dnl
+m4_define(`AST_AsmShr_t', `271')m4_dnl
+m4_define(`AST_AsmInstruction_t', `272')m4_dnl
+m4_define(`AST_AsmMov_t', `273')m4_dnl
+m4_define(`AST_AsmMovSx_t', `274')m4_dnl
+m4_define(`AST_AsmMovZeroExtend_t', `275')m4_dnl
+m4_define(`AST_AsmLea_t', `276')m4_dnl
+m4_define(`AST_AsmCvttsd2si_t', `277')m4_dnl
+m4_define(`AST_AsmCvtsi2sd_t', `278')m4_dnl
+m4_define(`AST_AsmUnary_t', `279')m4_dnl
+m4_define(`AST_AsmBinary_t', `280')m4_dnl
+m4_define(`AST_AsmCmp_t', `281')m4_dnl
+m4_define(`AST_AsmIdiv_t', `282')m4_dnl
+m4_define(`AST_AsmDiv_t', `283')m4_dnl
+m4_define(`AST_AsmCdq_t', `284')m4_dnl
+m4_define(`AST_AsmJmp_t', `285')m4_dnl
+m4_define(`AST_AsmJmpCC_t', `286')m4_dnl
+m4_define(`AST_AsmSetCC_t', `287')m4_dnl
+m4_define(`AST_AsmLabel_t', `288')m4_dnl
+m4_define(`AST_AsmPush_t', `289')m4_dnl
+m4_define(`AST_AsmPop_t', `290')m4_dnl
+m4_define(`AST_AsmCall_t', `291')m4_dnl
+m4_define(`AST_AsmRet_t', `292')m4_dnl
+m4_define(`AST_AsmTopLevel_t', `293')m4_dnl
+m4_define(`AST_AsmFunction_t', `294')m4_dnl
+m4_define(`AST_AsmStaticVariable_t', `295')m4_dnl
+m4_define(`AST_AsmStaticConstant_t', `296')m4_dnl
+m4_define(`AST_AsmProgram_t', `297')m4_dnl
+m4_define(`MESSAGE_FATAL', `TODO')m4_dnl
+m4_define(`MSG_unhandled_fatal_error', `0')m4_dnl
+m4_define(`MSG_unsupported_os', `1')m4_dnl
+m4_define(`MSG_unsupported_arch', `2')m4_dnl
+m4_define(`MSG_unsupported_compiler', `3')m4_dnl
+m4_define(`MSG_unsupported_cc_ver', `4')m4_dnl
+m4_define(`MESSAGE_ARG', `TODO')m4_dnl
+m4_define(`MSG_unhandled_arg_error', `100')m4_dnl
+m4_define(`MSG_print_help', `101')m4_dnl
+m4_define(`MSG_no_debug_arg', `102')m4_dnl
+m4_define(`MSG_invalid_debug_arg', `103')m4_dnl
+m4_define(`MSG_no_optim_1_arg', `104')m4_dnl
+m4_define(`MSG_invalid_optim_1_arg', `105')m4_dnl
+m4_define(`MSG_no_optim_2_arg', `106')m4_dnl
+m4_define(`MSG_invalid_optim_2_arg', `107')m4_dnl
+m4_define(`MSG_no_input_files_arg', `108')m4_dnl
+m4_define(`MSG_no_stdlib_dir_arg', `109')m4_dnl
+m4_define(`MSG_no_include_dir_arg', `110')m4_dnl
+m4_define(`MESSAGE_UTIL', `TODO')m4_dnl
+m4_define(`MSG_unhandled_util_error', `200')m4_dnl
+m4_define(`MSG_failed_fread', `201')m4_dnl
+m4_define(`MSG_failed_fwrite', `202')m4_dnl
+m4_define(`MSG_failed_strtoi', `203')m4_dnl
+m4_define(`MSG_failed_strtou', `204')m4_dnl
+m4_define(`MSG_failed_strtod', `205')m4_dnl
+m4_define(`MESSAGE_LEXER', `TODO')m4_dnl
+m4_define(`MSG_unhandled_lexer_error', `300')m4_dnl
+m4_define(`MSG_invalid_tok', `301')m4_dnl
+m4_define(`MSG_import_in_line', `302')m4_dnl
+m4_define(`MSG_use_in_line', `303')m4_dnl
+m4_define(`MSG_failed_import', `304')m4_dnl
+m4_define(`MSG_failed_use', `305')m4_dnl
+m4_define(`MSG_preproc_macro', `306')m4_dnl
+m4_define(`MSG_unmatched_close', `307')m4_dnl
+m4_define(`MESSAGE_PARSER', `TODO')m4_dnl
+m4_define(`MSG_unhandled_parser_error', `400')m4_dnl
+m4_define(`MSG_unexpected_next_tok', `401')m4_dnl
+m4_define(`MSG_reached_eof', `402')m4_dnl
+m4_define(`MSG_overflow_long_const', `403')m4_dnl
+m4_define(`MSG_overflow_ulong_const', `404')m4_dnl
+m4_define(`MSG_expect_unop', `405')m4_dnl
+m4_define(`MSG_expect_binop', `406')m4_dnl
+m4_define(`MSG_expect_data_specifier', `407')m4_dnl
+m4_define(`MSG_expect_specifier', `408')m4_dnl
+m4_define(`MSG_expect_maybe_type', `409')m4_dnl
+m4_define(`MSG_expect_open_sizeof', `410')m4_dnl
+m4_define(`MSG_expect_expression', `411')m4_dnl
+m4_define(`MSG_expect_assign', `412')m4_dnl
+m4_define(`MSG_expect_datatype', `413')m4_dnl
+m4_define(`MSG_expect_block', `414')m4_dnl
+m4_define(`MSG_expect_declaration', `415')m4_dnl
+m4_define(`MSG_expect_storage_class', `416')m4_dnl
+m4_define(`MSG_incomplete_any', `417')m4_dnl
+m4_define(`MSG_arr_size_not_int_const', `418')m4_dnl
+m4_define(`MSG_case_value_not_int_const', `419')m4_dnl
+m4_define(`MSG_empty_block', `420')m4_dnl
+m4_define(`MSG_empty_compound_init', `421')m4_dnl
+m4_define(`MSG_infinite_loop', `422')m4_dnl
+m4_define(`MSG_loop_decl_not_auto', `423')m4_dnl
+m4_define(`MSG_list_decl_not_auto', `424')m4_dnl
+m4_define(`MSG_type_decl_not_auto', `425')m4_dnl
+m4_define(`MSG_pub_in_block', `426')m4_dnl
+m4_define(`MSG_data_at_toplvl', `427')m4_dnl
+m4_define(`MESSAGE_SEMANTIC', `TODO')m4_dnl
+m4_define(`MSG_unhandled_semantic_error', `500')m4_dnl
+m4_define(`MSG_incomplete_arr', `501')m4_dnl
+m4_define(`MSG_joint_ptr_mismatch', `502')m4_dnl
+m4_define(`MSG_fun_used_as_var', `503')m4_dnl
+m4_define(`MSG_illegal_cast', `504')m4_dnl
+m4_define(`MSG_invalid_unary_op', `505')m4_dnl
+m4_define(`MSG_invalid_binary_op', `506')m4_dnl
+m4_define(`MSG_invalid_binary_ops', `507')m4_dnl
+m4_define(`MSG_assign_to_void', `508')m4_dnl
+m4_define(`MSG_assign_to_rvalue', `509')m4_dnl
+m4_define(`MSG_invalid_condition', `510')m4_dnl
+m4_define(`MSG_invalid_ternary_op', `511')m4_dnl
+m4_define(`MSG_var_used_as_fun', `512')m4_dnl
+m4_define(`MSG_call_with_wrong_argc', `513')m4_dnl
+m4_define(`MSG_deref_not_ptr', `514')m4_dnl
+m4_define(`MSG_addrof_rvalue', `515')m4_dnl
+m4_define(`MSG_invalid_subscript', `516')m4_dnl
+m4_define(`MSG_sizeof_incomplete', `517')m4_dnl
+m4_define(`MSG_dot_not_struct', `518')m4_dnl
+m4_define(`MSG_member_not_in_struct', `519')m4_dnl
+m4_define(`MSG_arrow_not_struct_ptr', `520')m4_dnl
+m4_define(`MSG_arrow_incomplete', `521')m4_dnl
+m4_define(`MSG_exp_incomplete', `522')m4_dnl
+m4_define(`MSG_ret_value_in_void_fun', `523')m4_dnl
+m4_define(`MSG_no_ret_value_in_fun', `524')m4_dnl
+m4_define(`MSG_invalid_if', `525')m4_dnl
+m4_define(`MSG_invalid_while', `526')m4_dnl
+m4_define(`MSG_invalid_do_while', `527')m4_dnl
+m4_define(`MSG_invalid_for', `528')m4_dnl
+m4_define(`MSG_invalid_switch', `529')m4_dnl
+m4_define(`MSG_duplicate_case_value', `530')m4_dnl
+m4_define(`MSG_string_init_not_char_arr', `531')m4_dnl
+m4_define(`MSG_string_init_overflow', `532')m4_dnl
+m4_define(`MSG_arr_init_overflow', `533')m4_dnl
+m4_define(`MSG_struct_init_overflow', `534')m4_dnl
+m4_define(`MSG_ret_arr', `535')m4_dnl
+m4_define(`MSG_ret_incomplete', `536')m4_dnl
+m4_define(`MSG_void_param', `537')m4_dnl
+m4_define(`MSG_incomplete_param', `538')m4_dnl
+m4_define(`MSG_redecl_fun_conflict', `539')m4_dnl
+m4_define(`MSG_redef_fun', `540')m4_dnl
+m4_define(`MSG_redecl_static_conflict', `541')m4_dnl
+m4_define(`MSG_static_ptr_init_not_int', `542')m4_dnl
+m4_define(`MSG_static_ptr_init_not_null', `543')m4_dnl
+m4_define(`MSG_agg_init_with_single', `544')m4_dnl
+m4_define(`MSG_static_ptr_init_string', `545')m4_dnl
+m4_define(`MSG_static_init_not_const', `546')m4_dnl
+m4_define(`MSG_scalar_init_with_compound', `547')m4_dnl
+m4_define(`MSG_void_var_decl', `548')m4_dnl
+m4_define(`MSG_incomplete_var_decl', `549')m4_dnl
+m4_define(`MSG_redecl_var_conflict', `550')m4_dnl
+m4_define(`MSG_redecl_var_storage', `551')m4_dnl
+m4_define(`MSG_redef_extern_var', `552')m4_dnl
+m4_define(`MSG_duplicate_member_decl', `553')m4_dnl
+m4_define(`MSG_incomplete_member_decl', `554')m4_dnl
+m4_define(`MSG_redecl_struct_in_scope', `555')m4_dnl
+m4_define(`MSG_case_out_of_switch', `556')m4_dnl
+m4_define(`MSG_default_out_of_switch', `557')m4_dnl
+m4_define(`MSG_multiple_default', `558')m4_dnl
+m4_define(`MSG_break_out_of_loop', `559')m4_dnl
+m4_define(`MSG_continue_out_of_loop', `560')m4_dnl
+m4_define(`MSG_undef_goto_target', `561')m4_dnl
+m4_define(`MSG_redecl_struct_conflict', `562')m4_dnl
+m4_define(`MSG_undef_struct_in_scope', `563')m4_dnl
+m4_define(`MSG_undecl_var_in_scope', `564')m4_dnl
+m4_define(`MSG_undecl_fun_in_scope', `565')m4_dnl
+m4_define(`MSG_for_init_decl_not_auto', `566')m4_dnl
+m4_define(`MSG_redef_label_in_scope', `567')m4_dnl
+m4_define(`MSG_redecl_var_in_scope', `568')m4_dnl
+m4_define(`MSG_def_nested_fun', `569')m4_dnl
+m4_define(`MSG_decl_nested_static_fun', `570')m4_dnl
+m4_define(`MSG_redecl_fun_in_scope', `571')m4_dnl
+m4_define(`TOKEN_KIND', `TODO')m4_dnl
+m4_define(`TOK_skip', `0')m4_dnl
+m4_define(`TOK_line_break', `1')m4_dnl
+m4_define(`TOK_open_paren', `2')m4_dnl
+m4_define(`TOK_close_paren', `3')m4_dnl
+m4_define(`TOK_open_brace', `4')m4_dnl
+m4_define(`TOK_close_brace', `5')m4_dnl
+m4_define(`TOK_open_bracket', `6')m4_dnl
+m4_define(`TOK_close_bracket', `7')m4_dnl
+m4_define(`TOK_comma_separator', `8')m4_dnl
+m4_define(`TOK_semicolon', `9')m4_dnl
+m4_define(`TOK_unop_complement', `10')m4_dnl
+m4_define(`TOK_unop_neg', `11')m4_dnl
+m4_define(`TOK_unop_not', `12')m4_dnl
+m4_define(`TOK_unop_addrof', `13')m4_dnl
+m4_define(`TOK_unop_incr', `14')m4_dnl
+m4_define(`TOK_unop_decr', `15')m4_dnl
+m4_define(`TOK_binop_add', `16')m4_dnl
+m4_define(`TOK_binop_multiply', `17')m4_dnl
+m4_define(`TOK_binop_divide', `18')m4_dnl
+m4_define(`TOK_binop_remainder', `19')m4_dnl
+m4_define(`TOK_binop_bitand', `20')m4_dnl
+m4_define(`TOK_binop_bitor', `21')m4_dnl
+m4_define(`TOK_binop_xor', `22')m4_dnl
+m4_define(`TOK_binop_shiftleft', `23')m4_dnl
+m4_define(`TOK_binop_shiftright', `24')m4_dnl
+m4_define(`TOK_binop_and', `25')m4_dnl
+m4_define(`TOK_binop_or', `26')m4_dnl
+m4_define(`TOK_binop_eq', `27')m4_dnl
+m4_define(`TOK_binop_ne', `28')m4_dnl
+m4_define(`TOK_binop_lt', `29')m4_dnl
+m4_define(`TOK_binop_le', `30')m4_dnl
+m4_define(`TOK_binop_gt', `31')m4_dnl
+m4_define(`TOK_binop_ge', `32')m4_dnl
+m4_define(`TOK_assign', `33')m4_dnl
+m4_define(`TOK_assign_type', `34')m4_dnl
+m4_define(`TOK_assign_add', `35')m4_dnl
+m4_define(`TOK_assign_subtract', `36')m4_dnl
+m4_define(`TOK_assign_multiply', `37')m4_dnl
+m4_define(`TOK_assign_divide', `38')m4_dnl
+m4_define(`TOK_assign_remainder', `39')m4_dnl
+m4_define(`TOK_assign_bitand', `40')m4_dnl
+m4_define(`TOK_assign_bitor', `41')m4_dnl
+m4_define(`TOK_assign_xor', `42')m4_dnl
+m4_define(`TOK_assign_shiftleft', `43')m4_dnl
+m4_define(`TOK_assign_shiftright', `44')m4_dnl
+m4_define(`TOK_force_exec', `45')m4_dnl
+m4_define(`TOK_ternary_if', `46')m4_dnl
+m4_define(`TOK_compound_init', `47')m4_dnl
+m4_define(`TOK_typeop_member', `48')m4_dnl
+m4_define(`TOK_loop_post', `49')m4_dnl
+m4_define(`TOK_match_with', `50')m4_dnl
+m4_define(`TOK_key_char', `51')m4_dnl
+m4_define(`TOK_key_string', `52')m4_dnl
+m4_define(`TOK_key_i32', `53')m4_dnl
+m4_define(`TOK_key_i64', `54')m4_dnl
+m4_define(`TOK_key_i8', `55')m4_dnl
+m4_define(`TOK_key_f64', `56')m4_dnl
+m4_define(`TOK_key_u32', `57')m4_dnl
+m4_define(`TOK_key_u64', `58')m4_dnl
+m4_define(`TOK_key_u8', `59')m4_dnl
+m4_define(`TOK_key_any', `60')m4_dnl
+m4_define(`TOK_key_none', `61')m4_dnl
+m4_define(`TOK_key_fn', `62')m4_dnl
+m4_define(`TOK_key_struc', `63')m4_dnl
+m4_define(`TOK_key_union', `64')m4_dnl
+m4_define(`TOK_key_type', `65')m4_dnl
+m4_define(`TOK_key_sizeof', `66')m4_dnl
+m4_define(`TOK_key_return', `67')m4_dnl
+m4_define(`TOK_key_cast', `68')m4_dnl
+m4_define(`TOK_key_if', `69')m4_dnl
+m4_define(`TOK_key_elif', `70')m4_dnl
+m4_define(`TOK_key_else', `71')m4_dnl
+m4_define(`TOK_key_then', `72')m4_dnl
+m4_define(`TOK_key_jump', `73')m4_dnl
+m4_define(`TOK_key_label', `74')m4_dnl
+m4_define(`TOK_key_loop', `75')m4_dnl
+m4_define(`TOK_key_while', `76')m4_dnl
+m4_define(`TOK_key_match', `77')m4_dnl
+m4_define(`TOK_key_otherwise', `78')m4_dnl
+m4_define(`TOK_key_break', `79')m4_dnl
+m4_define(`TOK_key_continue', `80')m4_dnl
+m4_define(`TOK_key_pub', `81')m4_dnl
+m4_define(`TOK_key_data', `82')m4_dnl
+m4_define(`TOK_key_extrn', `83')m4_dnl
+m4_define(`TOK_key_true', `84')m4_dnl
+m4_define(`TOK_key_false', `85')m4_dnl
+m4_define(`TOK_identifier', `86')m4_dnl
+m4_define(`TOK_string_literal', `87')m4_dnl
+m4_define(`TOK_char_const', `88')m4_dnl
+m4_define(`TOK_int_const', `89')m4_dnl
+m4_define(`TOK_long_const', `90')m4_dnl
+m4_define(`TOK_uint_const', `91')m4_dnl
+m4_define(`TOK_ulong_const', `92')m4_dnl
+m4_define(`TOK_dbl_const', `93')m4_dnl
+m4_define(`TOK_m4_prefix', `94')m4_dnl
+m4_define(`TOK_import_file', `95')m4_dnl
+m4_define(`TOK_import_force', `96')m4_dnl
+m4_define(`TOK_use_file', `97')m4_dnl
+m4_define(`TOK_use_force', `98')m4_dnl
+m4_define(`TOK_error', `99')m4_dnl
 type struc Token;
 type struc FunType;
 type struc Pointer;
@@ -73,7 +647,10 @@ pub fn get_util_msg(msg: i32) string;
 pub fn get_lexer_msg(msg: i32) string;
 pub fn get_parser_msg(msg: i32) string;
 pub fn get_semantic_msg(msg: i32) string;
+m4_define(`GCC_VERSION', `TODO')m4_dnl
+m4_define(`CLANG_VERSION', `TODO')m4_dnl
 type struc FileIoContext;
+m4_define(`hash_t', `TODO')m4_dnl
 
 type struc Pairhash_thash_t(key: u64, value: u64)
 
@@ -81,12 +658,14 @@ type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
 
 type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
-type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [1024]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`THROW_ABORT', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
+m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
 type struc ErrorsContext;
 type struc FileIoContext;
 type struc IdentifierContext;
@@ -136,6 +715,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
+m4_define(`UID_SEPARATOR', `TODO')m4_dnl
 type struc Type;
 type struc StaticInit;
 type struc InitialValue;
@@ -265,18 +845,24 @@ pub fn free_Symbol(self: **struc Symbol) none;
 type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
+m4_define(`UPtrStructMember', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
 
 type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: *u64, members: *struc PairTIdentifierUPtrStructMember)
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
+m4_define(`ulong_t', `TODO')m4_dnl
 
 type struc PairTIdentifierulong_t(key: u64, value: u64)
 
 type struc PairTIdentifierTIdentifier(key: u64, value: u64)
 
+m4_define(`UPtrStructTypedef', `TODO')m4_dnl
+
 type struc PairTIdentifierUPtrStructTypedef(key: u64, value: *struc StructTypedef)
+
+m4_define(`UPtrSymbol', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrSymbol(key: u64, value: *struc Symbol)
 
@@ -537,283 +1123,283 @@ pub fn free_CProgram(self: **struc CProgram) none;
 
 pub fn get_tok_kind_fmt(tok_kind: i32) string {
     match tok_kind {
-        -> 1 {
+        -> TOK_line_break {
             return "line break"
         }
-        -> 2 {
+        -> TOK_open_paren {
             return "("
         }
-        -> 3 {
+        -> TOK_close_paren {
             return ")"
         }
-        -> 4 {
+        -> TOK_open_brace {
             return "{"
         }
-        -> 5 {
+        -> TOK_close_brace {
             return "}"
         }
-        -> 6 {
+        -> TOK_open_bracket {
             return "["
         }
-        -> 7 {
+        -> TOK_close_bracket {
             return "]"
         }
-        -> 8 {
+        -> TOK_comma_separator {
             return ","
         }
-        -> 9 {
+        -> TOK_semicolon {
             return ";"
         }
-        -> 10 {
+        -> TOK_unop_complement {
             return "~"
         }
-        -> 11 {
+        -> TOK_unop_neg {
             return "-"
         }
-        -> 12 {
+        -> TOK_unop_not {
             return "not"
         }
-        -> 13 {
+        -> TOK_unop_addrof {
             return "@"
         }
-        -> 14 {
+        -> TOK_unop_incr {
             return "++"
         }
-        -> 15 {
+        -> TOK_unop_decr {
             return "--"
         }
-        -> 16 {
+        -> TOK_binop_add {
             return "+"
         }
-        -> 17 {
+        -> TOK_binop_multiply {
             return "*"
         }
-        -> 18 {
+        -> TOK_binop_divide {
             return "/"
         }
-        -> 19 {
+        -> TOK_binop_remainder {
             return "%"
         }
-        -> 20 {
+        -> TOK_binop_bitand {
             return "&"
         }
-        -> 21 {
+        -> TOK_binop_bitor {
             return "|"
         }
-        -> 22 {
+        -> TOK_binop_xor {
             return "^"
         }
-        -> 23 {
+        -> TOK_binop_shiftleft {
             return "<<"
         }
-        -> 24 {
+        -> TOK_binop_shiftright {
             return ">>"
         }
-        -> 25 {
+        -> TOK_binop_and {
             return "and"
         }
-        -> 26 {
+        -> TOK_binop_or {
             return "or"
         }
-        -> 27 {
+        -> TOK_binop_eq {
             return "=="
         }
-        -> 28 {
+        -> TOK_binop_ne {
             return "~="
         }
-        -> 29 {
+        -> TOK_binop_lt {
             return "<"
         }
-        -> 30 {
+        -> TOK_binop_le {
             return "<="
         }
-        -> 31 {
+        -> TOK_binop_gt {
             return ">"
         }
-        -> 32 {
+        -> TOK_binop_ge {
             return ">="
         }
-        -> 33 {
+        -> TOK_assign {
             return "="
         }
-        -> 34 {
+        -> TOK_assign_type {
             return ":"
         }
-        -> 35 {
+        -> TOK_assign_add {
             return "+="
         }
-        -> 36 {
+        -> TOK_assign_subtract {
             return "-="
         }
-        -> 37 {
+        -> TOK_assign_multiply {
             return "*="
         }
-        -> 38 {
+        -> TOK_assign_divide {
             return "/="
         }
-        -> 39 {
+        -> TOK_assign_remainder {
             return "%="
         }
-        -> 40 {
+        -> TOK_assign_bitand {
             return "&="
         }
-        -> 41 {
+        -> TOK_assign_bitor {
             return "|="
         }
-        -> 42 {
+        -> TOK_assign_xor {
             return "^="
         }
-        -> 43 {
+        -> TOK_assign_shiftleft {
             return "<<="
         }
-        -> 44 {
+        -> TOK_assign_shiftright {
             return ">>="
         }
-        -> 45 {
+        -> TOK_force_exec {
             return "!"
         }
-        -> 46 {
+        -> TOK_ternary_if {
             return "?"
         }
-        -> 47 {
+        -> TOK_compound_init {
             return "$"
         }
-        -> 48 {
+        -> TOK_typeop_member {
             return "."
         }
-        -> 49 {
+        -> TOK_loop_post {
             return ".."
         }
-        -> 50 {
+        -> TOK_match_with {
             return "->"
         }
-        -> 51 {
+        -> TOK_key_char {
             return "char"
         }
-        -> 52 {
+        -> TOK_key_string {
             return "string"
         }
-        -> 53 {
+        -> TOK_key_i32 {
             return "i32"
         }
-        -> 54 {
+        -> TOK_key_i64 {
             return "i64"
         }
-        -> 55 {
+        -> TOK_key_i8 {
             return "i8"
         }
-        -> 56 {
+        -> TOK_key_f64 {
             return "f64"
         }
-        -> 57 {
+        -> TOK_key_u32 {
             return "u32"
         }
-        -> 58 {
+        -> TOK_key_u64 {
             return "u64"
         }
-        -> 59 {
+        -> TOK_key_u8 {
             return "u8"
         }
-        -> 60 {
+        -> TOK_key_any {
             return "any"
         }
-        -> 61 {
+        -> TOK_key_none {
             return "none"
         }
-        -> 62 {
+        -> TOK_key_fn {
             return "fn"
         }
-        -> 63 {
+        -> TOK_key_struc {
             return "struc"
         }
-        -> 64 {
+        -> TOK_key_union {
             return "union"
         }
-        -> 65 {
+        -> TOK_key_type {
             return "type"
         }
-        -> 66 {
+        -> TOK_key_sizeof {
             return "sizeof"
         }
-        -> 67 {
+        -> TOK_key_return {
             return "return"
         }
-        -> 68 {
+        -> TOK_key_cast {
             return "cast"
         }
-        -> 69 {
+        -> TOK_key_if {
             return "if"
         }
-        -> 70 {
+        -> TOK_key_elif {
             return "elif"
         }
-        -> 71 {
+        -> TOK_key_else {
             return "else"
         }
-        -> 72 {
+        -> TOK_key_then {
             return "then"
         }
-        -> 73 {
+        -> TOK_key_jump {
             return "jump"
         }
-        -> 74 {
+        -> TOK_key_label {
             return "label"
         }
-        -> 75 {
+        -> TOK_key_loop {
             return "loop"
         }
-        -> 76 {
+        -> TOK_key_while {
             return "while"
         }
-        -> 77 {
+        -> TOK_key_match {
             return "match"
         }
-        -> 78 {
+        -> TOK_key_otherwise {
             return "otherwise"
         }
-        -> 79 {
+        -> TOK_key_break {
             return "break"
         }
-        -> 80 {
+        -> TOK_key_continue {
             return "continue"
         }
-        -> 81 {
+        -> TOK_key_pub {
             return "pub"
         }
-        -> 82 {
+        -> TOK_key_data {
             return "data"
         }
-        -> 83 {
+        -> TOK_key_extrn {
             return "extrn"
         }
-        -> 84 {
+        -> TOK_key_true {
             return "true"
         }
-        -> 85 {
+        -> TOK_key_false {
             return "false"
         }
-        -> 86 {
+        -> TOK_identifier {
             return "identifier"
         }
-        -> 87 {
+        -> TOK_string_literal {
             return "const string"
         }
-        -> 88 {
+        -> TOK_char_const {
             return "const char"
         }
-        -> 89 {
+        -> TOK_int_const {
             return "const i32"
         }
-        -> 90 {
+        -> TOK_long_const {
             return "const i64"
         }
-        -> 91 {
+        -> TOK_uint_const {
             return "const u32"
         }
-        -> 92 {
+        -> TOK_ulong_const {
             return "const u64"
         }
-        -> 93 {
+        -> TOK_dbl_const {
             return "const f64"
         }
         otherwise {
@@ -824,14 +1410,14 @@ pub fn get_tok_kind_fmt(tok_kind: i32) string {
 
 pub fn get_tok_fmt(ctx: *struc IdentifierContext, token: *struc Token) string {
     match token[].tok_kind {
-        -> 86 {
-            -> 87 {
-                -> 88 {
-                    -> 89 {
-                        -> 90 {
-                            -> 91 {
-                                -> 92 {
-                                    -> 93 {
+        -> TOK_identifier {
+            -> TOK_string_literal {
+                -> TOK_char_const {
+                    -> TOK_int_const {
+                        -> TOK_long_const {
+                            -> TOK_uint_const {
+                                -> TOK_ulong_const {
+                                    -> TOK_dbl_const {
                                         return ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((token[].tok))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
                                     }
                                 }
@@ -849,25 +1435,25 @@ pub fn get_tok_fmt(ctx: *struc IdentifierContext, token: *struc Token) string {
 
 pub fn get_const_fmt(node: *struc CConst) string {
     match node[].tag {
-        -> 47 {
+        -> AST_CConstInt_t {
             return "i32"
         }
-        -> 48 {
+        -> AST_CConstLong_t {
             return "i64"
         }
-        -> 49 {
+        -> AST_CConstUInt_t {
             return "u32"
         }
-        -> 50 {
+        -> AST_CConstULong_t {
             return "u64"
         }
-        -> 51 {
+        -> AST_CConstDouble_t {
             return "f64"
         }
-        -> 52 {
+        -> AST_CConstChar_t {
             return "char"
         }
-        -> 53 {
+        -> AST_CConstUChar_t {
             return "u8"
         }
         otherwise {
@@ -878,10 +1464,10 @@ pub fn get_const_fmt(node: *struc CConst) string {
 
 pub fn get_storage_class_fmt(node: *struc CStorageClass) string {
     match node[].tag {
-        -> 133 {
+        -> AST_CStatic_t {
             return "data"
         }
-        -> 134 {
+        -> AST_CExtern_t {
             return "extrn"
         }
         otherwise {
@@ -892,13 +1478,13 @@ pub fn get_storage_class_fmt(node: *struc CStorageClass) string {
 
 pub fn get_unop_fmt(node: *struc CUnaryOp) string {
     match node[].tag {
-        -> 56 {
+        -> AST_CComplement_t {
             return "~"
         }
-        -> 57 {
+        -> AST_CNegate_t {
             return "-"
         }
-        -> 58 {
+        -> AST_CNot_t {
             return "not"
         }
         otherwise {
@@ -909,61 +1495,61 @@ pub fn get_unop_fmt(node: *struc CUnaryOp) string {
 
 pub fn get_binop_fmt(node: *struc CBinaryOp) string {
     match node[].tag {
-        -> 62 {
+        -> AST_CAdd_t {
             return "+"
         }
-        -> 63 {
+        -> AST_CSubtract_t {
             return "-"
         }
-        -> 64 {
+        -> AST_CMultiply_t {
             return "*"
         }
-        -> 65 {
+        -> AST_CDivide_t {
             return "/"
         }
-        -> 66 {
+        -> AST_CRemainder_t {
             return "%"
         }
-        -> 67 {
+        -> AST_CBitAnd_t {
             return "&"
         }
-        -> 68 {
+        -> AST_CBitOr_t {
             return "|"
         }
-        -> 69 {
+        -> AST_CBitXor_t {
             return "^"
         }
-        -> 70 {
+        -> AST_CBitShiftLeft_t {
             return "<<"
         }
-        -> 71 {
+        -> AST_CBitShiftRight_t {
             return ">>"
         }
-        -> 72 {
+        -> AST_CBitShrArithmetic_t {
             return ">>"
         }
-        -> 73 {
+        -> AST_CAnd_t {
             return "and"
         }
-        -> 74 {
+        -> AST_COr_t {
             return "or"
         }
-        -> 75 {
+        -> AST_CEqual_t {
             return "=="
         }
-        -> 76 {
+        -> AST_CNotEqual_t {
             return "~="
         }
-        -> 77 {
+        -> AST_CLessThan_t {
             return "<"
         }
-        -> 78 {
+        -> AST_CLessOrEqual_t {
             return "<="
         }
-        -> 79 {
+        -> AST_CGreaterThan_t {
             return ">"
         }
-        -> 80 {
+        -> AST_CGreaterOrEqual_t {
             return ">="
         }
         otherwise {
@@ -977,15 +1563,15 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
         return "="
     }
     match unop[].tag {
-        -> 55 {
+        -> AST_CUnaryOp_t {
             break
         }
-        -> 59 {
+        -> AST_CPrefix_t {
             match node[].tag {
-                -> 62 {
+                -> AST_CAdd_t {
                     return "prefix ++"
                 }
-                -> 63 {
+                -> AST_CSubtract_t {
                     return "prefix --"
                 }
                 otherwise {
@@ -993,12 +1579,12 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
                 }
             }
         }
-        -> 60 {
+        -> AST_CPostfix_t {
             match node[].tag {
-                -> 62 {
+                -> AST_CAdd_t {
                     return "postfix ++"
                 }
-                -> 63 {
+                -> AST_CSubtract_t {
                     return "postfix --"
                 }
                 otherwise {
@@ -1011,37 +1597,37 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
         }
     }
     match node[].tag {
-        -> 62 {
+        -> AST_CAdd_t {
             return "+="
         }
-        -> 63 {
+        -> AST_CSubtract_t {
             return "-="
         }
-        -> 64 {
+        -> AST_CMultiply_t {
             return "*="
         }
-        -> 65 {
+        -> AST_CDivide_t {
             return "/="
         }
-        -> 66 {
+        -> AST_CRemainder_t {
             return "%="
         }
-        -> 67 {
+        -> AST_CBitAnd_t {
             return "&="
         }
-        -> 68 {
+        -> AST_CBitOr_t {
             return "|="
         }
-        -> 69 {
+        -> AST_CBitXor_t {
             return "^="
         }
-        -> 70 {
+        -> AST_CBitShiftLeft_t {
             return "<<="
         }
-        -> 71 {
+        -> AST_CBitShiftRight_t {
             return ">>="
         }
-        -> 72 {
+        -> AST_CBitShrArithmetic_t {
             return ">>="
         }
         otherwise {
@@ -1055,7 +1641,7 @@ pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string)
     if value ~= name_fmt[] {
         if name_fmt[] {
             sdsfree(name_fmt[])
-            name_fmt[] = ? 0 then sdsnew(0) else 0
+            name_fmt[] = ? nil then sdsnew(nil) else nil
         }
         name_fmt[] = sdsdup(value)
     }
@@ -1069,35 +1655,35 @@ pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string)
 }
 
 pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i32, struct_fmt: *string) string {
-    struct_fmt[] = ? is_union then ? "union " then sdsnew("union ") else 0 else ? "struc " then sdsnew("struc ") else 0
+    struct_fmt[] = ? is_union then ? "union " then sdsnew("union ") else nil else ? "struc " then sdsnew("struc ") else nil
     {
-        name_fmt: string = ? 0 then sdsnew(0) else 0
+        name_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             struct_fmt[] = sdscat(struct_fmt[], get_name_fmt(ctx, name, @name_fmt))
         }        
         if name_fmt {
             sdsfree(name_fmt)
-            name_fmt = ? 0 then sdsnew(0) else 0
+            name_fmt = ? nil then sdsnew(nil) else nil
         }
     }
     return struct_fmt[]
 }
 
 pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_fmt: *string) string {
-    fun_fmt[] = ? "(" then sdsnew("(") else 0
+    fun_fmt[] = ? "(" then sdsnew("(") else nil
     if ((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], "none")
         }        
     }
     else {
-        type_fmt: string = ? 0 then sdsnew(0) else 0
+        type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[0], @type_fmt))
         }        
         if type_fmt {
             sdsfree(type_fmt)
-            type_fmt = ? 0 then sdsnew(0) else 0
+            type_fmt = ? nil then sdsnew(nil) else nil
         }
     }
     loop i: u64 = 1 while i < (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) .. ++i {
@@ -1105,13 +1691,13 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
             fun_fmt[] = sdscat(fun_fmt[], ", ")
         }        
         {
-            type_fmt: string = ? 0 then sdsnew(0) else 0
+            type_fmt: string = ? nil then sdsnew(nil) else nil
             loop .. while 0 {
                 fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[i], @type_fmt))
             }            
             if type_fmt {
                 sdsfree(type_fmt)
-                type_fmt = ? 0 then sdsnew(0) else 0
+                type_fmt = ? nil then sdsnew(nil) else nil
             }
         }
     }
@@ -1119,46 +1705,46 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
         fun_fmt[] = sdscat(fun_fmt[], ") -> ")
     }    
     {
-        type_fmt: string = ? 0 then sdsnew(0) else 0
+        type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].ret_type, @type_fmt))
         }        
         if type_fmt {
             sdsfree(type_fmt)
-            type_fmt = ? 0 then sdsnew(0) else 0
+            type_fmt = ? nil then sdsnew(nil) else nil
         }
     }
     return fun_fmt[]
 }
 
 pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_fmt: *string) string {
-    ptr_fmt[] = ? "*" then sdsnew("*") else 0
-    loop while ptr_type[].ref_type[].tag == 11 {
+    ptr_fmt[] = ? "*" then sdsnew("*") else nil
+    loop while ptr_type[].ref_type[].tag == AST_Pointer_t {
         ptr_type = @ptr_type[].ref_type[].get._Pointer
         loop .. while 0 {
             ptr_fmt[] = sdscat(ptr_fmt[], "*")
         }        
     }
-    if ptr_type[].ref_type[].tag == 9 {
+    if ptr_type[].ref_type[].tag == AST_Void_t {
         loop .. while 0 {
             ptr_fmt[] = sdscat(ptr_fmt[], "any")
         }        
     }
     else {
-        type_fmt: string = ? 0 then sdsnew(0) else 0
+        type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             ptr_fmt[] = sdscat(ptr_fmt[], get_type_fmt(ctx, ptr_type[].ref_type, @type_fmt))
         }        
         if type_fmt {
             sdsfree(type_fmt)
-            type_fmt = ? 0 then sdsnew(0) else 0
+            type_fmt = ? nil then sdsnew(nil) else nil
         }
     }
     return ptr_fmt[]
 }
 
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string {
-    arr_fmt[] = ? "[" then sdsnew("[") else 0
+    arr_fmt[] = ? "[" then sdsnew("[") else nil
     {
         strto_size: string = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
         loop .. while 0 {
@@ -1166,13 +1752,13 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
         }        
         if strto_size {
             sdsfree(strto_size)
-            strto_size = ? 0 then sdsnew(0) else 0
+            strto_size = ? nil then sdsnew(nil) else nil
         }
     }
     loop .. while 0 {
         arr_fmt[] = sdscat(arr_fmt[], "]")
     }    
-    loop while arr_type[].elem_type[].tag == 12 {
+    loop while arr_type[].elem_type[].tag == AST_Array_t {
         arr_type = @arr_type[].elem_type[].get._Array
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], "[")
@@ -1184,26 +1770,26 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
             }            
             if strto_size {
                 sdsfree(strto_size)
-                strto_size = ? 0 then sdsnew(0) else 0
+                strto_size = ? nil then sdsnew(nil) else nil
             }
         }
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], "]")
         }        
     }
-    if arr_type[].elem_type[].tag == 9 {
+    if arr_type[].elem_type[].tag == AST_Void_t {
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], "any")
         }        
     }
     else {
-        type_fmt: string = ? 0 then sdsnew(0) else 0
+        type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], get_type_fmt(ctx, arr_type[].elem_type, @type_fmt))
         }        
         if type_fmt {
             sdsfree(type_fmt)
-            type_fmt = ? 0 then sdsnew(0) else 0
+            type_fmt = ? nil then sdsnew(nil) else nil
         }
     }
     return arr_fmt[]
@@ -1215,43 +1801,43 @@ pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structu
 
 pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string) string {
     match type_t[].tag {
-        -> 1 {
+        -> AST_Char_t {
             return "char"
         }
-        -> 2 {
+        -> AST_SChar_t {
             return "i8"
         }
-        -> 3 {
+        -> AST_UChar_t {
             return "u8"
         }
-        -> 4 {
+        -> AST_Int_t {
             return "i32"
         }
-        -> 5 {
+        -> AST_Long_t {
             return "i64"
         }
-        -> 6 {
+        -> AST_UInt_t {
             return "u32"
         }
-        -> 7 {
+        -> AST_ULong_t {
             return "u64"
         }
-        -> 8 {
+        -> AST_Double_t {
             return "f64"
         }
-        -> 9 {
+        -> AST_Void_t {
             return "none"
         }
-        -> 10 {
+        -> AST_FunType_t {
             return get_fun_fmt(ctx, @type_t[].get._FunType, type_fmt)
         }
-        -> 11 {
+        -> AST_Pointer_t {
             return get_ptr_fmt(ctx, @type_t[].get._Pointer, type_fmt)
         }
-        -> 12 {
+        -> AST_Array_t {
             return get_arr_fmt(ctx, @type_t[].get._Array, type_fmt)
         }
-        -> 13 {
+        -> AST_Structure_t {
             return get_struct_fmt(ctx, @type_t[].get._Structure, type_fmt)
         }
         otherwise {
@@ -1260,18 +1846,24 @@ pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt
     }
 }
 
+m4_define(`EM_VARG', `TODO')m4_dnl
+m4_define(`PAD_ERR_0', `TODO')m4_dnl
+m4_define(`PAD_ERR_1', `TODO')m4_dnl
+m4_define(`PAD_ERR_2', `TODO')m4_dnl
+m4_define(`PAD_ERR_3', `TODO')m4_dnl
+
 pub fn get_fatal_msg(msg: i32) string {
     match msg {
-        -> 1 {
+        -> MSG_unsupported_os {
             return "(no. %s) "             "%s%s"             "‘%s’"             " operating system is not supported, requires "             "‘"             "GNU/Linux"             "’"             " (x86_64) or "             "‘"             "MacOS"             "’"
         }
-        -> 2 {
+        -> MSG_unsupported_arch {
             return "(no. %s) "             "%s%s"             "‘%s’"             " architecture is not supported, requires "             "‘"             "x86_64"             "’"
         }
-        -> 3 {
+        -> MSG_unsupported_compiler {
             return "(no. %s) "             "%s%s"             "‘%s’"             " compiler is not supported, requires "             "‘"             "gcc"             "’"             " >= 8.1.0"
         }
-        -> 4 {
+        -> MSG_unsupported_cc_ver {
             return "(no. %s) "             ""             "‘"             "gcc"             "’"             " %s.%s.%s is not supported, requires "             "‘"             "gcc"             "’"             " >= 8.1.0"
         }
         otherwise {
@@ -1282,34 +1874,34 @@ pub fn get_fatal_msg(msg: i32) string {
 
 pub fn get_arg_msg(msg: i32) string {
     match msg {
-        -> 101 {
+        -> MSG_print_help {
             return "(no. %s) "             "%s%s"             "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"             "    [--help]:         print help and exit\n"             "    Debug:            print debug info (0..1|251..255)\n"             "    OptimL1:          optimization level 1 mask (0..15)\n"             "    OptimL2:          optimization level 2 enum (0..2)\n"             "    FILE:             source file to compile\n"             "    StdlibDir:        standard lib include path\n"             "    SourceDir:        source file include path\n"             "    [IncludeDir...]:  add a list of paths to include path\n"             "see "             "‘"             "driver.sh"             "’"
         }
-        -> 102 {
+        -> MSG_no_debug_arg {
             return "(no. %s) "             "%s%s%s"             "no debug code passed in first argument, see "             "‘"             "--help"             "’"
         }
-        -> 103 {
+        -> MSG_invalid_debug_arg {
             return "(no. %s) "             "%s%s"             "invalid debug code "             "‘%s’"             " passed in first argument, see "             "‘"             "--help"             "’"
         }
-        -> 104 {
+        -> MSG_no_optim_1_arg {
             return "(no. %s) "             "%s%s%s"             "no level 1 optimization mask passed in second argument, see "             "‘"             "--help"             "’"
         }
-        -> 105 {
+        -> MSG_invalid_optim_1_arg {
             return "(no. %s) "             "%s%s"             "invalid level 1 optimization mask "             "‘%s’"             " passed in second argument, see "             "‘"             "--help"             "’"
         }
-        -> 106 {
+        -> MSG_no_optim_2_arg {
             return "(no. %s) "             "%s%s%s"             "no level 2 optimization code passed in third argument, see "             "‘"             "--help"             "’"
         }
-        -> 107 {
+        -> MSG_invalid_optim_2_arg {
             return "(no. %s) "             "%s%s"             "invalid level 2 optimization code "             "‘%s’"             " passed in third argument, see "             "‘"             "--help"             "’"
         }
-        -> 108 {
+        -> MSG_no_input_files_arg {
             return "(no. %s) "             "%s%s%s"             "no input file passed in fourth argument, see "             "‘"             "--help"             "’"
         }
-        -> 109 {
+        -> MSG_no_stdlib_dir_arg {
             return "(no. %s) "             "%s%s%s"             "no standard lib directory passed in fifth argument, see "             "‘"             "--help"             "’"
         }
-        -> 110 {
+        -> MSG_no_include_dir_arg {
             return "(no. %s) "             "%s%s%s"             "no include directories passed in sixth argument, see "             "‘"             "--help"             "’"
         }
         otherwise {
@@ -1320,19 +1912,19 @@ pub fn get_arg_msg(msg: i32) string {
 
 pub fn get_util_msg(msg: i32) string {
     match msg {
-        -> 201 {
+        -> MSG_failed_fread {
             return "(no. %s) "             "%s%s"             "cannot read input file "             "‘%s’"
         }
-        -> 202 {
+        -> MSG_failed_fwrite {
             return "(no. %s) "             "%s%s"             "cannot write output file "             "‘%s’"
         }
-        -> 203 {
+        -> MSG_failed_strtoi {
             return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to an integer value"
         }
-        -> 204 {
+        -> MSG_failed_strtou {
             return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to an unsigned integer value"
         }
-        -> 205 {
+        -> MSG_failed_strtod {
             return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to a floating point value"
         }
         otherwise {
@@ -1343,25 +1935,25 @@ pub fn get_util_msg(msg: i32) string {
 
 pub fn get_lexer_msg(msg: i32) string {
     match msg {
-        -> 301 {
+        -> MSG_invalid_tok {
             return "(no. %s) "             "%s%s"             "found invalid token "             "‘%s’"
         }
-        -> 304 {
+        -> MSG_failed_import {
             return "(no. %s) "             "%s%s"             "cannot find "             "‘%s’"             " header file in "             "‘"             "import"             "’"             " directive search"
         }
-        -> 305 {
+        -> MSG_failed_use {
             return "(no. %s) "             "%s%s"             "cannot find "             "‘%s’"             " header file in "             "‘"             "use"             "’"             " directive search"
         }
-        -> 302 {
+        -> MSG_import_in_line {
             return "(no. %s) "             "%s%s"             "cannot search "             "‘%s’"             " in a line, "             "‘"             "import"             "’"             " requires its own line"
         }
-        -> 303 {
+        -> MSG_use_in_line {
             return "(no. %s) "             "%s%s"             "cannot search "             "‘%s’"             " in a line, "             "‘"             "use"             "’"             " requires its own line"
         }
-        -> 306 {
+        -> MSG_preproc_macro {
             return "(no. %s) "             "%s%s"             "found m4 macro "             "‘%s’"             ", preprocess with "             "‘"             "-E"             "’"             " or see "             "‘"             "--help"             "’"
         }
-        -> 307 {
+        -> MSG_unmatched_close {
             return "(no. %s) "             "%s%s"             "found unmatched bracket "             "‘%s’"
         }
         otherwise {
@@ -1372,85 +1964,85 @@ pub fn get_lexer_msg(msg: i32) string {
 
 pub fn get_parser_msg(msg: i32) string {
     match msg {
-        -> 401 {
+        -> MSG_unexpected_next_tok {
             return "(no. %s) "             "%s"             "found token "             "‘%s’"             ", but expected "             "‘%s’"             " next"
         }
-        -> 402 {
+        -> MSG_reached_eof {
             return "(no. %s) "             "%s%s%s"             "reached end of file, but expected declaration or statement next"
         }
-        -> 403 {
+        -> MSG_overflow_long_const {
             return "(no. %s) "             "%s%s"             "cannot represent "             "‘%s’"             " as a 64 bits signed integer constant, very large number"
         }
-        -> 404 {
+        -> MSG_overflow_ulong_const {
             return "(no. %s) "             "%s%s"             "cannot represent "             "‘%s’"             " as a 64 bits unsigned integer constant, very large number"
         }
-        -> 405 {
+        -> MSG_expect_unop {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected unary operator "             "‘"             "~"             "’"             ", "             "‘"             "-"             "’"             " or "             "‘"             "not"             "’"             " next"
         }
-        -> 406 {
+        -> MSG_expect_binop {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected binary operator "             "‘"             "="             "’"             ", "             "‘"             "+"             "’"             ", "             "‘"             "+="             "’"             ", "             "‘"             "-"             "’"             ", "             "‘"             "-="             "’"             ", "             "‘"             "*"             "’"             ", "             "‘"             "*="             "’"             ", "             "‘"             "/"             "’"             ", "             "‘"             "/="             "’"             ", "             "‘"             "%"             "’"             ", "             "‘"             "%="             "’"             ", "             "‘"             "&"             "’"             ", "             "‘"             "&="             "’"             ", "             "‘"             "|"             "’"             ", "             "‘"             "|="             "’"             ", "             "‘"             "^"             "’"             ", "             "‘"             "^="             "’"             ", "             "‘"             "<<"             "’"             ", "             "‘"             "<<="             "’"             ", "             "‘"             ">>"             "’"             ", "             "‘"             ">>="             "’"             ", "             "‘"             "and"             "’"             ", "             "‘"             "or"             "’"             ", "             "‘"             "=="             "’"             ", "             "‘"             "~="             "’"             ", "             "‘"             "<"             "’"             ", "             "‘"             "<="             "’"             ", "             "‘"             ">"             "’"             " or "             "‘"             ">="             "’"             " next"
         }
-        -> 407 {
+        -> MSG_expect_data_specifier {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected datatype specifier "             "‘"             "struc"             "’"             " or "             "‘"             "union"             "’"             " next"
         }
-        -> 408 {
+        -> MSG_expect_specifier {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected type specifier "             "‘"             "char"             "’"             ", "             "‘"             "string"             "’"             ", "             "‘"             "bool"             "’"             ", "             "‘"             "i32"             "’"             ", "             "‘"             "i64"             "’"             ", "             "‘"             "i8"             "’"             ", "             "‘"             "f64"             "’"             ", "             "‘"             "u32"             "’"             ", "             "‘"             "u64"             "’"             ", "             "‘"             "u8"             "’"             ", "             "‘"             "struc"             "’"             ", "             "‘"             "union"             "’"             ", "             "‘"             "*"             "’"             ", "             "‘"             "*any"             "’"             " or "             "‘"             "["             "’"             " next"
         }
-        -> 409 {
+        -> MSG_expect_maybe_type {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected maybe type specifier "             "‘"             "none"             "’"             ", "             "‘"             "char"             "’"             ", "             "‘"             "string"             "’"             ", "             "‘"             "bool"             "’"             ", "             "‘"             "i32"             "’"             ", "             "‘"             "i64"             "’"             ", "             "‘"             "i8"             "’"             ", "             "‘"             "f64"             "’"             ", "             "‘"             "u32"             "’"             ", "             "‘"             "u64"             "’"             ", "             "‘"             "u8"             "’"             ", "             "‘"             "struc"             "’"             ", "             "‘"             "union"             "’"             ", "             "‘"             "*"             "’"             ", "             "‘"             "*any"             "’"             " or "             "‘"             "["             "’"             " next"
         }
-        -> 410 {
+        -> MSG_expect_open_sizeof {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected sizeof "             "‘"             "<"             "’"             " or "             "‘"             "("             "’"             " next"
         }
-        -> 411 {
+        -> MSG_expect_expression {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected expression "             "‘"             "?"             "’"             ", "             "‘"             "~"             "’"             ", "             "‘"             "-"             "’"             ", "             "‘"             "not"             "’"             ", "             "‘"             "++"             "’"             ", "             "‘"             "--"             "’"             ", "             "‘"             "@"             "’"             ", "             "‘"             "sizeof"             "’"             ", "             "‘"             "cast"             "’"             ", "             "‘"             "identifier"             "’"             ", "             "‘"             "identifier("             "’"             ", "             "‘"             "("             "’"             ", "             "‘"             "const string"             "’"             ", "             "‘"             "const char"             "’"             ", "             "‘"             "const i32"             "’"             ", "             "‘"             "const i64"             "’"             ", "             "‘"             "const u32"             "’"             ", "             "‘"             "const u64"             "’"             ", "             "‘"             "const f64"             "’"             ", "             "‘"             "true"             "’"             ", "             "‘"             "false"             "’"             " or "             "‘"             "nil"             "’"             " next"
         }
-        -> 412 {
+        -> MSG_expect_assign {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected assignment "             "‘"             "="             "’"             " or "             "‘"             ";"             "’"             " next"
         }
-        -> 413 {
+        -> MSG_expect_datatype {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected member list "             "‘"             "("             "’"             " or "             "‘"             ";"             "’"             " next"
         }
-        -> 414 {
+        -> MSG_expect_block {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected block "             "‘"             "{"             "’"             " or "             "‘"             ";"             "’"             " next"
         }
-        -> 415 {
+        -> MSG_expect_declaration {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected declaration "             "‘"             "identifier"             "’"             ", "             "‘"             "fn"             "’"             " or "             "‘"             "type"             "’"             " next"
         }
-        -> 416 {
+        -> MSG_expect_storage_class {
             return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected storage class "             "‘"             "pub"             "’"             ", "             "‘"             "data"             "’"             ", "             "‘"             "extrn"             "’"             ", "             "‘"             "identifier"             "’"             ", "             "‘"             "fn"             "’"             " or "             "‘"             "type"             "’"             " next"
         }
-        -> 417 {
+        -> MSG_incomplete_any {
             return "(no. %s) "             "%s%s%s"             "incomplete type "             "‘"             "any"             "’"             " requires a pointer, or use "             "‘"             "none"             "’"             " instead"
         }
-        -> 418 {
+        -> MSG_arr_size_not_int_const {
             return "(no. %s) "             "%s%s"             "illegal array size "             "‘%s’"             ", requires a constant integer"
         }
-        -> 419 {
+        -> MSG_case_value_not_int_const {
             return "(no. %s) "             "%s%s"             "illegal "             "‘"             "->"             "’"             " value "             "‘%s’"             ", requires a constant integer"
         }
-        -> 420 {
+        -> MSG_empty_block {
             return "(no. %s) "             "%s%s%s"             "empty block requires at least one item, or use "             "‘"             ";"             "’"             " instead"
         }
-        -> 421 {
+        -> MSG_empty_compound_init {
             return "(no. %s) "             "%s%s%s"             "empty compound initializer requires at least one initializer"
         }
-        -> 422 {
+        -> MSG_infinite_loop {
             return "(no. %s) "             "%s%s%s"             "cannot exit "             "‘"             "loop"             "’"             ", infinite loop requires at least one statement"
         }
-        -> 423 {
+        -> MSG_loop_decl_not_auto {
             return "(no. %s) "             "%s%s"             "illegal storage "             "‘%s’"             ", cannot use storage class in "             "‘"             "loop"             "’"             " initialization"
         }
-        -> 424 {
+        -> MSG_list_decl_not_auto {
             return "(no. %s) "             "%s%s"             "illegal storage "             "‘%s’"             ", cannot use storage class in list declaration"
         }
-        -> 425 {
+        -> MSG_type_decl_not_auto {
             return "(no. %s) "             "%s%s"             "illegal storage "             "‘%s’"             ", cannot use storage class in type declaration"
         }
-        -> 426 {
+        -> MSG_pub_in_block {
             return "(no. %s) "             "%s%s%s"             "illegal storage class, cannot use "             "‘"             "pub"             "’"             " declaration in block"
         }
-        -> 427 {
+        -> MSG_data_at_toplvl {
             return "(no. %s) "             "%s%s%s"             "illegal storage class, cannot use "             "‘"             "data"             "’"             " declaration at top level"
         }
         otherwise {
@@ -1461,217 +2053,217 @@ pub fn get_parser_msg(msg: i32) string {
 
 pub fn get_semantic_msg(msg: i32) string {
     match msg {
-        -> 501 {
+        -> MSG_incomplete_arr {
             return "(no. %s) "             "%s"             "array type "             "‘%s’"             " of incomplete type "             "‘%s’"             ", requires a complete type"
         }
-        -> 502 {
+        -> MSG_joint_ptr_mismatch {
             return "(no. %s) "             "%s"             "pointer type mismatch "             "‘%s’"             " and "             "‘%s’"             " in operator"
         }
-        -> 503 {
+        -> MSG_fun_used_as_var {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " used as a variable"
         }
-        -> 504 {
+        -> MSG_illegal_cast {
             return "(no. %s) "             "%s"             "illegal cast, cannot convert expression from type "             "‘%s’"             " to "             "‘%s’"
         }
-        -> 505 {
+        -> MSG_invalid_unary_op {
             return "(no. %s) "             "%s"             "cannot apply unary operator "             "‘%s’"             " on operand type "             "‘%s’"
         }
-        -> 506 {
+        -> MSG_invalid_binary_op {
             return "(no. %s) "             "%s"             "cannot apply binary operator "             "‘%s’"             " on operand type "             "‘%s’"
         }
-        -> 507 {
+        -> MSG_invalid_binary_ops {
             return "(no. %s) "             ""             "cannot apply binary operator "             "‘%s’"             " on operand types "             "‘%s’"             " and "             "‘%s’"
         }
-        -> 508 {
+        -> MSG_assign_to_void {
             return "(no. %s) "             "%s%s%s"             "cannot assign "             "‘"             "="             "’"             " to left operand type "             "‘"             "none"             "’"
         }
-        -> 509 {
+        -> MSG_assign_to_rvalue {
             return "(no. %s) "             "%s%s"             "assignment "             "‘%s’"             " requires lvalue left operand, but got rvalue"
         }
-        -> 510 {
+        -> MSG_invalid_condition {
             return "(no. %s) "             "%s%s"             "cannot apply conditional "             "‘"             "then"             "’"             " on condition operand type "             "‘%s’"
         }
-        -> 511 {
+        -> MSG_invalid_ternary_op {
             return "(no. %s) "             "%s"             "cannot apply ternary operator "             "‘"             "else"             "’"             " on operand types "             "‘%s’"             " and "             "‘%s’"
         }
-        -> 512 {
+        -> MSG_var_used_as_fun {
             return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " used as a function"
         }
-        -> 513 {
+        -> MSG_call_with_wrong_argc {
             return "(no. %s) "             ""             "function "             "‘%s’"             " called with "             "‘%s’"             " arguments instead of "             "‘%s’"
         }
-        -> 514 {
+        -> MSG_deref_not_ptr {
             return "(no. %s) "             "%s%s"             "cannot apply dereference operator "             "‘"             "[]"             "’"             " on non-pointer type "             "‘%s’"
         }
-        -> 515 {
+        -> MSG_addrof_rvalue {
             return "(no. %s) "             "%s%s%s"             "addresssing "             "‘"             "@"             "’"             " requires lvalue operand, but got rvalue"
         }
-        -> 516 {
+        -> MSG_invalid_subscript {
             return "(no. %s) "             "%s"             "cannot subscript array with operand types "             "‘%s’"             " and "             "‘%s’"             ", requires a complete pointer and an integer types"
         }
-        -> 517 {
+        -> MSG_sizeof_incomplete {
             return "(no. %s) "             "%s%s"             "cannot get size with "             "‘"             "sizeof"             "’"             " operator on incomplete type "             "‘%s’"
         }
-        -> 518 {
+        -> MSG_dot_not_struct {
             return "(no. %s) "             "%s"             "cannot access datatype member "             "‘%s’"             " with dot operator "             "‘"             "."             "’"             " on non-datatype "             "‘%s’"
         }
-        -> 519 {
+        -> MSG_member_not_in_struct {
             return "(no. %s) "             "%s"             "datatype "             "‘%s’"             " has no member named "             "‘%s’"
         }
-        -> 520 {
+        -> MSG_arrow_not_struct_ptr {
             return "(no. %s) "             "%s"             "cannot access datatype member "             "‘%s’"             " with dereferenced dot operator "             "‘"             "[]."             "’"             " on non-pointer-to-datatype "             "‘%s’"
         }
-        -> 521 {
+        -> MSG_arrow_incomplete {
             return "(no. %s) "             "%s"             "cannot access datatype member "             "‘%s’"             " with dereferenced dot operator "             "‘"             "[]."             "’"             " on incomplete datatype "             "‘%s’"
         }
-        -> 522 {
+        -> MSG_exp_incomplete {
             return "(no. %s) "             "%s%s"             "incomplete datatype "             "‘%s’"             " in expression"
         }
-        -> 523 {
+        -> MSG_ret_value_in_void_fun {
             return "(no. %s) "             "%s%s"             "found "             "‘"             "return"             "’"             " value in function "             "‘%s’"             " returning type "             "‘"             "none"             "’"
         }
-        -> 524 {
+        -> MSG_no_ret_value_in_fun {
             return "(no. %s) "             "%s"             "found "             "‘"             "return"             "’"             " with no value in function "             "‘%s’"             " returning type "             "‘%s’"
         }
-        -> 525 {
+        -> MSG_invalid_if {
             return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "if"             "’"             " statement with condition expression type "             "‘%s’"
         }
-        -> 526 {
+        -> MSG_invalid_while {
             return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "loop while"             "’"             " statement with condition expression type "             "‘%s’"
         }
-        -> 527 {
+        -> MSG_invalid_do_while {
             return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "loop .. while"             "’"             " statement with post-condition expression type "             "‘%s’"
         }
-        -> 528 {
+        -> MSG_invalid_for {
             return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "loop"             "’"             " statement with "             "‘"             "while"             "’"             " condition expression type "             "‘%s’"
         }
-        -> 529 {
+        -> MSG_invalid_switch {
             return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "match"             "’"             " statement with match expression type "             "‘%s’"             ", requires an integer type"
         }
-        -> 530 {
+        -> MSG_duplicate_case_value {
             return "(no. %s) "             "%s%s"             "found duplicate "             "‘"             "->"             "’"             " value "             "‘%s’"             " in "             "‘"             "match"             "’"             " statement"
         }
-        -> 531 {
+        -> MSG_string_init_not_char_arr {
             return "(no. %s) "             "%s%s"             "non-character array type "             "‘%s’"             " initialized from string constant"
         }
-        -> 532 {
+        -> MSG_string_init_overflow {
             return "(no. %s) "             "%s"             "size "             "‘%s’"             " string constant initialized with "             "‘%s’"             " characters"
         }
-        -> 533 {
+        -> MSG_arr_init_overflow {
             return "(no. %s) "             ""             "size "             "‘%s’"             " array type "             "‘%s’"             " initialized with "             "‘%s’"             " initializers"
         }
-        -> 534 {
+        -> MSG_struct_init_overflow {
             return "(no. %s) "             ""             "datatype "             "‘%s’"             " initialized with "             "‘%s’"             " members instead of "             "‘%s’"
         }
-        -> 535 {
+        -> MSG_ret_arr {
             return "(no. %s) "             "%s"             "function "             "‘%s’"             " returns array type "             "‘%s’"             ", instead of pointer type"
         }
-        -> 536 {
+        -> MSG_ret_incomplete {
             return "(no. %s) "             "%s"             "function "             "‘%s’"             " returns incomplete datatype "             "‘%s’"
         }
-        -> 537 {
+        -> MSG_void_param {
             return "(no. %s) "             "%s"             "function "             "‘%s’"             " declared with parameter "             "‘%s’"             " with type "             "‘"             "none"             "’"
         }
-        -> 538 {
+        -> MSG_incomplete_param {
             return "(no. %s) "             ""             "function "             "‘%s’"             " defined with parameter "             "‘%s’"             " with incomplete datatype "             "‘%s’"
         }
-        -> 539 {
+        -> MSG_redecl_fun_conflict {
             return "(no. %s) "             ""             "function "             "‘%s’"             " redeclared with function type "             "‘%s’"             ", but previous declaration has function type "             "‘%s’"
         }
-        -> 540 {
+        -> MSG_redef_fun {
             return "(no. %s) "             "%s"             "function "             "‘%s’"             " already defined with function type "             "‘%s’"
         }
-        -> 541 {
+        -> MSG_redecl_static_conflict {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " with "             "‘"             "data"             "’"             " storage class already declared non-static"
         }
-        -> 542 {
+        -> MSG_static_ptr_init_not_int {
             return "(no. %s) "             "%s"             "cannot statically initialize pointer type "             "‘%s’"             " from constant "             "‘%s’"             ", requires a constant integer"
         }
-        -> 543 {
+        -> MSG_static_ptr_init_not_null {
             return "(no. %s) "             "%s"             "cannot statically initialize pointer type "             "‘%s’"             " from non-zero value "             "‘%s’"
         }
-        -> 544 {
+        -> MSG_agg_init_with_single {
             return "(no. %s) "             "%s%s"             "aggregate type "             "‘%s’"             " statically initialized with single initializer"
         }
-        -> 545 {
+        -> MSG_static_ptr_init_string {
             return "(no. %s) "             "%s%s"             "non-character pointer type "             "‘%s’"             " statically initialized from string constant"
         }
-        -> 546 {
+        -> MSG_static_init_not_const {
             return "(no. %s) "             "%s%s"             "cannot statically initialize variable from non-constant type "             "‘%s’"             ", requires a constant"
         }
-        -> 547 {
+        -> MSG_scalar_init_with_compound {
             return "(no. %s) "             "%s%s"             "cannot initialize scalar type "             "‘%s’"             " with compound initializer"
         }
-        -> 548 {
+        -> MSG_void_var_decl {
             return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " declared with type "             "‘"             "none"             "’"
         }
-        -> 549 {
+        -> MSG_incomplete_var_decl {
             return "(no. %s) "             "%s"             "variable "             "‘%s’"             " declared with incomplete datatype "             "‘%s’"
         }
-        -> 550 {
+        -> MSG_redecl_var_conflict {
             return "(no. %s) "             ""             "variable "             "‘%s’"             " redeclared with conflicting type "             "‘%s’"             ", but previously declared with type "             "‘%s’"
         }
-        -> 551 {
+        -> MSG_redecl_var_storage {
             return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " redeclared with conflicting storage class"
         }
-        -> 552 {
+        -> MSG_redef_extern_var {
             return "(no. %s) "             "%s%s"             "illegal initializer, can only declare variable "             "‘%s’"             " with "             "‘"             "extrn"             "’"             " storage class"
         }
-        -> 553 {
+        -> MSG_duplicate_member_decl {
             return "(no. %s) "             "%s"             "datatype "             "‘%s’"             " declared with duplicate member name "             "‘%s’"
         }
-        -> 554 {
+        -> MSG_incomplete_member_decl {
             return "(no. %s) "             ""             "datatype "             "‘%s’"             " declared with member "             "‘%s’"             " with incomplete type "             "‘%s’"
         }
-        -> 555 {
+        -> MSG_redecl_struct_in_scope {
             return "(no. %s) "             "%s%s"             "datatype "             "‘%s’"             " already declared in this scope"
         }
-        -> 556 {
+        -> MSG_case_out_of_switch {
             return "(no. %s) "             "%s%s%s"             "found "             "‘"             "->"             "’"             " statement outside of "             "‘"             "match"             "’"
         }
-        -> 557 {
+        -> MSG_default_out_of_switch {
             return "(no. %s) "             "%s%s%s"             "found "             "‘"             "otherwise"             "’"             " statement outside of "             "‘"             "match"             "’"
         }
-        -> 558 {
+        -> MSG_multiple_default {
             return "(no. %s) "             "%s%s%s"             "found more than one "             "‘"             "otherwise"             "’"             " statement in "             "‘"             "match"             "’"
         }
-        -> 559 {
+        -> MSG_break_out_of_loop {
             return "(no. %s) "             "%s%s%s"             "found "             "‘"             "break"             "’"             " statement outside of "             "‘"             "loop"             "’"             " or "             "‘"             "match"             "’"
         }
-        -> 560 {
+        -> MSG_continue_out_of_loop {
             return "(no. %s) "             "%s%s%s"             "found "             "‘"             "continue"             "’"             " statement outside of "             "‘"             "loop"             "’"
         }
-        -> 561 {
+        -> MSG_undef_goto_target {
             return "(no. %s) "             "%s"             "found "             "‘"             "jump"             "’"             " statement, but "             "‘"             "label"             "’"             " with target "             "‘%s’"             " not defined in function "             "‘%s’"
         }
-        -> 562 {
+        -> MSG_redecl_struct_conflict {
             return "(no. %s) "             "%s"             "‘%s’"             " conflicts with datatype "             "‘%s’"             " previously declared or defined in this scope"
         }
-        -> 563 {
+        -> MSG_undef_struct_in_scope {
             return "(no. %s) "             "%s%s"             "datatype "             "‘%s’"             " not defined in this scope"
         }
-        -> 564 {
+        -> MSG_undecl_var_in_scope {
             return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " not declared in this scope"
         }
-        -> 565 {
+        -> MSG_undecl_fun_in_scope {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " not declared in this scope"
         }
-        -> 566 {
+        -> MSG_for_init_decl_not_auto {
             return "(no. %s) "             "%s"             "variable "             "‘%s’"             " declared with "             "‘%s’"             " storage class in "             "‘"             "loop"             "’"             " initialization"
         }
-        -> 567 {
+        -> MSG_redef_label_in_scope {
             return "(no. %s) "             "%s%s"             "‘"             "label"             "’"             " with target "             "‘%s’"             " already defined in this scope"
         }
-        -> 568 {
+        -> MSG_redecl_var_in_scope {
             return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " already declared in this scope"
         }
-        -> 569 {
+        -> MSG_def_nested_fun {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " defined inside another function, but nested function definition are not permitted"
         }
-        -> 570 {
+        -> MSG_decl_nested_static_fun {
             return "(no. %s) "             "%s%s"             "cannot declare nested function "             "‘%s’"             " in another function with "             "‘"             "data"             "’"             " storage class"
         }
-        -> 571 {
+        -> MSG_redecl_fun_in_scope {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " already declared in this scope"
         }
         otherwise {
