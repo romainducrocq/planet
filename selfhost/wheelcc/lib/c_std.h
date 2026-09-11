@@ -22,13 +22,14 @@
 #define EARLY_EXIT goto _Lfinally
 #define FINALLY \
     _Lfinally:
-#define TRY(X)              \
-    do {                    \
-        _errval = X;        \
-        if (_errval != 0) { \
-            EARLY_EXIT;     \
-        }                   \
-    }                       \
+#define TRY(X)               \
+    do {                     \
+        "@MACRO@:TRY(@ARG@"#X"@ARG@)";  \
+        _errval = X;         \
+        if (_errval != 0) {  \
+            EARLY_EXIT;      \
+        }                    \
+    }                        \
     while (0)
 
 #define THROW_PANIC(...) PANIC_FUNC(__VA_ARGS__)
