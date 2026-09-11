@@ -4,13 +4,13 @@ FILE="${1}"
 
 sed -i 's|0000000|nil|g' lib/c_lib.h
 
-sed -i 's|9876617|__OPTIM_LEVEL__|g' ${FILE}
+# sed -i 's|9876617|__OPTIM_LEVEL__|g' ${FILE}
 sed -i 's|9876616|CONTROL_FLOW_GRAPH|g' ${FILE}
 sed -i 's|9876615|DEAD_STORE_ELIMINATION|g' ${FILE}
 sed -i 's|9876614|UNREACHABLE_CODE_ELIMINATION|g' ${FILE}
 sed -i 's|9876613|COPY_PROPAGATION|g' ${FILE}
 sed -i 's|9876612|CONSTANT_FOLDING|g' ${FILE}
-sed -i 's|9876611|__OPTIM_LEVEL__|g' ${FILE}
+# sed -i 's|9876611|__OPTIM_LEVEL__|g' ${FILE}
 sed -i 's|9876610|AST_AsmProgram_t|g' ${FILE}
 sed -i 's|9876609|AST_AsmStaticConstant_t|g' ${FILE}
 sed -i 's|9876608|AST_AsmStaticVariable_t|g' ${FILE}
