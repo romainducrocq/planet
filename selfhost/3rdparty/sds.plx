@@ -58,6 +58,9 @@ m4_define(`SDS_TYPE_32', `3')m4_dnl
 m4_define(`SDS_TYPE_64', `4')m4_dnl
 m4_define(`SDS_TYPE_MASK', `7')m4_dnl
 m4_define(`SDS_TYPE_BITS', `3')m4_dnl
+m4_define(`SDS_HDR_VAR', `TODO')m4_dnl
+m4_define(`SDS_HDR', `TODO')m4_dnl
+m4_define(`SDS_TYPE_5_LEN', `TODO')m4_dnl
 pub SDS_NOINIT: string = "SDS_NOINIT"
 
 pub fn sdslen(s: string) u64 {

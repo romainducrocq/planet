@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 type struc FileIoContext;
 m4_define(`hash_t', `TODO')m4_dnl
 
@@ -84,11 +185,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 type struc ErrorsContext;
 
 type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string)
@@ -662,9 +770,54 @@ type struc AsmProgram;
 
 type struc AsmReg(tag: i32)
 pub fn make_AsmReg(tag: i32) struc AsmReg;
+m4_define(`init_AsmReg', `TODO')m4_dnl
+m4_define(`init_AsmAx', `TODO')m4_dnl
+m4_define(`init_AsmBx', `TODO')m4_dnl
+m4_define(`init_AsmCx', `TODO')m4_dnl
+m4_define(`init_AsmDx', `TODO')m4_dnl
+m4_define(`init_AsmDi', `TODO')m4_dnl
+m4_define(`init_AsmSi', `TODO')m4_dnl
+m4_define(`init_AsmR8', `TODO')m4_dnl
+m4_define(`init_AsmR9', `TODO')m4_dnl
+m4_define(`init_AsmR10', `TODO')m4_dnl
+m4_define(`init_AsmR11', `TODO')m4_dnl
+m4_define(`init_AsmR12', `TODO')m4_dnl
+m4_define(`init_AsmR13', `TODO')m4_dnl
+m4_define(`init_AsmR14', `TODO')m4_dnl
+m4_define(`init_AsmR15', `TODO')m4_dnl
+m4_define(`init_AsmSp', `TODO')m4_dnl
+m4_define(`init_AsmBp', `TODO')m4_dnl
+m4_define(`init_AsmXMM0', `TODO')m4_dnl
+m4_define(`init_AsmXMM1', `TODO')m4_dnl
+m4_define(`init_AsmXMM2', `TODO')m4_dnl
+m4_define(`init_AsmXMM3', `TODO')m4_dnl
+m4_define(`init_AsmXMM4', `TODO')m4_dnl
+m4_define(`init_AsmXMM5', `TODO')m4_dnl
+m4_define(`init_AsmXMM6', `TODO')m4_dnl
+m4_define(`init_AsmXMM7', `TODO')m4_dnl
+m4_define(`init_AsmXMM8', `TODO')m4_dnl
+m4_define(`init_AsmXMM9', `TODO')m4_dnl
+m4_define(`init_AsmXMM10', `TODO')m4_dnl
+m4_define(`init_AsmXMM11', `TODO')m4_dnl
+m4_define(`init_AsmXMM12', `TODO')m4_dnl
+m4_define(`init_AsmXMM13', `TODO')m4_dnl
+m4_define(`init_AsmXMM14', `TODO')m4_dnl
+m4_define(`init_AsmXMM15', `TODO')m4_dnl
 
 type struc AsmCondCode(tag: i32)
 pub fn make_AsmCondCode(tag: i32) struc AsmCondCode;
+m4_define(`init_AsmCondCode', `TODO')m4_dnl
+m4_define(`init_AsmE', `TODO')m4_dnl
+m4_define(`init_AsmNE', `TODO')m4_dnl
+m4_define(`init_AsmG', `TODO')m4_dnl
+m4_define(`init_AsmGE', `TODO')m4_dnl
+m4_define(`init_AsmL', `TODO')m4_dnl
+m4_define(`init_AsmLE', `TODO')m4_dnl
+m4_define(`init_AsmA', `TODO')m4_dnl
+m4_define(`init_AsmAE', `TODO')m4_dnl
+m4_define(`init_AsmB', `TODO')m4_dnl
+m4_define(`init_AsmBE', `TODO')m4_dnl
+m4_define(`init_AsmP', `TODO')m4_dnl
 
 type struc AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32)
 
@@ -695,9 +848,24 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none;
 
 type struc AsmBinaryOp(tag: i32)
 pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp;
+m4_define(`init_AsmBinaryOp', `TODO')m4_dnl
+m4_define(`init_AsmAdd', `TODO')m4_dnl
+m4_define(`init_AsmSub', `TODO')m4_dnl
+m4_define(`init_AsmMult', `TODO')m4_dnl
+m4_define(`init_AsmDivDouble', `TODO')m4_dnl
+m4_define(`init_AsmBitAnd', `TODO')m4_dnl
+m4_define(`init_AsmBitOr', `TODO')m4_dnl
+m4_define(`init_AsmBitXor', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftRight', `TODO')m4_dnl
+m4_define(`init_AsmBitShrArithmetic', `TODO')m4_dnl
 
 type struc AsmUnaryOp(tag: i32)
 pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp;
+m4_define(`init_AsmUnaryOp', `TODO')m4_dnl
+m4_define(`init_AsmNot', `TODO')m4_dnl
+m4_define(`init_AsmNeg', `TODO')m4_dnl
+m4_define(`init_AsmShr', `TODO')m4_dnl
 
 type struc AsmMov(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
 
@@ -804,9 +972,35 @@ type struc CProgram;
 
 type struc CUnaryOp(tag: i32)
 pub fn make_CUnaryOp(tag: i32) struc CUnaryOp;
+m4_define(`init_CUnaryOp', `TODO')m4_dnl
+m4_define(`init_CComplement', `TODO')m4_dnl
+m4_define(`init_CNegate', `TODO')m4_dnl
+m4_define(`init_CNot', `TODO')m4_dnl
+m4_define(`init_CPrefix', `TODO')m4_dnl
+m4_define(`init_CPostfix', `TODO')m4_dnl
 
 type struc CBinaryOp(tag: i32)
 pub fn make_CBinaryOp(tag: i32) struc CBinaryOp;
+m4_define(`init_CBinaryOp', `TODO')m4_dnl
+m4_define(`init_CAdd', `TODO')m4_dnl
+m4_define(`init_CSubtract', `TODO')m4_dnl
+m4_define(`init_CMultiply', `TODO')m4_dnl
+m4_define(`init_CDivide', `TODO')m4_dnl
+m4_define(`init_CRemainder', `TODO')m4_dnl
+m4_define(`init_CBitAnd', `TODO')m4_dnl
+m4_define(`init_CBitOr', `TODO')m4_dnl
+m4_define(`init_CBitXor', `TODO')m4_dnl
+m4_define(`init_CBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_CBitShiftRight', `TODO')m4_dnl
+m4_define(`init_CBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_CAnd', `TODO')m4_dnl
+m4_define(`init_COr', `TODO')m4_dnl
+m4_define(`init_CEqual', `TODO')m4_dnl
+m4_define(`init_CNotEqual', `TODO')m4_dnl
+m4_define(`init_CLessThan', `TODO')m4_dnl
+m4_define(`init_CLessOrEqual', `TODO')m4_dnl
+m4_define(`init_CGreaterThan', `TODO')m4_dnl
+m4_define(`init_CGreaterOrEqual', `TODO')m4_dnl
 
 type struc CAbstractPointer(abstract_decltor: *struc CAbstractDeclarator)
 
@@ -985,6 +1179,9 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none;
 
 type struc CStorageClass(tag: i32)
 pub fn make_CStorageClass(tag: i32) struc CStorageClass;
+m4_define(`init_CStorageClass', `TODO')m4_dnl
+m4_define(`init_CStatic', `TODO')m4_dnl
+m4_define(`init_CExtern', `TODO')m4_dnl
 
 type struc CSingleInit(exp: *struc CExp, _base: *struc CInitializer)
 
@@ -1042,9 +1239,31 @@ type struc TacProgram;
 
 type struc TacUnaryOp(tag: i32)
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp;
+m4_define(`init_TacUnaryOp', `TODO')m4_dnl
+m4_define(`init_TacComplement', `TODO')m4_dnl
+m4_define(`init_TacNegate', `TODO')m4_dnl
+m4_define(`init_TacNot', `TODO')m4_dnl
 
 type struc TacBinaryOp(tag: i32)
 pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp;
+m4_define(`init_TacBinaryOp', `TODO')m4_dnl
+m4_define(`init_TacAdd', `TODO')m4_dnl
+m4_define(`init_TacSubtract', `TODO')m4_dnl
+m4_define(`init_TacMultiply', `TODO')m4_dnl
+m4_define(`init_TacDivide', `TODO')m4_dnl
+m4_define(`init_TacRemainder', `TODO')m4_dnl
+m4_define(`init_TacBitAnd', `TODO')m4_dnl
+m4_define(`init_TacBitOr', `TODO')m4_dnl
+m4_define(`init_TacBitXor', `TODO')m4_dnl
+m4_define(`init_TacBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_TacBitShiftRight', `TODO')m4_dnl
+m4_define(`init_TacBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_TacEqual', `TODO')m4_dnl
+m4_define(`init_TacNotEqual', `TODO')m4_dnl
+m4_define(`init_TacLessThan', `TODO')m4_dnl
+m4_define(`init_TacLessOrEqual', `TODO')m4_dnl
+m4_define(`init_TacGreaterThan', `TODO')m4_dnl
+m4_define(`init_TacGreaterOrEqual', `TODO')m4_dnl
 
 type struc TacConstant(constant: *struc CConst)
 
@@ -1425,12 +1644,34 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string;
 pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string) string;
 pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string) string;
+m4_define(`str_get_fmt', `TODO')m4_dnl
+m4_define(`str_fmt_tok', `TODO')m4_dnl
+m4_define(`str_fmt_name', `TODO')m4_dnl
+m4_define(`str_fmt_struct_name', `TODO')m4_dnl
+m4_define(`str_fmt_fun', `TODO')m4_dnl
+m4_define(`str_fmt_ptr', `TODO')m4_dnl
+m4_define(`str_fmt_arr', `TODO')m4_dnl
+m4_define(`str_fmt_struct', `TODO')m4_dnl
+m4_define(`str_fmt_type', `TODO')m4_dnl
 pub fn get_fatal_msg(msg: i32) string;
 pub fn get_arg_msg(msg: i32) string;
 pub fn get_util_msg(msg: i32) string;
 pub fn get_lexer_msg(msg: i32) string;
 pub fn get_parser_msg(msg: i32) string;
 pub fn get_semantic_msg(msg: i32) string;
+m4_define(`GET_MESSAGE', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_0', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_1', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_2', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_3', `TODO')m4_dnl
+m4_define(`GET_FATAL_MSG', `TODO')m4_dnl
+m4_define(`GET_ARG_MSG', `TODO')m4_dnl
+m4_define(`GET_UTIL_MSG', `TODO')m4_dnl
+m4_define(`GET_LEXER_MSG', `TODO')m4_dnl
+m4_define(`GET_PARSER_MSG', `TODO')m4_dnl
+m4_define(`GET_SEMANTIC_MSG', `TODO')m4_dnl
+m4_define(`STRINGIFY', `TODO')m4_dnl
+m4_define(`GET_VERSION', `TODO')m4_dnl
 m4_define(`GCC_VERSION', `TODO')m4_dnl
 m4_define(`CLANG_VERSION', `TODO')m4_dnl
 type struc ErrorsContext;
@@ -1537,6 +1778,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     _errval: i32 = 0
     verbose(ctx, "-- Lexing ... ")
     loop .. while 0 {
+        "@MACRO@:TRY(lex_c_code(ctx->filename, &ctx->includedirs, &ctx->stdlibdirs, errors, fileio, &identifiers, &tokens))"
         _errval = lex_c_code(ctx[].filename, @ctx[].includedirs, @ctx[].stdlibdirs, errors, fileio, @identifiers, @tokens)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1548,6 +1790,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     verbose(ctx, "-- Parsing ... ")
     loop .. while 0 {
+        "@MACRO@:TRY(parse_tokens(&tokens, errors, &identifiers, &c_ast))"
         _errval = parse_tokens(@tokens, errors, @identifiers, @c_ast)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1559,6 +1802,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     verbose(ctx, "-- Semantic analysis ... ")
     loop .. while 0 {
+        "@MACRO@:TRY(analyze_semantic(c_ast, errors, &frontend, &identifiers))"
         _errval = analyze_semantic(c_ast, errors, @frontend, @identifiers)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1593,6 +1837,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     verbose(ctx, "-- Code emission ... ")
     set_filename_ext(ctx, "s")
     loop .. while 0 {
+        "@MACRO@:TRY(open_fwrite(fileio, ctx->filename))"
         _errval = open_fwrite(fileio, ctx[].filename)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1683,6 +1928,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_print_help), "MSG_print_help", "", "", argv[0]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1690,6 +1936,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_debug_arg), "MSG_no_debug_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1697,6 +1944,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_debug_arg), "MSG_invalid_debug_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1704,6 +1952,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_1_arg), "MSG_no_optim_1_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1711,6 +1960,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_1_arg), "MSG_invalid_optim_1_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1718,6 +1968,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_2_arg), "MSG_no_optim_2_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1725,6 +1976,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_2_arg), "MSG_invalid_optim_2_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1732,6 +1984,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_input_files_arg), "MSG_no_input_files_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1740,6 +1993,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     ctx[].filename = ? argv[i] then sdsnew(argv[i]) else nil
     if not argv[++i] {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_stdlib_dir_arg), "MSG_no_stdlib_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1751,6 +2005,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }    
     if not argv[++i] {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_include_dir_arg), "MSG_no_include_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1792,12 +2047,14 @@ pub fn main(argc: i32, argv: *string) i32 {
 
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(arg_parse(&ctx, argc, argv))"
         _errval = arg_parse(@ctx, argc, argv)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(compile(&ctx, &errors, &fileio))"
         _errval = compile(@ctx, @errors, @fileio)
         if _errval ~= 0 {
             jump _Lfinally

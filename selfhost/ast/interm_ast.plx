@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 m4_define(`TIdentifier', `TODO')m4_dnl
 m4_define(`TChar', `TODO')m4_dnl
 m4_define(`TInt', `TODO')m4_dnl
@@ -587,9 +688,31 @@ type struc TacProgram;
 
 type struc TacUnaryOp(tag: i32)
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp;
+m4_define(`init_TacUnaryOp', `TODO')m4_dnl
+m4_define(`init_TacComplement', `TODO')m4_dnl
+m4_define(`init_TacNegate', `TODO')m4_dnl
+m4_define(`init_TacNot', `TODO')m4_dnl
 
 type struc TacBinaryOp(tag: i32)
 pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp;
+m4_define(`init_TacBinaryOp', `TODO')m4_dnl
+m4_define(`init_TacAdd', `TODO')m4_dnl
+m4_define(`init_TacSubtract', `TODO')m4_dnl
+m4_define(`init_TacMultiply', `TODO')m4_dnl
+m4_define(`init_TacDivide', `TODO')m4_dnl
+m4_define(`init_TacRemainder', `TODO')m4_dnl
+m4_define(`init_TacBitAnd', `TODO')m4_dnl
+m4_define(`init_TacBitOr', `TODO')m4_dnl
+m4_define(`init_TacBitXor', `TODO')m4_dnl
+m4_define(`init_TacBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_TacBitShiftRight', `TODO')m4_dnl
+m4_define(`init_TacBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_TacEqual', `TODO')m4_dnl
+m4_define(`init_TacNotEqual', `TODO')m4_dnl
+m4_define(`init_TacLessThan', `TODO')m4_dnl
+m4_define(`init_TacLessOrEqual', `TODO')m4_dnl
+m4_define(`init_TacGreaterThan', `TODO')m4_dnl
+m4_define(`init_TacGreaterOrEqual', `TODO')m4_dnl
 
 type struc TacConstant(constant: *struc CConst)
 
@@ -720,11 +843,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
     self: struc TacUnaryOp = $(tag)
@@ -793,7 +923,9 @@ pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp {
 pub fn make_TacValue(none) *struc TacValue {
     self: *struc TacValue = nil
     loop .. while 0 {
+        "@MACRO@:sptr_alloc(TacValue, self)"
         loop .. while 0 {
+            "@MACRO@:uptr_alloc(TacValue, self)"
             free_TacValue(@self)
             self = cast<*struc TacValue>(malloc(sizeof<struc TacValue>))
             if not self {
@@ -810,11 +942,15 @@ pub fn make_TacConstant(constant: **struc CConst) *struc TacValue {
     self: *struc TacValue = make_TacValue()
     self[].tag = AST_TacConstant_t
     self[].get._TacConstant.constant = nil
-    if constant[] ~= self[].get._TacConstant.constant {
-        free_CConst(@self[].get._TacConstant.constant)
-        self[].get._TacConstant.constant = constant[]
-        constant[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(CConst, *constant, self->get._TacConstant.constant)"
+        if constant[] ~= self[].get._TacConstant.constant {
+            "@MACRO@:uptr_move(CConst, *constant, self->get._TacConstant.constant)"
+            free_CConst(@self[].get._TacConstant.constant)
+            self[].get._TacConstant.constant = constant[]
+            constant[] = nil
+        }
+    }    
     return self
 }
 
@@ -826,14 +962,18 @@ pub fn make_TacVariable(name: u64) *struc TacValue {
 }
 
 pub fn free_TacValue(self: **struc TacValue) none {
-    if not self[] {
-        return none
-    }
-    elif (self[])[]._ref_count > 1 {
-        (self[])[]._ref_count--
-        self[] = nil
-        return none
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_delete(*self)"
+        if not self[] {
+            "@MACRO@:uptr_delete(*self)"
+            return none
+        }
+        elif (self[])[]._ref_count > 1 {
+            (self[])[]._ref_count--
+            self[] = nil
+            return none
+        }
+    }    
     match (self[])[].tag {
         -> AST_TacValue_t {
             break
@@ -849,15 +989,20 @@ pub fn free_TacValue(self: **struc TacValue) none {
             panic_sigabrt("abort")
         }
     }
-    if self[] {
-        free(self[])
-        self[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_free(*self)"
+        if self[] {
+            "@MACRO@:uptr_free(*self)"
+            free(self[])
+            self[] = nil
+        }
+    }    
 }
 
 pub fn make_TacExpResult(none) *struc TacExpResult {
     self: *struc TacExpResult = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(TacExpResult, self)"
         free_TacExpResult(@self)
         self = cast<*struc TacExpResult>(malloc(sizeof<struc TacExpResult>))
         if not self {
@@ -872,11 +1017,15 @@ pub fn make_TacPlainOperand(val: **struc TacValue) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
     self[].tag = AST_TacPlainOperand_t
     self[].get._TacPlainOperand.val = nil
-    if val[] ~= self[].get._TacPlainOperand.val {
-        free_TacValue(@self[].get._TacPlainOperand.val)
-        self[].get._TacPlainOperand.val = val[]
-        val[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *val, self->get._TacPlainOperand.val)"
+        if val[] ~= self[].get._TacPlainOperand.val {
+            "@MACRO@:uptr_move(TacValue, *val, self->get._TacPlainOperand.val)"
+            free_TacValue(@self[].get._TacPlainOperand.val)
+            self[].get._TacPlainOperand.val = val[]
+            val[] = nil
+        }
+    }    
     return self
 }
 
@@ -884,11 +1033,15 @@ pub fn make_TacDereferencedPointer(val: **struc TacValue) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
     self[].tag = AST_TacDereferencedPointer_t
     self[].get._TacDereferencedPointer.val = nil
-    if val[] ~= self[].get._TacDereferencedPointer.val {
-        free_TacValue(@self[].get._TacDereferencedPointer.val)
-        self[].get._TacDereferencedPointer.val = val[]
-        val[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *val, self->get._TacDereferencedPointer.val)"
+        if val[] ~= self[].get._TacDereferencedPointer.val {
+            "@MACRO@:uptr_move(TacValue, *val, self->get._TacDereferencedPointer.val)"
+            free_TacValue(@self[].get._TacDereferencedPointer.val)
+            self[].get._TacDereferencedPointer.val = val[]
+            val[] = nil
+        }
+    }    
     return self
 }
 
@@ -902,6 +1055,7 @@ pub fn make_TacSubObject(base_name: u64, offset: i64) *struc TacExpResult {
 
 pub fn free_TacExpResult(self: **struc TacExpResult) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -924,6 +1078,7 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
         }
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -932,6 +1087,7 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
 pub fn make_TacInstruction(none) *struc TacInstruction {
     self: *struc TacInstruction = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(TacInstruction, self)"
         free_TacInstruction(@self)
         self = cast<*struc TacInstruction>(malloc(sizeof<struc TacInstruction>))
         if not self {
@@ -946,11 +1102,15 @@ pub fn make_TacReturn(val: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacReturn_t
     self[].get._TacReturn.val = nil
-    if val[] ~= self[].get._TacReturn.val {
-        free_TacValue(@self[].get._TacReturn.val)
-        self[].get._TacReturn.val = val[]
-        val[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *val, self->get._TacReturn.val)"
+        if val[] ~= self[].get._TacReturn.val {
+            "@MACRO@:uptr_move(TacValue, *val, self->get._TacReturn.val)"
+            free_TacValue(@self[].get._TacReturn.val)
+            self[].get._TacReturn.val = val[]
+            val[] = nil
+        }
+    }    
     return self
 }
 
@@ -958,17 +1118,25 @@ pub fn make_TacSignExtend(src: **struc TacValue, dst: **struc TacValue) *struc T
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacSignExtend_t
     self[].get._TacSignExtend.src = nil
-    if src[] ~= self[].get._TacSignExtend.src {
-        free_TacValue(@self[].get._TacSignExtend.src)
-        self[].get._TacSignExtend.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacSignExtend.src)"
+        if src[] ~= self[].get._TacSignExtend.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacSignExtend.src)"
+            free_TacValue(@self[].get._TacSignExtend.src)
+            self[].get._TacSignExtend.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacSignExtend.dst = nil
-    if dst[] ~= self[].get._TacSignExtend.dst {
-        free_TacValue(@self[].get._TacSignExtend.dst)
-        self[].get._TacSignExtend.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacSignExtend.dst)"
+        if dst[] ~= self[].get._TacSignExtend.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacSignExtend.dst)"
+            free_TacValue(@self[].get._TacSignExtend.dst)
+            self[].get._TacSignExtend.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -976,17 +1144,25 @@ pub fn make_TacTruncate(src: **struc TacValue, dst: **struc TacValue) *struc Tac
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacTruncate_t
     self[].get._TacTruncate.src = nil
-    if src[] ~= self[].get._TacTruncate.src {
-        free_TacValue(@self[].get._TacTruncate.src)
-        self[].get._TacTruncate.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacTruncate.src)"
+        if src[] ~= self[].get._TacTruncate.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacTruncate.src)"
+            free_TacValue(@self[].get._TacTruncate.src)
+            self[].get._TacTruncate.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacTruncate.dst = nil
-    if dst[] ~= self[].get._TacTruncate.dst {
-        free_TacValue(@self[].get._TacTruncate.dst)
-        self[].get._TacTruncate.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacTruncate.dst)"
+        if dst[] ~= self[].get._TacTruncate.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacTruncate.dst)"
+            free_TacValue(@self[].get._TacTruncate.dst)
+            self[].get._TacTruncate.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -994,17 +1170,25 @@ pub fn make_TacZeroExtend(src: **struc TacValue, dst: **struc TacValue) *struc T
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacZeroExtend_t
     self[].get._TacZeroExtend.src = nil
-    if src[] ~= self[].get._TacZeroExtend.src {
-        free_TacValue(@self[].get._TacZeroExtend.src)
-        self[].get._TacZeroExtend.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacZeroExtend.src)"
+        if src[] ~= self[].get._TacZeroExtend.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacZeroExtend.src)"
+            free_TacValue(@self[].get._TacZeroExtend.src)
+            self[].get._TacZeroExtend.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacZeroExtend.dst = nil
-    if dst[] ~= self[].get._TacZeroExtend.dst {
-        free_TacValue(@self[].get._TacZeroExtend.dst)
-        self[].get._TacZeroExtend.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacZeroExtend.dst)"
+        if dst[] ~= self[].get._TacZeroExtend.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacZeroExtend.dst)"
+            free_TacValue(@self[].get._TacZeroExtend.dst)
+            self[].get._TacZeroExtend.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1012,17 +1196,25 @@ pub fn make_TacDoubleToInt(src: **struc TacValue, dst: **struc TacValue) *struc 
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacDoubleToInt_t
     self[].get._TacDoubleToInt.src = nil
-    if src[] ~= self[].get._TacDoubleToInt.src {
-        free_TacValue(@self[].get._TacDoubleToInt.src)
-        self[].get._TacDoubleToInt.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacDoubleToInt.src)"
+        if src[] ~= self[].get._TacDoubleToInt.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacDoubleToInt.src)"
+            free_TacValue(@self[].get._TacDoubleToInt.src)
+            self[].get._TacDoubleToInt.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacDoubleToInt.dst = nil
-    if dst[] ~= self[].get._TacDoubleToInt.dst {
-        free_TacValue(@self[].get._TacDoubleToInt.dst)
-        self[].get._TacDoubleToInt.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacDoubleToInt.dst)"
+        if dst[] ~= self[].get._TacDoubleToInt.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacDoubleToInt.dst)"
+            free_TacValue(@self[].get._TacDoubleToInt.dst)
+            self[].get._TacDoubleToInt.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1030,17 +1222,25 @@ pub fn make_TacDoubleToUInt(src: **struc TacValue, dst: **struc TacValue) *struc
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacDoubleToUInt_t
     self[].get._TacDoubleToUInt.src = nil
-    if src[] ~= self[].get._TacDoubleToUInt.src {
-        free_TacValue(@self[].get._TacDoubleToUInt.src)
-        self[].get._TacDoubleToUInt.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacDoubleToUInt.src)"
+        if src[] ~= self[].get._TacDoubleToUInt.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacDoubleToUInt.src)"
+            free_TacValue(@self[].get._TacDoubleToUInt.src)
+            self[].get._TacDoubleToUInt.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacDoubleToUInt.dst = nil
-    if dst[] ~= self[].get._TacDoubleToUInt.dst {
-        free_TacValue(@self[].get._TacDoubleToUInt.dst)
-        self[].get._TacDoubleToUInt.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacDoubleToUInt.dst)"
+        if dst[] ~= self[].get._TacDoubleToUInt.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacDoubleToUInt.dst)"
+            free_TacValue(@self[].get._TacDoubleToUInt.dst)
+            self[].get._TacDoubleToUInt.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1048,17 +1248,25 @@ pub fn make_TacIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc 
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacIntToDouble_t
     self[].get._TacIntToDouble.src = nil
-    if src[] ~= self[].get._TacIntToDouble.src {
-        free_TacValue(@self[].get._TacIntToDouble.src)
-        self[].get._TacIntToDouble.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacIntToDouble.src)"
+        if src[] ~= self[].get._TacIntToDouble.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacIntToDouble.src)"
+            free_TacValue(@self[].get._TacIntToDouble.src)
+            self[].get._TacIntToDouble.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacIntToDouble.dst = nil
-    if dst[] ~= self[].get._TacIntToDouble.dst {
-        free_TacValue(@self[].get._TacIntToDouble.dst)
-        self[].get._TacIntToDouble.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacIntToDouble.dst)"
+        if dst[] ~= self[].get._TacIntToDouble.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacIntToDouble.dst)"
+            free_TacValue(@self[].get._TacIntToDouble.dst)
+            self[].get._TacIntToDouble.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1066,17 +1274,25 @@ pub fn make_TacUIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacUIntToDouble_t
     self[].get._TacUIntToDouble.src = nil
-    if src[] ~= self[].get._TacUIntToDouble.src {
-        free_TacValue(@self[].get._TacUIntToDouble.src)
-        self[].get._TacUIntToDouble.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacUIntToDouble.src)"
+        if src[] ~= self[].get._TacUIntToDouble.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacUIntToDouble.src)"
+            free_TacValue(@self[].get._TacUIntToDouble.src)
+            self[].get._TacUIntToDouble.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacUIntToDouble.dst = nil
-    if dst[] ~= self[].get._TacUIntToDouble.dst {
-        free_TacValue(@self[].get._TacUIntToDouble.dst)
-        self[].get._TacUIntToDouble.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacUIntToDouble.dst)"
+        if dst[] ~= self[].get._TacUIntToDouble.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacUIntToDouble.dst)"
+            free_TacValue(@self[].get._TacUIntToDouble.dst)
+            self[].get._TacUIntToDouble.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1097,11 +1313,15 @@ pub fn make_TacFunCall(name: u64, args: ***struc TacValue, dst: **struc TacValue
         args[] = nil
     }
     self[].get._TacFunCall.dst = nil
-    if dst[] ~= self[].get._TacFunCall.dst {
-        free_TacValue(@self[].get._TacFunCall.dst)
-        self[].get._TacFunCall.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacFunCall.dst)"
+        if dst[] ~= self[].get._TacFunCall.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacFunCall.dst)"
+            free_TacValue(@self[].get._TacFunCall.dst)
+            self[].get._TacFunCall.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1110,17 +1330,25 @@ pub fn make_TacUnary(unop: *struc TacUnaryOp, src: **struc TacValue, dst: **stru
     self[].tag = AST_TacUnary_t
     self[].get._TacUnary.unop = unop[]
     self[].get._TacUnary.src = nil
-    if src[] ~= self[].get._TacUnary.src {
-        free_TacValue(@self[].get._TacUnary.src)
-        self[].get._TacUnary.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacUnary.src)"
+        if src[] ~= self[].get._TacUnary.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacUnary.src)"
+            free_TacValue(@self[].get._TacUnary.src)
+            self[].get._TacUnary.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacUnary.dst = nil
-    if dst[] ~= self[].get._TacUnary.dst {
-        free_TacValue(@self[].get._TacUnary.dst)
-        self[].get._TacUnary.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacUnary.dst)"
+        if dst[] ~= self[].get._TacUnary.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacUnary.dst)"
+            free_TacValue(@self[].get._TacUnary.dst)
+            self[].get._TacUnary.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1129,23 +1357,35 @@ pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: **struc TacValue, src2: *
     self[].tag = AST_TacBinary_t
     self[].get._TacBinary.binop = binop[]
     self[].get._TacBinary.src1 = nil
-    if src1[] ~= self[].get._TacBinary.src1 {
-        free_TacValue(@self[].get._TacBinary.src1)
-        self[].get._TacBinary.src1 = src1[]
-        src1[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src1, self->get._TacBinary.src1)"
+        if src1[] ~= self[].get._TacBinary.src1 {
+            "@MACRO@:uptr_move(TacValue, *src1, self->get._TacBinary.src1)"
+            free_TacValue(@self[].get._TacBinary.src1)
+            self[].get._TacBinary.src1 = src1[]
+            src1[] = nil
+        }
+    }    
     self[].get._TacBinary.src2 = nil
-    if src2[] ~= self[].get._TacBinary.src2 {
-        free_TacValue(@self[].get._TacBinary.src2)
-        self[].get._TacBinary.src2 = src2[]
-        src2[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src2, self->get._TacBinary.src2)"
+        if src2[] ~= self[].get._TacBinary.src2 {
+            "@MACRO@:uptr_move(TacValue, *src2, self->get._TacBinary.src2)"
+            free_TacValue(@self[].get._TacBinary.src2)
+            self[].get._TacBinary.src2 = src2[]
+            src2[] = nil
+        }
+    }    
     self[].get._TacBinary.dst = nil
-    if dst[] ~= self[].get._TacBinary.dst {
-        free_TacValue(@self[].get._TacBinary.dst)
-        self[].get._TacBinary.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacBinary.dst)"
+        if dst[] ~= self[].get._TacBinary.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacBinary.dst)"
+            free_TacValue(@self[].get._TacBinary.dst)
+            self[].get._TacBinary.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1153,17 +1393,25 @@ pub fn make_TacCopy(src: **struc TacValue, dst: **struc TacValue) *struc TacInst
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacCopy_t
     self[].get._TacCopy.src = nil
-    if src[] ~= self[].get._TacCopy.src {
-        free_TacValue(@self[].get._TacCopy.src)
-        self[].get._TacCopy.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacCopy.src)"
+        if src[] ~= self[].get._TacCopy.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacCopy.src)"
+            free_TacValue(@self[].get._TacCopy.src)
+            self[].get._TacCopy.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacCopy.dst = nil
-    if dst[] ~= self[].get._TacCopy.dst {
-        free_TacValue(@self[].get._TacCopy.dst)
-        self[].get._TacCopy.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacCopy.dst)"
+        if dst[] ~= self[].get._TacCopy.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacCopy.dst)"
+            free_TacValue(@self[].get._TacCopy.dst)
+            self[].get._TacCopy.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1171,17 +1419,25 @@ pub fn make_TacGetAddress(src: **struc TacValue, dst: **struc TacValue) *struc T
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacGetAddress_t
     self[].get._TacGetAddress.src = nil
-    if src[] ~= self[].get._TacGetAddress.src {
-        free_TacValue(@self[].get._TacGetAddress.src)
-        self[].get._TacGetAddress.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacGetAddress.src)"
+        if src[] ~= self[].get._TacGetAddress.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacGetAddress.src)"
+            free_TacValue(@self[].get._TacGetAddress.src)
+            self[].get._TacGetAddress.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacGetAddress.dst = nil
-    if dst[] ~= self[].get._TacGetAddress.dst {
-        free_TacValue(@self[].get._TacGetAddress.dst)
-        self[].get._TacGetAddress.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacGetAddress.dst)"
+        if dst[] ~= self[].get._TacGetAddress.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacGetAddress.dst)"
+            free_TacValue(@self[].get._TacGetAddress.dst)
+            self[].get._TacGetAddress.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1189,17 +1445,25 @@ pub fn make_TacLoad(src_ptr: **struc TacValue, dst: **struc TacValue) *struc Tac
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacLoad_t
     self[].get._TacLoad.src_ptr = nil
-    if src_ptr[] ~= self[].get._TacLoad.src_ptr {
-        free_TacValue(@self[].get._TacLoad.src_ptr)
-        self[].get._TacLoad.src_ptr = src_ptr[]
-        src_ptr[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src_ptr, self->get._TacLoad.src_ptr)"
+        if src_ptr[] ~= self[].get._TacLoad.src_ptr {
+            "@MACRO@:uptr_move(TacValue, *src_ptr, self->get._TacLoad.src_ptr)"
+            free_TacValue(@self[].get._TacLoad.src_ptr)
+            self[].get._TacLoad.src_ptr = src_ptr[]
+            src_ptr[] = nil
+        }
+    }    
     self[].get._TacLoad.dst = nil
-    if dst[] ~= self[].get._TacLoad.dst {
-        free_TacValue(@self[].get._TacLoad.dst)
-        self[].get._TacLoad.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacLoad.dst)"
+        if dst[] ~= self[].get._TacLoad.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacLoad.dst)"
+            free_TacValue(@self[].get._TacLoad.dst)
+            self[].get._TacLoad.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1207,17 +1471,25 @@ pub fn make_TacStore(src: **struc TacValue, dst_ptr: **struc TacValue) *struc Ta
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacStore_t
     self[].get._TacStore.src = nil
-    if src[] ~= self[].get._TacStore.src {
-        free_TacValue(@self[].get._TacStore.src)
-        self[].get._TacStore.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacStore.src)"
+        if src[] ~= self[].get._TacStore.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacStore.src)"
+            free_TacValue(@self[].get._TacStore.src)
+            self[].get._TacStore.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._TacStore.dst_ptr = nil
-    if dst_ptr[] ~= self[].get._TacStore.dst_ptr {
-        free_TacValue(@self[].get._TacStore.dst_ptr)
-        self[].get._TacStore.dst_ptr = dst_ptr[]
-        dst_ptr[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst_ptr, self->get._TacStore.dst_ptr)"
+        if dst_ptr[] ~= self[].get._TacStore.dst_ptr {
+            "@MACRO@:uptr_move(TacValue, *dst_ptr, self->get._TacStore.dst_ptr)"
+            free_TacValue(@self[].get._TacStore.dst_ptr)
+            self[].get._TacStore.dst_ptr = dst_ptr[]
+            dst_ptr[] = nil
+        }
+    }    
     return self
 }
 
@@ -1226,23 +1498,35 @@ pub fn make_TacAddPtr(scale: i64, src_ptr: **struc TacValue, idx: **struc TacVal
     self[].tag = AST_TacAddPtr_t
     self[].get._TacAddPtr.scale = scale
     self[].get._TacAddPtr.src_ptr = nil
-    if src_ptr[] ~= self[].get._TacAddPtr.src_ptr {
-        free_TacValue(@self[].get._TacAddPtr.src_ptr)
-        self[].get._TacAddPtr.src_ptr = src_ptr[]
-        src_ptr[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src_ptr, self->get._TacAddPtr.src_ptr)"
+        if src_ptr[] ~= self[].get._TacAddPtr.src_ptr {
+            "@MACRO@:uptr_move(TacValue, *src_ptr, self->get._TacAddPtr.src_ptr)"
+            free_TacValue(@self[].get._TacAddPtr.src_ptr)
+            self[].get._TacAddPtr.src_ptr = src_ptr[]
+            src_ptr[] = nil
+        }
+    }    
     self[].get._TacAddPtr.idx = nil
-    if idx[] ~= self[].get._TacAddPtr.idx {
-        free_TacValue(@self[].get._TacAddPtr.idx)
-        self[].get._TacAddPtr.idx = idx[]
-        idx[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *idx, self->get._TacAddPtr.idx)"
+        if idx[] ~= self[].get._TacAddPtr.idx {
+            "@MACRO@:uptr_move(TacValue, *idx, self->get._TacAddPtr.idx)"
+            free_TacValue(@self[].get._TacAddPtr.idx)
+            self[].get._TacAddPtr.idx = idx[]
+            idx[] = nil
+        }
+    }    
     self[].get._TacAddPtr.dst = nil
-    if dst[] ~= self[].get._TacAddPtr.dst {
-        free_TacValue(@self[].get._TacAddPtr.dst)
-        self[].get._TacAddPtr.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacAddPtr.dst)"
+        if dst[] ~= self[].get._TacAddPtr.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacAddPtr.dst)"
+            free_TacValue(@self[].get._TacAddPtr.dst)
+            self[].get._TacAddPtr.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1252,11 +1536,15 @@ pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: **struc TacValue) *
     self[].get._TacCopyToOffset.dst_name = dst_name
     self[].get._TacCopyToOffset.offset = offset
     self[].get._TacCopyToOffset.src = nil
-    if src[] ~= self[].get._TacCopyToOffset.src {
-        free_TacValue(@self[].get._TacCopyToOffset.src)
-        self[].get._TacCopyToOffset.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *src, self->get._TacCopyToOffset.src)"
+        if src[] ~= self[].get._TacCopyToOffset.src {
+            "@MACRO@:uptr_move(TacValue, *src, self->get._TacCopyToOffset.src)"
+            free_TacValue(@self[].get._TacCopyToOffset.src)
+            self[].get._TacCopyToOffset.src = src[]
+            src[] = nil
+        }
+    }    
     return self
 }
 
@@ -1266,11 +1554,15 @@ pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: **struc TacValue)
     self[].get._TacCopyFromOffset.src_name = src_name
     self[].get._TacCopyFromOffset.offset = offset
     self[].get._TacCopyFromOffset.dst = nil
-    if dst[] ~= self[].get._TacCopyFromOffset.dst {
-        free_TacValue(@self[].get._TacCopyFromOffset.dst)
-        self[].get._TacCopyFromOffset.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *dst, self->get._TacCopyFromOffset.dst)"
+        if dst[] ~= self[].get._TacCopyFromOffset.dst {
+            "@MACRO@:uptr_move(TacValue, *dst, self->get._TacCopyFromOffset.dst)"
+            free_TacValue(@self[].get._TacCopyFromOffset.dst)
+            self[].get._TacCopyFromOffset.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1286,11 +1578,15 @@ pub fn make_TacJumpIfZero(target: u64, condition: **struc TacValue) *struc TacIn
     self[].tag = AST_TacJumpIfZero_t
     self[].get._TacJumpIfZero.target = target
     self[].get._TacJumpIfZero.condition = nil
-    if condition[] ~= self[].get._TacJumpIfZero.condition {
-        free_TacValue(@self[].get._TacJumpIfZero.condition)
-        self[].get._TacJumpIfZero.condition = condition[]
-        condition[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *condition, self->get._TacJumpIfZero.condition)"
+        if condition[] ~= self[].get._TacJumpIfZero.condition {
+            "@MACRO@:uptr_move(TacValue, *condition, self->get._TacJumpIfZero.condition)"
+            free_TacValue(@self[].get._TacJumpIfZero.condition)
+            self[].get._TacJumpIfZero.condition = condition[]
+            condition[] = nil
+        }
+    }    
     return self
 }
 
@@ -1299,11 +1595,15 @@ pub fn make_TacJumpIfNotZero(target: u64, condition: **struc TacValue) *struc Ta
     self[].tag = AST_TacJumpIfNotZero_t
     self[].get._TacJumpIfNotZero.target = target
     self[].get._TacJumpIfNotZero.condition = nil
-    if condition[] ~= self[].get._TacJumpIfNotZero.condition {
-        free_TacValue(@self[].get._TacJumpIfNotZero.condition)
-        self[].get._TacJumpIfNotZero.condition = condition[]
-        condition[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(TacValue, *condition, self->get._TacJumpIfNotZero.condition)"
+        if condition[] ~= self[].get._TacJumpIfNotZero.condition {
+            "@MACRO@:uptr_move(TacValue, *condition, self->get._TacJumpIfNotZero.condition)"
+            free_TacValue(@self[].get._TacJumpIfNotZero.condition)
+            self[].get._TacJumpIfNotZero.condition = condition[]
+            condition[] = nil
+        }
+    }    
     return self
 }
 
@@ -1316,6 +1616,7 @@ pub fn make_TacLabel(name: u64) *struc TacInstruction {
 
 pub fn free_TacInstruction(self: **struc TacInstruction) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -1439,6 +1740,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
         }
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1447,6 +1749,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
 pub fn make_TacTopLevel(none) *struc TacTopLevel {
     self: *struc TacTopLevel = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(TacTopLevel, self)"
         free_TacTopLevel(@self)
         self = cast<*struc TacTopLevel>(malloc(sizeof<struc TacTopLevel>))
         if not self {
@@ -1495,11 +1798,15 @@ pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc
     self[].get._TacStaticVariable.name = name
     self[].get._TacStaticVariable.is_glob = is_glob
     self[].get._TacStaticVariable.static_init_type = nil
-    if static_init_type[] ~= self[].get._TacStaticVariable.static_init_type {
-        free_Type(@self[].get._TacStaticVariable.static_init_type)
-        self[].get._TacStaticVariable.static_init_type = static_init_type[]
-        static_init_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, *static_init_type, self->get._TacStaticVariable.static_init_type)"
+        if static_init_type[] ~= self[].get._TacStaticVariable.static_init_type {
+            "@MACRO@:uptr_move(Type, *static_init_type, self->get._TacStaticVariable.static_init_type)"
+            free_Type(@self[].get._TacStaticVariable.static_init_type)
+            self[].get._TacStaticVariable.static_init_type = static_init_type[]
+            static_init_type[] = nil
+        }
+    }    
     self[].get._TacStaticVariable.static_inits = nil
     if static_inits[] ~= self[].get._TacStaticVariable.static_inits {
         if self[].get._TacStaticVariable.static_inits {
@@ -1520,22 +1827,31 @@ pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_
     self[].tag = AST_TacStaticConstant_t
     self[].get._TacStaticConstant.name = name
     self[].get._TacStaticConstant.static_init_type = nil
-    if static_init_type[] ~= self[].get._TacStaticConstant.static_init_type {
-        free_Type(@self[].get._TacStaticConstant.static_init_type)
-        self[].get._TacStaticConstant.static_init_type = static_init_type[]
-        static_init_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, *static_init_type, self->get._TacStaticConstant.static_init_type)"
+        if static_init_type[] ~= self[].get._TacStaticConstant.static_init_type {
+            "@MACRO@:uptr_move(Type, *static_init_type, self->get._TacStaticConstant.static_init_type)"
+            free_Type(@self[].get._TacStaticConstant.static_init_type)
+            self[].get._TacStaticConstant.static_init_type = static_init_type[]
+            static_init_type[] = nil
+        }
+    }    
     self[].get._TacStaticConstant.static_init = nil
-    if static_init[] ~= self[].get._TacStaticConstant.static_init {
-        free_StaticInit(@self[].get._TacStaticConstant.static_init)
-        self[].get._TacStaticConstant.static_init = static_init[]
-        static_init[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(StaticInit, *static_init, self->get._TacStaticConstant.static_init)"
+        if static_init[] ~= self[].get._TacStaticConstant.static_init {
+            "@MACRO@:uptr_move(StaticInit, *static_init, self->get._TacStaticConstant.static_init)"
+            free_StaticInit(@self[].get._TacStaticConstant.static_init)
+            self[].get._TacStaticConstant.static_init = static_init[]
+            static_init[] = nil
+        }
+    }    
     return self
 }
 
 pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -1586,6 +1902,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         }
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1594,6 +1911,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
 pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_toplvls: ***struc TacTopLevel, fun_toplvls: ***struc TacTopLevel) *struc TacProgram {
     self: *struc TacProgram = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(TacProgram, self)"
         free_TacProgram(@self)
         self = cast<*struc TacProgram>(malloc(sizeof<struc TacProgram>))
         if not self {
@@ -1642,6 +1960,7 @@ pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_to
 
 pub fn free_TacProgram(self: **struc TacProgram) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -1683,6 +2002,7 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
         (self[])[].fun_toplvls = nil
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
