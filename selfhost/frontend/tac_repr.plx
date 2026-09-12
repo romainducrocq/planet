@@ -1297,9 +1297,9 @@ fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *
                 (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((inner_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
                 (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (inner_name)
                 (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-            }            
+            }
             symbol = nil
-        }        
+        }
     }
     return make_TacVariable(inner_name)
 }
@@ -1331,9 +1331,9 @@ fn push_instr(ctx: *struc TacReprContext, instr: *struc TacInstruction) none {
         loop .. while 0 {
             (? (not (ctx[].p_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].capacity) then (((ctx[].p_instrs[]) = stbds_arrgrowf((ctx[].p_instrs[]), sizeof((ctx[].p_instrs[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length++] = (instr)
-        }        
+        }
         instr = nil
-    }    
+    }
 }
 fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacExpResult;
 fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue;
@@ -1362,7 +1362,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
                 (ctx[].frontend[].string_const_table) = stbds_hmput_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)
                 (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].key = (string_const)
                 (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].value = (string_const_label)
-            }            
+            }
 
             constant_type: *struc Type = nil
             {
@@ -1393,9 +1393,9 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
                     (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((string_const_label))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
                     (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (string_const_label)
                     (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-                }                
+                }
                 symbol = nil
-            }            
+            }
         }
     }
     val: *struc TacValue = make_TacVariable(string_const_label)
@@ -1623,7 +1623,7 @@ fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary)
                 idx = dst
                 dst = nil
             }
-        }        
+        }
     }
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = nil
@@ -1660,7 +1660,7 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
                 src_1 = dst
                 dst = nil
             }
-        }        
+        }
     }
 
     src_2: *struc TacValue = nil
@@ -1897,7 +1897,7 @@ fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDerefer
             dst = res[].val
             res[].val = nil
         }
-    }    
+    }
     push_instr(ctx, make_TacStore(@src_cp, @dst))
     free_TacExpResult(exp_res)
     exp_res[] = make_TacPlainOperand(src)
@@ -1959,7 +1959,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                     loop .. while 0 {
                         cast<none>((? (noeval_instrs) then free((cast<*struc stbds_array_header>((noeval_instrs)) - 1)) else cast<none>(0)))
                         (noeval_instrs) = nil
-                    }                    
+                    }
                     noeval_instrs = nil
                 }
             }
@@ -2092,9 +2092,9 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc
             loop .. while 0 {
                 (? (not (args) or (cast<*struc stbds_array_header>((args)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args)) - 1)[].capacity) then (((args) = stbds_arrgrowf((args), sizeof((args)[]), (1), (0))) and 0) else 0)
                 (args)[(cast<*struc stbds_array_header>((args)) - 1)[].length++] = (arg)
-            }            
+            }
             arg = nil
-        }        
+        }
     }
     dst: *struc TacValue = nil
     if node[]._base[].exp_type[].tag ~= AST_Void_t {
@@ -2126,7 +2126,7 @@ fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
             src = res[].val
             res[].val = nil
         }
-    }    
+    }
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = nil
     if dst ~= dst_cp {
@@ -2144,7 +2144,7 @@ fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
             res[].val = dst
             dst = nil
         }
-    }    
+    }
 }
 
 fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: **struc TacExpResult) none {
@@ -2157,7 +2157,7 @@ fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: **str
             val = res[].val
             res[].val = nil
         }
-    }    
+    }
     free_TacExpResult(exp_res)
     exp_res[] = make_TacPlainOperand(@val)
 }
@@ -2291,7 +2291,7 @@ fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferenc
                 src_ptr = res[].val
                 res[].val = nil
             }
-        }        
+        }
 
         idx: *struc TacValue = nil
         {
@@ -2316,7 +2316,7 @@ fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferenc
                 res[].val = dst
                 dst = nil
             }
-        }        
+        }
     }
 }
 
@@ -2379,7 +2379,7 @@ fn arrow_res_instr(ctx: *struc TacReprContext, node: *struc CArrow) *struc TacEx
                 val = dst
                 dst = nil
             }
-        }        
+        }
     }
     return make_TacDereferencedPointer(@val)
 }
@@ -2450,7 +2450,7 @@ fn plain_op_exp_instr(res: *struc TacPlainOperand) *struc TacValue {
             dst = res[].val
             res[].val = nil
         }
-    }    
+    }
     return dst
 }
 
@@ -2464,7 +2464,7 @@ fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPo
             src = res[].val
             res[].val = nil
         }
-    }    
+    }
     dst: *struc TacValue = plain_inner_value(ctx, node)
     dst_cp: *struc TacValue = nil
     if dst ~= dst_cp {
@@ -3014,7 +3014,7 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
     loop .. while 0 {
         (? (? (params) then (cast<*struc stbds_array_header>((params)) - 1)[].capacity else 0) < cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))) then ((((params)) = stbds_arrgrowf(((params)), sizeof(((params))[]), (0), (cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))))))) and 0 else 0)
         ? (params) then (cast<*struc stbds_array_header>((params)) - 1)[].length = cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))) else 0
-    }    
+    }
     memcpy(params, node[].params, sizeof<u64> * (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))
 
     body: **struc TacInstruction = nil
@@ -3037,9 +3037,9 @@ fn push_toplvl(ctx: *struc TacReprContext, top_level: *struc TacTopLevel) none {
         loop .. while 0 {
             (? (not (ctx[].p_toplvls[]) or (cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].capacity) then (((ctx[].p_toplvls[]) = stbds_arrgrowf((ctx[].p_toplvls[]), sizeof((ctx[].p_toplvls[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_toplvls[])[(cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].length++] = (top_level)
-        }        
+        }
         top_level = nil
-    }    
+    }
 }
 
 fn fun_decl_toplvl(ctx: *struc TacReprContext, node: *struc CFunDecl) none {
@@ -3074,9 +3074,9 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
             loop .. while 0 {
                 (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
                 (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
-            }            
+            }
             static_init = nil
-        }        
+        }
     }
 
     return static_inits
@@ -3097,9 +3097,9 @@ fn initial_static_toplvl(node: *struc Initial) **struc StaticInit {
             loop .. while 0 {
                 (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
                 (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
-            }            
+            }
             static_init = nil
-        }        
+        }
     }
     return static_inits
 }
@@ -3140,9 +3140,9 @@ fn push_static_const_toplvl(ctx: *struc TacReprContext, static_const_toplvls: *s
         loop .. while 0 {
             (? (not (ctx[].p_static_consts[]) or (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].capacity) then (((ctx[].p_static_consts[]) = stbds_arrgrowf((ctx[].p_static_consts[]), sizeof((ctx[].p_static_consts[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_static_consts[])[(cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length++] = (static_const_toplvls)
-        }        
+        }
         static_const_toplvls = nil
-    }    
+    }
 }
 
 fn repr_static_const_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbol: u64) none {

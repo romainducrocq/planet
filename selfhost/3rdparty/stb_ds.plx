@@ -281,7 +281,7 @@ fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
                 v0 += v3
                 v3 = (((v3) << (21)) | ((v3) >> (((sizeof<u64>) * 8) - (21))))
                 v3 ^= v0
-            }        
+            }
         }
         v0 ^= dat
         d += sizeof<u64>
@@ -330,7 +330,7 @@ fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
             v0 += v3
             v3 = (((v3) << (21)) | ((v3) >> (((sizeof<u64>) * 8) - (21))))
             v3 ^= v0
-        }    
+        }
     }
     v0 ^= dat
     v2 ^= 255
@@ -350,7 +350,7 @@ fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
             v0 += v3
             v3 = (((v3) << (21)) | ((v3) >> (((sizeof<u64>) * 8) - (21))))
             v3 ^= v0
-        }    
+        }
     }
     return v1 ^ v2 ^ v3
 }

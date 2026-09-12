@@ -868,7 +868,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     if filename ~= file_read.filename {
         if file_read.filename {
@@ -880,7 +880,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     loop .. while 0 {
         (? (not (ctx[].file_reads) or (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].capacity) then (((ctx[].file_reads) = stbds_arrgrowf((ctx[].file_reads), sizeof((ctx[].file_reads)[]), (1), (0))) and 0) else 0)
         (ctx[].file_reads)[(cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length++] = (file_read)
-    }    
+    }
     label _Lfinally
     return _errval
 }
@@ -895,12 +895,12 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fwrite), "MSG_failed_fwrite", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     ctx[].write_buf = ? "" then sdsnew("") else nil
     loop .. while 0 {
         ctx[].write_buf = sdsMakeRoomFor(ctx[].write_buf, WRITE_BUF_SIZE)
-    }    
+    }
     label _Lfinally
     return _errval
 }
@@ -929,7 +929,7 @@ fn write_chunk(ctx: *struc FileIoContext, buf: string, buf_size: u64) none {
 pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     loop .. while 0 {
         ctx[].write_buf = sdscat(ctx[].write_buf, buf)
-    }    
+    }
     loop while sdslen(ctx[].write_buf) >= WRITE_BUF_SIZE {
         write_chunk(ctx, ctx[].write_buf, WRITE_BUF_SIZE)
         sdsrange(ctx[].write_buf, WRITE_BUF_SIZE, -1)
@@ -953,7 +953,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
-            }            
+            }
         }
         loop i: u64 = 0 while i < linenum .. ++i {
             if getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd) == -1 {
@@ -962,7 +962,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
-                }                
+                }
             }
         }
     }

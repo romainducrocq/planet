@@ -750,9 +750,9 @@ pub fn make_Type(none) *struc Type {
             if not self {
                 panic_sigabrt("alloc "                     "Type")
             }
-        }        
+        }
         (self)[]._ref_count = 1
-    }    
+    }
     self[].tag = AST_Type_t
     return self
 }
@@ -822,7 +822,7 @@ pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc T
             loop .. while 0 {
                 cast<none>((? (self[].get._FunType.param_types) then free((cast<*struc stbds_array_header>((self[].get._FunType.param_types)) - 1)) else cast<none>(0)))
                 (self[].get._FunType.param_types) = nil
-            }            
+            }
             self[].get._FunType.param_types = nil
         }
         self[].get._FunType.param_types = param_types[]
@@ -837,7 +837,7 @@ pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc T
             self[].get._FunType.ret_type = ret_type[]
             ret_type[] = nil
         }
-    }    
+    }
     self[].get._FunType.param_reg_mask = (cast<u8>(1u)) << REGISTER_MASK_SIZE
     self[].get._FunType.ret_reg_mask = (cast<u8>(1u)) << REGISTER_MASK_SIZE
     return self
@@ -855,7 +855,7 @@ pub fn make_Pointer(ref_type: **struc Type) *struc Type {
             self[].get._Pointer.ref_type = ref_type[]
             ref_type[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -872,7 +872,7 @@ pub fn make_Array(size: i64, elem_type: **struc Type) *struc Type {
             self[].get._Array.elem_type = elem_type[]
             elem_type[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -896,7 +896,7 @@ pub fn free_Type(self: **struc Type) none {
             self[] = nil
             return none
         }
-    }    
+    }
     match (self[])[].tag {
         -> AST_Type_t {
             -> AST_Char_t {
@@ -928,7 +928,7 @@ pub fn free_Type(self: **struc Type) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._FunType.param_types) then free((cast<*struc stbds_array_header>(((self[])[].get._FunType.param_types)) - 1)) else cast<none>(0)))
                 ((self[])[].get._FunType.param_types) = nil
-            }            
+            }
             (self[])[].get._FunType.param_types = nil
         }
         free_Type(@(self[])[].get._FunType.ret_type)
@@ -955,7 +955,7 @@ pub fn free_Type(self: **struc Type) none {
             free(self[])
             self[] = nil
         }
-    }    
+    }
 }
 
 pub fn make_StaticInit(none) *struc StaticInit {
@@ -969,9 +969,9 @@ pub fn make_StaticInit(none) *struc StaticInit {
             if not self {
                 panic_sigabrt("alloc "                     "StaticInit")
             }
-        }        
+        }
         (self)[]._ref_count = 1
-    }    
+    }
     self[].tag = AST_StaticInit_t
     return self
 }
@@ -1046,7 +1046,7 @@ pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: **struc CS
             self[].get._StringInit.literal = literal[]
             literal[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -1069,7 +1069,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
             self[] = nil
             return none
         }
-    }    
+    }
     match (self[])[].tag {
         -> AST_StaticInit_t {
             -> AST_IntInit_t {
@@ -1110,7 +1110,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
             free(self[])
             self[] = nil
         }
-    }    
+    }
 }
 
 pub fn make_InitialValue(none) *struc InitialValue {
@@ -1124,9 +1124,9 @@ pub fn make_InitialValue(none) *struc InitialValue {
             if not self {
                 panic_sigabrt("alloc "                     "InitialValue")
             }
-        }        
+        }
         (self)[]._ref_count = 1
-    }    
+    }
     self[].tag = AST_InitialValue_t
     return self
 }
@@ -1146,7 +1146,7 @@ pub fn make_Initial(static_inits: ***struc StaticInit) *struc InitialValue {
             loop .. while 0 {
                 cast<none>((? (self[].get._Initial.static_inits) then free((cast<*struc stbds_array_header>((self[].get._Initial.static_inits)) - 1)) else cast<none>(0)))
                 (self[].get._Initial.static_inits) = nil
-            }            
+            }
             self[].get._Initial.static_inits = nil
         }
         self[].get._Initial.static_inits = static_inits[]
@@ -1173,7 +1173,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             self[] = nil
             return none
         }
-    }    
+    }
     match (self[])[].tag {
         -> AST_InitialValue_t {
             -> AST_Tentative_t {
@@ -1189,7 +1189,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._Initial.static_inits) then free((cast<*struc stbds_array_header>(((self[])[].get._Initial.static_inits)) - 1)) else cast<none>(0)))
                 ((self[])[].get._Initial.static_inits) = nil
-            }            
+            }
             (self[])[].get._Initial.static_inits = nil
         }
         break
@@ -1207,7 +1207,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             free(self[])
             self[] = nil
         }
-    }    
+    }
 }
 
 pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
@@ -1219,7 +1219,7 @@ pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
         if not self {
             panic_sigabrt("alloc "                 "IdentifierAttr")
         }
-    }    
+    }
     self[].tag = AST_IdentifierAttr_t
     return self
 }
@@ -1245,7 +1245,7 @@ pub fn make_StaticAttr(is_glob: i32, init: **struc InitialValue) *struc Identifi
             self[].get._StaticAttr.init = init[]
             init[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -1261,7 +1261,7 @@ pub fn make_ConstantAttr(static_init: **struc StaticInit) *struc IdentifierAttr 
             self[].get._ConstantAttr.static_init = static_init[]
             static_init[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -1313,7 +1313,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
         if not self {
             panic_sigabrt("alloc "                 "Symbol")
         }
-    }    
+    }
     self[].tag = AST_Symbol_t
     self[].type_t = nil
     loop .. while 0 {
@@ -1324,7 +1324,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
             self[].type_t = type_t[]
             type_t[] = nil
         }
-    }    
+    }
     self[].attrs = nil
     if attrs[] ~= self[].attrs {
         "@MACRO@:uptr_move(IdentifierAttr, *attrs, self->attrs)"
@@ -1366,7 +1366,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
         if not self {
             panic_sigabrt("alloc "                 "StructMember")
         }
-    }    
+    }
     self[].tag = AST_StructMember_t
     self[].offset = offset
     self[].member_type = nil
@@ -1378,7 +1378,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
             self[].member_type = member_type[]
             member_type[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -1412,7 +1412,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
         if not self {
             panic_sigabrt("alloc "                 "StructTypedef")
         }
-    }    
+    }
     self[].tag = AST_StructTypedef_t
     self[].alignment = alignment
     self[].size = size
@@ -1422,7 +1422,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
             loop .. while 0 {
                 cast<none>((? (self[].member_names) then free((cast<*struc stbds_array_header>((self[].member_names)) - 1)) else cast<none>(0)))
                 (self[].member_names) = nil
-            }            
+            }
             self[].member_names = nil
         }
         self[].member_names = member_names[]
@@ -1434,7 +1434,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
             loop .. while 0 {
                 cast<none>((? (self[].members) ~= nil then stbds_hmfree_func((self[].members) - 1, sizeof((self[].members)[])) else cast<none>(0)))
                 (self[].members) = nil
-            }            
+            }
             self[].members = nil
         }
         self[].members = members[]
@@ -1460,7 +1460,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].member_names) then free((cast<*struc stbds_array_header>(((self[])[].member_names)) - 1)) else cast<none>(0)))
             ((self[])[].member_names) = nil
-        }        
+        }
         (self[])[].member_names = nil
     }
     loop i: u64 = 0 while i < (? ((self[])[].members) then (cast<*struc stbds_array_header>((((self[])[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
@@ -1470,7 +1470,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].members) ~= nil then stbds_hmfree_func(((self[])[].members) - 1, sizeof(((self[])[].members)[])) else cast<none>(0)))
             ((self[])[].members) = nil
-        }        
+        }
         (self[])[].members = nil
     }
     if self[] {

@@ -1819,7 +1819,7 @@ pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i
         name_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             struct_fmt[] = sdscat(struct_fmt[], get_name_fmt(ctx, name, @name_fmt))
-        }        
+        }
         if name_fmt {
             sdsfree(name_fmt)
             name_fmt = ? nil then sdsnew(nil) else nil
@@ -1833,13 +1833,13 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
     if ((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], "none")
-        }        
+        }
     }
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[0], @type_fmt))
-        }        
+        }
         if type_fmt {
             sdsfree(type_fmt)
             type_fmt = ? nil then sdsnew(nil) else nil
@@ -1848,12 +1848,12 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
     loop i: u64 = 1 while i < (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) .. ++i {
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], ", ")
-        }        
+        }
         {
             type_fmt: string = ? nil then sdsnew(nil) else nil
             loop .. while 0 {
                 fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[i], @type_fmt))
-            }            
+            }
             if type_fmt {
                 sdsfree(type_fmt)
                 type_fmt = ? nil then sdsnew(nil) else nil
@@ -1862,12 +1862,12 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
     }
     loop .. while 0 {
         fun_fmt[] = sdscat(fun_fmt[], ") -> ")
-    }    
+    }
     {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].ret_type, @type_fmt))
-        }        
+        }
         if type_fmt {
             sdsfree(type_fmt)
             type_fmt = ? nil then sdsnew(nil) else nil
@@ -1882,18 +1882,18 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
         ptr_type = @ptr_type[].ref_type[].get._Pointer
         loop .. while 0 {
             ptr_fmt[] = sdscat(ptr_fmt[], "*")
-        }        
+        }
     }
     if ptr_type[].ref_type[].tag == AST_Void_t {
         loop .. while 0 {
             ptr_fmt[] = sdscat(ptr_fmt[], "any")
-        }        
+        }
     }
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             ptr_fmt[] = sdscat(ptr_fmt[], get_type_fmt(ctx, ptr_type[].ref_type, @type_fmt))
-        }        
+        }
         if type_fmt {
             sdsfree(type_fmt)
             type_fmt = ? nil then sdsnew(nil) else nil
@@ -1908,7 +1908,7 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
         strto_size: string = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], strto_size)
-        }        
+        }
         if strto_size {
             sdsfree(strto_size)
             strto_size = ? nil then sdsnew(nil) else nil
@@ -1916,17 +1916,17 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
     }
     loop .. while 0 {
         arr_fmt[] = sdscat(arr_fmt[], "]")
-    }    
+    }
     loop while arr_type[].elem_type[].tag == AST_Array_t {
         arr_type = @arr_type[].elem_type[].get._Array
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], "[")
-        }        
+        }
         {
             strto_size: string = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
             loop .. while 0 {
                 arr_fmt[] = sdscat(arr_fmt[], strto_size)
-            }            
+            }
             if strto_size {
                 sdsfree(strto_size)
                 strto_size = ? nil then sdsnew(nil) else nil
@@ -1934,18 +1934,18 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
         }
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], "]")
-        }        
+        }
     }
     if arr_type[].elem_type[].tag == AST_Void_t {
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], "any")
-        }        
+        }
     }
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         loop .. while 0 {
             arr_fmt[] = sdscat(arr_fmt[], get_type_fmt(ctx, arr_type[].elem_type, @type_fmt))
-        }        
+        }
         if type_fmt {
             sdsfree(type_fmt)
             type_fmt = ? nil then sdsnew(nil) else nil

@@ -824,77 +824,77 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (39)
-                    }                
+                    }
                 }
                 break
                 -> '"' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (34)
-                    }                
+                    }
                 }
                 break
                 -> '?' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (63)
-                    }                
+                    }
                 }
                 break
                 -> '\\' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (92)
-                    }                
+                    }
                 }
                 break
                 -> 'a' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (7)
-                    }                
+                    }
                 }
                 break
                 -> 'b' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (8)
-                    }                
+                    }
                 }
                 break
                 -> 'f' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (12)
-                    }                
+                    }
                 }
                 break
                 -> 'n' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (10)
-                    }                
+                    }
                 }
                 break
                 -> 'r' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (13)
-                    }                
+                    }
                 }
                 break
                 -> 't' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (9)
-                    }                
+                    }
                 }
                 break
                 -> 'v' {
                     loop .. while 0 {
                         (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                         (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (11)
-                    }                
+                    }
                 }
                 break
                 otherwise {
@@ -906,7 +906,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
             loop .. while 0 {
                 (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                 (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (cast<i8>(str_char))
-            }            
+            }
         }
     }
 }
@@ -970,7 +970,7 @@ fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
     sprintf(byte_hex, "%.2x", cast<u32>(value))
     loop .. while 0 {
         str_hex[] = sdscat(str_hex[], byte_hex)
-    }    
+    }
 }
 
 pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
@@ -1026,76 +1026,76 @@ pub fn string_literal_to_const(string_literal: *i8) string {
             -> 39 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\047")
-                }            
+                }
             }
             break
             -> 34 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\042")
-                }            
+                }
             }
             break
             -> 63 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\077")
-                }            
+                }
             }
             break
             -> 92 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\134")
-                }            
+                }
             }
             break
             -> 7 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\007")
-                }            
+                }
             }
             break
             -> 8 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\010")
-                }            
+                }
             }
             break
             -> 12 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\014")
-                }            
+                }
             }
             break
             -> 10 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\012")
-                }            
+                }
             }
             break
             -> 13 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\013")
-                }            
+                }
             }
             break
             -> 9 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\011")
-                }            
+                }
             }
             break
             -> 11 {
                 loop .. while 0 {
                     string_const = sdscat(string_const, "\\013")
-                }            
+                }
             }
             break
             otherwise {
                 loop .. while 0 {
                     loop .. while 0 {
                         string_const = sdsgrowzero(string_const, sdslen(string_const) + 1)
-                    }                    
+                    }
                     (string_const)[sdslen(string_const) - 1] = cast<char>(byte)
-                }            
+                }
             }
             break
         }
@@ -1113,7 +1113,7 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtoi), "MSG_failed_strtoi", "", "", str_int) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     label _Lfinally
     return _errval
@@ -1129,7 +1129,7 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtou), "MSG_failed_strtou", "", "", str_uint) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     label _Lfinally
     return _errval
@@ -1145,7 +1145,7 @@ pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, v
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtod), "MSG_failed_strtod", "", "", str_dbl) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     label _Lfinally
     return _errval
