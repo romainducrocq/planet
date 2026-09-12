@@ -96,6 +96,7 @@ for PLX_FILE in $(find ${PLX_PATH}/ -name "*.plx" -type f); do
     sed -i 's|\"[[:blank:]]*\", @ARG@\"[[:blank:]]*\"|, |g' ${PLX_FILE}
     sed -i 's|@ARG@\"[[:blank:]]*\"||g' ${PLX_FILE}
     sed -i 's|\"[[:blank:]]*\"@ARG@||g' ${PLX_FILE}
+    sed -i 's|[[:space:]]*$||g' ${PLX_FILE}
 done
 
 exit 0
