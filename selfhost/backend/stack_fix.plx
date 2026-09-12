@@ -1074,7 +1074,7 @@ fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op
                 (ctx[].pseudo_stack_map) = stbds_hmput_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)
                 (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].key = (node[].name)
                 (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].value = (ctx[].stack_bytes)
-            }            
+            }
         }
     }
     pseudo_memory(ctx, node, pseudo_op)
@@ -1093,7 +1093,7 @@ fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, ps
                 (ctx[].pseudo_stack_map) = stbds_hmput_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)
                 (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].key = (node[].name)
                 (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].value = (ctx[].stack_bytes)
-            }            
+            }
         }
     }
     pseudo_mem_memory(ctx, node, pseudo_op)
@@ -1492,9 +1492,9 @@ fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) non
         loop .. while 0 {
             (? (not (ctx[].p_fix_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].capacity) then (((ctx[].p_fix_instrs[]) = stbds_arrgrowf((ctx[].p_fix_instrs[]), sizeof((ctx[].p_fix_instrs[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_fix_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length++] = (instr)
-        }        
+        }
         instr = nil
-    }    
+    }
 }
 
 fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
@@ -1602,7 +1602,7 @@ fn mov_dbl_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) n
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_Xmm14)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -1638,7 +1638,7 @@ fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     if dst ~= node[].src {
@@ -1661,7 +1661,7 @@ fn mov_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none 
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -1706,7 +1706,7 @@ fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type_src ~= asm_type {
@@ -1736,7 +1736,7 @@ fn mov_sx_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = nil
     if node[].asm_type_dst ~= asm_type {
         "@MACRO@:sptr_copy(AssemblyType, node->asm_type_dst, asm_type)"
@@ -1772,7 +1772,7 @@ fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZer
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_Byte()
     if dst ~= node[].src {
@@ -1796,7 +1796,7 @@ fn byte_zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovZero
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = nil
     if node[].asm_type_dst ~= asm_type {
         "@MACRO@:sptr_copy(AssemblyType, node->asm_type_dst, asm_type)"
@@ -1823,7 +1823,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = nil
     loop .. while 0 {
         "@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
@@ -1833,7 +1833,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = make_LongWord()
     instr_back: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1]
     free_AsmInstruction(instr_back)
@@ -1852,7 +1852,7 @@ fn zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = make_QuadWord()
     if src ~= node[].dst {
         "@MACRO@:sptr_copy(AsmOperand, src, node->dst)"
@@ -1891,7 +1891,7 @@ fn lea_to_addr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = make_QuadWord()
     if src ~= node[].dst {
         "@MACRO@:sptr_copy(AsmOperand, src, node->dst)"
@@ -1919,7 +1919,7 @@ fn cvttsd2si_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) non
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
         "@MACRO@:sptr_copy(AssemblyType, node->asm_type, asm_type)"
@@ -1952,7 +1952,7 @@ fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -1982,7 +1982,7 @@ fn cvtsi2sd_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none 
             dst = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     asm_type: *struc AssemblyType = make_BackendDouble()
     if src ~= node[].dst {
         "@MACRO@:sptr_copy(AsmOperand, src, node->dst)"
@@ -2012,7 +2012,7 @@ fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none 
             src = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_Xmm15)
     asm_type: *struc AssemblyType = make_BackendDouble()
     if dst ~= node[].dst {
@@ -2059,7 +2059,7 @@ fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) non
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     if dst ~= node[].src {
@@ -2082,7 +2082,7 @@ fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary)
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2111,7 +2111,7 @@ fn binary_imul_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none
             src = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R11)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2167,7 +2167,7 @@ fn binary_shx_from_not_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) 
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_Cx)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2250,7 +2250,7 @@ fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
             src = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_Xmm15)
     asm_type: *struc AssemblyType = make_BackendDouble()
     if dst ~= node[].dst {
@@ -2273,7 +2273,7 @@ fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     if dst ~= node[].src {
@@ -2296,7 +2296,7 @@ fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none 
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2325,7 +2325,7 @@ fn cmp_to_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
             src = node[].dst
             node[].dst = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R11)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2373,7 +2373,7 @@ fn idiv_from_imm(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2408,7 +2408,7 @@ fn div_from_imm(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = nil
     if node[].asm_type ~= asm_type {
@@ -2443,7 +2443,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
             src_reg = node[].src
             node[].src = nil
         }
-    }    
+    }
 
     asm_type_src: *struc AssemblyType = make_QuadWord()
     {
@@ -2478,7 +2478,7 @@ fn push_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmPush) none {
             src = node[].src
             node[].src = nil
         }
-    }    
+    }
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     if dst ~= node[].src {
@@ -2562,7 +2562,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
             loop .. while 0 {
                 cast<none>((? (instructions) then free((cast<*struc stbds_array_header>((instructions)) - 1)) else cast<none>(0)))
                 (instructions) = nil
-            }            
+            }
             instructions = nil
         }
         instructions = node[].instructions
@@ -2578,14 +2578,14 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
         loop .. while 0 {
             cast<none>((? (ctx[].pseudo_stack_map) ~= nil then stbds_hmfree_func((ctx[].pseudo_stack_map) - 1, sizeof((ctx[].pseudo_stack_map)[])) else cast<none>(0)))
             (ctx[].pseudo_stack_map) = nil
-        }        
+        }
         ctx[].pseudo_stack_map = nil
     }
     ctx[].p_fix_instrs = @node[].instructions
     loop .. while 0 {
         (? (not (ctx[].p_fix_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].capacity) then (((ctx[].p_fix_instrs[]) = stbds_arrgrowf((ctx[].p_fix_instrs[]), sizeof((ctx[].p_fix_instrs[])[]), (1), (0))) and 0) else 0)
         (ctx[].p_fix_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length++] = (nil)
-    }    
+    }
     is_ret: i32 = false
     push_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
     loop i: u64 = 0 while i < (? (instructions) then (cast<*struc stbds_array_header>((instructions)) - 1)[].length else 0) .. ++i {
@@ -2612,7 +2612,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
         loop .. while 0 {
             cast<none>((? (instructions) then free((cast<*struc stbds_array_header>((instructions)) - 1)) else cast<none>(0)))
             (instructions) = nil
-        }        
+        }
         instructions = nil
     }
 }
@@ -2651,7 +2651,7 @@ pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none {
         loop .. while 0 {
             cast<none>((? (ctx.pseudo_stack_map) ~= nil then stbds_hmfree_func((ctx.pseudo_stack_map) - 1, sizeof((ctx.pseudo_stack_map)[])) else cast<none>(0)))
             (ctx.pseudo_stack_map) = nil
-        }        
+        }
         ctx.pseudo_stack_map = nil
     }
 }

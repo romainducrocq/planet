@@ -357,7 +357,7 @@ fn sdsll2str(s: string, value: i64) i32 {
     loop .. while v {
         p++[] = '0' + (v % 10)
         v /= 10
-    }    
+    }
     if value < 0 {
         p++[] = '-'
     }
@@ -382,7 +382,7 @@ fn sdsull2str(s: string, v: u64) i32 {
     loop .. while v {
         p++[] = '0' + (v % 10)
         v /= 10
-    }    
+    }
     l = p - s
     p[] = 0
     p--

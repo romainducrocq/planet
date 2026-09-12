@@ -559,9 +559,9 @@ pub fn make_CConst(none) *struc CConst {
             if not self {
                 panic_sigabrt("alloc "                     "CConst")
             }
-        }        
+        }
         (self)[]._ref_count = 1
-    }    
+    }
     self[].tag = AST_CConst_t
     return self
 }
@@ -627,7 +627,7 @@ pub fn free_CConst(self: **struc CConst) none {
             self[] = nil
             return none
         }
-    }    
+    }
     match (self[])[].tag {
         -> AST_CConst_t {
             -> AST_CConstInt_t {
@@ -657,7 +657,7 @@ pub fn free_CConst(self: **struc CConst) none {
             free(self[])
             self[] = nil
         }
-    }    
+    }
 }
 
 pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
@@ -671,9 +671,9 @@ pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
             if not self {
                 panic_sigabrt("alloc "                     "CStringLiteral")
             }
-        }        
+        }
         (self)[]._ref_count = 1
-    }    
+    }
     self[].tag = AST_CStringLiteral_t
     self[].value = nil
     if value[] ~= self[].value {
@@ -681,7 +681,7 @@ pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
             loop .. while 0 {
                 cast<none>((? (self[].value) then free((cast<*struc stbds_array_header>((self[].value)) - 1)) else cast<none>(0)))
                 (self[].value) = nil
-            }            
+            }
             self[].value = nil
         }
         self[].value = value[]
@@ -702,7 +702,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
             self[] = nil
             return none
         }
-    }    
+    }
     match (self[])[].tag {
         -> AST_CStringLiteral_t {
             break
@@ -715,7 +715,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].value) then free((cast<*struc stbds_array_header>(((self[])[].value)) - 1)) else cast<none>(0)))
             ((self[])[].value) = nil
-        }        
+        }
         (self[])[].value = nil
     }
     loop .. while 0 {
@@ -725,7 +725,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
             free(self[])
             self[] = nil
         }
-    }    
+    }
 }
 
 m4_define(`Ctx', `TODO')m4_dnl
@@ -738,9 +738,9 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
                 (ctx[].hash_table) = stbds_hmput_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)
                 (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].key = (identifier)
                 (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].value = (value[])
-            }            
+            }
             value[] = nil
-        }        
+        }
     }
     else {
         if value[] {
@@ -754,12 +754,12 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     loop .. while 0 {
         name[] = sdscat(name[], ".")
-    }    
+    }
     {
         strto_uid: string = ? (ctx[].label_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].label_count))) else sdsfromlong(cast<i64>((ctx[].label_count)))
         loop .. while 0 {
             name[] = sdscat(name[], strto_uid)
-        }        
+        }
         if strto_uid {
             sdsfree(strto_uid)
             strto_uid = ? nil then sdsnew(nil) else nil
@@ -772,12 +772,12 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     loop .. while 0 {
         name[] = sdscat(name[], ".")
-    }    
+    }
     {
         strto_uid: string = ? (ctx[].var_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].var_count))) else sdsfromlong(cast<i64>((ctx[].var_count)))
         loop .. while 0 {
             name[] = sdscat(name[], strto_uid)
-        }        
+        }
         if strto_uid {
             sdsfree(strto_uid)
             strto_uid = ? nil then sdsnew(nil) else nil
@@ -790,12 +790,12 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     loop .. while 0 {
         name[] = sdscat(name[], ".")
-    }    
+    }
     {
         strto_uid: string = ? (ctx[].struct_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].struct_count))) else sdsfromlong(cast<i64>((ctx[].struct_count)))
         loop .. while 0 {
             name[] = sdscat(name[], strto_uid)
-        }        
+        }
         if strto_uid {
             sdsfree(strto_uid)
             strto_uid = ? nil then sdsnew(nil) else nil

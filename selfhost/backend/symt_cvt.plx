@@ -1117,9 +1117,9 @@ fn cvt_backend_symbol(ctx: *struc SymtCvtContext, node: *struc BackendSymbol) no
             (ctx[].backend[].symbol_table) = stbds_hmput_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((ctx[].symbol))), sizeof((ctx[].backend[].symbol_table)[].key), 0)
             (ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp].key = (ctx[].symbol)
             (ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp].value = (node)
-        }        
+        }
         node = nil
-    }    
+    }
 }
 
 fn dbl_static_const(ctx: *struc SymtCvtContext) none {
