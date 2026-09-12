@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 type struc TacProgram;
 type struc AsmProgram;
 type struc FrontEndContext;
@@ -454,11 +555,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 type struc ErrorsContext;
 pub fn dbl_to_binary(decimal: f64) u64;
 pub fn string_to_literal(str_string: string, string_literal: **i8) none;
@@ -720,9 +828,54 @@ type struc AsmProgram;
 
 type struc AsmReg(tag: i32)
 pub fn make_AsmReg(tag: i32) struc AsmReg;
+m4_define(`init_AsmReg', `TODO')m4_dnl
+m4_define(`init_AsmAx', `TODO')m4_dnl
+m4_define(`init_AsmBx', `TODO')m4_dnl
+m4_define(`init_AsmCx', `TODO')m4_dnl
+m4_define(`init_AsmDx', `TODO')m4_dnl
+m4_define(`init_AsmDi', `TODO')m4_dnl
+m4_define(`init_AsmSi', `TODO')m4_dnl
+m4_define(`init_AsmR8', `TODO')m4_dnl
+m4_define(`init_AsmR9', `TODO')m4_dnl
+m4_define(`init_AsmR10', `TODO')m4_dnl
+m4_define(`init_AsmR11', `TODO')m4_dnl
+m4_define(`init_AsmR12', `TODO')m4_dnl
+m4_define(`init_AsmR13', `TODO')m4_dnl
+m4_define(`init_AsmR14', `TODO')m4_dnl
+m4_define(`init_AsmR15', `TODO')m4_dnl
+m4_define(`init_AsmSp', `TODO')m4_dnl
+m4_define(`init_AsmBp', `TODO')m4_dnl
+m4_define(`init_AsmXMM0', `TODO')m4_dnl
+m4_define(`init_AsmXMM1', `TODO')m4_dnl
+m4_define(`init_AsmXMM2', `TODO')m4_dnl
+m4_define(`init_AsmXMM3', `TODO')m4_dnl
+m4_define(`init_AsmXMM4', `TODO')m4_dnl
+m4_define(`init_AsmXMM5', `TODO')m4_dnl
+m4_define(`init_AsmXMM6', `TODO')m4_dnl
+m4_define(`init_AsmXMM7', `TODO')m4_dnl
+m4_define(`init_AsmXMM8', `TODO')m4_dnl
+m4_define(`init_AsmXMM9', `TODO')m4_dnl
+m4_define(`init_AsmXMM10', `TODO')m4_dnl
+m4_define(`init_AsmXMM11', `TODO')m4_dnl
+m4_define(`init_AsmXMM12', `TODO')m4_dnl
+m4_define(`init_AsmXMM13', `TODO')m4_dnl
+m4_define(`init_AsmXMM14', `TODO')m4_dnl
+m4_define(`init_AsmXMM15', `TODO')m4_dnl
 
 type struc AsmCondCode(tag: i32)
 pub fn make_AsmCondCode(tag: i32) struc AsmCondCode;
+m4_define(`init_AsmCondCode', `TODO')m4_dnl
+m4_define(`init_AsmE', `TODO')m4_dnl
+m4_define(`init_AsmNE', `TODO')m4_dnl
+m4_define(`init_AsmG', `TODO')m4_dnl
+m4_define(`init_AsmGE', `TODO')m4_dnl
+m4_define(`init_AsmL', `TODO')m4_dnl
+m4_define(`init_AsmLE', `TODO')m4_dnl
+m4_define(`init_AsmA', `TODO')m4_dnl
+m4_define(`init_AsmAE', `TODO')m4_dnl
+m4_define(`init_AsmB', `TODO')m4_dnl
+m4_define(`init_AsmBE', `TODO')m4_dnl
+m4_define(`init_AsmP', `TODO')m4_dnl
 
 type struc AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32)
 
@@ -753,9 +906,24 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none;
 
 type struc AsmBinaryOp(tag: i32)
 pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp;
+m4_define(`init_AsmBinaryOp', `TODO')m4_dnl
+m4_define(`init_AsmAdd', `TODO')m4_dnl
+m4_define(`init_AsmSub', `TODO')m4_dnl
+m4_define(`init_AsmMult', `TODO')m4_dnl
+m4_define(`init_AsmDivDouble', `TODO')m4_dnl
+m4_define(`init_AsmBitAnd', `TODO')m4_dnl
+m4_define(`init_AsmBitOr', `TODO')m4_dnl
+m4_define(`init_AsmBitXor', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftRight', `TODO')m4_dnl
+m4_define(`init_AsmBitShrArithmetic', `TODO')m4_dnl
 
 type struc AsmUnaryOp(tag: i32)
 pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp;
+m4_define(`init_AsmUnaryOp', `TODO')m4_dnl
+m4_define(`init_AsmNot', `TODO')m4_dnl
+m4_define(`init_AsmNeg', `TODO')m4_dnl
+m4_define(`init_AsmShr', `TODO')m4_dnl
 
 type struc AsmMov(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
 
@@ -851,9 +1019,31 @@ type struc TacProgram;
 
 type struc TacUnaryOp(tag: i32)
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp;
+m4_define(`init_TacUnaryOp', `TODO')m4_dnl
+m4_define(`init_TacComplement', `TODO')m4_dnl
+m4_define(`init_TacNegate', `TODO')m4_dnl
+m4_define(`init_TacNot', `TODO')m4_dnl
 
 type struc TacBinaryOp(tag: i32)
 pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp;
+m4_define(`init_TacBinaryOp', `TODO')m4_dnl
+m4_define(`init_TacAdd', `TODO')m4_dnl
+m4_define(`init_TacSubtract', `TODO')m4_dnl
+m4_define(`init_TacMultiply', `TODO')m4_dnl
+m4_define(`init_TacDivide', `TODO')m4_dnl
+m4_define(`init_TacRemainder', `TODO')m4_dnl
+m4_define(`init_TacBitAnd', `TODO')m4_dnl
+m4_define(`init_TacBitOr', `TODO')m4_dnl
+m4_define(`init_TacBitXor', `TODO')m4_dnl
+m4_define(`init_TacBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_TacBitShiftRight', `TODO')m4_dnl
+m4_define(`init_TacBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_TacEqual', `TODO')m4_dnl
+m4_define(`init_TacNotEqual', `TODO')m4_dnl
+m4_define(`init_TacLessThan', `TODO')m4_dnl
+m4_define(`init_TacLessOrEqual', `TODO')m4_dnl
+m4_define(`init_TacGreaterThan', `TODO')m4_dnl
+m4_define(`init_TacGreaterOrEqual', `TODO')m4_dnl
 
 type struc TacConstant(constant: *struc CConst)
 
@@ -1718,12 +1908,14 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
                 src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
                 dst_cp: *struc AsmOperand = nil
                 if dst ~= dst_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
                     free_AsmOperand(@dst_cp)
                     dst_cp = dst
                     (dst_cp)[]._ref_count++
                 }
                 asm_type_src_cp: *struc AssemblyType = nil
                 if asm_type_src ~= asm_type_src_cp {
+                    "@MACRO@:sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)"
                     free_AssemblyType(@asm_type_src_cp)
                     asm_type_src_cp = asm_type_src
                     (asm_type_src_cp)[]._ref_count++
@@ -1734,18 +1926,21 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
                 binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
                 asm_type_shl_cp: *struc AssemblyType = nil
                 if asm_type_shl ~= asm_type_shl_cp {
+                    "@MACRO@:sptr_copy(AssemblyType, asm_type_shl, asm_type_shl_cp)"
                     free_AssemblyType(@asm_type_shl_cp)
                     asm_type_shl_cp = asm_type_shl
                     (asm_type_shl_cp)[]._ref_count++
                 }
                 src_shl_cp: *struc AsmOperand = nil
                 if src_shl ~= src_shl_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, src_shl, src_shl_cp)"
                     free_AsmOperand(@src_shl_cp)
                     src_shl_cp = src_shl
                     (src_shl_cp)[]._ref_count++
                 }
                 dst_cp: *struc AsmOperand = nil
                 if dst ~= dst_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
                     free_AsmOperand(@dst_cp)
                     dst_cp = dst
                     (dst_cp)[]._ref_count++
@@ -1758,12 +1953,14 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
             src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
             dst_cp: *struc AsmOperand = nil
             if dst ~= dst_cp {
+                "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
                 free_AsmOperand(@dst_cp)
                 dst_cp = dst
                 (dst_cp)[]._ref_count++
             }
             asm_type_src_cp: *struc AssemblyType = nil
             if asm_type_src ~= asm_type_src_cp {
+                "@MACRO@:sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)"
                 free_AssemblyType(@asm_type_src_cp)
                 asm_type_src_cp = asm_type_src
                 (asm_type_src_cp)[]._ref_count++
@@ -1774,6 +1971,7 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
             binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
             dst_cp: *struc AsmOperand = nil
             if dst ~= dst_cp {
+                "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
                 free_AsmOperand(@dst_cp)
                 dst_cp = dst
                 (dst_cp)[]._ref_count++
@@ -1958,6 +2156,7 @@ fn dbl_to_char_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToInt) non
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
@@ -1995,6 +2194,7 @@ fn dbl_to_uchar_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
@@ -2016,6 +2216,7 @@ fn dbl_to_uint_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) no
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
@@ -2044,18 +2245,21 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     {
         src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
         upper_bound_sd_cp: *struc AsmOperand = nil
         if upper_bound_sd ~= upper_bound_sd_cp {
+            "@MACRO@:sptr_copy(AsmOperand, upper_bound_sd, upper_bound_sd_cp)"
             free_AsmOperand(@upper_bound_sd_cp)
             upper_bound_sd_cp = upper_bound_sd
             (upper_bound_sd_cp)[]._ref_count++
         }
         asm_type_sd_cp: *struc AssemblyType = nil
         if asm_type_sd ~= asm_type_sd_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_sd, asm_type_sd_cp)"
             free_AssemblyType(@asm_type_sd_cp)
             asm_type_sd_cp = asm_type_sd
             (asm_type_sd_cp)[]._ref_count++
@@ -2070,18 +2274,21 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     {
         src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2093,12 +2300,14 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     {
         dst_out_of_range_sd_cp: *struc AsmOperand = nil
         if dst_out_of_range_sd ~= dst_out_of_range_sd_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_sd, dst_out_of_range_sd_cp)"
             free_AsmOperand(@dst_out_of_range_sd_cp)
             dst_out_of_range_sd_cp = dst_out_of_range_sd
             (dst_out_of_range_sd_cp)[]._ref_count++
         }
         asm_type_sd_cp: *struc AssemblyType = nil
         if asm_type_sd ~= asm_type_sd_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_sd, asm_type_sd_cp)"
             free_AssemblyType(@asm_type_sd_cp)
             asm_type_sd_cp = asm_type_sd
             (asm_type_sd_cp)[]._ref_count++
@@ -2109,6 +2318,7 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         binop_out_of_range_sd_sub: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
         dst_out_of_range_sd_cp: *struc AsmOperand = nil
         if dst_out_of_range_sd ~= dst_out_of_range_sd_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_sd, dst_out_of_range_sd_cp)"
             free_AsmOperand(@dst_out_of_range_sd_cp)
             dst_out_of_range_sd_cp = dst_out_of_range_sd
             (dst_out_of_range_sd_cp)[]._ref_count++
@@ -2118,12 +2328,14 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     {
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2158,6 +2370,7 @@ fn char_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacIntToDouble) non
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
@@ -2165,6 +2378,7 @@ fn char_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacIntToDouble) non
         asm_type_src: *struc AssemblyType = make_Byte()
         asm_type_dst_cp: *struc AssemblyType = nil
         if asm_type_dst ~= asm_type_dst_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_dst, asm_type_dst_cp)"
             free_AssemblyType(@asm_type_dst_cp)
             asm_type_dst_cp = asm_type_dst
             (asm_type_dst_cp)[]._ref_count++
@@ -2202,6 +2416,7 @@ fn uchar_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
@@ -2209,6 +2424,7 @@ fn uchar_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         asm_type_src: *struc AssemblyType = make_Byte()
         asm_type_dst_cp: *struc AssemblyType = nil
         if asm_type_dst ~= asm_type_dst_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_dst, asm_type_dst_cp)"
             free_AssemblyType(@asm_type_dst_cp)
             asm_type_dst_cp = asm_type_dst
             (asm_type_dst_cp)[]._ref_count++
@@ -2230,6 +2446,7 @@ fn uint_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) no
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
@@ -2237,6 +2454,7 @@ fn uint_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) no
         asm_type_src: *struc AssemblyType = make_LongWord()
         asm_type_dst_cp: *struc AssemblyType = nil
         if asm_type_dst ~= asm_type_dst_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_dst, asm_type_dst_cp)"
             free_AssemblyType(@asm_type_dst_cp)
             asm_type_dst_cp = asm_type_dst
             (asm_type_dst_cp)[]._ref_count++
@@ -2263,12 +2481,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         lower_bound_si: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2283,18 +2503,21 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     {
         src_cp: *struc AsmOperand = nil
         if src ~= src_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
             free_AsmOperand(@src_cp)
             src_cp = src
             (src_cp)[]._ref_count++
         }
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2306,12 +2529,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     {
         dst_out_of_range_si_cp: *struc AsmOperand = nil
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si, dst_out_of_range_si_cp)"
             free_AsmOperand(@dst_out_of_range_si_cp)
             dst_out_of_range_si_cp = dst_out_of_range_si
             (dst_out_of_range_si_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2321,18 +2546,21 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     {
         dst_out_of_range_si_cp: *struc AsmOperand = nil
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si, dst_out_of_range_si_cp)"
             free_AsmOperand(@dst_out_of_range_si_cp)
             dst_out_of_range_si_cp = dst_out_of_range_si
             (dst_out_of_range_si_cp)[]._ref_count++
         }
         dst_out_of_range_si_shr_cp: *struc AsmOperand = nil
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si_shr, dst_out_of_range_si_shr_cp)"
             free_AsmOperand(@dst_out_of_range_si_shr_cp)
             dst_out_of_range_si_shr_cp = dst_out_of_range_si_shr
             (dst_out_of_range_si_shr_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2343,12 +2571,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         unop_out_of_range_si_shr: struc AsmUnaryOp = make_AsmUnaryOp(AST_AsmShr_t)
         dst_out_of_range_si_shr_cp: *struc AsmOperand = nil
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si_shr, dst_out_of_range_si_shr_cp)"
             free_AsmOperand(@dst_out_of_range_si_shr_cp)
             dst_out_of_range_si_shr_cp = dst_out_of_range_si_shr
             (dst_out_of_range_si_shr_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2360,12 +2590,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         set_bit_si: *struc AsmOperand = make_AsmImm(1ul, true, false, false)
         dst_out_of_range_si_cp: *struc AsmOperand = nil
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si, dst_out_of_range_si_cp)"
             free_AsmOperand(@dst_out_of_range_si_cp)
             dst_out_of_range_si_cp = dst_out_of_range_si
             (dst_out_of_range_si_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2376,12 +2608,14 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         binop_out_of_range_si_or: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitOr_t)
         dst_out_of_range_si_shr_cp: *struc AsmOperand = nil
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si_shr, dst_out_of_range_si_shr_cp)"
             free_AsmOperand(@dst_out_of_range_si_shr_cp)
             dst_out_of_range_si_shr_cp = dst_out_of_range_si_shr
             (dst_out_of_range_si_shr_cp)[]._ref_count++
         }
         asm_type_si_cp: *struc AssemblyType = nil
         if asm_type_si ~= asm_type_si_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)"
             free_AssemblyType(@asm_type_si_cp)
             asm_type_si_cp = asm_type_si
             (asm_type_si_cp)[]._ref_count++
@@ -2391,6 +2625,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     {
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -2401,6 +2636,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         binop_out_of_range_sq_add: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -2481,6 +2717,7 @@ fn stack_arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacValue) none {
     {
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -2518,6 +2755,7 @@ fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, 
     {
         dst_cp: *struc AsmOperand = nil
         if dst ~= dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
             free_AsmOperand(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -2525,11 +2763,15 @@ fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, 
         push_instr(ctx, make_AsmPush(@dst_cp))
     }
     asm_type_src: *struc AssemblyType = nil
-    if asm_type[] ~= asm_type_src {
-        free_AssemblyType(@asm_type_src)
-        asm_type_src = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, asm_type_src)"
+        if asm_type[] ~= asm_type_src {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, asm_type_src)"
+            free_AssemblyType(@asm_type_src)
+            asm_type_src = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
@@ -2725,6 +2967,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
             {
                 src_cp: *struc AsmOperand = nil
                 if src ~= src_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
                     free_AsmOperand(@src_cp)
                     src_cp = src
                     (src_cp)[]._ref_count++
@@ -2732,6 +2975,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
                 dst: *struc AsmOperand = make_AsmPseudoMem(dst_name, offset)
                 asm_type_dst_cp: *struc AssemblyType = nil
                 if asm_type_dst ~= asm_type_dst_cp {
+                    "@MACRO@:sptr_copy(AssemblyType, asm_type_dst, asm_type_dst_cp)"
                     free_AssemblyType(@asm_type_dst_cp)
                     asm_type_dst_cp = asm_type_dst
                     (asm_type_dst_cp)[]._ref_count++
@@ -2742,18 +2986,21 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
                 binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftRight_t)
                 src_shr2op_cp: *struc AsmOperand = nil
                 if src_shr2op ~= src_shr2op_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, src_shr2op, src_shr2op_cp)"
                     free_AsmOperand(@src_shr2op_cp)
                     src_shr2op_cp = src_shr2op
                     (src_shr2op_cp)[]._ref_count++
                 }
                 src_cp: *struc AsmOperand = nil
                 if src ~= src_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
                     free_AsmOperand(@src_cp)
                     src_cp = src
                     (src_cp)[]._ref_count++
                 }
                 asm_type_shr2op_cp: *struc AssemblyType = nil
                 if asm_type_shr2op ~= asm_type_shr2op_cp {
+                    "@MACRO@:sptr_copy(AssemblyType, asm_type_shr2op, asm_type_shr2op_cp)"
                     free_AssemblyType(@asm_type_shr2op_cp)
                     asm_type_shr2op_cp = asm_type_shr2op
                     (asm_type_shr2op_cp)[]._ref_count++
@@ -2765,6 +3012,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
         {
             src_cp: *struc AsmOperand = nil
             if src ~= src_cp {
+                "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
                 free_AsmOperand(@src_cp)
                 src_cp = src
                 (src_cp)[]._ref_count++
@@ -2772,6 +3020,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
             dst: *struc AsmOperand = make_AsmPseudoMem(dst_name, offset)
             asm_type_dst_cp: *struc AssemblyType = nil
             if asm_type_dst ~= asm_type_dst_cp {
+                "@MACRO@:sptr_copy(AssemblyType, asm_type_dst, asm_type_dst_cp)"
                 free_AssemblyType(@asm_type_dst_cp)
                 asm_type_dst_cp = asm_type_dst
                 (asm_type_dst_cp)[]._ref_count++
@@ -2782,6 +3031,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
             binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftRight_t)
             src_cp: *struc AsmOperand = nil
             if src ~= src_cp {
+                "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
                 free_AsmOperand(@src_cp)
                 src_cp = src
                 (src_cp)[]._ref_count++
@@ -2893,6 +3143,7 @@ fn zero_xmm_reg_instr(ctx: *struc AsmGenContext) none {
     src: *struc AsmOperand = gen_register(REG_Xmm0)
     src_cp: *struc AsmOperand = nil
     if src ~= src_cp {
+        "@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
         free_AsmOperand(@src_cp)
         src_cp = src
         (src_cp)[]._ref_count++
@@ -2909,12 +3160,14 @@ fn unop_int_arithmetic_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) n
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
         asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)"
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
             (asm_type_src_cp)[]._ref_count++
@@ -2936,12 +3189,14 @@ fn unop_dbl_neg_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
         src1: *struc AsmOperand = gen_op(ctx, node[].src)
         src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src1_dst, src1_dst_cp)"
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -2973,6 +3228,7 @@ fn unop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
         src: *struc AsmOperand = gen_op(ctx, node[].src)
         imm_zero_cp: *struc AsmOperand = nil
         if imm_zero ~= imm_zero_cp {
+            "@MACRO@:sptr_copy(AsmOperand, imm_zero, imm_zero_cp)"
             free_AsmOperand(@imm_zero_cp)
             imm_zero_cp = imm_zero
             (imm_zero_cp)[]._ref_count++
@@ -2984,6 +3240,7 @@ fn unop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
     {
         cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, cmp_dst, cmp_dst_cp)"
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
             (cmp_dst_cp)[]._ref_count++
@@ -3011,6 +3268,7 @@ fn unop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
         imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, cmp_dst, cmp_dst_cp)"
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
             (cmp_dst_cp)[]._ref_count++
@@ -3066,12 +3324,14 @@ fn binop_arithmetic_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
         src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src1_dst, src1_dst_cp)"
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3094,12 +3354,14 @@ fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
         src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src1_dst, src1_dst_cp)"
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3110,6 +3372,7 @@ fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
     {
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3120,6 +3383,7 @@ fn signed_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3140,12 +3404,14 @@ fn unsigned_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none
         src1: *struc AsmOperand = gen_op(ctx, node[].src1)
         src1_dst_cp: *struc AsmOperand = nil
         if src1_dst ~= src1_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src1_dst, src1_dst_cp)"
             free_AsmOperand(@src1_dst_cp)
             src1_dst_cp = src1_dst
             (src1_dst_cp)[]._ref_count++
         }
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3158,6 +3424,7 @@ fn unsigned_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none
         imm_zero_dst: *struc AsmOperand = gen_register(REG_Dx)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3168,6 +3435,7 @@ fn unsigned_divide_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3199,6 +3467,7 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
         src1_dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3209,6 +3478,7 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
     {
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3219,6 +3489,7 @@ fn signed_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) non
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3241,6 +3512,7 @@ fn unsigned_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) n
         src1_dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3252,12 +3524,14 @@ fn unsigned_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) n
         imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         dst_src_cp: *struc AsmOperand = nil
         if dst_src ~= dst_src_cp {
+            "@MACRO@:sptr_copy(AsmOperand, dst_src, dst_src_cp)"
             free_AsmOperand(@dst_src_cp)
             dst_src_cp = dst_src
             (dst_src_cp)[]._ref_count++
         }
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3268,6 +3542,7 @@ fn unsigned_remainder_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) n
         src2: *struc AsmOperand = gen_op(ctx, node[].src2)
         asm_type_src1_cp: *struc AssemblyType = nil
         if asm_type_src1 ~= asm_type_src1_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src1, asm_type_src1_cp)"
             free_AssemblyType(@asm_type_src1_cp)
             asm_type_src1_cp = asm_type_src1
             (asm_type_src1_cp)[]._ref_count++
@@ -3302,6 +3577,7 @@ fn binop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
         imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, cmp_dst, cmp_dst_cp)"
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
             (cmp_dst_cp)[]._ref_count++
@@ -3336,6 +3612,7 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
         imm_zero: *struc AsmOperand = make_AsmImm(0ul, true, false, false)
         cmp_dst_cp: *struc AsmOperand = nil
         if cmp_dst ~= cmp_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, cmp_dst, cmp_dst_cp)"
             free_AsmOperand(@cmp_dst_cp)
             cmp_dst_cp = cmp_dst
             (cmp_dst_cp)[]._ref_count++
@@ -3354,6 +3631,7 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
             {
                 cmp_dst_cp: *struc AsmOperand = nil
                 if cmp_dst ~= cmp_dst_cp {
+                    "@MACRO@:sptr_copy(AsmOperand, cmp_dst, cmp_dst_cp)"
                     free_AsmOperand(@cmp_dst_cp)
                     cmp_dst_cp = cmp_dst
                     (cmp_dst_cp)[]._ref_count++
@@ -3647,6 +3925,7 @@ fn scalar_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) n
         dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)"
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
             (asm_type_src_cp)[]._ref_count++
@@ -3675,6 +3954,7 @@ fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) non
         dst: *struc AsmOperand = gen_register(REG_Ax)
         asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)"
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
             (asm_type_src_cp)[]._ref_count++
@@ -3686,12 +3966,14 @@ fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) non
         src: *struc AsmOperand = gen_op(ctx, node[].idx)
         src_dst_cp: *struc AsmOperand = nil
         if src_dst ~= src_dst_cp {
+            "@MACRO@:sptr_copy(AsmOperand, src_dst, src_dst_cp)"
             free_AsmOperand(@src_dst_cp)
             src_dst_cp = src_dst
             (src_dst_cp)[]._ref_count++
         }
         asm_type_src_cp: *struc AssemblyType = nil
         if asm_type_src ~= asm_type_src_cp {
+            "@MACRO@:sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)"
             free_AssemblyType(@asm_type_src_cp)
             asm_type_src_cp = asm_type_src
             (asm_type_src_cp)[]._ref_count++
@@ -4248,6 +4530,7 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
     loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
         static_init: *struc StaticInit = nil
         if node[].static_inits[i] ~= static_init {
+            "@MACRO@:sptr_copy(StaticInit, node->static_inits[i], static_init)"
             free_StaticInit(@static_init)
             static_init = node[].static_inits[i]
             (static_init)[]._ref_count++
@@ -4285,6 +4568,7 @@ fn gen_static_const_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticCons
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_init: *struc StaticInit = nil
     if node[].static_init ~= static_init {
+        "@MACRO@:sptr_copy(StaticInit, node->static_init, static_init)"
         free_StaticInit(@static_init)
         static_init = node[].static_init
         (static_init)[]._ref_count++

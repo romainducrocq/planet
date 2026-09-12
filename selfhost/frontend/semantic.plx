@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 m4_define(`TIdentifier', `TODO')m4_dnl
 m4_define(`TChar', `TODO')m4_dnl
 m4_define(`TInt', `TODO')m4_dnl
@@ -641,12 +742,34 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string;
 pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string) string;
 pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string) string;
+m4_define(`str_get_fmt', `TODO')m4_dnl
+m4_define(`str_fmt_tok', `TODO')m4_dnl
+m4_define(`str_fmt_name', `TODO')m4_dnl
+m4_define(`str_fmt_struct_name', `TODO')m4_dnl
+m4_define(`str_fmt_fun', `TODO')m4_dnl
+m4_define(`str_fmt_ptr', `TODO')m4_dnl
+m4_define(`str_fmt_arr', `TODO')m4_dnl
+m4_define(`str_fmt_struct', `TODO')m4_dnl
+m4_define(`str_fmt_type', `TODO')m4_dnl
 pub fn get_fatal_msg(msg: i32) string;
 pub fn get_arg_msg(msg: i32) string;
 pub fn get_util_msg(msg: i32) string;
 pub fn get_lexer_msg(msg: i32) string;
 pub fn get_parser_msg(msg: i32) string;
 pub fn get_semantic_msg(msg: i32) string;
+m4_define(`GET_MESSAGE', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_0', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_1', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_2', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_3', `TODO')m4_dnl
+m4_define(`GET_FATAL_MSG', `TODO')m4_dnl
+m4_define(`GET_ARG_MSG', `TODO')m4_dnl
+m4_define(`GET_UTIL_MSG', `TODO')m4_dnl
+m4_define(`GET_LEXER_MSG', `TODO')m4_dnl
+m4_define(`GET_PARSER_MSG', `TODO')m4_dnl
+m4_define(`GET_SEMANTIC_MSG', `TODO')m4_dnl
+m4_define(`STRINGIFY', `TODO')m4_dnl
+m4_define(`GET_VERSION', `TODO')m4_dnl
 m4_define(`GCC_VERSION', `TODO')m4_dnl
 m4_define(`CLANG_VERSION', `TODO')m4_dnl
 m4_define(`LABEL_KIND', `TODO')m4_dnl
@@ -690,11 +813,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 type struc CProgram;
 type struc ErrorsContext;
 type struc FrontEndContext;
@@ -930,9 +1060,35 @@ type struc CProgram;
 
 type struc CUnaryOp(tag: i32)
 pub fn make_CUnaryOp(tag: i32) struc CUnaryOp;
+m4_define(`init_CUnaryOp', `TODO')m4_dnl
+m4_define(`init_CComplement', `TODO')m4_dnl
+m4_define(`init_CNegate', `TODO')m4_dnl
+m4_define(`init_CNot', `TODO')m4_dnl
+m4_define(`init_CPrefix', `TODO')m4_dnl
+m4_define(`init_CPostfix', `TODO')m4_dnl
 
 type struc CBinaryOp(tag: i32)
 pub fn make_CBinaryOp(tag: i32) struc CBinaryOp;
+m4_define(`init_CBinaryOp', `TODO')m4_dnl
+m4_define(`init_CAdd', `TODO')m4_dnl
+m4_define(`init_CSubtract', `TODO')m4_dnl
+m4_define(`init_CMultiply', `TODO')m4_dnl
+m4_define(`init_CDivide', `TODO')m4_dnl
+m4_define(`init_CRemainder', `TODO')m4_dnl
+m4_define(`init_CBitAnd', `TODO')m4_dnl
+m4_define(`init_CBitOr', `TODO')m4_dnl
+m4_define(`init_CBitXor', `TODO')m4_dnl
+m4_define(`init_CBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_CBitShiftRight', `TODO')m4_dnl
+m4_define(`init_CBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_CAnd', `TODO')m4_dnl
+m4_define(`init_COr', `TODO')m4_dnl
+m4_define(`init_CEqual', `TODO')m4_dnl
+m4_define(`init_CNotEqual', `TODO')m4_dnl
+m4_define(`init_CLessThan', `TODO')m4_dnl
+m4_define(`init_CLessOrEqual', `TODO')m4_dnl
+m4_define(`init_CGreaterThan', `TODO')m4_dnl
+m4_define(`init_CGreaterOrEqual', `TODO')m4_dnl
 
 type struc CAbstractPointer(abstract_decltor: *struc CAbstractDeclarator)
 
@@ -1111,6 +1267,9 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none;
 
 type struc CStorageClass(tag: i32)
 pub fn make_CStorageClass(tag: i32) struc CStorageClass;
+m4_define(`init_CStorageClass', `TODO')m4_dnl
+m4_define(`init_CStatic', `TODO')m4_dnl
+m4_define(`init_CExtern', `TODO')m4_dnl
 
 type struc CSingleInit(exp: *struc CExp, _base: *struc CInitializer)
 
@@ -1346,6 +1505,7 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32;
 fn is_valid_ptr(ctx: *struc SemanticContext, ptr_type: *struc Pointer) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, ptr_type->ref_type))"
         _errval = is_valid_type(ctx, ptr_type[].ref_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1361,12 +1521,14 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
     _errval: i32 = 0
     if not is_type_complete(ctx, arr_type[].elem_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_arr), "MSG_incomplete_arr", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, arr_type[].elem_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, arr_type->elem_type))"
         _errval = is_valid_type(ctx, arr_type[].elem_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1389,6 +1551,7 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     match type_t[].tag {
         -> AST_Pointer_t {
             loop .. while 0 {
+                "@MACRO@:TRY(is_valid_ptr(ctx, &type_t->get._Pointer))"
                 _errval = is_valid_ptr(ctx, @type_t[].get._Pointer)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -1398,6 +1561,7 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         break
         -> AST_Array_t {
             loop .. while 0 {
+                "@MACRO@:TRY(is_valid_arr(ctx, &type_t->get._Array))"
                 _errval = is_valid_arr(ctx, @type_t[].get._Array)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -1550,36 +1714,53 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
     joint_type: *struc Type = nil
     if is_type_char(node_1[].exp_type) {
         exp_type: *struc Type = nil
-        if node_1[].exp_type ~= exp_type {
-            free_Type(@exp_type)
-            exp_type = node_1[].exp_type
-            node_1[].exp_type = nil
-        }
+        loop .. while 0 {
+            "@MACRO@:sptr_move(Type, node_1->exp_type, exp_type)"
+            if node_1[].exp_type ~= exp_type {
+                "@MACRO@:uptr_move(Type, node_1->exp_type, exp_type)"
+                free_Type(@exp_type)
+                exp_type = node_1[].exp_type
+                node_1[].exp_type = nil
+            }
+        }        
         node_1[].exp_type = make_Int()
         joint_type = get_joint_type(node_1, node_2)
-        if exp_type ~= node_1[].exp_type {
-            free_Type(@node_1[].exp_type)
-            node_1[].exp_type = exp_type
-            exp_type = nil
-        }
+        loop .. while 0 {
+            "@MACRO@:sptr_move(Type, exp_type, node_1->exp_type)"
+            if exp_type ~= node_1[].exp_type {
+                "@MACRO@:uptr_move(Type, exp_type, node_1->exp_type)"
+                free_Type(@node_1[].exp_type)
+                node_1[].exp_type = exp_type
+                exp_type = nil
+            }
+        }        
     }
     elif is_type_char(node_2[].exp_type) {
         exp_type: *struc Type = nil
-        if node_2[].exp_type ~= exp_type {
-            free_Type(@exp_type)
-            exp_type = node_2[].exp_type
-            node_2[].exp_type = nil
-        }
+        loop .. while 0 {
+            "@MACRO@:sptr_move(Type, node_2->exp_type, exp_type)"
+            if node_2[].exp_type ~= exp_type {
+                "@MACRO@:uptr_move(Type, node_2->exp_type, exp_type)"
+                free_Type(@exp_type)
+                exp_type = node_2[].exp_type
+                node_2[].exp_type = nil
+            }
+        }        
         node_2[].exp_type = make_Int()
         joint_type = get_joint_type(node_1, node_2)
-        if exp_type ~= node_2[].exp_type {
-            free_Type(@node_2[].exp_type)
-            node_2[].exp_type = exp_type
-            exp_type = nil
-        }
+        loop .. while 0 {
+            "@MACRO@:sptr_move(Type, exp_type, node_2->exp_type)"
+            if exp_type ~= node_2[].exp_type {
+                "@MACRO@:uptr_move(Type, exp_type, node_2->exp_type)"
+                free_Type(@node_2[].exp_type)
+                node_2[].exp_type = exp_type
+                exp_type = nil
+            }
+        }        
     }
     elif is_same_type(node_1[].exp_type, node_2[].exp_type) {
         if node_1[].exp_type ~= joint_type {
+            "@MACRO@:sptr_copy(Type, node_1->exp_type, joint_type)"
             free_Type(@joint_type)
             joint_type = node_1[].exp_type
             (joint_type)[]._ref_count++
@@ -1594,6 +1775,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
         if type_size_1 == type_size_2 {
             if is_type_signed(node_1[].exp_type) {
                 if node_2[].exp_type ~= joint_type {
+                    "@MACRO@:sptr_copy(Type, node_2->exp_type, joint_type)"
                     free_Type(@joint_type)
                     joint_type = node_2[].exp_type
                     (joint_type)[]._ref_count++
@@ -1601,6 +1783,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
             }
             else {
                 if node_1[].exp_type ~= joint_type {
+                    "@MACRO@:sptr_copy(Type, node_1->exp_type, joint_type)"
                     free_Type(@joint_type)
                     joint_type = node_1[].exp_type
                     (joint_type)[]._ref_count++
@@ -1609,6 +1792,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
         }
         elif type_size_1 > type_size_2 {
             if node_1[].exp_type ~= joint_type {
+                "@MACRO@:sptr_copy(Type, node_1->exp_type, joint_type)"
                 free_Type(@joint_type)
                 joint_type = node_1[].exp_type
                 (joint_type)[]._ref_count++
@@ -1616,6 +1800,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
         }
         else {
             if node_2[].exp_type ~= joint_type {
+                "@MACRO@:sptr_copy(Type, node_2->exp_type, joint_type)"
                 free_Type(@joint_type)
                 joint_type = node_2[].exp_type
                 (joint_type)[]._ref_count++
@@ -1631,6 +1816,7 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     _errval: i32 = 0
     if is_same_type(node_1[].exp_type, node_2[].exp_type) {
         if node_1[].exp_type ~= joint_type[] {
+            "@MACRO@:sptr_copy(Type, node_1->exp_type, *joint_type)"
             free_Type(@joint_type[])
             joint_type[] = node_1[].exp_type
             (joint_type[])[]._ref_count++
@@ -1638,6 +1824,7 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     }
     elif node_1[].tag == AST_CConstant_t and is_const_null_ptr(@node_1[].get._CConstant) {
         if node_2[].exp_type ~= joint_type[] {
+            "@MACRO@:sptr_copy(Type, node_2->exp_type, *joint_type)"
             free_Type(@joint_type[])
             joint_type[] = node_2[].exp_type
             (joint_type[])[]._ref_count++
@@ -1645,6 +1832,7 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     }
     elif (node_2[].tag == AST_CConstant_t and is_const_null_ptr(@node_2[].get._CConstant)) or (node_1[].exp_type[].tag == AST_Pointer_t and node_1[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and node_2[].exp_type[].tag == AST_Pointer_t) {
         if node_1[].exp_type ~= joint_type[] {
+            "@MACRO@:sptr_copy(Type, node_1->exp_type, *joint_type)"
             free_Type(@joint_type[])
             joint_type[] = node_1[].exp_type
             (joint_type[])[]._ref_count++
@@ -1652,6 +1840,7 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     }
     elif node_2[].exp_type[].tag == AST_Pointer_t and node_2[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and node_1[].exp_type[].tag == AST_Pointer_t {
         if node_2[].exp_type ~= joint_type[] {
+            "@MACRO@:sptr_copy(Type, node_2->exp_type, *joint_type)"
             free_Type(@joint_type[])
             joint_type[] = node_2[].exp_type
             (joint_type[])[]._ref_count++
@@ -1659,6 +1848,7 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node_1->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_joint_ptr_mismatch), "MSG_joint_ptr_mismatch", "", get_type_fmt(ctx[].identifiers, node_1[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node_2[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node_1[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -1958,12 +2148,14 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     var_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
     if var_type[].tag == AST_FunType_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_fun_used_as_var), "MSG_fun_used_as_var", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if var_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, var_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = var_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -1982,6 +2174,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     _errval: i32 = 0
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, node->target_type))"
         _errval = reslv_struct_type(ctx, node[].target_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1989,18 +2182,21 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     }    
     if node[].target_type[].tag ~= AST_Void_t and ((node[].exp[].exp_type[].tag == AST_Double_t and node[].target_type[].tag == AST_Pointer_t) or (node[].exp[].exp_type[].tag == AST_Pointer_t and node[].target_type[].tag == AST_Double_t) or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type)) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_illegal_cast), "MSG_illegal_cast", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, node->target_type))"
         _errval = is_valid_type(ctx, node[].target_type)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     if node[].target_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, node->target_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = node[].target_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -2022,12 +2218,14 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CE
     _errval: i32 = 0
     info_at: u64 = (exp[])[].info_at
     if exp_type[] ~= exp_type_cp {
+        "@MACRO@:sptr_copy(Type, *exp_type, exp_type_cp)"
         free_Type(@exp_type_cp)
         exp_type_cp = exp_type[]
         (exp_type_cp)[]._ref_count++
     }
     exp[] = make_CCast(exp, @exp_type_cp, info_at)
     loop .. while 0 {
+        "@MACRO@:TRY(check_cast_exp(ctx, &(*exp)->get._CCast))"
         _errval = check_cast_exp(ctx, @(exp[])[].get._CCast)
         if _errval ~= 0 {
             jump _Lfinally
@@ -2044,6 +2242,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
     _errval: i32 = 0
     if (is_type_arithmetic((exp[])[].exp_type) and is_type_arithmetic(exp_type[])) or ((exp[])[].tag == AST_CConstant_t and (exp_type[])[].tag == AST_Pointer_t and is_const_null_ptr(@(exp[])[].get._CConstant)) or ((exp_type[])[].tag == AST_Pointer_t and (exp_type[])[].get._Pointer.ref_type[].tag == AST_Void_t and (exp[])[].exp_type[].tag == AST_Pointer_t) or ((exp[])[].exp_type[].tag == AST_Pointer_t and (exp[])[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and (exp_type[])[].tag == AST_Pointer_t) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, exp_type, exp))"
             _errval = cast_exp(ctx, exp_type, exp)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2052,6 +2251,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*exp)->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_illegal_cast), "MSG_illegal_cast", "", get_type_fmt(ctx[].identifiers, (exp[])[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, exp_type[], @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, (exp[])[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2074,6 +2274,7 @@ fn promote_char_to_int(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
     _errval: i32 = 0
     promote_type = make_Int()
     loop .. while 0 {
+        "@MACRO@:TRY(cast_exp(ctx, &promote_type, exp))"
         _errval = cast_exp(ctx, @promote_type, exp)
         if _errval ~= 0 {
             jump _Lfinally
@@ -2089,6 +2290,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2097,6 +2299,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     match node[].exp[].exp_type[].tag {
         -> AST_Double_t {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -2106,6 +2309,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
             -> AST_SChar_t {
                 -> AST_UChar_t {
                     loop .. while 0 {
+                        "@MACRO@:TRY(promote_char_to_int(ctx, &node->exp))"
                         _errval = promote_char_to_int(ctx, @node[].exp)
                         if _errval ~= 0 {
                             jump _Lfinally
@@ -2120,6 +2324,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
         }
     }
     if node[].exp[].exp_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, node->exp->exp_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = node[].exp[].exp_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -2137,6 +2342,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2147,6 +2353,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
             -> AST_SChar_t {
                 -> AST_UChar_t {
                     loop .. while 0 {
+                        "@MACRO@:TRY(promote_char_to_int(ctx, &node->exp))"
                         _errval = promote_char_to_int(ctx, @node[].exp)
                         if _errval ~= 0 {
                             jump _Lfinally
@@ -2161,6 +2368,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         }
     }
     if node[].exp[].exp_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, node->exp->exp_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = node[].exp[].exp_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -2178,6 +2386,7 @@ fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     _errval: i32 = 0
     if not is_type_scalar(node[].exp[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2197,6 +2406,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     match node[].unop.tag {
         -> AST_CComplement_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_unary_complement_exp(ctx, node))"
                 _errval = check_unary_complement_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2206,6 +2416,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         break
         -> AST_CNegate_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_unary_neg_exp(ctx, node))"
                 _errval = check_unary_neg_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2215,6 +2426,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         break
         -> AST_CNot_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_unary_not_exp(ctx, node))"
                 _errval = check_unary_not_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2242,6 +2454,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         common_type = make_Long()
         if not is_same_type(node[].exp_right[].exp_type, common_type) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
                 _errval = cast_exp(ctx, @common_type, @node[].exp_right)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2249,6 +2462,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             }            
         }
         if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = node[].exp_left[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
@@ -2259,6 +2473,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         common_type = make_Long()
         if not is_same_type(node[].exp_left[].exp_type, common_type) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
                 _errval = cast_exp(ctx, @common_type, @node[].exp_left)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2266,6 +2481,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             }            
         }
         if node[].exp_right[].exp_type ~= node[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->exp_right->exp_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = node[].exp_right[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
@@ -2274,6 +2490,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2281,6 +2498,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2289,17 +2507,22 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
     }
-    if common_type ~= node[]._base[].exp_type {
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = common_type
-        common_type = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
+        if common_type ~= node[]._base[].exp_type {
+            "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
+            free_Type(@node[]._base[].exp_type)
+            node[]._base[].exp_type = common_type
+            common_type = nil
+        }
+    }    
     label _Lfinally
     if type_fmt_1 {
         sdsfree(type_fmt_1)
@@ -2326,6 +2549,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
             common_type = make_Long()
             if not is_same_type(node[].exp_right[].exp_type, common_type) {
                 loop .. while 0 {
+                    "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
                     _errval = cast_exp(ctx, @common_type, @node[].exp_right)
                     if _errval ~= 0 {
                         jump _Lfinally
@@ -2333,6 +2557,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
                 }                
             }
             if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
+                "@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
                 free_Type(@node[]._base[].exp_type)
                 node[]._base[].exp_type = node[].exp_left[].exp_type
                 (node[]._base[].exp_type)[]._ref_count++
@@ -2341,15 +2566,20 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
         elif is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) and not (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) {
             common_type = make_Long()
-            if common_type ~= node[]._base[].exp_type {
-                free_Type(@node[]._base[].exp_type)
-                node[]._base[].exp_type = common_type
-                common_type = nil
-            }
+            loop .. while 0 {
+                "@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
+                if common_type ~= node[]._base[].exp_type {
+                    "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
+                    free_Type(@node[]._base[].exp_type)
+                    node[]._base[].exp_type = common_type
+                    common_type = nil
+                }
+            }            
             jump _Lfinally
         }
         else {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -2358,6 +2588,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2365,6 +2596,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2373,17 +2605,22 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
     }
-    if common_type ~= node[]._base[].exp_type {
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = common_type
-        common_type = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
+        if common_type ~= node[]._base[].exp_type {
+            "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
+            free_Type(@node[]._base[].exp_type)
+            node[]._base[].exp_type = common_type
+            common_type = nil
+        }
+    }    
     label _Lfinally
     if type_fmt_1 {
         sdsfree(type_fmt_1)
@@ -2404,6 +2641,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2412,6 +2650,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2420,17 +2659,22 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
     }
-    if common_type ~= node[]._base[].exp_type {
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = common_type
-        common_type = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
+        if common_type ~= node[]._base[].exp_type {
+            "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
+            free_Type(@node[]._base[].exp_type)
+            node[]._base[].exp_type = common_type
+            common_type = nil
+        }
+    }    
     label _Lfinally
     if type_fmt_1 {
         sdsfree(type_fmt_1)
@@ -2451,6 +2695,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2459,6 +2704,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2467,19 +2713,25 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
     }
-    if common_type ~= node[]._base[].exp_type {
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = common_type
-        common_type = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
+        if common_type ~= node[]._base[].exp_type {
+            "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
+            free_Type(@node[]._base[].exp_type)
+            node[]._base[].exp_type = common_type
+            common_type = nil
+        }
+    }    
     if node[]._base[].exp_type[].tag == AST_Double_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_op), "MSG_invalid_binary_op", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2504,6 +2756,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_int(node[].exp_right[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2511,6 +2764,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     elif is_type_char(node[].exp_left[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(promote_char_to_int(ctx, &node->exp_left))"
             _errval = promote_char_to_int(ctx, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2519,6 +2773,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &node->exp_left->exp_type, &node->exp_right))"
             _errval = cast_exp(ctx, @node[].exp_left[].exp_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2526,12 +2781,14 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }        
     }
     if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = node[].exp_left[].exp_type
         (node[]._base[].exp_type)[]._ref_count++
     }
     if node[]._base[].exp_type[].tag == AST_Double_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_op), "MSG_invalid_binary_op", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2552,6 +2809,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_bitshift_right_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(check_binary_bitshift_exp(ctx, node))"
         _errval = check_binary_bitshift_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -2570,6 +2828,7 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2595,6 +2854,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     _errval: i32 = 0
     if node[].exp_left[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
         loop .. while 0 {
+            "@MACRO@:TRY(get_joint_ptr_type(ctx, node->exp_left, node->exp_right, &common_type))"
             _errval = get_joint_ptr_type(ctx, node[].exp_left, node[].exp_right, @common_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2606,6 +2866,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2613,6 +2874,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2621,6 +2883,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2648,6 +2911,7 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2656,6 +2920,7 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2664,6 +2929,7 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2689,6 +2955,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     match node[].binop.tag {
         -> AST_CAdd_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_binary_add_exp(ctx, node))"
                 _errval = check_binary_add_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2698,6 +2965,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         break
         -> AST_CSubtract_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_binary_subtract_exp(ctx, node))"
                 _errval = check_binary_subtract_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2708,6 +2976,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         -> AST_CMultiply_t {
             -> AST_CDivide_t {
                 loop .. while 0 {
+                    "@MACRO@:TRY(check_multiply_divide_exp(ctx, node))"
                     _errval = check_multiply_divide_exp(ctx, node)
                     if _errval ~= 0 {
                         jump _Lfinally
@@ -2721,6 +2990,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
                 -> AST_CBitOr_t {
                     -> AST_CBitXor_t {
                         loop .. while 0 {
+                            "@MACRO@:TRY(check_remainder_bitwise_exp(ctx, node))"
                             _errval = check_remainder_bitwise_exp(ctx, node)
                             if _errval ~= 0 {
                                 jump _Lfinally
@@ -2733,6 +3003,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         break
         -> AST_CBitShiftLeft_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_binary_bitshift_exp(ctx, node))"
                 _errval = check_binary_bitshift_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2742,6 +3013,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         break
         -> AST_CBitShiftRight_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_bitshift_right_exp(ctx, node))"
                 _errval = check_bitshift_right_exp(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2752,6 +3024,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         -> AST_CAnd_t {
             -> AST_COr_t {
                 loop .. while 0 {
+                    "@MACRO@:TRY(check_binary_logical_exp(ctx, node))"
                     _errval = check_binary_logical_exp(ctx, node)
                     if _errval ~= 0 {
                         jump _Lfinally
@@ -2763,6 +3036,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         -> AST_CEqual_t {
             -> AST_CNotEqual_t {
                 loop .. while 0 {
+                    "@MACRO@:TRY(check_binary_equality_exp(ctx, node))"
                     _errval = check_binary_equality_exp(ctx, node)
                     if _errval ~= 0 {
                         jump _Lfinally
@@ -2776,6 +3050,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
                 -> AST_CGreaterThan_t {
                     -> AST_CGreaterOrEqual_t {
                         loop .. while 0 {
+                            "@MACRO@:TRY(check_binary_relational_exp(ctx, node))"
                             _errval = check_binary_relational_exp(ctx, node)
                             if _errval ~= 0 {
                                 jump _Lfinally
@@ -2799,6 +3074,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
     if node[].exp_left {
         if node[].exp_left[].exp_type[].tag == AST_Void_t {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_assign_to_void), "MSG_assign_to_void", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -2806,6 +3082,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
         }
         elif not is_exp_lvalue(node[].exp_left) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_assign_to_rvalue), "MSG_assign_to_rvalue", "", "", get_assign_fmt(nil, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -2813,6 +3090,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
         }
         elif not is_same_type(node[].exp_right[].exp_type, node[].exp_left[].exp_type) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_assign(ctx, &node->exp_left->exp_type, &node->exp_right))"
                 _errval = cast_assign(ctx, @node[].exp_left[].exp_type, @node[].exp_right)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2820,6 +3098,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
             }            
         }
         if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = node[].exp_left[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
@@ -2832,6 +3111,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
         }
         if not is_exp_lvalue(exp_left) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_assign_to_rvalue), "MSG_assign_to_rvalue", "", "", get_assign_fmt(@node[].exp_right[].get._CBinary.binop, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -2839,6 +3119,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
         }
         elif not is_same_type(node[].exp_right[].exp_type, exp_left[].exp_type) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_assign(ctx, &exp_left->exp_type, &node->exp_right))"
                 _errval = cast_assign(ctx, @exp_left[].exp_type, @node[].exp_right)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2846,6 +3127,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
             }            
         }
         if exp_left[].exp_type ~= node[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, exp_left->exp_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = exp_left[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
@@ -2862,6 +3144,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     _errval: i32 = 0
     if not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_condition), "MSG_invalid_condition", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2869,6 +3152,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Void_t and node[].exp_right[].exp_type[].tag == AST_Void_t {
         if node[].exp_middle[].exp_type ~= node[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->exp_middle->exp_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = node[].exp_middle[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
@@ -2878,12 +3162,14 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     elif node[].exp_middle[].exp_type[].tag == AST_Structure_t or node[].exp_right[].exp_type[].tag == AST_Structure_t {
         if not is_same_type(node[].exp_middle[].exp_type, node[].exp_right[].exp_type) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_ternary_op), "MSG_invalid_ternary_op", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         if node[].exp_middle[].exp_type ~= node[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->exp_middle->exp_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = node[].exp_middle[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
@@ -2895,6 +3181,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
         loop .. while 0 {
+            "@MACRO@:TRY(get_joint_ptr_type(ctx, node->exp_middle, node->exp_right, &common_type))"
             _errval = get_joint_ptr_type(ctx, node[].exp_middle, node[].exp_right, @common_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2903,6 +3190,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_ternary_op), "MSG_invalid_ternary_op", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2910,6 +3198,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     if not is_same_type(node[].exp_middle[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_middle))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_middle)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -2918,17 +3207,22 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
             _errval = cast_exp(ctx, @common_type, @node[].exp_right)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
     }
-    if common_type ~= node[]._base[].exp_type {
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = common_type
-        common_type = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
+        if common_type ~= node[]._base[].exp_type {
+            "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
+            free_Type(@node[]._base[].exp_type)
+            node[]._base[].exp_type = common_type
+            common_type = nil
+        }
+    }    
     label _Lfinally
     if type_fmt_1 {
         sdsfree(type_fmt_1)
@@ -2951,6 +3245,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
     if fun_symbol[].type_t[].tag ~= AST_FunType_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_var_used_as_fun), "MSG_var_used_as_fun", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2960,6 +3255,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         strto_fmt_1 = ? ((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0))))
         strto_fmt_2 = ? ((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0))))
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_call_with_wrong_argc), "MSG_call_with_wrong_argc", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -2968,6 +3264,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
         if not is_same_type(node[].args[i][].exp_type, fun_type[].param_types[i]) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_assign(ctx, &fun_type->param_types[i], &node->args[i]))"
                 _errval = cast_assign(ctx, @fun_type[].param_types[i], @node[].args[i])
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -2976,6 +3273,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         }
     }
     if fun_type[].ret_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, fun_type->ret_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = fun_type[].ret_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -3001,12 +3299,14 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
     _errval: i32 = 0
     if node[].exp[].exp_type[].tag ~= AST_Pointer_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_deref_not_ptr), "MSG_deref_not_ptr", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if node[].exp[].exp_type[].get._Pointer.ref_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, node->exp->exp_type->get._Pointer.ref_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = node[].exp[].exp_type[].get._Pointer.ref_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -3024,12 +3324,14 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
     _errval: i32 = 0
     if not is_exp_lvalue(node[].exp) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_addrof_rvalue), "MSG_addrof_rvalue", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if node[].exp[].exp_type ~= ref_type {
+        "@MACRO@:sptr_copy(Type, node->exp->exp_type, ref_type)"
         free_Type(@ref_type)
         ref_type = node[].exp[].exp_type
         (ref_type)[]._ref_count++
@@ -3050,6 +3352,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
         subscript_type = make_Long()
         if not is_same_type(node[].subscript_exp[].exp_type, subscript_type) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_exp(ctx, &subscript_type, &node->subscript_exp))"
                 _errval = cast_exp(ctx, @subscript_type, @node[].subscript_exp)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3057,6 +3360,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
             }            
         }
         if node[].primary_exp[].exp_type[].get._Pointer.ref_type ~= ref_type {
+            "@MACRO@:sptr_copy(Type, node->primary_exp->exp_type->get._Pointer.ref_type, ref_type)"
             free_Type(@ref_type)
             ref_type = node[].primary_exp[].exp_type[].get._Pointer.ref_type
             (ref_type)[]._ref_count++
@@ -3066,6 +3370,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
         subscript_type = make_Long()
         if not is_same_type(node[].primary_exp[].exp_type, subscript_type) {
             loop .. while 0 {
+                "@MACRO@:TRY(cast_exp(ctx, &subscript_type, &node->primary_exp))"
                 _errval = cast_exp(ctx, @subscript_type, @node[].primary_exp)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3073,6 +3378,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
             }            
         }
         if node[].subscript_exp[].exp_type[].get._Pointer.ref_type ~= ref_type {
+            "@MACRO@:sptr_copy(Type, node->subscript_exp->exp_type->get._Pointer.ref_type, ref_type)"
             free_Type(@ref_type)
             ref_type = node[].subscript_exp[].exp_type[].get._Pointer.ref_type
             (ref_type)[]._ref_count++
@@ -3080,16 +3386,21 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
     }
     else {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_subscript), "MSG_invalid_subscript", "", get_type_fmt(ctx[].identifiers, node[].primary_exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].subscript_exp[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
-    if ref_type ~= node[]._base[].exp_type {
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = ref_type
-        ref_type = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(Type, ref_type, node->_base->exp_type)"
+        if ref_type ~= node[]._base[].exp_type {
+            "@MACRO@:uptr_move(Type, ref_type, node->_base->exp_type)"
+            free_Type(@node[]._base[].exp_type)
+            node[]._base[].exp_type = ref_type
+            ref_type = nil
+        }
+    }    
     label _Lfinally
     if type_fmt_1 {
         sdsfree(type_fmt_1)
@@ -3109,6 +3420,7 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     _errval: i32 = 0
     if not is_type_complete(ctx, node[].exp[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_sizeof_incomplete), "MSG_sizeof_incomplete", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3128,6 +3440,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     _errval: i32 = 0
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, node->target_type))"
         _errval = reslv_struct_type(ctx, node[].target_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -3135,12 +3448,14 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     }    
     if not is_type_complete(ctx, node[].target_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_sizeof_incomplete), "MSG_sizeof_incomplete", "", "", get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, node->target_type))"
         _errval = is_valid_type(ctx, node[].target_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -3165,6 +3480,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     map_it: i64;
     if node[].structure[].exp_type[].tag ~= AST_Structure_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_dot_not_struct), "MSG_dot_not_struct", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].structure[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3175,6 +3491,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     map_it = (? ((struct_typedef[].members) = stbds_hmget_key((struct_typedef[].members), sizeof((struct_typedef[].members)[]), cast<*any>(@((node[].member))), sizeof((struct_typedef[].members)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp)
     if map_it == -1 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_member_not_in_struct), "MSG_member_not_in_struct", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3182,6 +3499,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     }
     member_type = (struct_typedef[].members[map_it]).value[].member_type
     if member_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, member_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = member_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -3209,6 +3527,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     map_it: i64;
     if node[].pointer[].exp_type[].tag ~= AST_Pointer_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arrow_not_struct_ptr), "MSG_arrow_not_struct_ptr", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3217,6 +3536,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     ptr_type = @node[].pointer[].exp_type[].get._Pointer
     if ptr_type[].ref_type[].tag ~= AST_Structure_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arrow_not_struct_ptr), "MSG_arrow_not_struct_ptr", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3226,6 +3546,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     map_it = (? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)
     if map_it == -1 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arrow_incomplete), "MSG_arrow_incomplete", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3235,6 +3556,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     map_it = (? ((struct_typedef[].members) = stbds_hmget_key((struct_typedef[].members), sizeof((struct_typedef[].members)[]), cast<*any>(@((node[].member))), sizeof((struct_typedef[].members)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp)
     if map_it == -1 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_member_not_in_struct), "MSG_member_not_in_struct", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3242,6 +3564,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     }
     member_type = (struct_typedef[].members[map_it]).value[].member_type
     if member_type ~= node[]._base[].exp_type {
+        "@MACRO@:sptr_copy(Type, member_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
         node[]._base[].exp_type = member_type
         (node[]._base[].exp_type)[]._ref_count++
@@ -3262,6 +3585,7 @@ fn check_arr_typed_exp(addrof: **struc CExp) none {
     {
         ref_type: *struc Type = nil
         if (addrof[])[].exp_type[].get._Array.elem_type ~= ref_type {
+            "@MACRO@:sptr_copy(Type, (*addrof)->exp_type->get._Array.elem_type, ref_type)"
             free_Type(@ref_type)
             ref_type = (addrof[])[].exp_type[].get._Array.elem_type
             (ref_type)[]._ref_count++
@@ -3272,6 +3596,7 @@ fn check_arr_typed_exp(addrof: **struc CExp) none {
     info_at: u64 = (addrof[])[].info_at
     addrof[] = make_CAddrOf(addrof, info_at)
     if (addrof[])[].get._CAddrOf.exp[].exp_type ~= (addrof[])[].exp_type {
+        "@MACRO@:sptr_copy(Type, (*addrof)->get._CAddrOf.exp->exp_type, (*addrof)->exp_type)"
         free_Type(@(addrof[])[].exp_type)
         (addrof[])[].exp_type = (addrof[])[].get._CAddrOf.exp[].exp_type
         ((addrof[])[].exp_type)[]._ref_count++
@@ -3283,6 +3608,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
     _errval: i32 = 0
     if not is_struct_complete(ctx, @node[].exp_type[].get._Structure) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_exp_incomplete), "MSG_exp_incomplete", "", "", get_type_fmt(ctx[].identifiers, node[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3305,6 +3631,7 @@ fn check_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
         break
         -> AST_Structure_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_struct_typed_exp(ctx, *exp))"
                 _errval = check_struct_typed_exp(ctx, exp[])
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3328,6 +3655,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     if fun_type[].ret_type[].tag == AST_Void_t {
         if node[].exp {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_ret_value_in_void_fun), "MSG_ret_value_in_void_fun", "", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -3337,6 +3665,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     }
     elif not node[].exp {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_no_ret_value_in_fun), "MSG_no_ret_value_in_fun", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3344,6 +3673,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     }
     elif not is_same_type(node[].exp[].exp_type, fun_type[].ret_type) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_assign(ctx, &fun_type->ret_type, &node->exp))"
             _errval = cast_assign(ctx, @fun_type[].ret_type, @node[].exp)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -3351,6 +3681,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_typed_exp(ctx, &node->exp))"
         _errval = check_typed_exp(ctx, @node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
@@ -3373,6 +3704,7 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_if), "MSG_invalid_if", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3391,6 +3723,7 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_while), "MSG_invalid_while", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3409,6 +3742,7 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_do_while), "MSG_invalid_do_while", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3427,6 +3761,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_for), "MSG_invalid_for", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3455,6 +3790,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -3464,6 +3800,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstInt(values[i])
         if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
             free_Type(@esac[]._base[].exp_type)
             esac[]._base[].exp_type = node[].lookup[].exp_type
             (esac[]._base[].exp_type)[]._ref_count++
@@ -3499,6 +3836,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -3508,6 +3846,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstLong(values[i])
         if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
             free_Type(@esac[]._base[].exp_type)
             esac[]._base[].exp_type = node[].lookup[].exp_type
             (esac[]._base[].exp_type)[]._ref_count++
@@ -3543,6 +3882,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -3552,6 +3892,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstUInt(values[i])
         if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
             free_Type(@esac[]._base[].exp_type)
             esac[]._base[].exp_type = node[].lookup[].exp_type
             (esac[]._base[].exp_type)[]._ref_count++
@@ -3587,6 +3928,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
             if values[i] == values[j] {
                 strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -3596,6 +3938,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstULong(values[i])
         if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
+            "@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
             free_Type(@esac[]._base[].exp_type)
             esac[]._base[].exp_type = node[].lookup[].exp_type
             (esac[]._base[].exp_type)[]._ref_count++
@@ -3621,6 +3964,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     _errval: i32 = 0
     if not is_type_int(node[].lookup[].exp_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->lookup->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_switch), "MSG_invalid_switch", "", "", get_type_fmt(ctx[].identifiers, node[].lookup[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].lookup[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3631,6 +3975,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
             -> AST_SChar_t {
                 -> AST_UChar_t {
                     loop .. while 0 {
+                        "@MACRO@:TRY(promote_char_to_int(ctx, &node->lookup))"
                         _errval = promote_char_to_int(ctx, @node[].lookup)
                         if _errval ~= 0 {
                             jump _Lfinally
@@ -3647,6 +3992,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     match node[].lookup[].exp_type[].tag {
         -> AST_Int_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_switch_int_cases(ctx, node))"
                 _errval = check_switch_int_cases(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3656,6 +4002,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         break
         -> AST_Long_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_switch_long_cases(ctx, node))"
                 _errval = check_switch_long_cases(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3665,6 +4012,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         break
         -> AST_UInt_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_switch_uint_cases(ctx, node))"
                 _errval = check_switch_uint_cases(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3674,6 +4022,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         break
         -> AST_ULong_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_switch_ulong_cases(ctx, node))"
                 _errval = check_switch_ulong_cases(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -3700,6 +4049,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
     _errval: i32 = 0
     if not is_type_char(arr_type[].elem_type) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_string_init_not_char_arr), "MSG_string_init_not_char_arr", "", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3709,6 +4059,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
         strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
         strto_fmt_2 = ? ((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))))
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_string_init_overflow), "MSG_string_init_overflow", "", strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3734,6 +4085,7 @@ fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     _errval: i32 = 0
     if not is_same_type(node[].exp[].exp_type, init_type[]) {
         loop .. while 0 {
+            "@MACRO@:TRY(cast_assign(ctx, init_type, &node->exp))"
             _errval = cast_assign(ctx, init_type, @node[].exp)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -3741,6 +4093,7 @@ fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
         }        
     }
     if init_type[] ~= node[]._base[].init_type {
+        "@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
         free_Type(@node[]._base[].init_type)
         node[]._base[].init_type = init_type[]
         (node[]._base[].init_type)[]._ref_count++
@@ -3751,11 +4104,13 @@ fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
 
 fn check_string_init(node: *struc CSingleInit, init_type: **struc Type) none {
     if init_type[] ~= node[].exp[].exp_type {
+        "@MACRO@:sptr_copy(Type, *init_type, node->exp->exp_type)"
         free_Type(@node[].exp[].exp_type)
         node[].exp[].exp_type = init_type[]
         (node[].exp[].exp_type)[]._ref_count++
     }
     if init_type[] ~= node[]._base[].init_type {
+        "@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
         free_Type(@node[]._base[].init_type)
         node[]._base[].init_type = init_type[]
         (node[]._base[].init_type)[]._ref_count++
@@ -3868,6 +4223,7 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
         strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
         strto_fmt_2 = ? ((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))))
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arr_init_overflow), "MSG_arr_init_overflow", strto_fmt_1, get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt), strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3900,6 +4256,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
         strto_fmt_1 = ? ((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))))
         strto_fmt_2 = ? (bound) > 0 then sdsfromunsignedlong(cast<u64>((bound))) else sdsfromlong(cast<i64>((bound)))
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_struct_init_overflow), "MSG_struct_init_overflow", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -3933,6 +4290,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
         }        
     }
     if init_type[] ~= node[]._base[].init_type {
+        "@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
         free_Type(@node[]._base[].init_type)
         node[]._base[].init_type = init_type[]
         (node[]._base[].init_type)[]._ref_count++
@@ -3953,6 +4311,7 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
         }        
     }
     if init_type[] ~= node[]._base[].init_type {
+        "@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
         free_Type(@node[]._base[].init_type)
         node[]._base[].init_type = init_type[]
         (node[]._base[].init_type)[]._ref_count++
@@ -3966,12 +4325,14 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
     ctx[].errors[].info_at_buf = node[].info_at
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, fun_type->ret_type))"
         _errval = reslv_struct_type(ctx, fun_type[].ret_type)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, fun_type->ret_type))"
         _errval = is_valid_type(ctx, fun_type[].ret_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -3980,6 +4341,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
     match fun_type[].ret_type[].tag {
         -> AST_Array_t {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_ret_arr), "MSG_ret_arr", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -3988,6 +4350,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
         -> AST_Structure_t {
             if node[].body and not is_struct_complete(ctx, @fun_type[].ret_type[].get._Structure) {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_ret_incomplete), "MSG_ret_incomplete", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -4014,6 +4377,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
 fn check_arr_param_decl(fun_type: *struc FunType, i: u64) none {
     ref_type: *struc Type = nil
     if fun_type[].param_types[i][].get._Array.elem_type ~= ref_type {
+        "@MACRO@:sptr_copy(Type, fun_type->param_types[i]->get._Array.elem_type, ref_type)"
         free_Type(@ref_type)
         ref_type = fun_type[].param_types[i][].get._Array.elem_type
         (ref_type)[]._ref_count++
@@ -4034,6 +4398,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     loop i: u64 = 0 while i < (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) .. ++i {
         ctx[].errors[].info_at_buf = node[].info_at
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_struct_type(ctx, fun_type->param_types[i]))"
             _errval = reslv_struct_type(ctx, fun_type[].param_types[i])
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4041,12 +4406,14 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }        
         if fun_type[].param_types[i][].tag == AST_Void_t {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_void_param), "MSG_void_param", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         loop .. while 0 {
+            "@MACRO@:TRY(is_valid_type(ctx, fun_type->param_types[i]))"
             _errval = is_valid_type(ctx, fun_type[].param_types[i])
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4058,12 +4425,14 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         if node[].body {
             if fun_type[].param_types[i][].tag == AST_Structure_t and not is_struct_complete(ctx, @fun_type[].param_types[i][].get._Structure) {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_param), "MSG_incomplete_param", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2), get_type_fmt(ctx[].identifiers, fun_type[].param_types[i], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
                 }                
             }
             if fun_type[].param_types[i] ~= param_type {
+                "@MACRO@:sptr_copy(Type, fun_type->param_types[i], param_type)"
                 free_Type(@param_type)
                 param_type = fun_type[].param_types[i]
                 (param_type)[]._ref_count++
@@ -4115,6 +4484,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
         if not (fun_symbol[].type_t[].tag == AST_FunType_t and (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) == (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_fun_conflict), "MSG_redecl_fun_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, fun_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4122,6 +4492,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         }
         elif is_def and node[].body {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redef_fun), "MSG_redef_fun", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4130,6 +4501,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         fun_attrs: *struc FunAttr = @fun_symbol[].attrs[].get._FunAttr
         if not is_glob and fun_attrs[].is_glob {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_static_conflict), "MSG_redecl_static_conflict", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4148,6 +4520,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         ctx[].fun_def_name = node[].name
     }
     if node[].fun_type ~= glob_fun_type {
+        "@MACRO@:sptr_copy(Type, node->fun_type, glob_fun_type)"
         free_Type(@glob_fun_type)
         glob_fun_type = node[].fun_type
         (glob_fun_type)[]._ref_count++
@@ -4308,6 +4681,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
                     -> AST_CConstDouble_t {
                         -> AST_CConstUChar_t {
                             loop .. while 0 {
+                                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_not_int), "MSG_static_ptr_init_not_int", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), get_const_fmt(node[].constant)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                                 _errval = 1
                                 jump _Lfinally
@@ -4323,6 +4697,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
             if value ~= 0ul {
                 strto_fmt = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_not_null), "MSG_static_ptr_init_not_null", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -4333,6 +4708,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
         }
         otherwise {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_agg_init_with_single), "MSG_agg_init_with_single", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4356,6 +4732,7 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
     _errval: i32 = 0
     if static_ptr_type[].ref_type[].tag ~= AST_Char_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_string), "MSG_static_ptr_init_string", "", "", get_ptr_fmt(ctx[].identifiers, static_ptr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -4403,6 +4780,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
                 {
                     literal: *struc CStringLiteral = nil
                     if node[].literal ~= literal {
+                        "@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
                         free_CStringLiteral(@literal)
                         literal = node[].literal
                         (literal)[]._ref_count++
@@ -4431,6 +4809,7 @@ fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
     _errval: i32 = 0
     byte: i64;
     loop .. while 0 {
+        "@MACRO@:TRY(check_bound_string_init(ctx, node, static_arr_type))"
         _errval = check_bound_string_init(ctx, node, static_arr_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4441,6 +4820,7 @@ fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
         is_null_term: i32 = byte >= 0l
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
         if node[].literal ~= literal {
+            "@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
             free_CStringLiteral(@literal)
             literal = node[].literal
             (literal)[]._ref_count++
@@ -4460,6 +4840,7 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
     match static_init_type[].tag {
         -> AST_Pointer_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_literal_string_init(ctx, node, &static_init_type->get._Pointer))"
                 _errval = check_literal_string_init(ctx, node, @static_init_type[].get._Pointer)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4470,6 +4851,7 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
         break
         -> AST_Array_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_arr_string_init(ctx, node, &static_init_type->get._Array))"
                 _errval = check_static_arr_string_init(ctx, node, @static_init_type[].get._Array)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4491,6 +4873,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
     match node[].exp[].tag {
         -> AST_CConstant_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_const_init(ctx, &node->exp->get._CConstant, static_init_type))"
                 _errval = check_static_const_init(ctx, @node[].exp[].get._CConstant, static_init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4500,6 +4883,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
         break
         -> AST_CString_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_string_init(ctx, &node->exp->get._CString, static_init_type))"
                 _errval = check_static_string_init(ctx, @node[].exp[].get._CString, static_init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4509,6 +4893,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
         break
         otherwise {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->exp->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_init_not_const), "MSG_static_init_not_const", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].exp[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4526,6 +4911,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
 fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(check_bound_arr_init(ctx, node, arr_type))"
         _errval = check_bound_arr_init(ctx, node, arr_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4533,6 +4919,7 @@ fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit
     }    
     loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
         loop .. while 0 {
+            "@MACRO@:TRY(check_static_init(ctx, node->initializers[i], arr_type->elem_type))"
             _errval = check_static_init(ctx, node[].initializers[i], arr_type[].elem_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4550,6 +4937,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
     _errval: i32 = 0
     size: i64;
     loop .. while 0 {
+        "@MACRO@:TRY(check_bound_struct_init(ctx, node, struct_type))"
         _errval = check_bound_struct_init(ctx, node, struct_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4563,6 +4951,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
             size = member[].offset
         }
         loop .. while 0 {
+            "@MACRO@:TRY(check_static_init(ctx, node->initializers[i], member->member_type))"
             _errval = check_static_init(ctx, node[].initializers[i], member[].member_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4584,6 +4973,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
     match static_init_type[].tag {
         -> AST_Array_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_arr_init(ctx, node, &static_init_type->get._Array))"
                 _errval = check_static_arr_init(ctx, node, @static_init_type[].get._Array)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4593,6 +4983,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
         break
         -> AST_Structure_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_struct_init(ctx, node, &static_init_type->get._Structure))"
                 _errval = check_static_struct_init(ctx, node, @static_init_type[].get._Structure)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4602,6 +4993,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
         break
         otherwise {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_scalar_init_with_compound), "MSG_scalar_init_with_compound", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4621,6 +5013,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     match node[].tag {
         -> AST_CSingleInit_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_single_static_init(ctx, &node->get._CSingleInit, static_init_type))"
                 _errval = check_single_static_init(ctx, @node[].get._CSingleInit, static_init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4630,6 +5023,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
         break
         -> AST_CCompoundInit_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_compound_init(ctx, &node->get._CCompoundInit, static_init_type))"
                 _errval = check_static_compound_init(ctx, @node[].get._CCompoundInit, static_init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4651,6 +5045,7 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     {
         ctx[].p_static_inits = @static_inits
         loop .. while 0 {
+            "@MACRO@:TRY(check_static_init(ctx, node, static_init_type))"
             _errval = check_static_init(ctx, node, static_init_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4686,6 +5081,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     map_it: i64;
     ctx[].errors[].info_at_buf = node[].info_at
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, node->var_type))"
         _errval = reslv_struct_type(ctx, node[].var_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4693,12 +5089,14 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }    
     if node[].var_type[].tag == AST_Void_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_void_var_decl), "MSG_void_var_decl", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, node->var_type))"
         _errval = is_valid_type(ctx, node[].var_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4708,12 +5106,14 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     if node[].init {
         if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_var_decl), "MSG_incomplete_var_decl", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         loop .. while 0 {
+            "@MACRO@:TRY(check_initializer(ctx, node->init, node->var_type, &init_value))"
             _errval = check_initializer(ctx, node[].init, node[].var_type, @init_value)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4727,6 +5127,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         else {
             if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_var_decl), "MSG_incomplete_var_decl", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -4740,6 +5141,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         var_symbol: *struc Symbol = (ctx[].frontend[].symbol_table[map_it]).value
         if not is_same_type(var_symbol[].type_t, node[].var_type) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_conflict), "MSG_redecl_var_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4751,6 +5153,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         }
         elif is_glob ~= var_attrs[].is_glob {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_storage), "MSG_redecl_var_storage", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4759,6 +5162,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         if var_attrs[].init[].tag == AST_Initial_t {
             if init_value[].tag == AST_Initial_t {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_storage), "MSG_redecl_var_storage", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -4766,6 +5170,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
             }
             else {
                 if var_attrs[].init ~= init_value {
+                    "@MACRO@:sptr_copy(InitialValue, var_attrs->init, init_value)"
                     free_InitialValue(@init_value)
                     init_value = var_attrs[].init
                     (init_value)[]._ref_count++
@@ -4775,6 +5180,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         free_Symbol(@var_symbol)
     }
     if node[].var_type ~= glob_var_type {
+        "@MACRO@:sptr_copy(Type, node->var_type, glob_var_type)"
         free_Type(@glob_var_type)
         glob_var_type = node[].var_type
         (glob_var_type)[]._ref_count++
@@ -4821,6 +5227,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     map_it: i64;
     if node[].init {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redef_extern_var), "MSG_redef_extern_var", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -4831,6 +5238,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
         var_type: *struc Type = (ctx[].frontend[].symbol_table[map_it]).value[].type_t
         if not is_same_type(var_type, node[].var_type) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_conflict), "MSG_redecl_var_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -4839,6 +5247,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
         jump _Lfinally
     }
     if node[].var_type ~= local_var_type {
+        "@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
         free_Type(@local_var_type)
         local_var_type = node[].var_type
         (local_var_type)[]._ref_count++
@@ -4882,6 +5291,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     _errval: i32 = 0
     if node[].init {
         loop .. while 0 {
+            "@MACRO@:TRY(check_initializer(ctx, node->init, node->var_type, &init_value))"
             _errval = check_initializer(ctx, node[].init, node[].var_type, @init_value)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -4892,6 +5302,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
         init_value = check_no_initializer(ctx, node[].var_type)
     }
     if node[].var_type ~= local_var_type {
+        "@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
         free_Type(@local_var_type)
         local_var_type = node[].var_type
         (local_var_type)[]._ref_count++
@@ -4923,12 +5334,14 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     _errval: i32 = 0
     if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_var_decl), "MSG_incomplete_var_decl", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     if node[].var_type ~= local_var_type {
+        "@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
         free_Type(@local_var_type)
         local_var_type = node[].var_type
         (local_var_type)[]._ref_count++
@@ -4963,6 +5376,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     _errval: i32 = 0
     ctx[].errors[].info_at_buf = node[].info_at
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, node->var_type))"
         _errval = reslv_struct_type(ctx, node[].var_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4970,12 +5384,14 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }    
     if node[].var_type[].tag == AST_Void_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_void_var_decl), "MSG_void_var_decl", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(is_valid_type(ctx, node->var_type))"
         _errval = is_valid_type(ctx, node[].var_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -4984,6 +5400,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     match node[].storage_class.tag {
         -> AST_CStorageClass_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_auto_block_var_decl(ctx, node))"
                 _errval = check_auto_block_var_decl(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -4993,6 +5410,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         break
         -> AST_CExtern_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_extern_block_var_decl(ctx, node))"
                 _errval = check_extern_block_var_decl(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5002,6 +5420,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         break
         -> AST_CStatic_t {
             loop .. while 0 {
+                "@MACRO@:TRY(check_static_block_var_decl(ctx, node))"
                 _errval = check_static_block_var_decl(ctx, node)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5030,6 +5449,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
         loop j: u64 = i + 1 while j < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++j {
             if node[].members[i][].member_name == node[].members[j][].member_name {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->members[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_member_decl), "MSG_duplicate_member_decl", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -5038,6 +5458,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
         }
         ctx[].errors[].info_at_buf = node[].members[i][].info_at
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_struct_type(ctx, node->members[i]->member_type))"
             _errval = reslv_struct_type(ctx, node[].members[i][].member_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -5045,12 +5466,14 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
         }        
         if not is_type_complete(ctx, node[].members[i][].member_type) {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->members[i]->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_member_decl), "MSG_incomplete_member_decl", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].members[i][].member_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
             }            
         }
         loop .. while 0 {
+            "@MACRO@:TRY(is_valid_type(ctx, node->members[i]->member_type))"
             _errval = is_valid_type(ctx, node[].members[i][].member_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -5085,6 +5508,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     size: i64;
     if (? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp) ~= -1 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_in_scope), "MSG_redecl_struct_in_scope", "", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5119,6 +5543,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
                 size += member_size
             }
             if node[].members[i][].member_type ~= member_type {
+                "@MACRO@:sptr_copy(Type, node->members[i]->member_type, member_type)"
                 free_Type(@member_type)
                 member_type = node[].members[i][].member_type
                 (member_type)[]._ref_count++
@@ -5185,6 +5610,7 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     _errval: i32 = 0
     if (? ((ctx[].label_set) = stbds_hmget_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@((node[].target))), sizeof((ctx[].label_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp) ~= -1 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redef_label_in_scope), "MSG_redef_label_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].target, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5252,6 +5678,7 @@ fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) i32 {
     _errval: i32 = 0
     if not ctx[].p_switch_statement {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->value->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_case_out_of_switch), "MSG_case_out_of_switch", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].value[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5266,6 +5693,7 @@ fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) i32
     _errval: i32 = 0
     if not ctx[].p_switch_statement {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_default_out_of_switch), "MSG_default_out_of_switch", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5273,6 +5701,7 @@ fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) i32
     }
     elif ctx[].p_switch_statement[].is_default {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_multiple_default), "MSG_multiple_default", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5288,6 +5717,7 @@ fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
     _errval: i32 = 0
     if ((? (ctx[].break_loop_labels) then (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_break_out_of_loop), "MSG_break_out_of_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5302,6 +5732,7 @@ fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) i
     _errval: i32 = 0
     if ((? (ctx[].continue_loop_labels) then (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_continue_out_of_loop), "MSG_continue_out_of_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -5369,6 +5800,7 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
     loop i: u64 = 0 while i < (? (ctx[].goto_map) then (cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if (? ((ctx[].label_set) = stbds_hmget_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@(((ctx[].goto_map[i]).key))), sizeof((ctx[].label_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp) == -1 {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ((((((ctx->errors->info_at_map) = stbds_hmget_key((ctx->errors->info_at_map), sizeof(*(ctx->errors->info_at_map)), (void*)&(((ctx->goto_map[i]).value)), sizeof((ctx->errors->info_at_map)->key), 0)) && 0 ? 0 : ((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp)) && 0 ? 0 : &(ctx->errors->info_at_map)[((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp])->value)))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undef_goto_target), "MSG_undef_goto_target", "", get_name_fmt(ctx[].identifiers, (ctx[].goto_map[i]).key, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ((? ((? ((ctx[].errors[].info_at_map) = stbds_hmget_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@(((ctx[].goto_map[i]).value))), sizeof((ctx[].errors[].info_at_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp])[].value))) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -5390,6 +5822,7 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
 fn reslv_ptr_struct(ctx: *struc SemanticContext, ptr_type: *struc Pointer) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, ptr_type->ref_type))"
         _errval = reslv_struct_type(ctx, ptr_type[].ref_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5402,6 +5835,7 @@ fn reslv_ptr_struct(ctx: *struc SemanticContext, ptr_type: *struc Pointer) i32 {
 fn reslv_arr_struct(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_type(ctx, arr_type->elem_type))"
         _errval = reslv_struct_type(ctx, arr_type[].elem_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5429,6 +5863,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
             structure: *struc Structure = @(ctx[].scoped_struct_maps[i][map_it]).value
             if structure[].is_union ~= struct_type[].is_union {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_conflict), "MSG_redecl_struct_conflict", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_struct_name_fmt(ctx[].identifiers, struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -5439,6 +5874,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
         }
     }
     loop .. while 0 {
+        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undef_struct_in_scope), "MSG_undef_struct_in_scope", "", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
         _errval = 1
         jump _Lfinally
@@ -5460,6 +5896,7 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     match type_t[].tag {
         -> AST_Pointer_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_ptr_struct(ctx, &type_t->get._Pointer))"
                 _errval = reslv_ptr_struct(ctx, @type_t[].get._Pointer)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5469,6 +5906,7 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         break
         -> AST_Array_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_arr_struct(ctx, &type_t->get._Array))"
                 _errval = reslv_arr_struct(ctx, @type_t[].get._Array)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5478,6 +5916,7 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         break
         -> AST_Structure_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_struct(ctx, &type_t->get._Structure))"
                 _errval = reslv_struct(ctx, @type_t[].get._Structure)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5518,12 +5957,14 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
         }
     }
     loop .. while 0 {
+        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undecl_var_in_scope), "MSG_undecl_var_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
         _errval = 1
         jump _Lfinally
     }    
     label Lelse
     loop .. while 0 {
+        "@MACRO@:TRY(check_var_exp(ctx, node))"
         _errval = check_var_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5540,12 +5981,14 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
 fn reslv_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
         _errval = reslv_typed_exp(ctx, @node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_cast_exp(ctx, node))"
         _errval = check_cast_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5558,12 +6001,14 @@ fn reslv_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
 fn reslv_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
         _errval = reslv_typed_exp(ctx, @node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_unary_exp(ctx, node))"
         _errval = check_unary_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5576,18 +6021,21 @@ fn reslv_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
 fn reslv_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_left))"
         _errval = reslv_typed_exp(ctx, @node[].exp_left)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_right))"
         _errval = reslv_typed_exp(ctx, @node[].exp_right)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_binary_exp(ctx, node))"
         _errval = check_binary_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5601,6 +6049,7 @@ fn reslv_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
     _errval: i32 = 0
     if node[].exp_left {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_left))"
             _errval = reslv_typed_exp(ctx, @node[].exp_left)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -5608,12 +6057,14 @@ fn reslv_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_right))"
         _errval = reslv_typed_exp(ctx, @node[].exp_right)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_assign_exp(ctx, node))"
         _errval = check_assign_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5626,24 +6077,28 @@ fn reslv_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
 fn reslv_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
         _errval = reslv_typed_exp(ctx, @node[].condition)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_middle))"
         _errval = reslv_typed_exp(ctx, @node[].exp_middle)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_right))"
         _errval = reslv_typed_exp(ctx, @node[].exp_right)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_conditional_exp(ctx, node))"
         _errval = check_conditional_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5664,6 +6119,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         }
     }
     loop .. while 0 {
+        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undecl_fun_in_scope), "MSG_undecl_fun_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
         _errval = 1
         jump _Lfinally
@@ -5671,6 +6127,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     label Lelse
     loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->args[i]))"
             _errval = reslv_typed_exp(ctx, @node[].args[i])
             if _errval ~= 0 {
                 jump _Lfinally
@@ -5678,6 +6135,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_call_exp(ctx, node))"
         _errval = check_call_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5694,12 +6152,14 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
 fn reslv_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
         _errval = reslv_typed_exp(ctx, @node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_deref_exp(ctx, node))"
         _errval = check_deref_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5712,12 +6172,14 @@ fn reslv_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
 fn reslv_addrof_expr(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_exp(ctx, node->exp))"
         _errval = reslv_exp(ctx, node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_addrof_exp(ctx, node))"
         _errval = check_addrof_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5730,18 +6192,21 @@ fn reslv_addrof_expr(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
 fn reslv_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->primary_exp))"
         _errval = reslv_typed_exp(ctx, @node[].primary_exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->subscript_exp))"
         _errval = reslv_typed_exp(ctx, @node[].subscript_exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_subscript_exp(ctx, node))"
         _errval = check_subscript_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5754,12 +6219,14 @@ fn reslv_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
 fn reslv_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_exp(ctx, node->exp))"
         _errval = reslv_exp(ctx, node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_sizeof_exp(ctx, node))"
         _errval = check_sizeof_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5772,6 +6239,7 @@ fn reslv_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
 fn reslv_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(check_sizeoft_exp(ctx, node))"
         _errval = check_sizeoft_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5784,12 +6252,14 @@ fn reslv_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
 fn reslv_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->structure))"
         _errval = reslv_typed_exp(ctx, @node[].structure)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_dot_exp(ctx, node))"
         _errval = check_dot_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5802,12 +6272,14 @@ fn reslv_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
 fn reslv_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->pointer))"
         _errval = reslv_typed_exp(ctx, @node[].pointer)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_arrow_exp(ctx, node))"
         _errval = check_arrow_exp(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5830,6 +6302,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CVar_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_var_exp(ctx, &node->get._CVar))"
                 _errval = reslv_var_exp(ctx, @node[].get._CVar)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5839,6 +6312,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CCast_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_cast_exp(ctx, &node->get._CCast))"
                 _errval = reslv_cast_exp(ctx, @node[].get._CCast)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5848,6 +6322,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CUnary_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_unary_exp(ctx, &node->get._CUnary))"
                 _errval = reslv_unary_exp(ctx, @node[].get._CUnary)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5857,6 +6332,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CBinary_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_binary_exp(ctx, &node->get._CBinary))"
                 _errval = reslv_binary_exp(ctx, @node[].get._CBinary)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5866,6 +6342,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CAssignment_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_assign_exp(ctx, &node->get._CAssignment))"
                 _errval = reslv_assign_exp(ctx, @node[].get._CAssignment)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5875,6 +6352,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CConditional_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_conditional_exp(ctx, &node->get._CConditional))"
                 _errval = reslv_conditional_exp(ctx, @node[].get._CConditional)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5884,6 +6362,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CFunctionCall_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_call_exp(ctx, &node->get._CFunctionCall))"
                 _errval = reslv_call_exp(ctx, @node[].get._CFunctionCall)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5893,6 +6372,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CDereference_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_deref_exp(ctx, &node->get._CDereference))"
                 _errval = reslv_deref_exp(ctx, @node[].get._CDereference)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5902,6 +6382,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CAddrOf_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_addrof_expr(ctx, &node->get._CAddrOf))"
                 _errval = reslv_addrof_expr(ctx, @node[].get._CAddrOf)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5911,6 +6392,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CSubscript_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_subscript_exp(ctx, &node->get._CSubscript))"
                 _errval = reslv_subscript_exp(ctx, @node[].get._CSubscript)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5920,6 +6402,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CSizeOf_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_sizeof_exp(ctx, &node->get._CSizeOf))"
                 _errval = reslv_sizeof_exp(ctx, @node[].get._CSizeOf)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5929,6 +6412,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CSizeOfT_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_sizeoft_exp(ctx, &node->get._CSizeOfT))"
                 _errval = reslv_sizeoft_exp(ctx, @node[].get._CSizeOfT)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5938,6 +6422,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CDot_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_dot_exp(ctx, &node->get._CDot))"
                 _errval = reslv_dot_exp(ctx, @node[].get._CDot)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5947,6 +6432,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         break
         -> AST_CArrow_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_arrow_exp(ctx, &node->get._CArrow))"
                 _errval = reslv_arrow_exp(ctx, @node[].get._CArrow)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -5965,12 +6451,14 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
 fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_exp(ctx, *exp))"
         _errval = reslv_exp(ctx, exp[])
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_typed_exp(ctx, exp))"
         _errval = check_typed_exp(ctx, exp)
         if _errval ~= 0 {
             jump _Lfinally
@@ -5989,12 +6477,14 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
     _errval: i32 = 0
     if node[].init[].storage_class.tag ~= AST_CStorageClass_t {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->init->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_for_init_decl_not_auto), "MSG_for_init_decl_not_auto", "", get_name_fmt(ctx[].identifiers, node[].init[].name, @name_fmt), get_storage_class_fmt(@node[].init[].storage_class)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].init[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_block_var_decl(ctx, node->init))"
         _errval = reslv_block_var_decl(ctx, node[].init)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6012,6 +6502,7 @@ fn reslv_for_init_exp(ctx: *struc SemanticContext, node: *struc CInitExp) i32 {
     _errval: i32 = 0
     if node[].init {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->init))"
             _errval = reslv_typed_exp(ctx, @node[].init)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6027,6 +6518,7 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) i32 {
     match node[].tag {
         -> AST_CInitDecl_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_for_init_decl(ctx, &node->get._CInitDecl))"
                 _errval = reslv_for_init_decl(ctx, @node[].get._CInitDecl)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6036,6 +6528,7 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) i32 {
         break
         -> AST_CInitExp_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_for_init_exp(ctx, &node->get._CInitExp))"
                 _errval = reslv_for_init_exp(ctx, @node[].get._CInitExp)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6055,6 +6548,7 @@ fn reslv_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     _errval: i32 = 0
     if node[].exp {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
             _errval = reslv_typed_exp(ctx, @node[].exp)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6062,6 +6556,7 @@ fn reslv_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_ret_statement(ctx, node))"
         _errval = check_ret_statement(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6074,6 +6569,7 @@ fn reslv_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
 fn reslv_exp_statement(ctx: *struc SemanticContext, node: *struc CExpression) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
         _errval = reslv_typed_exp(ctx, @node[].exp)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6086,12 +6582,14 @@ fn reslv_exp_statement(ctx: *struc SemanticContext, node: *struc CExpression) i3
 fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
         _errval = reslv_typed_exp(ctx, @node[].condition)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->then_fi))"
         _errval = reslv_statement(ctx, node[].then_fi)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6099,6 +6597,7 @@ fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     }    
     if node[].else_fi {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_statement(ctx, node->else_fi))"
             _errval = reslv_statement(ctx, node[].else_fi)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6106,6 +6605,7 @@ fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_if_statement(ctx, node))"
         _errval = check_if_statement(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6145,6 +6645,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     _errval: i32 = 0
     map_it: i64;
     loop .. while 0 {
+        "@MACRO@:TRY(annotate_goto_label(ctx, node))"
         _errval = annotate_goto_label(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6164,6 +6665,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
         node[].target = target
     }
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
         _errval = reslv_statement(ctx, node[].jump_to)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6177,6 +6679,7 @@ fn reslv_compound_statement(ctx: *struc SemanticContext, node: *struc CCompound)
     _errval: i32 = 0
     enter_scope(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_block(ctx, node->block))"
         _errval = reslv_block(ctx, node[].block)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6191,12 +6694,14 @@ fn reslv_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     _errval: i32 = 0
     annotate_while_loop(ctx, node)
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
         _errval = reslv_typed_exp(ctx, @node[].condition)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->body))"
         _errval = reslv_statement(ctx, node[].body)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6204,6 +6709,7 @@ fn reslv_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     }    
     deannotate_loop(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(check_while_statement(ctx, node))"
         _errval = check_while_statement(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6217,12 +6723,14 @@ fn reslv_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     _errval: i32 = 0
     annotate_do_while_loop(ctx, node)
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->body))"
         _errval = reslv_statement(ctx, node[].body)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
         _errval = reslv_typed_exp(ctx, @node[].condition)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6230,6 +6738,7 @@ fn reslv_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     }    
     deannotate_loop(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(check_do_while_statement(ctx, node))"
         _errval = check_do_while_statement(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6244,6 +6753,7 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     annotate_for_loop(ctx, node)
     enter_scope(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_for_init(ctx, node->init))"
         _errval = reslv_for_init(ctx, node[].init)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6251,6 +6761,7 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     }    
     if node[].condition {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
             _errval = reslv_typed_exp(ctx, @node[].condition)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6259,6 +6770,7 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     }
     if node[].post {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->post))"
             _errval = reslv_typed_exp(ctx, @node[].post)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6266,6 +6778,7 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->body))"
         _errval = reslv_statement(ctx, node[].body)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6274,6 +6787,7 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     exit_scope(ctx)
     deannotate_loop(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(check_for_statement(ctx, node))"
         _errval = check_for_statement(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6288,6 +6802,7 @@ fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     annotate_switch_lookup(ctx, node)
     enter_scope(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->lookup))"
         _errval = reslv_typed_exp(ctx, @node[].lookup)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6297,6 +6812,7 @@ fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         p_switch_statement: *struc CSwitch = ctx[].p_switch_statement
         ctx[].p_switch_statement = node
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_statement(ctx, node->body))"
             _errval = reslv_statement(ctx, node[].body)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6307,6 +6823,7 @@ fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     exit_scope(ctx)
     deannotate_lookup(ctx)
     loop .. while 0 {
+        "@MACRO@:TRY(check_switch_statement(ctx, node))"
         _errval = check_switch_statement(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6319,12 +6836,14 @@ fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
 fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(annotate_case_jump(ctx, node))"
         _errval = annotate_case_jump(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_typed_exp(ctx, &node->value))"
         _errval = reslv_typed_exp(ctx, @node[].value)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6338,6 +6857,7 @@ fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) i32 {
         node[].value = nil
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
         _errval = reslv_statement(ctx, node[].jump_to)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6350,12 +6870,14 @@ fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) i32 {
 fn reslv_default_statement(ctx: *struc SemanticContext, node: *struc CDefault) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(annotate_default_jump(ctx, node))"
         _errval = annotate_default_jump(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
         _errval = reslv_statement(ctx, node[].jump_to)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6368,6 +6890,7 @@ fn reslv_default_statement(ctx: *struc SemanticContext, node: *struc CDefault) i
 fn reslv_break_statement(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(annotate_break_jump(ctx, node))"
         _errval = annotate_break_jump(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6380,6 +6903,7 @@ fn reslv_break_statement(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
 fn reslv_continue_statement(ctx: *struc SemanticContext, node: *struc CContinue) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(annotate_continue_jump(ctx, node))"
         _errval = annotate_continue_jump(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6394,6 +6918,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
     match node[].tag {
         -> AST_CReturn_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_ret_statement(ctx, &node->get._CReturn))"
                 _errval = reslv_ret_statement(ctx, @node[].get._CReturn)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6403,6 +6928,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CExpression_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_exp_statement(ctx, &node->get._CExpression))"
                 _errval = reslv_exp_statement(ctx, @node[].get._CExpression)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6412,6 +6938,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CIf_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_if_statement(ctx, &node->get._CIf))"
                 _errval = reslv_if_statement(ctx, @node[].get._CIf)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6425,6 +6952,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CLabel_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_label_statement(ctx, &node->get._CLabel))"
                 _errval = reslv_label_statement(ctx, @node[].get._CLabel)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6434,6 +6962,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CCompound_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_compound_statement(ctx, &node->get._CCompound))"
                 _errval = reslv_compound_statement(ctx, @node[].get._CCompound)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6443,6 +6972,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CWhile_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_while_statement(ctx, &node->get._CWhile))"
                 _errval = reslv_while_statement(ctx, @node[].get._CWhile)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6452,6 +6982,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CDoWhile_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_do_while_statement(ctx, &node->get._CDoWhile))"
                 _errval = reslv_do_while_statement(ctx, @node[].get._CDoWhile)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6461,6 +6992,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CFor_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_for_statement(ctx, &node->get._CFor))"
                 _errval = reslv_for_statement(ctx, @node[].get._CFor)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6470,6 +7002,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CSwitch_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_switch_statement(ctx, &node->get._CSwitch))"
                 _errval = reslv_switch_statement(ctx, @node[].get._CSwitch)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6479,6 +7012,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CCase_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_case_statement(ctx, &node->get._CCase))"
                 _errval = reslv_case_statement(ctx, @node[].get._CCase)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6488,6 +7022,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CDefault_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_default_statement(ctx, &node->get._CDefault))"
                 _errval = reslv_default_statement(ctx, @node[].get._CDefault)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6497,6 +7032,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CBreak_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_break_statement(ctx, &node->get._CBreak))"
                 _errval = reslv_break_statement(ctx, @node[].get._CBreak)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6506,6 +7042,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         break
         -> AST_CContinue_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_continue_statement(ctx, &node->get._CContinue))"
                 _errval = reslv_continue_statement(ctx, @node[].get._CContinue)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6532,6 +7069,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: **struc CBlockItem)
         match node_list[i][].tag {
             -> AST_CS_t {
                 loop .. while 0 {
+                    "@MACRO@:TRY(reslv_statement(ctx, node_list[i]->get._CS.statement))"
                     _errval = reslv_statement(ctx, node_list[i][].get._CS.statement)
                     if _errval ~= 0 {
                         jump _Lfinally
@@ -6541,6 +7079,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: **struc CBlockItem)
             break
             -> AST_CD_t {
                 loop .. while 0 {
+                    "@MACRO@:TRY(reslv_declaration(ctx, node_list[i]->get._CD.declaration))"
                     _errval = reslv_declaration(ctx, node_list[i][].get._CD.declaration)
                     if _errval ~= 0 {
                         jump _Lfinally
@@ -6560,6 +7099,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: **struc CBlockItem)
 fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_block_items(ctx, node->get._CB.block_items))"
         _errval = reslv_block_items(ctx, node[].get._CB.block_items)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6575,6 +7115,7 @@ fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     _errval: i32 = 0
     if node[].exp[].tag == AST_CString_t and (init_type[])[].tag == AST_Array_t {
         loop .. while 0 {
+            "@MACRO@:TRY(check_bound_string_init(ctx, &node->exp->get._CString, &(*init_type)->get._Array))"
             _errval = check_bound_string_init(ctx, @node[].exp[].get._CString, @(init_type[])[].get._Array)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6584,12 +7125,14 @@ fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     }
     else {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
             _errval = reslv_typed_exp(ctx, @node[].exp)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
         loop .. while 0 {
+            "@MACRO@:TRY(check_single_init(ctx, node, init_type))"
             _errval = check_single_init(ctx, node, init_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6603,6 +7146,7 @@ fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
 fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: **struc Type) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(check_bound_arr_init(ctx, node, arr_type))"
         _errval = check_bound_arr_init(ctx, node, arr_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6610,6 +7154,7 @@ fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
     }    
     loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_initializer(ctx, node->initializers[i], &arr_type->elem_type))"
             _errval = reslv_initializer(ctx, node[].initializers[i], @arr_type[].elem_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6624,6 +7169,7 @@ fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
 fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(check_bound_struct_init(ctx, node, struct_type))"
         _errval = check_bound_struct_init(ctx, node, struct_type)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6632,6 +7178,7 @@ fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
     loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_initializer(ctx, node->initializers[i], &member->member_type))"
             _errval = reslv_initializer(ctx, node[].initializers[i], @member[].member_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6649,6 +7196,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
     match (init_type[])[].tag {
         -> AST_Array_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_arr_init(ctx, node, &(*init_type)->get._Array, init_type))"
                 _errval = reslv_arr_init(ctx, node, @(init_type[])[].get._Array, init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6658,6 +7206,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
         break
         -> AST_Structure_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_struct_init(ctx, node, &(*init_type)->get._Structure, init_type))"
                 _errval = reslv_struct_init(ctx, node, @(init_type[])[].get._Structure, init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6667,6 +7216,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
         break
         otherwise {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_scalar_init_with_compound), "MSG_scalar_init_with_compound", "", "", get_type_fmt(ctx[].identifiers, init_type[], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -6686,6 +7236,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
     match node[].tag {
         -> AST_CSingleInit_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_single_init(ctx, &node->get._CSingleInit, init_type))"
                 _errval = reslv_single_init(ctx, @node[].get._CSingleInit, init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6695,6 +7246,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
         break
         -> AST_CCompoundInit_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_compound_init(ctx, &node->get._CCompoundInit, init_type))"
                 _errval = reslv_compound_init(ctx, @node[].get._CCompoundInit, init_type)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -6717,6 +7269,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         param: u64 = node[].params[i]
         if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((param))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_in_scope), "MSG_redecl_var_in_scope", "", "", get_name_fmt(ctx[].identifiers, param, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -6731,6 +7284,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         node[].params[i] = param
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_fun_params_decl(ctx, node))"
         _errval = check_fun_params_decl(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6750,6 +7304,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     if not is_file_scope(ctx) {
         if node[].body {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_def_nested_fun), "MSG_def_nested_fun", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -6757,6 +7312,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }
         elif node[].storage_class.tag == AST_CStatic_t {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_decl_nested_static_fun), "MSG_decl_nested_static_fun", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -6766,6 +7322,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     if (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp) == -1 {
         if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_fun_in_scope), "MSG_redecl_fun_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -6783,6 +7340,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
     }    
     loop .. while 0 {
+        "@MACRO@:TRY(check_ret_fun_decl(ctx, node))"
         _errval = check_ret_fun_decl(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6791,6 +7349,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     enter_scope(ctx)
     if not ((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_fun_params_decl(ctx, node))"
             _errval = reslv_fun_params_decl(ctx, node)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6798,6 +7357,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }        
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_fun_decl(ctx, node))"
         _errval = check_fun_decl(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6805,6 +7365,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     }    
     if node[].body {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_block(ctx, node->body))"
             _errval = reslv_block(ctx, node[].body)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6836,6 +7397,7 @@ fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }    
     if is_file_scope(ctx) {
         loop .. while 0 {
+            "@MACRO@:TRY(check_file_var_decl(ctx, node))"
             _errval = check_file_var_decl(ctx, node)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6844,6 +7406,7 @@ fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }
     else {
         loop .. while 0 {
+            "@MACRO@:TRY(check_block_var_decl(ctx, node))"
             _errval = check_block_var_decl(ctx, node)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6859,6 +7422,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     _errval: i32 = 0
     if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 and not ((? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp) ~= -1 and node[].storage_class.tag == AST_CExtern_t) {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_in_scope), "MSG_redecl_var_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -6866,6 +7430,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }
     elif node[].storage_class.tag == AST_CExtern_t {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_file_var_decl(ctx, node))"
             _errval = reslv_file_var_decl(ctx, node)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6883,6 +7448,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         node[].name = name
     }
     loop .. while 0 {
+        "@MACRO@:TRY(check_block_var_decl(ctx, node))"
         _errval = check_block_var_decl(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6890,6 +7456,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }    
     if node[].init and node[].storage_class.tag == AST_CStorageClass_t {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_initializer(ctx, node->init, &node->var_type))"
             _errval = reslv_initializer(ctx, node[].init, @node[].var_type)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -6907,6 +7474,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
 fn reslv_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(check_struct_members_decl(ctx, node))"
         _errval = check_struct_members_decl(ctx, node)
         if _errval ~= 0 {
             jump _Lfinally
@@ -6926,6 +7494,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         if node[].is_union {
             if (? ((ctx[].union_def_set) = stbds_hmget_key((ctx[].union_def_set), sizeof((ctx[].union_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].union_def_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp) == -1 {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_conflict), "MSG_redecl_struct_conflict", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -6934,6 +7503,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         }
         elif (? ((ctx[].struct_def_set) = stbds_hmget_key((ctx[].struct_def_set), sizeof((ctx[].struct_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].struct_def_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp) == -1 {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_conflict), "MSG_redecl_struct_conflict", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -6967,12 +7537,14 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
     }
     if not ((? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) == 0) {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_struct_members_decl(ctx, node))"
             _errval = reslv_struct_members_decl(ctx, node)
             if _errval ~= 0 {
                 jump _Lfinally
             }
         }        
         loop .. while 0 {
+            "@MACRO@:TRY(check_struct_decl(ctx, node))"
             _errval = check_struct_decl(ctx, node)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -7017,6 +7589,7 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
         ctx[].p_switch_statement = nil
     }
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_fun_declaration(ctx, node->fun_decl))"
         _errval = reslv_fun_declaration(ctx, node[].fun_decl)
         if _errval ~= 0 {
             jump _Lfinally
@@ -7024,6 +7597,7 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
     }    
     if is_file_scope(ctx) {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_label(ctx, node->fun_decl))"
             _errval = reslv_label(ctx, node[].fun_decl)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -7038,6 +7612,7 @@ fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) i32 {
     _errval: i32 = 0
     if is_file_scope(ctx) {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_file_var_decl(ctx, node->var_decl))"
             _errval = reslv_file_var_decl(ctx, node[].var_decl)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -7046,6 +7621,7 @@ fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) i32 {
     }
     else {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_block_var_decl(ctx, node->var_decl))"
             _errval = reslv_block_var_decl(ctx, node[].var_decl)
             if _errval ~= 0 {
                 jump _Lfinally
@@ -7059,6 +7635,7 @@ fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) i32 {
 fn reslv_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDecl) i32 {
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(reslv_struct_declaration(ctx, node->struct_decl))"
         _errval = reslv_struct_declaration(ctx, node[].struct_decl)
         if _errval ~= 0 {
             jump _Lfinally
@@ -7073,6 +7650,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
     match node[].tag {
         -> AST_CFunDecl_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_fun_decl(ctx, &node->get._CFunDecl))"
                 _errval = reslv_fun_decl(ctx, @node[].get._CFunDecl)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -7082,6 +7660,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
         break
         -> AST_CVarDecl_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_var_decl(ctx, &node->get._CVarDecl))"
                 _errval = reslv_var_decl(ctx, @node[].get._CVarDecl)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -7091,6 +7670,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
         break
         -> AST_CStructDecl_t {
             loop .. while 0 {
+                "@MACRO@:TRY(reslv_struct_decl(ctx, &node->get._CStructDecl))"
                 _errval = reslv_struct_decl(ctx, @node[].get._CStructDecl)
                 if _errval ~= 0 {
                     jump _Lfinally
@@ -7111,6 +7691,7 @@ fn resolve_program(ctx: *struc SemanticContext, node: *struc CProgram) i32 {
     enter_scope(ctx)
     loop i: u64 = 0 while i < (? (node[].declarations) then (cast<*struc stbds_array_header>((node[].declarations)) - 1)[].length else 0) .. ++i {
         loop .. while 0 {
+            "@MACRO@:TRY(reslv_declaration(ctx, node->declarations[i]))"
             _errval = reslv_declaration(ctx, node[].declarations[i])
             if _errval ~= 0 {
                 jump _Lfinally
@@ -7141,6 +7722,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
 
     _errval: i32 = 0
     loop .. while 0 {
+        "@MACRO@:TRY(resolve_program(&ctx, node))"
         _errval = resolve_program(@ctx, node)
         if _errval ~= 0 {
             jump _Lfinally

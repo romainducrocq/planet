@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 m4_define(`REGISTER_KIND', `TODO')m4_dnl
 m4_define(`REG_Ax', `0')m4_dnl
 m4_define(`REG_Bx', `1')m4_dnl
@@ -435,11 +536,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 type struc CConst;
 type struc CStringLiteral;
 
@@ -690,9 +798,54 @@ type struc AsmProgram;
 
 type struc AsmReg(tag: i32)
 pub fn make_AsmReg(tag: i32) struc AsmReg;
+m4_define(`init_AsmReg', `TODO')m4_dnl
+m4_define(`init_AsmAx', `TODO')m4_dnl
+m4_define(`init_AsmBx', `TODO')m4_dnl
+m4_define(`init_AsmCx', `TODO')m4_dnl
+m4_define(`init_AsmDx', `TODO')m4_dnl
+m4_define(`init_AsmDi', `TODO')m4_dnl
+m4_define(`init_AsmSi', `TODO')m4_dnl
+m4_define(`init_AsmR8', `TODO')m4_dnl
+m4_define(`init_AsmR9', `TODO')m4_dnl
+m4_define(`init_AsmR10', `TODO')m4_dnl
+m4_define(`init_AsmR11', `TODO')m4_dnl
+m4_define(`init_AsmR12', `TODO')m4_dnl
+m4_define(`init_AsmR13', `TODO')m4_dnl
+m4_define(`init_AsmR14', `TODO')m4_dnl
+m4_define(`init_AsmR15', `TODO')m4_dnl
+m4_define(`init_AsmSp', `TODO')m4_dnl
+m4_define(`init_AsmBp', `TODO')m4_dnl
+m4_define(`init_AsmXMM0', `TODO')m4_dnl
+m4_define(`init_AsmXMM1', `TODO')m4_dnl
+m4_define(`init_AsmXMM2', `TODO')m4_dnl
+m4_define(`init_AsmXMM3', `TODO')m4_dnl
+m4_define(`init_AsmXMM4', `TODO')m4_dnl
+m4_define(`init_AsmXMM5', `TODO')m4_dnl
+m4_define(`init_AsmXMM6', `TODO')m4_dnl
+m4_define(`init_AsmXMM7', `TODO')m4_dnl
+m4_define(`init_AsmXMM8', `TODO')m4_dnl
+m4_define(`init_AsmXMM9', `TODO')m4_dnl
+m4_define(`init_AsmXMM10', `TODO')m4_dnl
+m4_define(`init_AsmXMM11', `TODO')m4_dnl
+m4_define(`init_AsmXMM12', `TODO')m4_dnl
+m4_define(`init_AsmXMM13', `TODO')m4_dnl
+m4_define(`init_AsmXMM14', `TODO')m4_dnl
+m4_define(`init_AsmXMM15', `TODO')m4_dnl
 
 type struc AsmCondCode(tag: i32)
 pub fn make_AsmCondCode(tag: i32) struc AsmCondCode;
+m4_define(`init_AsmCondCode', `TODO')m4_dnl
+m4_define(`init_AsmE', `TODO')m4_dnl
+m4_define(`init_AsmNE', `TODO')m4_dnl
+m4_define(`init_AsmG', `TODO')m4_dnl
+m4_define(`init_AsmGE', `TODO')m4_dnl
+m4_define(`init_AsmL', `TODO')m4_dnl
+m4_define(`init_AsmLE', `TODO')m4_dnl
+m4_define(`init_AsmA', `TODO')m4_dnl
+m4_define(`init_AsmAE', `TODO')m4_dnl
+m4_define(`init_AsmB', `TODO')m4_dnl
+m4_define(`init_AsmBE', `TODO')m4_dnl
+m4_define(`init_AsmP', `TODO')m4_dnl
 
 type struc AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32)
 
@@ -723,9 +876,24 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none;
 
 type struc AsmBinaryOp(tag: i32)
 pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp;
+m4_define(`init_AsmBinaryOp', `TODO')m4_dnl
+m4_define(`init_AsmAdd', `TODO')m4_dnl
+m4_define(`init_AsmSub', `TODO')m4_dnl
+m4_define(`init_AsmMult', `TODO')m4_dnl
+m4_define(`init_AsmDivDouble', `TODO')m4_dnl
+m4_define(`init_AsmBitAnd', `TODO')m4_dnl
+m4_define(`init_AsmBitOr', `TODO')m4_dnl
+m4_define(`init_AsmBitXor', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftRight', `TODO')m4_dnl
+m4_define(`init_AsmBitShrArithmetic', `TODO')m4_dnl
 
 type struc AsmUnaryOp(tag: i32)
 pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp;
+m4_define(`init_AsmUnaryOp', `TODO')m4_dnl
+m4_define(`init_AsmNot', `TODO')m4_dnl
+m4_define(`init_AsmNeg', `TODO')m4_dnl
+m4_define(`init_AsmShr', `TODO')m4_dnl
 
 type struc AsmMov(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
 

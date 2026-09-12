@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 type struc TacProgram;
 type struc FrontEndContext;
 pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none;
@@ -87,11 +188,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 type struc ErrorsContext;
 pub fn dbl_to_binary(decimal: f64) u64;
 pub fn string_to_literal(str_string: string, string_literal: **i8) none;
@@ -629,9 +737,35 @@ type struc CProgram;
 
 type struc CUnaryOp(tag: i32)
 pub fn make_CUnaryOp(tag: i32) struc CUnaryOp;
+m4_define(`init_CUnaryOp', `TODO')m4_dnl
+m4_define(`init_CComplement', `TODO')m4_dnl
+m4_define(`init_CNegate', `TODO')m4_dnl
+m4_define(`init_CNot', `TODO')m4_dnl
+m4_define(`init_CPrefix', `TODO')m4_dnl
+m4_define(`init_CPostfix', `TODO')m4_dnl
 
 type struc CBinaryOp(tag: i32)
 pub fn make_CBinaryOp(tag: i32) struc CBinaryOp;
+m4_define(`init_CBinaryOp', `TODO')m4_dnl
+m4_define(`init_CAdd', `TODO')m4_dnl
+m4_define(`init_CSubtract', `TODO')m4_dnl
+m4_define(`init_CMultiply', `TODO')m4_dnl
+m4_define(`init_CDivide', `TODO')m4_dnl
+m4_define(`init_CRemainder', `TODO')m4_dnl
+m4_define(`init_CBitAnd', `TODO')m4_dnl
+m4_define(`init_CBitOr', `TODO')m4_dnl
+m4_define(`init_CBitXor', `TODO')m4_dnl
+m4_define(`init_CBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_CBitShiftRight', `TODO')m4_dnl
+m4_define(`init_CBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_CAnd', `TODO')m4_dnl
+m4_define(`init_COr', `TODO')m4_dnl
+m4_define(`init_CEqual', `TODO')m4_dnl
+m4_define(`init_CNotEqual', `TODO')m4_dnl
+m4_define(`init_CLessThan', `TODO')m4_dnl
+m4_define(`init_CLessOrEqual', `TODO')m4_dnl
+m4_define(`init_CGreaterThan', `TODO')m4_dnl
+m4_define(`init_CGreaterOrEqual', `TODO')m4_dnl
 
 type struc CAbstractPointer(abstract_decltor: *struc CAbstractDeclarator)
 
@@ -810,6 +944,9 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none;
 
 type struc CStorageClass(tag: i32)
 pub fn make_CStorageClass(tag: i32) struc CStorageClass;
+m4_define(`init_CStorageClass', `TODO')m4_dnl
+m4_define(`init_CStatic', `TODO')m4_dnl
+m4_define(`init_CExtern', `TODO')m4_dnl
 
 type struc CSingleInit(exp: *struc CExp, _base: *struc CInitializer)
 
@@ -867,9 +1004,31 @@ type struc TacProgram;
 
 type struc TacUnaryOp(tag: i32)
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp;
+m4_define(`init_TacUnaryOp', `TODO')m4_dnl
+m4_define(`init_TacComplement', `TODO')m4_dnl
+m4_define(`init_TacNegate', `TODO')m4_dnl
+m4_define(`init_TacNot', `TODO')m4_dnl
 
 type struc TacBinaryOp(tag: i32)
 pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp;
+m4_define(`init_TacBinaryOp', `TODO')m4_dnl
+m4_define(`init_TacAdd', `TODO')m4_dnl
+m4_define(`init_TacSubtract', `TODO')m4_dnl
+m4_define(`init_TacMultiply', `TODO')m4_dnl
+m4_define(`init_TacDivide', `TODO')m4_dnl
+m4_define(`init_TacRemainder', `TODO')m4_dnl
+m4_define(`init_TacBitAnd', `TODO')m4_dnl
+m4_define(`init_TacBitOr', `TODO')m4_dnl
+m4_define(`init_TacBitXor', `TODO')m4_dnl
+m4_define(`init_TacBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_TacBitShiftRight', `TODO')m4_dnl
+m4_define(`init_TacBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_TacEqual', `TODO')m4_dnl
+m4_define(`init_TacNotEqual', `TODO')m4_dnl
+m4_define(`init_TacLessThan', `TODO')m4_dnl
+m4_define(`init_TacLessOrEqual', `TODO')m4_dnl
+m4_define(`init_TacGreaterThan', `TODO')m4_dnl
+m4_define(`init_TacGreaterOrEqual', `TODO')m4_dnl
 
 type struc TacConstant(constant: *struc CConst)
 
@@ -994,11 +1153,17 @@ type struc DataFlowAnalysisO1;
 
 type struc OptimTacContext(frontend: *struc FrontEndContext, is_fixed_point: i32, enabled_optims: [5]i32, cfg: *struc ControlFlowGraph, dfa: *struc DataFlowAnalysis, dfa_o1: *struc DataFlowAnalysisO1, p_instrs: ***struc TacInstruction)
 
+m4_define(`GET_INSTR', `TODO')m4_dnl
+m4_define(`GET_CFG_BLOCK', `TODO')m4_dnl
 m4_define(`mask_t', `TODO')m4_dnl
 m4_define(`AstInstruction', `TODO')m4_dnl
 m4_define(`AstInstruction', `TODO')m4_dnl
 m4_define(`Ctx', `TODO')m4_dnl
 m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`free_AstInstruction', `TODO')m4_dnl
+m4_define(`free_AstInstruction', `TODO')m4_dnl
+m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
+m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
 
 type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: *u64, succ_ids: *u64)
 
@@ -1010,6 +1175,7 @@ type struc DataFlowAnalysisO1(data_idx_map: *u64, bak_instrs: **struc TacInstruc
 
 fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     ;
@@ -1072,6 +1238,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     }
     ;
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1081,6 +1248,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
 fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
     self: *struc ControlFlowGraph = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(ControlFlowGraph, self)"
         free_ControlFlowGraph(@self)
         self = cast<*struc ControlFlowGraph>(malloc(sizeof<struc ControlFlowGraph>))
         if not self {
@@ -1099,6 +1267,7 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
 
 fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     ;
@@ -1135,6 +1304,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     }
     ;
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1144,6 +1314,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
 fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
     self: *struc DataFlowAnalysis = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(DataFlowAnalysis, self)"
         free_DataFlowAnalysis(@self)
         self = cast<*struc DataFlowAnalysis>(malloc(sizeof<struc DataFlowAnalysis>))
         if not self {
@@ -1163,6 +1334,7 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
 
 fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     ;
@@ -1186,6 +1358,7 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
     }
     ;
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1195,6 +1368,7 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
 fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
     self: *struc DataFlowAnalysisO1 = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(DataFlowAnalysisO1, self)"
         free_DataFlowAnalysisO1(@self)
         self = cast<*struc DataFlowAnalysisO1>(malloc(sizeof<struc DataFlowAnalysisO1>))
         if not self {
@@ -1210,6 +1384,7 @@ fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
 fn set_instr(ctx: *struc OptimTacContext, instr: *struc TacInstruction, instr_idx: u64) none {
     if instr {
         if instr ~= (ctx[].p_instrs[])[instr_idx] {
+            "@MACRO@:uptr_move(TacInstruction, instr, (*ctx->p_instrs)[instr_idx])"
             free_TacInstruction(@(ctx[].p_instrs[])[instr_idx])
             (ctx[].p_instrs[])[instr_idx] = instr
             instr = nil
@@ -1541,6 +1716,15 @@ fn mask_set(mask: *u64, bit: u64, value: i32) none {
 
 m4_define(`MASK_FALSE', `TODO')m4_dnl
 m4_define(`MASK_TRUE', `TODO')m4_dnl
+m4_define(`MASK_OFFSET', `TODO')m4_dnl
+m4_define(`GET_DFA_BLOCK_SET_IDX', `TODO')m4_dnl
+m4_define(`GET_DFA_INSTR_SET_IDX', `TODO')m4_dnl
+m4_define(`GET_DFA_BLOCK_SET_MASK', `TODO')m4_dnl
+m4_define(`GET_DFA_INSTR_SET_MASK', `TODO')m4_dnl
+m4_define(`GET_DFA_BLOCK_SET_AT', `TODO')m4_dnl
+m4_define(`GET_DFA_INSTR_SET_AT', `TODO')m4_dnl
+m4_define(`SET_DFA_INSTR_SET_AT', `TODO')m4_dnl
+m4_define(`GET_DFA_INSTR', `TODO')m4_dnl
 
 fn is_transfer_instr(ctx: *struc OptimTacContext, instr_idx: u64, is_store_elim: i32) i32 {
     match (ctx[].p_instrs[])[instr_idx][].tag {
@@ -2350,6 +2534,7 @@ fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
         src: *struc TacValue = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2479,6 +2664,7 @@ fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
         src: *struc TacValue = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2556,6 +2742,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
         src: *struc TacValue = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2599,6 +2786,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
         src: *struc TacValue = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2640,6 +2828,7 @@ fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubl
         src: *struc TacValue = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2680,6 +2869,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
         src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2720,6 +2910,7 @@ fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntT
         src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -2888,6 +3079,7 @@ fn fold_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_id
         src: *struc TacValue = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -3277,6 +3469,7 @@ fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
         src: *struc TacValue = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -3459,12 +3652,15 @@ fn fold_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy) none {
         ;
         src: *struc TacValue = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         if src {
-            if src ~= node[].src {
-                free_TacValue(@node[].src)
-                node[].src = src
-                src = nil
-            }
-            ;
+            loop .. while 0 {
+                "@MACRO@:sptr_move(TacValue, src, node->src)"
+                if src ~= node[].src {
+                    "@MACRO@:uptr_move(TacValue, src, node->src)"
+                    free_TacValue(@node[].src)
+                    node[].src = src
+                    src = nil
+                }
+            }            
             ctx[].is_fixed_point = false
         }
     }
@@ -4101,6 +4297,7 @@ fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, ins
     if set_dfa_bak_instr(ctx, instr_idx, @i) {
         src: *struc TacValue = nil
         if node[].src ~= src {
+            "@MACRO@:sptr_copy(TacValue, node->src, src)"
             free_TacValue(@src)
             src = node[].src
             (src)[]._ref_count++
@@ -4108,6 +4305,7 @@ fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, ins
         ;
         dst: *struc TacValue = nil
         if node[].dst ~= dst {
+            "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
             dst = node[].dst
             (dst)[]._ref_count++
@@ -4136,6 +4334,7 @@ fn prop_ret_instr(ctx: *struc OptimTacContext, node: *struc TacReturn, incoming_
                     ;
                     if is_same_value(node[].val, copy[].dst) {
                         if copy[].src ~= node[].val {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->val)"
                             free_TacValue(@node[].val)
                             node[].val = copy[].src
                             (node[].val)[]._ref_count++
@@ -4168,6 +4367,7 @@ fn prop_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4200,6 +4400,7 @@ fn prop_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4232,6 +4433,7 @@ fn prop_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4264,6 +4466,7 @@ fn prop_dbl_to_int_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToIn
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4296,6 +4499,7 @@ fn prop_dbl_to_uint_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToU
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4328,6 +4532,7 @@ fn prop_int_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDoubl
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4360,6 +4565,7 @@ fn prop_uint_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDou
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4393,6 +4599,7 @@ fn prop_call_instr(ctx: *struc OptimTacContext, node: *struc TacFunCall, instr_i
                         ;
                         if is_same_value(node[].args[i], copy[].dst) {
                             if copy[].src ~= node[].args[i] {
+                                "@MACRO@:sptr_copy(TacValue, copy->src, node->args[i])"
                                 free_TacValue(@node[].args[i])
                                 node[].args[i] = copy[].src
                                 (node[].args[i])[]._ref_count++
@@ -4428,6 +4635,7 @@ fn prop_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_id
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4462,6 +4670,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
                     ;
                     if is_src1 and is_same_value(node[].src1, copy[].dst) {
                         if copy[].src ~= node[].src1 {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src1)"
                             free_TacValue(@node[].src1)
                             node[].src1 = copy[].src
                             (node[].src1)[]._ref_count++
@@ -4475,6 +4684,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
                     }
                     if is_src2 and is_same_value(node[].src2, copy[].dst) {
                         if copy[].src ~= node[].src2 {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src2)"
                             free_TacValue(@node[].src2)
                             node[].src2 = copy[].src
                             (node[].src2)[]._ref_count++
@@ -4516,6 +4726,7 @@ fn prop_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx:
                 elif is_same_value(node[].src, copy[].dst) {
                     set_dfa_bak_copy_instr(ctx, node, instr_idx)
                     if copy[].src ~= node[].src {
+                        "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                         free_TacValue(@node[].src)
                         node[].src = copy[].src
                         (node[].src)[]._ref_count++
@@ -4547,6 +4758,7 @@ fn prop_load_instr(ctx: *struc OptimTacContext, node: *struc TacLoad, instr_idx:
                     ;
                     if is_same_value(node[].src_ptr, copy[].dst) {
                         if copy[].src ~= node[].src_ptr {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src_ptr)"
                             free_TacValue(@node[].src_ptr)
                             node[].src_ptr = copy[].src
                             (node[].src_ptr)[]._ref_count++
@@ -4579,6 +4791,7 @@ fn prop_store_instr(ctx: *struc OptimTacContext, node: *struc TacStore, instr_id
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4613,6 +4826,7 @@ fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr
                     ;
                     if is_src_ptr and is_same_value(node[].src_ptr, copy[].dst) {
                         if copy[].src ~= node[].src_ptr {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src_ptr)"
                             free_TacValue(@node[].src_ptr)
                             node[].src_ptr = copy[].src
                             (node[].src_ptr)[]._ref_count++
@@ -4626,6 +4840,7 @@ fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr
                     }
                     if is_idx and is_same_value(node[].idx, copy[].dst) {
                         if copy[].src ~= node[].idx {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->idx)"
                             free_TacValue(@node[].idx)
                             node[].idx = copy[].src
                             (node[].idx)[]._ref_count++
@@ -4661,6 +4876,7 @@ fn prop_cp_to_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyToOf
                     ;
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
                             free_TacValue(@node[].src)
                             node[].src = copy[].src
                             (node[].src)[]._ref_count++
@@ -4719,6 +4935,7 @@ fn prop_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
                     ;
                     if is_same_value(node[].condition, copy[].dst) {
                         if copy[].src ~= node[].condition {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->condition)"
                             free_TacValue(@node[].condition)
                             node[].condition = copy[].src
                             (node[].condition)[]._ref_count++
@@ -4751,6 +4968,7 @@ fn prop_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZer
                     ;
                     if is_same_value(node[].condition, copy[].dst) {
                         if copy[].src ~= node[].condition {
+                            "@MACRO@:sptr_copy(TacValue, copy->src, node->condition)"
                             free_TacValue(@node[].condition)
                             node[].condition = copy[].src
                             (node[].condition)[]._ref_count++

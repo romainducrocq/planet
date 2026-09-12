@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 m4_define(`TIdentifier', `TODO')m4_dnl
 m4_define(`TChar', `TODO')m4_dnl
 m4_define(`TInt', `TODO')m4_dnl
@@ -629,9 +730,54 @@ type struc AsmProgram;
 
 type struc AsmReg(tag: i32)
 pub fn make_AsmReg(tag: i32) struc AsmReg;
+m4_define(`init_AsmReg', `TODO')m4_dnl
+m4_define(`init_AsmAx', `TODO')m4_dnl
+m4_define(`init_AsmBx', `TODO')m4_dnl
+m4_define(`init_AsmCx', `TODO')m4_dnl
+m4_define(`init_AsmDx', `TODO')m4_dnl
+m4_define(`init_AsmDi', `TODO')m4_dnl
+m4_define(`init_AsmSi', `TODO')m4_dnl
+m4_define(`init_AsmR8', `TODO')m4_dnl
+m4_define(`init_AsmR9', `TODO')m4_dnl
+m4_define(`init_AsmR10', `TODO')m4_dnl
+m4_define(`init_AsmR11', `TODO')m4_dnl
+m4_define(`init_AsmR12', `TODO')m4_dnl
+m4_define(`init_AsmR13', `TODO')m4_dnl
+m4_define(`init_AsmR14', `TODO')m4_dnl
+m4_define(`init_AsmR15', `TODO')m4_dnl
+m4_define(`init_AsmSp', `TODO')m4_dnl
+m4_define(`init_AsmBp', `TODO')m4_dnl
+m4_define(`init_AsmXMM0', `TODO')m4_dnl
+m4_define(`init_AsmXMM1', `TODO')m4_dnl
+m4_define(`init_AsmXMM2', `TODO')m4_dnl
+m4_define(`init_AsmXMM3', `TODO')m4_dnl
+m4_define(`init_AsmXMM4', `TODO')m4_dnl
+m4_define(`init_AsmXMM5', `TODO')m4_dnl
+m4_define(`init_AsmXMM6', `TODO')m4_dnl
+m4_define(`init_AsmXMM7', `TODO')m4_dnl
+m4_define(`init_AsmXMM8', `TODO')m4_dnl
+m4_define(`init_AsmXMM9', `TODO')m4_dnl
+m4_define(`init_AsmXMM10', `TODO')m4_dnl
+m4_define(`init_AsmXMM11', `TODO')m4_dnl
+m4_define(`init_AsmXMM12', `TODO')m4_dnl
+m4_define(`init_AsmXMM13', `TODO')m4_dnl
+m4_define(`init_AsmXMM14', `TODO')m4_dnl
+m4_define(`init_AsmXMM15', `TODO')m4_dnl
 
 type struc AsmCondCode(tag: i32)
 pub fn make_AsmCondCode(tag: i32) struc AsmCondCode;
+m4_define(`init_AsmCondCode', `TODO')m4_dnl
+m4_define(`init_AsmE', `TODO')m4_dnl
+m4_define(`init_AsmNE', `TODO')m4_dnl
+m4_define(`init_AsmG', `TODO')m4_dnl
+m4_define(`init_AsmGE', `TODO')m4_dnl
+m4_define(`init_AsmL', `TODO')m4_dnl
+m4_define(`init_AsmLE', `TODO')m4_dnl
+m4_define(`init_AsmA', `TODO')m4_dnl
+m4_define(`init_AsmAE', `TODO')m4_dnl
+m4_define(`init_AsmB', `TODO')m4_dnl
+m4_define(`init_AsmBE', `TODO')m4_dnl
+m4_define(`init_AsmP', `TODO')m4_dnl
 
 type struc AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32)
 
@@ -662,9 +808,24 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none;
 
 type struc AsmBinaryOp(tag: i32)
 pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp;
+m4_define(`init_AsmBinaryOp', `TODO')m4_dnl
+m4_define(`init_AsmAdd', `TODO')m4_dnl
+m4_define(`init_AsmSub', `TODO')m4_dnl
+m4_define(`init_AsmMult', `TODO')m4_dnl
+m4_define(`init_AsmDivDouble', `TODO')m4_dnl
+m4_define(`init_AsmBitAnd', `TODO')m4_dnl
+m4_define(`init_AsmBitOr', `TODO')m4_dnl
+m4_define(`init_AsmBitXor', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftLeft', `TODO')m4_dnl
+m4_define(`init_AsmBitShiftRight', `TODO')m4_dnl
+m4_define(`init_AsmBitShrArithmetic', `TODO')m4_dnl
 
 type struc AsmUnaryOp(tag: i32)
 pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp;
+m4_define(`init_AsmUnaryOp', `TODO')m4_dnl
+m4_define(`init_AsmNot', `TODO')m4_dnl
+m4_define(`init_AsmNeg', `TODO')m4_dnl
+m4_define(`init_AsmShr', `TODO')m4_dnl
 
 type struc AsmMov(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
 
@@ -762,11 +923,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 
 pub fn make_AsmReg(tag: i32) struc AsmReg {
     self: struc AsmReg = $(tag)
@@ -881,7 +1049,9 @@ pub fn make_AsmCondCode(tag: i32) struc AsmCondCode {
 pub fn make_AsmOperand(none) *struc AsmOperand {
     self: *struc AsmOperand = nil
     loop .. while 0 {
+        "@MACRO@:sptr_alloc(AsmOperand, self)"
         loop .. while 0 {
+            "@MACRO@:uptr_alloc(AsmOperand, self)"
             free_AsmOperand(@self)
             self = cast<*struc AsmOperand>(malloc(sizeof<struc AsmOperand>))
             if not self {
@@ -952,14 +1122,18 @@ pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc As
 }
 
 pub fn free_AsmOperand(self: **struc AsmOperand) none {
-    if not self[] {
-        return none
-    }
-    elif (self[])[]._ref_count > 1 {
-        (self[])[]._ref_count--
-        self[] = nil
-        return none
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_delete(*self)"
+        if not self[] {
+            "@MACRO@:uptr_delete(*self)"
+            return none
+        }
+        elif (self[])[]._ref_count > 1 {
+            (self[])[]._ref_count--
+            self[] = nil
+            return none
+        }
+    }    
     match (self[])[].tag {
         -> AST_AsmOperand_t {
             -> AST_AsmImm_t {
@@ -988,10 +1162,14 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none {
             panic_sigabrt("abort")
         }
     }
-    if self[] {
-        free(self[])
-        self[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_free(*self)"
+        if self[] {
+            "@MACRO@:uptr_free(*self)"
+            free(self[])
+            self[] = nil
+        }
+    }    
 }
 
 pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp {
@@ -1047,6 +1225,7 @@ pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp {
 pub fn make_AsmInstruction(none) *struc AsmInstruction {
     self: *struc AsmInstruction = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(AsmInstruction, self)"
         free_AsmInstruction(@self)
         self = cast<*struc AsmInstruction>(malloc(sizeof<struc AsmInstruction>))
         if not self {
@@ -1061,23 +1240,35 @@ pub fn make_AsmMov(asm_type: **struc AssemblyType, src: **struc AsmOperand, dst:
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmMov_t
     self[].get._AsmMov.asm_type = nil
-    if asm_type[] ~= self[].get._AsmMov.asm_type {
-        free_AssemblyType(@self[].get._AsmMov.asm_type)
-        self[].get._AsmMov.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmMov.asm_type)"
+        if asm_type[] ~= self[].get._AsmMov.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmMov.asm_type)"
+            free_AssemblyType(@self[].get._AsmMov.asm_type)
+            self[].get._AsmMov.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmMov.src = nil
-    if src[] ~= self[].get._AsmMov.src {
-        free_AsmOperand(@self[].get._AsmMov.src)
-        self[].get._AsmMov.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmMov.src)"
+        if src[] ~= self[].get._AsmMov.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmMov.src)"
+            free_AsmOperand(@self[].get._AsmMov.src)
+            self[].get._AsmMov.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmMov.dst = nil
-    if dst[] ~= self[].get._AsmMov.dst {
-        free_AsmOperand(@self[].get._AsmMov.dst)
-        self[].get._AsmMov.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmMov.dst)"
+        if dst[] ~= self[].get._AsmMov.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmMov.dst)"
+            free_AsmOperand(@self[].get._AsmMov.dst)
+            self[].get._AsmMov.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1085,29 +1276,45 @@ pub fn make_AsmMovSx(asm_type_src: **struc AssemblyType, asm_type_dst: **struc A
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmMovSx_t
     self[].get._AsmMovSx.asm_type_src = nil
-    if asm_type_src[] ~= self[].get._AsmMovSx.asm_type_src {
-        free_AssemblyType(@self[].get._AsmMovSx.asm_type_src)
-        self[].get._AsmMovSx.asm_type_src = asm_type_src[]
-        asm_type_src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type_src, self->get._AsmMovSx.asm_type_src)"
+        if asm_type_src[] ~= self[].get._AsmMovSx.asm_type_src {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type_src, self->get._AsmMovSx.asm_type_src)"
+            free_AssemblyType(@self[].get._AsmMovSx.asm_type_src)
+            self[].get._AsmMovSx.asm_type_src = asm_type_src[]
+            asm_type_src[] = nil
+        }
+    }    
     self[].get._AsmMovSx.asm_type_dst = nil
-    if asm_type_dst[] ~= self[].get._AsmMovSx.asm_type_dst {
-        free_AssemblyType(@self[].get._AsmMovSx.asm_type_dst)
-        self[].get._AsmMovSx.asm_type_dst = asm_type_dst[]
-        asm_type_dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type_dst, self->get._AsmMovSx.asm_type_dst)"
+        if asm_type_dst[] ~= self[].get._AsmMovSx.asm_type_dst {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type_dst, self->get._AsmMovSx.asm_type_dst)"
+            free_AssemblyType(@self[].get._AsmMovSx.asm_type_dst)
+            self[].get._AsmMovSx.asm_type_dst = asm_type_dst[]
+            asm_type_dst[] = nil
+        }
+    }    
     self[].get._AsmMovSx.src = nil
-    if src[] ~= self[].get._AsmMovSx.src {
-        free_AsmOperand(@self[].get._AsmMovSx.src)
-        self[].get._AsmMovSx.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmMovSx.src)"
+        if src[] ~= self[].get._AsmMovSx.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmMovSx.src)"
+            free_AsmOperand(@self[].get._AsmMovSx.src)
+            self[].get._AsmMovSx.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmMovSx.dst = nil
-    if dst[] ~= self[].get._AsmMovSx.dst {
-        free_AsmOperand(@self[].get._AsmMovSx.dst)
-        self[].get._AsmMovSx.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmMovSx.dst)"
+        if dst[] ~= self[].get._AsmMovSx.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmMovSx.dst)"
+            free_AsmOperand(@self[].get._AsmMovSx.dst)
+            self[].get._AsmMovSx.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1115,29 +1322,45 @@ pub fn make_AsmMovZeroExtend(asm_type_src: **struc AssemblyType, asm_type_dst: *
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmMovZeroExtend_t
     self[].get._AsmMovZeroExtend.asm_type_src = nil
-    if asm_type_src[] ~= self[].get._AsmMovZeroExtend.asm_type_src {
-        free_AssemblyType(@self[].get._AsmMovZeroExtend.asm_type_src)
-        self[].get._AsmMovZeroExtend.asm_type_src = asm_type_src[]
-        asm_type_src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type_src, self->get._AsmMovZeroExtend.asm_type_src)"
+        if asm_type_src[] ~= self[].get._AsmMovZeroExtend.asm_type_src {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type_src, self->get._AsmMovZeroExtend.asm_type_src)"
+            free_AssemblyType(@self[].get._AsmMovZeroExtend.asm_type_src)
+            self[].get._AsmMovZeroExtend.asm_type_src = asm_type_src[]
+            asm_type_src[] = nil
+        }
+    }    
     self[].get._AsmMovZeroExtend.asm_type_dst = nil
-    if asm_type_dst[] ~= self[].get._AsmMovZeroExtend.asm_type_dst {
-        free_AssemblyType(@self[].get._AsmMovZeroExtend.asm_type_dst)
-        self[].get._AsmMovZeroExtend.asm_type_dst = asm_type_dst[]
-        asm_type_dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type_dst, self->get._AsmMovZeroExtend.asm_type_dst)"
+        if asm_type_dst[] ~= self[].get._AsmMovZeroExtend.asm_type_dst {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type_dst, self->get._AsmMovZeroExtend.asm_type_dst)"
+            free_AssemblyType(@self[].get._AsmMovZeroExtend.asm_type_dst)
+            self[].get._AsmMovZeroExtend.asm_type_dst = asm_type_dst[]
+            asm_type_dst[] = nil
+        }
+    }    
     self[].get._AsmMovZeroExtend.src = nil
-    if src[] ~= self[].get._AsmMovZeroExtend.src {
-        free_AsmOperand(@self[].get._AsmMovZeroExtend.src)
-        self[].get._AsmMovZeroExtend.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmMovZeroExtend.src)"
+        if src[] ~= self[].get._AsmMovZeroExtend.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmMovZeroExtend.src)"
+            free_AsmOperand(@self[].get._AsmMovZeroExtend.src)
+            self[].get._AsmMovZeroExtend.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmMovZeroExtend.dst = nil
-    if dst[] ~= self[].get._AsmMovZeroExtend.dst {
-        free_AsmOperand(@self[].get._AsmMovZeroExtend.dst)
-        self[].get._AsmMovZeroExtend.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmMovZeroExtend.dst)"
+        if dst[] ~= self[].get._AsmMovZeroExtend.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmMovZeroExtend.dst)"
+            free_AsmOperand(@self[].get._AsmMovZeroExtend.dst)
+            self[].get._AsmMovZeroExtend.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1145,17 +1368,25 @@ pub fn make_AsmLea(src: **struc AsmOperand, dst: **struc AsmOperand) *struc AsmI
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmLea_t
     self[].get._AsmLea.src = nil
-    if src[] ~= self[].get._AsmLea.src {
-        free_AsmOperand(@self[].get._AsmLea.src)
-        self[].get._AsmLea.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmLea.src)"
+        if src[] ~= self[].get._AsmLea.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmLea.src)"
+            free_AsmOperand(@self[].get._AsmLea.src)
+            self[].get._AsmLea.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmLea.dst = nil
-    if dst[] ~= self[].get._AsmLea.dst {
-        free_AsmOperand(@self[].get._AsmLea.dst)
-        self[].get._AsmLea.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmLea.dst)"
+        if dst[] ~= self[].get._AsmLea.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmLea.dst)"
+            free_AsmOperand(@self[].get._AsmLea.dst)
+            self[].get._AsmLea.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1163,23 +1394,35 @@ pub fn make_AsmCvttsd2si(asm_type: **struc AssemblyType, src: **struc AsmOperand
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmCvttsd2si_t
     self[].get._AsmCvttsd2si.asm_type = nil
-    if asm_type[] ~= self[].get._AsmCvttsd2si.asm_type {
-        free_AssemblyType(@self[].get._AsmCvttsd2si.asm_type)
-        self[].get._AsmCvttsd2si.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmCvttsd2si.asm_type)"
+        if asm_type[] ~= self[].get._AsmCvttsd2si.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmCvttsd2si.asm_type)"
+            free_AssemblyType(@self[].get._AsmCvttsd2si.asm_type)
+            self[].get._AsmCvttsd2si.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmCvttsd2si.src = nil
-    if src[] ~= self[].get._AsmCvttsd2si.src {
-        free_AsmOperand(@self[].get._AsmCvttsd2si.src)
-        self[].get._AsmCvttsd2si.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmCvttsd2si.src)"
+        if src[] ~= self[].get._AsmCvttsd2si.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmCvttsd2si.src)"
+            free_AsmOperand(@self[].get._AsmCvttsd2si.src)
+            self[].get._AsmCvttsd2si.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmCvttsd2si.dst = nil
-    if dst[] ~= self[].get._AsmCvttsd2si.dst {
-        free_AsmOperand(@self[].get._AsmCvttsd2si.dst)
-        self[].get._AsmCvttsd2si.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmCvttsd2si.dst)"
+        if dst[] ~= self[].get._AsmCvttsd2si.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmCvttsd2si.dst)"
+            free_AsmOperand(@self[].get._AsmCvttsd2si.dst)
+            self[].get._AsmCvttsd2si.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1187,23 +1430,35 @@ pub fn make_AsmCvtsi2sd(asm_type: **struc AssemblyType, src: **struc AsmOperand,
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmCvtsi2sd_t
     self[].get._AsmCvtsi2sd.asm_type = nil
-    if asm_type[] ~= self[].get._AsmCvtsi2sd.asm_type {
-        free_AssemblyType(@self[].get._AsmCvtsi2sd.asm_type)
-        self[].get._AsmCvtsi2sd.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmCvtsi2sd.asm_type)"
+        if asm_type[] ~= self[].get._AsmCvtsi2sd.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmCvtsi2sd.asm_type)"
+            free_AssemblyType(@self[].get._AsmCvtsi2sd.asm_type)
+            self[].get._AsmCvtsi2sd.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmCvtsi2sd.src = nil
-    if src[] ~= self[].get._AsmCvtsi2sd.src {
-        free_AsmOperand(@self[].get._AsmCvtsi2sd.src)
-        self[].get._AsmCvtsi2sd.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmCvtsi2sd.src)"
+        if src[] ~= self[].get._AsmCvtsi2sd.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmCvtsi2sd.src)"
+            free_AsmOperand(@self[].get._AsmCvtsi2sd.src)
+            self[].get._AsmCvtsi2sd.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmCvtsi2sd.dst = nil
-    if dst[] ~= self[].get._AsmCvtsi2sd.dst {
-        free_AsmOperand(@self[].get._AsmCvtsi2sd.dst)
-        self[].get._AsmCvtsi2sd.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmCvtsi2sd.dst)"
+        if dst[] ~= self[].get._AsmCvtsi2sd.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmCvtsi2sd.dst)"
+            free_AsmOperand(@self[].get._AsmCvtsi2sd.dst)
+            self[].get._AsmCvtsi2sd.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1212,17 +1467,25 @@ pub fn make_AsmUnary(unop: *struc AsmUnaryOp, asm_type: **struc AssemblyType, ds
     self[].tag = AST_AsmUnary_t
     self[].get._AsmUnary.unop = unop[]
     self[].get._AsmUnary.asm_type = nil
-    if asm_type[] ~= self[].get._AsmUnary.asm_type {
-        free_AssemblyType(@self[].get._AsmUnary.asm_type)
-        self[].get._AsmUnary.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmUnary.asm_type)"
+        if asm_type[] ~= self[].get._AsmUnary.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmUnary.asm_type)"
+            free_AssemblyType(@self[].get._AsmUnary.asm_type)
+            self[].get._AsmUnary.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmUnary.dst = nil
-    if dst[] ~= self[].get._AsmUnary.dst {
-        free_AsmOperand(@self[].get._AsmUnary.dst)
-        self[].get._AsmUnary.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmUnary.dst)"
+        if dst[] ~= self[].get._AsmUnary.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmUnary.dst)"
+            free_AsmOperand(@self[].get._AsmUnary.dst)
+            self[].get._AsmUnary.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1231,23 +1494,35 @@ pub fn make_AsmBinary(binop: *struc AsmBinaryOp, asm_type: **struc AssemblyType,
     self[].tag = AST_AsmBinary_t
     self[].get._AsmBinary.binop = binop[]
     self[].get._AsmBinary.asm_type = nil
-    if asm_type[] ~= self[].get._AsmBinary.asm_type {
-        free_AssemblyType(@self[].get._AsmBinary.asm_type)
-        self[].get._AsmBinary.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmBinary.asm_type)"
+        if asm_type[] ~= self[].get._AsmBinary.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmBinary.asm_type)"
+            free_AssemblyType(@self[].get._AsmBinary.asm_type)
+            self[].get._AsmBinary.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmBinary.src = nil
-    if src[] ~= self[].get._AsmBinary.src {
-        free_AsmOperand(@self[].get._AsmBinary.src)
-        self[].get._AsmBinary.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmBinary.src)"
+        if src[] ~= self[].get._AsmBinary.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmBinary.src)"
+            free_AsmOperand(@self[].get._AsmBinary.src)
+            self[].get._AsmBinary.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmBinary.dst = nil
-    if dst[] ~= self[].get._AsmBinary.dst {
-        free_AsmOperand(@self[].get._AsmBinary.dst)
-        self[].get._AsmBinary.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmBinary.dst)"
+        if dst[] ~= self[].get._AsmBinary.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmBinary.dst)"
+            free_AsmOperand(@self[].get._AsmBinary.dst)
+            self[].get._AsmBinary.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1255,23 +1530,35 @@ pub fn make_AsmCmp(asm_type: **struc AssemblyType, src: **struc AsmOperand, dst:
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmCmp_t
     self[].get._AsmCmp.asm_type = nil
-    if asm_type[] ~= self[].get._AsmCmp.asm_type {
-        free_AssemblyType(@self[].get._AsmCmp.asm_type)
-        self[].get._AsmCmp.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmCmp.asm_type)"
+        if asm_type[] ~= self[].get._AsmCmp.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmCmp.asm_type)"
+            free_AssemblyType(@self[].get._AsmCmp.asm_type)
+            self[].get._AsmCmp.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmCmp.src = nil
-    if src[] ~= self[].get._AsmCmp.src {
-        free_AsmOperand(@self[].get._AsmCmp.src)
-        self[].get._AsmCmp.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmCmp.src)"
+        if src[] ~= self[].get._AsmCmp.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmCmp.src)"
+            free_AsmOperand(@self[].get._AsmCmp.src)
+            self[].get._AsmCmp.src = src[]
+            src[] = nil
+        }
+    }    
     self[].get._AsmCmp.dst = nil
-    if dst[] ~= self[].get._AsmCmp.dst {
-        free_AsmOperand(@self[].get._AsmCmp.dst)
-        self[].get._AsmCmp.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmCmp.dst)"
+        if dst[] ~= self[].get._AsmCmp.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmCmp.dst)"
+            free_AsmOperand(@self[].get._AsmCmp.dst)
+            self[].get._AsmCmp.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1279,17 +1566,25 @@ pub fn make_AsmIdiv(asm_type: **struc AssemblyType, src: **struc AsmOperand) *st
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmIdiv_t
     self[].get._AsmIdiv.asm_type = nil
-    if asm_type[] ~= self[].get._AsmIdiv.asm_type {
-        free_AssemblyType(@self[].get._AsmIdiv.asm_type)
-        self[].get._AsmIdiv.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmIdiv.asm_type)"
+        if asm_type[] ~= self[].get._AsmIdiv.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmIdiv.asm_type)"
+            free_AssemblyType(@self[].get._AsmIdiv.asm_type)
+            self[].get._AsmIdiv.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmIdiv.src = nil
-    if src[] ~= self[].get._AsmIdiv.src {
-        free_AsmOperand(@self[].get._AsmIdiv.src)
-        self[].get._AsmIdiv.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmIdiv.src)"
+        if src[] ~= self[].get._AsmIdiv.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmIdiv.src)"
+            free_AsmOperand(@self[].get._AsmIdiv.src)
+            self[].get._AsmIdiv.src = src[]
+            src[] = nil
+        }
+    }    
     return self
 }
 
@@ -1297,17 +1592,25 @@ pub fn make_AsmDiv(asm_type: **struc AssemblyType, src: **struc AsmOperand) *str
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmDiv_t
     self[].get._AsmDiv.asm_type = nil
-    if asm_type[] ~= self[].get._AsmDiv.asm_type {
-        free_AssemblyType(@self[].get._AsmDiv.asm_type)
-        self[].get._AsmDiv.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmDiv.asm_type)"
+        if asm_type[] ~= self[].get._AsmDiv.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmDiv.asm_type)"
+            free_AssemblyType(@self[].get._AsmDiv.asm_type)
+            self[].get._AsmDiv.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     self[].get._AsmDiv.src = nil
-    if src[] ~= self[].get._AsmDiv.src {
-        free_AsmOperand(@self[].get._AsmDiv.src)
-        self[].get._AsmDiv.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmDiv.src)"
+        if src[] ~= self[].get._AsmDiv.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmDiv.src)"
+            free_AsmOperand(@self[].get._AsmDiv.src)
+            self[].get._AsmDiv.src = src[]
+            src[] = nil
+        }
+    }    
     return self
 }
 
@@ -1315,11 +1618,15 @@ pub fn make_AsmCdq(asm_type: **struc AssemblyType) *struc AsmInstruction {
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmCdq_t
     self[].get._AsmCdq.asm_type = nil
-    if asm_type[] ~= self[].get._AsmCdq.asm_type {
-        free_AssemblyType(@self[].get._AsmCdq.asm_type)
-        self[].get._AsmCdq.asm_type = asm_type[]
-        asm_type[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._AsmCdq.asm_type)"
+        if asm_type[] ~= self[].get._AsmCdq.asm_type {
+            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._AsmCdq.asm_type)"
+            free_AssemblyType(@self[].get._AsmCdq.asm_type)
+            self[].get._AsmCdq.asm_type = asm_type[]
+            asm_type[] = nil
+        }
+    }    
     return self
 }
 
@@ -1343,11 +1650,15 @@ pub fn make_AsmSetCC(cond_code: *struc AsmCondCode, dst: **struc AsmOperand) *st
     self[].tag = AST_AsmSetCC_t
     self[].get._AsmSetCC.cond_code = cond_code[]
     self[].get._AsmSetCC.dst = nil
-    if dst[] ~= self[].get._AsmSetCC.dst {
-        free_AsmOperand(@self[].get._AsmSetCC.dst)
-        self[].get._AsmSetCC.dst = dst[]
-        dst[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *dst, self->get._AsmSetCC.dst)"
+        if dst[] ~= self[].get._AsmSetCC.dst {
+            "@MACRO@:uptr_move(AsmOperand, *dst, self->get._AsmSetCC.dst)"
+            free_AsmOperand(@self[].get._AsmSetCC.dst)
+            self[].get._AsmSetCC.dst = dst[]
+            dst[] = nil
+        }
+    }    
     return self
 }
 
@@ -1362,11 +1673,15 @@ pub fn make_AsmPush(src: **struc AsmOperand) *struc AsmInstruction {
     self: *struc AsmInstruction = make_AsmInstruction()
     self[].tag = AST_AsmPush_t
     self[].get._AsmPush.src = nil
-    if src[] ~= self[].get._AsmPush.src {
-        free_AsmOperand(@self[].get._AsmPush.src)
-        self[].get._AsmPush.src = src[]
-        src[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(AsmOperand, *src, self->get._AsmPush.src)"
+        if src[] ~= self[].get._AsmPush.src {
+            "@MACRO@:uptr_move(AsmOperand, *src, self->get._AsmPush.src)"
+            free_AsmOperand(@self[].get._AsmPush.src)
+            self[].get._AsmPush.src = src[]
+            src[] = nil
+        }
+    }    
     return self
 }
 
@@ -1392,6 +1707,7 @@ pub fn make_AsmRet(none) *struc AsmInstruction {
 
 pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -1497,6 +1813,7 @@ pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
         }
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1505,6 +1822,7 @@ pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
 pub fn make_AsmTopLevel(none) *struc AsmTopLevel {
     self: *struc AsmTopLevel = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(AsmTopLevel, self)"
         free_AsmTopLevel(@self)
         self = cast<*struc AsmTopLevel>(malloc(sizeof<struc AsmTopLevel>))
         if not self {
@@ -1563,16 +1881,21 @@ pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: **struc St
     self[].get._AsmStaticConstant.name = name
     self[].get._AsmStaticConstant.alignment = alignment
     self[].get._AsmStaticConstant.static_init = nil
-    if static_init[] ~= self[].get._AsmStaticConstant.static_init {
-        free_StaticInit(@self[].get._AsmStaticConstant.static_init)
-        self[].get._AsmStaticConstant.static_init = static_init[]
-        static_init[] = nil
-    }
+    loop .. while 0 {
+        "@MACRO@:sptr_move(StaticInit, *static_init, self->get._AsmStaticConstant.static_init)"
+        if static_init[] ~= self[].get._AsmStaticConstant.static_init {
+            "@MACRO@:uptr_move(StaticInit, *static_init, self->get._AsmStaticConstant.static_init)"
+            free_StaticInit(@self[].get._AsmStaticConstant.static_init)
+            self[].get._AsmStaticConstant.static_init = static_init[]
+            static_init[] = nil
+        }
+    }    
     return self
 }
 
 pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -1614,6 +1937,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
         }
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
@@ -1622,6 +1946,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
 pub fn make_AsmProgram(static_const_toplvls: ***struc AsmTopLevel, top_levels: ***struc AsmTopLevel) *struc AsmProgram {
     self: *struc AsmProgram = nil
     loop .. while 0 {
+        "@MACRO@:uptr_alloc(AsmProgram, self)"
         free_AsmProgram(@self)
         self = cast<*struc AsmProgram>(malloc(sizeof<struc AsmProgram>))
         if not self {
@@ -1658,6 +1983,7 @@ pub fn make_AsmProgram(static_const_toplvls: ***struc AsmTopLevel, top_levels: *
 
 pub fn free_AsmProgram(self: **struc AsmProgram) none {
     if not self[] {
+        "@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -1689,6 +2015,7 @@ pub fn free_AsmProgram(self: **struc AsmProgram) none {
         (self[])[].top_levels = nil
     }
     if self[] {
+        "@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = nil
     }
