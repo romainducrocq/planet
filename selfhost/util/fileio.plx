@@ -56,6 +56,28 @@ m4_define(`hmgeti', `TODO')m4_dnl
 m4_define(`hmdel', `TODO')m4_dnl
 m4_define(`hmlenu', `TODO')m4_dnl
 m4_define(`hmfree', `TODO')m4_dnl
+m4_define(`STBDS_ADDRESSOF', `TODO')m4_dnl
+m4_define(`STBDS_OFFSETOF', `TODO')m4_dnl
+m4_define(`stbds_header', `TODO')m4_dnl
+m4_define(`stbds_temp', `TODO')m4_dnl
+m4_define(`stbds_arrsetcap', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrcap', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrput', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrdelswap', `TODO')m4_dnl
+m4_define(`stbds_arrmaybegrow', `TODO')m4_dnl
+m4_define(`stbds_arrgrow', `TODO')m4_dnl
+m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
@@ -71,7 +93,86 @@ m4_define(`CATCH_ENTER', `TODO')m4_dnl
 m4_define(`CATCH_EXIT', `TODO')m4_dnl
 m4_define(`EARLY_EXIT', `TODO')m4_dnl
 m4_define(`FINALLY', `TODO')m4_dnl
+m4_define(`TRY', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`tagged_def_t', `TODO')m4_dnl
+m4_define(`tagged_def_impl', `TODO')m4_dnl
+m4_define(`tagged_def_init', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_impl', `TODO')m4_dnl
+m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_alloc', `TODO')m4_dnl
+m4_define(`uptr_free', `TODO')m4_dnl
+m4_define(`uptr_move', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_impl', `TODO')m4_dnl
+m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_delete', `TODO')m4_dnl
+m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_free', `TODO')m4_dnl
+m4_define(`sptr_move', `TODO')m4_dnl
+m4_define(`sptr_copy', `TODO')m4_dnl
 m4_define(`string_t', `TODO')m4_dnl
+m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_move', `TODO')m4_dnl
+m4_define(`str_size', `TODO')m4_dnl
+m4_define(`str_back', `TODO')m4_dnl
+m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_copy', `TODO')m4_dnl
+m4_define(`str_hash', `TODO')m4_dnl
+m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_push_back', `TODO')m4_dnl
+m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_resize', `TODO')m4_dnl
+m4_define(`str_substr', `TODO')m4_dnl
+m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_delete', `TODO')m4_dnl
+m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_pop_back', `TODO')m4_dnl
+m4_define(`vec_push_back', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_resize', `TODO')m4_dnl
+m4_define(`vec_reserve', `TODO')m4_dnl
+m4_define(`pair_t', `TODO')m4_dnl
+m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`pair_first', `TODO')m4_dnl
+m4_define(`pair_second', `TODO')m4_dnl
+m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_delete', `TODO')m4_dnl
+m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_clear', `TODO')m4_dnl
+m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_end', `TODO')m4_dnl
+m4_define(`map_erase', `TODO')m4_dnl
+m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`element_t', `TODO')m4_dnl
+m4_define(`ElementKey', `TODO')m4_dnl
+m4_define(`element_get', `TODO')m4_dnl
+m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_delete', `TODO')m4_dnl
+m4_define(`set_size', `TODO')m4_dnl
+m4_define(`set_clear', `TODO')m4_dnl
+m4_define(`set_end', `TODO')m4_dnl
+m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_insert', `TODO')m4_dnl
 type struc FileIoContext;
 m4_define(`hash_t', `TODO')m4_dnl
 
@@ -84,11 +185,18 @@ type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: *struc Pairhash_thash_t, fopen_lines: *struc FileOpenLine, token_infos: *struc TokenInfo)
 
 pub fn panic_sigabrt(msg: string) none;
+m4_define(`PANIC_FUNC', `TODO')m4_dnl
 m4_define(`THROW_ABORT', `TODO')m4_dnl
+m4_define(`THROW_ALLOC', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
+m4_define(`THROW_ABORT_IF', `TODO')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `TODO')m4_dnl
+m4_define(`THROW_INIT', `TODO')m4_dnl
+m4_define(`THROW_BASE', `TODO')m4_dnl
+m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 type struc ErrorsContext;
 
 type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string)
@@ -674,12 +782,34 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string;
 pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string) string;
 pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string) string;
+m4_define(`str_get_fmt', `TODO')m4_dnl
+m4_define(`str_fmt_tok', `TODO')m4_dnl
+m4_define(`str_fmt_name', `TODO')m4_dnl
+m4_define(`str_fmt_struct_name', `TODO')m4_dnl
+m4_define(`str_fmt_fun', `TODO')m4_dnl
+m4_define(`str_fmt_ptr', `TODO')m4_dnl
+m4_define(`str_fmt_arr', `TODO')m4_dnl
+m4_define(`str_fmt_struct', `TODO')m4_dnl
+m4_define(`str_fmt_type', `TODO')m4_dnl
 pub fn get_fatal_msg(msg: i32) string;
 pub fn get_arg_msg(msg: i32) string;
 pub fn get_util_msg(msg: i32) string;
 pub fn get_lexer_msg(msg: i32) string;
 pub fn get_parser_msg(msg: i32) string;
 pub fn get_semantic_msg(msg: i32) string;
+m4_define(`GET_MESSAGE', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_0', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_1', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_2', `TODO')m4_dnl
+m4_define(`GET_MESSAGE_3', `TODO')m4_dnl
+m4_define(`GET_FATAL_MSG', `TODO')m4_dnl
+m4_define(`GET_ARG_MSG', `TODO')m4_dnl
+m4_define(`GET_UTIL_MSG', `TODO')m4_dnl
+m4_define(`GET_LEXER_MSG', `TODO')m4_dnl
+m4_define(`GET_PARSER_MSG', `TODO')m4_dnl
+m4_define(`GET_SEMANTIC_MSG', `TODO')m4_dnl
+m4_define(`STRINGIFY', `TODO')m4_dnl
+m4_define(`GET_VERSION', `TODO')m4_dnl
 m4_define(`GCC_VERSION', `TODO')m4_dnl
 m4_define(`CLANG_VERSION', `TODO')m4_dnl
 m4_define(`Ctx', `TODO')m4_dnl
@@ -734,6 +864,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or sdslen(filename) >= 4096 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -760,6 +891,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or sdslen(filename) >= 4096 {
         loop .. while 0 {
+            "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fwrite), "MSG_failed_fwrite", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -817,6 +949,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd = fopen((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename, "rb")
         if not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
             loop .. while 0 {
+                "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -825,6 +958,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         loop i: u64 = 0 while i < linenum .. ++i {
             if getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd) == -1 {
                 loop .. while 0 {
+                    "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
