@@ -1279,7 +1279,7 @@ fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc
                 (ctx[].dbl_const_table) = stbds_hmput_key((ctx[].dbl_const_table), sizeof((ctx[].dbl_const_table)[]), cast<*any>(@((dbl_const))), sizeof((ctx[].dbl_const_table)[].key), 0)
                 (ctx[].dbl_const_table)[(cast<*struc stbds_array_header>(((ctx[].dbl_const_table) - 1)) - 1)[].temp].key = (dbl_const)
                 (ctx[].dbl_const_table)[(cast<*struc stbds_array_header>(((ctx[].dbl_const_table) - 1)) - 1)[].temp].value = (dbl_const_label)
-            }            
+            }
             dbl_static_const_toplvl(ctx, dbl_const_label, dbl_const, byte)
         }
     }
@@ -1723,7 +1723,7 @@ fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
         (ctx[].struct_8b_map) = stbds_hmput_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)
         (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].key = (struct_type[].tag_name)
         (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].value = (struct_8b)
-    }    
+    }
 }
 
 fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
@@ -1741,7 +1741,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
                 member_arr_type: *struc Array = @member_type[].get._Array
                 member_type = member_arr_type[].elem_type
                 size *= member_arr_type[].size
-            }            
+            }
         }
         if member_type[].tag == AST_Structure_t {
             size *= ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((member_type[].get._Structure.tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
@@ -1805,7 +1805,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
         (ctx[].struct_8b_map) = stbds_hmput_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)
         (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].key = (struct_type[].tag_name)
         (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].value = (struct_8b)
-    }    
+    }
 }
 
 fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
@@ -1822,7 +1822,7 @@ fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) non
                 (ctx[].struct_8b_map) = stbds_hmput_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)
                 (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].key = (struct_type[].tag_name)
                 (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].value = (struct_8b)
-            }            
+            }
         }
         elif size > 8l {
             struct_2_reg_8b_class(ctx, struct_type)
@@ -1871,9 +1871,9 @@ fn push_instr(ctx: *struc AsmGenContext, instr: *struc AsmInstruction) none {
         loop .. while 0 {
             (? (not (ctx[].p_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].capacity) then (((ctx[].p_instrs[]) = stbds_arrgrowf((ctx[].p_instrs[]), sizeof((ctx[].p_instrs[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length++] = (instr)
-        }        
+        }
         instr = nil
-    }    
+    }
 }
 
 fn ret_int_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
@@ -2771,7 +2771,7 @@ fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, 
             asm_type_src = asm_type[]
             asm_type[] = nil
         }
-    }    
+    }
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
@@ -2805,9 +2805,9 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
                 loop .. while 0 {
                     (? (not (byte_instrs) or (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].capacity) then (((byte_instrs) = stbds_arrgrowf((byte_instrs), sizeof((byte_instrs)[]), (1), (0))) and 0) else 0)
                     (byte_instrs)[(cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length++] = (byte_instr)
-                }                
+                }
                 byte_instr = nil
-            }            
+            }
         }
         loop i: u64 = (? (byte_instrs) then (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length else 0) while i-- > 0 {
             push_instr(ctx, byte_instrs[i])
@@ -2817,7 +2817,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
             loop .. while 0 {
                 cast<none>((? (byte_instrs) then free((cast<*struc stbds_array_header>((byte_instrs)) - 1)) else cast<none>(0)))
                 (byte_instrs) = nil
-            }            
+            }
             byte_instrs = nil
         }
     }
@@ -2940,7 +2940,7 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
         loop .. while 0 {
             cast<none>((? (stack_instrs) then free((cast<*struc stbds_array_header>((stack_instrs)) - 1)) else cast<none>(0)))
             (stack_instrs) = nil
-        }        
+        }
         stack_instrs = nil
     }
     return stack_padding
@@ -3766,7 +3766,7 @@ fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
                 (ctx[].frontend[].addressed_set) = stbds_hmput_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)
                 (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].key = (name)
                 (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].value = (0)
-            }            
+            }
             map_it: i64 = (? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)
             if map_it ~= -1 and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == AST_ConstantAttr_t {
                 src = make_AsmData(name, 0l)
@@ -4539,9 +4539,9 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
             loop .. while 0 {
                 (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
                 (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
-            }            
+            }
             static_init = nil
-        }        
+        }
     }
     return make_AsmStaticVariable(name, alignment, is_glob, @static_inits)
 }
@@ -4551,9 +4551,9 @@ fn push_static_const_toplvl(ctx: *struc AsmGenContext, static_const_toplvls: *st
         loop .. while 0 {
             (? (not (ctx[].p_static_consts[]) or (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].capacity) then (((ctx[].p_static_consts[]) = stbds_arrgrowf((ctx[].p_static_consts[]), sizeof((ctx[].p_static_consts[])[]), (1), (0))) and 0) else 0)
             (ctx[].p_static_consts[])[(cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length++] = (static_const_toplvls)
-        }        
+        }
         static_const_toplvls = nil
-    }    
+    }
 }
 
 fn dbl_static_const_toplvl(ctx: *struc AsmGenContext, identifier: u64, dbl_const: u64, byte: i32) none {
@@ -4602,9 +4602,9 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
             loop .. while 0 {
                 (? (not (static_const_toplvls) or (cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].capacity) then (((static_const_toplvls) = stbds_arrgrowf((static_const_toplvls), sizeof((static_const_toplvls)[]), (1), (0))) and 0) else 0)
                 (static_const_toplvls)[(cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].length++] = (static_const_toplvl)
-            }            
+            }
             static_const_toplvl = nil
-        }        
+        }
     }
     top_levels: **struc AsmTopLevel = nil
     (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (0), ((? (node[].static_var_toplvls) then (cast<*struc stbds_array_header>((node[].static_var_toplvls)) - 1)[].length else 0) + (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0)))))
@@ -4616,9 +4616,9 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
                 loop .. while 0 {
                     (? (not (top_levels) or (cast<*struc stbds_array_header>((top_levels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((top_levels)) - 1)[].capacity) then (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (1), (0))) and 0) else 0)
                     (top_levels)[(cast<*struc stbds_array_header>((top_levels)) - 1)[].length++] = (static_var_toplvl)
-                }                
+                }
                 static_var_toplvl = nil
-            }            
+            }
         }
         loop i: u64 = 0 while i < (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0) .. ++i {
             fun_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].fun_toplvls[i])
@@ -4626,9 +4626,9 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
                 loop .. while 0 {
                     (? (not (top_levels) or (cast<*struc stbds_array_header>((top_levels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((top_levels)) - 1)[].capacity) then (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (1), (0))) and 0) else 0)
                     (top_levels)[(cast<*struc stbds_array_header>((top_levels)) - 1)[].length++] = (fun_toplvl)
-                }                
+                }
                 fun_toplvl = nil
-            }            
+            }
         }
         ctx[].p_static_consts = nil
     }
@@ -4663,14 +4663,14 @@ pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndC
         loop .. while 0 {
             cast<none>((? (ctx.dbl_const_table) ~= nil then stbds_hmfree_func((ctx.dbl_const_table) - 1, sizeof((ctx.dbl_const_table)[])) else cast<none>(0)))
             (ctx.dbl_const_table) = nil
-        }        
+        }
         ctx.dbl_const_table = nil
     }
     if ctx.struct_8b_map {
         loop .. while 0 {
             cast<none>((? (ctx.struct_8b_map) ~= nil then stbds_hmfree_func((ctx.struct_8b_map) - 1, sizeof((ctx.struct_8b_map)[])) else cast<none>(0)))
             (ctx.struct_8b_map) = nil
-        }        
+        }
         ctx.struct_8b_map = nil
     }
     return asm_ast

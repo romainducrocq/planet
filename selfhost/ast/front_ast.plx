@@ -1062,7 +1062,7 @@ pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator {
         if not self {
             panic_sigabrt("alloc "                 "CAbstractDeclarator")
         }
-    }    
+    }
     self[].tag = AST_CAbstractDeclarator_t
     return self
 }
@@ -1140,7 +1140,7 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
         if not self {
             panic_sigabrt("alloc "                 "CParam")
         }
-    }    
+    }
     self[].tag = AST_CParam_t
     self[].decltor = nil
     if decltor[] ~= self[].decltor {
@@ -1158,7 +1158,7 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
             self[].param_type = param_type[]
             param_type[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -1193,7 +1193,7 @@ pub fn make_CDeclarator(none) *struc CDeclarator {
         if not self {
             panic_sigabrt("alloc "                 "CDeclarator")
         }
-    }    
+    }
     self[].tag = AST_CDeclarator_t
     return self
 }
@@ -1241,7 +1241,7 @@ pub fn make_CFunDeclarator(param_list: ***struc CParam, decltor: **struc CDeclar
             loop .. while 0 {
                 cast<none>((? (self[].get._CFunDeclarator.param_list) then free((cast<*struc stbds_array_header>((self[].get._CFunDeclarator.param_list)) - 1)) else cast<none>(0)))
                 (self[].get._CFunDeclarator.param_list) = nil
-            }            
+            }
             self[].get._CFunDeclarator.param_list = nil
         }
         self[].get._CFunDeclarator.param_list = param_list[]
@@ -1286,7 +1286,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CFunDeclarator.param_list) then free((cast<*struc stbds_array_header>(((self[])[].get._CFunDeclarator.param_list)) - 1)) else cast<none>(0)))
                 ((self[])[].get._CFunDeclarator.param_list) = nil
-            }            
+            }
             (self[])[].get._CFunDeclarator.param_list = nil
         }
         free_CDeclarator(@(self[])[].get._CFunDeclarator.decltor)
@@ -1311,7 +1311,7 @@ pub fn make_CExp(info_at: u64) *struc CExp {
         if not self {
             panic_sigabrt("alloc "                 "CExp")
         }
-    }    
+    }
     self[].tag = AST_CExp_t
     self[].exp_type = nil
     self[].info_at = info_at
@@ -1330,7 +1330,7 @@ pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp {
             self[].get._CConstant.constant = constant[]
             constant[] = nil
         }
-    }    
+    }
     self[].get._CConstant._base = self
     return self
 }
@@ -1347,7 +1347,7 @@ pub fn make_CString(literal: **struc CStringLiteral, info_at: u64) *struc CExp {
             self[].get._CString.literal = literal[]
             literal[] = nil
         }
-    }    
+    }
     self[].get._CString._base = self
     return self
 }
@@ -1379,7 +1379,7 @@ pub fn make_CCast(exp: **struc CExp, target_type: **struc Type, info_at: u64) *s
             self[].get._CCast.target_type = target_type[]
             target_type[] = nil
         }
-    }    
+    }
     self[].get._CCast._base = self
     return self
 }
@@ -1481,7 +1481,7 @@ pub fn make_CFunctionCall(name: u64, args: ***struc CExp, info_at: u64) *struc C
             loop .. while 0 {
                 cast<none>((? (self[].get._CFunctionCall.args) then free((cast<*struc stbds_array_header>((self[].get._CFunctionCall.args)) - 1)) else cast<none>(0)))
                 (self[].get._CFunctionCall.args) = nil
-            }            
+            }
             self[].get._CFunctionCall.args = nil
         }
         self[].get._CFunctionCall.args = args[]
@@ -1566,7 +1566,7 @@ pub fn make_CSizeOfT(target_type: **struc Type, info_at: u64) *struc CExp {
             self[].get._CSizeOfT.target_type = target_type[]
             target_type[] = nil
         }
-    }    
+    }
     self[].get._CSizeOfT._base = self
     return self
 }
@@ -1655,7 +1655,7 @@ pub fn free_CExp(self: **struc CExp) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CFunctionCall.args) then free((cast<*struc stbds_array_header>(((self[])[].get._CFunctionCall.args)) - 1)) else cast<none>(0)))
                 ((self[])[].get._CFunctionCall.args) = nil
-            }            
+            }
             (self[])[].get._CFunctionCall.args = nil
         }
         break
@@ -1709,7 +1709,7 @@ pub fn make_CStatement(none) *struc CStatement {
         if not self {
             panic_sigabrt("alloc "                 "CStatement")
         }
-    }    
+    }
     self[].tag = AST_CStatement_t
     return self
 }
@@ -2024,7 +2024,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CSwitch.cases) then free((cast<*struc stbds_array_header>(((self[])[].get._CSwitch.cases)) - 1)) else cast<none>(0)))
                 ((self[])[].get._CSwitch.cases) = nil
-            }            
+            }
             (self[])[].get._CSwitch.cases = nil
         }
         break
@@ -2066,7 +2066,7 @@ pub fn make_CForInit(none) *struc CForInit {
         if not self {
             panic_sigabrt("alloc "                 "CForInit")
         }
-    }    
+    }
     self[].tag = AST_CForInit_t
     return self
 }
@@ -2134,7 +2134,7 @@ pub fn make_CBlock(none) *struc CBlock {
         if not self {
             panic_sigabrt("alloc "                 "CBlock")
         }
-    }    
+    }
     self[].tag = AST_CBlock_t
     return self
 }
@@ -2148,7 +2148,7 @@ pub fn make_CB(block_items: ***struc CBlockItem) *struc CBlock {
             loop .. while 0 {
                 cast<none>((? (self[].get._CB.block_items) then free((cast<*struc stbds_array_header>((self[].get._CB.block_items)) - 1)) else cast<none>(0)))
                 (self[].get._CB.block_items) = nil
-            }            
+            }
             self[].get._CB.block_items = nil
         }
         self[].get._CB.block_items = block_items[]
@@ -2175,7 +2175,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CB.block_items) then free((cast<*struc stbds_array_header>(((self[])[].get._CB.block_items)) - 1)) else cast<none>(0)))
                 ((self[])[].get._CB.block_items) = nil
-            }            
+            }
             (self[])[].get._CB.block_items = nil
         }
         break
@@ -2199,7 +2199,7 @@ pub fn make_CBlockItem(none) *struc CBlockItem {
         if not self {
             panic_sigabrt("alloc "                 "CBlockItem")
         }
-    }    
+    }
     self[].tag = AST_CBlockItem_t
     return self
 }
@@ -2283,7 +2283,7 @@ pub fn make_CInitializer(none) *struc CInitializer {
         if not self {
             panic_sigabrt("alloc "                 "CInitializer")
         }
-    }    
+    }
     self[].tag = AST_CInitializer_t
     self[].init_type = nil
     return self
@@ -2312,7 +2312,7 @@ pub fn make_CCompoundInit(initializers: ***struc CInitializer) *struc CInitializ
             loop .. while 0 {
                 cast<none>((? (self[].get._CCompoundInit.initializers) then free((cast<*struc stbds_array_header>((self[].get._CCompoundInit.initializers)) - 1)) else cast<none>(0)))
                 (self[].get._CCompoundInit.initializers) = nil
-            }            
+            }
             self[].get._CCompoundInit.initializers = nil
         }
         self[].get._CCompoundInit.initializers = initializers[]
@@ -2344,7 +2344,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._CCompoundInit.initializers) then free((cast<*struc stbds_array_header>(((self[])[].get._CCompoundInit.initializers)) - 1)) else cast<none>(0)))
                 ((self[])[].get._CCompoundInit.initializers) = nil
-            }            
+            }
             (self[])[].get._CCompoundInit.initializers = nil
         }
         break
@@ -2369,7 +2369,7 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info
         if not self {
             panic_sigabrt("alloc "                 "CMemberDeclaration")
         }
-    }    
+    }
     self[].tag = AST_CMemberDeclaration_t
     self[].member_name = member_name
     self[].member_type = nil
@@ -2381,7 +2381,7 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info
             self[].member_type = member_type[]
             member_type[] = nil
         }
-    }    
+    }
     self[].info_at = info_at
     return self
 }
@@ -2416,7 +2416,7 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc C
         if not self {
             panic_sigabrt("alloc "                 "CStructDeclaration")
         }
-    }    
+    }
     self[].tag = AST_CStructDeclaration_t
     self[].tag_name = tag_name
     self[].is_union = is_union
@@ -2426,7 +2426,7 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc C
             loop .. while 0 {
                 cast<none>((? (self[].members) then free((cast<*struc stbds_array_header>((self[].members)) - 1)) else cast<none>(0)))
                 (self[].members) = nil
-            }            
+            }
             self[].members = nil
         }
         self[].members = members[]
@@ -2456,7 +2456,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].members) then free((cast<*struc stbds_array_header>(((self[])[].members)) - 1)) else cast<none>(0)))
             ((self[])[].members) = nil
-        }        
+        }
         (self[])[].members = nil
     }
     if self[] {
@@ -2475,7 +2475,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock,
         if not self {
             panic_sigabrt("alloc "                 "CFunctionDeclaration")
         }
-    }    
+    }
     self[].tag = AST_CFunctionDeclaration_t
     self[].name = name
     self[].params = nil
@@ -2484,7 +2484,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock,
             loop .. while 0 {
                 cast<none>((? (self[].params) then free((cast<*struc stbds_array_header>((self[].params)) - 1)) else cast<none>(0)))
                 (self[].params) = nil
-            }            
+            }
             self[].params = nil
         }
         self[].params = params[]
@@ -2506,7 +2506,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock,
             self[].fun_type = fun_type[]
             fun_type[] = nil
         }
-    }    
+    }
     self[].storage_class = storage_class[]
     self[].info_at = info_at
     return self
@@ -2529,7 +2529,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].params) then free((cast<*struc stbds_array_header>(((self[])[].params)) - 1)) else cast<none>(0)))
             ((self[])[].params) = nil
-        }        
+        }
         (self[])[].params = nil
     }
     free_CBlock(@(self[])[].body)
@@ -2550,7 +2550,7 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
         if not self {
             panic_sigabrt("alloc "                 "CVariableDeclaration")
         }
-    }    
+    }
     self[].tag = AST_CVariableDeclaration_t
     self[].name = name
     self[].init = nil
@@ -2569,7 +2569,7 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
             self[].var_type = var_type[]
             var_type[] = nil
         }
-    }    
+    }
     self[].storage_class = storage_class[]
     self[].info_at = info_at
     return self
@@ -2606,7 +2606,7 @@ pub fn make_CDeclaration(none) *struc CDeclaration {
         if not self {
             panic_sigabrt("alloc "                 "CDeclaration")
         }
-    }    
+    }
     self[].tag = AST_CDeclaration_t
     return self
 }
@@ -2691,7 +2691,7 @@ pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
         if not self {
             panic_sigabrt("alloc "                 "CProgram")
         }
-    }    
+    }
     self[].tag = AST_CProgram_t
     self[].declarations = nil
     if declarations[] ~= self[].declarations {
@@ -2699,7 +2699,7 @@ pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
             loop .. while 0 {
                 cast<none>((? (self[].declarations) then free((cast<*struc stbds_array_header>((self[].declarations)) - 1)) else cast<none>(0)))
                 (self[].declarations) = nil
-            }            
+            }
             self[].declarations = nil
         }
         self[].declarations = declarations[]
@@ -2728,7 +2728,7 @@ pub fn free_CProgram(self: **struc CProgram) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].declarations) then free((cast<*struc stbds_array_header>(((self[])[].declarations)) - 1)) else cast<none>(0)))
             ((self[])[].declarations) = nil
-        }        
+        }
         (self[])[].declarations = nil
     }
     if self[] {

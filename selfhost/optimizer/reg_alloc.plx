@@ -1009,7 +1009,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].unpruned_hard_mask_bits) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_hard_mask_bits)) - 1)) else cast<none>(0)))
             ((self[])[].unpruned_hard_mask_bits) = nil
-        }        
+        }
         (self[])[].unpruned_hard_mask_bits = nil
     }
     ;
@@ -1017,7 +1017,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].unpruned_pseudo_names) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_pseudo_names)) - 1)) else cast<none>(0)))
             ((self[])[].unpruned_pseudo_names) = nil
-        }        
+        }
         (self[])[].unpruned_pseudo_names = nil
     }
     ;
@@ -1026,7 +1026,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
             loop .. while 0 {
                 cast<none>((? (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
                 (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
-            }            
+            }
             ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
         }
         ;
@@ -1035,7 +1035,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].pseudo_reg_map) ~= nil then stbds_hmfree_func(((self[])[].pseudo_reg_map) - 1, sizeof(((self[])[].pseudo_reg_map)[])) else cast<none>(0)))
             ((self[])[].pseudo_reg_map) = nil
-        }        
+        }
         (self[])[].pseudo_reg_map = nil
     }
     ;
@@ -1056,7 +1056,7 @@ fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
         if not self {
             panic_sigabrt("alloc "                 "InferenceGraph")
         }
-    }    
+    }
     self[].hard_reg_mask = 0ul
     self[].unpruned_hard_mask_bits = nil
     self[].unpruned_pseudo_names = nil
@@ -1127,7 +1127,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].entry_succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].entry_succ_ids)) - 1)) else cast<none>(0)))
             ((self[])[].entry_succ_ids) = nil
-        }        
+        }
         (self[])[].entry_succ_ids = nil
     }
     ;
@@ -1135,7 +1135,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].exit_pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].exit_pred_ids)) - 1)) else cast<none>(0)))
             ((self[])[].exit_pred_ids) = nil
-        }        
+        }
         (self[])[].exit_pred_ids = nil
     }
     ;
@@ -1143,7 +1143,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].reaching_code) then free((cast<*struc stbds_array_header>(((self[])[].reaching_code)) - 1)) else cast<none>(0)))
             ((self[])[].reaching_code) = nil
-        }        
+        }
         (self[])[].reaching_code = nil
     }
     ;
@@ -1152,7 +1152,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].pred_ids)) - 1)) else cast<none>(0)))
                 ((self[])[].blocks[i].pred_ids) = nil
-            }            
+            }
             (self[])[].blocks[i].pred_ids = nil
         }
         ;
@@ -1160,7 +1160,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].succ_ids)) - 1)) else cast<none>(0)))
                 ((self[])[].blocks[i].succ_ids) = nil
-            }            
+            }
             (self[])[].blocks[i].succ_ids = nil
         }
         ;
@@ -1169,7 +1169,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks) then free((cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)) else cast<none>(0)))
             ((self[])[].blocks) = nil
-        }        
+        }
         (self[])[].blocks = nil
     }
     ;
@@ -1177,7 +1177,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].identifier_id_map) ~= nil then stbds_hmfree_func(((self[])[].identifier_id_map) - 1, sizeof(((self[])[].identifier_id_map)[])) else cast<none>(0)))
             ((self[])[].identifier_id_map) = nil
-        }        
+        }
         (self[])[].identifier_id_map = nil
     }
     ;
@@ -1198,7 +1198,7 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
         if not self {
             panic_sigabrt("alloc "                 "ControlFlowGraph")
         }
-    }    
+    }
     self[].entry_id = 0
     self[].exit_id = 0
     self[].entry_succ_ids = nil
@@ -1219,7 +1219,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].open_data_map) then free((cast<*struc stbds_array_header>(((self[])[].open_data_map)) - 1)) else cast<none>(0)))
             ((self[])[].open_data_map) = nil
-        }        
+        }
         (self[])[].open_data_map = nil
     }
     ;
@@ -1227,7 +1227,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].instr_idx_map) then free((cast<*struc stbds_array_header>(((self[])[].instr_idx_map)) - 1)) else cast<none>(0)))
             ((self[])[].instr_idx_map) = nil
-        }        
+        }
         (self[])[].instr_idx_map = nil
     }
     ;
@@ -1235,7 +1235,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].blocks_mask_sets)) - 1)) else cast<none>(0)))
             ((self[])[].blocks_mask_sets) = nil
-        }        
+        }
         (self[])[].blocks_mask_sets = nil
     }
     ;
@@ -1243,7 +1243,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].instrs_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].instrs_mask_sets)) - 1)) else cast<none>(0)))
             ((self[])[].instrs_mask_sets) = nil
-        }        
+        }
         (self[])[].instrs_mask_sets = nil
     }
     ;
@@ -1264,7 +1264,7 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
         if not self {
             panic_sigabrt("alloc "                 "DataFlowAnalysis")
         }
-    }    
+    }
     self[].set_size = 0
     self[].mask_size = 0
     self[].incoming_idx = 0
@@ -1286,7 +1286,7 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
         loop .. while 0 {
             cast<none>((? ((self[])[].data_name_map) then free((cast<*struc stbds_array_header>(((self[])[].data_name_map)) - 1)) else cast<none>(0)))
             ((self[])[].data_name_map) = nil
-        }        
+        }
         (self[])[].data_name_map = nil
     }
     ;
@@ -1307,7 +1307,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
         if not self {
             panic_sigabrt("alloc "                 "DataFlowAnalysisO2")
         }
-    }    
+    }
     self[].data_name_map = nil
     return self
 }
@@ -1341,13 +1341,13 @@ fn cfg_add_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64) no
         loop .. while 0 {
             (? (not (succ_ids[]) or (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].capacity) then (((succ_ids[]) = stbds_arrgrowf((succ_ids[]), sizeof((succ_ids[])[]), (1), (0))) and 0) else 0)
             (succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length++] = (succ_id)
-        }        
+        }
     }
     if not find_size_t(pred_ids[], pred_id) {
         loop .. while 0 {
             (? (not (pred_ids[]) or (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].capacity) then (((pred_ids[]) = stbds_arrgrowf((pred_ids[]), sizeof((pred_ids[])[]), (1), (0))) and 0) else 0)
             (pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length++] = (pred_id)
-        }        
+        }
     }
 }
 
@@ -1382,7 +1382,7 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
                 loop .. while 0 {
                     (succ_ids[])[i] = ((succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length - 1])
                     (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length -= 1
-                }                
+                }
                 break
             }
         }
@@ -1392,7 +1392,7 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
             loop .. while 0 {
                 (pred_ids[])[i] = ((pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length - 1])
                 (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length -= 1
-            }            
+            }
             break
         }
     }
@@ -1480,7 +1480,7 @@ fn cfg_init_label_block(ctx: *struc RegAllocContext, node: *struc AsmLabel) none
         (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
         (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
         (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
-    }    
+    }
 }
 
 fn cfg_init_block(ctx: *struc RegAllocContext, instr_idx: u64, instrs_back_idx: *u64) none {
@@ -1493,7 +1493,7 @@ fn cfg_init_block(ctx: *struc RegAllocContext, instr_idx: u64, instrs_back_idx: 
                 loop .. while 0 {
                     (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
                     (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
-                }                
+                }
             }
             cfg_init_label_block(ctx, @node[].get._AsmLabel)
             instrs_back_idx[] = instr_idx
@@ -1552,7 +1552,7 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].pred_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)) else cast<none>(0)))
                 (ctx[].cfg[].blocks[block_id].pred_ids) = nil
-            }            
+            }
             ctx[].cfg[].blocks[block_id].pred_ids = nil
         }
         ;
@@ -1560,7 +1560,7 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].succ_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)) else cast<none>(0)))
                 (ctx[].cfg[].blocks[block_id].succ_ids) = nil
-            }            
+            }
             ctx[].cfg[].blocks[block_id].succ_ids = nil
         }
         ;
@@ -1573,7 +1573,7 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
         loop .. while 0 {
             cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
             (ctx[].cfg[].identifier_id_map) = nil
-        }        
+        }
         ctx[].cfg[].identifier_id_map = nil
     }
     ;
@@ -1586,7 +1586,7 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
                     loop .. while 0 {
                         (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
                         (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
-                    }                    
+                    }
                 }
                 cfg_init_block(ctx, instr_idx, @instrs_back_idx)
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].size++
@@ -1782,7 +1782,7 @@ fn dfa_iter_alg(ctx: *struc RegAllocContext) none {
                         loop .. while 0 {
                             (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
                             (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (pred_id)
-                        }                        
+                        }
                     }
                     open_data_map_size++
                     label Lelse
@@ -1823,7 +1823,7 @@ fn infer_add_data_name(ctx: *struc RegAllocContext, name: u64) none {
             (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
             (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
             (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
-        }        
+        }
         ctx[].dfa[].set_size++
     }
 }
@@ -1841,7 +1841,7 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         loop .. while 0 {
             (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
             ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
-        }        
+        }
     }
     {
         i: u64;
@@ -1850,14 +1850,14 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             loop .. while 0 {
                 (? (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) then ((((ctx[].dfa[].instr_idx_map)) = stbds_arrgrowf(((ctx[].dfa[].instr_idx_map)), sizeof(((ctx[].dfa[].instr_idx_map))[]), (0), (cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)))))) and 0 else 0)
                 ? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length = cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) else 0
-            }            
+            }
         }
     }
     if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
         loop .. while 0 {
             (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
             ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
-        }        
+        }
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
     instrs_mask_sets_size: u64 = 0
@@ -1865,7 +1865,7 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         loop .. while 0 {
             cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
             (ctx[].cfg[].identifier_id_map) = nil
-        }        
+        }
         ctx[].cfg[].identifier_id_map = nil
     }
     ;
@@ -1971,7 +1971,7 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         loop .. while 0 {
             (? (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].dfa_o2[].data_name_map)) = stbds_arrgrowf(((ctx[].dfa_o2[].data_name_map)), sizeof(((ctx[].dfa_o2[].data_name_map))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
             ? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
-        }        
+        }
     }
     ctx[].dfa[].set_size += REGISTER_MASK_SIZE
     ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] = instrs_mask_sets_size
@@ -1985,13 +1985,13 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         loop .. while 0 {
             (? (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].capacity else 0) < cast<u64>((blocks_mask_sets_size)) then ((((ctx[].dfa[].blocks_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].blocks_mask_sets)), sizeof(((ctx[].dfa[].blocks_mask_sets))[]), (0), (cast<u64>((blocks_mask_sets_size)))))) and 0 else 0)
             ? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length = cast<u64>((blocks_mask_sets_size)) else 0
-        }        
+        }
     }
     if (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length else 0) < instrs_mask_sets_size {
         loop .. while 0 {
             (? (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].capacity else 0) < cast<u64>((instrs_mask_sets_size)) then ((((ctx[].dfa[].instrs_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].instrs_mask_sets)), sizeof(((ctx[].dfa[].instrs_mask_sets))[]), (0), (cast<u64>((instrs_mask_sets_size)))))) and 0 else 0)
             ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
-        }        
+        }
         memset(ctx[].dfa[].instrs_mask_sets, 0ul, sizeof<u64> * instrs_mask_sets_size)
     }
     i: u64 = 0
@@ -2262,7 +2262,7 @@ fn infer_add_pseudo_edges(ctx: *struc RegAllocContext, name_1: u64, name_2: u64)
             loop .. while 0 {
                 (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
                 (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name_2)
-            }            
+            }
             infer[].degree++
         }
     }
@@ -2272,7 +2272,7 @@ fn infer_add_pseudo_edges(ctx: *struc RegAllocContext, name_1: u64, name_2: u64)
             loop .. while 0 {
                 (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
                 (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name_1)
-            }            
+            }
             infer[].degree++
         }
     }
@@ -2292,7 +2292,7 @@ fn infer_add_reg_edge(ctx: *struc RegAllocContext, reg_kind: i32, name: u64) non
             loop .. while 0 {
                 (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
                 (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name)
-            }            
+            }
             infer[].degree++
         }
     }
@@ -2304,7 +2304,7 @@ fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
             loop .. while 0 {
                 (infer[].linked_pseudo_names)[i] = ((infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length - 1])
                 (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length -= 1
-            }            
+            }
             infer[].degree--
             return none
         }
@@ -2318,7 +2318,7 @@ fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
             loop .. while 0 {
                 (ctx[].p_infer_graph[].unpruned_pseudo_names)[i] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
                 (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
-            }            
+            }
             return none
         }
     }
@@ -2621,7 +2621,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             loop .. while 0 {
                 cast<none>((? ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
                 ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
-            }            
+            }
             (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
         }
         ;
@@ -2630,7 +2630,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         loop .. while 0 {
             cast<none>((? (ctx[].infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
             (ctx[].infer_graph[].pseudo_reg_map) = nil
-        }        
+        }
         ctx[].infer_graph[].pseudo_reg_map = nil
     }
     ;
@@ -2643,7 +2643,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             loop .. while 0 {
                 cast<none>((? ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
                 ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
-            }            
+            }
             (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
         }
         ;
@@ -2652,7 +2652,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         loop .. while 0 {
             cast<none>((? (ctx[].sse_infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].sse_infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
             (ctx[].sse_infer_graph[].pseudo_reg_map) = nil
-        }        
+        }
         ctx[].sse_infer_graph[].pseudo_reg_map = nil
     }
     ;
@@ -2663,23 +2663,23 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             loop .. while 0 {
                 (? (not (ctx[].sse_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].sse_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].sse_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].sse_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
                 (ctx[].sse_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
-            }            
+            }
             loop .. while 0 {
                 (ctx[].sse_infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].sse_infer_graph[].pseudo_reg_map), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[].key), 0)
                 (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
                 (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
-            }            
+            }
         }
         else {
             loop .. while 0 {
                 (? (not (ctx[].infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].infer_graph[].unpruned_pseudo_names), sizeof((ctx[].infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
                 (ctx[].infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
-            }            
+            }
             loop .. while 0 {
                 (ctx[].infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].infer_graph[].pseudo_reg_map), sizeof((ctx[].infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].infer_graph[].pseudo_reg_map)[].key), 0)
                 (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
                 (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
-            }            
+            }
         }
     }
     if not ((? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
@@ -2687,7 +2687,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             loop .. while 0 {
                 (? (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((12)) then ((((ctx[].infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((12)))))) and 0 else 0)
                 ? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((12)) else 0
-            }            
+            }
         }
         hard_reg_mask: u64 = ctx[].infer_graph[].hard_reg_mask
         loop i: u64 = 0 while i < 12 .. ++i {
@@ -2708,7 +2708,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             loop .. while 0 {
                 (? (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((14)) then ((((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((14)))))) and 0 else 0)
                 ? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((14)) else 0
-            }            
+            }
         }
         hard_reg_mask: u64 = ctx[].sse_infer_graph[].hard_reg_mask
         loop i: u64 = 12 while i < 26 .. ++i {
@@ -2760,13 +2760,13 @@ fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceReg
         loop .. while 0 {
             (ctx[].p_infer_graph[].unpruned_pseudo_names)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
             (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
-        }        
+        }
     }
     else {
         loop .. while 0 {
             (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length - 1])
             (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length -= 1
-        }        
+        }
     }
     if infer[].linked_hard_mask ~= 0ul {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
@@ -2787,7 +2787,7 @@ fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceR
         loop .. while 0 {
             (? (not (ctx[].p_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].p_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
             (ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (pruned_name)
-        }        
+        }
     }
     else {
         pruned_mask_bit: u64 = register_mask_bit(infer[].reg_kind)
@@ -2795,7 +2795,7 @@ fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceR
         loop .. while 0 {
             (? (not (ctx[].p_infer_graph[].unpruned_hard_mask_bits) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_hard_mask_bits) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_hard_mask_bits), sizeof((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[]), (1), (0))) and 0) else 0)
             (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length++] = (pruned_mask_bit)
-        }        
+        }
     }
     if infer[].linked_hard_mask ~= 0ul {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
@@ -2952,9 +2952,9 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
                 loop .. while 0 {
                     (? (not (ctx[].p_backend_fun[].callee_saved_regs) or (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].capacity) then (((ctx[].p_backend_fun[].callee_saved_regs) = stbds_arrgrowf((ctx[].p_backend_fun[].callee_saved_regs), sizeof((ctx[].p_backend_fun[].callee_saved_regs)[]), (1), (0))) and 0) else 0)
                     (ctx[].p_backend_fun[].callee_saved_regs)[(cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length++] = (callee_saved_reg)
-                }                
+                }
                 callee_saved_reg = nil
-            }            
+            }
         }
         return hard_reg
     }
@@ -3012,7 +3012,7 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
                         node[].src = hard_reg
                         hard_reg = nil
                     }
-                }                
+                }
             }
         }
         if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3026,7 +3026,7 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
                         node[].dst = hard_reg
                         hard_reg = nil
                     }
-                }                
+                }
             }
         }
     }
@@ -3044,7 +3044,7 @@ fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3058,7 +3058,7 @@ fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3075,7 +3075,7 @@ fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroE
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3089,7 +3089,7 @@ fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroE
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3106,7 +3106,7 @@ fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3120,7 +3120,7 @@ fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3137,7 +3137,7 @@ fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si)
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3151,7 +3151,7 @@ fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si)
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3168,7 +3168,7 @@ fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) n
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3182,7 +3182,7 @@ fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) n
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3199,7 +3199,7 @@ fn alloc_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3216,7 +3216,7 @@ fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none 
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3230,7 +3230,7 @@ fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none 
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3247,7 +3247,7 @@ fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3261,7 +3261,7 @@ fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3278,7 +3278,7 @@ fn alloc_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3295,7 +3295,7 @@ fn alloc_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3312,7 +3312,7 @@ fn alloc_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
                     node[].dst = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3329,7 +3329,7 @@ fn alloc_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
                     node[].src = hard_reg
                     hard_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3692,7 +3692,7 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
                         node[].src = op_reg
                         op_reg = nil
                     }
-                }                
+                }
             }
         }
         if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3706,7 +3706,7 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
                         node[].dst = op_reg
                         op_reg = nil
                     }
-                }                
+                }
             }
         }
     }
@@ -3725,7 +3725,7 @@ fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3740,7 +3740,7 @@ fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3758,7 +3758,7 @@ fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroEx
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3773,7 +3773,7 @@ fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroEx
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3791,7 +3791,7 @@ fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3806,7 +3806,7 @@ fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3824,7 +3824,7 @@ fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) 
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3839,7 +3839,7 @@ fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) 
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3857,7 +3857,7 @@ fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) no
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3872,7 +3872,7 @@ fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) no
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3890,7 +3890,7 @@ fn coal_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3908,7 +3908,7 @@ fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3923,7 +3923,7 @@ fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3941,7 +3941,7 @@ fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
@@ -3956,7 +3956,7 @@ fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3974,7 +3974,7 @@ fn coal_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -3992,7 +3992,7 @@ fn coal_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -4010,7 +4010,7 @@ fn coal_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
                     node[].dst = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -4028,7 +4028,7 @@ fn coal_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
                     node[].src = op_reg
                     op_reg = nil
                 }
-            }            
+            }
         }
     }
 }
@@ -4106,7 +4106,7 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
             loop .. while 0 {
                 (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>((open_data_map_size)) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>((open_data_map_size)))))) and 0 else 0)
                 ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>((open_data_map_size)) else 0
-            }            
+            }
         }
     }
     loop i: u64 = REGISTER_MASK_SIZE while i < ctx[].dfa[].set_size .. ++i {
@@ -4227,7 +4227,7 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
             loop .. while 0 {
                 cast<none>((? (ctx.hard_regs[i].linked_pseudo_names) then free((cast<*struc stbds_array_header>((ctx.hard_regs[i].linked_pseudo_names)) - 1)) else cast<none>(0)))
                 (ctx.hard_regs[i].linked_pseudo_names) = nil
-            }            
+            }
             ctx.hard_regs[i].linked_pseudo_names = nil
         }
         ;

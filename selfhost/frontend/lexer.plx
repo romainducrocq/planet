@@ -1201,7 +1201,7 @@ fn match_string_literal(ctx: *struc LexerContext) i32 {
     tok_kind: i32;
     loop .. while tok_kind == TOK_char_const {
         tok_kind = match_char_const(ctx, true)
-    }    
+    }
     return tok_kind
 }
 
@@ -2014,7 +2014,7 @@ fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string {
     smatch: string = ? "" then sdsnew("") else nil
     loop .. while 0 {
         smatch = sdsgrowzero(smatch, match_size)
-    }    
+    }
     loop i: u64 = 0 while i < match_size .. ++i {
         smatch[i] = ctx[].line[match_at + i]
     }
@@ -2028,7 +2028,7 @@ fn push_token_info(ctx: *struc LexerContext) u64 {
     loop .. while 0 {
         (? (not (ctx[].errors[].token_infos) or (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].capacity) then (((ctx[].errors[].token_infos) = stbds_arrgrowf((ctx[].errors[].token_infos), sizeof((ctx[].errors[].token_infos)[]), (1), (0))) and 0) else 0)
         (ctx[].errors[].token_infos)[(cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length++] = (token_info)
-    }    
+    }
     return (? (ctx[].errors[].token_infos) then (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length else 0) - 1
 }
 
@@ -2055,7 +2055,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                                     if _errval ~= 0 {
                                         jump _Lfinally
                                     }
-                                }                            
+                                }
                             }
                         }
                     }
@@ -2080,7 +2080,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_unmatched_close), "MSG_unmatched_close", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                             _errval = 1
                             jump _Lfinally
-                        }                        
+                        }
                     }
                     ctx[].paren_depth--
                     jump Lpass
@@ -2112,7 +2112,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_preproc_macro), "MSG_preproc_macro", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
-                    }                    
+                    }
                 }
                 -> TOK_error {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
@@ -2122,7 +2122,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_invalid_tok), "MSG_invalid_tok", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
-                    }                    
+                    }
                 }
                 otherwise {
                     jump Lpass
@@ -2139,7 +2139,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
             loop .. while 0 {
                 (? (not (ctx[].p_toks[]) or (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].capacity) then (((ctx[].p_toks[]) = stbds_arrgrowf((ctx[].p_toks[]), sizeof((ctx[].p_toks[])[]), (1), (0))) and 0) else 0)
                 (ctx[].p_toks[])[(cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length++] = (token)
-            }            
+            }
             if match_kind == TOK_line_break {
                 break
             }
@@ -2161,7 +2161,7 @@ fn find_include(dirnames: *string, filename: *string) i32 {
         dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
         loop .. while 0 {
             dirname = sdscat(dirname, filename[])
-        }        
+        }
         if find_file(dirname) {
             if dirname ~= filename[] {
                 if filename[] {
@@ -2195,7 +2195,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     filename = get_match(ctx, ctx[].match_at + 1, ctx[].match_size - 2)
     loop .. while 0 {
         filename = sdscat(filename, ".etc")
-    }    
+    }
     if not is_empty {
         info_at: u64 = push_token_info(ctx)
         match match_tok {
@@ -2206,7 +2206,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_import_in_line), "MSG_import_in_line", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
-                    }                
+                    }
                 }
             }
             -> TOK_use_file {
@@ -2216,7 +2216,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_use_in_line), "MSG_use_in_line", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
-                    }                
+                    }
                 }
             }
             otherwise {
@@ -2248,7 +2248,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                 (ctx[].includename_set) = stbds_hmput_key((ctx[].includename_set), sizeof((ctx[].includename_set)[]), cast<*any>(@((includename))), sizeof((ctx[].includename_set)[].key), 0)
                 (ctx[].includename_set)[(cast<*struc stbds_array_header>(((ctx[].includename_set) - 1)) - 1)[].temp].key = (includename)
                 (ctx[].includename_set)[(cast<*struc stbds_array_header>(((ctx[].includename_set) - 1)) - 1)[].temp].value = (0)
-            }            
+            }
         }
     }
     match match_tok {
@@ -2261,7 +2261,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_failed_import), "MSG_failed_import", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
-                    }                    
+                    }
                 }
                 break
             }
@@ -2275,7 +2275,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_failed_use), "MSG_failed_use", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
-                    }                    
+                    }
                 }
                 break
             }
@@ -2303,7 +2303,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     {
         fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
         if filename ~= fopen_line.filename {
@@ -2319,7 +2319,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         loop .. while 0 {
             (? (not (ctx[].errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].capacity) then (((ctx[].errors[].fopen_lines) = stbds_arrgrowf((ctx[].errors[].fopen_lines), sizeof((ctx[].errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
             (ctx[].errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
-        }        
+        }
     }
     loop .. while 0 {
         "@MACRO@:TRY(tokenize_file(ctx))"
@@ -2327,14 +2327,14 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     loop .. while 0 {
         "@MACRO@:TRY(close_fread(ctx->fileio, linenum))"
         _errval = close_fread(ctx[].fileio, linenum)
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     {
         fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
         if fopen_name ~= fopen_line.filename {
@@ -2350,7 +2350,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         loop .. while 0 {
             (? (not (ctx[].errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].capacity) then (((ctx[].errors[].fopen_lines) = stbds_arrgrowf((ctx[].errors[].fopen_lines), sizeof((ctx[].errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
             (ctx[].errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
-        }        
+        }
     }
     ctx[].line = line
     ctx[].line_size = line_size
@@ -2392,7 +2392,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     {
         fopen_line: struc FileOpenLine = $(1, 1, ? nil then sdsnew(nil) else nil)
         if filename ~= fopen_line.filename {
@@ -2407,7 +2407,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         loop .. while 0 {
             (? (not (ctx.errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].capacity) then (((ctx.errors[].fopen_lines) = stbds_arrgrowf((ctx.errors[].fopen_lines), sizeof((ctx.errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
             (ctx.errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
-        }        
+        }
     }
     loop .. while 0 {
         "@MACRO@:TRY(tokenize_file(&ctx))"
@@ -2415,14 +2415,14 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     loop .. while 0 {
         "@MACRO@:TRY(close_fread(ctx.fileio, 0))"
         _errval = close_fread(ctx.fileio, 0)
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     set_filename(ctx.fileio, filename)
     label _Lfinally
     ;
@@ -2430,7 +2430,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         loop .. while 0 {
             cast<none>((? (ctx.includename_set) ~= nil then stbds_hmfree_func((ctx.includename_set) - 1, sizeof((ctx.includename_set)[])) else cast<none>(0)))
             (ctx.includename_set) = nil
-        }        
+        }
         ctx.includename_set = nil
     }
     ;
@@ -2445,7 +2445,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         loop .. while 0 {
             cast<none>((? (fileio[].file_reads) then free((cast<*struc stbds_array_header>((fileio[].file_reads)) - 1)) else cast<none>(0)))
             (fileio[].file_reads) = nil
-        }        
+        }
         fileio[].file_reads = nil
     }
     ;
@@ -2453,7 +2453,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         loop .. while 0 {
             cast<none>((? (includedirs[]) then free((cast<*struc stbds_array_header>((includedirs[])) - 1)) else cast<none>(0)))
             (includedirs[]) = nil
-        }        
+        }
         includedirs[] = nil
     }
     ;
@@ -2461,7 +2461,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         loop .. while 0 {
             cast<none>((? (stdlibdirs[]) then free((cast<*struc stbds_array_header>((stdlibdirs[])) - 1)) else cast<none>(0)))
             (stdlibdirs[]) = nil
-        }        
+        }
         stdlibdirs[] = nil
     }
     ;

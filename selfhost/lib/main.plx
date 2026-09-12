@@ -1743,7 +1743,7 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
             sdsrange(ctx[].filename, 0, i)
             loop .. while 0 {
                 ctx[].filename = sdscat(ctx[].filename, ext)
-            }            
+            }
             return none
         }
     }
@@ -1783,7 +1783,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 255 {
         jump _Lfinally
@@ -1795,7 +1795,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 254 {
         jump _Lfinally
@@ -1807,7 +1807,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 253 {
         jump _Lfinally
@@ -1842,7 +1842,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     emit_gas_code(@asm_ast, @backend, fileio, @identifiers)
     close_fwrite(fileio)
     verbose(ctx, "OK\n")
@@ -1857,14 +1857,14 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         loop .. while 0 {
             cast<none>((? (identifiers.hash_table) ~= nil then stbds_hmfree_func((identifiers.hash_table) - 1, sizeof((identifiers.hash_table)[])) else cast<none>(0)))
             (identifiers.hash_table) = nil
-        }        
+        }
         identifiers.hash_table = nil
     }
     if frontend.string_const_table {
         loop .. while 0 {
             cast<none>((? (frontend.string_const_table) ~= nil then stbds_hmfree_func((frontend.string_const_table) - 1, sizeof((frontend.string_const_table)[])) else cast<none>(0)))
             (frontend.string_const_table) = nil
-        }        
+        }
         frontend.string_const_table = nil
     }
     loop i: u64 = 0 while i < (? (frontend.struct_typedef_table) then (cast<*struc stbds_array_header>(((frontend.struct_typedef_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
@@ -1874,7 +1874,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         loop .. while 0 {
             cast<none>((? (frontend.struct_typedef_table) ~= nil then stbds_hmfree_func((frontend.struct_typedef_table) - 1, sizeof((frontend.struct_typedef_table)[])) else cast<none>(0)))
             (frontend.struct_typedef_table) = nil
-        }        
+        }
         frontend.struct_typedef_table = nil
     }
     loop i: u64 = 0 while i < (? (frontend.symbol_table) then (cast<*struc stbds_array_header>(((frontend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
@@ -1884,14 +1884,14 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         loop .. while 0 {
             cast<none>((? (frontend.symbol_table) ~= nil then stbds_hmfree_func((frontend.symbol_table) - 1, sizeof((frontend.symbol_table)[])) else cast<none>(0)))
             (frontend.symbol_table) = nil
-        }        
+        }
         frontend.symbol_table = nil
     }
     if frontend.addressed_set {
         loop .. while 0 {
             cast<none>((? (frontend.addressed_set) ~= nil then stbds_hmfree_func((frontend.addressed_set) - 1, sizeof((frontend.addressed_set)[])) else cast<none>(0)))
             (frontend.addressed_set) = nil
-        }        
+        }
         frontend.addressed_set = nil
     }
     loop i: u64 = 0 while i < (? (backend.symbol_table) then (cast<*struc stbds_array_header>(((backend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
@@ -1901,14 +1901,14 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         loop .. while 0 {
             cast<none>((? (backend.symbol_table) ~= nil then stbds_hmfree_func((backend.symbol_table) - 1, sizeof((backend.symbol_table)[])) else cast<none>(0)))
             (backend.symbol_table) = nil
-        }        
+        }
         backend.symbol_table = nil
     }
     if tokens {
         loop .. while 0 {
             cast<none>((? (tokens) then free((cast<*struc stbds_array_header>((tokens)) - 1)) else cast<none>(0)))
             (tokens) = nil
-        }        
+        }
         tokens = nil
     }
     free_CProgram(@c_ast)
@@ -1932,7 +1932,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_print_help), "MSG_print_help", "", "", argv[0]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     if not argv[++i] {
         loop .. while 0 {
@@ -1940,7 +1940,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_debug_arg), "MSG_no_debug_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
         loop .. while 0 {
@@ -1948,7 +1948,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_debug_arg), "MSG_invalid_debug_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     if not argv[++i] {
         loop .. while 0 {
@@ -1956,7 +1956,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_1_arg), "MSG_no_optim_1_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
         loop .. while 0 {
@@ -1964,7 +1964,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_1_arg), "MSG_invalid_optim_1_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     if not argv[++i] {
         loop .. while 0 {
@@ -1972,7 +1972,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_2_arg), "MSG_no_optim_2_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
         loop .. while 0 {
@@ -1980,7 +1980,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_2_arg), "MSG_invalid_optim_2_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     if not argv[++i] {
         loop .. while 0 {
@@ -1988,7 +1988,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_input_files_arg), "MSG_no_input_files_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     ctx[].filename = ? argv[i] then sdsnew(argv[i]) else nil
     if not argv[++i] {
@@ -1997,26 +1997,26 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_stdlib_dir_arg), "MSG_no_stdlib_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     loop .. while 0 {
         (? (not (ctx[].stdlibdirs) or (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].capacity) then (((ctx[].stdlibdirs) = stbds_arrgrowf((ctx[].stdlibdirs), sizeof((ctx[].stdlibdirs)[]), (1), (0))) and 0) else 0)
         (ctx[].stdlibdirs)[(cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length++] = (cast<string>(argv[i]))
-    }    
+    }
     if not argv[++i] {
         loop .. while 0 {
             "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_include_dir_arg), "MSG_no_include_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
-        }        
+        }
     }
     loop .. while argv[++i] {
         loop .. while 0 {
             (? (not (ctx[].includedirs) or (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].capacity) then (((ctx[].includedirs) = stbds_arrgrowf((ctx[].includedirs), sizeof((ctx[].includedirs)[]), (1), (0))) and 0) else 0)
             (ctx[].includedirs)[(cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length++] = (cast<string>(argv[i]))
-        }        
-    }    
+        }
+    }
     label _Lfinally
     return _errval
 }
@@ -2052,20 +2052,20 @@ pub fn main(argc: i32, argv: *string) i32 {
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     loop .. while 0 {
         "@MACRO@:TRY(compile(&ctx, &errors, &fileio))"
         _errval = compile(@ctx, @errors, @fileio)
         if _errval ~= 0 {
             jump _Lfinally
         }
-    }    
+    }
     label _Lfinally
     if errors.info_at_map {
         loop .. while 0 {
             cast<none>((? (errors.info_at_map) ~= nil then stbds_hmfree_func((errors.info_at_map) - 1, sizeof((errors.info_at_map)[])) else cast<none>(0)))
             (errors.info_at_map) = nil
-        }        
+        }
         errors.info_at_map = nil
     }
     loop i: u64 = 0 while i < (? (errors.fopen_lines) then (cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)[].length else 0) .. ++i {
@@ -2078,14 +2078,14 @@ pub fn main(argc: i32, argv: *string) i32 {
         loop .. while 0 {
             cast<none>((? (errors.fopen_lines) then free((cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)) else cast<none>(0)))
             (errors.fopen_lines) = nil
-        }        
+        }
         errors.fopen_lines = nil
     }
     if errors.token_infos {
         loop .. while 0 {
             cast<none>((? (errors.token_infos) then free((cast<*struc stbds_array_header>((errors.token_infos)) - 1)) else cast<none>(0)))
             (errors.token_infos) = nil
-        }        
+        }
         errors.token_infos = nil
     }
     if fileio.write_buf {
@@ -2106,7 +2106,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         loop .. while 0 {
             cast<none>((? (fileio.file_reads) then free((cast<*struc stbds_array_header>((fileio.file_reads)) - 1)) else cast<none>(0)))
             (fileio.file_reads) = nil
-        }        
+        }
         fileio.file_reads = nil
     }
     if ctx.filename {
@@ -2117,14 +2117,14 @@ pub fn main(argc: i32, argv: *string) i32 {
         loop .. while 0 {
             cast<none>((? (ctx.includedirs) then free((cast<*struc stbds_array_header>((ctx.includedirs)) - 1)) else cast<none>(0)))
             (ctx.includedirs) = nil
-        }        
+        }
         ctx.includedirs = nil
     }
     if ctx.stdlibdirs {
         loop .. while 0 {
             cast<none>((? (ctx.stdlibdirs) then free((cast<*struc stbds_array_header>((ctx.stdlibdirs)) - 1)) else cast<none>(0)))
             (ctx.stdlibdirs) = nil
-        }        
+        }
         ctx.stdlibdirs = nil
     }
     return _errval

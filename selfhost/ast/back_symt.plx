@@ -947,9 +947,9 @@ pub fn make_AssemblyType(none) *struc AssemblyType {
             if not self {
                 panic_sigabrt("alloc "                     "AssemblyType")
             }
-        }        
+        }
         (self)[]._ref_count = 1
-    }    
+    }
     self[].tag = AST_AssemblyType_t
     return self
 }
@@ -998,7 +998,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
             self[] = nil
             return none
         }
-    }    
+    }
     match (self[])[].tag {
         -> AST_AssemblyType_t {
             -> AST_Byte_t {
@@ -1024,7 +1024,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
             free(self[])
             self[] = nil
         }
-    }    
+    }
 }
 
 pub fn make_BackendSymbol(none) *struc BackendSymbol {
@@ -1036,7 +1036,7 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol {
         if not self {
             panic_sigabrt("alloc "                 "BackendSymbol")
         }
-    }    
+    }
     self[].tag = AST_BackendSymbol_t
     return self
 }
@@ -1055,7 +1055,7 @@ pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc Assembly
             self[].get._BackendObj.asm_type = asm_type[]
             asm_type[] = nil
         }
-    }    
+    }
     return self
 }
 
@@ -1089,7 +1089,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._BackendFun.callee_saved_regs) then free((cast<*struc stbds_array_header>(((self[])[].get._BackendFun.callee_saved_regs)) - 1)) else cast<none>(0)))
                 ((self[])[].get._BackendFun.callee_saved_regs) = nil
-            }            
+            }
             (self[])[].get._BackendFun.callee_saved_regs = nil
         }
         break
