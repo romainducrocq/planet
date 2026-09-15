@@ -248,25 +248,28 @@
 #define map_new() NULL
 #define map_delete(X)  \
     if (X) {           \
+        "@MACRO@:map_delete(@ARG@"#X"@ARG@)"; \
         hmfree(X);     \
         X = map_new(); \
     }
 #define map_move(X, Y) \
     if (X != Y) {      \
+        "@MACRO@:map_move(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         map_delete(Y); \
         Y = X;         \
         X = map_new(); \
     }
 #define map_size(X) hmlenu(X)
-#define map_add(X, Y, Z) hmput(X, Y, Z)
-#define map_clear(X) map_delete(X)
+#define map_add(X, Y, Z) do { "@MACRO@:map_add(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; hmput(X, Y, Z); } while (0)
+#define map_clear(X) do { "@MACRO@:map_clear(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
 #define map_empty(X) (map_size(X) == 0)
 #define map_end() -1
-#define map_erase(X, Y) hmdel(X, Y)
+#define map_erase(X, Y) do { "@MACRO@:map_erase(@ARG@"#X", @ARG@"#Y"@ARG@)"; hmdel(X, Y); } while (0)
 #define map_find(X, Y) hmgeti(X, Y)
 #define map_get(X, Y) hmget(X, Y)
 #define map_move_add(X, Y, Z) \
     do {                      \
+        "@MACRO@:map_move_add(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; \
         map_add(X, Y, Z);     \
         Z = NULL;             \
     }                         \
