@@ -2,18 +2,7 @@ m4_include(`sds.plx.m4')m4_dnl
 
 m4_include(`../lib/c_lib.plx.m4')m4_dnl
 
-m4_define(`sds', `TODO')m4_dnl
-pub fn sdslen(s: string) u64;
-pub fn sdsnew(init: string) string;
-pub fn sdsdup(s: string) string;
-pub fn sdsfree(s: string) none;
-pub fn sdsgrowzero(s: string, len: u64) string;
-pub fn sdscat(s: string, t: string) string;
-pub fn sdsrange(s: string, start: i64, end: i64) none;
-pub fn sdsclear(s: string) none;
-pub fn sdsfromlong(value: i64) string;
-pub fn sdsfromunsignedlong(value: u64) string;
-pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
 m4_define(`bool', `TODO')m4_dnl
