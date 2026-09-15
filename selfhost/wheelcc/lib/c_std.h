@@ -289,11 +289,11 @@
 
 #define hashset_t(TK) struct Element##TK*
 #define set_new() map_new()
-#define set_delete(X) map_delete(X)
+#define set_delete(X) do { "@MACRO@:set_delete(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
 #define set_size(X) map_size(X)
-#define set_clear(X) map_clear(X)
+#define set_clear(X) do { "@MACRO@:set_clear(@ARG@"#X"@ARG@)"; map_clear(X); } while (0)
 #define set_end() map_end()
 #define set_find(X, Y) map_find(X, Y)
-#define set_insert(X, Y) map_add(X, Y, 0)
+#define set_insert(X, Y) do { "@MACRO@:set_insert(@ARG@"#X", @ARG@"#Y"@ARG@)"; map_add(X, Y, 0); } while (0)
 
 #endif
