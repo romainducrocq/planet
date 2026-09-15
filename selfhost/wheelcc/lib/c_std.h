@@ -199,11 +199,13 @@
 #define vec_new() NULL
 #define vec_delete(X)  \
     if (X) {           \
+        "@MACRO@:vec_delete(@ARG@"#X"@ARG@)"; \
         arrfree(X);    \
         X = vec_new(); \
     }
 #define vec_move(X, Y) \
     if (X != Y) {      \
+        "@MACRO@:vec_move(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         vec_delete(Y); \
         Y = X;         \
         X = vec_new(); \
@@ -212,20 +214,22 @@
 #define vec_back(X) (X)[vec_size(X) - 1]
 #define vec_clear(X)                 \
     if (X) {                         \
+        "@MACRO@:vec_clear(@ARG@"#X"@ARG@)"; \
         stbds_header(X)->length = 0; \
     }
 #define vec_empty(X) (vec_size(X) == 0)
 #define vec_move_back(X, Y)  \
     do {                     \
+        "@MACRO@:vec_move_back(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         vec_push_back(X, Y); \
         Y = NULL;            \
     }                        \
     while (0)
-#define vec_pop_back(X) arrpop(X)
-#define vec_push_back(X, Y) arrput(X, Y)
-#define vec_remove_swap(X, Y) arrdelswap(X, Y)
-#define vec_resize(X, Y) arrsetlen(X, Y)
-#define vec_reserve(X, Y) arrsetcap(X, Y)
+#define vec_pop_back(X) do { "@MACRO@:vec_pop_back(@ARG@"#X"@ARG@)"; arrpop(X); } while (0)
+#define vec_push_back(X, Y) do { "@MACRO@:vec_push_back(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrput(X, Y); } while (0)
+#define vec_remove_swap(X, Y) do { "@MACRO@:vec_remove_swap(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrdelswap(X, Y); } while (0)
+#define vec_resize(X, Y) do { "@MACRO@:vec_resize(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrsetlen(X, Y); } while (0)
+#define vec_reserve(X, Y) do { "@MACRO@:vec_reserve(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrsetcap(X, Y); } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
