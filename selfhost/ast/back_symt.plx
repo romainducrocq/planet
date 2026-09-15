@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -937,7 +937,7 @@ m4_define(`THROW_BASE', `TODO')m4_dnl
 m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 
 pub fn make_AssemblyType(none) *struc AssemblyType {
-    self: *struc AssemblyType = nil
+    self: *struc AssemblyType = sptr_new()
     loop .. while 0 {
         "@MACRO@:sptr_alloc(AssemblyType, self)"
         loop .. while 0 {
@@ -995,7 +995,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
         }
         elif (self[])[]._ref_count > 1 {
             (self[])[]._ref_count--
-            self[] = nil
+            self[] = sptr_new()
             return none
         }
     }
@@ -1022,13 +1022,13 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
         if self[] {
             "@MACRO@:uptr_free(*self)"
             free(self[])
-            self[] = nil
+            self[] = uptr_new()
         }
     }
 }
 
 pub fn make_BackendSymbol(none) *struc BackendSymbol {
-    self: *struc BackendSymbol = nil
+    self: *struc BackendSymbol = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(BackendSymbol, self)"
         free_BackendSymbol(@self)
@@ -1046,14 +1046,14 @@ pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc Assembly
     self[].tag = AST_BackendObj_t
     self[].get._BackendObj.is_static = is_static
     self[].get._BackendObj.is_const = is_const
-    self[].get._BackendObj.asm_type = nil
+    self[].get._BackendObj.asm_type = sptr_new()
     loop .. while 0 {
         "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
         if asm_type[] ~= self[].get._BackendObj.asm_type {
             "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
             free_AssemblyType(@self[].get._BackendObj.asm_type)
             self[].get._BackendObj.asm_type = asm_type[]
-            asm_type[] = nil
+            asm_type[] = uptr_new()
         }
     }
     return self
@@ -1063,7 +1063,7 @@ pub fn make_BackendFun(is_def: i32) *struc BackendSymbol {
     self: *struc BackendSymbol = make_BackendSymbol()
     self[].tag = AST_BackendFun_t
     self[].get._BackendFun.is_def = is_def
-    self[].get._BackendFun.callee_saved_regs = nil
+    self[].get._BackendFun.callee_saved_regs = vec_new()
     return self
 }
 
@@ -1086,11 +1086,12 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
             }
         }
         if (self[])[].get._BackendFun.callee_saved_regs {
+            "@MACRO@:vec_delete((*self)->get._BackendFun.callee_saved_regs)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._BackendFun.callee_saved_regs) then free((cast<*struc stbds_array_header>(((self[])[].get._BackendFun.callee_saved_regs)) - 1)) else cast<none>(0)))
                 ((self[])[].get._BackendFun.callee_saved_regs) = nil
             }
-            (self[])[].get._BackendFun.callee_saved_regs = nil
+            (self[])[].get._BackendFun.callee_saved_regs = vec_new()
         }
         break
         otherwise {
@@ -1100,6 +1101,6 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
 }

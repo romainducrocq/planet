@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -822,78 +822,111 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
             match str_char {
                 -> '\'' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (39)
+                        "@MACRO@:vec_push_back(*string_literal, 39)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (39)
+                        }
                     }
                 }
                 break
                 -> '"' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (34)
+                        "@MACRO@:vec_push_back(*string_literal, 34)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (34)
+                        }
                     }
                 }
                 break
                 -> '?' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (63)
+                        "@MACRO@:vec_push_back(*string_literal, 63)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (63)
+                        }
                     }
                 }
                 break
                 -> '\\' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (92)
+                        "@MACRO@:vec_push_back(*string_literal, 92)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (92)
+                        }
                     }
                 }
                 break
                 -> 'a' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (7)
+                        "@MACRO@:vec_push_back(*string_literal, 7)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (7)
+                        }
                     }
                 }
                 break
                 -> 'b' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (8)
+                        "@MACRO@:vec_push_back(*string_literal, 8)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (8)
+                        }
                     }
                 }
                 break
                 -> 'f' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (12)
+                        "@MACRO@:vec_push_back(*string_literal, 12)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (12)
+                        }
                     }
                 }
                 break
                 -> 'n' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (10)
+                        "@MACRO@:vec_push_back(*string_literal, 10)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (10)
+                        }
                     }
                 }
                 break
                 -> 'r' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (13)
+                        "@MACRO@:vec_push_back(*string_literal, 13)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (13)
+                        }
                     }
                 }
                 break
                 -> 't' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (9)
+                        "@MACRO@:vec_push_back(*string_literal, 9)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (9)
+                        }
                     }
                 }
                 break
                 -> 'v' {
                     loop .. while 0 {
-                        (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                        (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (11)
+                        "@MACRO@:vec_push_back(*string_literal, 11)"
+                        loop .. while 0 {
+                            (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                            (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (11)
+                        }
                     }
                 }
                 break
@@ -904,8 +937,11 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
         }
         else {
             loop .. while 0 {
-                (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (cast<i8>(str_char))
+                "@MACRO@:vec_push_back(*string_literal, (int8_t)str_char)"
+                loop .. while 0 {
+                    (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
+                    (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (cast<i8>(str_char))
+                }
             }
         }
     }
@@ -969,6 +1005,7 @@ fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
     byte_hex: [3]char;
     sprintf(byte_hex, "%.2x", cast<u32>(value))
     loop .. while 0 {
+        "@MACRO@:str_append(*str_hex, byte_hex)"
         str_hex[] = sdscat(str_hex[], byte_hex)
     }
 }
@@ -982,6 +1019,7 @@ pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
     }
     hex_value: i8 = cast<i8>(hex_string_to_long(str_hex))
     if str_hex {
+        "@MACRO@:str_delete(str_hex)"
         sdsfree(str_hex)
         str_hex = ? nil then sdsnew(nil) else nil
     }
@@ -997,6 +1035,7 @@ pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32 {
     }
     hex_value: i32 = cast<i32>(hex_string_to_long(str_hex))
     if str_hex {
+        "@MACRO@:str_delete(str_hex)"
         sdsfree(str_hex)
         str_hex = ? nil then sdsnew(nil) else nil
     }
@@ -1012,6 +1051,7 @@ pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64 {
     }
     hex_value: i64 = cast<i64>(hex_string_to_long(str_hex))
     if str_hex {
+        "@MACRO@:str_delete(str_hex)"
         sdsfree(str_hex)
         str_hex = ? nil then sdsnew(nil) else nil
     }
@@ -1025,73 +1065,86 @@ pub fn string_literal_to_const(string_literal: *i8) string {
         match byte {
             -> 39 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\047\")"
                     string_const = sdscat(string_const, "\\047")
                 }
             }
             break
             -> 34 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\042\")"
                     string_const = sdscat(string_const, "\\042")
                 }
             }
             break
             -> 63 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\077\")"
                     string_const = sdscat(string_const, "\\077")
                 }
             }
             break
             -> 92 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\134\")"
                     string_const = sdscat(string_const, "\\134")
                 }
             }
             break
             -> 7 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\007\")"
                     string_const = sdscat(string_const, "\\007")
                 }
             }
             break
             -> 8 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\010\")"
                     string_const = sdscat(string_const, "\\010")
                 }
             }
             break
             -> 12 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\014\")"
                     string_const = sdscat(string_const, "\\014")
                 }
             }
             break
             -> 10 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\012\")"
                     string_const = sdscat(string_const, "\\012")
                 }
             }
             break
             -> 13 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\013\")"
                     string_const = sdscat(string_const, "\\013")
                 }
             }
             break
             -> 9 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\011\")"
                     string_const = sdscat(string_const, "\\011")
                 }
             }
             break
             -> 11 {
                 loop .. while 0 {
+                    "@MACRO@:str_append(string_const, \"\\\\013\")"
                     string_const = sdscat(string_const, "\\013")
                 }
             }
             break
             otherwise {
                 loop .. while 0 {
+                    "@MACRO@:str_push_back(string_const, (char)byte)"
                     loop .. while 0 {
+                        "@MACRO@:str_resize(string_const, str_size(string_const) + 1)"
                         string_const = sdsgrowzero(string_const, sdslen(string_const) + 1)
                     }
                     (string_const)[sdslen(string_const) - 1] = cast<char>(byte)
