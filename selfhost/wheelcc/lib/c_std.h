@@ -57,7 +57,8 @@
 
 #define unique_ptr_t(T) struct T*
 #define unique_ptr_impl(T) tagged_def_impl(T)
-#define uptr_new() NULL
+// NULL
+#define uptr_new() 000000
 #define uptr_delete(X) \
     if (!X) {          \
         "@MACRO@:uptr_delete(@ARG@"#X"@ARG@)"; \
@@ -95,7 +96,8 @@
 #define shared_ptr_impl(T)    \
     unsigned long _ref_count; \
     unique_ptr_impl(T)
-#define sptr_new() uptr_new()
+// uptr_new()
+#define sptr_new() 00000
 #define sptr_delete(X)                             \
     do {                                           \
     "@MACRO@:sptr_delete(@ARG@"#X"@ARG@)"; \
@@ -196,7 +198,8 @@
 // Vector
 
 #define vector_t(T) T*
-#define vec_new() NULL
+// NULL
+#define vec_new() 0000
 #define vec_delete(X)  \
     if (X) {           \
         "@MACRO@:vec_delete(@ARG@"#X"@ARG@)"; \
@@ -245,7 +248,8 @@
 #define pair_second(X) (X).value
 
 #define hashmap_t(TK, TV) struct Pair##TK##TV*
-#define map_new() NULL
+// NULL
+#define map_new() 000
 #define map_delete(X)  \
     if (X) {           \
         "@MACRO@:map_delete(@ARG@"#X"@ARG@)"; \
@@ -288,7 +292,8 @@
 #define element_get(X) (X).key
 
 #define hashset_t(TK) struct Element##TK*
-#define set_new() map_new()
+// map_new()
+#define set_new() 00
 #define set_delete(X) do { "@MACRO@:set_delete(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
 #define set_size(X) map_size(X)
 #define set_clear(X) do { "@MACRO@:set_clear(@ARG@"#X"@ARG@)"; map_clear(X); } while (0)
