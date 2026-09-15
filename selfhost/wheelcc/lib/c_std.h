@@ -160,7 +160,7 @@
         X = sdscat(X, Y); \
     }                     \
     while (0)
-#define str_clear(X) sdsclear(X)
+#define str_clear(X) do { "@MACRO@:str_clear(@ARG@"#X"@ARG@)"; sdsclear(X); } while (0)
 #define str_copy(X, Y) \
     if (X != Y) {      \
         "@MACRO@:str_copy(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
@@ -188,7 +188,7 @@
         X = sdsgrowzero(X, Y); \
     }                          \
     while (0)
-#define str_substr(X, Y, Z) sdsrange(X, Y, Z)
+#define str_substr(X, Y, Z) do { "@MACRO@:str_substr(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; sdsrange(X, Y, Z); } while (0)
 #define str_to_string(X) (X) > 0 ? sdsfromunsignedlong((unsigned long)(X)) : sdsfromlong((long)(X))
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
