@@ -39,18 +39,7 @@ extrn fn memcmp(s1: *any, s2: *any, n: u64) i32;
 extrn fn strcmp(s1: string, s2: string) i32;
 extrn fn memset(s: *any, c: i32, n: u64) *any;
 extrn fn strlen(s: string) u64;
-m4_define(`sds', `TODO')m4_dnl
-pub fn sdslen(s: string) u64;
-pub fn sdsnew(init: string) string;
-pub fn sdsdup(s: string) string;
-pub fn sdsfree(s: string) none;
-pub fn sdsgrowzero(s: string, len: u64) string;
-pub fn sdscat(s: string, t: string) string;
-pub fn sdsrange(s: string, start: i64, end: i64) none;
-pub fn sdsclear(s: string) none;
-pub fn sdsfromlong(value: i64) string;
-pub fn sdsfromunsignedlong(value: u64) string;
-pub fn sdsMakeRoomFor(s: string, addlen: u64) string;
+
 m4_define(`arrlenu', `TODO')m4_dnl
 m4_define(`arrput', `TODO')m4_dnl
 m4_define(`arrpop', `TODO')m4_dnl
