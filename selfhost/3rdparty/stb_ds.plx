@@ -1,6 +1,6 @@
-m4_sinclude(`stb_ds.plx.m4')m4_dnl
+m4_include(`stb_ds.plx.m4')m4_dnl
 
-m4_sinclude(`../lib/c_lib.plx.m4')m4_dnl
+m4_include(`../lib/c_lib.plx.m4')m4_dnl
 
 m4_define(`arrlenu', `TODO')m4_dnl
 m4_define(`arrput', `TODO')m4_dnl
