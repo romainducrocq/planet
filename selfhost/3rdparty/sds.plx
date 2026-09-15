@@ -1,6 +1,6 @@
-m4_sinclude(`sds.plx.m4')m4_dnl
+m4_include(`sds.plx.m4')m4_dnl
 
-m4_sinclude(`../lib/c_lib.plx.m4')m4_dnl
+m4_include(`../lib/c_lib.plx.m4')m4_dnl
 
 m4_define(`sds', `TODO')m4_dnl
 pub fn sdslen(s: string) u64;

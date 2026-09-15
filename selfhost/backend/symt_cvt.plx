@@ -1,14 +1,14 @@
-m4_sinclude(`regs.plx.m4')m4_dnl
-m4_sinclude(`symt_cvt.plx.m4')m4_dnl
+m4_include(`regs.plx.m4')m4_dnl
+m4_include(`symt_cvt.plx.m4')m4_dnl
 
-m4_sinclude(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/c_std.plx.m4')m4_dnl
 
-m4_sinclude(`../util/throw.plx.m4')m4_dnl
+m4_include(`../util/throw.plx.m4')m4_dnl
 
-m4_sinclude(`../ast/ast_t.plx.m4')m4_dnl
-m4_sinclude(`../ast/back_ast.plx.m4')m4_dnl
-m4_sinclude(`../ast/back_symt.plx.m4')m4_dnl
-m4_sinclude(`../ast/front_symt.plx.m4')m4_dnl
+m4_include(`../ast/ast_t.plx.m4')m4_dnl
+m4_include(`../ast/back_ast.plx.m4')m4_dnl
+m4_include(`../ast/back_symt.plx.m4')m4_dnl
+m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;

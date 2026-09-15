@@ -1,15 +1,15 @@
-m4_sinclude(`idents.plx.m4')m4_dnl
-m4_sinclude(`tac_repr.plx.m4')m4_dnl
+m4_include(`idents.plx.m4')m4_dnl
+m4_include(`tac_repr.plx.m4')m4_dnl
 
-m4_sinclude(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/c_std.plx.m4')m4_dnl
 
-m4_sinclude(`../util/str2t.plx.m4')m4_dnl
-m4_sinclude(`../util/throw.plx.m4')m4_dnl
+m4_include(`../util/str2t.plx.m4')m4_dnl
+m4_include(`../util/throw.plx.m4')m4_dnl
 
-m4_sinclude(`../ast/ast.plx.m4')m4_dnl
-m4_sinclude(`../ast/front_ast.plx.m4')m4_dnl
-m4_sinclude(`../ast/front_symt.plx.m4')m4_dnl
-m4_sinclude(`../ast/interm_ast.plx.m4')m4_dnl
+m4_include(`../ast/ast.plx.m4')m4_dnl
+m4_include(`../ast/front_ast.plx.m4')m4_dnl
+m4_include(`../ast/front_symt.plx.m4')m4_dnl
+m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;

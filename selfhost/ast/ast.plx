@@ -1,8 +1,8 @@
-m4_sinclude(`ast.plx.m4')m4_dnl
+m4_include(`ast.plx.m4')m4_dnl
 
-m4_sinclude(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/c_std.plx.m4')m4_dnl
 
-m4_sinclude(`../util/throw.plx.m4')m4_dnl
+m4_include(`../util/throw.plx.m4')m4_dnl
 
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
