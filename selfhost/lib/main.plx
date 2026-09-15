@@ -1,3 +1,29 @@
+m4_sinclude(`c_std.plx.m4')m4_dnl
+
+m4_sinclude(`../util/fileio.plx.m4')m4_dnl
+m4_sinclude(`../util/throw.plx.m4')m4_dnl
+
+m4_sinclude(`../ast/ast.plx.m4')m4_dnl
+m4_sinclude(`../ast/back_ast.plx.m4')m4_dnl
+m4_sinclude(`../ast/back_symt.plx.m4')m4_dnl
+m4_sinclude(`../ast/front_ast.plx.m4')m4_dnl
+m4_sinclude(`../ast/front_symt.plx.m4')m4_dnl
+m4_sinclude(`../ast/interm_ast.plx.m4')m4_dnl
+
+m4_sinclude(`../frontend/errors.plx.m4')m4_dnl
+m4_sinclude(`../frontend/lexer.plx.m4')m4_dnl
+m4_sinclude(`../frontend/parser.plx.m4')m4_dnl
+m4_sinclude(`../frontend/semantic.plx.m4')m4_dnl
+m4_sinclude(`../frontend/tac_repr.plx.m4')m4_dnl
+
+m4_sinclude(`../backend/asm_gen.plx.m4')m4_dnl
+m4_sinclude(`../backend/gas_code.plx.m4')m4_dnl
+m4_sinclude(`../backend/stack_fix.plx.m4')m4_dnl
+m4_sinclude(`../backend/symt_cvt.plx.m4')m4_dnl
+
+m4_sinclude(`../optimizer/optim_tac.plx.m4')m4_dnl
+m4_sinclude(`../optimizer/reg_alloc.plx.m4')m4_dnl
+
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
 m4_define(`bool', `TODO')m4_dnl
