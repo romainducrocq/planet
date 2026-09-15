@@ -3,6 +3,11 @@
 FILE="${1}"
 
 sed -i 's|0000000|nil|g' ${FILE}
+sed -i 's|000000|uptr_new()|g' ${FILE}
+sed -i 's|00000|sptr_new()|g' ${FILE}
+sed -i 's|0000|vec_new()|g' ${FILE}
+sed -i 's|000|map_new()|g' ${FILE}
+sed -i 's|00|set_new()|g' ${FILE}
 
 # sed -i 's|9876617|__OPTIM_LEVEL__|g' ${FILE}
 sed -i 's|9876616|CONTROL_FLOW_GRAPH|g' ${FILE}
