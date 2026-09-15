@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -549,7 +549,7 @@ m4_define(`THROW_BASE', `TODO')m4_dnl
 m4_define(`THROW_AT_TOKEN', `TODO')m4_dnl
 
 pub fn make_CConst(none) *struc CConst {
-    self: *struc CConst = nil
+    self: *struc CConst = sptr_new()
     loop .. while 0 {
         "@MACRO@:sptr_alloc(CConst, self)"
         loop .. while 0 {
@@ -624,7 +624,7 @@ pub fn free_CConst(self: **struc CConst) none {
         }
         elif (self[])[]._ref_count > 1 {
             (self[])[]._ref_count--
-            self[] = nil
+            self[] = sptr_new()
             return none
         }
     }
@@ -655,13 +655,13 @@ pub fn free_CConst(self: **struc CConst) none {
         if self[] {
             "@MACRO@:uptr_free(*self)"
             free(self[])
-            self[] = nil
+            self[] = uptr_new()
         }
     }
 }
 
 pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
-    self: *struc CStringLiteral = nil
+    self: *struc CStringLiteral = sptr_new()
     loop .. while 0 {
         "@MACRO@:sptr_alloc(CStringLiteral, self)"
         loop .. while 0 {
@@ -675,17 +675,19 @@ pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
         (self)[]._ref_count = 1
     }
     self[].tag = AST_CStringLiteral_t
-    self[].value = nil
+    self[].value = vec_new()
     if value[] ~= self[].value {
+        "@MACRO@:vec_move(*value, self->value)"
         if self[].value {
+            "@MACRO@:vec_delete(self->value)"
             loop .. while 0 {
                 cast<none>((? (self[].value) then free((cast<*struc stbds_array_header>((self[].value)) - 1)) else cast<none>(0)))
                 (self[].value) = nil
             }
-            self[].value = nil
+            self[].value = vec_new()
         }
         self[].value = value[]
-        value[] = nil
+        value[] = vec_new()
     }
     return self
 }
@@ -699,7 +701,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
         }
         elif (self[])[]._ref_count > 1 {
             (self[])[]._ref_count--
-            self[] = nil
+            self[] = sptr_new()
             return none
         }
     }
@@ -712,18 +714,19 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
         }
     }
     if (self[])[].value {
+        "@MACRO@:vec_delete((*self)->value)"
         loop .. while 0 {
             cast<none>((? ((self[])[].value) then free((cast<*struc stbds_array_header>(((self[])[].value)) - 1)) else cast<none>(0)))
             ((self[])[].value) = nil
         }
-        (self[])[].value = nil
+        (self[])[].value = vec_new()
     }
     loop .. while 0 {
         "@MACRO@:sptr_free(*self)"
         if self[] {
             "@MACRO@:uptr_free(*self)"
             free(self[])
-            self[] = nil
+            self[] = uptr_new()
         }
     }
 }
@@ -734,16 +737,21 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
     identifier: u64 = stbds_hash_string(value[], 42)
     if (? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp) == -1 {
         loop .. while 0 {
+            "@MACRO@:map_move_add(ctx->hash_table, identifier, *value)"
             loop .. while 0 {
-                (ctx[].hash_table) = stbds_hmput_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)
-                (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].key = (identifier)
-                (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].value = (value[])
+                "@MACRO@:map_add(ctx->hash_table, identifier, *value)"
+                loop .. while 0 {
+                    (ctx[].hash_table) = stbds_hmput_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)
+                    (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].key = (identifier)
+                    (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].value = (value[])
+                }
             }
             value[] = nil
         }
     }
     else {
         if value[] {
+            "@MACRO@:str_delete(*value)"
             sdsfree(value[])
             value[] = ? nil then sdsnew(nil) else nil
         }
@@ -753,14 +761,17 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     loop .. while 0 {
+        "@MACRO@:str_append(*name, UID_SEPARATOR)"
         name[] = sdscat(name[], ".")
     }
     {
         strto_uid: string = ? (ctx[].label_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].label_count))) else sdsfromlong(cast<i64>((ctx[].label_count)))
         loop .. while 0 {
+            "@MACRO@:str_append(*name, strto_uid)"
             name[] = sdscat(name[], strto_uid)
         }
         if strto_uid {
+            "@MACRO@:str_delete(strto_uid)"
             sdsfree(strto_uid)
             strto_uid = ? nil then sdsnew(nil) else nil
         }
@@ -771,14 +782,17 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
 
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     loop .. while 0 {
+        "@MACRO@:str_append(*name, UID_SEPARATOR)"
         name[] = sdscat(name[], ".")
     }
     {
         strto_uid: string = ? (ctx[].var_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].var_count))) else sdsfromlong(cast<i64>((ctx[].var_count)))
         loop .. while 0 {
+            "@MACRO@:str_append(*name, strto_uid)"
             name[] = sdscat(name[], strto_uid)
         }
         if strto_uid {
+            "@MACRO@:str_delete(strto_uid)"
             sdsfree(strto_uid)
             strto_uid = ? nil then sdsnew(nil) else nil
         }
@@ -789,14 +803,17 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
 
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     loop .. while 0 {
+        "@MACRO@:str_append(*name, UID_SEPARATOR)"
         name[] = sdscat(name[], ".")
     }
     {
         strto_uid: string = ? (ctx[].struct_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].struct_count))) else sdsfromlong(cast<i64>((ctx[].struct_count)))
         loop .. while 0 {
+            "@MACRO@:str_append(*name, strto_uid)"
             name[] = sdscat(name[], strto_uid)
         }
         if strto_uid {
+            "@MACRO@:str_delete(strto_uid)"
             sdsfree(strto_uid)
             strto_uid = ? nil then sdsnew(nil) else nil
         }

@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -1740,8 +1740,12 @@ fn verbose(ctx: *struc MainContext, msg: string) none {
 fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
     loop i: u64 = sdslen(ctx[].filename) while i-- > 0 {
         if ctx[].filename[i] == '.' {
-            sdsrange(ctx[].filename, 0, i)
             loop .. while 0 {
+                "@MACRO@:str_substr(ctx->filename, 0, i)"
+                sdsrange(ctx[].filename, 0, i)
+            }
+            loop .. while 0 {
+                "@MACRO@:str_append(ctx->filename, ext)"
                 ctx[].filename = sdscat(ctx[].filename, ext)
             }
             return none
@@ -1754,11 +1758,11 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     identifiers: struc IdentifierContext;
     frontend: struc FrontEndContext;
     backend: struc BackEndContext;
-    tokens: *struc Token = nil
-    c_ast: *struc CProgram = nil
-    tac_ast: *struc TacProgram = nil
+    tokens: *struc Token = vec_new()
+    c_ast: *struc CProgram = uptr_new()
+    tac_ast: *struc TacProgram = uptr_new()
 
-    asm_ast: *struc AsmProgram = nil
+    asm_ast: *struc AsmProgram = uptr_new()
     {
         if ctx[].debug_code > 0 and ctx[].debug_code <= 127 {
             ctx[].is_verbose = true
@@ -1767,12 +1771,12 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         identifiers.label_count = 0u
         identifiers.var_count = 0u
         identifiers.struct_count = 0u
-        identifiers.hash_table = nil
-        frontend.string_const_table = nil
-        frontend.struct_typedef_table = nil
-        frontend.symbol_table = nil
-        frontend.addressed_set = nil
-        backend.symbol_table = nil
+        identifiers.hash_table = map_new()
+        frontend.string_const_table = map_new()
+        frontend.struct_typedef_table = map_new()
+        frontend.symbol_table = map_new()
+        frontend.addressed_set = set_new()
+        backend.symbol_table = map_new()
     }
 
     _errval: i32 = 0
@@ -1849,67 +1853,78 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     label _Lfinally
     loop i: u64 = 0 while i < (? (identifiers.hash_table) then (cast<*struc stbds_array_header>(((identifiers.hash_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if (identifiers.hash_table[i]).value {
+            "@MACRO@:str_delete(pair_second(identifiers.hash_table[i]))"
             sdsfree((identifiers.hash_table[i]).value)
             (identifiers.hash_table[i]).value = ? nil then sdsnew(nil) else nil
         }
     }
     if identifiers.hash_table {
+        "@MACRO@:map_delete(identifiers.hash_table)"
         loop .. while 0 {
             cast<none>((? (identifiers.hash_table) ~= nil then stbds_hmfree_func((identifiers.hash_table) - 1, sizeof((identifiers.hash_table)[])) else cast<none>(0)))
             (identifiers.hash_table) = nil
         }
-        identifiers.hash_table = nil
+        identifiers.hash_table = map_new()
     }
     if frontend.string_const_table {
+        "@MACRO@:map_delete(frontend.string_const_table)"
         loop .. while 0 {
             cast<none>((? (frontend.string_const_table) ~= nil then stbds_hmfree_func((frontend.string_const_table) - 1, sizeof((frontend.string_const_table)[])) else cast<none>(0)))
             (frontend.string_const_table) = nil
         }
-        frontend.string_const_table = nil
+        frontend.string_const_table = map_new()
     }
     loop i: u64 = 0 while i < (? (frontend.struct_typedef_table) then (cast<*struc stbds_array_header>(((frontend.struct_typedef_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructTypedef(@(frontend.struct_typedef_table[i]).value)
     }
     if frontend.struct_typedef_table {
+        "@MACRO@:map_delete(frontend.struct_typedef_table)"
         loop .. while 0 {
             cast<none>((? (frontend.struct_typedef_table) ~= nil then stbds_hmfree_func((frontend.struct_typedef_table) - 1, sizeof((frontend.struct_typedef_table)[])) else cast<none>(0)))
             (frontend.struct_typedef_table) = nil
         }
-        frontend.struct_typedef_table = nil
+        frontend.struct_typedef_table = map_new()
     }
     loop i: u64 = 0 while i < (? (frontend.symbol_table) then (cast<*struc stbds_array_header>(((frontend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_Symbol(@(frontend.symbol_table[i]).value)
     }
     if frontend.symbol_table {
+        "@MACRO@:map_delete(frontend.symbol_table)"
         loop .. while 0 {
             cast<none>((? (frontend.symbol_table) ~= nil then stbds_hmfree_func((frontend.symbol_table) - 1, sizeof((frontend.symbol_table)[])) else cast<none>(0)))
             (frontend.symbol_table) = nil
         }
-        frontend.symbol_table = nil
+        frontend.symbol_table = map_new()
     }
-    if frontend.addressed_set {
-        loop .. while 0 {
-            cast<none>((? (frontend.addressed_set) ~= nil then stbds_hmfree_func((frontend.addressed_set) - 1, sizeof((frontend.addressed_set)[])) else cast<none>(0)))
-            (frontend.addressed_set) = nil
+    loop .. while 0 {
+        "@MACRO@:set_delete(frontend.addressed_set)"
+        if frontend.addressed_set {
+            "@MACRO@:map_delete(frontend.addressed_set)"
+            loop .. while 0 {
+                cast<none>((? (frontend.addressed_set) ~= nil then stbds_hmfree_func((frontend.addressed_set) - 1, sizeof((frontend.addressed_set)[])) else cast<none>(0)))
+                (frontend.addressed_set) = nil
+            }
+            frontend.addressed_set = map_new()
         }
-        frontend.addressed_set = nil
     }
     loop i: u64 = 0 while i < (? (backend.symbol_table) then (cast<*struc stbds_array_header>(((backend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_BackendSymbol(@(backend.symbol_table[i]).value)
     }
     if backend.symbol_table {
+        "@MACRO@:map_delete(backend.symbol_table)"
         loop .. while 0 {
             cast<none>((? (backend.symbol_table) ~= nil then stbds_hmfree_func((backend.symbol_table) - 1, sizeof((backend.symbol_table)[])) else cast<none>(0)))
             (backend.symbol_table) = nil
         }
-        backend.symbol_table = nil
+        backend.symbol_table = map_new()
     }
     if tokens {
+        "@MACRO@:vec_delete(tokens)"
         loop .. while 0 {
             cast<none>((? (tokens) then free((cast<*struc stbds_array_header>((tokens)) - 1)) else cast<none>(0)))
             (tokens) = nil
         }
-        tokens = nil
+        tokens = vec_new()
     }
     free_CProgram(@c_ast)
     free_TacProgram(@tac_ast)
@@ -2000,8 +2015,11 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
         }
     }
     loop .. while 0 {
-        (? (not (ctx[].stdlibdirs) or (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].capacity) then (((ctx[].stdlibdirs) = stbds_arrgrowf((ctx[].stdlibdirs), sizeof((ctx[].stdlibdirs)[]), (1), (0))) and 0) else 0)
-        (ctx[].stdlibdirs)[(cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length++] = (cast<string>(argv[i]))
+        "@MACRO@:vec_push_back(ctx->stdlibdirs, (char*)argv[i])"
+        loop .. while 0 {
+            (? (not (ctx[].stdlibdirs) or (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].capacity) then (((ctx[].stdlibdirs) = stbds_arrgrowf((ctx[].stdlibdirs), sizeof((ctx[].stdlibdirs)[]), (1), (0))) and 0) else 0)
+            (ctx[].stdlibdirs)[(cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length++] = (cast<string>(argv[i]))
+        }
     }
     if not argv[++i] {
         loop .. while 0 {
@@ -2013,8 +2031,11 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     loop .. while argv[++i] {
         loop .. while 0 {
-            (? (not (ctx[].includedirs) or (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].capacity) then (((ctx[].includedirs) = stbds_arrgrowf((ctx[].includedirs), sizeof((ctx[].includedirs)[]), (1), (0))) and 0) else 0)
-            (ctx[].includedirs)[(cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length++] = (cast<string>(argv[i]))
+            "@MACRO@:vec_push_back(ctx->includedirs, (char*)argv[i])"
+            loop .. while 0 {
+                (? (not (ctx[].includedirs) or (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].capacity) then (((ctx[].includedirs) = stbds_arrgrowf((ctx[].includedirs), sizeof((ctx[].includedirs)[]), (1), (0))) and 0) else 0)
+                (ctx[].includedirs)[(cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length++] = (cast<string>(argv[i]))
+            }
         }
     }
     label _Lfinally
@@ -2030,19 +2051,19 @@ pub fn main(argc: i32, argv: *string) i32 {
         errors.errors = @errors
         errors.fileio = @fileio
         errors.is_stdout = false
-        errors.info_at_map = nil
-        errors.fopen_lines = nil
-        errors.token_infos = nil
+        errors.info_at_map = map_new()
+        errors.fopen_lines = vec_new()
+        errors.token_infos = vec_new()
         fileio.errors = @errors
         fileio.fd_write = nil
         fileio.write_buf = ? nil then sdsnew(nil) else nil
         fileio.filename = ? nil then sdsnew(nil) else nil
-        fileio.file_reads = nil
+        fileio.file_reads = vec_new()
         ctx.errors = @errors
         ctx.is_verbose = false
         ctx.filename = ? nil then sdsnew(nil) else nil
-        ctx.includedirs = nil
-        ctx.stdlibdirs = nil
+        ctx.includedirs = vec_new()
+        ctx.stdlibdirs = vec_new()
     }
 
     _errval: i32 = 0
@@ -2062,70 +2083,81 @@ pub fn main(argc: i32, argv: *string) i32 {
     }
     label _Lfinally
     if errors.info_at_map {
+        "@MACRO@:map_delete(errors.info_at_map)"
         loop .. while 0 {
             cast<none>((? (errors.info_at_map) ~= nil then stbds_hmfree_func((errors.info_at_map) - 1, sizeof((errors.info_at_map)[])) else cast<none>(0)))
             (errors.info_at_map) = nil
         }
-        errors.info_at_map = nil
+        errors.info_at_map = map_new()
     }
     loop i: u64 = 0 while i < (? (errors.fopen_lines) then (cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)[].length else 0) .. ++i {
         if errors.fopen_lines[i].filename {
+            "@MACRO@:str_delete(errors.fopen_lines[i].filename)"
             sdsfree(errors.fopen_lines[i].filename)
             errors.fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
     if errors.fopen_lines {
+        "@MACRO@:vec_delete(errors.fopen_lines)"
         loop .. while 0 {
             cast<none>((? (errors.fopen_lines) then free((cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)) else cast<none>(0)))
             (errors.fopen_lines) = nil
         }
-        errors.fopen_lines = nil
+        errors.fopen_lines = vec_new()
     }
     if errors.token_infos {
+        "@MACRO@:vec_delete(errors.token_infos)"
         loop .. while 0 {
             cast<none>((? (errors.token_infos) then free((cast<*struc stbds_array_header>((errors.token_infos)) - 1)) else cast<none>(0)))
             (errors.token_infos) = nil
         }
-        errors.token_infos = nil
+        errors.token_infos = vec_new()
     }
     if fileio.write_buf {
+        "@MACRO@:str_delete(fileio.write_buf)"
         sdsfree(fileio.write_buf)
         fileio.write_buf = ? nil then sdsnew(nil) else nil
     }
     if fileio.filename {
+        "@MACRO@:str_delete(fileio.filename)"
         sdsfree(fileio.filename)
         fileio.filename = ? nil then sdsnew(nil) else nil
     }
     loop i: u64 = 0 while i < (? (fileio.file_reads) then (cast<*struc stbds_array_header>((fileio.file_reads)) - 1)[].length else 0) .. ++i {
         if fileio.file_reads[i].filename {
+            "@MACRO@:str_delete(fileio.file_reads[i].filename)"
             sdsfree(fileio.file_reads[i].filename)
             fileio.file_reads[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
     if fileio.file_reads {
+        "@MACRO@:vec_delete(fileio.file_reads)"
         loop .. while 0 {
             cast<none>((? (fileio.file_reads) then free((cast<*struc stbds_array_header>((fileio.file_reads)) - 1)) else cast<none>(0)))
             (fileio.file_reads) = nil
         }
-        fileio.file_reads = nil
+        fileio.file_reads = vec_new()
     }
     if ctx.filename {
+        "@MACRO@:str_delete(ctx.filename)"
         sdsfree(ctx.filename)
         ctx.filename = ? nil then sdsnew(nil) else nil
     }
     if ctx.includedirs {
+        "@MACRO@:vec_delete(ctx.includedirs)"
         loop .. while 0 {
             cast<none>((? (ctx.includedirs) then free((cast<*struc stbds_array_header>((ctx.includedirs)) - 1)) else cast<none>(0)))
             (ctx.includedirs) = nil
         }
-        ctx.includedirs = nil
+        ctx.includedirs = vec_new()
     }
     if ctx.stdlibdirs {
+        "@MACRO@:vec_delete(ctx.stdlibdirs)"
         loop .. while 0 {
             cast<none>((? (ctx.stdlibdirs) then free((cast<*struc stbds_array_header>((ctx.stdlibdirs)) - 1)) else cast<none>(0)))
             (ctx.stdlibdirs) = nil
         }
-        ctx.stdlibdirs = nil
+        ctx.stdlibdirs = vec_new()
     }
     return _errval
 }

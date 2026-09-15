@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -1180,73 +1180,80 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     }
     ;
     if (self[])[].entry_succ_ids {
+        "@MACRO@:vec_delete((*self)->entry_succ_ids)"
         loop .. while 0 {
             cast<none>((? ((self[])[].entry_succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].entry_succ_ids)) - 1)) else cast<none>(0)))
             ((self[])[].entry_succ_ids) = nil
         }
-        (self[])[].entry_succ_ids = nil
+        (self[])[].entry_succ_ids = vec_new()
     }
     ;
     if (self[])[].exit_pred_ids {
+        "@MACRO@:vec_delete((*self)->exit_pred_ids)"
         loop .. while 0 {
             cast<none>((? ((self[])[].exit_pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].exit_pred_ids)) - 1)) else cast<none>(0)))
             ((self[])[].exit_pred_ids) = nil
         }
-        (self[])[].exit_pred_ids = nil
+        (self[])[].exit_pred_ids = vec_new()
     }
     ;
     if (self[])[].reaching_code {
+        "@MACRO@:vec_delete((*self)->reaching_code)"
         loop .. while 0 {
             cast<none>((? ((self[])[].reaching_code) then free((cast<*struc stbds_array_header>(((self[])[].reaching_code)) - 1)) else cast<none>(0)))
             ((self[])[].reaching_code) = nil
         }
-        (self[])[].reaching_code = nil
+        (self[])[].reaching_code = vec_new()
     }
     ;
     loop i: u64 = 0 while i < (? ((self[])[].blocks) then (cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)[].length else 0) .. ++i {
         if (self[])[].blocks[i].pred_ids {
+            "@MACRO@:vec_delete((*self)->blocks[i].pred_ids)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].pred_ids)) - 1)) else cast<none>(0)))
                 ((self[])[].blocks[i].pred_ids) = nil
             }
-            (self[])[].blocks[i].pred_ids = nil
+            (self[])[].blocks[i].pred_ids = vec_new()
         }
         ;
         if (self[])[].blocks[i].succ_ids {
+            "@MACRO@:vec_delete((*self)->blocks[i].succ_ids)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].succ_ids)) - 1)) else cast<none>(0)))
                 ((self[])[].blocks[i].succ_ids) = nil
             }
-            (self[])[].blocks[i].succ_ids = nil
+            (self[])[].blocks[i].succ_ids = vec_new()
         }
         ;
     }
     if (self[])[].blocks {
+        "@MACRO@:vec_delete((*self)->blocks)"
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks) then free((cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)) else cast<none>(0)))
             ((self[])[].blocks) = nil
         }
-        (self[])[].blocks = nil
+        (self[])[].blocks = vec_new()
     }
     ;
     if (self[])[].identifier_id_map {
+        "@MACRO@:map_delete((*self)->identifier_id_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].identifier_id_map) ~= nil then stbds_hmfree_func(((self[])[].identifier_id_map) - 1, sizeof(((self[])[].identifier_id_map)[])) else cast<none>(0)))
             ((self[])[].identifier_id_map) = nil
         }
-        (self[])[].identifier_id_map = nil
+        (self[])[].identifier_id_map = map_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
-    self: *struc ControlFlowGraph = nil
+    self: *struc ControlFlowGraph = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(ControlFlowGraph, self)"
         free_ControlFlowGraph(@self)
@@ -1257,11 +1264,11 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
     }
     self[].entry_id = 0
     self[].exit_id = 0
-    self[].entry_succ_ids = nil
-    self[].exit_pred_ids = nil
-    self[].reaching_code = nil
-    self[].blocks = nil
-    self[].identifier_id_map = nil
+    self[].entry_succ_ids = vec_new()
+    self[].exit_pred_ids = vec_new()
+    self[].reaching_code = vec_new()
+    self[].blocks = vec_new()
+    self[].identifier_id_map = map_new()
     return self
 }
 
@@ -1272,47 +1279,51 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     }
     ;
     if (self[])[].open_data_map {
+        "@MACRO@:vec_delete((*self)->open_data_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].open_data_map) then free((cast<*struc stbds_array_header>(((self[])[].open_data_map)) - 1)) else cast<none>(0)))
             ((self[])[].open_data_map) = nil
         }
-        (self[])[].open_data_map = nil
+        (self[])[].open_data_map = vec_new()
     }
     ;
     if (self[])[].instr_idx_map {
+        "@MACRO@:vec_delete((*self)->instr_idx_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].instr_idx_map) then free((cast<*struc stbds_array_header>(((self[])[].instr_idx_map)) - 1)) else cast<none>(0)))
             ((self[])[].instr_idx_map) = nil
         }
-        (self[])[].instr_idx_map = nil
+        (self[])[].instr_idx_map = vec_new()
     }
     ;
     if (self[])[].blocks_mask_sets {
+        "@MACRO@:vec_delete((*self)->blocks_mask_sets)"
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].blocks_mask_sets)) - 1)) else cast<none>(0)))
             ((self[])[].blocks_mask_sets) = nil
         }
-        (self[])[].blocks_mask_sets = nil
+        (self[])[].blocks_mask_sets = vec_new()
     }
     ;
     if (self[])[].instrs_mask_sets {
+        "@MACRO@:vec_delete((*self)->instrs_mask_sets)"
         loop .. while 0 {
             cast<none>((? ((self[])[].instrs_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].instrs_mask_sets)) - 1)) else cast<none>(0)))
             ((self[])[].instrs_mask_sets) = nil
         }
-        (self[])[].instrs_mask_sets = nil
+        (self[])[].instrs_mask_sets = vec_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
-    self: *struc DataFlowAnalysis = nil
+    self: *struc DataFlowAnalysis = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(DataFlowAnalysis, self)"
         free_DataFlowAnalysis(@self)
@@ -1325,10 +1336,10 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
     self[].mask_size = 0
     self[].incoming_idx = 0
     self[].static_idx = 0
-    self[].open_data_map = nil
-    self[].instr_idx_map = nil
-    self[].blocks_mask_sets = nil
-    self[].instrs_mask_sets = nil
+    self[].open_data_map = vec_new()
+    self[].instr_idx_map = vec_new()
+    self[].blocks_mask_sets = vec_new()
+    self[].instrs_mask_sets = vec_new()
     return self
 }
 
@@ -1339,34 +1350,36 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
     }
     ;
     if (self[])[].data_idx_map {
+        "@MACRO@:vec_delete((*self)->data_idx_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].data_idx_map) then free((cast<*struc stbds_array_header>(((self[])[].data_idx_map)) - 1)) else cast<none>(0)))
             ((self[])[].data_idx_map) = nil
         }
-        (self[])[].data_idx_map = nil
+        (self[])[].data_idx_map = vec_new()
     }
     ;
     loop i: u64 = 0 while i < (? ((self[])[].bak_instrs) then (cast<*struc stbds_array_header>(((self[])[].bak_instrs)) - 1)[].length else 0) .. ++i {
         free_TacInstruction(@(self[])[].bak_instrs[i])
     }
     if (self[])[].bak_instrs {
+        "@MACRO@:vec_delete((*self)->bak_instrs)"
         loop .. while 0 {
             cast<none>((? ((self[])[].bak_instrs) then free((cast<*struc stbds_array_header>(((self[])[].bak_instrs)) - 1)) else cast<none>(0)))
             ((self[])[].bak_instrs) = nil
         }
-        (self[])[].bak_instrs = nil
+        (self[])[].bak_instrs = vec_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
-    self: *struc DataFlowAnalysisO1 = nil
+    self: *struc DataFlowAnalysisO1 = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(DataFlowAnalysisO1, self)"
         free_DataFlowAnalysisO1(@self)
@@ -1376,8 +1389,8 @@ fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
         }
     }
     self[].addressed_idx = 0
-    self[].data_idx_map = nil
-    self[].bak_instrs = nil
+    self[].data_idx_map = vec_new()
+    self[].bak_instrs = vec_new()
     return self
 }
 
@@ -1387,7 +1400,7 @@ fn set_instr(ctx: *struc OptimTacContext, instr: *struc TacInstruction, instr_id
             "@MACRO@:uptr_move(TacInstruction, instr, (*ctx->p_instrs)[instr_idx])"
             free_TacInstruction(@(ctx[].p_instrs[])[instr_idx])
             (ctx[].p_instrs[])[instr_idx] = instr
-            instr = nil
+            instr = uptr_new()
         }
         ;
     }
@@ -1409,14 +1422,20 @@ fn find_size_t(xs: *u64, x: u64) i32 {
 fn cfg_add_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64) none {
     if not find_size_t(succ_ids[], succ_id) {
         loop .. while 0 {
-            (? (not (succ_ids[]) or (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].capacity) then (((succ_ids[]) = stbds_arrgrowf((succ_ids[]), sizeof((succ_ids[])[]), (1), (0))) and 0) else 0)
-            (succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length++] = (succ_id)
+            "@MACRO@:vec_push_back(*succ_ids, succ_id)"
+            loop .. while 0 {
+                (? (not (succ_ids[]) or (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].capacity) then (((succ_ids[]) = stbds_arrgrowf((succ_ids[]), sizeof((succ_ids[])[]), (1), (0))) and 0) else 0)
+                (succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length++] = (succ_id)
+            }
         }
     }
     if not find_size_t(pred_ids[], pred_id) {
         loop .. while 0 {
-            (? (not (pred_ids[]) or (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].capacity) then (((pred_ids[]) = stbds_arrgrowf((pred_ids[]), sizeof((pred_ids[])[]), (1), (0))) and 0) else 0)
-            (pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length++] = (pred_id)
+            "@MACRO@:vec_push_back(*pred_ids, pred_id)"
+            loop .. while 0 {
+                (? (not (pred_ids[]) or (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].capacity) then (((pred_ids[]) = stbds_arrgrowf((pred_ids[]), sizeof((pred_ids[])[]), (1), (0))) and 0) else 0)
+                (pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length++] = (pred_id)
+            }
         }
     }
 }
@@ -1450,8 +1469,11 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
         loop i: u64 = (? (succ_ids[]) then (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length else 0) while i-- > 0 {
             if (succ_ids[])[i] == succ_id {
                 loop .. while 0 {
-                    (succ_ids[])[i] = ((succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length - 1])
-                    (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length -= 1
+                    "@MACRO@:vec_remove_swap(*succ_ids, i)"
+                    loop .. while 0 {
+                        (succ_ids[])[i] = ((succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length - 1])
+                        (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length -= 1
+                    }
                 }
                 break
             }
@@ -1460,8 +1482,11 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
     loop i: u64 = (? (pred_ids[]) then (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length else 0) while i-- > 0 {
         if (pred_ids[])[i] == pred_id {
             loop .. while 0 {
-                (pred_ids[])[i] = ((pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length - 1])
-                (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length -= 1
+                "@MACRO@:vec_remove_swap(*pred_ids, i)"
+                loop .. while 0 {
+                    (pred_ids[])[i] = ((pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length - 1])
+                    (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length -= 1
+                }
             }
             break
         }
@@ -1520,7 +1545,7 @@ fn cfg_rm_empty_block(ctx: *struc OptimTacContext, block_id: u64, is_reachable: 
 
 fn cfg_rm_block_instr(ctx: *struc OptimTacContext, instr_idx: u64, block_id: u64) none {
     if (ctx[].p_instrs[])[instr_idx] {
-        set_instr(ctx, nil, instr_idx)
+        set_instr(ctx, uptr_new(), instr_idx)
         ctx[].cfg[].blocks[block_id].size--
         if ctx[].cfg[].blocks[block_id].size == 0 {
             cfg_rm_empty_block(ctx, block_id, true)
@@ -1547,9 +1572,12 @@ fn cfg_rm_block_instr(ctx: *struc OptimTacContext, instr_idx: u64, block_id: u64
 
 fn cfg_init_label_block(ctx: *struc OptimTacContext, node: *struc TacLabel) none {
     loop .. while 0 {
-        (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-        (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
-        (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
+        "@MACRO@:map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1)"
+        loop .. while 0 {
+            (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
+            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
+            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
+        }
     }
 }
 
@@ -1559,10 +1587,13 @@ fn cfg_init_block(ctx: *struc OptimTacContext, instr_idx: u64, instrs_back_idx: 
         -> AST_TacLabel_t {
             if instrs_back_idx[] ~= (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx[]
-                block: struc ControlFlowBlock = $(0, instr_idx, 0, nil, nil)
+                block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
                 loop .. while 0 {
-                    (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
-                    (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                    "@MACRO@:vec_push_back(ctx->cfg->blocks, block)"
+                    loop .. while 0 {
+                        (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
+                        (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                    }
                 }
             }
             cfg_init_label_block(ctx, @node[].get._TacLabel)
@@ -1630,43 +1661,53 @@ fn cfg_init_edges(ctx: *struc OptimTacContext, block_id: u64) none {
 fn init_control_flow_graph(ctx: *struc OptimTacContext) none {
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].pred_ids {
+            "@MACRO@:vec_delete(GET_CFG_BLOCK(block_id).pred_ids)"
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].pred_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)) else cast<none>(0)))
                 (ctx[].cfg[].blocks[block_id].pred_ids) = nil
             }
-            ctx[].cfg[].blocks[block_id].pred_ids = nil
+            ctx[].cfg[].blocks[block_id].pred_ids = vec_new()
         }
         ;
         if ctx[].cfg[].blocks[block_id].succ_ids {
+            "@MACRO@:vec_delete(GET_CFG_BLOCK(block_id).succ_ids)"
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].succ_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)) else cast<none>(0)))
                 (ctx[].cfg[].blocks[block_id].succ_ids) = nil
             }
-            ctx[].cfg[].blocks[block_id].succ_ids = nil
+            ctx[].cfg[].blocks[block_id].succ_ids = vec_new()
         }
         ;
     }
     if ctx[].cfg[].blocks {
+        "@MACRO@:vec_clear(ctx->cfg->blocks)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length = 0
     }
     ;
-    if ctx[].cfg[].identifier_id_map {
-        loop .. while 0 {
-            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-            (ctx[].cfg[].identifier_id_map) = nil
+    loop .. while 0 {
+        "@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
+        if ctx[].cfg[].identifier_id_map {
+            "@MACRO@:map_delete(ctx->cfg->identifier_id_map)"
+            loop .. while 0 {
+                cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
+                (ctx[].cfg[].identifier_id_map) = nil
+            }
+            ctx[].cfg[].identifier_id_map = map_new()
         }
-        ctx[].cfg[].identifier_id_map = nil
+        ;
     }
-    ;
     {
         instrs_back_idx: u64 = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
         loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
             if (ctx[].p_instrs[])[instr_idx] {
                 if instrs_back_idx == (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
-                    block: struc ControlFlowBlock = $(0, instr_idx, 0, nil, nil)
+                    block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
                     loop .. while 0 {
-                        (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
-                        (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                        "@MACRO@:vec_push_back(ctx->cfg->blocks, block)"
+                        loop .. while 0 {
+                            (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
+                            (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                        }
                     }
                 }
                 cfg_init_block(ctx, instr_idx, @instrs_back_idx)
@@ -1680,10 +1721,12 @@ fn init_control_flow_graph(ctx: *struc OptimTacContext) none {
     ctx[].cfg[].exit_id = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     ctx[].cfg[].entry_id = ctx[].cfg[].exit_id + 1
     if ctx[].cfg[].entry_succ_ids {
+        "@MACRO@:vec_clear(ctx->cfg->entry_succ_ids)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length = 0
     }
     ;
     if ctx[].cfg[].exit_pred_ids {
+        "@MACRO@:vec_clear(ctx->cfg->exit_pred_ids)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].exit_pred_ids)) - 1)[].length = 0
     }
     ;
@@ -1975,8 +2018,11 @@ fn dfa_forward_iter_alg(ctx: *struc OptimTacContext) none {
                     }
                     else {
                         loop .. while 0 {
-                            (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
-                            (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (succ_id)
+                            "@MACRO@:vec_push_back(ctx->dfa->open_data_map, succ_id)"
+                            loop .. while 0 {
+                                (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
+                                (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (succ_id)
+                            }
                         }
                     }
                     open_data_map_size++
@@ -2013,8 +2059,11 @@ fn dfa_iter_alg(ctx: *struc OptimTacContext) none {
                     }
                     else {
                         loop .. while 0 {
-                            (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
-                            (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (pred_id)
+                            "@MACRO@:vec_push_back(ctx->dfa->open_data_map, pred_id)"
+                            loop .. while 0 {
+                                (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
+                                (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (pred_id)
+                            }
                         }
                     }
                     open_data_map_size++
@@ -2069,9 +2118,15 @@ fn is_aliased_name(ctx: *struc OptimTacContext, name: u64) i32 {
 fn dfa_add_aliased_value(ctx: *struc OptimTacContext, node: *struc TacValue) none {
     if node[].tag == AST_TacVariable_t {
         loop .. while 0 {
-            (ctx[].frontend[].addressed_set) = stbds_hmput_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((node[].get._TacVariable.name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)
-            (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].key = (node[].get._TacVariable.name)
-            (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].value = (0)
+            "@MACRO@:set_insert(ctx->frontend->addressed_set, node->get._TacVariable.name)"
+            loop .. while 0 {
+                "@MACRO@:map_add(ctx->frontend->addressed_set, node->get._TacVariable.name, 0)"
+                loop .. while 0 {
+                    (ctx[].frontend[].addressed_set) = stbds_hmput_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((node[].get._TacVariable.name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)
+                    (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].key = (node[].get._TacVariable.name)
+                    (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].value = (0)
+                }
+            }
         }
     }
 }
@@ -2090,8 +2145,11 @@ fn prop_add_data_idx(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_id
         }
         else {
             loop .. while 0 {
-                (? (not (ctx[].dfa_o1[].data_idx_map) or (cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].capacity) then (((ctx[].dfa_o1[].data_idx_map) = stbds_arrgrowf((ctx[].dfa_o1[].data_idx_map), sizeof((ctx[].dfa_o1[].data_idx_map)[]), (1), (0))) and 0) else 0)
-                (ctx[].dfa_o1[].data_idx_map)[(cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].length++] = (instr_idx)
+                "@MACRO@:vec_push_back(ctx->dfa_o1->data_idx_map, instr_idx)"
+                loop .. while 0 {
+                    (? (not (ctx[].dfa_o1[].data_idx_map) or (cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].capacity) then (((ctx[].dfa_o1[].data_idx_map) = stbds_arrgrowf((ctx[].dfa_o1[].data_idx_map), sizeof((ctx[].dfa_o1[].data_idx_map)[]), (1), (0))) and 0) else 0)
+                    (ctx[].dfa_o1[].data_idx_map)[(cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].length++] = (instr_idx)
+                }
             }
         }
         ctx[].dfa[].set_size++
@@ -2102,9 +2160,12 @@ fn prop_add_data_idx(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_id
 fn elim_add_data_name(ctx: *struc OptimTacContext, name: u64) none {
     if (? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp) == -1 {
         loop .. while 0 {
-            (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (ctx[].dfa[].set_size)
+            "@MACRO@:map_add(ctx->cfg->identifier_id_map, name, ctx->dfa->set_size)"
+            loop .. while 0 {
+                (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
+                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
+                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (ctx[].dfa[].set_size)
+            }
         }
         ctx[].dfa[].set_size++
     }
@@ -2121,8 +2182,11 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
     ctx[].dfa[].incoming_idx = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
     if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
         loop .. while 0 {
-            (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            "@MACRO@:vec_resize(ctx->dfa->open_data_map, vec_size(ctx->cfg->blocks))"
+            loop .. while 0 {
+                (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
+                ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            }
         }
     }
     {
@@ -2130,41 +2194,58 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
         i = ? is_store_elim then 3 else 1
         if (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length else 0) < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i {
             loop .. while 0 {
-                (? (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) then ((((ctx[].dfa[].instr_idx_map)) = stbds_arrgrowf(((ctx[].dfa[].instr_idx_map)), sizeof(((ctx[].dfa[].instr_idx_map))[]), (0), (cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)))))) and 0 else 0)
-                ? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length = cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) else 0
+                "@MACRO@:vec_resize(ctx->dfa->instr_idx_map, vec_size(*ctx->p_instrs) + i)"
+                loop .. while 0 {
+                    (? (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) then ((((ctx[].dfa[].instr_idx_map)) = stbds_arrgrowf(((ctx[].dfa[].instr_idx_map)), sizeof(((ctx[].dfa[].instr_idx_map))[]), (0), (cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)))))) and 0 else 0)
+                    ? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length = cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) else 0
+                }
             }
         }
     }
     if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
         loop .. while 0 {
-            (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            "@MACRO@:vec_resize(ctx->cfg->reaching_code, vec_size(ctx->cfg->blocks))"
+            loop .. while 0 {
+                (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
+                ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            }
         }
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
     instrs_mask_sets_size: u64 = 0
     is_copy_prop: i32 = not is_store_elim
     if is_store_elim {
-        if ctx[].cfg[].identifier_id_map {
-            loop .. while 0 {
-                cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-                (ctx[].cfg[].identifier_id_map) = nil
+        loop .. while 0 {
+            "@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
+            if ctx[].cfg[].identifier_id_map {
+                "@MACRO@:map_delete(ctx->cfg->identifier_id_map)"
+                loop .. while 0 {
+                    cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
+                    (ctx[].cfg[].identifier_id_map) = nil
+                }
+                ctx[].cfg[].identifier_id_map = map_new()
             }
-            ctx[].cfg[].identifier_id_map = nil
+            ;
         }
-        ;
         ctx[].dfa[].static_idx = ctx[].dfa[].incoming_idx + 1
         ctx[].dfa_o1[].addressed_idx = ctx[].dfa[].static_idx + 1
     }
     if is_addressed_set {
-        if ctx[].frontend[].addressed_set {
+        loop .. while 0 {
+            "@MACRO@:set_clear(ctx->frontend->addressed_set)"
             loop .. while 0 {
-                cast<none>((? (ctx[].frontend[].addressed_set) ~= nil then stbds_hmfree_func((ctx[].frontend[].addressed_set) - 1, sizeof((ctx[].frontend[].addressed_set)[])) else cast<none>(0)))
-                (ctx[].frontend[].addressed_set) = nil
+                "@MACRO@:map_clear(ctx->frontend->addressed_set)"
+                if ctx[].frontend[].addressed_set {
+                    "@MACRO@:map_delete(ctx->frontend->addressed_set)"
+                    loop .. while 0 {
+                        cast<none>((? (ctx[].frontend[].addressed_set) ~= nil then stbds_hmfree_func((ctx[].frontend[].addressed_set) - 1, sizeof((ctx[].frontend[].addressed_set)[])) else cast<none>(0)))
+                        (ctx[].frontend[].addressed_set) = nil
+                    }
+                    ctx[].frontend[].addressed_set = map_new()
+                }
+                ;
             }
-            ctx[].frontend[].addressed_set = nil
         }
-        ;
     }
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
@@ -2377,14 +2458,20 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
     blocks_mask_sets_size: u64 = ctx[].dfa[].mask_size * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     if (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length else 0) < blocks_mask_sets_size {
         loop .. while 0 {
-            (? (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].capacity else 0) < cast<u64>((blocks_mask_sets_size)) then ((((ctx[].dfa[].blocks_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].blocks_mask_sets)), sizeof(((ctx[].dfa[].blocks_mask_sets))[]), (0), (cast<u64>((blocks_mask_sets_size)))))) and 0 else 0)
-            ? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length = cast<u64>((blocks_mask_sets_size)) else 0
+            "@MACRO@:vec_resize(ctx->dfa->blocks_mask_sets, blocks_mask_sets_size)"
+            loop .. while 0 {
+                (? (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].capacity else 0) < cast<u64>((blocks_mask_sets_size)) then ((((ctx[].dfa[].blocks_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].blocks_mask_sets)), sizeof(((ctx[].dfa[].blocks_mask_sets))[]), (0), (cast<u64>((blocks_mask_sets_size)))))) and 0 else 0)
+                ? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length = cast<u64>((blocks_mask_sets_size)) else 0
+            }
         }
     }
     if (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length else 0) < instrs_mask_sets_size {
         loop .. while 0 {
-            (? (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].capacity else 0) < cast<u64>((instrs_mask_sets_size)) then ((((ctx[].dfa[].instrs_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].instrs_mask_sets)), sizeof(((ctx[].dfa[].instrs_mask_sets))[]), (0), (cast<u64>((instrs_mask_sets_size)))))) and 0 else 0)
-            ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
+            "@MACRO@:vec_resize(ctx->dfa->instrs_mask_sets, instrs_mask_sets_size)"
+            loop .. while 0 {
+                (? (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].capacity else 0) < cast<u64>((instrs_mask_sets_size)) then ((((ctx[].dfa[].instrs_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].instrs_mask_sets)), sizeof(((ctx[].dfa[].instrs_mask_sets))[]), (0), (cast<u64>((instrs_mask_sets_size)))))) and 0 else 0)
+                ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
+            }
         }
     }
     if is_copy_prop {
@@ -2407,14 +2494,20 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
         }
         if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < ctx[].dfa[].set_size {
             loop .. while 0 {
-                (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
-                ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
+                "@MACRO@:vec_resize(ctx->cfg->reaching_code, ctx->dfa->set_size)"
+                loop .. while 0 {
+                    (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
+                    ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
+                }
             }
         }
         loop j: u64 = (? (ctx[].dfa_o1[].bak_instrs) then (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length else 0) while j <= ctx[].dfa[].set_size .. ++j {
             loop .. while 0 {
-                (? (not (ctx[].dfa_o1[].bak_instrs) or (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].capacity) then (((ctx[].dfa_o1[].bak_instrs) = stbds_arrgrowf((ctx[].dfa_o1[].bak_instrs), sizeof((ctx[].dfa_o1[].bak_instrs)[]), (1), (0))) and 0) else 0)
-                (ctx[].dfa_o1[].bak_instrs)[(cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length++] = (nil)
+                "@MACRO@:vec_push_back(ctx->dfa_o1->bak_instrs, uptr_new())"
+                loop .. while 0 {
+                    (? (not (ctx[].dfa_o1[].bak_instrs) or (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].capacity) then (((ctx[].dfa_o1[].bak_instrs) = stbds_arrgrowf((ctx[].dfa_o1[].bak_instrs), sizeof((ctx[].dfa_o1[].bak_instrs)[]), (1), (0))) and 0) else 0)
+                    (ctx[].dfa_o1[].bak_instrs)[(cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length++] = (uptr_new())
+                }
             }
         }
         memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * ctx[].dfa[].set_size)
@@ -2511,7 +2604,7 @@ fn fold_sign_extend_int_const(ctx: *struc OptimTacContext, node: *struc TacVaria
 }
 
 fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             fold_constant = fold_sign_extend_char_const(ctx, node, @constant[].get._CConstChar)
@@ -2532,7 +2625,7 @@ fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -2633,7 +2726,7 @@ fn fold_truncate_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariab
 }
 
 fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstInt_t {
             fold_constant = fold_truncate_int_const(ctx, node, @constant[].get._CConstInt)
@@ -2662,7 +2755,7 @@ fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -2719,7 +2812,7 @@ fn fold_zero_extend_uint_const(ctx: *struc OptimTacContext, node: *struc TacVari
 }
 
 fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstUChar_t {
             fold_constant = fold_zero_extend_uchar_const(ctx, node, @constant[].get._CConstUChar)
@@ -2740,7 +2833,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -2754,7 +2847,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
 
 fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
     ;
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -2784,7 +2877,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -2798,7 +2891,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
 
 fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
     ;
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
         -> AST_UChar_t {
             value: u8 = cast<u8>(constant[].get._CConstDouble.value)
@@ -2826,7 +2919,7 @@ fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubl
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -2839,7 +2932,7 @@ fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubl
 }
 
 fn fold_signed_to_dbl_const(constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             value: f64 = cast<f64>(constant[].get._CConstChar.value)
@@ -2867,7 +2960,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -2880,7 +2973,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
 }
 
 fn fold_unsigned_to_dbl_const(constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstUChar_t {
             value: f64 = cast<f64>(constant[].get._CConstUChar.value)
@@ -2908,7 +3001,7 @@ fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntT
     if node[].src[].tag == AST_TacConstant_t {
         ;
         src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -3037,7 +3130,7 @@ fn fold_unary_ulong_const(node: *struc TacUnaryOp, constant: *struc CConstULong)
 }
 
 fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             fold_constant = fold_unary_char_const(node, @constant[].get._CConstChar)
@@ -3077,7 +3170,7 @@ fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) *struc Tac
 fn fold_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         src: *struc TacValue = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -3435,7 +3528,7 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
 
 fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, constant_2: *struc CConst) *struc TacValue {
     ;
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant_1[].tag {
         -> AST_CConstInt_t {
             fold_constant = fold_binary_int_const(node, @constant_1[].get._CConstInt, @constant_2[].get._CConstInt)
@@ -3467,7 +3560,7 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
 fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_idx: u64) none {
     if node[].src1[].tag == AST_TacConstant_t and node[].src2[].tag == AST_TacConstant_t {
         src: *struc TacValue = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -3483,7 +3576,7 @@ fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                return nil
+                return sptr_new()
             }
         }
         -> AST_UChar_t {
@@ -3499,7 +3592,7 @@ fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
 fn fold_copy_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) *struc CConst {
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
         -> AST_Int_t {
-            return nil
+            return sptr_new()
         }
         -> AST_UInt_t {
             value: u32 = cast<u32>(constant[].value)
@@ -3515,7 +3608,7 @@ fn fold_copy_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
     match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
-                return nil
+                return sptr_new()
             }
         }
         -> AST_Double_t {
@@ -3539,7 +3632,7 @@ fn fold_copy_dbl_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
             return make_CConstLong(value)
         }
         -> AST_Double_t {
-            return nil
+            return sptr_new()
         }
         -> AST_ULong_t {
             value: u64 = cast<u64>(constant[].value)
@@ -3560,7 +3653,7 @@ fn fold_copy_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
             }
         }
         -> AST_UChar_t {
-            return nil
+            return sptr_new()
         }
         otherwise {
             panic_sigabrt("abort")
@@ -3575,7 +3668,7 @@ fn fold_copy_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
             return make_CConstInt(value)
         }
         -> AST_UInt_t {
-            return nil
+            return sptr_new()
         }
         otherwise {
             panic_sigabrt("abort")
@@ -3595,7 +3688,7 @@ fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
         }
         -> AST_Pointer_t {
             -> AST_ULong_t {
-                return nil
+                return sptr_new()
             }
         }
         otherwise {
@@ -3605,7 +3698,7 @@ fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
 }
 
 fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = nil
+    fold_constant: *struc CConst = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             fold_constant = fold_copy_char_const(ctx, node, @constant[].get._CConstChar)
@@ -3643,7 +3736,7 @@ fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, consta
         return make_TacConstant(@fold_constant)
     }
     else {
-        return nil
+        return sptr_new()
     }
 }
 
@@ -3658,7 +3751,7 @@ fn fold_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy) none {
                     "@MACRO@:uptr_move(TacValue, src, node->src)"
                     free_TacValue(@node[].src)
                     node[].src = src
-                    src = nil
+                    src = uptr_new()
                 }
             }
             ctx[].is_fixed_point = false
@@ -3702,7 +3795,7 @@ fn fold_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
             set_instr(ctx, make_TacJump(target), instr_idx)
         }
         else {
-            set_instr(ctx, nil, instr_idx)
+            set_instr(ctx, uptr_new(), instr_idx)
         }
     }
 }
@@ -3710,7 +3803,7 @@ fn fold_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
 fn fold_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZero, instr_idx: u64) none {
     if node[].condition[].tag == AST_TacConstant_t {
         if is_const_zero(node[].condition[].get._TacConstant.constant) {
-            set_instr(ctx, nil, instr_idx)
+            set_instr(ctx, uptr_new(), instr_idx)
         }
         else {
             target: u64 = node[].target
@@ -3802,16 +3895,18 @@ fn unreach_reachable_block(ctx: *struc OptimTacContext, block_id: u64) none {
 fn unreach_empty_block(ctx: *struc OptimTacContext, block_id: u64) none {
     loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
         if (ctx[].p_instrs[])[instr_idx] {
-            set_instr(ctx, nil, instr_idx)
+            set_instr(ctx, uptr_new(), instr_idx)
         }
     }
     ctx[].cfg[].blocks[block_id].size = 0
     cfg_rm_empty_block(ctx, block_id, false)
     if ctx[].cfg[].blocks[block_id].succ_ids {
+        "@MACRO@:vec_clear(GET_CFG_BLOCK(block_id).succ_ids)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)[].length = 0
     }
     ;
     if ctx[].cfg[].blocks[block_id].pred_ids {
+        "@MACRO@:vec_clear(GET_CFG_BLOCK(block_id).pred_ids)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)[].length = 0
     }
     ;
@@ -3857,8 +3952,11 @@ fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
     }
     if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
         loop .. while 0 {
-            (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            "@MACRO@:vec_resize(ctx->cfg->reaching_code, vec_size(ctx->cfg->blocks))"
+            loop .. while 0 {
+                (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
+                ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            }
         }
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
@@ -4295,7 +4393,7 @@ fn get_dfa_bak_copy_instr(ctx: *struc OptimTacContext, i: u64) *struc TacCopy {
 fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx: u64) none {
     i: u64;
     if set_dfa_bak_instr(ctx, instr_idx, @i) {
-        src: *struc TacValue = nil
+        src: *struc TacValue = sptr_new()
         if node[].src ~= src {
             "@MACRO@:sptr_copy(TacValue, node->src, src)"
             free_TacValue(@src)
@@ -4303,7 +4401,7 @@ fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, ins
             (src)[]._ref_count++
         }
         ;
-        dst: *struc TacValue = nil
+        dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
             "@MACRO@:sptr_copy(TacValue, node->dst, dst)"
             free_TacValue(@dst)
@@ -5302,7 +5400,7 @@ fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_i
 fn elim_dst_name_instr(ctx: *struc OptimTacContext, name: u64, instr_idx: u64) none {
     i: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
     if not mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-        set_instr(ctx, nil, instr_idx)
+        set_instr(ctx, uptr_new(), instr_idx)
     }
 }
 
@@ -5438,14 +5536,21 @@ fn optim_program(ctx: *struc OptimTacContext, node: *struc TacProgram) none {
     loop i: u64 = 0 while i < (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0) .. ++i {
         optim_toplvl(ctx, node[].fun_toplvls[i])
     }
-    if ctx[].frontend[].addressed_set {
+    loop .. while 0 {
+        "@MACRO@:set_clear(ctx->frontend->addressed_set)"
         loop .. while 0 {
-            cast<none>((? (ctx[].frontend[].addressed_set) ~= nil then stbds_hmfree_func((ctx[].frontend[].addressed_set) - 1, sizeof((ctx[].frontend[].addressed_set)[])) else cast<none>(0)))
-            (ctx[].frontend[].addressed_set) = nil
+            "@MACRO@:map_clear(ctx->frontend->addressed_set)"
+            if ctx[].frontend[].addressed_set {
+                "@MACRO@:map_delete(ctx->frontend->addressed_set)"
+                loop .. while 0 {
+                    cast<none>((? (ctx[].frontend[].addressed_set) ~= nil then stbds_hmfree_func((ctx[].frontend[].addressed_set) - 1, sizeof((ctx[].frontend[].addressed_set)[])) else cast<none>(0)))
+                    (ctx[].frontend[].addressed_set) = nil
+                }
+                ctx[].frontend[].addressed_set = map_new()
+            }
+            ;
         }
-        ctx[].frontend[].addressed_set = nil
     }
-    ;
 }
 
 pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none {
@@ -5458,9 +5563,9 @@ pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc Fro
         ctx.enabled_optims[UNREACHABLE_CODE_ELIMINATION] = (optim_1_mask & ((cast<u8>(1u)) << 2)) > 0
         ctx.enabled_optims[DEAD_STORE_ELIMINATION] = (optim_1_mask & ((cast<u8>(1u)) << 3)) > 0
         ctx.enabled_optims[CONTROL_FLOW_GRAPH] = (optim_1_mask & ~((cast<u8>(1u)) << 0)) > 0
-        ctx.cfg = nil
-        ctx.dfa = nil
-        ctx.dfa_o1 = nil
+        ctx.cfg = uptr_new()
+        ctx.dfa = uptr_new()
+        ctx.dfa_o1 = uptr_new()
         if ctx.enabled_optims[CONTROL_FLOW_GRAPH] {
             ctx.cfg = make_ControlFlowGraph()
             if ctx.enabled_optims[COPY_PROPAGATION] or ctx.enabled_optims[DEAD_STORE_ELIMINATION] {

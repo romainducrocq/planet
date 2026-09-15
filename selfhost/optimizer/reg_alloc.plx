@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -1006,49 +1006,53 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
     }
     ;
     if (self[])[].unpruned_hard_mask_bits {
+        "@MACRO@:vec_delete((*self)->unpruned_hard_mask_bits)"
         loop .. while 0 {
             cast<none>((? ((self[])[].unpruned_hard_mask_bits) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_hard_mask_bits)) - 1)) else cast<none>(0)))
             ((self[])[].unpruned_hard_mask_bits) = nil
         }
-        (self[])[].unpruned_hard_mask_bits = nil
+        (self[])[].unpruned_hard_mask_bits = vec_new()
     }
     ;
     if (self[])[].unpruned_pseudo_names {
+        "@MACRO@:vec_delete((*self)->unpruned_pseudo_names)"
         loop .. while 0 {
             cast<none>((? ((self[])[].unpruned_pseudo_names) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_pseudo_names)) - 1)) else cast<none>(0)))
             ((self[])[].unpruned_pseudo_names) = nil
         }
-        (self[])[].unpruned_pseudo_names = nil
+        (self[])[].unpruned_pseudo_names = vec_new()
     }
     ;
     loop i: u64 = 0 while i < (? ((self[])[].pseudo_reg_map) then (cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names {
+            "@MACRO@:vec_delete(pair_second((*self)->pseudo_reg_map[i]).linked_pseudo_names)"
             loop .. while 0 {
                 cast<none>((? (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
                 (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
             }
-            ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
+            ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names = vec_new()
         }
         ;
     }
     if (self[])[].pseudo_reg_map {
+        "@MACRO@:map_delete((*self)->pseudo_reg_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].pseudo_reg_map) ~= nil then stbds_hmfree_func(((self[])[].pseudo_reg_map) - 1, sizeof(((self[])[].pseudo_reg_map)[])) else cast<none>(0)))
             ((self[])[].pseudo_reg_map) = nil
         }
-        (self[])[].pseudo_reg_map = nil
+        (self[])[].pseudo_reg_map = map_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
-    self: *struc InferenceGraph = nil
+    self: *struc InferenceGraph = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(InferenceGraph, self)"
         free_InferenceGraph(@self)
@@ -1058,9 +1062,9 @@ fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
         }
     }
     self[].hard_reg_mask = 0ul
-    self[].unpruned_hard_mask_bits = nil
-    self[].unpruned_pseudo_names = nil
-    self[].pseudo_reg_map = nil
+    self[].unpruned_hard_mask_bits = vec_new()
+    self[].unpruned_pseudo_names = vec_new()
+    self[].pseudo_reg_map = map_new()
     if is_sse {
         self[].k = 14
         self[].offset = 12
@@ -1124,73 +1128,80 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     }
     ;
     if (self[])[].entry_succ_ids {
+        "@MACRO@:vec_delete((*self)->entry_succ_ids)"
         loop .. while 0 {
             cast<none>((? ((self[])[].entry_succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].entry_succ_ids)) - 1)) else cast<none>(0)))
             ((self[])[].entry_succ_ids) = nil
         }
-        (self[])[].entry_succ_ids = nil
+        (self[])[].entry_succ_ids = vec_new()
     }
     ;
     if (self[])[].exit_pred_ids {
+        "@MACRO@:vec_delete((*self)->exit_pred_ids)"
         loop .. while 0 {
             cast<none>((? ((self[])[].exit_pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].exit_pred_ids)) - 1)) else cast<none>(0)))
             ((self[])[].exit_pred_ids) = nil
         }
-        (self[])[].exit_pred_ids = nil
+        (self[])[].exit_pred_ids = vec_new()
     }
     ;
     if (self[])[].reaching_code {
+        "@MACRO@:vec_delete((*self)->reaching_code)"
         loop .. while 0 {
             cast<none>((? ((self[])[].reaching_code) then free((cast<*struc stbds_array_header>(((self[])[].reaching_code)) - 1)) else cast<none>(0)))
             ((self[])[].reaching_code) = nil
         }
-        (self[])[].reaching_code = nil
+        (self[])[].reaching_code = vec_new()
     }
     ;
     loop i: u64 = 0 while i < (? ((self[])[].blocks) then (cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)[].length else 0) .. ++i {
         if (self[])[].blocks[i].pred_ids {
+            "@MACRO@:vec_delete((*self)->blocks[i].pred_ids)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].pred_ids)) - 1)) else cast<none>(0)))
                 ((self[])[].blocks[i].pred_ids) = nil
             }
-            (self[])[].blocks[i].pred_ids = nil
+            (self[])[].blocks[i].pred_ids = vec_new()
         }
         ;
         if (self[])[].blocks[i].succ_ids {
+            "@MACRO@:vec_delete((*self)->blocks[i].succ_ids)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].blocks[i].succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].succ_ids)) - 1)) else cast<none>(0)))
                 ((self[])[].blocks[i].succ_ids) = nil
             }
-            (self[])[].blocks[i].succ_ids = nil
+            (self[])[].blocks[i].succ_ids = vec_new()
         }
         ;
     }
     if (self[])[].blocks {
+        "@MACRO@:vec_delete((*self)->blocks)"
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks) then free((cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)) else cast<none>(0)))
             ((self[])[].blocks) = nil
         }
-        (self[])[].blocks = nil
+        (self[])[].blocks = vec_new()
     }
     ;
     if (self[])[].identifier_id_map {
+        "@MACRO@:map_delete((*self)->identifier_id_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].identifier_id_map) ~= nil then stbds_hmfree_func(((self[])[].identifier_id_map) - 1, sizeof(((self[])[].identifier_id_map)[])) else cast<none>(0)))
             ((self[])[].identifier_id_map) = nil
         }
-        (self[])[].identifier_id_map = nil
+        (self[])[].identifier_id_map = map_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
-    self: *struc ControlFlowGraph = nil
+    self: *struc ControlFlowGraph = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(ControlFlowGraph, self)"
         free_ControlFlowGraph(@self)
@@ -1201,11 +1212,11 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
     }
     self[].entry_id = 0
     self[].exit_id = 0
-    self[].entry_succ_ids = nil
-    self[].exit_pred_ids = nil
-    self[].reaching_code = nil
-    self[].blocks = nil
-    self[].identifier_id_map = nil
+    self[].entry_succ_ids = vec_new()
+    self[].exit_pred_ids = vec_new()
+    self[].reaching_code = vec_new()
+    self[].blocks = vec_new()
+    self[].identifier_id_map = map_new()
     return self
 }
 
@@ -1216,47 +1227,51 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     }
     ;
     if (self[])[].open_data_map {
+        "@MACRO@:vec_delete((*self)->open_data_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].open_data_map) then free((cast<*struc stbds_array_header>(((self[])[].open_data_map)) - 1)) else cast<none>(0)))
             ((self[])[].open_data_map) = nil
         }
-        (self[])[].open_data_map = nil
+        (self[])[].open_data_map = vec_new()
     }
     ;
     if (self[])[].instr_idx_map {
+        "@MACRO@:vec_delete((*self)->instr_idx_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].instr_idx_map) then free((cast<*struc stbds_array_header>(((self[])[].instr_idx_map)) - 1)) else cast<none>(0)))
             ((self[])[].instr_idx_map) = nil
         }
-        (self[])[].instr_idx_map = nil
+        (self[])[].instr_idx_map = vec_new()
     }
     ;
     if (self[])[].blocks_mask_sets {
+        "@MACRO@:vec_delete((*self)->blocks_mask_sets)"
         loop .. while 0 {
             cast<none>((? ((self[])[].blocks_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].blocks_mask_sets)) - 1)) else cast<none>(0)))
             ((self[])[].blocks_mask_sets) = nil
         }
-        (self[])[].blocks_mask_sets = nil
+        (self[])[].blocks_mask_sets = vec_new()
     }
     ;
     if (self[])[].instrs_mask_sets {
+        "@MACRO@:vec_delete((*self)->instrs_mask_sets)"
         loop .. while 0 {
             cast<none>((? ((self[])[].instrs_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].instrs_mask_sets)) - 1)) else cast<none>(0)))
             ((self[])[].instrs_mask_sets) = nil
         }
-        (self[])[].instrs_mask_sets = nil
+        (self[])[].instrs_mask_sets = vec_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
-    self: *struc DataFlowAnalysis = nil
+    self: *struc DataFlowAnalysis = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(DataFlowAnalysis, self)"
         free_DataFlowAnalysis(@self)
@@ -1269,10 +1284,10 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
     self[].mask_size = 0
     self[].incoming_idx = 0
     self[].static_idx = 0
-    self[].open_data_map = nil
-    self[].instr_idx_map = nil
-    self[].blocks_mask_sets = nil
-    self[].instrs_mask_sets = nil
+    self[].open_data_map = vec_new()
+    self[].instr_idx_map = vec_new()
+    self[].blocks_mask_sets = vec_new()
+    self[].instrs_mask_sets = vec_new()
     return self
 }
 
@@ -1283,23 +1298,24 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
     }
     ;
     if (self[])[].data_name_map {
+        "@MACRO@:vec_delete((*self)->data_name_map)"
         loop .. while 0 {
             cast<none>((? ((self[])[].data_name_map) then free((cast<*struc stbds_array_header>(((self[])[].data_name_map)) - 1)) else cast<none>(0)))
             ((self[])[].data_name_map) = nil
         }
-        (self[])[].data_name_map = nil
+        (self[])[].data_name_map = vec_new()
     }
     ;
     if self[] {
         "@MACRO@:uptr_free(*self)"
         free(self[])
-        self[] = nil
+        self[] = uptr_new()
     }
     ;
 }
 
 fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
-    self: *struc DataFlowAnalysisO2 = nil
+    self: *struc DataFlowAnalysisO2 = uptr_new()
     loop .. while 0 {
         "@MACRO@:uptr_alloc(DataFlowAnalysisO2, self)"
         free_DataFlowAnalysisO2(@self)
@@ -1308,7 +1324,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
             panic_sigabrt("alloc "                 "DataFlowAnalysisO2")
         }
     }
-    self[].data_name_map = nil
+    self[].data_name_map = vec_new()
     return self
 }
 
@@ -1318,7 +1334,7 @@ fn set_instr(ctx: *struc RegAllocContext, instr: *struc AsmInstruction, instr_id
             "@MACRO@:uptr_move(AsmInstruction, instr, (*ctx->p_instrs)[instr_idx])"
             free_AsmInstruction(@(ctx[].p_instrs[])[instr_idx])
             (ctx[].p_instrs[])[instr_idx] = instr
-            instr = nil
+            instr = uptr_new()
         }
         ;
     }
@@ -1339,14 +1355,20 @@ fn find_size_t(xs: *u64, x: u64) i32 {
 fn cfg_add_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64) none {
     if not find_size_t(succ_ids[], succ_id) {
         loop .. while 0 {
-            (? (not (succ_ids[]) or (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].capacity) then (((succ_ids[]) = stbds_arrgrowf((succ_ids[]), sizeof((succ_ids[])[]), (1), (0))) and 0) else 0)
-            (succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length++] = (succ_id)
+            "@MACRO@:vec_push_back(*succ_ids, succ_id)"
+            loop .. while 0 {
+                (? (not (succ_ids[]) or (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].capacity) then (((succ_ids[]) = stbds_arrgrowf((succ_ids[]), sizeof((succ_ids[])[]), (1), (0))) and 0) else 0)
+                (succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length++] = (succ_id)
+            }
         }
     }
     if not find_size_t(pred_ids[], pred_id) {
         loop .. while 0 {
-            (? (not (pred_ids[]) or (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].capacity) then (((pred_ids[]) = stbds_arrgrowf((pred_ids[]), sizeof((pred_ids[])[]), (1), (0))) and 0) else 0)
-            (pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length++] = (pred_id)
+            "@MACRO@:vec_push_back(*pred_ids, pred_id)"
+            loop .. while 0 {
+                (? (not (pred_ids[]) or (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].capacity) then (((pred_ids[]) = stbds_arrgrowf((pred_ids[]), sizeof((pred_ids[])[]), (1), (0))) and 0) else 0)
+                (pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length++] = (pred_id)
+            }
         }
     }
 }
@@ -1380,8 +1402,11 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
         loop i: u64 = (? (succ_ids[]) then (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length else 0) while i-- > 0 {
             if (succ_ids[])[i] == succ_id {
                 loop .. while 0 {
-                    (succ_ids[])[i] = ((succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length - 1])
-                    (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length -= 1
+                    "@MACRO@:vec_remove_swap(*succ_ids, i)"
+                    loop .. while 0 {
+                        (succ_ids[])[i] = ((succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length - 1])
+                        (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length -= 1
+                    }
                 }
                 break
             }
@@ -1390,8 +1415,11 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
     loop i: u64 = (? (pred_ids[]) then (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length else 0) while i-- > 0 {
         if (pred_ids[])[i] == pred_id {
             loop .. while 0 {
-                (pred_ids[])[i] = ((pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length - 1])
-                (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length -= 1
+                "@MACRO@:vec_remove_swap(*pred_ids, i)"
+                loop .. while 0 {
+                    (pred_ids[])[i] = ((pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length - 1])
+                    (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length -= 1
+                }
             }
             break
         }
@@ -1450,7 +1478,7 @@ fn cfg_rm_empty_block(ctx: *struc RegAllocContext, block_id: u64, is_reachable: 
 
 fn cfg_rm_block_instr(ctx: *struc RegAllocContext, instr_idx: u64, block_id: u64) none {
     if (ctx[].p_instrs[])[instr_idx] {
-        set_instr(ctx, nil, instr_idx)
+        set_instr(ctx, uptr_new(), instr_idx)
         ctx[].cfg[].blocks[block_id].size--
         if ctx[].cfg[].blocks[block_id].size == 0 {
             cfg_rm_empty_block(ctx, block_id, true)
@@ -1477,9 +1505,12 @@ fn cfg_rm_block_instr(ctx: *struc RegAllocContext, instr_idx: u64, block_id: u64
 
 fn cfg_init_label_block(ctx: *struc RegAllocContext, node: *struc AsmLabel) none {
     loop .. while 0 {
-        (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-        (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
-        (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
+        "@MACRO@:map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1)"
+        loop .. while 0 {
+            (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
+            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
+            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
+        }
     }
 }
 
@@ -1489,10 +1520,13 @@ fn cfg_init_block(ctx: *struc RegAllocContext, instr_idx: u64, instrs_back_idx: 
         -> AST_AsmLabel_t {
             if instrs_back_idx[] ~= (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx[]
-                block: struc ControlFlowBlock = $(0, instr_idx, 0, nil, nil)
+                block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
                 loop .. while 0 {
-                    (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
-                    (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                    "@MACRO@:vec_push_back(ctx->cfg->blocks, block)"
+                    loop .. while 0 {
+                        (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
+                        (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                    }
                 }
             }
             cfg_init_label_block(ctx, @node[].get._AsmLabel)
@@ -1549,43 +1583,53 @@ fn cfg_init_edges(ctx: *struc RegAllocContext, block_id: u64) none {
 fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].pred_ids {
+            "@MACRO@:vec_delete(GET_CFG_BLOCK(block_id).pred_ids)"
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].pred_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)) else cast<none>(0)))
                 (ctx[].cfg[].blocks[block_id].pred_ids) = nil
             }
-            ctx[].cfg[].blocks[block_id].pred_ids = nil
+            ctx[].cfg[].blocks[block_id].pred_ids = vec_new()
         }
         ;
         if ctx[].cfg[].blocks[block_id].succ_ids {
+            "@MACRO@:vec_delete(GET_CFG_BLOCK(block_id).succ_ids)"
             loop .. while 0 {
                 cast<none>((? (ctx[].cfg[].blocks[block_id].succ_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)) else cast<none>(0)))
                 (ctx[].cfg[].blocks[block_id].succ_ids) = nil
             }
-            ctx[].cfg[].blocks[block_id].succ_ids = nil
+            ctx[].cfg[].blocks[block_id].succ_ids = vec_new()
         }
         ;
     }
     if ctx[].cfg[].blocks {
+        "@MACRO@:vec_clear(ctx->cfg->blocks)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length = 0
     }
     ;
-    if ctx[].cfg[].identifier_id_map {
-        loop .. while 0 {
-            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-            (ctx[].cfg[].identifier_id_map) = nil
+    loop .. while 0 {
+        "@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
+        if ctx[].cfg[].identifier_id_map {
+            "@MACRO@:map_delete(ctx->cfg->identifier_id_map)"
+            loop .. while 0 {
+                cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
+                (ctx[].cfg[].identifier_id_map) = nil
+            }
+            ctx[].cfg[].identifier_id_map = map_new()
         }
-        ctx[].cfg[].identifier_id_map = nil
+        ;
     }
-    ;
     {
         instrs_back_idx: u64 = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
         loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
             if (ctx[].p_instrs[])[instr_idx] {
                 if instrs_back_idx == (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
-                    block: struc ControlFlowBlock = $(0, instr_idx, 0, nil, nil)
+                    block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
                     loop .. while 0 {
-                        (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
-                        (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                        "@MACRO@:vec_push_back(ctx->cfg->blocks, block)"
+                        loop .. while 0 {
+                            (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
+                            (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
+                        }
                     }
                 }
                 cfg_init_block(ctx, instr_idx, @instrs_back_idx)
@@ -1599,10 +1643,12 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
     ctx[].cfg[].exit_id = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     ctx[].cfg[].entry_id = ctx[].cfg[].exit_id + 1
     if ctx[].cfg[].entry_succ_ids {
+        "@MACRO@:vec_clear(ctx->cfg->entry_succ_ids)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length = 0
     }
     ;
     if ctx[].cfg[].exit_pred_ids {
+        "@MACRO@:vec_clear(ctx->cfg->exit_pred_ids)"
         (cast<*struc stbds_array_header>((ctx[].cfg[].exit_pred_ids)) - 1)[].length = 0
     }
     ;
@@ -1780,8 +1826,11 @@ fn dfa_iter_alg(ctx: *struc RegAllocContext) none {
                     }
                     else {
                         loop .. while 0 {
-                            (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
-                            (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (pred_id)
+                            "@MACRO@:vec_push_back(ctx->dfa->open_data_map, pred_id)"
+                            loop .. while 0 {
+                                (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
+                                (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (pred_id)
+                            }
                         }
                     }
                     open_data_map_size++
@@ -1820,9 +1869,12 @@ fn is_aliased_name(ctx: *struc RegAllocContext, name: u64) i32 {
 fn infer_add_data_name(ctx: *struc RegAllocContext, name: u64) none {
     if not is_aliased_name(ctx, name) and (? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp) == -1 {
         loop .. while 0 {
-            (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
+            "@MACRO@:map_add(ctx->cfg->identifier_id_map, name, REGISTER_MASK_SIZE + ctx->dfa->set_size)"
+            loop .. while 0 {
+                (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
+                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
+                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
+            }
         }
         ctx[].dfa[].set_size++
     }
@@ -1839,8 +1891,11 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     ctx[].dfa[].incoming_idx = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
     if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
         loop .. while 0 {
-            (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            "@MACRO@:vec_resize(ctx->dfa->open_data_map, vec_size(ctx->cfg->blocks))"
+            loop .. while 0 {
+                (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
+                ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            }
         }
     }
     {
@@ -1848,27 +1903,37 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         i = 2
         if (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length else 0) < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i {
             loop .. while 0 {
-                (? (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) then ((((ctx[].dfa[].instr_idx_map)) = stbds_arrgrowf(((ctx[].dfa[].instr_idx_map)), sizeof(((ctx[].dfa[].instr_idx_map))[]), (0), (cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)))))) and 0 else 0)
-                ? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length = cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) else 0
+                "@MACRO@:vec_resize(ctx->dfa->instr_idx_map, vec_size(*ctx->p_instrs) + i)"
+                loop .. while 0 {
+                    (? (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) then ((((ctx[].dfa[].instr_idx_map)) = stbds_arrgrowf(((ctx[].dfa[].instr_idx_map)), sizeof(((ctx[].dfa[].instr_idx_map))[]), (0), (cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)))))) and 0 else 0)
+                    ? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length = cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) else 0
+                }
             }
         }
     }
     if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
         loop .. while 0 {
-            (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            "@MACRO@:vec_resize(ctx->cfg->reaching_code, vec_size(ctx->cfg->blocks))"
+            loop .. while 0 {
+                (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
+                ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
+            }
         }
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
     instrs_mask_sets_size: u64 = 0
-    if ctx[].cfg[].identifier_id_map {
-        loop .. while 0 {
-            cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-            (ctx[].cfg[].identifier_id_map) = nil
+    loop .. while 0 {
+        "@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
+        if ctx[].cfg[].identifier_id_map {
+            "@MACRO@:map_delete(ctx->cfg->identifier_id_map)"
+            loop .. while 0 {
+                cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
+                (ctx[].cfg[].identifier_id_map) = nil
+            }
+            ctx[].cfg[].identifier_id_map = map_new()
         }
-        ctx[].cfg[].identifier_id_map = nil
+        ;
     }
-    ;
     ctx[].dfa[].static_idx = ctx[].dfa[].incoming_idx + 1
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
@@ -1969,8 +2034,11 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     if (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length else 0) < ctx[].dfa[].set_size {
         loop .. while 0 {
-            (? (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].dfa_o2[].data_name_map)) = stbds_arrgrowf(((ctx[].dfa_o2[].data_name_map)), sizeof(((ctx[].dfa_o2[].data_name_map))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
-            ? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
+            "@MACRO@:vec_resize(ctx->dfa_o2->data_name_map, ctx->dfa->set_size)"
+            loop .. while 0 {
+                (? (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].dfa_o2[].data_name_map)) = stbds_arrgrowf(((ctx[].dfa_o2[].data_name_map)), sizeof(((ctx[].dfa_o2[].data_name_map))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
+                ? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
+            }
         }
     }
     ctx[].dfa[].set_size += REGISTER_MASK_SIZE
@@ -1983,14 +2051,20 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     blocks_mask_sets_size: u64 = ctx[].dfa[].mask_size * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     if (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length else 0) < blocks_mask_sets_size {
         loop .. while 0 {
-            (? (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].capacity else 0) < cast<u64>((blocks_mask_sets_size)) then ((((ctx[].dfa[].blocks_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].blocks_mask_sets)), sizeof(((ctx[].dfa[].blocks_mask_sets))[]), (0), (cast<u64>((blocks_mask_sets_size)))))) and 0 else 0)
-            ? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length = cast<u64>((blocks_mask_sets_size)) else 0
+            "@MACRO@:vec_resize(ctx->dfa->blocks_mask_sets, blocks_mask_sets_size)"
+            loop .. while 0 {
+                (? (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].capacity else 0) < cast<u64>((blocks_mask_sets_size)) then ((((ctx[].dfa[].blocks_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].blocks_mask_sets)), sizeof(((ctx[].dfa[].blocks_mask_sets))[]), (0), (cast<u64>((blocks_mask_sets_size)))))) and 0 else 0)
+                ? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length = cast<u64>((blocks_mask_sets_size)) else 0
+            }
         }
     }
     if (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length else 0) < instrs_mask_sets_size {
         loop .. while 0 {
-            (? (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].capacity else 0) < cast<u64>((instrs_mask_sets_size)) then ((((ctx[].dfa[].instrs_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].instrs_mask_sets)), sizeof(((ctx[].dfa[].instrs_mask_sets))[]), (0), (cast<u64>((instrs_mask_sets_size)))))) and 0 else 0)
-            ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
+            "@MACRO@:vec_resize(ctx->dfa->instrs_mask_sets, instrs_mask_sets_size)"
+            loop .. while 0 {
+                (? (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].capacity else 0) < cast<u64>((instrs_mask_sets_size)) then ((((ctx[].dfa[].instrs_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].instrs_mask_sets)), sizeof(((ctx[].dfa[].instrs_mask_sets))[]), (0), (cast<u64>((instrs_mask_sets_size)))))) and 0 else 0)
+                ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
+            }
         }
         memset(ctx[].dfa[].instrs_mask_sets, 0ul, sizeof<u64> * instrs_mask_sets_size)
     }
@@ -2260,8 +2334,11 @@ fn infer_add_pseudo_edges(ctx: *struc RegAllocContext, name_1: u64, name_2: u64)
         infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name_1))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if not find_identifier(infer[].linked_pseudo_names, name_2) {
             loop .. while 0 {
-                (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
-                (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name_2)
+                "@MACRO@:vec_push_back(infer->linked_pseudo_names, name_2)"
+                loop .. while 0 {
+                    (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
+                    (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name_2)
+                }
             }
             infer[].degree++
         }
@@ -2270,8 +2347,11 @@ fn infer_add_pseudo_edges(ctx: *struc RegAllocContext, name_1: u64, name_2: u64)
         infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name_2))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if not find_identifier(infer[].linked_pseudo_names, name_1) {
             loop .. while 0 {
-                (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
-                (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name_1)
+                "@MACRO@:vec_push_back(infer->linked_pseudo_names, name_1)"
+                loop .. while 0 {
+                    (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
+                    (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name_1)
+                }
             }
             infer[].degree++
         }
@@ -2290,8 +2370,11 @@ fn infer_add_reg_edge(ctx: *struc RegAllocContext, reg_kind: i32, name: u64) non
         infer: *struc InferenceRegister = @ctx[].hard_regs[register_mask_bit(reg_kind)]
         if not find_identifier(infer[].linked_pseudo_names, name) {
             loop .. while 0 {
-                (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
-                (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name)
+                "@MACRO@:vec_push_back(infer->linked_pseudo_names, name)"
+                loop .. while 0 {
+                    (? (not (infer[].linked_pseudo_names) or (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].capacity) then (((infer[].linked_pseudo_names) = stbds_arrgrowf((infer[].linked_pseudo_names), sizeof((infer[].linked_pseudo_names)[]), (1), (0))) and 0) else 0)
+                    (infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length++] = (name)
+                }
             }
             infer[].degree++
         }
@@ -2302,8 +2385,11 @@ fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
     loop i: u64 = (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) while i-- > 0 {
         if infer[].linked_pseudo_names[i] == name {
             loop .. while 0 {
-                (infer[].linked_pseudo_names)[i] = ((infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length - 1])
-                (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length -= 1
+                "@MACRO@:vec_remove_swap(infer->linked_pseudo_names, i)"
+                loop .. while 0 {
+                    (infer[].linked_pseudo_names)[i] = ((infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length - 1])
+                    (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length -= 1
+                }
             }
             infer[].degree--
             return none
@@ -2316,8 +2402,11 @@ fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
     loop i: u64 = (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) while i-- > 0 {
         if ctx[].p_infer_graph[].unpruned_pseudo_names[i] == name {
             loop .. while 0 {
-                (ctx[].p_infer_graph[].unpruned_pseudo_names)[i] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
-                (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
+                "@MACRO@:vec_remove_swap(ctx->p_infer_graph->unpruned_pseudo_names, i)"
+                loop .. while 0 {
+                    (ctx[].p_infer_graph[].unpruned_pseudo_names)[i] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
+                    (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
+                }
             }
             return none
         }
@@ -2613,80 +2702,107 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     ctx[].callee_saved_reg_mask = 0ul
     if ctx[].infer_graph[].unpruned_pseudo_names {
+        "@MACRO@:vec_clear(ctx->infer_graph->unpruned_pseudo_names)"
         (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length = 0
     }
     ;
     loop i: u64 = 0 while i < (? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names {
+            "@MACRO@:vec_delete(pair_second(ctx->infer_graph->pseudo_reg_map[i]).linked_pseudo_names)"
             loop .. while 0 {
                 cast<none>((? ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
                 ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
             }
-            (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
+            (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = vec_new()
         }
         ;
     }
-    if ctx[].infer_graph[].pseudo_reg_map {
-        loop .. while 0 {
-            cast<none>((? (ctx[].infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
-            (ctx[].infer_graph[].pseudo_reg_map) = nil
+    loop .. while 0 {
+        "@MACRO@:map_clear(ctx->infer_graph->pseudo_reg_map)"
+        if ctx[].infer_graph[].pseudo_reg_map {
+            "@MACRO@:map_delete(ctx->infer_graph->pseudo_reg_map)"
+            loop .. while 0 {
+                cast<none>((? (ctx[].infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
+                (ctx[].infer_graph[].pseudo_reg_map) = nil
+            }
+            ctx[].infer_graph[].pseudo_reg_map = map_new()
         }
-        ctx[].infer_graph[].pseudo_reg_map = nil
+        ;
     }
-    ;
     if ctx[].sse_infer_graph[].unpruned_pseudo_names {
+        "@MACRO@:vec_clear(ctx->sse_infer_graph->unpruned_pseudo_names)"
         (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length = 0
     }
     ;
     loop i: u64 = 0 while i < (? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names {
+            "@MACRO@:vec_delete(pair_second(ctx->sse_infer_graph->pseudo_reg_map[i]).linked_pseudo_names)"
             loop .. while 0 {
                 cast<none>((? ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
                 ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
             }
-            (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = nil
+            (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = vec_new()
         }
         ;
     }
-    if ctx[].sse_infer_graph[].pseudo_reg_map {
-        loop .. while 0 {
-            cast<none>((? (ctx[].sse_infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].sse_infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
-            (ctx[].sse_infer_graph[].pseudo_reg_map) = nil
+    loop .. while 0 {
+        "@MACRO@:map_clear(ctx->sse_infer_graph->pseudo_reg_map)"
+        if ctx[].sse_infer_graph[].pseudo_reg_map {
+            "@MACRO@:map_delete(ctx->sse_infer_graph->pseudo_reg_map)"
+            loop .. while 0 {
+                cast<none>((? (ctx[].sse_infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].sse_infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
+                (ctx[].sse_infer_graph[].pseudo_reg_map) = nil
+            }
+            ctx[].sse_infer_graph[].pseudo_reg_map = map_new()
         }
-        ctx[].sse_infer_graph[].pseudo_reg_map = nil
+        ;
     }
-    ;
     loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         name: u64 = (ctx[].cfg[].identifier_id_map[i]).key
-        infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, nil)
+        infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, vec_new())
         if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t {
             loop .. while 0 {
-                (? (not (ctx[].sse_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].sse_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].sse_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].sse_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
-                (ctx[].sse_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
+                "@MACRO@:vec_push_back(ctx->sse_infer_graph->unpruned_pseudo_names, name)"
+                loop .. while 0 {
+                    (? (not (ctx[].sse_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].sse_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].sse_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].sse_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
+                    (ctx[].sse_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
+                }
             }
             loop .. while 0 {
-                (ctx[].sse_infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].sse_infer_graph[].pseudo_reg_map), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[].key), 0)
-                (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
-                (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
+                "@MACRO@:map_add(ctx->sse_infer_graph->pseudo_reg_map, name, infer)"
+                loop .. while 0 {
+                    (ctx[].sse_infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].sse_infer_graph[].pseudo_reg_map), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[].key), 0)
+                    (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
+                    (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
+                }
             }
         }
         else {
             loop .. while 0 {
-                (? (not (ctx[].infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].infer_graph[].unpruned_pseudo_names), sizeof((ctx[].infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
-                (ctx[].infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
+                "@MACRO@:vec_push_back(ctx->infer_graph->unpruned_pseudo_names, name)"
+                loop .. while 0 {
+                    (? (not (ctx[].infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].infer_graph[].unpruned_pseudo_names), sizeof((ctx[].infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
+                    (ctx[].infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (name)
+                }
             }
             loop .. while 0 {
-                (ctx[].infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].infer_graph[].pseudo_reg_map), sizeof((ctx[].infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].infer_graph[].pseudo_reg_map)[].key), 0)
-                (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
-                (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
+                "@MACRO@:map_add(ctx->infer_graph->pseudo_reg_map, name, infer)"
+                loop .. while 0 {
+                    (ctx[].infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].infer_graph[].pseudo_reg_map), sizeof((ctx[].infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].infer_graph[].pseudo_reg_map)[].key), 0)
+                    (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
+                    (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
+                }
             }
         }
     }
     if not ((? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
         if (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) < 12 {
             loop .. while 0 {
-                (? (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((12)) then ((((ctx[].infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((12)))))) and 0 else 0)
-                ? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((12)) else 0
+                "@MACRO@:vec_resize(ctx->infer_graph->unpruned_hard_mask_bits, 12)"
+                loop .. while 0 {
+                    (? (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((12)) then ((((ctx[].infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((12)))))) and 0 else 0)
+                    ? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((12)) else 0
+                }
             }
         }
         hard_reg_mask: u64 = ctx[].infer_graph[].hard_reg_mask
@@ -2697,6 +2813,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
             if ctx[].hard_regs[i].linked_pseudo_names {
+                "@MACRO@:vec_clear(ctx->hard_regs[i].linked_pseudo_names)"
                 (cast<*struc stbds_array_header>((ctx[].hard_regs[i].linked_pseudo_names)) - 1)[].length = 0
             }
             ;
@@ -2706,8 +2823,11 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     if not ((? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
         if (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) < 14 {
             loop .. while 0 {
-                (? (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((14)) then ((((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((14)))))) and 0 else 0)
-                ? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((14)) else 0
+                "@MACRO@:vec_resize(ctx->sse_infer_graph->unpruned_hard_mask_bits, 14)"
+                loop .. while 0 {
+                    (? (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((14)) then ((((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((14)))))) and 0 else 0)
+                    ? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((14)) else 0
+                }
             }
         }
         hard_reg_mask: u64 = ctx[].sse_infer_graph[].hard_reg_mask
@@ -2718,6 +2838,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
             if ctx[].hard_regs[i].linked_pseudo_names {
+                "@MACRO@:vec_clear(ctx->hard_regs[i].linked_pseudo_names)"
                 (cast<*struc stbds_array_header>((ctx[].hard_regs[i].linked_pseudo_names)) - 1)[].length = 0
             }
             ;
@@ -2758,14 +2879,20 @@ fn is_reg_callee_saved(reg_kind: i32) i32 {
 fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceRegister, pruned_idx: u64) none {
     if infer[].reg_kind == REG_Sp {
         loop .. while 0 {
-            (ctx[].p_infer_graph[].unpruned_pseudo_names)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
-            (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
+            "@MACRO@:vec_remove_swap(ctx->p_infer_graph->unpruned_pseudo_names, pruned_idx)"
+            loop .. while 0 {
+                (ctx[].p_infer_graph[].unpruned_pseudo_names)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
+                (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
+            }
         }
     }
     else {
         loop .. while 0 {
-            (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length - 1])
-            (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length -= 1
+            "@MACRO@:vec_remove_swap(ctx->p_infer_graph->unpruned_hard_mask_bits, pruned_idx)"
+            loop .. while 0 {
+                (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length - 1])
+                (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length -= 1
+            }
         }
     }
     if infer[].linked_hard_mask ~= 0ul {
@@ -2785,16 +2912,22 @@ fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceR
     if infer[].reg_kind == REG_Sp {
         ;
         loop .. while 0 {
-            (? (not (ctx[].p_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].p_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
-            (ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (pruned_name)
+            "@MACRO@:vec_push_back(ctx->p_infer_graph->unpruned_pseudo_names, pruned_name)"
+            loop .. while 0 {
+                (? (not (ctx[].p_infer_graph[].unpruned_pseudo_names) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_pseudo_names) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_pseudo_names), sizeof((ctx[].p_infer_graph[].unpruned_pseudo_names)[]), (1), (0))) and 0) else 0)
+                (ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length++] = (pruned_name)
+            }
         }
     }
     else {
         pruned_mask_bit: u64 = register_mask_bit(infer[].reg_kind)
         ;
         loop .. while 0 {
-            (? (not (ctx[].p_infer_graph[].unpruned_hard_mask_bits) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_hard_mask_bits) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_hard_mask_bits), sizeof((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[]), (1), (0))) and 0) else 0)
-            (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length++] = (pruned_mask_bit)
+            "@MACRO@:vec_push_back(ctx->p_infer_graph->unpruned_hard_mask_bits, pruned_mask_bit)"
+            loop .. while 0 {
+                (? (not (ctx[].p_infer_graph[].unpruned_hard_mask_bits) or (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity) then (((ctx[].p_infer_graph[].unpruned_hard_mask_bits) = stbds_arrgrowf((ctx[].p_infer_graph[].unpruned_hard_mask_bits), sizeof((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[]), (1), (0))) and 0) else 0)
+                (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length++] = (pruned_mask_bit)
+            }
         }
     }
     if infer[].linked_hard_mask ~= 0ul {
@@ -2931,7 +3064,7 @@ fn alloc_color_reg_map(ctx: *struc RegAllocContext) none {
 
 fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
     if is_aliased_name(ctx, name) {
-        return nil
+        return sptr_new()
     }
     set_p_infer_graph(ctx, ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t)
     color: i32 = ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).color
@@ -2940,7 +3073,7 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
         hard_reg: *struc AsmOperand = gen_register(reg_kind)
         if is_reg_callee_saved(reg_kind) and not register_mask_get(ctx[].callee_saved_reg_mask, reg_kind) {
             register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, true)
-            callee_saved_reg: *struc AsmOperand = nil
+            callee_saved_reg: *struc AsmOperand = sptr_new()
             if hard_reg ~= callee_saved_reg {
                 "@MACRO@:sptr_copy(AsmOperand, hard_reg, callee_saved_reg)"
                 free_AsmOperand(@callee_saved_reg)
@@ -2949,9 +3082,13 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
             }
             ;
             loop .. while 0 {
+                "@MACRO@:vec_move_back(ctx->p_backend_fun->callee_saved_regs, callee_saved_reg)"
                 loop .. while 0 {
-                    (? (not (ctx[].p_backend_fun[].callee_saved_regs) or (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].capacity) then (((ctx[].p_backend_fun[].callee_saved_regs) = stbds_arrgrowf((ctx[].p_backend_fun[].callee_saved_regs), sizeof((ctx[].p_backend_fun[].callee_saved_regs)[]), (1), (0))) and 0) else 0)
-                    (ctx[].p_backend_fun[].callee_saved_regs)[(cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length++] = (callee_saved_reg)
+                    "@MACRO@:vec_push_back(ctx->p_backend_fun->callee_saved_regs, callee_saved_reg)"
+                    loop .. while 0 {
+                        (? (not (ctx[].p_backend_fun[].callee_saved_regs) or (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].capacity) then (((ctx[].p_backend_fun[].callee_saved_regs) = stbds_arrgrowf((ctx[].p_backend_fun[].callee_saved_regs), sizeof((ctx[].p_backend_fun[].callee_saved_regs)[]), (1), (0))) and 0) else 0)
+                        (ctx[].p_backend_fun[].callee_saved_regs)[(cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length++] = (callee_saved_reg)
+                    }
                 }
                 callee_saved_reg = nil
             }
@@ -2959,7 +3096,7 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
         return hard_reg
     }
     else {
-        return nil
+        return sptr_new()
     }
 }
 
@@ -2998,7 +3135,7 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
     src_reg_kind: i32 = get_op_reg_kind(ctx, node[].src)
     dst_reg_kind: i32 = get_op_reg_kind(ctx, node[].dst)
     if src_reg_kind ~= REG_Sp and src_reg_kind == dst_reg_kind {
-        set_instr(ctx, nil, instr_idx)
+        set_instr(ctx, uptr_new(), instr_idx)
     }
     else {
         if node[].src[].tag == AST_AsmPseudo_t {
@@ -3010,7 +3147,7 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
                         "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                         free_AsmOperand(@node[].src)
                         node[].src = hard_reg
-                        hard_reg = nil
+                        hard_reg = uptr_new()
                     }
                 }
             }
@@ -3024,7 +3161,7 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
                         "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                         free_AsmOperand(@node[].dst)
                         node[].dst = hard_reg
-                        hard_reg = nil
+                        hard_reg = uptr_new()
                     }
                 }
             }
@@ -3042,7 +3179,7 @@ fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3056,7 +3193,7 @@ fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3073,7 +3210,7 @@ fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroE
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3087,7 +3224,7 @@ fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroE
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3104,7 +3241,7 @@ fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3118,7 +3255,7 @@ fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3135,7 +3272,7 @@ fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si)
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3149,7 +3286,7 @@ fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si)
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3166,7 +3303,7 @@ fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) n
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3180,7 +3317,7 @@ fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) n
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3197,7 +3334,7 @@ fn alloc_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3214,7 +3351,7 @@ fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none 
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3228,7 +3365,7 @@ fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none 
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3245,7 +3382,7 @@ fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3259,7 +3396,7 @@ fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3276,7 +3413,7 @@ fn alloc_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3293,7 +3430,7 @@ fn alloc_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3310,7 +3447,7 @@ fn alloc_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3327,7 +3464,7 @@ fn alloc_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
                     "@MACRO@:uptr_move(AsmOperand, hard_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = hard_reg
-                    hard_reg = nil
+                    hard_reg = uptr_new()
                 }
             }
         }
@@ -3670,7 +3807,7 @@ fn coal_op_reg(ctx: *struc RegAllocContext, name: u64, coalesced_idx: u64) *stru
         }
     }
     else {
-        return nil
+        return sptr_new()
     }
 }
 
@@ -3690,7 +3827,7 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
                         "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                         free_AsmOperand(@node[].src)
                         node[].src = op_reg
-                        op_reg = nil
+                        op_reg = uptr_new()
                     }
                 }
             }
@@ -3704,7 +3841,7 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
                         "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                         free_AsmOperand(@node[].dst)
                         node[].dst = op_reg
-                        op_reg = nil
+                        op_reg = uptr_new()
                     }
                 }
             }
@@ -3723,7 +3860,7 @@ fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3738,7 +3875,7 @@ fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3756,7 +3893,7 @@ fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroEx
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3771,7 +3908,7 @@ fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroEx
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3789,7 +3926,7 @@ fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3804,7 +3941,7 @@ fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3822,7 +3959,7 @@ fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) 
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3837,7 +3974,7 @@ fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) 
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3855,7 +3992,7 @@ fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) no
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3870,7 +4007,7 @@ fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) no
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3888,7 +4025,7 @@ fn coal_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3906,7 +4043,7 @@ fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3921,7 +4058,7 @@ fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3939,7 +4076,7 @@ fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3954,7 +4091,7 @@ fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3972,7 +4109,7 @@ fn coal_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -3990,7 +4127,7 @@ fn coal_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -4008,7 +4145,7 @@ fn coal_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->dst)"
                     free_AsmOperand(@node[].dst)
                     node[].dst = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -4026,7 +4163,7 @@ fn coal_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
                     "@MACRO@:uptr_move(AsmOperand, op_reg, node->src)"
                     free_AsmOperand(@node[].src)
                     node[].src = op_reg
-                    op_reg = nil
+                    op_reg = uptr_new()
                 }
             }
         }
@@ -4104,8 +4241,11 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
         open_data_map_size: u64 = ctx[].dfa[].set_size - REGISTER_MASK_SIZE
         if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < open_data_map_size {
             loop .. while 0 {
-                (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>((open_data_map_size)) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>((open_data_map_size)))))) and 0 else 0)
-                ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>((open_data_map_size)) else 0
+                "@MACRO@:vec_resize(ctx->dfa->open_data_map, open_data_map_size)"
+                loop .. while 0 {
+                    (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>((open_data_map_size)) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>((open_data_map_size)))))) and 0 else 0)
+                    ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>((open_data_map_size)) else 0
+                }
             }
         }
     }
@@ -4212,7 +4352,7 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
         ctx.hard_regs[24].reg_kind = REG_Xmm12
         ctx.hard_regs[25].reg_kind = REG_Xmm13
         loop i: u64 = 0 while i < 26 .. ++i {
-            ctx.hard_regs[i].linked_pseudo_names = nil
+            ctx.hard_regs[i].linked_pseudo_names = vec_new()
         }
         ctx.cfg = make_ControlFlowGraph()
         ctx.dfa = make_DataFlowAnalysis()
@@ -4224,11 +4364,12 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
     alloc_program(@ctx, node)
     loop i: u64 = 0 while i < 26 .. ++i {
         if ctx.hard_regs[i].linked_pseudo_names {
+            "@MACRO@:vec_delete(ctx.hard_regs[i].linked_pseudo_names)"
             loop .. while 0 {
                 cast<none>((? (ctx.hard_regs[i].linked_pseudo_names) then free((cast<*struc stbds_array_header>((ctx.hard_regs[i].linked_pseudo_names)) - 1)) else cast<none>(0)))
                 (ctx.hard_regs[i].linked_pseudo_names) = nil
             }
-            ctx.hard_regs[i].linked_pseudo_names = nil
+            ctx.hard_regs[i].linked_pseudo_names = vec_new()
         }
         ;
     }
