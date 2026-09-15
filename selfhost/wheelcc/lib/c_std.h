@@ -141,11 +141,13 @@
 #define str_new(X) X ? sdsnew(X) : NULL
 #define str_delete(X)      \
     if (X) {               \
+        "@MACRO@:str_delete(@ARG@"#X"@ARG@)"; \
         sdsfree(X);        \
         X = str_new(NULL); \
     }
 #define str_move(X, Y)     \
     if (X != Y) {          \
+        "@MACRO@:str_move(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         str_delete(Y);     \
         Y = X;             \
         X = str_new(NULL); \
@@ -154,12 +156,14 @@
 #define str_back(X) (X)[str_size(X) - 1]
 #define str_append(X, Y)  \
     do {                  \
+        "@MACRO@:str_append(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         X = sdscat(X, Y); \
     }                     \
     while (0)
 #define str_clear(X) sdsclear(X)
 #define str_copy(X, Y) \
     if (X != Y) {      \
+        "@MACRO@:str_copy(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         str_delete(Y); \
         Y = sdsdup(X); \
     }
@@ -167,17 +171,20 @@
 #define str_pop_back(X) sdsrange(X, 0, -2)
 #define str_push_back(X, Y)             \
     do {                                \
+        "@MACRO@:str_push_back(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         str_resize(X, str_size(X) + 1); \
         str_back(X) = Y;                \
     }                                   \
     while (0)
 #define str_reserve(X, Y)         \
     do {                          \
+        "@MACRO@:str_reserve(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         X = sdsMakeRoomFor(X, Y); \
     }                             \
     while (0)
 #define str_resize(X, Y)       \
     do {                       \
+        "@MACRO@:str_resize(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         X = sdsgrowzero(X, Y); \
     }                          \
     while (0)
