@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -1415,7 +1415,7 @@ fn parse_identifier(ctx: *struc ParserContext, identifier: *u64) i32 {
 }
 
 fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiteral) i32 {
-    value: *i8 = nil
+    value: *i8 = vec_new()
     _errval: i32 = 0
     string_to_literal(((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value), @value)
     loop .. while 0 {
@@ -1445,11 +1445,12 @@ fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiter
     literal[] = make_CStringLiteral(@value)
     label _Lfinally
     if value {
+        "@MACRO@:vec_delete(value)"
         loop .. while 0 {
             cast<none>((? (value) then free((cast<*struc stbds_array_header>((value)) - 1)) else cast<none>(0)))
             (value) = nil
         }
-        value = nil
+        value = vec_new()
     }
     return _errval
 }
@@ -1880,7 +1881,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
 }
 
 fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) i32 {
-    constant: *struc CConst = nil
+    constant: *struc CConst = sptr_new()
     _errval: i32 = 0
     size: i64 = 0
     loop .. while 0 {
@@ -2163,7 +2164,7 @@ fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32;
 fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) i32;
 
 fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
-    arg: *struc CExp = nil
+    arg: *struc CExp = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_exp(ctx, 0, &arg))"
@@ -2173,9 +2174,13 @@ fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
         }
     }
     loop .. while 0 {
+        "@MACRO@:vec_move_back(*args, arg)"
         loop .. while 0 {
-            (? (not (args[]) or (cast<*struc stbds_array_header>((args[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args[])) - 1)[].capacity) then (((args[]) = stbds_arrgrowf((args[]), sizeof((args[])[]), (1), (0))) and 0) else 0)
-            (args[])[(cast<*struc stbds_array_header>((args[])) - 1)[].length++] = (arg)
+            "@MACRO@:vec_push_back(*args, arg)"
+            loop .. while 0 {
+                (? (not (args[]) or (cast<*struc stbds_array_header>((args[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args[])) - 1)[].capacity) then (((args[]) = stbds_arrgrowf((args[]), sizeof((args[])[]), (1), (0))) and 0) else 0)
+                (args[])[(cast<*struc stbds_array_header>((args[])) - 1)[].length++] = (arg)
+            }
         }
         arg = nil
     }
@@ -2202,9 +2207,13 @@ fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
             }
         }
         loop .. while 0 {
+            "@MACRO@:vec_move_back(*args, arg)"
             loop .. while 0 {
-                (? (not (args[]) or (cast<*struc stbds_array_header>((args[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args[])) - 1)[].capacity) then (((args[]) = stbds_arrgrowf((args[]), sizeof((args[])[]), (1), (0))) and 0) else 0)
-                (args[])[(cast<*struc stbds_array_header>((args[])) - 1)[].length++] = (arg)
+                "@MACRO@:vec_push_back(*args, arg)"
+                loop .. while 0 {
+                    (? (not (args[]) or (cast<*struc stbds_array_header>((args[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args[])) - 1)[].capacity) then (((args[]) = stbds_arrgrowf((args[]), sizeof((args[])[]), (1), (0))) and 0) else 0)
+                    (args[])[(cast<*struc stbds_array_header>((args[])) - 1)[].length++] = (arg)
+                }
             }
             arg = nil
         }
@@ -2222,7 +2231,7 @@ fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
 }
 
 fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    constant: *struc CConst = nil
+    constant: *struc CConst = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -2239,7 +2248,7 @@ fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    constant: *struc CConst = nil
+    constant: *struc CConst = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -2256,7 +2265,7 @@ fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
 }
 
 fn parse_string_literal_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    literal: *struc CStringLiteral = nil
+    literal: *struc CStringLiteral = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -2296,7 +2305,7 @@ fn parse_var_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    args: **struc CExp = nil
+    args: **struc CExp = vec_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
@@ -2350,18 +2359,19 @@ fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         free_CExp(@args[i])
     }
     if args {
+        "@MACRO@:vec_delete(args)"
         loop .. while 0 {
             cast<none>((? (args) then free((cast<*struc stbds_array_header>((args)) - 1)) else cast<none>(0)))
             (args) = nil
         }
-        args = nil
+        args = vec_new()
     }
     return _errval
 }
 
 fn parse_cast_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    cast_exp: *struc CExp = nil
-    target_type: *struc Type = nil
+    cast_exp: *struc CExp = uptr_new()
+    target_type: *struc Type = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -2540,7 +2550,7 @@ fn parse_deref_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_subscript_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    subscript_exp: *struc CExp = nil
+    subscript_exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -2646,11 +2656,11 @@ fn parse_dot_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    exp_right: *struc CExp = nil
-    exp_right_1: *struc CExp = nil
-    constant: *struc CConst = nil
+    exp_right: *struc CExp = uptr_new()
+    exp_right_1: *struc CExp = uptr_new()
+    constant: *struc CConst = sptr_new()
     _errval: i32 = 0
-    exp_null: *struc CExp = nil
+    exp_null: *struc CExp = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CPostfix_t)
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
@@ -2673,7 +2683,7 @@ fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    cast_exp: *struc CExp = nil
+    cast_exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
@@ -2698,11 +2708,11 @@ fn parse_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    exp_left: *struc CExp = nil
-    exp_right: *struc CExp = nil
-    exp_left_1: *struc CExp = nil
-    exp_right_1: *struc CExp = nil
-    constant: *struc CConst = nil
+    exp_left: *struc CExp = uptr_new()
+    exp_right: *struc CExp = uptr_new()
+    exp_left_1: *struc CExp = uptr_new()
+    exp_right_1: *struc CExp = uptr_new()
+    constant: *struc CConst = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CPrefix_t)
@@ -2735,7 +2745,7 @@ fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_addrof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    cast_exp: *struc CExp = nil
+    cast_exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -2759,7 +2769,7 @@ fn parse_addrof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_sizeoft_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    target_type: *struc Type = nil
+    target_type: *struc Type = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].next_tok[].info_at
     loop .. while 0 {
@@ -2790,7 +2800,7 @@ fn parse_sizeoft_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_sizeof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    unary_exp: *struc CExp = nil
+    unary_exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].next_tok[].info_at
     loop .. while 0 {
@@ -3153,7 +3163,7 @@ fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_assign_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **struc CExp) i32 {
-    exp_right: *struc CExp = nil
+    exp_right: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
@@ -3178,10 +3188,10 @@ fn parse_assign_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
 }
 
 fn parse_assign_compound_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **struc CExp) i32 {
-    exp_right: *struc CExp = nil
-    exp_right_1: *struc CExp = nil
+    exp_right: *struc CExp = uptr_new()
+    exp_right_1: *struc CExp = uptr_new()
     _errval: i32 = 0
-    exp_null: *struc CExp = nil
+    exp_null: *struc CExp = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
@@ -3208,7 +3218,7 @@ fn parse_assign_compound_exp(ctx: *struc ParserContext, precedence: i32, exp_lef
 }
 
 fn parse_binary_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **struc CExp) i32 {
-    exp_right: *struc CExp = nil
+    exp_right: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
@@ -3233,9 +3243,9 @@ fn parse_binary_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
 }
 
 fn parse_ternary_exp(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    exp_left: *struc CExp = nil
-    exp_middle: *struc CExp = nil
-    exp_right: *struc CExp = nil
+    exp_left: *struc CExp = uptr_new()
+    exp_middle: *struc CExp = uptr_new()
+    exp_right: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -3519,7 +3529,7 @@ fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32;
 fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, var_decl: **struc CVariableDeclaration) i32;
 
 fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    exp: *struc CExp = nil
+    exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -3561,7 +3571,7 @@ fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement)
 }
 
 fn parse_exp_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    exp: *struc CExp = nil
+    exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
@@ -3577,7 +3587,7 @@ fn parse_exp_statement(ctx: *struc ParserContext, statement: **struc CStatement)
 }
 
 fn parse_compound_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    block: *struc CBlock = nil
+    block: *struc CBlock = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_block(ctx, &block))"
@@ -3598,9 +3608,9 @@ fn parse_compound_statement(ctx: *struc ParserContext, statement: **struc CState
 }
 
 fn parse_if_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    condition: *struc CExp = nil
-    then_fi: *struc CStatement = nil
-    else_fi: *struc CStatement = nil
+    condition: *struc CExp = uptr_new()
+    then_fi: *struc CStatement = uptr_new()
+    else_fi: *struc CStatement = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(pop_next(ctx))"
@@ -3731,7 +3741,7 @@ fn parse_jump_statement(ctx: *struc ParserContext, statement: **struc CStatement
 }
 
 fn parse_label_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    jump_to: *struc CStatement = nil
+    jump_to: *struc CStatement = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -3771,7 +3781,7 @@ fn parse_label_statement(ctx: *struc ParserContext, statement: **struc CStatemen
 }
 
 fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) i32 {
-    var_decl: *struc CVariableDeclaration = nil
+    var_decl: *struc CVariableDeclaration = uptr_new()
     _errval: i32 = 0
     storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
     loop .. while 0 {
@@ -3788,7 +3798,7 @@ fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) i
 }
 
 fn parse_loop_init_exp(ctx: *struc ParserContext, for_init: **struc CForInit) i32 {
-    init: *struc CExp = nil
+    init: *struc CExp = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_exp(ctx, 0, &init))"
@@ -3804,10 +3814,10 @@ fn parse_loop_init_exp(ctx: *struc ParserContext, for_init: **struc CForInit) i3
 }
 
 fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    for_init: *struc CForInit = nil
-    condition: *struc CExp = nil
-    post: *struc CExp = nil
-    body: *struc CStatement = nil
+    for_init: *struc CForInit = uptr_new()
+    condition: *struc CExp = uptr_new()
+    post: *struc CExp = uptr_new()
+    body: *struc CStatement = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(pop_next(ctx))"
@@ -4036,7 +4046,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
     }
     label Lbreak
     if not for_init {
-        exp_null: *struc CExp = nil
+        exp_null: *struc CExp = uptr_new()
         for_init = make_CInitExp(@exp_null)
     }
     if not condition {
@@ -4073,8 +4083,8 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
 }
 
 fn parse_match_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    lookup: *struc CExp = nil
-    body: *struc CStatement = nil
+    lookup: *struc CExp = uptr_new()
+    body: *struc CStatement = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(pop_next(ctx))"
@@ -4105,9 +4115,9 @@ fn parse_match_statement(ctx: *struc ParserContext, statement: **struc CStatemen
 }
 
 fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    value: *struc CExp = nil
-    jump_to: *struc CStatement = nil
-    constant: *struc CConst = nil
+    value: *struc CExp = uptr_new()
+    jump_to: *struc CStatement = uptr_new()
+    constant: *struc CConst = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -4181,7 +4191,7 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
 }
 
 fn parse_otherwise_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    jump_to: *struc CStatement = nil
+    jump_to: *struc CStatement = uptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -4389,7 +4399,7 @@ fn parse_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32
 fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32;
 
 fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i32 {
-    statement: *struc CStatement = nil
+    statement: *struc CStatement = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_statement(ctx, &statement))"
@@ -4405,7 +4415,7 @@ fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
 }
 
 fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i32 {
-    declaration: *struc CDeclaration = nil
+    declaration: *struc CDeclaration = uptr_new()
     _errval: i32 = 0
     storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
     loop .. while 0 {
@@ -4484,8 +4494,8 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
 }
 
 fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
-    block_item: *struc CBlockItem = nil
-    block_items: **struc CBlockItem = nil
+    block_item: *struc CBlockItem = uptr_new()
+    block_items: **struc CBlockItem = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(peek_next(ctx))"
@@ -4526,9 +4536,13 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
         }
     }
     loop .. while 0 {
+        "@MACRO@:vec_move_back(block_items, block_item)"
         loop .. while 0 {
-            (? (not (block_items) or (cast<*struc stbds_array_header>((block_items)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((block_items)) - 1)[].capacity) then (((block_items) = stbds_arrgrowf((block_items), sizeof((block_items)[]), (1), (0))) and 0) else 0)
-            (block_items)[(cast<*struc stbds_array_header>((block_items)) - 1)[].length++] = (block_item)
+            "@MACRO@:vec_push_back(block_items, block_item)"
+            loop .. while 0 {
+                (? (not (block_items) or (cast<*struc stbds_array_header>((block_items)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((block_items)) - 1)[].capacity) then (((block_items) = stbds_arrgrowf((block_items), sizeof((block_items)[]), (1), (0))) and 0) else 0)
+                (block_items)[(cast<*struc stbds_array_header>((block_items)) - 1)[].length++] = (block_item)
+            }
         }
         block_item = nil
     }
@@ -4575,9 +4589,13 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
             }
         }
         loop .. while 0 {
+            "@MACRO@:vec_move_back(block_items, block_item)"
             loop .. while 0 {
-                (? (not (block_items) or (cast<*struc stbds_array_header>((block_items)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((block_items)) - 1)[].capacity) then (((block_items) = stbds_arrgrowf((block_items), sizeof((block_items)[]), (1), (0))) and 0) else 0)
-                (block_items)[(cast<*struc stbds_array_header>((block_items)) - 1)[].length++] = (block_item)
+                "@MACRO@:vec_push_back(block_items, block_item)"
+                loop .. while 0 {
+                    (? (not (block_items) or (cast<*struc stbds_array_header>((block_items)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((block_items)) - 1)[].capacity) then (((block_items) = stbds_arrgrowf((block_items), sizeof((block_items)[]), (1), (0))) and 0) else 0)
+                    (block_items)[(cast<*struc stbds_array_header>((block_items)) - 1)[].length++] = (block_item)
+                }
             }
             block_item = nil
         }
@@ -4596,11 +4614,12 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
         free_CBlockItem(@block_items[i])
     }
     if block_items {
+        "@MACRO@:vec_delete(block_items)"
         loop .. while 0 {
             cast<none>((? (block_items) then free((cast<*struc stbds_array_header>((block_items)) - 1)) else cast<none>(0)))
             (block_items) = nil
         }
-        block_items = nil
+        block_items = vec_new()
     }
     return _errval
 }
@@ -4644,7 +4663,7 @@ fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
 fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitializer) i32;
 
 fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
-    exp: *struc CExp = nil
+    exp: *struc CExp = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
@@ -4660,7 +4679,7 @@ fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitialize
 }
 
 fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
-    initializers: **struc CInitializer = nil
+    initializers: **struc CInitializer = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(pop_next(ctx))"
@@ -4706,9 +4725,13 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
         }
     }
     loop .. while 0 {
+        "@MACRO@:vec_move_back(initializers, *initializer)"
         loop .. while 0 {
-            (? (not (initializers) or (cast<*struc stbds_array_header>((initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((initializers)) - 1)[].capacity) then (((initializers) = stbds_arrgrowf((initializers), sizeof((initializers)[]), (1), (0))) and 0) else 0)
-            (initializers)[(cast<*struc stbds_array_header>((initializers)) - 1)[].length++] = (initializer[])
+            "@MACRO@:vec_push_back(initializers, *initializer)"
+            loop .. while 0 {
+                (? (not (initializers) or (cast<*struc stbds_array_header>((initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((initializers)) - 1)[].capacity) then (((initializers) = stbds_arrgrowf((initializers), sizeof((initializers)[]), (1), (0))) and 0) else 0)
+                (initializers)[(cast<*struc stbds_array_header>((initializers)) - 1)[].length++] = (initializer[])
+            }
         }
         initializer[] = nil
     }
@@ -4728,9 +4751,13 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
             }
         }
         loop .. while 0 {
+            "@MACRO@:vec_move_back(initializers, *initializer)"
             loop .. while 0 {
-                (? (not (initializers) or (cast<*struc stbds_array_header>((initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((initializers)) - 1)[].capacity) then (((initializers) = stbds_arrgrowf((initializers), sizeof((initializers)[]), (1), (0))) and 0) else 0)
-                (initializers)[(cast<*struc stbds_array_header>((initializers)) - 1)[].length++] = (initializer[])
+                "@MACRO@:vec_push_back(initializers, *initializer)"
+                loop .. while 0 {
+                    (? (not (initializers) or (cast<*struc stbds_array_header>((initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((initializers)) - 1)[].capacity) then (((initializers) = stbds_arrgrowf((initializers), sizeof((initializers)[]), (1), (0))) and 0) else 0)
+                    (initializers)[(cast<*struc stbds_array_header>((initializers)) - 1)[].length++] = (initializer[])
+                }
             }
             initializer[] = nil
         }
@@ -4755,11 +4782,12 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
         free_CInitializer(@initializers[i])
     }
     if initializers {
+        "@MACRO@:vec_delete(initializers)"
         loop .. while 0 {
             cast<none>((? (initializers) then free((cast<*struc stbds_array_header>((initializers)) - 1)) else cast<none>(0)))
             (initializers) = nil
         }
-        initializers = nil
+        initializers = vec_new()
     }
     return _errval
 }
@@ -4867,7 +4895,7 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
 }
 
 fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***struc Type) i32 {
-    param_type: *struc Type = nil
+    param_type: *struc Type = sptr_new()
     _errval: i32 = 0
     param: u64;
     loop .. while 0 {
@@ -4878,13 +4906,20 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
         }
     }
     loop .. while 0 {
-        (? (not (params[]) or (cast<*struc stbds_array_header>((params[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((params[])) - 1)[].capacity) then (((params[]) = stbds_arrgrowf((params[]), sizeof((params[])[]), (1), (0))) and 0) else 0)
-        (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
+        "@MACRO@:vec_push_back(*params, param)"
+        loop .. while 0 {
+            (? (not (params[]) or (cast<*struc stbds_array_header>((params[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((params[])) - 1)[].capacity) then (((params[]) = stbds_arrgrowf((params[]), sizeof((params[])[]), (1), (0))) and 0) else 0)
+            (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
+        }
     }
     loop .. while 0 {
+        "@MACRO@:vec_move_back(*param_types, param_type)"
         loop .. while 0 {
-            (? (not (param_types[]) or (cast<*struc stbds_array_header>((param_types[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((param_types[])) - 1)[].capacity) then (((param_types[]) = stbds_arrgrowf((param_types[]), sizeof((param_types[])[]), (1), (0))) and 0) else 0)
-            (param_types[])[(cast<*struc stbds_array_header>((param_types[])) - 1)[].length++] = (param_type)
+            "@MACRO@:vec_push_back(*param_types, param_type)"
+            loop .. while 0 {
+                (? (not (param_types[]) or (cast<*struc stbds_array_header>((param_types[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((param_types[])) - 1)[].capacity) then (((param_types[]) = stbds_arrgrowf((param_types[]), sizeof((param_types[])[]), (1), (0))) and 0) else 0)
+                (param_types[])[(cast<*struc stbds_array_header>((param_types[])) - 1)[].length++] = (param_type)
+            }
         }
         param_type = nil
     }
@@ -4918,13 +4953,20 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
             }
         }
         loop .. while 0 {
-            (? (not (params[]) or (cast<*struc stbds_array_header>((params[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((params[])) - 1)[].capacity) then (((params[]) = stbds_arrgrowf((params[]), sizeof((params[])[]), (1), (0))) and 0) else 0)
-            (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
+            "@MACRO@:vec_push_back(*params, param)"
+            loop .. while 0 {
+                (? (not (params[]) or (cast<*struc stbds_array_header>((params[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((params[])) - 1)[].capacity) then (((params[]) = stbds_arrgrowf((params[]), sizeof((params[])[]), (1), (0))) and 0) else 0)
+                (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
+            }
         }
         loop .. while 0 {
+            "@MACRO@:vec_move_back(*param_types, param_type)"
             loop .. while 0 {
-                (? (not (param_types[]) or (cast<*struc stbds_array_header>((param_types[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((param_types[])) - 1)[].capacity) then (((param_types[]) = stbds_arrgrowf((param_types[]), sizeof((param_types[])[]), (1), (0))) and 0) else 0)
-                (param_types[])[(cast<*struc stbds_array_header>((param_types[])) - 1)[].length++] = (param_type)
+                "@MACRO@:vec_push_back(*param_types, param_type)"
+                loop .. while 0 {
+                    (? (not (param_types[]) or (cast<*struc stbds_array_header>((param_types[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((param_types[])) - 1)[].capacity) then (((param_types[]) = stbds_arrgrowf((param_types[]), sizeof((param_types[])[]), (1), (0))) and 0) else 0)
+                    (param_types[])[(cast<*struc stbds_array_header>((param_types[])) - 1)[].length++] = (param_type)
+                }
             }
             param_type = nil
         }
@@ -4942,7 +4984,7 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
 }
 
 fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: **u64) i32 {
-    param_types: **struc Type = nil
+    param_types: **struc Type = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(pop_next(ctx))"
@@ -5010,19 +5052,20 @@ fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: 
         free_Type(@param_types[i])
     }
     if param_types {
+        "@MACRO@:vec_delete(param_types)"
         loop .. while 0 {
             cast<none>((? (param_types) then free((cast<*struc stbds_array_header>((param_types)) - 1)) else cast<none>(0)))
             (param_types) = nil
         }
-        param_types = nil
+        param_types = vec_new()
     }
     return _errval
 }
 
 fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, fun_decl: **struc CFunctionDeclaration) i32 {
-    body: *struc CBlock = nil
-    fun_type: *struc Type = nil
-    params: *u64 = nil
+    body: *struc CBlock = uptr_new()
+    fun_type: *struc Type = sptr_new()
+    params: *u64 = vec_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -5073,18 +5116,19 @@ fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
     free_CBlock(@body)
     free_Type(@fun_type)
     if params {
+        "@MACRO@:vec_delete(params)"
         loop .. while 0 {
             cast<none>((? (params) then free((cast<*struc stbds_array_header>((params)) - 1)) else cast<none>(0)))
             (params) = nil
         }
-        params = nil
+        params = vec_new()
     }
     return _errval
 }
 
 fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, var_decl: **struc CVariableDeclaration) i32 {
-    initializer: *struc CInitializer = nil
-    var_type: *struc Type = nil
+    initializer: *struc CInitializer = uptr_new()
+    var_type: *struc Type = sptr_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
@@ -5133,7 +5177,7 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
 }
 
 fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMemberDeclaration) i32 {
-    member_type: *struc Type = nil
+    member_type: *struc Type = sptr_new()
     _errval: i32 = 0
     info_at: u64;
     member_name: u64;
@@ -5159,7 +5203,7 @@ fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMem
 }
 
 fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclaration) i32 {
-    member: *struc CMemberDeclaration = nil
+    member: *struc CMemberDeclaration = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_member_declaration(ctx, &member))"
@@ -5169,9 +5213,13 @@ fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclara
         }
     }
     loop .. while 0 {
+        "@MACRO@:vec_move_back(*members, member)"
         loop .. while 0 {
-            (? (not (members[]) or (cast<*struc stbds_array_header>((members[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((members[])) - 1)[].capacity) then (((members[]) = stbds_arrgrowf((members[]), sizeof((members[])[]), (1), (0))) and 0) else 0)
-            (members[])[(cast<*struc stbds_array_header>((members[])) - 1)[].length++] = (member)
+            "@MACRO@:vec_push_back(*members, member)"
+            loop .. while 0 {
+                (? (not (members[]) or (cast<*struc stbds_array_header>((members[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((members[])) - 1)[].capacity) then (((members[]) = stbds_arrgrowf((members[]), sizeof((members[])[]), (1), (0))) and 0) else 0)
+                (members[])[(cast<*struc stbds_array_header>((members[])) - 1)[].length++] = (member)
+            }
         }
         member = nil
     }
@@ -5191,9 +5239,13 @@ fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclara
             }
         }
         loop .. while 0 {
+            "@MACRO@:vec_move_back(*members, member)"
             loop .. while 0 {
-                (? (not (members[]) or (cast<*struc stbds_array_header>((members[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((members[])) - 1)[].capacity) then (((members[]) = stbds_arrgrowf((members[]), sizeof((members[])[]), (1), (0))) and 0) else 0)
-                (members[])[(cast<*struc stbds_array_header>((members[])) - 1)[].length++] = (member)
+                "@MACRO@:vec_push_back(*members, member)"
+                loop .. while 0 {
+                    (? (not (members[]) or (cast<*struc stbds_array_header>((members[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((members[])) - 1)[].capacity) then (((members[]) = stbds_arrgrowf((members[]), sizeof((members[])[]), (1), (0))) and 0) else 0)
+                    (members[])[(cast<*struc stbds_array_header>((members[])) - 1)[].length++] = (member)
+                }
             }
             member = nil
         }
@@ -5218,7 +5270,7 @@ fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclara
 }
 
 fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStructDeclaration) i32 {
-    members: **struc CMemberDeclaration = nil
+    members: **struc CMemberDeclaration = vec_new()
     _errval: i32 = 0
     is_union: i32;
     tag_name: u64;
@@ -5280,17 +5332,18 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
         free_CMemberDeclaration(@members[i])
     }
     if members {
+        "@MACRO@:vec_delete(members)"
         loop .. while 0 {
             cast<none>((? (members) then free((cast<*struc stbds_array_header>((members)) - 1)) else cast<none>(0)))
             (members) = nil
         }
-        members = nil
+        members = vec_new()
     }
     return _errval
 }
 
 fn parse_fun_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
-    fun_decl: *struc CFunctionDeclaration = nil
+    fun_decl: *struc CFunctionDeclaration = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_fun_declaration(ctx, storage_class, &fun_decl))"
@@ -5306,7 +5359,7 @@ fn parse_fun_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass
 }
 
 fn parse_var_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
-    var_decl: *struc CVariableDeclaration = nil
+    var_decl: *struc CVariableDeclaration = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_var_declaration(ctx, storage_class, &var_decl))"
@@ -5322,7 +5375,7 @@ fn parse_var_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass
 }
 
 fn parse_type_decl(ctx: *struc ParserContext, declaration: **struc CDeclaration) i32 {
-    struct_decl: *struc CStructDeclaration = nil
+    struct_decl: *struc CStructDeclaration = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
         "@MACRO@:TRY(parse_type_declaration(ctx, &struct_decl))"
@@ -5448,8 +5501,8 @@ fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageCl
 }
 
 fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
-    declaration: *struc CDeclaration = nil
-    declarations: **struc CDeclaration = nil
+    declaration: *struc CDeclaration = uptr_new()
+    declarations: **struc CDeclaration = vec_new()
     _errval: i32 = 0
     loop while ctx[].pop_idx < (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
         storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
@@ -5476,9 +5529,13 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
             }
         }
         loop .. while 0 {
+            "@MACRO@:vec_move_back(declarations, declaration)"
             loop .. while 0 {
-                (? (not (declarations) or (cast<*struc stbds_array_header>((declarations)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((declarations)) - 1)[].capacity) then (((declarations) = stbds_arrgrowf((declarations), sizeof((declarations)[]), (1), (0))) and 0) else 0)
-                (declarations)[(cast<*struc stbds_array_header>((declarations)) - 1)[].length++] = (declaration)
+                "@MACRO@:vec_push_back(declarations, declaration)"
+                loop .. while 0 {
+                    (? (not (declarations) or (cast<*struc stbds_array_header>((declarations)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((declarations)) - 1)[].capacity) then (((declarations) = stbds_arrgrowf((declarations), sizeof((declarations)[]), (1), (0))) and 0) else 0)
+                    (declarations)[(cast<*struc stbds_array_header>((declarations)) - 1)[].length++] = (declaration)
+                }
             }
             declaration = nil
         }
@@ -5504,11 +5561,12 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
         free_CDeclaration(@declarations[i])
     }
     if declarations {
+        "@MACRO@:vec_delete(declarations)"
         loop .. while 0 {
             cast<none>((? (declarations) then free((cast<*struc stbds_array_header>((declarations)) - 1)) else cast<none>(0)))
             (declarations) = nil
         }
-        declarations = nil
+        declarations = vec_new()
     }
     return _errval
 }
@@ -5532,11 +5590,12 @@ pub fn parse_tokens(tokens: **struc Token, errors: *struc ErrorsContext, identif
     }
     label _Lfinally
     if tokens[] {
+        "@MACRO@:vec_delete(*tokens)"
         loop .. while 0 {
             cast<none>((? (tokens[]) then free((cast<*struc stbds_array_header>((tokens[])) - 1)) else cast<none>(0)))
             (tokens[]) = nil
         }
-        tokens[] = nil
+        tokens[] = vec_new()
     }
     return _errval
 }

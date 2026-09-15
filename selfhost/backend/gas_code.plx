@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -983,6 +983,7 @@ fn emit_char(ctx: *struc GasCodeContext, value: i8) none {
     strto_value: string = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
     emit(ctx, strto_value)
     if strto_value {
+        "@MACRO@:str_delete(strto_value)"
         sdsfree(strto_value)
         strto_value = ? nil then sdsnew(nil) else nil
     }
@@ -992,6 +993,7 @@ fn emit_int(ctx: *struc GasCodeContext, value: i32) none {
     strto_value: string = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
     emit(ctx, strto_value)
     if strto_value {
+        "@MACRO@:str_delete(strto_value)"
         sdsfree(strto_value)
         strto_value = ? nil then sdsnew(nil) else nil
     }
@@ -1001,6 +1003,7 @@ fn emit_long(ctx: *struc GasCodeContext, value: i64) none {
     strto_value: string = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
     emit(ctx, strto_value)
     if strto_value {
+        "@MACRO@:str_delete(strto_value)"
         sdsfree(strto_value)
         strto_value = ? nil then sdsnew(nil) else nil
     }
@@ -1015,6 +1018,7 @@ fn emit_uchar(ctx: *struc GasCodeContext, value: u8) none {
     strto_value: string = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
     emit(ctx, strto_value)
     if strto_value {
+        "@MACRO@:str_delete(strto_value)"
         sdsfree(strto_value)
         strto_value = ? nil then sdsnew(nil) else nil
     }
@@ -1024,6 +1028,7 @@ fn emit_uint(ctx: *struc GasCodeContext, value: u32) none {
     strto_value: string = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
     emit(ctx, strto_value)
     if strto_value {
+        "@MACRO@:str_delete(strto_value)"
         sdsfree(strto_value)
         strto_value = ? nil then sdsnew(nil) else nil
     }
@@ -1033,6 +1038,7 @@ fn emit_ulong(ctx: *struc GasCodeContext, value: u64) none {
     strto_value: string = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
     emit(ctx, strto_value)
     if strto_value {
+        "@MACRO@:str_delete(strto_value)"
         sdsfree(strto_value)
         strto_value = ? nil then sdsnew(nil) else nil
     }

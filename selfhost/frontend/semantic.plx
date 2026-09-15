@@ -102,14 +102,14 @@ m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
 m4_define(`unique_ptr_t', `TODO')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
-m4_define(`uptr_new', `TODO')m4_dnl
+m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
 m4_define(`shared_ptr_t', `TODO')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
-m4_define(`sptr_new', `TODO')m4_dnl
+m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
@@ -132,7 +132,7 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `TODO')m4_dnl
-m4_define(`vec_new', `TODO')m4_dnl
+m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
 m4_define(`vec_size', `TODO')m4_dnl
@@ -150,7 +150,7 @@ m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
 m4_define(`hashmap_t', `TODO')m4_dnl
-m4_define(`map_new', `TODO')m4_dnl
+m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
@@ -166,7 +166,7 @@ m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
 m4_define(`hashset_t', `TODO')m4_dnl
-m4_define(`set_new', `TODO')m4_dnl
+m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
 m4_define(`set_clear', `TODO')m4_dnl
@@ -1536,10 +1536,12 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -1711,16 +1713,16 @@ fn get_type_alignment(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
 }
 
 fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
-    joint_type: *struc Type = nil
+    joint_type: *struc Type = sptr_new()
     if is_type_char(node_1[].exp_type) {
-        exp_type: *struc Type = nil
+        exp_type: *struc Type = sptr_new()
         loop .. while 0 {
             "@MACRO@:sptr_move(Type, node_1->exp_type, exp_type)"
             if node_1[].exp_type ~= exp_type {
                 "@MACRO@:uptr_move(Type, node_1->exp_type, exp_type)"
                 free_Type(@exp_type)
                 exp_type = node_1[].exp_type
-                node_1[].exp_type = nil
+                node_1[].exp_type = uptr_new()
             }
         }
         node_1[].exp_type = make_Int()
@@ -1731,19 +1733,19 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
                 "@MACRO@:uptr_move(Type, exp_type, node_1->exp_type)"
                 free_Type(@node_1[].exp_type)
                 node_1[].exp_type = exp_type
-                exp_type = nil
+                exp_type = uptr_new()
             }
         }
     }
     elif is_type_char(node_2[].exp_type) {
-        exp_type: *struc Type = nil
+        exp_type: *struc Type = sptr_new()
         loop .. while 0 {
             "@MACRO@:sptr_move(Type, node_2->exp_type, exp_type)"
             if node_2[].exp_type ~= exp_type {
                 "@MACRO@:uptr_move(Type, node_2->exp_type, exp_type)"
                 free_Type(@exp_type)
                 exp_type = node_2[].exp_type
-                node_2[].exp_type = nil
+                node_2[].exp_type = uptr_new()
             }
         }
         node_2[].exp_type = make_Int()
@@ -1754,7 +1756,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
                 "@MACRO@:uptr_move(Type, exp_type, node_2->exp_type)"
                 free_Type(@node_2[].exp_type)
                 node_2[].exp_type = exp_type
-                exp_type = nil
+                exp_type = uptr_new()
             }
         }
     }
@@ -1856,10 +1858,12 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2162,6 +2166,7 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -2203,10 +2208,12 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2214,7 +2221,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
 }
 
 fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CExp) i32 {
-    exp_type_cp: *struc Type = nil
+    exp_type_cp: *struc Type = sptr_new()
     _errval: i32 = 0
     info_at: u64 = (exp[])[].info_at
     if exp_type[] ~= exp_type_cp {
@@ -2259,10 +2266,12 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2270,7 +2279,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
 }
 
 fn promote_char_to_int(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
-    promote_type: *struc Type = nil
+    promote_type: *struc Type = sptr_new()
     _errval: i32 = 0
     promote_type = make_Int()
     loop .. while 0 {
@@ -2331,6 +2340,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -2375,6 +2385,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -2395,6 +2406,7 @@ fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     node[]._base[].exp_type = make_Int()
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -2445,7 +2457,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
 fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
@@ -2520,15 +2532,17 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = common_type
-            common_type = nil
+            common_type = uptr_new()
         }
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2539,7 +2553,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
 fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
@@ -2572,7 +2586,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
                     "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
                     free_Type(@node[]._base[].exp_type)
                     node[]._base[].exp_type = common_type
-                    common_type = nil
+                    common_type = uptr_new()
                 }
             }
             jump _Lfinally
@@ -2618,15 +2632,17 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
             "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = common_type
-            common_type = nil
+            common_type = uptr_new()
         }
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2637,7 +2653,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         loop .. while 0 {
@@ -2672,15 +2688,17 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
             "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = common_type
-            common_type = nil
+            common_type = uptr_new()
         }
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2691,7 +2709,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         loop .. while 0 {
@@ -2726,7 +2744,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
             "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = common_type
-            common_type = nil
+            common_type = uptr_new()
         }
     }
     if node[]._base[].exp_type[].tag == AST_Double_t {
@@ -2739,10 +2757,12 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2796,10 +2816,12 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2837,10 +2859,12 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
     node[]._base[].exp_type = make_Int()
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2850,7 +2874,7 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
 fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if node[].exp_left[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
         loop .. while 0 {
@@ -2893,10 +2917,12 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     node[]._base[].exp_type = make_Int()
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -2907,7 +2933,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
         loop .. while 0 {
@@ -2939,10 +2965,12 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     node[]._base[].exp_type = make_Int()
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -3140,7 +3168,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
 fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    common_type: *struc Type = nil
+    common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
@@ -3220,15 +3248,17 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
             "@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = common_type
-            common_type = nil
+            common_type = uptr_new()
         }
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -3280,14 +3310,17 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_1 {
+        "@MACRO@:str_delete(strto_fmt_1)"
         sdsfree(strto_fmt_1)
         strto_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_2 {
+        "@MACRO@:str_delete(strto_fmt_2)"
         sdsfree(strto_fmt_2)
         strto_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -3313,6 +3346,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3320,7 +3354,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
 }
 
 fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
-    ref_type: *struc Type = nil
+    ref_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_exp_lvalue(node[].exp) {
         loop .. while 0 {
@@ -3345,8 +3379,8 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
 fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32 {
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    ref_type: *struc Type = nil
-    subscript_type: *struc Type = nil
+    ref_type: *struc Type = sptr_new()
+    subscript_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if node[].primary_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].primary_exp[].exp_type[].get._Pointer.ref_type) and is_type_int(node[].subscript_exp[].exp_type) {
         subscript_type = make_Long()
@@ -3398,15 +3432,17 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
             "@MACRO@:uptr_move(Type, ref_type, node->_base->exp_type)"
             free_Type(@node[]._base[].exp_type)
             node[]._base[].exp_type = ref_type
-            ref_type = nil
+            ref_type = uptr_new()
         }
     }
     label _Lfinally
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -3429,6 +3465,7 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     node[]._base[].exp_type = make_ULong()
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3464,6 +3501,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     node[]._base[].exp_type = make_ULong()
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3506,10 +3544,12 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3571,10 +3611,12 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3583,7 +3625,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
 
 fn check_arr_typed_exp(addrof: **struc CExp) none {
     {
-        ref_type: *struc Type = nil
+        ref_type: *struc Type = sptr_new()
         if (addrof[])[].exp_type[].get._Array.elem_type ~= ref_type {
             "@MACRO@:sptr_copy(Type, (*addrof)->exp_type->get._Array.elem_type, ref_type)"
             free_Type(@ref_type)
@@ -3616,6 +3658,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3689,10 +3732,12 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3712,6 +3757,7 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3731,6 +3777,7 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3750,6 +3797,7 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3769,6 +3817,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -3777,11 +3826,14 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
 
 fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *i32 = nil
+    values: *i32 = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
-        (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-        ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        "@MACRO@:vec_resize(values, vec_size(node->cases))"
+        loop .. while 0 {
+            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
+            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        }
     }
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
@@ -3808,26 +3860,31 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     }
     label _Lfinally
     if strto_fmt {
+        "@MACRO@:str_delete(strto_fmt)"
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
     if values {
+        "@MACRO@:vec_delete(values)"
         loop .. while 0 {
             cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
             (values) = nil
         }
-        values = nil
+        values = vec_new()
     }
     return _errval
 }
 
 fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *i64 = nil
+    values: *i64 = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
-        (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-        ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        "@MACRO@:vec_resize(values, vec_size(node->cases))"
+        loop .. while 0 {
+            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
+            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        }
     }
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
@@ -3854,26 +3911,31 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
     }
     label _Lfinally
     if strto_fmt {
+        "@MACRO@:str_delete(strto_fmt)"
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
     if values {
+        "@MACRO@:vec_delete(values)"
         loop .. while 0 {
             cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
             (values) = nil
         }
-        values = nil
+        values = vec_new()
     }
     return _errval
 }
 
 fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *u32 = nil
+    values: *u32 = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
-        (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-        ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        "@MACRO@:vec_resize(values, vec_size(node->cases))"
+        loop .. while 0 {
+            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
+            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        }
     }
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
@@ -3900,26 +3962,31 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
     }
     label _Lfinally
     if strto_fmt {
+        "@MACRO@:str_delete(strto_fmt)"
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
     if values {
+        "@MACRO@:vec_delete(values)"
         loop .. while 0 {
             cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
             (values) = nil
         }
-        values = nil
+        values = vec_new()
     }
     return _errval
 }
 
 fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *u64 = nil
+    values: *u64 = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
-        (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-        ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        "@MACRO@:vec_resize(values, vec_size(node->cases))"
+        loop .. while 0 {
+            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
+            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
+        }
     }
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
@@ -3946,15 +4013,17 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
     }
     label _Lfinally
     if strto_fmt {
+        "@MACRO@:str_delete(strto_fmt)"
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
     if values {
+        "@MACRO@:vec_delete(values)"
         loop .. while 0 {
             cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
             (values) = nil
         }
-        values = nil
+        values = vec_new()
     }
     return _errval
 }
@@ -4036,6 +4105,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -4067,14 +4137,17 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_1 {
+        "@MACRO@:str_delete(strto_fmt_1)"
         sdsfree(strto_fmt_1)
         strto_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_2 {
+        "@MACRO@:str_delete(strto_fmt_2)"
         sdsfree(strto_fmt_2)
         strto_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -4119,9 +4192,9 @@ fn check_string_init(node: *struc CSingleInit, init_type: **struc Type) none {
 fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc CInitializer;
 
 fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
-    exp: *struc CExp = nil
+    exp: *struc CExp = uptr_new()
     {
-        constant: *struc CConst = nil
+        constant: *struc CConst = sptr_new()
         match elem_type[].tag {
             -> AST_Char_t {
                 -> AST_SChar_t {
@@ -4166,15 +4239,22 @@ fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
 }
 
 fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *struc CInitializer {
-    zero_inits: **struc CInitializer = nil
+    zero_inits: **struc CInitializer = vec_new()
     arr_type_size: u64 = cast<u64>(arr_type[].size)
-    (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (0), (arr_type_size))))
+    loop .. while 0 {
+        "@MACRO@:vec_reserve(zero_inits, arr_type_size)"
+        (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (0), (arr_type_size))))
+    }
     loop i: u64 = 0 while i < arr_type_size .. ++i {
         initializer: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
         loop .. while 0 {
+            "@MACRO@:vec_move_back(zero_inits, initializer)"
             loop .. while 0 {
-                (? (not (zero_inits) or (cast<*struc stbds_array_header>((zero_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((zero_inits)) - 1)[].capacity) then (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (1), (0))) and 0) else 0)
-                (zero_inits)[(cast<*struc stbds_array_header>((zero_inits)) - 1)[].length++] = (initializer)
+                "@MACRO@:vec_push_back(zero_inits, initializer)"
+                loop .. while 0 {
+                    (? (not (zero_inits) or (cast<*struc stbds_array_header>((zero_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((zero_inits)) - 1)[].capacity) then (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (1), (0))) and 0) else 0)
+                    (zero_inits)[(cast<*struc stbds_array_header>((zero_inits)) - 1)[].length++] = (initializer)
+                }
             }
             initializer = nil
         }
@@ -4183,16 +4263,23 @@ fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *str
 }
 
 fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) *struc CInitializer {
-    zero_inits: **struc CInitializer = nil
+    zero_inits: **struc CInitializer = vec_new()
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (0), ((? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0)))))
+    loop .. while 0 {
+        "@MACRO@:vec_reserve(zero_inits, vec_size(struct_typedef->member_names))"
+        (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (0), ((? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0)))))
+    }
     loop i: u64 = 0 while i < (? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         initializer: *struc CInitializer = check_zero_init(ctx, member[].member_type)
         loop .. while 0 {
+            "@MACRO@:vec_move_back(zero_inits, initializer)"
             loop .. while 0 {
-                (? (not (zero_inits) or (cast<*struc stbds_array_header>((zero_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((zero_inits)) - 1)[].capacity) then (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (1), (0))) and 0) else 0)
-                (zero_inits)[(cast<*struc stbds_array_header>((zero_inits)) - 1)[].length++] = (initializer)
+                "@MACRO@:vec_push_back(zero_inits, initializer)"
+                loop .. while 0 {
+                    (? (not (zero_inits) or (cast<*struc stbds_array_header>((zero_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((zero_inits)) - 1)[].capacity) then (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (1), (0))) and 0) else 0)
+                    (zero_inits)[(cast<*struc stbds_array_header>((zero_inits)) - 1)[].length++] = (initializer)
+                }
             }
             initializer = nil
         }
@@ -4231,14 +4318,17 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_1 {
+        "@MACRO@:str_delete(strto_fmt_1)"
         sdsfree(strto_fmt_1)
         strto_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_2 {
+        "@MACRO@:str_delete(strto_fmt_2)"
         sdsfree(strto_fmt_2)
         strto_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -4264,14 +4354,17 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_1 {
+        "@MACRO@:str_delete(strto_fmt_1)"
         sdsfree(strto_fmt_1)
         strto_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt_2 {
+        "@MACRO@:str_delete(strto_fmt_2)"
         sdsfree(strto_fmt_2)
         strto_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -4282,9 +4375,13 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
     loop while (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) < cast<u64>(arr_type[].size) {
         zero_init: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
         loop .. while 0 {
+            "@MACRO@:vec_move_back(node->initializers, zero_init)"
             loop .. while 0 {
-                (? (not (node[].initializers) or (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].capacity) then (((node[].initializers) = stbds_arrgrowf((node[].initializers), sizeof((node[].initializers)[]), (1), (0))) and 0) else 0)
-                (node[].initializers)[(cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length++] = (zero_init)
+                "@MACRO@:vec_push_back(node->initializers, zero_init)"
+                loop .. while 0 {
+                    (? (not (node[].initializers) or (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].capacity) then (((node[].initializers) = stbds_arrgrowf((node[].initializers), sizeof((node[].initializers)[]), (1), (0))) and 0) else 0)
+                    (node[].initializers)[(cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length++] = (zero_init)
+                }
             }
             zero_init = nil
         }
@@ -4303,9 +4400,13 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
         loop .. while 0 {
+            "@MACRO@:vec_move_back(node->initializers, zero_init)"
             loop .. while 0 {
-                (? (not (node[].initializers) or (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].capacity) then (((node[].initializers) = stbds_arrgrowf((node[].initializers), sizeof((node[].initializers)[]), (1), (0))) and 0) else 0)
-                (node[].initializers)[(cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length++] = (zero_init)
+                "@MACRO@:vec_push_back(node->initializers, zero_init)"
+                loop .. while 0 {
+                    (? (not (node[].initializers) or (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].capacity) then (((node[].initializers) = stbds_arrgrowf((node[].initializers), sizeof((node[].initializers)[]), (1), (0))) and 0) else 0)
+                    (node[].initializers)[(cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length++] = (zero_init)
+                }
             }
             zero_init = nil
         }
@@ -4364,10 +4465,12 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -4375,7 +4478,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
 }
 
 fn check_arr_param_decl(fun_type: *struc FunType, i: u64) none {
-    ref_type: *struc Type = nil
+    ref_type: *struc Type = sptr_new()
     if fun_type[].param_types[i][].get._Array.elem_type ~= ref_type {
         "@MACRO@:sptr_copy(Type, fun_type->param_types[i]->get._Array.elem_type, ref_type)"
         free_Type(@ref_type)
@@ -4390,9 +4493,9 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     name_fmt_1: string = ? nil then sdsnew(nil) else nil
     name_fmt_2: string = ? nil then sdsnew(nil) else nil
     type_fmt: string = ? nil then sdsnew(nil) else nil
-    param_attrs: *struc IdentifierAttr = nil
-    symbol: *struc Symbol = nil
-    param_type: *struc Type = nil
+    param_attrs: *struc IdentifierAttr = uptr_new()
+    symbol: *struc Symbol = uptr_new()
+    param_type: *struc Type = sptr_new()
     _errval: i32 = 0
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
     loop i: u64 = 0 while i < (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) .. ++i {
@@ -4440,10 +4543,14 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
             param_attrs = make_LocalAttr()
             symbol = make_Symbol(@param_type, @param_attrs)
             loop .. while 0 {
+                "@MACRO@:map_move_add(ctx->frontend->symbol_table, node->params[i], symbol)"
                 loop .. while 0 {
-                    (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].params[i]))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                    (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].params[i])
-                    (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+                    "@MACRO@:map_add(ctx->frontend->symbol_table, node->params[i], symbol)"
+                    loop .. while 0 {
+                        (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].params[i]))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].params[i])
+                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+                    }
                 }
                 symbol = nil
             }
@@ -4451,14 +4558,17 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     }
     label _Lfinally
     if name_fmt_1 {
+        "@MACRO@:str_delete(name_fmt_1)"
         sdsfree(name_fmt_1)
         name_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if name_fmt_2 {
+        "@MACRO@:str_delete(name_fmt_2)"
         sdsfree(name_fmt_2)
         name_fmt_2 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -4472,9 +4582,9 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     name_fmt: string = ? nil then sdsnew(nil) else nil
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    glob_fun_attrs: *struc IdentifierAttr = nil
-    symbol: *struc Symbol = nil
-    glob_fun_type: *struc Type = nil
+    glob_fun_attrs: *struc IdentifierAttr = uptr_new()
+    symbol: *struc Symbol = uptr_new()
+    glob_fun_type: *struc Type = sptr_new()
     _errval: i32 = 0
     is_def: i32 = (? ((ctx[].fun_def_set) = stbds_hmget_key((ctx[].fun_def_set), sizeof((ctx[].fun_def_set)[]), cast<*any>(@((node[].name))), sizeof((ctx[].fun_def_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp) ~= -1
     is_glob: i32 = node[].storage_class.tag ~= AST_CStatic_t
@@ -4512,9 +4622,15 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     }
     if node[].body {
         loop .. while 0 {
-            (ctx[].fun_def_set) = stbds_hmput_key((ctx[].fun_def_set), sizeof((ctx[].fun_def_set)[]), cast<*any>(@((node[].name))), sizeof((ctx[].fun_def_set)[].key), 0)
-            (ctx[].fun_def_set)[(cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].fun_def_set)[(cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp].value = (0)
+            "@MACRO@:set_insert(ctx->fun_def_set, node->name)"
+            loop .. while 0 {
+                "@MACRO@:map_add(ctx->fun_def_set, node->name, 0)"
+                loop .. while 0 {
+                    (ctx[].fun_def_set) = stbds_hmput_key((ctx[].fun_def_set), sizeof((ctx[].fun_def_set)[]), cast<*any>(@((node[].name))), sizeof((ctx[].fun_def_set)[].key), 0)
+                    (ctx[].fun_def_set)[(cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp].key = (node[].name)
+                    (ctx[].fun_def_set)[(cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp].value = (0)
+                }
+            }
         }
         is_def = true
         ctx[].fun_def_name = node[].name
@@ -4528,23 +4644,30 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     glob_fun_attrs = make_FunAttr(is_def, is_glob)
     symbol = make_Symbol(@glob_fun_type, @glob_fun_attrs)
     loop .. while 0 {
+        "@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
         loop .. while 0 {
-            (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            "@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
+            loop .. while 0 {
+                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            }
         }
         symbol = nil
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -4556,9 +4679,13 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
 
 fn push_static_init(ctx: *struc SemanticContext, static_init: *struc StaticInit) none {
     loop .. while 0 {
+        "@MACRO@:vec_move_back(*ctx->p_static_inits, static_init)"
         loop .. while 0 {
-            (? (not (ctx[].p_static_inits[]) or (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].capacity) then (((ctx[].p_static_inits[]) = stbds_arrgrowf((ctx[].p_static_inits[]), sizeof((ctx[].p_static_inits[])[]), (1), (0))) and 0) else 0)
-            (ctx[].p_static_inits[])[(cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length++] = (static_init)
+            "@MACRO@:vec_push_back(*ctx->p_static_inits, static_init)"
+            loop .. while 0 {
+                (? (not (ctx[].p_static_inits[]) or (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].capacity) then (((ctx[].p_static_inits[]) = stbds_arrgrowf((ctx[].p_static_inits[]), sizeof((ctx[].p_static_inits[])[]), (1), (0))) and 0) else 0)
+                (ctx[].p_static_inits[])[(cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length++] = (static_init)
+            }
         }
         static_init = nil
     }
@@ -4581,7 +4708,7 @@ fn check_static_no_init(ctx: *struc SemanticContext, static_init_type: *struc Ty
 }
 
 fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Type) *struc InitialValue {
-    static_inits: **struc StaticInit = nil
+    static_inits: **struc StaticInit = vec_new()
     {
         ctx[].p_static_inits = @static_inits
         check_static_no_init(ctx, static_init_type, 1l)
@@ -4717,10 +4844,12 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
     if strto_fmt {
+        "@MACRO@:str_delete(strto_fmt)"
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -4740,6 +4869,7 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -4762,23 +4892,26 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
             loop .. while 0 {
-                (ctx[].frontend[].string_const_table) = stbds_hmput_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)
-                (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].key = (string_const)
-                (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].value = (string_const_label)
+                "@MACRO@:map_add(ctx->frontend->string_const_table, string_const, string_const_label)"
+                loop .. while 0 {
+                    (ctx[].frontend[].string_const_table) = stbds_hmput_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)
+                    (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].key = (string_const)
+                    (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].value = (string_const_label)
+                }
             }
 
-            constant_type: *struc Type = nil
+            constant_type: *struc Type = sptr_new()
             {
                 size: i64 = (cast<i64>((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))) + 1l
                 elem_type: *struc Type = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
 
-            constant_attrs: *struc IdentifierAttr = nil
+            constant_attrs: *struc IdentifierAttr = uptr_new()
             {
-                static_init: *struc StaticInit = nil
+                static_init: *struc StaticInit = sptr_new()
                 {
-                    literal: *struc CStringLiteral = nil
+                    literal: *struc CStringLiteral = sptr_new()
                     if node[].literal ~= literal {
                         "@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
                         free_CStringLiteral(@literal)
@@ -4792,10 +4925,14 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
             }
             symbol: *struc Symbol = make_Symbol(@constant_type, @constant_attrs)
             loop .. while 0 {
+                "@MACRO@:map_move_add(ctx->frontend->symbol_table, string_const_label, symbol)"
                 loop .. while 0 {
-                    (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((string_const_label))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                    (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (string_const_label)
-                    (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+                    "@MACRO@:map_add(ctx->frontend->symbol_table, string_const_label, symbol)"
+                    loop .. while 0 {
+                        (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((string_const_label))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (string_const_label)
+                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+                    }
                 }
                 symbol = nil
             }
@@ -4805,7 +4942,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
 }
 
 fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CString, static_arr_type: *struc Array) i32 {
-    literal: *struc CStringLiteral = nil
+    literal: *struc CStringLiteral = sptr_new()
     _errval: i32 = 0
     byte: i64;
     loop .. while 0 {
@@ -4902,6 +5039,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5002,6 +5140,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5040,7 +5179,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
 }
 
 fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type, init_value: **struc InitialValue) i32 {
-    static_inits: **struc StaticInit = nil
+    static_inits: **struc StaticInit = vec_new()
     _errval: i32 = 0
     {
         ctx[].p_static_inits = @static_inits
@@ -5059,11 +5198,12 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
         free_StaticInit(@static_inits[i])
     }
     if static_inits {
+        "@MACRO@:vec_delete(static_inits)"
         loop .. while 0 {
             cast<none>((? (static_inits) then free((cast<*struc stbds_array_header>((static_inits)) - 1)) else cast<none>(0)))
             (static_inits) = nil
         }
-        static_inits = nil
+        static_inits = vec_new()
     }
     return _errval
 }
@@ -5072,10 +5212,10 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     name_fmt: string = ? nil then sdsnew(nil) else nil
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    glob_var_attrs: *struc IdentifierAttr = nil
-    symbol: *struc Symbol = nil
-    init_value: *struc InitialValue = nil
-    glob_var_type: *struc Type = nil
+    glob_var_attrs: *struc IdentifierAttr = uptr_new()
+    symbol: *struc Symbol = uptr_new()
+    init_value: *struc InitialValue = sptr_new()
+    glob_var_type: *struc Type = sptr_new()
     _errval: i32 = 0
     is_glob: i32;
     map_it: i64;
@@ -5188,23 +5328,30 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     glob_var_attrs = make_StaticAttr(is_glob, @init_value)
     symbol = make_Symbol(@glob_var_type, @glob_var_attrs)
     loop .. while 0 {
+        "@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
         loop .. while 0 {
-            (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            "@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
+            loop .. while 0 {
+                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            }
         }
         symbol = nil
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -5219,10 +5366,10 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     name_fmt: string = ? nil then sdsnew(nil) else nil
     type_fmt_1: string = ? nil then sdsnew(nil) else nil
     type_fmt_2: string = ? nil then sdsnew(nil) else nil
-    local_var_attrs: *struc IdentifierAttr = nil
-    symbol: *struc Symbol = nil
-    init_value: *struc InitialValue = nil
-    local_var_type: *struc Type = nil
+    local_var_attrs: *struc IdentifierAttr = uptr_new()
+    symbol: *struc Symbol = uptr_new()
+    init_value: *struc InitialValue = sptr_new()
+    local_var_type: *struc Type = sptr_new()
     _errval: i32 = 0
     map_it: i64;
     if node[].init {
@@ -5256,23 +5403,30 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     local_var_attrs = make_StaticAttr(true, @init_value)
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     loop .. while 0 {
+        "@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
         loop .. while 0 {
-            (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            "@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
+            loop .. while 0 {
+                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            }
         }
         symbol = nil
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_1 {
+        "@MACRO@:str_delete(type_fmt_1)"
         sdsfree(type_fmt_1)
         type_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if type_fmt_2 {
+        "@MACRO@:str_delete(type_fmt_2)"
         sdsfree(type_fmt_2)
         type_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -5284,10 +5438,10 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
 }
 
 fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
-    local_var_attrs: *struc IdentifierAttr = nil
-    symbol: *struc Symbol = nil
-    init_value: *struc InitialValue = nil
-    local_var_type: *struc Type = nil
+    local_var_attrs: *struc IdentifierAttr = uptr_new()
+    symbol: *struc Symbol = uptr_new()
+    init_value: *struc InitialValue = sptr_new()
+    local_var_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if node[].init {
         loop .. while 0 {
@@ -5310,10 +5464,14 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     local_var_attrs = make_StaticAttr(false, @init_value)
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     loop .. while 0 {
+        "@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
         loop .. while 0 {
-            (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            "@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
+            loop .. while 0 {
+                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            }
         }
         symbol = nil
     }
@@ -5328,9 +5486,9 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
 fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
     name_fmt: string = ? nil then sdsnew(nil) else nil
     type_fmt: string = ? nil then sdsnew(nil) else nil
-    local_var_attrs: *struc IdentifierAttr = nil
-    symbol: *struc Symbol = nil
-    local_var_type: *struc Type = nil
+    local_var_attrs: *struc IdentifierAttr = uptr_new()
+    symbol: *struc Symbol = uptr_new()
+    local_var_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
         loop .. while 0 {
@@ -5349,19 +5507,25 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     local_var_attrs = make_LocalAttr()
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     loop .. while 0 {
+        "@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
         loop .. while 0 {
-            (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            "@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
+            loop .. while 0 {
+                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
+            }
         }
         symbol = nil
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5434,6 +5598,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5482,14 +5647,17 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
     if struct_fmt {
+        "@MACRO@:str_delete(struct_fmt)"
         sdsfree(struct_fmt)
         struct_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5498,11 +5666,11 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
 
 fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) i32 {
     struct_fmt: string = ? nil then sdsnew(nil) else nil
-    struct_member: *struc StructMember = nil
-    struct_typedef: *struc StructTypedef = nil
-    member_type: *struc Type = nil
-    member_names: *u64 = nil
-    members: *struc PairTIdentifierUPtrStructMember = nil
+    struct_member: *struc StructMember = uptr_new()
+    struct_typedef: *struc StructTypedef = uptr_new()
+    member_type: *struc Type = sptr_new()
+    member_names: *u64 = vec_new()
+    members: *struc PairTIdentifierUPtrStructMember = map_new()
     _errval: i32 = 0
     alignment: i32;
     size: i64;
@@ -5516,13 +5684,19 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     }
     alignment = 0
     size = 0l
-    (((member_names) = stbds_arrgrowf((member_names), sizeof((member_names)[]), (0), ((? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0)))))
+    loop .. while 0 {
+        "@MACRO@:vec_reserve(member_names, vec_size(node->members))"
+        (((member_names) = stbds_arrgrowf((member_names), sizeof((member_names)[]), (0), ((? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0)))))
+    }
     loop i: u64 = 0 while i < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++i {
         {
             name: u64 = node[].members[i][].member_name
             loop .. while 0 {
-                (? (not (member_names) or (cast<*struc stbds_array_header>((member_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((member_names)) - 1)[].capacity) then (((member_names) = stbds_arrgrowf((member_names), sizeof((member_names)[]), (1), (0))) and 0) else 0)
-                (member_names)[(cast<*struc stbds_array_header>((member_names)) - 1)[].length++] = (name)
+                "@MACRO@:vec_push_back(member_names, name)"
+                loop .. while 0 {
+                    (? (not (member_names) or (cast<*struc stbds_array_header>((member_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((member_names)) - 1)[].capacity) then (((member_names) = stbds_arrgrowf((member_names), sizeof((member_names)[]), (1), (0))) and 0) else 0)
+                    (member_names)[(cast<*struc stbds_array_header>((member_names)) - 1)[].length++] = (name)
+                }
             }
         }
         member_alignment: i32 = get_type_alignment(ctx, node[].members[i][].member_type)
@@ -5550,10 +5724,14 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
             }
             struct_member = make_StructMember(offset, @member_type)
             loop .. while 0 {
+                "@MACRO@:map_move_add(members, vec_back(member_names), struct_member)"
                 loop .. while 0 {
-                    (members) = stbds_hmput_key((members), sizeof((members)[]), cast<*any>(@(((member_names)[(? (member_names) then (cast<*struc stbds_array_header>((member_names)) - 1)[].length else 0) - 1]))), sizeof((members)[].key), 0)
-                    (members)[(cast<*struc stbds_array_header>(((members) - 1)) - 1)[].temp].key = ((member_names)[(? (member_names) then (cast<*struc stbds_array_header>((member_names)) - 1)[].length else 0) - 1])
-                    (members)[(cast<*struc stbds_array_header>(((members) - 1)) - 1)[].temp].value = (struct_member)
+                    "@MACRO@:map_add(members, (member_names)[((member_names) ? ((struct stbds_array_header*)(member_names)-1)->length : 0) - 1], struct_member)"
+                    loop .. while 0 {
+                        (members) = stbds_hmput_key((members), sizeof((members)[]), cast<*any>(@(((member_names)[(? (member_names) then (cast<*struc stbds_array_header>((member_names)) - 1)[].length else 0) - 1]))), sizeof((members)[].key), 0)
+                        (members)[(cast<*struc stbds_array_header>(((members) - 1)) - 1)[].temp].key = ((member_names)[(? (member_names) then (cast<*struc stbds_array_header>((member_names)) - 1)[].length else 0) - 1])
+                        (members)[(cast<*struc stbds_array_header>(((members) - 1)) - 1)[].temp].value = (struct_member)
+                    }
                 }
                 struct_member = nil
             }
@@ -5570,15 +5748,20 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     }
     struct_typedef = make_StructTypedef(alignment, size, @member_names, @members)
     loop .. while 0 {
+        "@MACRO@:map_move_add(ctx->frontend->struct_typedef_table, node->tag_name, struct_typedef)"
         loop .. while 0 {
-            (ctx[].frontend[].struct_typedef_table) = stbds_hmput_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)
-            (ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp].key = (node[].tag_name)
-            (ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp].value = (struct_typedef)
+            "@MACRO@:map_add(ctx->frontend->struct_typedef_table, node->tag_name, struct_typedef)"
+            loop .. while 0 {
+                (ctx[].frontend[].struct_typedef_table) = stbds_hmput_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)
+                (ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp].key = (node[].tag_name)
+                (ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp].value = (struct_typedef)
+            }
         }
         struct_typedef = nil
     }
     label _Lfinally
     if struct_fmt {
+        "@MACRO@:str_delete(struct_fmt)"
         sdsfree(struct_fmt)
         struct_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5586,21 +5769,23 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     free_StructTypedef(@struct_typedef)
     free_Type(@member_type)
     if member_names {
+        "@MACRO@:vec_delete(member_names)"
         loop .. while 0 {
             cast<none>((? (member_names) then free((cast<*struc stbds_array_header>((member_names)) - 1)) else cast<none>(0)))
             (member_names) = nil
         }
-        member_names = nil
+        member_names = vec_new()
     }
     loop i: u64 = 0 while i < (? (members) then (cast<*struc stbds_array_header>(((members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructMember(@(members[i]).value)
     }
     if members {
+        "@MACRO@:map_delete(members)"
         loop .. while 0 {
             cast<none>((? (members) ~= nil then stbds_hmfree_func((members) - 1, sizeof((members)[])) else cast<none>(0)))
             (members) = nil
         }
-        members = nil
+        members = map_new()
     }
     return _errval
 }
@@ -5617,12 +5802,19 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
         }
     }
     loop .. while 0 {
-        (ctx[].label_set) = stbds_hmput_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@((node[].target))), sizeof((ctx[].label_set)[].key), 0)
-        (ctx[].label_set)[(cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp].key = (node[].target)
-        (ctx[].label_set)[(cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp].value = (0)
+        "@MACRO@:set_insert(ctx->label_set, node->target)"
+        loop .. while 0 {
+            "@MACRO@:map_add(ctx->label_set, node->target, 0)"
+            loop .. while 0 {
+                (ctx[].label_set) = stbds_hmput_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@((node[].target))), sizeof((ctx[].label_set)[].key), 0)
+                (ctx[].label_set)[(cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp].key = (node[].target)
+                (ctx[].label_set)[(cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp].value = (0)
+            }
+        }
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5632,36 +5824,54 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
 fn annotate_while_loop(ctx: *struc SemanticContext, node: *struc CWhile) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lwhile)
     loop .. while 0 {
-        (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
     loop .. while 0 {
-        (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->continue_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
 }
 
 fn annotate_do_while_loop(ctx: *struc SemanticContext, node: *struc CDoWhile) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Ldo_while)
     loop .. while 0 {
-        (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
     loop .. while 0 {
-        (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->continue_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
 }
 
 fn annotate_for_loop(ctx: *struc SemanticContext, node: *struc CFor) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lfor)
     loop .. while 0 {
-        (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
     loop .. while 0 {
-        (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->continue_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
 }
 
@@ -5669,8 +5879,11 @@ fn annotate_switch_lookup(ctx: *struc SemanticContext, node: *struc CSwitch) non
     node[].is_default = false
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lswitch)
     loop .. while 0 {
-        (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-        (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        "@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
+        loop .. while 0 {
+            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
+            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
+        }
     }
 }
 
@@ -5744,12 +5957,21 @@ fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) i
 }
 
 fn deannotate_loop(ctx: *struc SemanticContext) none {
-    ((cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length--)
-    ((cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length--)
+    loop .. while 0 {
+        "@MACRO@:vec_pop_back(ctx->break_loop_labels)"
+        ((cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length--)
+    }
+    loop .. while 0 {
+        "@MACRO@:vec_pop_back(ctx->continue_loop_labels)"
+        ((cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length--)
+    }
 }
 
 fn deannotate_lookup(ctx: *struc SemanticContext) none {
-    ((cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length--)
+    loop .. while 0 {
+        "@MACRO@:vec_pop_back(ctx->break_loop_labels)"
+        ((cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length--)
+    }
 }
 
 fn is_file_scope(ctx: *struc SemanticContext) i32 {
@@ -5758,12 +5980,18 @@ fn is_file_scope(ctx: *struc SemanticContext) i32 {
 
 fn enter_scope(ctx: *struc SemanticContext) none {
     loop .. while 0 {
-        (? (not (ctx[].scoped_identifier_maps) or (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].capacity) then (((ctx[].scoped_identifier_maps) = stbds_arrgrowf((ctx[].scoped_identifier_maps), sizeof((ctx[].scoped_identifier_maps)[]), (1), (0))) and 0) else 0)
-        (ctx[].scoped_identifier_maps)[(cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length++] = (nil)
+        "@MACRO@:vec_push_back(ctx->scoped_identifier_maps, map_new())"
+        loop .. while 0 {
+            (? (not (ctx[].scoped_identifier_maps) or (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].capacity) then (((ctx[].scoped_identifier_maps) = stbds_arrgrowf((ctx[].scoped_identifier_maps), sizeof((ctx[].scoped_identifier_maps)[]), (1), (0))) and 0) else 0)
+            (ctx[].scoped_identifier_maps)[(cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length++] = (map_new())
+        }
     }
     loop .. while 0 {
-        (? (not (ctx[].scoped_struct_maps) or (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].capacity) then (((ctx[].scoped_struct_maps) = stbds_arrgrowf((ctx[].scoped_struct_maps), sizeof((ctx[].scoped_struct_maps)[]), (1), (0))) and 0) else 0)
-        (ctx[].scoped_struct_maps)[(cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length++] = (nil)
+        "@MACRO@:vec_push_back(ctx->scoped_struct_maps, map_new())"
+        loop .. while 0 {
+            (? (not (ctx[].scoped_struct_maps) or (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].capacity) then (((ctx[].scoped_struct_maps) = stbds_arrgrowf((ctx[].scoped_struct_maps), sizeof((ctx[].scoped_struct_maps)[]), (1), (0))) and 0) else 0)
+            (ctx[].scoped_struct_maps)[(cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length++] = (map_new())
+        }
     }
 }
 
@@ -5772,25 +6000,36 @@ fn exit_scope(ctx: *struc SemanticContext) none {
         identifier: u64 = ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1][i]).key
         map_it: i64 = (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp)
         if map_it ~= -1 and (ctx[].extern_scope_map[map_it]).value == (? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) {
-            (? ((ctx[].extern_scope_map) = stbds_hmdel_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), (cast<string>(@((ctx[].extern_scope_map))[].key) - cast<string>(((ctx[].extern_scope_map)))), 0)) then (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp else 0)
+            loop .. while 0 {
+                "@MACRO@:map_erase(ctx->extern_scope_map, identifier)"
+                (? ((ctx[].extern_scope_map) = stbds_hmdel_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), (cast<string>(@((ctx[].extern_scope_map))[].key) - cast<string>(((ctx[].extern_scope_map)))), 0)) then (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp else 0)
+            }
         }
     }
     if (ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1] {
+        "@MACRO@:map_delete(vec_back(ctx->scoped_identifier_maps))"
         loop .. while 0 {
             cast<none>((? ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) ~= nil then stbds_hmfree_func(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1, sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[])) else cast<none>(0)))
             ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = nil
         }
-        (ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1] = nil
+        (ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1] = map_new()
     }
-    ((cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length--)
+    loop .. while 0 {
+        "@MACRO@:vec_pop_back(ctx->scoped_identifier_maps)"
+        ((cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length--)
+    }
     if (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] {
+        "@MACRO@:map_delete(vec_back(ctx->scoped_struct_maps))"
         loop .. while 0 {
             cast<none>((? ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) ~= nil then stbds_hmfree_func(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1, sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[])) else cast<none>(0)))
             ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) = nil
         }
-        (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] = nil
+        (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] = map_new()
     }
-    ((cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length--)
+    loop .. while 0 {
+        "@MACRO@:vec_pop_back(ctx->scoped_struct_maps)"
+        ((cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length--)
+    }
 }
 
 fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
@@ -5809,10 +6048,12 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
     }
     label _Lfinally
     if name_fmt_1 {
+        "@MACRO@:str_delete(name_fmt_1)"
         sdsfree(name_fmt_1)
         name_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if name_fmt_2 {
+        "@MACRO@:str_delete(name_fmt_2)"
         sdsfree(name_fmt_2)
         name_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -5881,10 +6122,12 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
     }
     label _Lfinally
     if struct_fmt {
+        "@MACRO@:str_delete(struct_fmt)"
         sdsfree(struct_fmt)
         struct_fmt = ? nil then sdsnew(nil) else nil
     }
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -5972,6 +6215,7 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -6143,6 +6387,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -6492,6 +6737,7 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -6620,23 +6866,32 @@ fn reslv_goto_statement(ctx: *struc SemanticContext, node: *struc CGoto) none {
     if map_it ~= -1 {
         node[].target = (ctx[].goto_map[map_it]).value
         loop .. while 0 {
-            (ctx[].errors[].info_at_map) = stbds_hmput_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].errors[].info_at_map)[].key), 0)
-            (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].key = (node[].target)
-            (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].value = (node[].info_at)
+            "@MACRO@:map_add(ctx->errors->info_at_map, node->target, node->info_at)"
+            loop .. while 0 {
+                (ctx[].errors[].info_at_map) = stbds_hmput_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].errors[].info_at_map)[].key), 0)
+                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].key = (node[].target)
+                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].value = (node[].info_at)
+            }
         }
     }
     else {
         target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
         loop .. while 0 {
-            (ctx[].goto_map) = stbds_hmput_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)
-            (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].key = (node[].target)
-            (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].value = (target)
+            "@MACRO@:map_add(ctx->goto_map, node->target, target)"
+            loop .. while 0 {
+                (ctx[].goto_map) = stbds_hmput_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)
+                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].key = (node[].target)
+                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].value = (target)
+            }
         }
         node[].target = target
         loop .. while 0 {
-            (ctx[].errors[].info_at_map) = stbds_hmput_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].errors[].info_at_map)[].key), 0)
-            (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].key = (node[].target)
-            (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].value = (node[].info_at)
+            "@MACRO@:map_add(ctx->errors->info_at_map, node->target, node->info_at)"
+            loop .. while 0 {
+                (ctx[].errors[].info_at_map) = stbds_hmput_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].errors[].info_at_map)[].key), 0)
+                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].key = (node[].target)
+                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].value = (node[].info_at)
+            }
         }
     }
 }
@@ -6658,9 +6913,12 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     else {
         target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
         loop .. while 0 {
-            (ctx[].goto_map) = stbds_hmput_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)
-            (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].key = (node[].target)
-            (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].value = (target)
+            "@MACRO@:map_add(ctx->goto_map, node->target, target)"
+            loop .. while 0 {
+                (ctx[].goto_map) = stbds_hmput_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)
+                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].key = (node[].target)
+                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].value = (target)
+            }
         }
         node[].target = target
     }
@@ -6850,9 +7108,13 @@ fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) i32 {
         }
     }
     loop .. while 0 {
+        "@MACRO@:vec_move_back(ctx->p_switch_statement->cases, node->value)"
         loop .. while 0 {
-            (? (not (ctx[].p_switch_statement[].cases) or (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].capacity) then (((ctx[].p_switch_statement[].cases) = stbds_arrgrowf((ctx[].p_switch_statement[].cases), sizeof((ctx[].p_switch_statement[].cases)[]), (1), (0))) and 0) else 0)
-            (ctx[].p_switch_statement[].cases)[(cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length++] = (node[].value)
+            "@MACRO@:vec_push_back(ctx->p_switch_statement->cases, node->value)"
+            loop .. while 0 {
+                (? (not (ctx[].p_switch_statement[].cases) or (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].capacity) then (((ctx[].p_switch_statement[].cases) = stbds_arrgrowf((ctx[].p_switch_statement[].cases), sizeof((ctx[].p_switch_statement[].cases)[]), (1), (0))) and 0) else 0)
+                (ctx[].p_switch_statement[].cases)[(cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length++] = (node[].value)
+            }
         }
         node[].value = nil
     }
@@ -7225,6 +7487,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
     }
     label _Lfinally
     if type_fmt {
+        "@MACRO@:str_delete(type_fmt)"
         sdsfree(type_fmt)
         type_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -7277,9 +7540,12 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }
         param = rslv_var_identifier(ctx[].identifiers, param)
         loop .. while 0 {
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].params[i]))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].params[i])
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (param)
+            "@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->params[i], param)"
+            loop .. while 0 {
+                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].params[i]))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
+                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].params[i])
+                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (param)
+            }
         }
         node[].params[i] = param
     }
@@ -7292,6 +7558,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -7329,15 +7596,21 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
             }
         }
         loop .. while 0 {
-            (ctx[].extern_scope_map) = stbds_hmput_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)
-            (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].value = ((? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0))
+            "@MACRO@:map_add(ctx->extern_scope_map, node->name, vec_size(ctx->scoped_identifier_maps))"
+            loop .. while 0 {
+                (ctx[].extern_scope_map) = stbds_hmput_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)
+                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].value = ((? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0))
+            }
         }
     }
     loop .. while 0 {
-        ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-        ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
-        ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
+        "@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->name, node->name)"
+        loop .. while 0 {
+            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
+            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
+            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
+        }
     }
     loop .. while 0 {
         "@MACRO@:TRY(check_ret_fun_decl(ctx, node))"
@@ -7375,6 +7648,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     exit_scope(ctx)
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -7385,15 +7659,21 @@ fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     _errval: i32 = 0
     if (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp) == -1 {
         loop .. while 0 {
-            (ctx[].extern_scope_map) = stbds_hmput_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)
-            (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].value = ((? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0))
+            "@MACRO@:map_add(ctx->extern_scope_map, node->name, vec_size(ctx->scoped_identifier_maps))"
+            loop .. while 0 {
+                (ctx[].extern_scope_map) = stbds_hmput_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)
+                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].key = (node[].name)
+                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].value = ((? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0))
+            }
         }
     }
     loop .. while 0 {
-        ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-        ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
-        ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
+        "@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->name, node->name)"
+        loop .. while 0 {
+            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
+            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
+            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
+        }
     }
     if is_file_scope(ctx) {
         loop .. while 0 {
@@ -7441,9 +7721,12 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     {
         name: u64 = rslv_var_identifier(ctx[].identifiers, node[].name)
         loop .. while 0 {
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (name)
+            "@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->name, name)"
+            loop .. while 0 {
+                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
+                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
+                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (name)
+            }
         }
         node[].name = name
     }
@@ -7465,6 +7748,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }
     label _Lfinally
     if name_fmt {
+        "@MACRO@:str_delete(name_fmt)"
         sdsfree(name_fmt)
         name_fmt = ? nil then sdsnew(nil) else nil
     }
@@ -7514,24 +7798,39 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         {
             structure: struc Structure = $(rslv_struct_tag(ctx[].identifiers, node[].tag_name), node[].is_union)
             loop .. while 0 {
-                ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].tag_name))), sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[].key), 0)
-                ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].tag_name)
-                ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (structure)
+                "@MACRO@:map_add(vec_back(ctx->scoped_struct_maps), node->tag_name, structure)"
+                loop .. while 0 {
+                    ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].tag_name))), sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[].key), 0)
+                    ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].tag_name)
+                    ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (structure)
+                }
             }
             node[].tag_name = structure.tag_name
         }
         if node[].is_union {
             loop .. while 0 {
-                (ctx[].union_def_set) = stbds_hmput_key((ctx[].union_def_set), sizeof((ctx[].union_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].union_def_set)[].key), 0)
-                (ctx[].union_def_set)[(cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp].key = (node[].tag_name)
-                (ctx[].union_def_set)[(cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp].value = (0)
+                "@MACRO@:set_insert(ctx->union_def_set, node->tag_name)"
+                loop .. while 0 {
+                    "@MACRO@:map_add(ctx->union_def_set, node->tag_name, 0)"
+                    loop .. while 0 {
+                        (ctx[].union_def_set) = stbds_hmput_key((ctx[].union_def_set), sizeof((ctx[].union_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].union_def_set)[].key), 0)
+                        (ctx[].union_def_set)[(cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp].key = (node[].tag_name)
+                        (ctx[].union_def_set)[(cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp].value = (0)
+                    }
+                }
             }
         }
         else {
             loop .. while 0 {
-                (ctx[].struct_def_set) = stbds_hmput_key((ctx[].struct_def_set), sizeof((ctx[].struct_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].struct_def_set)[].key), 0)
-                (ctx[].struct_def_set)[(cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp].key = (node[].tag_name)
-                (ctx[].struct_def_set)[(cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp].value = (0)
+                "@MACRO@:set_insert(ctx->struct_def_set, node->tag_name)"
+                loop .. while 0 {
+                    "@MACRO@:map_add(ctx->struct_def_set, node->tag_name, 0)"
+                    loop .. while 0 {
+                        (ctx[].struct_def_set) = stbds_hmput_key((ctx[].struct_def_set), sizeof((ctx[].struct_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].struct_def_set)[].key), 0)
+                        (ctx[].struct_def_set)[(cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp].key = (node[].tag_name)
+                        (ctx[].struct_def_set)[(cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp].value = (0)
+                    }
+                }
             }
         }
     }
@@ -7553,10 +7852,12 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
     }
     label _Lfinally
     if struct_fmt_1 {
+        "@MACRO@:str_delete(struct_fmt_1)"
         sdsfree(struct_fmt_1)
         struct_fmt_1 = ? nil then sdsnew(nil) else nil
     }
     if struct_fmt_2 {
+        "@MACRO@:str_delete(struct_fmt_2)"
         sdsfree(struct_fmt_2)
         struct_fmt_2 = ? nil then sdsnew(nil) else nil
     }
@@ -7566,24 +7867,37 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
 fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
     _errval: i32 = 0
     if is_file_scope(ctx) {
-        if ctx[].goto_map {
-            loop .. while 0 {
-                cast<none>((? (ctx[].goto_map) ~= nil then stbds_hmfree_func((ctx[].goto_map) - 1, sizeof((ctx[].goto_map)[])) else cast<none>(0)))
-                (ctx[].goto_map) = nil
+        loop .. while 0 {
+            "@MACRO@:map_clear(ctx->goto_map)"
+            if ctx[].goto_map {
+                "@MACRO@:map_delete(ctx->goto_map)"
+                loop .. while 0 {
+                    cast<none>((? (ctx[].goto_map) ~= nil then stbds_hmfree_func((ctx[].goto_map) - 1, sizeof((ctx[].goto_map)[])) else cast<none>(0)))
+                    (ctx[].goto_map) = nil
+                }
+                ctx[].goto_map = map_new()
             }
-            ctx[].goto_map = nil
         }
-        if ctx[].label_set {
+        loop .. while 0 {
+            "@MACRO@:set_clear(ctx->label_set)"
             loop .. while 0 {
-                cast<none>((? (ctx[].label_set) ~= nil then stbds_hmfree_func((ctx[].label_set) - 1, sizeof((ctx[].label_set)[])) else cast<none>(0)))
-                (ctx[].label_set) = nil
+                "@MACRO@:map_clear(ctx->label_set)"
+                if ctx[].label_set {
+                    "@MACRO@:map_delete(ctx->label_set)"
+                    loop .. while 0 {
+                        cast<none>((? (ctx[].label_set) ~= nil then stbds_hmfree_func((ctx[].label_set) - 1, sizeof((ctx[].label_set)[])) else cast<none>(0)))
+                        (ctx[].label_set) = nil
+                    }
+                    ctx[].label_set = map_new()
+                }
             }
-            ctx[].label_set = nil
         }
         if ctx[].break_loop_labels {
+            "@MACRO@:vec_clear(ctx->break_loop_labels)"
             (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length = 0
         }
         if ctx[].continue_loop_labels {
+            "@MACRO@:vec_clear(ctx->continue_loop_labels)"
             (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length = 0
         }
         ctx[].p_switch_statement = nil
@@ -7708,16 +8022,16 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
         ctx.errors = errors
         ctx.frontend = frontend
         ctx.identifiers = identifiers
-        ctx.extern_scope_map = nil
-        ctx.goto_map = nil
-        ctx.scoped_identifier_maps = nil
-        ctx.scoped_struct_maps = nil
-        ctx.label_set = nil
-        ctx.break_loop_labels = nil
-        ctx.continue_loop_labels = nil
-        ctx.fun_def_set = nil
-        ctx.struct_def_set = nil
-        ctx.union_def_set = nil
+        ctx.extern_scope_map = map_new()
+        ctx.goto_map = map_new()
+        ctx.scoped_identifier_maps = vec_new()
+        ctx.scoped_struct_maps = vec_new()
+        ctx.label_set = set_new()
+        ctx.break_loop_labels = vec_new()
+        ctx.continue_loop_labels = vec_new()
+        ctx.fun_def_set = set_new()
+        ctx.struct_def_set = set_new()
+        ctx.union_def_set = set_new()
     }
 
     _errval: i32 = 0
@@ -7730,119 +8044,147 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
     }
     label _Lfinally
     if ctx.extern_scope_map {
+        "@MACRO@:map_delete(ctx.extern_scope_map)"
         loop .. while 0 {
             cast<none>((? (ctx.extern_scope_map) ~= nil then stbds_hmfree_func((ctx.extern_scope_map) - 1, sizeof((ctx.extern_scope_map)[])) else cast<none>(0)))
             (ctx.extern_scope_map) = nil
         }
-        ctx.extern_scope_map = nil
+        ctx.extern_scope_map = map_new()
     }
     if ctx.goto_map {
+        "@MACRO@:map_delete(ctx.goto_map)"
         loop .. while 0 {
             cast<none>((? (ctx.goto_map) ~= nil then stbds_hmfree_func((ctx.goto_map) - 1, sizeof((ctx.goto_map)[])) else cast<none>(0)))
             (ctx.goto_map) = nil
         }
-        ctx.goto_map = nil
+        ctx.goto_map = map_new()
     }
     loop i: u64 = 0 while i < (? (ctx.scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx.scoped_identifier_maps)) - 1)[].length else 0) .. ++i {
         if ctx.scoped_identifier_maps[i] {
+            "@MACRO@:map_delete(ctx.scoped_identifier_maps[i])"
             loop .. while 0 {
                 cast<none>((? (ctx.scoped_identifier_maps[i]) ~= nil then stbds_hmfree_func((ctx.scoped_identifier_maps[i]) - 1, sizeof((ctx.scoped_identifier_maps[i])[])) else cast<none>(0)))
                 (ctx.scoped_identifier_maps[i]) = nil
             }
-            ctx.scoped_identifier_maps[i] = nil
+            ctx.scoped_identifier_maps[i] = map_new()
         }
     }
     if ctx.scoped_identifier_maps {
+        "@MACRO@:vec_delete(ctx.scoped_identifier_maps)"
         loop .. while 0 {
             cast<none>((? (ctx.scoped_identifier_maps) then free((cast<*struc stbds_array_header>((ctx.scoped_identifier_maps)) - 1)) else cast<none>(0)))
             (ctx.scoped_identifier_maps) = nil
         }
-        ctx.scoped_identifier_maps = nil
+        ctx.scoped_identifier_maps = vec_new()
     }
     loop i: u64 = 0 while i < (? (ctx.scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx.scoped_struct_maps)) - 1)[].length else 0) .. ++i {
         if ctx.scoped_struct_maps[i] {
+            "@MACRO@:map_delete(ctx.scoped_struct_maps[i])"
             loop .. while 0 {
                 cast<none>((? (ctx.scoped_struct_maps[i]) ~= nil then stbds_hmfree_func((ctx.scoped_struct_maps[i]) - 1, sizeof((ctx.scoped_struct_maps[i])[])) else cast<none>(0)))
                 (ctx.scoped_struct_maps[i]) = nil
             }
-            ctx.scoped_struct_maps[i] = nil
+            ctx.scoped_struct_maps[i] = map_new()
         }
     }
     if ctx.scoped_struct_maps {
+        "@MACRO@:vec_delete(ctx.scoped_struct_maps)"
         loop .. while 0 {
             cast<none>((? (ctx.scoped_struct_maps) then free((cast<*struc stbds_array_header>((ctx.scoped_struct_maps)) - 1)) else cast<none>(0)))
             (ctx.scoped_struct_maps) = nil
         }
-        ctx.scoped_struct_maps = nil
+        ctx.scoped_struct_maps = vec_new()
     }
-    if ctx.label_set {
-        loop .. while 0 {
-            cast<none>((? (ctx.label_set) ~= nil then stbds_hmfree_func((ctx.label_set) - 1, sizeof((ctx.label_set)[])) else cast<none>(0)))
-            (ctx.label_set) = nil
+    loop .. while 0 {
+        "@MACRO@:set_delete(ctx.label_set)"
+        if ctx.label_set {
+            "@MACRO@:map_delete(ctx.label_set)"
+            loop .. while 0 {
+                cast<none>((? (ctx.label_set) ~= nil then stbds_hmfree_func((ctx.label_set) - 1, sizeof((ctx.label_set)[])) else cast<none>(0)))
+                (ctx.label_set) = nil
+            }
+            ctx.label_set = map_new()
         }
-        ctx.label_set = nil
     }
     if ctx.break_loop_labels {
+        "@MACRO@:vec_delete(ctx.break_loop_labels)"
         loop .. while 0 {
             cast<none>((? (ctx.break_loop_labels) then free((cast<*struc stbds_array_header>((ctx.break_loop_labels)) - 1)) else cast<none>(0)))
             (ctx.break_loop_labels) = nil
         }
-        ctx.break_loop_labels = nil
+        ctx.break_loop_labels = vec_new()
     }
     if ctx.continue_loop_labels {
+        "@MACRO@:vec_delete(ctx.continue_loop_labels)"
         loop .. while 0 {
             cast<none>((? (ctx.continue_loop_labels) then free((cast<*struc stbds_array_header>((ctx.continue_loop_labels)) - 1)) else cast<none>(0)))
             (ctx.continue_loop_labels) = nil
         }
-        ctx.continue_loop_labels = nil
+        ctx.continue_loop_labels = vec_new()
     }
-    if ctx.fun_def_set {
-        loop .. while 0 {
-            cast<none>((? (ctx.fun_def_set) ~= nil then stbds_hmfree_func((ctx.fun_def_set) - 1, sizeof((ctx.fun_def_set)[])) else cast<none>(0)))
-            (ctx.fun_def_set) = nil
+    loop .. while 0 {
+        "@MACRO@:set_delete(ctx.fun_def_set)"
+        if ctx.fun_def_set {
+            "@MACRO@:map_delete(ctx.fun_def_set)"
+            loop .. while 0 {
+                cast<none>((? (ctx.fun_def_set) ~= nil then stbds_hmfree_func((ctx.fun_def_set) - 1, sizeof((ctx.fun_def_set)[])) else cast<none>(0)))
+                (ctx.fun_def_set) = nil
+            }
+            ctx.fun_def_set = map_new()
         }
-        ctx.fun_def_set = nil
     }
-    if ctx.struct_def_set {
-        loop .. while 0 {
-            cast<none>((? (ctx.struct_def_set) ~= nil then stbds_hmfree_func((ctx.struct_def_set) - 1, sizeof((ctx.struct_def_set)[])) else cast<none>(0)))
-            (ctx.struct_def_set) = nil
+    loop .. while 0 {
+        "@MACRO@:set_delete(ctx.struct_def_set)"
+        if ctx.struct_def_set {
+            "@MACRO@:map_delete(ctx.struct_def_set)"
+            loop .. while 0 {
+                cast<none>((? (ctx.struct_def_set) ~= nil then stbds_hmfree_func((ctx.struct_def_set) - 1, sizeof((ctx.struct_def_set)[])) else cast<none>(0)))
+                (ctx.struct_def_set) = nil
+            }
+            ctx.struct_def_set = map_new()
         }
-        ctx.struct_def_set = nil
     }
-    if ctx.union_def_set {
-        loop .. while 0 {
-            cast<none>((? (ctx.union_def_set) ~= nil then stbds_hmfree_func((ctx.union_def_set) - 1, sizeof((ctx.union_def_set)[])) else cast<none>(0)))
-            (ctx.union_def_set) = nil
+    loop .. while 0 {
+        "@MACRO@:set_delete(ctx.union_def_set)"
+        if ctx.union_def_set {
+            "@MACRO@:map_delete(ctx.union_def_set)"
+            loop .. while 0 {
+                cast<none>((? (ctx.union_def_set) ~= nil then stbds_hmfree_func((ctx.union_def_set) - 1, sizeof((ctx.union_def_set)[])) else cast<none>(0)))
+                (ctx.union_def_set) = nil
+            }
+            ctx.union_def_set = map_new()
         }
-        ctx.union_def_set = nil
     }
     if errors[].info_at_map {
+        "@MACRO@:map_delete(errors->info_at_map)"
         loop .. while 0 {
             cast<none>((? (errors[].info_at_map) ~= nil then stbds_hmfree_func((errors[].info_at_map) - 1, sizeof((errors[].info_at_map)[])) else cast<none>(0)))
             (errors[].info_at_map) = nil
         }
-        errors[].info_at_map = nil
+        errors[].info_at_map = map_new()
     }
     loop i: u64 = 0 while i < (? (errors[].fopen_lines) then (cast<*struc stbds_array_header>((errors[].fopen_lines)) - 1)[].length else 0) .. ++i {
         if errors[].fopen_lines[i].filename {
+            "@MACRO@:str_delete(errors->fopen_lines[i].filename)"
             sdsfree(errors[].fopen_lines[i].filename)
             errors[].fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
     if errors[].fopen_lines {
+        "@MACRO@:vec_delete(errors->fopen_lines)"
         loop .. while 0 {
             cast<none>((? (errors[].fopen_lines) then free((cast<*struc stbds_array_header>((errors[].fopen_lines)) - 1)) else cast<none>(0)))
             (errors[].fopen_lines) = nil
         }
-        errors[].fopen_lines = nil
+        errors[].fopen_lines = vec_new()
     }
     if errors[].token_infos {
+        "@MACRO@:vec_delete(errors->token_infos)"
         loop .. while 0 {
             cast<none>((? (errors[].token_infos) then free((cast<*struc stbds_array_header>((errors[].token_infos)) - 1)) else cast<none>(0)))
             (errors[].token_infos) = nil
         }
-        errors[].token_infos = nil
+        errors[].token_infos = vec_new()
     }
     return _errval
 }
