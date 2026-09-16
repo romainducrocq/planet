@@ -351,11 +351,7 @@ type struc TacProgram;
 type struc FrontEndContext;
 type struc IdentifierContext;
 pub fn represent_three_address_code(c_ast: **struc CProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram;
-type struc TacProgram;
-type struc AsmProgram;
-type struc FrontEndContext;
-type struc IdentifierContext;
-pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram;
+
 type struc AsmProgram;
 type struc BackEndContext;
 type struc FileIoContext;
