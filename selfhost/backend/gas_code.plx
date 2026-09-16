@@ -13,11 +13,7 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
 
 
-type struc AsmProgram;
-type struc BackEndContext;
-type struc FileIoContext;
-type struc IdentifierContext;
-pub fn emit_gas_code(asm_ast: **struc AsmProgram, backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none;
+
 
 
 
