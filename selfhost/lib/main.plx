@@ -352,11 +352,7 @@ type struc FrontEndContext;
 type struc IdentifierContext;
 pub fn represent_three_address_code(c_ast: **struc CProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram;
 
-type struc AsmProgram;
-type struc BackEndContext;
-type struc FileIoContext;
-type struc IdentifierContext;
-pub fn emit_gas_code(asm_ast: **struc AsmProgram, backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none;
+
 type struc AsmInstruction;
 type struc AsmProgram;
 type struc BackEndContext;
