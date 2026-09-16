@@ -22,11 +22,7 @@ m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
 
 
-type struc AsmInstruction;
-type struc AsmProgram;
-type struc BackEndContext;
-pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction;
-pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none;
+
 type struc Type;
 type struc AssemblyType;
 type struc AsmProgram;

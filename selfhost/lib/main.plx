@@ -353,11 +353,7 @@ type struc IdentifierContext;
 pub fn represent_three_address_code(c_ast: **struc CProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram;
 
 
-type struc AsmInstruction;
-type struc AsmProgram;
-type struc BackEndContext;
-pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction;
-pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none;
+
 type struc Type;
 type struc AssemblyType;
 type struc AsmProgram;
