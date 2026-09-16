@@ -7,17 +7,6 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
 m4_define(`Ctx', `TODO')m4_dnl
 
 pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {

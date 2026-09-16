@@ -8,19 +8,6 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 m4_include(`../ast/ast.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc Elementhash_t(key: u64, value: char)
 
 type struc LexerContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, line: string, line_size: u64, match_at: u64, match_size: u64, includename_set: *struc Elementhash_t, p_includedirs: **string, p_stdlibdirs: **string, p_toks: **struc Token, paren_depth: u64, total_linenum: u64)

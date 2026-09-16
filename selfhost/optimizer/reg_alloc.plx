@@ -11,19 +11,6 @@ m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
 m4_include(`../backend/registers.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 m4_define(`mask_t', `TODO')m4_dnl
 type struc ControlFlowGraph;
 type struc DataFlowAnalysis;

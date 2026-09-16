@@ -6,16 +6,6 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
 pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
     self: struc TacUnaryOp = $(tag)
     match tag {

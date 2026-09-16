@@ -14,23 +14,6 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 m4_define(`ASM_LABEL_KIND', `TODO')m4_dnl
 m4_define(`LBL_Lcomisd_nan', `0')m4_dnl
 m4_define(`LBL_Ldouble', `1')m4_dnl

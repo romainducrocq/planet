@@ -6,17 +6,6 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
 pub fn make_AssemblyType(none) *struc AssemblyType {
     self: *struc AssemblyType = sptr_new()
     loop .. while 0 {

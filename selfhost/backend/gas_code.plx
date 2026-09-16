@@ -9,19 +9,6 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc GasCodeContext(backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext)
 
 m4_define(`Ctx', `TODO')m4_dnl

@@ -6,19 +6,6 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 m4_include(`../ast/back_ast.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 fn gen_reg(reg_kind: i32) struc AsmReg {
     match reg_kind {
         -> REG_Ax {
