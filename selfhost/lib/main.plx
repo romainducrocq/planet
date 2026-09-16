@@ -374,9 +374,7 @@ type struc FrontEndContext;
 pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) i32;
 pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc AssemblyType;
 pub fn convert_symbol_table(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext) none;
-type struc TacProgram;
-type struc FrontEndContext;
-pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none;
+
 type struc AsmProgram;
 type struc BackEndContext;
 type struc FrontEndContext;
