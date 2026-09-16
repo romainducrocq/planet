@@ -375,10 +375,7 @@ pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) i32;
 pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc AssemblyType;
 pub fn convert_symbol_table(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext) none;
 
-type struc AsmProgram;
-type struc BackEndContext;
-type struc FrontEndContext;
-pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none;
+
 
 type struc MainContext(errors: *struc ErrorsContext, is_verbose: i32, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string, includedirs: *string, stdlibdirs: *string)
 

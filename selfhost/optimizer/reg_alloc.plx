@@ -15,10 +15,7 @@ m4_include(`../backend/registers.plx.m4')m4_dnl
 
 
 
-type struc AsmProgram;
-type struc BackEndContext;
-type struc FrontEndContext;
-pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none;
+
 
 
 
