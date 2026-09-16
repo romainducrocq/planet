@@ -18,17 +18,7 @@ type struc TacProgram;
 type struc FrontEndContext;
 pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none;
 
-type struc ErrorsContext;
-pub fn dbl_to_binary(decimal: f64) u64;
-pub fn string_to_literal(str_string: string, string_literal: **i8) none;
-pub fn string_to_char_ascii(str_char: string) i32;
-pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8;
-pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32;
-pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64;
-pub fn string_literal_to_const(string_literal: *i8) string;
-pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, value: *i64) i32;
-pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64, value: *u64) i32;
-pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, value: *f64) i32;
+
 
 
 
