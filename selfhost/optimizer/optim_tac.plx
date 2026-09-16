@@ -14,9 +14,7 @@ m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
 
 
-type struc TacProgram;
-type struc FrontEndContext;
-pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none;
+
 
 
 
