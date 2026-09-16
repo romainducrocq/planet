@@ -19,22 +19,7 @@ type struc FileIoContext;
 type struc IdentifierContext;
 pub fn emit_gas_code(asm_ast: **struc AsmProgram, backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none;
 
-type struc ErrorsContext;
 
-type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string)
-
-type struc FileIoContext(errors: *struc ErrorsContext, fd_write: *struc FILE, write_buf: string, filename: string, file_reads: *struc FileRead)
-
-pub fn find_file(filename: string) i32;
-pub fn get_filename(ctx: *struc FileIoContext) string;
-pub fn set_filename(ctx: *struc FileIoContext, filename: string) none;
-pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32;
-pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32;
-pub fn read_line(ctx: *struc FileIoContext, line: *string, line_size: *u64) i32;
-pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none;
-pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32;
-pub fn close_fwrite(ctx: *struc FileIoContext) none;
-pub fn free_fileio(ctx: *struc FileIoContext) none;
 
 
 
