@@ -9,4 +9,12 @@ m4_include(`../ast/ast_t.plx.m4')m4_dnl
 
 m4_include(`../frontend/tokens.plx.m4')m4_dnl
 
+type struc ErrorsContext;
+type struc FileIoContext;
+type struc IdentifierContext;
+
+type struc Token(tok_kind: i32, tok: u64, info_at: u64)
+
+pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string, errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: **struc Token) i32;
+
 ')m4_dnl
