@@ -124,11 +124,7 @@ m4_define(`TOK_error', `99')m4_dnl
 
 
 
-type struc Token;
-type struc CProgram;
-type struc ErrorsContext;
-type struc IdentifierContext;
-pub fn parse_tokens(tokens: **struc Token, errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: **struc CProgram) i32;
+
 
 
 
