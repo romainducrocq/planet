@@ -9,20 +9,6 @@ m4_include(`../ast/ast_t.plx.m4')m4_dnl
 m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc PairTIdentifierTLong(key: u64, value: i64)
 
 type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: *struc PairTIdentifierTLong, p_fix_instrs: ***struc AsmInstruction)

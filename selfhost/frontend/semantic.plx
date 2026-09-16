@@ -11,22 +11,6 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 m4_define(`StStructure', `TODO')m4_dnl
 
 type struc PairTIdentifierStStructure(key: u64, value: struc Structure)

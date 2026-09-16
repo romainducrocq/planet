@@ -7,17 +7,6 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
 pub fn make_AsmReg(tag: i32) struc AsmReg {
     self: struc AsmReg = $(tag)
     match tag {

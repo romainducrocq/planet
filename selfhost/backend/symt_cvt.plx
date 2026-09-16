@@ -10,19 +10,6 @@ m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, symbol: u64)
 
 m4_define(`Ctx', `TODO')m4_dnl

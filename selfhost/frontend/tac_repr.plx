@@ -11,21 +11,6 @@ m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc TacReprContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_instrs: ***struc TacInstruction, p_toplvls: ***struc TacTopLevel, p_static_consts: ***struc TacTopLevel)
 
 m4_define(`Ctx', `TODO')m4_dnl
