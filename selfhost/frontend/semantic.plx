@@ -122,11 +122,7 @@ m4_define(`TOK_error', `99')m4_dnl
 
 
 
-type struc CProgram;
-type struc ErrorsContext;
-type struc FrontEndContext;
-type struc IdentifierContext;
-pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) i32;
+
 
 
 
