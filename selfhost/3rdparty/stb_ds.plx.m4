@@ -66,7 +66,10 @@ m4_define(`stbds_header', `(cast<*struc stbds_array_header>($1) - 1)')m4_dnl
 m4_define(`stbds_temp', `stbds_header($1)[].temp')m4_dnl
 
 m4_define(`stbds_arrsetcap', `(stbds_arrgrow($1, 0, $2))')m4_dnl
-m4_define(`stbds_arrsetlen', `TODO')m4_dnl
+m4_define(`stbds_arrsetlen', `{
+    (? stbds_arrcap($1) < cast<u64>($2) then stbds_arrsetcap(($1), cast<u64>($2)) and 0 else 0)
+    ? ($1) then stbds_header($1)[].length = cast<u64>($2) else 0
+}')m4_dnl
 m4_define(`stbds_arrcap', `TODO')m4_dnl
 m4_define(`stbds_arrlenu', `TODO')m4_dnl
 m4_define(`stbds_arrput', `TODO')m4_dnl
