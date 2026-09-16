@@ -18,11 +18,7 @@ m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
 
 
-type struc TacProgram;
-type struc AsmProgram;
-type struc FrontEndContext;
-type struc IdentifierContext;
-pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram;
+
 
 m4_define(`REGISTER_KIND', `TODO')m4_dnl
 m4_define(`REG_Ax', `0')m4_dnl
