@@ -7,16 +7,6 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 m4_include(`../backend/regs.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
 pub fn make_Type(none) *struc Type {
     self: *struc Type = sptr_new()
     loop .. while 0 {

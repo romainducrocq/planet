@@ -12,24 +12,6 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, pop_idx: u64, next_tok: *struc Token, peek_tok: *struc Token, peek_tok_i: *struc Token, p_toks: **struc Token)
 
 m4_define(`Ctx', `TODO')m4_dnl

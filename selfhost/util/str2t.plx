@@ -5,17 +5,6 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../frontend/errors.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
 pub fn dbl_to_binary(decimal: f64) u64 {
     binary: u64;
     memcpy(@binary, @decimal, sizeof<u64>)

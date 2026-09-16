@@ -24,33 +24,6 @@ m4_include(`../backend/symt_cvt.plx.m4')m4_dnl
 m4_include(`../optimizer/optim_tac.plx.m4')m4_dnl
 m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 type struc MainContext(errors: *struc ErrorsContext, is_verbose: i32, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string, includedirs: *string, stdlibdirs: *string)
 
 m4_define(`Ctx', `TODO')m4_dnl
