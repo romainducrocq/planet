@@ -258,13 +258,7 @@ m4_define(`TOK_error', `99')m4_dnl
 
 
 
-type struc ErrorsContext;
-type struc FileIoContext;
-type struc IdentifierContext;
 
-type struc Token(tok_kind: i32, tok: u64, info_at: u64)
-
-pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string, errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: **struc Token) i32;
 type struc Token;
 type struc CProgram;
 type struc ErrorsContext;
