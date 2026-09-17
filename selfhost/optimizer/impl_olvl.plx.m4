@@ -30,7 +30,11 @@ type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: *u64, e
 
 type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: *u64, instr_idx_map: *u64, blocks_mask_sets: *u64, instrs_mask_sets: *u64)
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 type struc DataFlowAnalysisO1(data_idx_map: *u64, bak_instrs: **struc TacInstruction, addressed_idx: u64)
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
 
 fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     if not self[] {
@@ -132,6 +136,7 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
     return self
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
     if not self[] {
         " #@MACRO@:uptr_delete(*self)"
@@ -168,6 +173,9 @@ fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
     self[].bak_instrs = vec_new()
     return self
 }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
 
 fn set_instr(ctx: *struc OptimTacContext, instr: *struc TacInstruction, instr_idx: u64) none {
     if instr {
@@ -182,7 +190,9 @@ fn set_instr(ctx: *struc OptimTacContext, instr: *struc TacInstruction, instr_id
     else {
         free_TacInstruction(@(ctx[].p_instrs[])[instr_idx])
     }
+m4_ifelse(__OPTIM_LEVEL__, `1', `
     ctx[].is_fixed_point = false
+')m4_dnl
 }
 
 fn find_size_t(xs: *u64, x: u64) i32 {
@@ -345,6 +355,7 @@ fn cfg_rm_block_instr(ctx: *struc OptimTacContext, instr_idx: u64, block_id: u64
     }
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn cfg_init_label_block(ctx: *struc OptimTacContext, node: *struc TacLabel) none {
     loop .. while 0 {
         " #@MACRO@:map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1)"
@@ -355,11 +366,18 @@ fn cfg_init_label_block(ctx: *struc OptimTacContext, node: *struc TacLabel) none
         }
     }
 }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
 
 fn cfg_init_block(ctx: *struc OptimTacContext, instr_idx: u64, instrs_back_idx: *u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacLabel_t {
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
             if instrs_back_idx[] ~= (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx[]
                 block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
@@ -371,20 +389,25 @@ fn cfg_init_block(ctx: *struc OptimTacContext, instr_idx: u64, instrs_back_idx: 
                     }
                 }
             }
+m4_ifelse(__OPTIM_LEVEL__, `1', `
             cfg_init_label_block(ctx, @node[].get._TacLabel)
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
             instrs_back_idx[] = instr_idx
             break
         }
-        -> AST_TacReturn_t {
-            -> AST_TacJump_t {
-                -> AST_TacJumpIfZero_t {
-                    -> AST_TacJumpIfNotZero_t {
-                        (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instr_idx
-                        instrs_back_idx[] = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
-                        break
-                    }
-                }
-            }
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+        -> AST_TacReturn_t;
+        -> AST_TacJump_t;
+        -> AST_TacJumpIfZero_t;
+        -> AST_TacJumpIfNotZero_t {
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
+            (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instr_idx
+            instrs_back_idx[] = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
+            break
         }
         otherwise {
             instrs_back_idx[] = instr_idx
@@ -393,6 +416,7 @@ fn cfg_init_block(ctx: *struc OptimTacContext, instr_idx: u64, instrs_back_idx: 
     }
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn cfg_init_jump_edges(ctx: *struc OptimTacContext, node: *struc TacJump, block_id: u64) none {
     cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
 }
@@ -406,14 +430,22 @@ fn cfg_init_jmp_ne_0_edges(ctx: *struc OptimTacContext, node: *struc TacJumpIfNo
     cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
     cfg_add_succ_edge(ctx, block_id, block_id + 1)
 }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
 
 fn cfg_init_edges(ctx: *struc OptimTacContext, block_id: u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_back_idx]
     match node[].tag {
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacReturn_t {
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
             cfg_add_succ_edge(ctx, block_id, ctx[].cfg[].exit_id)
         }
         break
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacJump_t {
             cfg_init_jump_edges(ctx, @node[].get._TacJump, block_id)
         }
@@ -426,6 +458,9 @@ fn cfg_init_edges(ctx: *struc OptimTacContext, block_id: u64) none {
             cfg_init_jmp_ne_0_edges(ctx, @node[].get._TacJumpIfNotZero, block_id)
         }
         break
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
         otherwise {
             cfg_add_succ_edge(ctx, block_id, block_id + 1)
         }
@@ -510,19 +545,33 @@ fn mask_set(mask: *u64, bit: u64, value: i32) none {
 }
 
 m4_define(`MASK_FALSE', `TODO')m4_dnl
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 m4_define(`MASK_TRUE', `TODO')m4_dnl
+')m4_dnl
 m4_define(`MASK_OFFSET', `TODO')m4_dnl
+
 m4_define(`GET_DFA_BLOCK_SET_IDX', `TODO')m4_dnl
 m4_define(`GET_DFA_INSTR_SET_IDX', `TODO')m4_dnl
+
 m4_define(`GET_DFA_BLOCK_SET_MASK', `TODO')m4_dnl
 m4_define(`GET_DFA_INSTR_SET_MASK', `TODO')m4_dnl
+
 m4_define(`GET_DFA_BLOCK_SET_AT', `TODO')m4_dnl
 m4_define(`GET_DFA_INSTR_SET_AT', `TODO')m4_dnl
-m4_define(`SET_DFA_INSTR_SET_AT', `TODO')m4_dnl
-m4_define(`GET_DFA_INSTR', `TODO')m4_dnl
 
-fn is_transfer_instr(ctx: *struc OptimTacContext, instr_idx: u64, is_store_elim: i32) i32 {
+m4_define(`SET_DFA_INSTR_SET_AT', `TODO')m4_dnl
+
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+m4_define(`GET_DFA_INSTR', `TODO')m4_dnl
+')m4_dnl
+
+fn is_transfer_instr(ctx: *struc OptimTacContext, instr_idx: u64
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+    , is_store_elim: i32
+')m4_dnl
+) i32 {
     match (ctx[].p_instrs[])[instr_idx][].tag {
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacSignExtend_t {
             -> AST_TacTruncate_t {
                 -> AST_TacZeroExtend_t {
@@ -565,12 +614,16 @@ fn is_transfer_instr(ctx: *struc OptimTacContext, instr_idx: u64, is_store_elim:
                 }
             }
         }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
         otherwise {
             return false
         }
     }
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn get_dfa_data_idx(ctx: *struc OptimTacContext, instr_idx: u64) u64 {
     loop i: u64 = 0 while i < ctx[].dfa[].set_size .. ++i {
         if ctx[].dfa_o1[].data_idx_map[i] == instr_idx {
@@ -607,10 +660,16 @@ fn set_dfa_bak_instr(ctx: *struc OptimTacContext, instr_idx: u64, i: *u64) i32 {
         return false
     }
 }
+')m4_dnl
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn prop_transfer_reach_copies(ctx: *struc OptimTacContext, instr_idx: u64, next_instr_idx: u64) i32;
 fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_instr_idx: u64) none;
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_transfer_block(ctx: *struc OptimTacContext, instr_idx: u64, block_id: u64) u64 {
     loop next_instr_idx: u64 = instr_idx + 1 while next_instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++next_instr_idx {
         if (ctx[].p_instrs[])[next_instr_idx] and is_transfer_instr(ctx, next_instr_idx, false) {
@@ -635,15 +694,25 @@ fn dfa_forward_transfer_block(ctx: *struc OptimTacContext, instr_idx: u64, block
     }
     return instr_idx
 }
+')m4_dnl
 
 fn dfa_backward_transfer_block(ctx: *struc OptimTacContext, instr_idx: u64, block_id: u64) u64 {
     if instr_idx > 0 {
         loop next_instr_idx: u64 = instr_idx while next_instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
-            if (ctx[].p_instrs[])[next_instr_idx] and is_transfer_instr(ctx, next_instr_idx, true) {
+            if (ctx[].p_instrs[])[next_instr_idx] and is_transfer_instr(ctx, next_instr_idx
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+                , true
+')m4_dnl
+            ) {
                 loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
                     ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] = ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (i)]
                 }
-                elim_transfer_live_values(ctx, instr_idx, next_instr_idx)
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+                elim_transfer_live_values(
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
+                    ctx, instr_idx, next_instr_idx)
                 instr_idx = next_instr_idx
             }
         }
@@ -651,7 +720,12 @@ fn dfa_backward_transfer_block(ctx: *struc OptimTacContext, instr_idx: u64, bloc
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)] = ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (i)]
     }
-    elim_transfer_live_values(ctx, instr_idx, ctx[].dfa[].incoming_idx)
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+    elim_transfer_live_values(
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
+        ctx, instr_idx, ctx[].dfa[].incoming_idx)
     return instr_idx
 }
 
@@ -672,6 +746,7 @@ fn dfa_after_meet_block(ctx: *struc OptimTacContext, block_id: u64) i32 {
     return is_fixed_point
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_meet_block(ctx: *struc OptimTacContext, block_id: u64) i32 {
     instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx
     loop  while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
@@ -709,11 +784,16 @@ fn dfa_forward_meet_block(ctx: *struc OptimTacContext, block_id: u64) i32 {
     }
     return dfa_after_meet_block(ctx, block_id)
 }
+')m4_dnl
 
 fn dfa_backward_meet_block(ctx: *struc OptimTacContext, block_id: u64) i32 {
     instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_back_idx + 1
     loop while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
-        if (ctx[].p_instrs[])[instr_idx] and is_transfer_instr(ctx, instr_idx, true) {
+        if (ctx[].p_instrs[])[instr_idx] and is_transfer_instr(ctx, instr_idx
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+            , true
+')m4_dnl
+        ) {
             jump Lelse
         }
     }
@@ -748,6 +828,7 @@ fn dfa_backward_meet_block(ctx: *struc OptimTacContext, block_id: u64) i32 {
     return dfa_after_meet_block(ctx, block_id)
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_iter_alg(ctx: *struc OptimTacContext) none {
     open_data_map_size: u64 = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     loop i: u64 = 0 while i < open_data_map_size .. ++i {
@@ -788,6 +869,7 @@ fn dfa_forward_iter_alg(ctx: *struc OptimTacContext) none {
         }
     }
 }
+')m4_dnl
 
 fn dfa_iter_alg(ctx: *struc OptimTacContext) none {
     open_data_map_size: u64 = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
@@ -830,14 +912,18 @@ fn dfa_iter_alg(ctx: *struc OptimTacContext) none {
     }
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) none;
+')m4_dnl
 fn dfa_backward_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) none;
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_succ_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) none {
     loop j: u64 = 0 while j < (? (ctx[].cfg[].blocks[block_id].succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)[].length else 0) .. ++j {
         dfa_forward_open_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[j], i)
     }
 }
+')m4_dnl
 
 fn dfa_backward_succ_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) none {
     loop j: u64 = 0 while j < (? (ctx[].cfg[].blocks[block_id].succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)[].length else 0) .. ++j {
@@ -845,6 +931,7 @@ fn dfa_backward_succ_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *
     }
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) none {
     if block_id < ctx[].cfg[].exit_id and not ctx[].cfg[].reaching_code[block_id] {
         ctx[].cfg[].reaching_code[block_id] = true
@@ -853,6 +940,7 @@ fn dfa_forward_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) n
         ctx[].dfa[].open_data_map[i[]] = block_id
     }
 }
+')m4_dnl
 
 fn dfa_backward_open_block(ctx: *struc OptimTacContext, block_id: u64, i: *u64) none {
     if block_id < ctx[].cfg[].exit_id and not ctx[].cfg[].reaching_code[block_id] {
@@ -867,6 +955,7 @@ fn is_aliased_name(ctx: *struc OptimTacContext, name: u64) i32 {
     return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == AST_StaticAttr_t or (? ((ctx[].frontend[].addressed_set) = stbds_hmget_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp) ~= -1
 }
 
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_add_aliased_value(ctx: *struc OptimTacContext, node: *struc TacValue) none {
     if node[].tag == AST_TacVariable_t {
         loop .. while 0 {
@@ -928,8 +1017,17 @@ fn elim_add_data_value(ctx: *struc OptimTacContext, node: *struc TacValue) none 
         elim_add_data_name(ctx, node[].get._TacVariable.name)
     }
 }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
 
-fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_addressed_set: i32) i32 {
+fn init_data_flow_analysis(ctx: *struc OptimTacContext,
+m4_ifelse(__OPTIM_LEVEL__, `1', `
+    is_store_elim: i32, is_addressed_set: i32
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
+) i32 {
     ctx[].dfa[].set_size = 0
     ctx[].dfa[].incoming_idx = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
     if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
@@ -943,7 +1041,11 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
     }
     {
         i: u64;
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         i = ? is_store_elim then 3 else 1
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
         if (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length else 0) < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i {
             loop .. while 0 {
                 " #@MACRO@:vec_resize(ctx->dfa->instr_idx_map, vec_size(*ctx->p_instrs) + i)"
@@ -965,8 +1067,10 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
     instrs_mask_sets_size: u64 = 0
+m4_ifelse(__OPTIM_LEVEL__, `1', `
     is_copy_prop: i32 = not is_store_elim
     if is_store_elim {
+')m4_dnl
         loop .. while 0 {
             " #@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
             if ctx[].cfg[].identifier_id_map {
@@ -980,6 +1084,7 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
             ;
         }
         ctx[].dfa[].static_idx = ctx[].dfa[].incoming_idx + 1
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa_o1[].addressed_idx = ctx[].dfa[].static_idx + 1
     }
     if is_addressed_set {
@@ -999,12 +1104,14 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
             }
         }
     }
+')m4_dnl
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
                 if (ctx[].p_instrs[])[instr_idx] {
                     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
                     match node[].tag {
+m4_ifelse(__OPTIM_LEVEL__, `1', `
                         -> AST_TacReturn_t {
                             if is_copy_prop {
                                 jump Lcontinue
@@ -1179,6 +1286,9 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
                             elim_add_data_value(ctx, node[].get._TacJumpIfNotZero.condition)
                             break
                         }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
                         otherwise {
                             jump Lcontinue
                         }
@@ -1197,14 +1307,21 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
     if ctx[].dfa[].set_size == 0 {
         return false
     }
+m4_ifelse(__OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
     ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] = instrs_mask_sets_size
     instrs_mask_sets_size++
+m4_ifelse(__OPTIM_LEVEL__, `1', `
     if is_store_elim {
+')m4_dnl
         ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] = instrs_mask_sets_size
         instrs_mask_sets_size++
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] = instrs_mask_sets_size
         instrs_mask_sets_size++
     }
+')m4_dnl
     ctx[].dfa[].mask_size = (ctx[].dfa[].set_size + 63) / 64
     instrs_mask_sets_size *= ctx[].dfa[].mask_size
     blocks_mask_sets_size: u64 = ctx[].dfa[].mask_size * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
@@ -1225,7 +1342,11 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
                 ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
             }
         }
+m4_ifelse(__OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
     }
+m4_ifelse(__OPTIM_LEVEL__, `1', `
     if is_copy_prop {
         i: u64 = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
         loop j: u64 = 0 while j < (? (ctx[].cfg[].entry_succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length else 0) .. ++j {
@@ -1281,6 +1402,7 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
         }
     }
     else {
+')m4_dnl
         i: u64 = 0
         loop j: u64 = 0 while j < (? (ctx[].cfg[].entry_succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length else 0) .. ++j {
             succ_id: u64 = ctx[].cfg[].entry_succ_ids[j]
@@ -1291,23 +1413,35 @@ fn init_data_flow_analysis(ctx: *struc OptimTacContext, is_store_elim: i32, is_a
         loop  while i < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++i {
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
+m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (0)] = 0ul
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (0)] = 0ul
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
         loop i = 1 while i < ctx[].dfa[].mask_size .. ++i {
             ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (i)] = 0ul
+m4_ifelse(__OPTIM_LEVEL__, `1', `
             ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)] = 0ul
+')m4_dnl
         }
         loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
             name_id: *struc PairTIdentifierulong_t = @ctx[].cfg[].identifier_id_map[i]
+m4_ifelse(__OPTIM_LEVEL__, `1', `
             if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@(((name_id[]).key))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == AST_StaticAttr_t {
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
             }
             if (? ((ctx[].frontend[].addressed_set) = stbds_hmget_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@(((name_id[]).key))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp) ~= -1 {
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
             }
+', __OPTIM_LEVEL__, `2', `
+# TODO
+')m4_dnl
         }
         memset(ctx[].dfa[].blocks_mask_sets, 0ul, sizeof<u64> * blocks_mask_sets_size)
+m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
+')m4_dnl
     return true
 }
 
