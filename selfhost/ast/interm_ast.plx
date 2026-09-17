@@ -807,14 +807,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
                 free_TacValue(@(self[])[].get._TacFunCall.args[i])
             }
         }
-        if (self[])[].get._TacFunCall.args {
-            " #@MACRO@:vec_delete((*self)->get._TacFunCall.args)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._TacFunCall.args) then free((cast<*struc stbds_array_header>(((self[])[].get._TacFunCall.args)) - 1)) else cast<none>(0)))
-                ((self[])[].get._TacFunCall.args) = nil
-            }
-            (self[])[].get._TacFunCall.args = vec_new()
-        }
+        vec_delete(self[][].get._TacFunCall.args)
         free_TacValue(@(self[])[].get._TacFunCall.dst)
         break
         -> AST_TacUnary_t {
@@ -970,26 +963,12 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
             break
         }
         -> AST_TacFunction_t {
-            if (self[])[].get._TacFunction.params {
-                " #@MACRO@:vec_delete((*self)->get._TacFunction.params)"
-                loop .. while 0 {
-                    cast<none>((? ((self[])[].get._TacFunction.params) then free((cast<*struc stbds_array_header>(((self[])[].get._TacFunction.params)) - 1)) else cast<none>(0)))
-                    ((self[])[].get._TacFunction.params) = nil
-                }
-                (self[])[].get._TacFunction.params = vec_new()
-            }
+            vec_delete(self[][].get._TacFunction.params)
         }
         loop i: u64 = 0 while i < (? ((self[])[].get._TacFunction.body) then (cast<*struc stbds_array_header>(((self[])[].get._TacFunction.body)) - 1)[].length else 0) .. ++i {
             free_TacInstruction(@(self[])[].get._TacFunction.body[i])
         }
-        if (self[])[].get._TacFunction.body {
-            " #@MACRO@:vec_delete((*self)->get._TacFunction.body)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._TacFunction.body) then free((cast<*struc stbds_array_header>(((self[])[].get._TacFunction.body)) - 1)) else cast<none>(0)))
-                ((self[])[].get._TacFunction.body) = nil
-            }
-            (self[])[].get._TacFunction.body = vec_new()
-        }
+        vec_delete(self[][].get._TacFunction.body)
         break
         -> AST_TacStaticVariable_t {
             free_Type(@(self[])[].get._TacStaticVariable.static_init_type)
@@ -997,14 +976,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         loop i: u64 = 0 while i < (? ((self[])[].get._TacStaticVariable.static_inits) then (cast<*struc stbds_array_header>(((self[])[].get._TacStaticVariable.static_inits)) - 1)[].length else 0) .. ++i {
             free_StaticInit(@(self[])[].get._TacStaticVariable.static_inits[i])
         }
-        if (self[])[].get._TacStaticVariable.static_inits {
-            " #@MACRO@:vec_delete((*self)->get._TacStaticVariable.static_inits)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._TacStaticVariable.static_inits) then free((cast<*struc stbds_array_header>(((self[])[].get._TacStaticVariable.static_inits)) - 1)) else cast<none>(0)))
-                ((self[])[].get._TacStaticVariable.static_inits) = nil
-            }
-            (self[])[].get._TacStaticVariable.static_inits = vec_new()
-        }
+        vec_delete(self[][].get._TacStaticVariable.static_inits)
         break
         -> AST_TacStaticConstant_t {
             free_Type(@(self[])[].get._TacStaticConstant.static_init_type)
@@ -1058,36 +1030,15 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
     loop i: u64 = 0 while i < (? ((self[])[].static_const_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
         free_TacTopLevel(@(self[])[].static_const_toplvls[i])
     }
-    if (self[])[].static_const_toplvls {
-        " #@MACRO@:vec_delete((*self)->static_const_toplvls)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].static_const_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].static_const_toplvls) = nil
-        }
-        (self[])[].static_const_toplvls = vec_new()
-    }
+    vec_delete(self[][].static_const_toplvls)
     loop i: u64 = 0 while i < (? ((self[])[].static_var_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_var_toplvls)) - 1)[].length else 0) .. ++i {
         free_TacTopLevel(@(self[])[].static_var_toplvls[i])
     }
-    if (self[])[].static_var_toplvls {
-        " #@MACRO@:vec_delete((*self)->static_var_toplvls)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].static_var_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].static_var_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].static_var_toplvls) = nil
-        }
-        (self[])[].static_var_toplvls = vec_new()
-    }
+    vec_delete(self[][].static_var_toplvls)
     loop i: u64 = 0 while i < (? ((self[])[].fun_toplvls) then (cast<*struc stbds_array_header>(((self[])[].fun_toplvls)) - 1)[].length else 0) .. ++i {
         free_TacTopLevel(@(self[])[].fun_toplvls[i])
     }
-    if (self[])[].fun_toplvls {
-        " #@MACRO@:vec_delete((*self)->fun_toplvls)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].fun_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].fun_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].fun_toplvls) = nil
-        }
-        (self[])[].fun_toplvls = vec_new()
-    }
+    vec_delete(self[][].fun_toplvls)
     if self[] {
         " #@MACRO@:uptr_free(*self)"
         free(self[])

@@ -958,28 +958,14 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
                 free_AsmInstruction(@(self[])[].get._AsmFunction.instructions[i])
             }
         }
-        if (self[])[].get._AsmFunction.instructions {
-            " #@MACRO@:vec_delete((*self)->get._AsmFunction.instructions)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._AsmFunction.instructions) then free((cast<*struc stbds_array_header>(((self[])[].get._AsmFunction.instructions)) - 1)) else cast<none>(0)))
-                ((self[])[].get._AsmFunction.instructions) = nil
-            }
-            (self[])[].get._AsmFunction.instructions = vec_new()
-        }
+        vec_delete(self[][].get._AsmFunction.instructions)
         break
         -> AST_AsmStaticVariable_t {
             loop i: u64 = 0 while i < (? ((self[])[].get._AsmStaticVariable.static_inits) then (cast<*struc stbds_array_header>(((self[])[].get._AsmStaticVariable.static_inits)) - 1)[].length else 0) .. ++i {
                 free_StaticInit(@(self[])[].get._AsmStaticVariable.static_inits[i])
             }
         }
-        if (self[])[].get._AsmStaticVariable.static_inits {
-            " #@MACRO@:vec_delete((*self)->get._AsmStaticVariable.static_inits)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._AsmStaticVariable.static_inits) then free((cast<*struc stbds_array_header>(((self[])[].get._AsmStaticVariable.static_inits)) - 1)) else cast<none>(0)))
-                ((self[])[].get._AsmStaticVariable.static_inits) = nil
-            }
-            (self[])[].get._AsmStaticVariable.static_inits = vec_new()
-        }
+        vec_delete(self[][].get._AsmStaticVariable.static_inits)
         break
         -> AST_AsmStaticConstant_t {
             free_StaticInit(@(self[])[].get._AsmStaticConstant.static_init)
@@ -1030,25 +1016,11 @@ pub fn free_AsmProgram(self: **struc AsmProgram) none {
     loop i: u64 = 0 while i < (? ((self[])[].static_const_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
         free_AsmTopLevel(@(self[])[].static_const_toplvls[i])
     }
-    if (self[])[].static_const_toplvls {
-        " #@MACRO@:vec_delete((*self)->static_const_toplvls)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].static_const_toplvls) then free((cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)) else cast<none>(0)))
-            ((self[])[].static_const_toplvls) = nil
-        }
-        (self[])[].static_const_toplvls = vec_new()
-    }
+    vec_delete(self[][].static_const_toplvls)
     loop i: u64 = 0 while i < (? ((self[])[].top_levels) then (cast<*struc stbds_array_header>(((self[])[].top_levels)) - 1)[].length else 0) .. ++i {
         free_AsmTopLevel(@(self[])[].top_levels[i])
     }
-    if (self[])[].top_levels {
-        " #@MACRO@:vec_delete((*self)->top_levels)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].top_levels) then free((cast<*struc stbds_array_header>(((self[])[].top_levels)) - 1)) else cast<none>(0)))
-            ((self[])[].top_levels) = nil
-        }
-        (self[])[].top_levels = vec_new()
-    }
+    vec_delete(self[][].top_levels)
     if self[] {
         " #@MACRO@:uptr_free(*self)"
         free(self[])
