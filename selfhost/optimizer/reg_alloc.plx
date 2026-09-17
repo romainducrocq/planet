@@ -32,33 +32,12 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
         return none
     }
     ;
-    if (self[])[].unpruned_hard_mask_bits {
-        " #@MACRO@:vec_delete((*self)->unpruned_hard_mask_bits)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].unpruned_hard_mask_bits) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_hard_mask_bits)) - 1)) else cast<none>(0)))
-            ((self[])[].unpruned_hard_mask_bits) = nil
-        }
-        (self[])[].unpruned_hard_mask_bits = vec_new()
-    }
+    vec_delete(self[][].unpruned_hard_mask_bits)
     ;
-    if (self[])[].unpruned_pseudo_names {
-        " #@MACRO@:vec_delete((*self)->unpruned_pseudo_names)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].unpruned_pseudo_names) then free((cast<*struc stbds_array_header>(((self[])[].unpruned_pseudo_names)) - 1)) else cast<none>(0)))
-            ((self[])[].unpruned_pseudo_names) = nil
-        }
-        (self[])[].unpruned_pseudo_names = vec_new()
-    }
+    vec_delete(self[][].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < (? ((self[])[].pseudo_reg_map) then (cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
-        if ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names {
-            " #@MACRO@:vec_delete(pair_second((*self)->pseudo_reg_map[i]).linked_pseudo_names)"
-            loop .. while 0 {
-                cast<none>((? (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>((((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
-                (((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
-            }
-            ((self[])[].pseudo_reg_map[i]).value.linked_pseudo_names = vec_new()
-        }
+        vec_delete((self[][].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second((*self)->pseudo_reg_map[i]).linked_pseudo_names 
         ;
     }
     if (self[])[].pseudo_reg_map {
@@ -154,61 +133,19 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
         return none
     }
     ;
-    if (self[])[].entry_succ_ids {
-        " #@MACRO@:vec_delete((*self)->entry_succ_ids)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].entry_succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].entry_succ_ids)) - 1)) else cast<none>(0)))
-            ((self[])[].entry_succ_ids) = nil
-        }
-        (self[])[].entry_succ_ids = vec_new()
-    }
+    vec_delete(self[][].entry_succ_ids)
     ;
-    if (self[])[].exit_pred_ids {
-        " #@MACRO@:vec_delete((*self)->exit_pred_ids)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].exit_pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].exit_pred_ids)) - 1)) else cast<none>(0)))
-            ((self[])[].exit_pred_ids) = nil
-        }
-        (self[])[].exit_pred_ids = vec_new()
-    }
+    vec_delete(self[][].exit_pred_ids)
     ;
-    if (self[])[].reaching_code {
-        " #@MACRO@:vec_delete((*self)->reaching_code)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].reaching_code) then free((cast<*struc stbds_array_header>(((self[])[].reaching_code)) - 1)) else cast<none>(0)))
-            ((self[])[].reaching_code) = nil
-        }
-        (self[])[].reaching_code = vec_new()
-    }
+    vec_delete(self[][].reaching_code)
     ;
     loop i: u64 = 0 while i < (? ((self[])[].blocks) then (cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)[].length else 0) .. ++i {
-        if (self[])[].blocks[i].pred_ids {
-            " #@MACRO@:vec_delete((*self)->blocks[i].pred_ids)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].blocks[i].pred_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].pred_ids)) - 1)) else cast<none>(0)))
-                ((self[])[].blocks[i].pred_ids) = nil
-            }
-            (self[])[].blocks[i].pred_ids = vec_new()
-        }
+        vec_delete(self[][].blocks[i].pred_ids)
         ;
-        if (self[])[].blocks[i].succ_ids {
-            " #@MACRO@:vec_delete((*self)->blocks[i].succ_ids)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].blocks[i].succ_ids) then free((cast<*struc stbds_array_header>(((self[])[].blocks[i].succ_ids)) - 1)) else cast<none>(0)))
-                ((self[])[].blocks[i].succ_ids) = nil
-            }
-            (self[])[].blocks[i].succ_ids = vec_new()
-        }
+        vec_delete(self[][].blocks[i].succ_ids)
         ;
     }
-    if (self[])[].blocks {
-        " #@MACRO@:vec_delete((*self)->blocks)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].blocks) then free((cast<*struc stbds_array_header>(((self[])[].blocks)) - 1)) else cast<none>(0)))
-            ((self[])[].blocks) = nil
-        }
-        (self[])[].blocks = vec_new()
-    }
+    vec_delete(self[][].blocks)
     ;
     if (self[])[].identifier_id_map {
         " #@MACRO@:map_delete((*self)->identifier_id_map)"
@@ -253,41 +190,13 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
         return none
     }
     ;
-    if (self[])[].open_data_map {
-        " #@MACRO@:vec_delete((*self)->open_data_map)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].open_data_map) then free((cast<*struc stbds_array_header>(((self[])[].open_data_map)) - 1)) else cast<none>(0)))
-            ((self[])[].open_data_map) = nil
-        }
-        (self[])[].open_data_map = vec_new()
-    }
+    vec_delete(self[][].open_data_map)
     ;
-    if (self[])[].instr_idx_map {
-        " #@MACRO@:vec_delete((*self)->instr_idx_map)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].instr_idx_map) then free((cast<*struc stbds_array_header>(((self[])[].instr_idx_map)) - 1)) else cast<none>(0)))
-            ((self[])[].instr_idx_map) = nil
-        }
-        (self[])[].instr_idx_map = vec_new()
-    }
+    vec_delete(self[][].instr_idx_map)
     ;
-    if (self[])[].blocks_mask_sets {
-        " #@MACRO@:vec_delete((*self)->blocks_mask_sets)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].blocks_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].blocks_mask_sets)) - 1)) else cast<none>(0)))
-            ((self[])[].blocks_mask_sets) = nil
-        }
-        (self[])[].blocks_mask_sets = vec_new()
-    }
+    vec_delete(self[][].blocks_mask_sets)
     ;
-    if (self[])[].instrs_mask_sets {
-        " #@MACRO@:vec_delete((*self)->instrs_mask_sets)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].instrs_mask_sets) then free((cast<*struc stbds_array_header>(((self[])[].instrs_mask_sets)) - 1)) else cast<none>(0)))
-            ((self[])[].instrs_mask_sets) = nil
-        }
-        (self[])[].instrs_mask_sets = vec_new()
-    }
+    vec_delete(self[][].instrs_mask_sets)
     ;
     if self[] {
         " #@MACRO@:uptr_free(*self)"
@@ -324,14 +233,7 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
         return none
     }
     ;
-    if (self[])[].data_name_map {
-        " #@MACRO@:vec_delete((*self)->data_name_map)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].data_name_map) then free((cast<*struc stbds_array_header>(((self[])[].data_name_map)) - 1)) else cast<none>(0)))
-            ((self[])[].data_name_map) = nil
-        }
-        (self[])[].data_name_map = vec_new()
-    }
+    vec_delete(self[][].data_name_map)
     ;
     if self[] {
         " #@MACRO@:uptr_free(*self)"
@@ -609,23 +511,9 @@ fn cfg_init_edges(ctx: *struc RegAllocContext, block_id: u64) none {
 
 fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
     loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
-        if ctx[].cfg[].blocks[block_id].pred_ids {
-            " #@MACRO@:vec_delete(GET_CFG_BLOCK(block_id).pred_ids)"
-            loop .. while 0 {
-                cast<none>((? (ctx[].cfg[].blocks[block_id].pred_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)) else cast<none>(0)))
-                (ctx[].cfg[].blocks[block_id].pred_ids) = nil
-            }
-            ctx[].cfg[].blocks[block_id].pred_ids = vec_new()
-        }
+        vec_delete(ctx[].cfg[].blocks[block_id].pred_ids) # TODO GET_CFG_BLOCK(block_id).pred_ids
         ;
-        if ctx[].cfg[].blocks[block_id].succ_ids {
-            " #@MACRO@:vec_delete(GET_CFG_BLOCK(block_id).succ_ids)"
-            loop .. while 0 {
-                cast<none>((? (ctx[].cfg[].blocks[block_id].succ_ids) then free((cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)) else cast<none>(0)))
-                (ctx[].cfg[].blocks[block_id].succ_ids) = nil
-            }
-            ctx[].cfg[].blocks[block_id].succ_ids = vec_new()
-        }
+        vec_delete(ctx[].cfg[].blocks[block_id].succ_ids) # TODO GET_CFG_BLOCK(block_id).succ_ids
         ;
     }
     if ctx[].cfg[].blocks {
@@ -1734,14 +1622,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     ;
     loop i: u64 = 0 while i < (? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
-        if (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names {
-            " #@MACRO@:vec_delete(pair_second(ctx->infer_graph->pseudo_reg_map[i]).linked_pseudo_names)"
-            loop .. while 0 {
-                cast<none>((? ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
-                ((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
-            }
-            (ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = vec_new()
-        }
+        vec_delete((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->infer_graph->pseudo_reg_map[i]).linked_pseudo_names
         ;
     }
     loop .. while 0 {
@@ -1762,14 +1643,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     ;
     loop i: u64 = 0 while i < (? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
-        if (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names {
-            " #@MACRO@:vec_delete(pair_second(ctx->sse_infer_graph->pseudo_reg_map[i]).linked_pseudo_names)"
-            loop .. while 0 {
-                cast<none>((? ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) then free((cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names)) - 1)) else cast<none>(0)))
-                ((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) = nil
-            }
-            (ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names = vec_new()
-        }
+        vec_delete((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->sse_infer_graph->pseudo_reg_map[i]).linked_pseudo_names
         ;
     }
     loop .. while 0 {
@@ -3390,14 +3264,7 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
 
     alloc_program(@ctx, node)
     loop i: u64 = 0 while i < 26 .. ++i {
-        if ctx.hard_regs[i].linked_pseudo_names {
-            " #@MACRO@:vec_delete(ctx.hard_regs[i].linked_pseudo_names)"
-            loop .. while 0 {
-                cast<none>((? (ctx.hard_regs[i].linked_pseudo_names) then free((cast<*struc stbds_array_header>((ctx.hard_regs[i].linked_pseudo_names)) - 1)) else cast<none>(0)))
-                (ctx.hard_regs[i].linked_pseudo_names) = nil
-            }
-            ctx.hard_regs[i].linked_pseudo_names = vec_new()
-        }
+        vec_delete(ctx.hard_regs[i].linked_pseudo_names)
         ;
     }
     free_ControlFlowGraph(@ctx.cfg)

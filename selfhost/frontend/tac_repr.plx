@@ -802,14 +802,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                 loop i: u64 = 0 while i < (? (noeval_instrs) then (cast<*struc stbds_array_header>((noeval_instrs)) - 1)[].length else 0) .. ++i {
                     free_TacInstruction(@noeval_instrs[i])
                 }
-                if noeval_instrs {
-                    " #@MACRO@:vec_delete(noeval_instrs)"
-                    loop .. while 0 {
-                        cast<none>((? (noeval_instrs) then free((cast<*struc stbds_array_header>((noeval_instrs)) - 1)) else cast<none>(0)))
-                        (noeval_instrs) = nil
-                    }
-                    noeval_instrs = vec_new()
-                }
+                vec_delete(noeval_instrs)
             }
             ctx[].identifiers[].label_count = label_count_2
             ctx[].identifiers[].var_count = var_count_2
