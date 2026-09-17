@@ -2558,14 +2558,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
-    if values {
-        " #@MACRO@:vec_delete(values)"
-        loop .. while 0 {
-            cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
-            (values) = nil
-        }
-        values = vec_new()
-    }
+    vec_delete(values)
     return _errval
 }
 
@@ -2609,14 +2602,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
-    if values {
-        " #@MACRO@:vec_delete(values)"
-        loop .. while 0 {
-            cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
-            (values) = nil
-        }
-        values = vec_new()
-    }
+    vec_delete(values)
     return _errval
 }
 
@@ -2660,14 +2646,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
-    if values {
-        " #@MACRO@:vec_delete(values)"
-        loop .. while 0 {
-            cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
-            (values) = nil
-        }
-        values = vec_new()
-    }
+    vec_delete(values)
     return _errval
 }
 
@@ -2711,14 +2690,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
         sdsfree(strto_fmt)
         strto_fmt = ? nil then sdsnew(nil) else nil
     }
-    if values {
-        " #@MACRO@:vec_delete(values)"
-        loop .. while 0 {
-            cast<none>((? (values) then free((cast<*struc stbds_array_header>((values)) - 1)) else cast<none>(0)))
-            (values) = nil
-        }
-        values = vec_new()
-    }
+    vec_delete(values)
     return _errval
 }
 
@@ -3891,14 +3863,7 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     loop i: u64 = 0 while i < (? (static_inits) then (cast<*struc stbds_array_header>((static_inits)) - 1)[].length else 0) .. ++i {
         free_StaticInit(@static_inits[i])
     }
-    if static_inits {
-        " #@MACRO@:vec_delete(static_inits)"
-        loop .. while 0 {
-            cast<none>((? (static_inits) then free((cast<*struc stbds_array_header>((static_inits)) - 1)) else cast<none>(0)))
-            (static_inits) = nil
-        }
-        static_inits = vec_new()
-    }
+    vec_delete(static_inits)
     return _errval
 }
 
@@ -4462,14 +4427,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     free_StructMember(@struct_member)
     free_StructTypedef(@struct_typedef)
     free_Type(@member_type)
-    if member_names {
-        " #@MACRO@:vec_delete(member_names)"
-        loop .. while 0 {
-            cast<none>((? (member_names) then free((cast<*struc stbds_array_header>((member_names)) - 1)) else cast<none>(0)))
-            (member_names) = nil
-        }
-        member_names = vec_new()
-    }
+    vec_delete(member_names)
     loop i: u64 = 0 while i < (? (members) then (cast<*struc stbds_array_header>(((members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructMember(@(members[i]).value)
     }
@@ -6763,14 +6721,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
             ctx.scoped_identifier_maps[i] = map_new()
         }
     }
-    if ctx.scoped_identifier_maps {
-        " #@MACRO@:vec_delete(ctx.scoped_identifier_maps)"
-        loop .. while 0 {
-            cast<none>((? (ctx.scoped_identifier_maps) then free((cast<*struc stbds_array_header>((ctx.scoped_identifier_maps)) - 1)) else cast<none>(0)))
-            (ctx.scoped_identifier_maps) = nil
-        }
-        ctx.scoped_identifier_maps = vec_new()
-    }
+    vec_delete(ctx.scoped_identifier_maps)
     loop i: u64 = 0 while i < (? (ctx.scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx.scoped_struct_maps)) - 1)[].length else 0) .. ++i {
         if ctx.scoped_struct_maps[i] {
             " #@MACRO@:map_delete(ctx.scoped_struct_maps[i])"
@@ -6781,14 +6732,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
             ctx.scoped_struct_maps[i] = map_new()
         }
     }
-    if ctx.scoped_struct_maps {
-        " #@MACRO@:vec_delete(ctx.scoped_struct_maps)"
-        loop .. while 0 {
-            cast<none>((? (ctx.scoped_struct_maps) then free((cast<*struc stbds_array_header>((ctx.scoped_struct_maps)) - 1)) else cast<none>(0)))
-            (ctx.scoped_struct_maps) = nil
-        }
-        ctx.scoped_struct_maps = vec_new()
-    }
+    vec_delete(ctx.scoped_struct_maps)
     loop .. while 0 {
         " #@MACRO@:set_delete(ctx.label_set)"
         if ctx.label_set {
@@ -6800,22 +6744,8 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
             ctx.label_set = map_new()
         }
     }
-    if ctx.break_loop_labels {
-        " #@MACRO@:vec_delete(ctx.break_loop_labels)"
-        loop .. while 0 {
-            cast<none>((? (ctx.break_loop_labels) then free((cast<*struc stbds_array_header>((ctx.break_loop_labels)) - 1)) else cast<none>(0)))
-            (ctx.break_loop_labels) = nil
-        }
-        ctx.break_loop_labels = vec_new()
-    }
-    if ctx.continue_loop_labels {
-        " #@MACRO@:vec_delete(ctx.continue_loop_labels)"
-        loop .. while 0 {
-            cast<none>((? (ctx.continue_loop_labels) then free((cast<*struc stbds_array_header>((ctx.continue_loop_labels)) - 1)) else cast<none>(0)))
-            (ctx.continue_loop_labels) = nil
-        }
-        ctx.continue_loop_labels = vec_new()
-    }
+    vec_delete(ctx.break_loop_labels)
+    vec_delete(ctx.continue_loop_labels)
     loop .. while 0 {
         " #@MACRO@:set_delete(ctx.fun_def_set)"
         if ctx.fun_def_set {
@@ -6864,21 +6794,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
             errors[].fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
-    if errors[].fopen_lines {
-        " #@MACRO@:vec_delete(errors->fopen_lines)"
-        loop .. while 0 {
-            cast<none>((? (errors[].fopen_lines) then free((cast<*struc stbds_array_header>((errors[].fopen_lines)) - 1)) else cast<none>(0)))
-            (errors[].fopen_lines) = nil
-        }
-        errors[].fopen_lines = vec_new()
-    }
-    if errors[].token_infos {
-        " #@MACRO@:vec_delete(errors->token_infos)"
-        loop .. while 0 {
-            cast<none>((? (errors[].token_infos) then free((cast<*struc stbds_array_header>((errors[].token_infos)) - 1)) else cast<none>(0)))
-            (errors[].token_infos) = nil
-        }
-        errors[].token_infos = vec_new()
-    }
+    vec_delete(errors[].fopen_lines)
+    vec_delete(errors[].token_infos)
     return _errval
 }
