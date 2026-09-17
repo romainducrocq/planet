@@ -10,9 +10,9 @@ m4_include(`../backend/regs.plx.m4')m4_dnl
 pub fn make_Type(none) *struc Type {
     self: *struc Type = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_alloc(Type, self)"
+        " #@MACRO@:sptr_alloc(Type, self)"
         loop .. while 0 {
-            "@MACRO@:uptr_alloc(Type, self)"
+            " #@MACRO@:uptr_alloc(Type, self)"
             free_Type(@self)
             self = cast<*struc Type>(malloc(sizeof<struc Type>))
             if not self {
@@ -86,9 +86,9 @@ pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc T
     self[].get._FunType.ret_reg_mask = 0ul
     self[].get._FunType.param_types = vec_new()
     if param_types[] ~= self[].get._FunType.param_types {
-        "@MACRO@:vec_move(*param_types, self->get._FunType.param_types)"
+        " #@MACRO@:vec_move(*param_types, self->get._FunType.param_types)"
         if self[].get._FunType.param_types {
-            "@MACRO@:vec_delete(self->get._FunType.param_types)"
+            " #@MACRO@:vec_delete(self->get._FunType.param_types)"
             loop .. while 0 {
                 cast<none>((? (self[].get._FunType.param_types) then free((cast<*struc stbds_array_header>((self[].get._FunType.param_types)) - 1)) else cast<none>(0)))
                 (self[].get._FunType.param_types) = nil
@@ -100,9 +100,9 @@ pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc T
     }
     self[].get._FunType.ret_type = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(Type, *ret_type, self->get._FunType.ret_type)"
+        " #@MACRO@:sptr_move(Type, *ret_type, self->get._FunType.ret_type)"
         if ret_type[] ~= self[].get._FunType.ret_type {
-            "@MACRO@:uptr_move(Type, *ret_type, self->get._FunType.ret_type)"
+            " #@MACRO@:uptr_move(Type, *ret_type, self->get._FunType.ret_type)"
             free_Type(@self[].get._FunType.ret_type)
             self[].get._FunType.ret_type = ret_type[]
             ret_type[] = uptr_new()
@@ -118,9 +118,9 @@ pub fn make_Pointer(ref_type: **struc Type) *struc Type {
     self[].tag = AST_Pointer_t
     self[].get._Pointer.ref_type = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(Type, *ref_type, self->get._Pointer.ref_type)"
+        " #@MACRO@:sptr_move(Type, *ref_type, self->get._Pointer.ref_type)"
         if ref_type[] ~= self[].get._Pointer.ref_type {
-            "@MACRO@:uptr_move(Type, *ref_type, self->get._Pointer.ref_type)"
+            " #@MACRO@:uptr_move(Type, *ref_type, self->get._Pointer.ref_type)"
             free_Type(@self[].get._Pointer.ref_type)
             self[].get._Pointer.ref_type = ref_type[]
             ref_type[] = uptr_new()
@@ -135,9 +135,9 @@ pub fn make_Array(size: i64, elem_type: **struc Type) *struc Type {
     self[].get._Array.size = size
     self[].get._Array.elem_type = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(Type, *elem_type, self->get._Array.elem_type)"
+        " #@MACRO@:sptr_move(Type, *elem_type, self->get._Array.elem_type)"
         if elem_type[] ~= self[].get._Array.elem_type {
-            "@MACRO@:uptr_move(Type, *elem_type, self->get._Array.elem_type)"
+            " #@MACRO@:uptr_move(Type, *elem_type, self->get._Array.elem_type)"
             free_Type(@self[].get._Array.elem_type)
             self[].get._Array.elem_type = elem_type[]
             elem_type[] = uptr_new()
@@ -156,9 +156,9 @@ pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type {
 
 pub fn free_Type(self: **struc Type) none {
     loop .. while 0 {
-        "@MACRO@:sptr_delete(*self)"
+        " #@MACRO@:sptr_delete(*self)"
         if not self[] {
-            "@MACRO@:uptr_delete(*self)"
+            " #@MACRO@:uptr_delete(*self)"
             return none
         }
         elif (self[])[]._ref_count > 1 {
@@ -195,7 +195,7 @@ pub fn free_Type(self: **struc Type) none {
             }
         }
         if (self[])[].get._FunType.param_types {
-            "@MACRO@:vec_delete((*self)->get._FunType.param_types)"
+            " #@MACRO@:vec_delete((*self)->get._FunType.param_types)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._FunType.param_types) then free((cast<*struc stbds_array_header>(((self[])[].get._FunType.param_types)) - 1)) else cast<none>(0)))
                 ((self[])[].get._FunType.param_types) = nil
@@ -220,9 +220,9 @@ pub fn free_Type(self: **struc Type) none {
         }
     }
     loop .. while 0 {
-        "@MACRO@:sptr_free(*self)"
+        " #@MACRO@:sptr_free(*self)"
         if self[] {
-            "@MACRO@:uptr_free(*self)"
+            " #@MACRO@:uptr_free(*self)"
             free(self[])
             self[] = uptr_new()
         }
@@ -232,9 +232,9 @@ pub fn free_Type(self: **struc Type) none {
 pub fn make_StaticInit(none) *struc StaticInit {
     self: *struc StaticInit = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_alloc(StaticInit, self)"
+        " #@MACRO@:sptr_alloc(StaticInit, self)"
         loop .. while 0 {
-            "@MACRO@:uptr_alloc(StaticInit, self)"
+            " #@MACRO@:uptr_alloc(StaticInit, self)"
             free_StaticInit(@self)
             self = cast<*struc StaticInit>(malloc(sizeof<struc StaticInit>))
             if not self {
@@ -310,9 +310,9 @@ pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: **struc CS
     self[].get._StringInit.is_null_term = is_null_term
     self[].get._StringInit.literal = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(CStringLiteral, *literal, self->get._StringInit.literal)"
+        " #@MACRO@:sptr_move(CStringLiteral, *literal, self->get._StringInit.literal)"
         if literal[] ~= self[].get._StringInit.literal {
-            "@MACRO@:uptr_move(CStringLiteral, *literal, self->get._StringInit.literal)"
+            " #@MACRO@:uptr_move(CStringLiteral, *literal, self->get._StringInit.literal)"
             free_CStringLiteral(@self[].get._StringInit.literal)
             self[].get._StringInit.literal = literal[]
             literal[] = uptr_new()
@@ -330,9 +330,9 @@ pub fn make_PointerInit(name: u64) *struc StaticInit {
 
 pub fn free_StaticInit(self: **struc StaticInit) none {
     loop .. while 0 {
-        "@MACRO@:sptr_delete(*self)"
+        " #@MACRO@:sptr_delete(*self)"
         if not self[] {
-            "@MACRO@:uptr_delete(*self)"
+            " #@MACRO@:uptr_delete(*self)"
             return none
         }
         elif (self[])[]._ref_count > 1 {
@@ -375,9 +375,9 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
         }
     }
     loop .. while 0 {
-        "@MACRO@:sptr_free(*self)"
+        " #@MACRO@:sptr_free(*self)"
         if self[] {
-            "@MACRO@:uptr_free(*self)"
+            " #@MACRO@:uptr_free(*self)"
             free(self[])
             self[] = uptr_new()
         }
@@ -387,9 +387,9 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
 pub fn make_InitialValue(none) *struc InitialValue {
     self: *struc InitialValue = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_alloc(InitialValue, self)"
+        " #@MACRO@:sptr_alloc(InitialValue, self)"
         loop .. while 0 {
-            "@MACRO@:uptr_alloc(InitialValue, self)"
+            " #@MACRO@:uptr_alloc(InitialValue, self)"
             free_InitialValue(@self)
             self = cast<*struc InitialValue>(malloc(sizeof<struc InitialValue>))
             if not self {
@@ -413,9 +413,9 @@ pub fn make_Initial(static_inits: ***struc StaticInit) *struc InitialValue {
     self[].tag = AST_Initial_t
     self[].get._Initial.static_inits = vec_new()
     if static_inits[] ~= self[].get._Initial.static_inits {
-        "@MACRO@:vec_move(*static_inits, self->get._Initial.static_inits)"
+        " #@MACRO@:vec_move(*static_inits, self->get._Initial.static_inits)"
         if self[].get._Initial.static_inits {
-            "@MACRO@:vec_delete(self->get._Initial.static_inits)"
+            " #@MACRO@:vec_delete(self->get._Initial.static_inits)"
             loop .. while 0 {
                 cast<none>((? (self[].get._Initial.static_inits) then free((cast<*struc stbds_array_header>((self[].get._Initial.static_inits)) - 1)) else cast<none>(0)))
                 (self[].get._Initial.static_inits) = nil
@@ -436,9 +436,9 @@ pub fn make_NoInitializer(none) *struc InitialValue {
 
 pub fn free_InitialValue(self: **struc InitialValue) none {
     loop .. while 0 {
-        "@MACRO@:sptr_delete(*self)"
+        " #@MACRO@:sptr_delete(*self)"
         if not self[] {
-            "@MACRO@:uptr_delete(*self)"
+            " #@MACRO@:uptr_delete(*self)"
             return none
         }
         elif (self[])[]._ref_count > 1 {
@@ -459,7 +459,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             }
         }
         if (self[])[].get._Initial.static_inits {
-            "@MACRO@:vec_delete((*self)->get._Initial.static_inits)"
+            " #@MACRO@:vec_delete((*self)->get._Initial.static_inits)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._Initial.static_inits) then free((cast<*struc stbds_array_header>(((self[])[].get._Initial.static_inits)) - 1)) else cast<none>(0)))
                 ((self[])[].get._Initial.static_inits) = nil
@@ -475,9 +475,9 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
         }
     }
     loop .. while 0 {
-        "@MACRO@:sptr_free(*self)"
+        " #@MACRO@:sptr_free(*self)"
         if self[] {
-            "@MACRO@:uptr_free(*self)"
+            " #@MACRO@:uptr_free(*self)"
             free(self[])
             self[] = uptr_new()
         }
@@ -487,7 +487,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
 pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
     self: *struc IdentifierAttr = uptr_new()
     loop .. while 0 {
-        "@MACRO@:uptr_alloc(IdentifierAttr, self)"
+        " #@MACRO@:uptr_alloc(IdentifierAttr, self)"
         free_IdentifierAttr(@self)
         self = cast<*struc IdentifierAttr>(malloc(sizeof<struc IdentifierAttr>))
         if not self {
@@ -512,9 +512,9 @@ pub fn make_StaticAttr(is_glob: i32, init: **struc InitialValue) *struc Identifi
     self[].get._StaticAttr.is_glob = is_glob
     self[].get._StaticAttr.init = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(InitialValue, *init, self->get._StaticAttr.init)"
+        " #@MACRO@:sptr_move(InitialValue, *init, self->get._StaticAttr.init)"
         if init[] ~= self[].get._StaticAttr.init {
-            "@MACRO@:uptr_move(InitialValue, *init, self->get._StaticAttr.init)"
+            " #@MACRO@:uptr_move(InitialValue, *init, self->get._StaticAttr.init)"
             free_InitialValue(@self[].get._StaticAttr.init)
             self[].get._StaticAttr.init = init[]
             init[] = uptr_new()
@@ -528,9 +528,9 @@ pub fn make_ConstantAttr(static_init: **struc StaticInit) *struc IdentifierAttr 
     self[].tag = AST_ConstantAttr_t
     self[].get._ConstantAttr.static_init = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(StaticInit, *static_init, self->get._ConstantAttr.static_init)"
+        " #@MACRO@:sptr_move(StaticInit, *static_init, self->get._ConstantAttr.static_init)"
         if static_init[] ~= self[].get._ConstantAttr.static_init {
-            "@MACRO@:uptr_move(StaticInit, *static_init, self->get._ConstantAttr.static_init)"
+            " #@MACRO@:uptr_move(StaticInit, *static_init, self->get._ConstantAttr.static_init)"
             free_StaticInit(@self[].get._ConstantAttr.static_init)
             self[].get._ConstantAttr.static_init = static_init[]
             static_init[] = uptr_new()
@@ -547,7 +547,7 @@ pub fn make_LocalAttr(none) *struc IdentifierAttr {
 
 pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
     if not self[] {
-        "@MACRO@:uptr_delete(*self)"
+        " #@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -572,7 +572,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
         }
     }
     if self[] {
-        "@MACRO@:uptr_free(*self)"
+        " #@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = uptr_new()
     }
@@ -581,7 +581,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
 pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc Symbol {
     self: *struc Symbol = uptr_new()
     loop .. while 0 {
-        "@MACRO@:uptr_alloc(Symbol, self)"
+        " #@MACRO@:uptr_alloc(Symbol, self)"
         free_Symbol(@self)
         self = cast<*struc Symbol>(malloc(sizeof<struc Symbol>))
         if not self {
@@ -591,9 +591,9 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
     self[].tag = AST_Symbol_t
     self[].type_t = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(Type, *type_t, self->type_t)"
+        " #@MACRO@:sptr_move(Type, *type_t, self->type_t)"
         if type_t[] ~= self[].type_t {
-            "@MACRO@:uptr_move(Type, *type_t, self->type_t)"
+            " #@MACRO@:uptr_move(Type, *type_t, self->type_t)"
             free_Type(@self[].type_t)
             self[].type_t = type_t[]
             type_t[] = uptr_new()
@@ -601,7 +601,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
     }
     self[].attrs = uptr_new()
     if attrs[] ~= self[].attrs {
-        "@MACRO@:uptr_move(IdentifierAttr, *attrs, self->attrs)"
+        " #@MACRO@:uptr_move(IdentifierAttr, *attrs, self->attrs)"
         free_IdentifierAttr(@self[].attrs)
         self[].attrs = attrs[]
         attrs[] = uptr_new()
@@ -611,7 +611,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
 
 pub fn free_Symbol(self: **struc Symbol) none {
     if not self[] {
-        "@MACRO@:uptr_delete(*self)"
+        " #@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -625,7 +625,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
     free_Type(@(self[])[].type_t)
     free_IdentifierAttr(@(self[])[].attrs)
     if self[] {
-        "@MACRO@:uptr_free(*self)"
+        " #@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = uptr_new()
     }
@@ -634,7 +634,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember {
     self: *struc StructMember = uptr_new()
     loop .. while 0 {
-        "@MACRO@:uptr_alloc(StructMember, self)"
+        " #@MACRO@:uptr_alloc(StructMember, self)"
         free_StructMember(@self)
         self = cast<*struc StructMember>(malloc(sizeof<struc StructMember>))
         if not self {
@@ -645,9 +645,9 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
     self[].offset = offset
     self[].member_type = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(Type, *member_type, self->member_type)"
+        " #@MACRO@:sptr_move(Type, *member_type, self->member_type)"
         if member_type[] ~= self[].member_type {
-            "@MACRO@:uptr_move(Type, *member_type, self->member_type)"
+            " #@MACRO@:uptr_move(Type, *member_type, self->member_type)"
             free_Type(@self[].member_type)
             self[].member_type = member_type[]
             member_type[] = uptr_new()
@@ -658,7 +658,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
 
 pub fn free_StructMember(self: **struc StructMember) none {
     if not self[] {
-        "@MACRO@:uptr_delete(*self)"
+        " #@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -671,7 +671,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
     }
     free_Type(@(self[])[].member_type)
     if self[] {
-        "@MACRO@:uptr_free(*self)"
+        " #@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = uptr_new()
     }
@@ -680,7 +680,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef {
     self: *struc StructTypedef = uptr_new()
     loop .. while 0 {
-        "@MACRO@:uptr_alloc(StructTypedef, self)"
+        " #@MACRO@:uptr_alloc(StructTypedef, self)"
         free_StructTypedef(@self)
         self = cast<*struc StructTypedef>(malloc(sizeof<struc StructTypedef>))
         if not self {
@@ -692,9 +692,9 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
     self[].size = size
     self[].member_names = vec_new()
     if member_names[] ~= self[].member_names {
-        "@MACRO@:vec_move(*member_names, self->member_names)"
+        " #@MACRO@:vec_move(*member_names, self->member_names)"
         if self[].member_names {
-            "@MACRO@:vec_delete(self->member_names)"
+            " #@MACRO@:vec_delete(self->member_names)"
             loop .. while 0 {
                 cast<none>((? (self[].member_names) then free((cast<*struc stbds_array_header>((self[].member_names)) - 1)) else cast<none>(0)))
                 (self[].member_names) = nil
@@ -706,9 +706,9 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
     }
     self[].members = map_new()
     if members[] ~= self[].members {
-        "@MACRO@:map_move(*members, self->members)"
+        " #@MACRO@:map_move(*members, self->members)"
         if self[].members {
-            "@MACRO@:map_delete(self->members)"
+            " #@MACRO@:map_delete(self->members)"
             loop .. while 0 {
                 cast<none>((? (self[].members) ~= nil then stbds_hmfree_func((self[].members) - 1, sizeof((self[].members)[])) else cast<none>(0)))
                 (self[].members) = nil
@@ -723,7 +723,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
 
 pub fn free_StructTypedef(self: **struc StructTypedef) none {
     if not self[] {
-        "@MACRO@:uptr_delete(*self)"
+        " #@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -735,7 +735,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
         }
     }
     if (self[])[].member_names {
-        "@MACRO@:vec_delete((*self)->member_names)"
+        " #@MACRO@:vec_delete((*self)->member_names)"
         loop .. while 0 {
             cast<none>((? ((self[])[].member_names) then free((cast<*struc stbds_array_header>(((self[])[].member_names)) - 1)) else cast<none>(0)))
             ((self[])[].member_names) = nil
@@ -746,7 +746,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
         free_StructMember(@((self[])[].members[i]).value)
     }
     if (self[])[].members {
-        "@MACRO@:map_delete((*self)->members)"
+        " #@MACRO@:map_delete((*self)->members)"
         loop .. while 0 {
             cast<none>((? ((self[])[].members) ~= nil then stbds_hmfree_func(((self[])[].members) - 1, sizeof(((self[])[].members)[])) else cast<none>(0)))
             ((self[])[].members) = nil
@@ -754,7 +754,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
         (self[])[].members = map_new()
     }
     if self[] {
-        "@MACRO@:uptr_free(*self)"
+        " #@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = uptr_new()
     }
