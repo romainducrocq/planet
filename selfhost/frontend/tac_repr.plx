@@ -94,7 +94,7 @@ fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
 fn const_value(node: *struc CConstant) *struc TacValue {
     constant: *struc CConst = sptr_new()
     if node[].constant ~= constant {
-        "@MACRO@:sptr_copy(CConst, node->constant, constant)"
+        " #@MACRO@:sptr_copy(CConst, node->constant, constant)"
         free_CConst(@constant)
         constant = node[].constant
         (constant)[]._ref_count++
@@ -116,7 +116,7 @@ fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *
         }
         else {
             if node[].exp_type ~= inner_type {
-                "@MACRO@:sptr_copy(Type, node->exp_type, inner_type)"
+                " #@MACRO@:sptr_copy(Type, node->exp_type, inner_type)"
                 free_Type(@inner_type)
                 inner_type = node[].exp_type
                 (inner_type)[]._ref_count++
@@ -125,9 +125,9 @@ fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *
         inner_attrs: *struc IdentifierAttr = make_LocalAttr()
         symbol: *struc Symbol = make_Symbol(@inner_type, @inner_attrs)
         loop .. while 0 {
-            "@MACRO@:map_move_add(ctx->frontend->symbol_table, inner_name, symbol)"
+            " #@MACRO@:map_move_add(ctx->frontend->symbol_table, inner_name, symbol)"
             loop .. while 0 {
-                "@MACRO@:map_add(ctx->frontend->symbol_table, inner_name, symbol)"
+                " #@MACRO@:map_add(ctx->frontend->symbol_table, inner_name, symbol)"
                 loop .. while 0 {
                     (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((inner_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
                     (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (inner_name)
@@ -164,9 +164,9 @@ fn repr_value(node: *struc CExp) *struc TacValue {
 
 fn push_instr(ctx: *struc TacReprContext, instr: *struc TacInstruction) none {
     loop .. while 0 {
-        "@MACRO@:vec_move_back(*ctx->p_instrs, instr)"
+        " #@MACRO@:vec_move_back(*ctx->p_instrs, instr)"
         loop .. while 0 {
-            "@MACRO@:vec_push_back(*ctx->p_instrs, instr)"
+            " #@MACRO@:vec_push_back(*ctx->p_instrs, instr)"
             loop .. while 0 {
                 (? (not (ctx[].p_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].capacity) then (((ctx[].p_instrs[]) = stbds_arrgrowf((ctx[].p_instrs[]), sizeof((ctx[].p_instrs[])[]), (1), (0))) and 0) else 0)
                 (ctx[].p_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length++] = (instr)
@@ -199,7 +199,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
             loop .. while 0 {
-                "@MACRO@:map_add(ctx->frontend->string_const_table, string_const, string_const_label)"
+                " #@MACRO@:map_add(ctx->frontend->string_const_table, string_const, string_const_label)"
                 loop .. while 0 {
                     (ctx[].frontend[].string_const_table) = stbds_hmput_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)
                     (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].key = (string_const)
@@ -220,7 +220,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
                 {
                     literal: *struc CStringLiteral = sptr_new()
                     if node[].literal ~= literal {
-                        "@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
+                        " #@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
                         free_CStringLiteral(@literal)
                         literal = node[].literal
                         (literal)[]._ref_count++
@@ -232,9 +232,9 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
             }
             symbol: *struc Symbol = make_Symbol(@constant_type, @constant_attrs)
             loop .. while 0 {
-                "@MACRO@:map_move_add(ctx->frontend->symbol_table, string_const_label, symbol)"
+                " #@MACRO@:map_move_add(ctx->frontend->symbol_table, string_const_label, symbol)"
                 loop .. while 0 {
-                    "@MACRO@:map_add(ctx->frontend->symbol_table, string_const_label, symbol)"
+                    " #@MACRO@:map_add(ctx->frontend->symbol_table, string_const_label, symbol)"
                     loop .. while 0 {
                         (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((string_const_label))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
                         (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (string_const_label)
@@ -339,7 +339,7 @@ fn cast_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCast) *stru
     dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -399,7 +399,7 @@ fn unary_res_instr(ctx: *struc TacReprContext, node: *struc CUnary) *struc TacEx
     dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -427,7 +427,7 @@ fn binary_add_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *s
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -455,7 +455,7 @@ fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary)
         dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -463,9 +463,9 @@ fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary)
         unop: struc TacUnaryOp = make_TacUnaryOp(AST_TacNegate_t)
         push_instr(ctx, make_TacUnary(@unop, @idx, @dst_cp))
         loop .. while 0 {
-            "@MACRO@:sptr_move(TacValue, dst, idx)"
+            " #@MACRO@:sptr_move(TacValue, dst, idx)"
             if dst ~= idx {
-                "@MACRO@:uptr_move(TacValue, dst, idx)"
+                " #@MACRO@:uptr_move(TacValue, dst, idx)"
                 free_TacValue(@idx)
                 idx = dst
                 dst = uptr_new()
@@ -475,7 +475,7 @@ fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary)
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -492,7 +492,7 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
         dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -500,9 +500,9 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
         binop: struc TacBinaryOp = make_TacBinaryOp(AST_TacSubtract_t)
         push_instr(ctx, make_TacBinary(@binop, @src_1, @src_2, @dst_cp))
         loop .. while 0 {
-            "@MACRO@:sptr_move(TacValue, dst, src_1)"
+            " #@MACRO@:sptr_move(TacValue, dst, src_1)"
             if dst ~= src_1 {
-                "@MACRO@:uptr_move(TacValue, dst, src_1)"
+                " #@MACRO@:uptr_move(TacValue, dst, src_1)"
                 free_TacValue(@src_1)
                 src_1 = dst
                 dst = uptr_new()
@@ -519,7 +519,7 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
     dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -562,7 +562,7 @@ fn binary_and_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc
         src_true: *struc TacValue = make_TacConstant(@constant)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -576,7 +576,7 @@ fn binary_and_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc
         src_false: *struc TacValue = make_TacConstant(@constant)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -606,7 +606,7 @@ fn binary_or_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc 
         src_false: *struc TacValue = make_TacConstant(@constant)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -620,7 +620,7 @@ fn binary_or_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc 
         src_true: *struc TacValue = make_TacConstant(@constant)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -637,7 +637,7 @@ fn binary_any_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc
     dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -670,14 +670,14 @@ fn binary_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc Tac
 fn plain_op_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, dst: **struc TacValue) none {
     src: *struc TacValue = sptr_new()
     if res[].val ~= src {
-        "@MACRO@:sptr_copy(TacValue, res->val, src)"
+        " #@MACRO@:sptr_copy(TacValue, res->val, src)"
         free_TacValue(@src)
         src = res[].val
         (src)[]._ref_count++
     }
     dst_cp: *struc TacValue = sptr_new()
     if dst[] ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, *dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, *dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst[]
         (dst_cp)[]._ref_count++
@@ -688,14 +688,14 @@ fn plain_op_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacPlainOp
 fn deref_ptr_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, dst: **struc TacValue) none {
     src: *struc TacValue = sptr_new()
     if res[].val ~= src {
-        "@MACRO@:sptr_copy(TacValue, res->val, src)"
+        " #@MACRO@:sptr_copy(TacValue, res->val, src)"
         free_TacValue(@src)
         src = res[].val
         (src)[]._ref_count++
     }
     dst_cp: *struc TacValue = sptr_new()
     if dst[] ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, *dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, *dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst[]
         (dst_cp)[]._ref_count++
@@ -708,7 +708,7 @@ fn sub_obj_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObjec
     offset: i64 = res[].offset
     dst_cp: *struc TacValue = sptr_new()
     if dst[] ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, *dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, *dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst[]
         (dst_cp)[]._ref_count++
@@ -719,7 +719,7 @@ fn sub_obj_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObjec
 fn plain_op_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, src: **struc TacValue) none {
     dst: *struc TacValue = sptr_new()
     if res[].val ~= dst {
-        "@MACRO@:sptr_copy(TacValue, res->val, dst)"
+        " #@MACRO@:sptr_copy(TacValue, res->val, dst)"
         free_TacValue(@dst)
         dst = res[].val
         (dst)[]._ref_count++
@@ -730,16 +730,16 @@ fn plain_op_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
 fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, src: **struc TacValue, exp_res: **struc TacExpResult) none {
     src_cp: *struc TacValue = sptr_new()
     if src[] ~= src_cp {
-        "@MACRO@:sptr_copy(TacValue, *src, src_cp)"
+        " #@MACRO@:sptr_copy(TacValue, *src, src_cp)"
         free_TacValue(@src_cp)
         src_cp = src[]
         (src_cp)[]._ref_count++
     }
     dst: *struc TacValue = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(TacValue, res->val, dst)"
+        " #@MACRO@:sptr_move(TacValue, res->val, dst)"
         if res[].val ~= dst {
-            "@MACRO@:uptr_move(TacValue, res->val, dst)"
+            " #@MACRO@:uptr_move(TacValue, res->val, dst)"
             free_TacValue(@dst)
             dst = res[].val
             res[].val = uptr_new()
@@ -755,7 +755,7 @@ fn sub_obj_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject
     offset: i64 = res[].offset
     src_cp: *struc TacValue = sptr_new()
     if src[] ~= src_cp {
-        "@MACRO@:sptr_copy(TacValue, *src, src_cp)"
+        " #@MACRO@:sptr_copy(TacValue, *src, src_cp)"
         free_TacValue(@src_cp)
         src_cp = src[]
         (src_cp)[]._ref_count++
@@ -803,7 +803,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                     free_TacInstruction(@noeval_instrs[i])
                 }
                 if noeval_instrs {
-                    "@MACRO@:vec_delete(noeval_instrs)"
+                    " #@MACRO@:vec_delete(noeval_instrs)"
                     loop .. while 0 {
                         cast<none>((? (noeval_instrs) then free((cast<*struc stbds_array_header>((noeval_instrs)) - 1)) else cast<none>(0)))
                         (noeval_instrs) = nil
@@ -877,7 +877,7 @@ fn conditional_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCond
         src_middle: *struc TacValue = repr_exp_instr(ctx, node[].exp_middle)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -890,7 +890,7 @@ fn conditional_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCond
         src_right: *struc TacValue = repr_exp_instr(ctx, node[].exp_right)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -934,15 +934,15 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc
     name: u64 = node[].name
     args: **struc TacValue = vec_new()
     loop .. while 0 {
-        "@MACRO@:vec_reserve(args, vec_size(node->args))"
+        " #@MACRO@:vec_reserve(args, vec_size(node->args))"
         (((args) = stbds_arrgrowf((args), sizeof((args)[]), (0), ((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)))))
     }
     loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
         arg: *struc TacValue = repr_exp_instr(ctx, node[].args[i])
         loop .. while 0 {
-            "@MACRO@:vec_move_back(args, arg)"
+            " #@MACRO@:vec_move_back(args, arg)"
             loop .. while 0 {
-                "@MACRO@:vec_push_back(args, arg)"
+                " #@MACRO@:vec_push_back(args, arg)"
                 loop .. while 0 {
                     (? (not (args) or (cast<*struc stbds_array_header>((args)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args)) - 1)[].capacity) then (((args) = stbds_arrgrowf((args), sizeof((args)[]), (1), (0))) and 0) else 0)
                     (args)[(cast<*struc stbds_array_header>((args)) - 1)[].length++] = (arg)
@@ -957,7 +957,7 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc
     }
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -974,9 +974,9 @@ fn deref_res_instr(ctx: *struc TacReprContext, node: *struc CDereference) *struc
 fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, node: *struc CAddrOf) none {
     src: *struc TacValue = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(TacValue, res->val, src)"
+        " #@MACRO@:sptr_move(TacValue, res->val, src)"
         if res[].val ~= src {
-            "@MACRO@:uptr_move(TacValue, res->val, src)"
+            " #@MACRO@:uptr_move(TacValue, res->val, src)"
             free_TacValue(@src)
             src = res[].val
             res[].val = uptr_new()
@@ -985,16 +985,16 @@ fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
     }
     push_instr(ctx, make_TacGetAddress(@src, @dst_cp))
     loop .. while 0 {
-        "@MACRO@:sptr_move(TacValue, dst, res->val)"
+        " #@MACRO@:sptr_move(TacValue, dst, res->val)"
         if dst ~= res[].val {
-            "@MACRO@:uptr_move(TacValue, dst, res->val)"
+            " #@MACRO@:uptr_move(TacValue, dst, res->val)"
             free_TacValue(@res[].val)
             res[].val = dst
             dst = uptr_new()
@@ -1005,9 +1005,9 @@ fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
 fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: **struc TacExpResult) none {
     val: *struc TacValue = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(TacValue, res->val, val)"
+        " #@MACRO@:sptr_move(TacValue, res->val, val)"
         if res[].val ~= val {
-            "@MACRO@:uptr_move(TacValue, res->val, val)"
+            " #@MACRO@:uptr_move(TacValue, res->val, val)"
             free_TacValue(@val)
             val = res[].val
             res[].val = uptr_new()
@@ -1024,7 +1024,7 @@ fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject
         src: *struc TacValue = make_TacVariable(name)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -1035,7 +1035,7 @@ fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject
     if res[].offset > 0l {
         src_ptr: *struc TacValue = sptr_new()
         if dst ~= src_ptr {
-            "@MACRO@:sptr_copy(TacValue, dst, src_ptr)"
+            " #@MACRO@:sptr_copy(TacValue, dst, src_ptr)"
             free_TacValue(@src_ptr)
             src_ptr = dst
             (src_ptr)[]._ref_count++
@@ -1049,7 +1049,7 @@ fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject
         }
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
@@ -1099,7 +1099,7 @@ fn subscript_res_instr(ctx: *struc TacReprContext, node: *struc CSubscript) *str
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -1139,9 +1139,9 @@ fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferenc
     if member_offset > 0l {
         src_ptr: *struc TacValue = sptr_new()
         loop .. while 0 {
-            "@MACRO@:sptr_move(TacValue, res->val, src_ptr)"
+            " #@MACRO@:sptr_move(TacValue, res->val, src_ptr)"
             if res[].val ~= src_ptr {
-                "@MACRO@:uptr_move(TacValue, res->val, src_ptr)"
+                " #@MACRO@:uptr_move(TacValue, res->val, src_ptr)"
                 free_TacValue(@src_ptr)
                 src_ptr = res[].val
                 res[].val = uptr_new()
@@ -1157,16 +1157,16 @@ fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferenc
         dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
         push_instr(ctx, make_TacAddPtr(1l, @src_ptr, @idx, @dst_cp))
         loop .. while 0 {
-            "@MACRO@:sptr_move(TacValue, dst, res->val)"
+            " #@MACRO@:sptr_move(TacValue, dst, res->val)"
             if dst ~= res[].val {
-                "@MACRO@:uptr_move(TacValue, dst, res->val)"
+                " #@MACRO@:uptr_move(TacValue, dst, res->val)"
                 free_TacValue(@res[].val)
                 res[].val = dst
                 dst = uptr_new()
@@ -1220,16 +1220,16 @@ fn arrow_res_instr(ctx: *struc TacReprContext, node: *struc CArrow) *struc TacEx
         dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
         dst_cp: *struc TacValue = sptr_new()
         if dst ~= dst_cp {
-            "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+            " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
             free_TacValue(@dst_cp)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
         push_instr(ctx, make_TacAddPtr(1l, @val, @idx, @dst_cp))
         loop .. while 0 {
-            "@MACRO@:sptr_move(TacValue, dst, val)"
+            " #@MACRO@:sptr_move(TacValue, dst, val)"
             if dst ~= val {
-                "@MACRO@:uptr_move(TacValue, dst, val)"
+                " #@MACRO@:uptr_move(TacValue, dst, val)"
                 free_TacValue(@val)
                 val = dst
                 dst = uptr_new()
@@ -1298,9 +1298,9 @@ fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacExpRe
 fn plain_op_exp_instr(res: *struc TacPlainOperand) *struc TacValue {
     dst: *struc TacValue = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(TacValue, res->val, dst)"
+        " #@MACRO@:sptr_move(TacValue, res->val, dst)"
         if res[].val ~= dst {
-            "@MACRO@:uptr_move(TacValue, res->val, dst)"
+            " #@MACRO@:uptr_move(TacValue, res->val, dst)"
             free_TacValue(@dst)
             dst = res[].val
             res[].val = uptr_new()
@@ -1312,9 +1312,9 @@ fn plain_op_exp_instr(res: *struc TacPlainOperand) *struc TacValue {
 fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, node: *struc CExp) *struc TacValue {
     src: *struc TacValue = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(TacValue, res->val, src)"
+        " #@MACRO@:sptr_move(TacValue, res->val, src)"
         if res[].val ~= src {
-            "@MACRO@:uptr_move(TacValue, res->val, src)"
+            " #@MACRO@:uptr_move(TacValue, res->val, src)"
             free_TacValue(@src)
             src = res[].val
             res[].val = uptr_new()
@@ -1323,7 +1323,7 @@ fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPo
     dst: *struc TacValue = plain_inner_value(ctx, node)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -1338,7 +1338,7 @@ fn sub_obj_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node:
     dst: *struc TacValue = plain_inner_value(ctx, node)
     dst_cp: *struc TacValue = sptr_new()
     if dst ~= dst_cp {
-        "@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
+        " #@MACRO@:sptr_copy(TacValue, dst, dst_cp)"
         free_TacValue(@dst_cp)
         dst_cp = dst
         (dst_cp)[]._ref_count++
@@ -1523,7 +1523,7 @@ fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none
             {
                 lookup_cp: *struc TacValue = sptr_new()
                 if lookup ~= lookup_cp {
-                    "@MACRO@:sptr_copy(TacValue, lookup, lookup_cp)"
+                    " #@MACRO@:sptr_copy(TacValue, lookup, lookup_cp)"
                     free_TacValue(@lookup_cp)
                     lookup_cp = lookup
                     (lookup_cp)[]._ref_count++
@@ -1532,7 +1532,7 @@ fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none
                 case_match = plain_inner_value(ctx, node[].cases[i])
                 case_match_cp: *struc TacValue = sptr_new()
                 if case_match ~= case_match_cp {
-                    "@MACRO@:sptr_copy(TacValue, case_match, case_match_cp)"
+                    " #@MACRO@:sptr_copy(TacValue, case_match, case_match_cp)"
                     free_TacValue(@case_match_cp)
                     case_match_cp = case_match
                     (case_match_cp)[]._ref_count++
@@ -1867,7 +1867,7 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
     is_glob: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].get._FunAttr.is_glob
     params: *u64 = vec_new()
     loop .. while 0 {
-        "@MACRO@:vec_resize(params, vec_size(node->params))"
+        " #@MACRO@:vec_resize(params, vec_size(node->params))"
         loop .. while 0 {
             (? (? (params) then (cast<*struc stbds_array_header>((params)) - 1)[].capacity else 0) < cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))) then ((((params)) = stbds_arrgrowf(((params)), sizeof(((params))[]), (0), (cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))))))) and 0 else 0)
             ? (params) then (cast<*struc stbds_array_header>((params)) - 1)[].length = cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))) else 0
@@ -1892,9 +1892,9 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
 
 fn push_toplvl(ctx: *struc TacReprContext, top_level: *struc TacTopLevel) none {
     loop .. while 0 {
-        "@MACRO@:vec_move_back(*ctx->p_toplvls, top_level)"
+        " #@MACRO@:vec_move_back(*ctx->p_toplvls, top_level)"
         loop .. while 0 {
-            "@MACRO@:vec_push_back(*ctx->p_toplvls, top_level)"
+            " #@MACRO@:vec_push_back(*ctx->p_toplvls, top_level)"
             loop .. while 0 {
                 (? (not (ctx[].p_toplvls[]) or (cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].capacity) then (((ctx[].p_toplvls[]) = stbds_arrgrowf((ctx[].p_toplvls[]), sizeof((ctx[].p_toplvls[])[]), (1), (0))) and 0) else 0)
                 (ctx[].p_toplvls[])[(cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].length++] = (top_level)
@@ -1933,9 +1933,9 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
         byte: i64 = get_type_scale(ctx, static_init_type)
         static_init: *struc StaticInit = make_ZeroInit(byte)
         loop .. while 0 {
-            "@MACRO@:vec_move_back(static_inits, static_init)"
+            " #@MACRO@:vec_move_back(static_inits, static_init)"
             loop .. while 0 {
-                "@MACRO@:vec_push_back(static_inits, static_init)"
+                " #@MACRO@:vec_push_back(static_inits, static_init)"
                 loop .. while 0 {
                     (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
                     (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
@@ -1951,21 +1951,21 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
 fn initial_static_toplvl(node: *struc Initial) **struc StaticInit {
     static_inits: **struc StaticInit = vec_new()
     loop .. while 0 {
-        "@MACRO@:vec_reserve(static_inits, vec_size(node->static_inits))"
+        " #@MACRO@:vec_reserve(static_inits, vec_size(node->static_inits))"
         (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (0), ((? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0)))))
     }
     loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
         static_init: *struc StaticInit = sptr_new()
         if node[].static_inits[i] ~= static_init {
-            "@MACRO@:sptr_copy(StaticInit, node->static_inits[i], static_init)"
+            " #@MACRO@:sptr_copy(StaticInit, node->static_inits[i], static_init)"
             free_StaticInit(@static_init)
             static_init = node[].static_inits[i]
             (static_init)[]._ref_count++
         }
         loop .. while 0 {
-            "@MACRO@:vec_move_back(static_inits, static_init)"
+            " #@MACRO@:vec_move_back(static_inits, static_init)"
             loop .. while 0 {
-                "@MACRO@:vec_push_back(static_inits, static_init)"
+                " #@MACRO@:vec_push_back(static_inits, static_init)"
                 loop .. while 0 {
                     (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
                     (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
@@ -1986,7 +1986,7 @@ fn repr_static_var_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbo
     is_glob: i32 = static_attr[].is_glob
     static_init_type: *struc Type = sptr_new()
     if node[].type_t ~= static_init_type {
-        "@MACRO@:sptr_copy(Type, node->type_t, static_init_type)"
+        " #@MACRO@:sptr_copy(Type, node->type_t, static_init_type)"
         free_Type(@static_init_type)
         static_init_type = node[].type_t
         (static_init_type)[]._ref_count++
@@ -2010,9 +2010,9 @@ fn repr_static_var_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbo
 
 fn push_static_const_toplvl(ctx: *struc TacReprContext, static_const_toplvls: *struc TacTopLevel) none {
     loop .. while 0 {
-        "@MACRO@:vec_move_back(*ctx->p_static_consts, static_const_toplvls)"
+        " #@MACRO@:vec_move_back(*ctx->p_static_consts, static_const_toplvls)"
         loop .. while 0 {
-            "@MACRO@:vec_push_back(*ctx->p_static_consts, static_const_toplvls)"
+            " #@MACRO@:vec_push_back(*ctx->p_static_consts, static_const_toplvls)"
             loop .. while 0 {
                 (? (not (ctx[].p_static_consts[]) or (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].capacity) then (((ctx[].p_static_consts[]) = stbds_arrgrowf((ctx[].p_static_consts[]), sizeof((ctx[].p_static_consts[])[]), (1), (0))) and 0) else 0)
                 (ctx[].p_static_consts[])[(cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length++] = (static_const_toplvls)
@@ -2026,14 +2026,14 @@ fn repr_static_const_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, sym
     name: u64 = symbol
     static_init_type: *struc Type = sptr_new()
     if node[].type_t ~= static_init_type {
-        "@MACRO@:sptr_copy(Type, node->type_t, static_init_type)"
+        " #@MACRO@:sptr_copy(Type, node->type_t, static_init_type)"
         free_Type(@static_init_type)
         static_init_type = node[].type_t
         (static_init_type)[]._ref_count++
     }
     static_init: *struc StaticInit = sptr_new()
     if node[].attrs[].get._ConstantAttr.static_init ~= static_init {
-        "@MACRO@:sptr_copy(StaticInit, node->attrs->get._ConstantAttr.static_init, static_init)"
+        " #@MACRO@:sptr_copy(StaticInit, node->attrs->get._ConstantAttr.static_init, static_init)"
         free_StaticInit(@static_init)
         static_init = node[].attrs[].get._ConstantAttr.static_init
         (static_init)[]._ref_count++

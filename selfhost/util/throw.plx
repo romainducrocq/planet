@@ -18,36 +18,36 @@ pub fn panic_sigabrt(msg: string) none {
         stderr_buf: string = ? "" then sdsnew("") else nil
         stderr_buf_size: u64 = strlen("internal error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(msg)
         loop .. while 0 {
-            "@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
+            " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
             stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_red)"
+            " #@MACRO@:str_append(stderr_buf, esc_red)"
             stderr_buf = sdscat(stderr_buf, esc_red)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"internal error:\")"
+            " #@MACRO@:str_append(stderr_buf, \"internal error:\")"
             stderr_buf = sdscat(stderr_buf, "internal error:")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_reset)"
+            " #@MACRO@:str_append(stderr_buf, esc_reset)"
             stderr_buf = sdscat(stderr_buf, esc_reset)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \" \")"
+            " #@MACRO@:str_append(stderr_buf, \" \")"
             stderr_buf = sdscat(stderr_buf, " ")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, msg)"
+            " #@MACRO@:str_append(stderr_buf, msg)"
             stderr_buf = sdscat(stderr_buf, msg)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"\\n\")"
+            " #@MACRO@:str_append(stderr_buf, \"\\n\")"
             stderr_buf = sdscat(stderr_buf, "\n")
         }
         write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
         if stderr_buf {
-            "@MACRO@:str_delete(stderr_buf)"
+            " #@MACRO@:str_delete(stderr_buf)"
             sdsfree(stderr_buf)
             stderr_buf = ? nil then sdsnew(nil) else nil
         }
@@ -63,36 +63,36 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     stderr_buf: string = ? "" then sdsnew("") else nil
     stderr_buf_size: u64 = strlen("error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg)
     loop .. while 0 {
-        "@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
+        " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
         stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, esc_red)"
+        " #@MACRO@:str_append(stderr_buf, esc_red)"
         stderr_buf = sdscat(stderr_buf, esc_red)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \"error:\")"
+        " #@MACRO@:str_append(stderr_buf, \"error:\")"
         stderr_buf = sdscat(stderr_buf, "error:")
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, esc_reset)"
+        " #@MACRO@:str_append(stderr_buf, esc_reset)"
         stderr_buf = sdscat(stderr_buf, esc_reset)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \" \")"
+        " #@MACRO@:str_append(stderr_buf, \" \")"
         stderr_buf = sdscat(stderr_buf, " ")
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, ctx->msg)"
+        " #@MACRO@:str_append(stderr_buf, ctx->msg)"
         stderr_buf = sdscat(stderr_buf, ctx[].msg)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \"\\n\")"
+        " #@MACRO@:str_append(stderr_buf, \"\\n\")"
         stderr_buf = sdscat(stderr_buf, "\n")
     }
     write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
     if stderr_buf {
-        "@MACRO@:str_delete(stderr_buf)"
+        " #@MACRO@:str_delete(stderr_buf)"
         sdsfree(stderr_buf)
         stderr_buf = ? nil then sdsnew(nil) else nil
     }
@@ -111,56 +111,56 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     stderr_buf: string = ? "" then sdsnew("") else nil
     stderr_buf_size: u64 = strlen(":\nerror: \n") + ESC_BOLD_SIZE + strlen(filename) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg)
     loop .. while 0 {
-        "@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
+        " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
         stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, esc_bold)"
+        " #@MACRO@:str_append(stderr_buf, esc_bold)"
         stderr_buf = sdscat(stderr_buf, esc_bold)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, filename)"
+        " #@MACRO@:str_append(stderr_buf, filename)"
         stderr_buf = sdscat(stderr_buf, filename)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \":\")"
+        " #@MACRO@:str_append(stderr_buf, \":\")"
         stderr_buf = sdscat(stderr_buf, ":")
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, esc_reset)"
+        " #@MACRO@:str_append(stderr_buf, esc_reset)"
         stderr_buf = sdscat(stderr_buf, esc_reset)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \"\\n\")"
+        " #@MACRO@:str_append(stderr_buf, \"\\n\")"
         stderr_buf = sdscat(stderr_buf, "\n")
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, esc_red)"
+        " #@MACRO@:str_append(stderr_buf, esc_red)"
         stderr_buf = sdscat(stderr_buf, esc_red)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \"error:\")"
+        " #@MACRO@:str_append(stderr_buf, \"error:\")"
         stderr_buf = sdscat(stderr_buf, "error:")
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, esc_reset)"
+        " #@MACRO@:str_append(stderr_buf, esc_reset)"
         stderr_buf = sdscat(stderr_buf, esc_reset)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \" \")"
+        " #@MACRO@:str_append(stderr_buf, \" \")"
         stderr_buf = sdscat(stderr_buf, " ")
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, ctx->msg)"
+        " #@MACRO@:str_append(stderr_buf, ctx->msg)"
         stderr_buf = sdscat(stderr_buf, ctx[].msg)
     }
     loop .. while 0 {
-        "@MACRO@:str_append(stderr_buf, \"\\n\")"
+        " #@MACRO@:str_append(stderr_buf, \"\\n\")"
         stderr_buf = sdscat(stderr_buf, "\n")
     }
     write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
     if stderr_buf {
-        "@MACRO@:str_delete(stderr_buf)"
+        " #@MACRO@:str_delete(stderr_buf)"
         sdsfree(stderr_buf)
         stderr_buf = ? nil then sdsnew(nil) else nil
     }
@@ -221,7 +221,7 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
             tok_pos += token_info[].tok_pos
             if token_info[].tok_len > 1 {
                 loop .. while 0 {
-                    "@MACRO@:str_resize(tok_overline, token_info->tok_len - 1)"
+                    " #@MACRO@:str_resize(tok_overline, token_info->tok_len - 1)"
                     tok_overline = sdsgrowzero(tok_overline, token_info[].tok_len - 1)
                 }
                 loop i: u64 = 0 while i < sdslen(tok_overline) .. ++i {
@@ -234,14 +234,14 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         strto_pos: string = ? (tok_pos) > 0 then sdsfromunsignedlong(cast<u64>((tok_pos))) else sdsfromlong(cast<i64>((tok_pos)))
         strto_linenum: string = ? (tok_linenum) > 0 then sdsfromunsignedlong(cast<u64>((tok_linenum))) else sdsfromlong(cast<i64>((tok_linenum)))
         loop .. while 0 {
-            "@MACRO@:str_resize(pad_tok, tok_pos - 1)"
+            " #@MACRO@:str_resize(pad_tok, tok_pos - 1)"
             pad_tok = sdsgrowzero(pad_tok, tok_pos - 1)
         }
         loop i: u64 = 0 while i < sdslen(pad_tok) .. ++i {
             pad_tok[i] = ' '
         }
         loop .. while 0 {
-            "@MACRO@:str_resize(pad_linenum, str_size(strto_linenum))"
+            " #@MACRO@:str_resize(pad_linenum, str_size(strto_linenum))"
             pad_linenum = sdsgrowzero(pad_linenum, sdslen(strto_linenum))
         }
         loop i: u64 = 0 while i < sdslen(pad_linenum) .. ++i {
@@ -250,167 +250,167 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         stderr_buf: string = ? "" then sdsnew("") else nil
         stderr_buf_size: u64 = strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename) + sdslen(strto_linenum) + sdslen(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg) + sdslen(strto_linenum) + ESC_RED_SIZE + sdslen(pad_tok) + sdslen(tok_overline) + ESC_RESET_SIZE + sdslen(pad_linenum) + ESC_BOLD_SIZE + sdslen(line) + ESC_RESET_SIZE
         loop .. while 0 {
-            "@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
+            " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
             stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_bold)"
+            " #@MACRO@:str_append(stderr_buf, esc_bold)"
             stderr_buf = sdscat(stderr_buf, esc_bold)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, filename)"
+            " #@MACRO@:str_append(stderr_buf, filename)"
             stderr_buf = sdscat(stderr_buf, filename)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \":\")"
+            " #@MACRO@:str_append(stderr_buf, \":\")"
             stderr_buf = sdscat(stderr_buf, ":")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, strto_linenum)"
+            " #@MACRO@:str_append(stderr_buf, strto_linenum)"
             stderr_buf = sdscat(stderr_buf, strto_linenum)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \":\")"
+            " #@MACRO@:str_append(stderr_buf, \":\")"
             stderr_buf = sdscat(stderr_buf, ":")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, strto_pos)"
+            " #@MACRO@:str_append(stderr_buf, strto_pos)"
             stderr_buf = sdscat(stderr_buf, strto_pos)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \":\")"
+            " #@MACRO@:str_append(stderr_buf, \":\")"
             stderr_buf = sdscat(stderr_buf, ":")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_reset)"
+            " #@MACRO@:str_append(stderr_buf, esc_reset)"
             stderr_buf = sdscat(stderr_buf, esc_reset)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"\\n\")"
+            " #@MACRO@:str_append(stderr_buf, \"\\n\")"
             stderr_buf = sdscat(stderr_buf, "\n")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_red)"
+            " #@MACRO@:str_append(stderr_buf, esc_red)"
             stderr_buf = sdscat(stderr_buf, esc_red)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"error:\")"
+            " #@MACRO@:str_append(stderr_buf, \"error:\")"
             stderr_buf = sdscat(stderr_buf, "error:")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_reset)"
+            " #@MACRO@:str_append(stderr_buf, esc_reset)"
             stderr_buf = sdscat(stderr_buf, esc_reset)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \" \")"
+            " #@MACRO@:str_append(stderr_buf, \" \")"
             stderr_buf = sdscat(stderr_buf, " ")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, ctx->msg)"
+            " #@MACRO@:str_append(stderr_buf, ctx->msg)"
             stderr_buf = sdscat(stderr_buf, ctx[].msg)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"\\n\")"
+            " #@MACRO@:str_append(stderr_buf, \"\\n\")"
             stderr_buf = sdscat(stderr_buf, "\n")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"at line \")"
+            " #@MACRO@:str_append(stderr_buf, \"at line \")"
             stderr_buf = sdscat(stderr_buf, "at line ")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, strto_linenum)"
+            " #@MACRO@:str_append(stderr_buf, strto_linenum)"
             stderr_buf = sdscat(stderr_buf, strto_linenum)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \": \")"
+            " #@MACRO@:str_append(stderr_buf, \": \")"
             stderr_buf = sdscat(stderr_buf, ": ")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_red)"
+            " #@MACRO@:str_append(stderr_buf, esc_red)"
             stderr_buf = sdscat(stderr_buf, esc_red)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, pad_tok)"
+            " #@MACRO@:str_append(stderr_buf, pad_tok)"
             stderr_buf = sdscat(stderr_buf, pad_tok)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"v\")"
+            " #@MACRO@:str_append(stderr_buf, \"v\")"
             stderr_buf = sdscat(stderr_buf, "v")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, tok_overline)"
+            " #@MACRO@:str_append(stderr_buf, tok_overline)"
             stderr_buf = sdscat(stderr_buf, tok_overline)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_reset)"
+            " #@MACRO@:str_append(stderr_buf, esc_reset)"
             stderr_buf = sdscat(stderr_buf, esc_reset)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"\\n\")"
+            " #@MACRO@:str_append(stderr_buf, \"\\n\")"
             stderr_buf = sdscat(stderr_buf, "\n")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"        \")"
+            " #@MACRO@:str_append(stderr_buf, \"        \")"
             stderr_buf = sdscat(stderr_buf, "        ")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, pad_linenum)"
+            " #@MACRO@:str_append(stderr_buf, pad_linenum)"
             stderr_buf = sdscat(stderr_buf, pad_linenum)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"| \")"
+            " #@MACRO@:str_append(stderr_buf, \"| \")"
             stderr_buf = sdscat(stderr_buf, "| ")
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_bold)"
+            " #@MACRO@:str_append(stderr_buf, esc_bold)"
             stderr_buf = sdscat(stderr_buf, esc_bold)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, line)"
+            " #@MACRO@:str_append(stderr_buf, line)"
             stderr_buf = sdscat(stderr_buf, line)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, esc_reset)"
+            " #@MACRO@:str_append(stderr_buf, esc_reset)"
             stderr_buf = sdscat(stderr_buf, esc_reset)
         }
         loop .. while 0 {
-            "@MACRO@:str_append(stderr_buf, \"\\n\")"
+            " #@MACRO@:str_append(stderr_buf, \"\\n\")"
             stderr_buf = sdscat(stderr_buf, "\n")
         }
         write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
         if pad_tok {
-            "@MACRO@:str_delete(pad_tok)"
+            " #@MACRO@:str_delete(pad_tok)"
             sdsfree(pad_tok)
             pad_tok = ? nil then sdsnew(nil) else nil
         }
         if pad_linenum {
-            "@MACRO@:str_delete(pad_linenum)"
+            " #@MACRO@:str_delete(pad_linenum)"
             sdsfree(pad_linenum)
             pad_linenum = ? nil then sdsnew(nil) else nil
         }
         if strto_linenum {
-            "@MACRO@:str_delete(strto_linenum)"
+            " #@MACRO@:str_delete(strto_linenum)"
             sdsfree(strto_linenum)
             strto_linenum = ? nil then sdsnew(nil) else nil
         }
         if strto_pos {
-            "@MACRO@:str_delete(strto_pos)"
+            " #@MACRO@:str_delete(strto_pos)"
             sdsfree(strto_pos)
             strto_pos = ? nil then sdsnew(nil) else nil
         }
         if tok_overline {
-            "@MACRO@:str_delete(tok_overline)"
+            " #@MACRO@:str_delete(tok_overline)"
             sdsfree(tok_overline)
             tok_overline = ? nil then sdsnew(nil) else nil
         }
         if stderr_buf {
-            "@MACRO@:str_delete(stderr_buf)"
+            " #@MACRO@:str_delete(stderr_buf)"
             sdsfree(stderr_buf)
             stderr_buf = ? nil then sdsnew(nil) else nil
         }
     }
     if line {
-        "@MACRO@:str_delete(line)"
+        " #@MACRO@:str_delete(line)"
         sdsfree(line)
         line = ? nil then sdsnew(nil) else nil
     }

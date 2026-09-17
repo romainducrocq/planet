@@ -30,9 +30,9 @@ pub fn get_filename(ctx: *struc FileIoContext) string {
 
 pub fn set_filename(ctx: *struc FileIoContext, filename: string) none {
     if filename ~= ctx[].filename {
-        "@MACRO@:str_copy(filename, ctx->filename)"
+        " #@MACRO@:str_copy(filename, ctx->filename)"
         if ctx[].filename {
-            "@MACRO@:str_delete(ctx->filename)"
+            " #@MACRO@:str_delete(ctx->filename)"
             sdsfree(ctx[].filename)
             ctx[].filename = ? nil then sdsnew(nil) else nil
         }
@@ -59,23 +59,23 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or sdslen(filename) >= 4096 {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }
     }
     if filename ~= file_read.filename {
-        "@MACRO@:str_copy(filename, file_read.filename)"
+        " #@MACRO@:str_copy(filename, file_read.filename)"
         if file_read.filename {
-            "@MACRO@:str_delete(file_read.filename)"
+            " #@MACRO@:str_delete(file_read.filename)"
             sdsfree(file_read.filename)
             file_read.filename = ? nil then sdsnew(nil) else nil
         }
         file_read.filename = sdsdup(filename)
     }
     loop .. while 0 {
-        "@MACRO@:vec_push_back(ctx->file_reads, file_read)"
+        " #@MACRO@:vec_push_back(ctx->file_reads, file_read)"
         loop .. while 0 {
             (? (not (ctx[].file_reads) or (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].capacity) then (((ctx[].file_reads) = stbds_arrgrowf((ctx[].file_reads), sizeof((ctx[].file_reads)[]), (1), (0))) and 0) else 0)
             (ctx[].file_reads)[(cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length++] = (file_read)
@@ -91,7 +91,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or sdslen(filename) >= 4096 {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fwrite), "MSG_failed_fwrite", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -99,7 +99,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     }
     ctx[].write_buf = ? "" then sdsnew("") else nil
     loop .. while 0 {
-        "@MACRO@:str_reserve(ctx->write_buf, WRITE_BUF_SIZE)"
+        " #@MACRO@:str_reserve(ctx->write_buf, WRITE_BUF_SIZE)"
         ctx[].write_buf = sdsMakeRoomFor(ctx[].write_buf, WRITE_BUF_SIZE)
     }
     label _Lfinally
@@ -129,13 +129,13 @@ fn write_chunk(ctx: *struc FileIoContext, buf: string, buf_size: u64) none {
 
 pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     loop .. while 0 {
-        "@MACRO@:str_append(ctx->write_buf, buf)"
+        " #@MACRO@:str_append(ctx->write_buf, buf)"
         ctx[].write_buf = sdscat(ctx[].write_buf, buf)
     }
     loop while sdslen(ctx[].write_buf) >= WRITE_BUF_SIZE {
         write_chunk(ctx, ctx[].write_buf, WRITE_BUF_SIZE)
         loop .. while 0 {
-            "@MACRO@:str_substr(ctx->write_buf, WRITE_BUF_SIZE, -1)"
+            " #@MACRO@:str_substr(ctx->write_buf, WRITE_BUF_SIZE, -1)"
             sdsrange(ctx[].write_buf, WRITE_BUF_SIZE, -1)
         }
     }
@@ -146,19 +146,19 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
     fclose((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd)
     (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd = nil
     if (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename {
-        "@MACRO@:str_delete(vec_back(ctx->file_reads).filename)"
+        " #@MACRO@:str_delete(vec_back(ctx->file_reads).filename)"
         sdsfree((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename)
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename = ? nil then sdsnew(nil) else nil
     }
     loop .. while 0 {
-        "@MACRO@:vec_pop_back(ctx->file_reads)"
+        " #@MACRO@:vec_pop_back(ctx->file_reads)"
         ((cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length--)
     }
     if not ((? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) == 0) and not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd = fopen((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename, "rb")
         if not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
             loop .. while 0 {
-                "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
+                " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                 _errval = 1
                 jump _Lfinally
@@ -167,7 +167,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         loop i: u64 = 0 while i < linenum .. ++i {
             if getline(@(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].buf, @(ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].len, (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd) == -1 {
                 loop .. while 0 {
-                    "@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
+                    " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
                     _errval = 1
                     jump _Lfinally
@@ -182,7 +182,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
 pub fn close_fwrite(ctx: *struc FileIoContext) none {
     write_chunk(ctx, ctx[].write_buf, sdslen(ctx[].write_buf))
     loop .. while 0 {
-        "@MACRO@:str_clear(ctx->write_buf)"
+        " #@MACRO@:str_clear(ctx->write_buf)"
         sdsclear(ctx[].write_buf)
     }
     fclose(ctx[].fd_write)

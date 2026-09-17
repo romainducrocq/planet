@@ -1158,7 +1158,7 @@ fn match_token(ctx: *struc LexerContext) i32 {
 fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string {
     smatch: string = ? "" then sdsnew("") else nil
     loop .. while 0 {
-        "@MACRO@:str_resize(smatch, match_size)"
+        " #@MACRO@:str_resize(smatch, match_size)"
         smatch = sdsgrowzero(smatch, match_size)
     }
     loop i: u64 = 0 while i < match_size .. ++i {
@@ -1172,7 +1172,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
 fn push_token_info(ctx: *struc LexerContext) u64 {
     token_info: struc TokenInfo = $(cast<i32>(ctx[].match_at), cast<i32>(ctx[].match_size), ctx[].total_linenum)
     loop .. while 0 {
-        "@MACRO@:vec_push_back(ctx->errors->token_infos, token_info)"
+        " #@MACRO@:vec_push_back(ctx->errors->token_infos, token_info)"
         loop .. while 0 {
             (? (not (ctx[].errors[].token_infos) or (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].capacity) then (((ctx[].errors[].token_infos) = stbds_arrgrowf((ctx[].errors[].token_infos), sizeof((ctx[].errors[].token_infos)[]), (1), (0))) and 0) else 0)
             (ctx[].errors[].token_infos)[(cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length++] = (token_info)
@@ -1199,7 +1199,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                         -> TOK_use_file {
                             -> TOK_use_force {
                                 loop .. while 0 {
-                                    "@MACRO@:TRY(tokenize_include(ctx, match_kind, linenum, is_empty))"
+                                    " #@MACRO@:TRY(tokenize_include(ctx, match_kind, linenum, is_empty))"
                                     _errval = tokenize_include(ctx, match_kind, linenum, is_empty)
                                     if _errval ~= 0 {
                                         jump _Lfinally
@@ -1225,7 +1225,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                         smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                         info_at: u64 = push_token_info(ctx)
                         loop .. while 0 {
-                            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_unmatched_close), "MSG_unmatched_close", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                             _errval = 1
                             jump _Lfinally
@@ -1257,7 +1257,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_preproc_macro), "MSG_preproc_macro", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
@@ -1267,7 +1267,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_invalid_tok), "MSG_invalid_tok", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
@@ -1286,7 +1286,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
             info_at: u64 = push_token_info(ctx)
             token: struc Token = $(match_kind, match_tok, info_at)
             loop .. while 0 {
-                "@MACRO@:vec_push_back(*ctx->p_toks, token)"
+                " #@MACRO@:vec_push_back(*ctx->p_toks, token)"
                 loop .. while 0 {
                     (? (not (ctx[].p_toks[]) or (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].capacity) then (((ctx[].p_toks[]) = stbds_arrgrowf((ctx[].p_toks[]), sizeof((ctx[].p_toks[])[]), (1), (0))) and 0) else 0)
                     (ctx[].p_toks[])[(cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length++] = (token)
@@ -1301,7 +1301,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
     label _Lfinally
     ;
     if smatch {
-        "@MACRO@:str_delete(smatch)"
+        " #@MACRO@:str_delete(smatch)"
         sdsfree(smatch)
         smatch = ? nil then sdsnew(nil) else nil
     }
@@ -1313,14 +1313,14 @@ fn find_include(dirnames: *string, filename: *string) i32 {
     loop i: u64 = 0 while i < (? (dirnames) then (cast<*struc stbds_array_header>((dirnames)) - 1)[].length else 0) .. ++i {
         dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
         loop .. while 0 {
-            "@MACRO@:str_append(dirname, *filename)"
+            " #@MACRO@:str_append(dirname, *filename)"
             dirname = sdscat(dirname, filename[])
         }
         if find_file(dirname) {
             if dirname ~= filename[] {
-                "@MACRO@:str_move(dirname, *filename)"
+                " #@MACRO@:str_move(dirname, *filename)"
                 if filename[] {
-                    "@MACRO@:str_delete(*filename)"
+                    " #@MACRO@:str_delete(*filename)"
                     sdsfree(filename[])
                     filename[] = ? nil then sdsnew(nil) else nil
                 }
@@ -1332,7 +1332,7 @@ fn find_include(dirnames: *string, filename: *string) i32 {
             return true
         }
         if dirname {
-            "@MACRO@:str_delete(dirname)"
+            " #@MACRO@:str_delete(dirname)"
             sdsfree(dirname)
             dirname = ? nil then sdsnew(nil) else nil
         }
@@ -1351,7 +1351,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     match_size: u64;
     filename = get_match(ctx, ctx[].match_at + 1, ctx[].match_size - 2)
     loop .. while 0 {
-        "@MACRO@:str_append(filename, \".etc\")"
+        " #@MACRO@:str_append(filename, \".etc\")"
         filename = sdscat(filename, ".etc")
     }
     if not is_empty {
@@ -1360,7 +1360,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             -> TOK_import_file {
                 -> TOK_import_force {
                     loop .. while 0 {
-                        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_import_in_line), "MSG_import_in_line", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
@@ -1370,7 +1370,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             -> TOK_use_file {
                 -> TOK_use_force {
                     loop .. while 0 {
-                        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_use_in_line), "MSG_use_in_line", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
@@ -1403,9 +1403,9 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
         else {
             loop .. while 0 {
-                "@MACRO@:set_insert(ctx->includename_set, includename)"
+                " #@MACRO@:set_insert(ctx->includename_set, includename)"
                 loop .. while 0 {
-                    "@MACRO@:map_add(ctx->includename_set, includename, 0)"
+                    " #@MACRO@:map_add(ctx->includename_set, includename, 0)"
                     loop .. while 0 {
                         (ctx[].includename_set) = stbds_hmput_key((ctx[].includename_set), sizeof((ctx[].includename_set)[]), cast<*any>(@((includename))), sizeof((ctx[].includename_set)[].key), 0)
                         (ctx[].includename_set)[(cast<*struc stbds_array_header>(((ctx[].includename_set) - 1)) - 1)[].temp].key = (includename)
@@ -1421,7 +1421,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                 if not find_include(ctx[].p_includedirs[], @filename) {
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_failed_import), "MSG_failed_import", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
@@ -1435,7 +1435,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                 if not find_include(ctx[].p_stdlibdirs[], @filename) {
                     info_at: u64 = push_token_info(ctx)
                     loop .. while 0 {
-                        "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
                         ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_failed_use), "MSG_failed_use", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
                         _errval = 1
                         jump _Lfinally
@@ -1453,9 +1453,9 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     match_at = ctx[].match_at
     match_size = ctx[].match_size
     if (ctx[].errors[].fopen_lines)[(? (ctx[].errors[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length else 0) - 1].filename ~= fopen_name {
-        "@MACRO@:str_copy(vec_back(ctx->errors->fopen_lines).filename, fopen_name)"
+        " #@MACRO@:str_copy(vec_back(ctx->errors->fopen_lines).filename, fopen_name)"
         if fopen_name {
-            "@MACRO@:str_delete(fopen_name)"
+            " #@MACRO@:str_delete(fopen_name)"
             sdsfree(fopen_name)
             fopen_name = ? nil then sdsnew(nil) else nil
         }
@@ -1464,7 +1464,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     }
     ;
     loop .. while 0 {
-        "@MACRO@:TRY(open_fread(ctx->fileio, filename))"
+        " #@MACRO@:TRY(open_fread(ctx->fileio, filename))"
         _errval = open_fread(ctx[].fileio, filename)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1473,9 +1473,9 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     {
         fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
         if filename ~= fopen_line.filename {
-            "@MACRO@:str_move(filename, fopen_line.filename)"
+            " #@MACRO@:str_move(filename, fopen_line.filename)"
             if fopen_line.filename {
-                "@MACRO@:str_delete(fopen_line.filename)"
+                " #@MACRO@:str_delete(fopen_line.filename)"
                 sdsfree(fopen_line.filename)
                 fopen_line.filename = ? nil then sdsnew(nil) else nil
             }
@@ -1485,7 +1485,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
         ;
         loop .. while 0 {
-            "@MACRO@:vec_push_back(ctx->errors->fopen_lines, fopen_line)"
+            " #@MACRO@:vec_push_back(ctx->errors->fopen_lines, fopen_line)"
             loop .. while 0 {
                 (? (not (ctx[].errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].capacity) then (((ctx[].errors[].fopen_lines) = stbds_arrgrowf((ctx[].errors[].fopen_lines), sizeof((ctx[].errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
                 (ctx[].errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
@@ -1493,14 +1493,14 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
     }
     loop .. while 0 {
-        "@MACRO@:TRY(tokenize_file(ctx))"
+        " #@MACRO@:TRY(tokenize_file(ctx))"
         _errval = tokenize_file(ctx)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }
     loop .. while 0 {
-        "@MACRO@:TRY(close_fread(ctx->fileio, linenum))"
+        " #@MACRO@:TRY(close_fread(ctx->fileio, linenum))"
         _errval = close_fread(ctx[].fileio, linenum)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1509,9 +1509,9 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     {
         fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
         if fopen_name ~= fopen_line.filename {
-            "@MACRO@:str_move(fopen_name, fopen_line.filename)"
+            " #@MACRO@:str_move(fopen_name, fopen_line.filename)"
             if fopen_line.filename {
-                "@MACRO@:str_delete(fopen_line.filename)"
+                " #@MACRO@:str_delete(fopen_line.filename)"
                 sdsfree(fopen_line.filename)
                 fopen_line.filename = ? nil then sdsnew(nil) else nil
             }
@@ -1521,7 +1521,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
         ;
         loop .. while 0 {
-            "@MACRO@:vec_push_back(ctx->errors->fopen_lines, fopen_line)"
+            " #@MACRO@:vec_push_back(ctx->errors->fopen_lines, fopen_line)"
             loop .. while 0 {
                 (? (not (ctx[].errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].capacity) then (((ctx[].errors[].fopen_lines) = stbds_arrgrowf((ctx[].errors[].fopen_lines), sizeof((ctx[].errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
                 (ctx[].errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
@@ -1535,13 +1535,13 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     label _Lfinally
     ;
     if filename {
-        "@MACRO@:str_delete(filename)"
+        " #@MACRO@:str_delete(filename)"
         sdsfree(filename)
         filename = ? nil then sdsnew(nil) else nil
     }
     ;
     if fopen_name {
-        "@MACRO@:str_delete(fopen_name)"
+        " #@MACRO@:str_delete(fopen_name)"
         sdsfree(fopen_name)
         fopen_name = ? nil then sdsnew(nil) else nil
     }
@@ -1565,7 +1565,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
 
     _errval: i32 = 0
     loop .. while 0 {
-        "@MACRO@:TRY(open_fread(ctx.fileio, filename))"
+        " #@MACRO@:TRY(open_fread(ctx.fileio, filename))"
         _errval = open_fread(ctx.fileio, filename)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1574,9 +1574,9 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
     {
         fopen_line: struc FileOpenLine = $(1, 1, ? nil then sdsnew(nil) else nil)
         if filename ~= fopen_line.filename {
-            "@MACRO@:str_copy(filename, fopen_line.filename)"
+            " #@MACRO@:str_copy(filename, fopen_line.filename)"
             if fopen_line.filename {
-                "@MACRO@:str_delete(fopen_line.filename)"
+                " #@MACRO@:str_delete(fopen_line.filename)"
                 sdsfree(fopen_line.filename)
                 fopen_line.filename = ? nil then sdsnew(nil) else nil
             }
@@ -1585,7 +1585,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         }
         ;
         loop .. while 0 {
-            "@MACRO@:vec_push_back(ctx.errors->fopen_lines, fopen_line)"
+            " #@MACRO@:vec_push_back(ctx.errors->fopen_lines, fopen_line)"
             loop .. while 0 {
                 (? (not (ctx.errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].capacity) then (((ctx.errors[].fopen_lines) = stbds_arrgrowf((ctx.errors[].fopen_lines), sizeof((ctx.errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
                 (ctx.errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
@@ -1593,14 +1593,14 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         }
     }
     loop .. while 0 {
-        "@MACRO@:TRY(tokenize_file(&ctx))"
+        " #@MACRO@:TRY(tokenize_file(&ctx))"
         _errval = tokenize_file(@ctx)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }
     loop .. while 0 {
-        "@MACRO@:TRY(close_fread(ctx.fileio, 0))"
+        " #@MACRO@:TRY(close_fread(ctx.fileio, 0))"
         _errval = close_fread(ctx.fileio, 0)
         if _errval ~= 0 {
             jump _Lfinally
@@ -1610,9 +1610,9 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
     label _Lfinally
     ;
     loop .. while 0 {
-        "@MACRO@:set_delete(ctx.includename_set)"
+        " #@MACRO@:set_delete(ctx.includename_set)"
         if ctx.includename_set {
-            "@MACRO@:map_delete(ctx.includename_set)"
+            " #@MACRO@:map_delete(ctx.includename_set)"
             loop .. while 0 {
                 cast<none>((? (ctx.includename_set) ~= nil then stbds_hmfree_func((ctx.includename_set) - 1, sizeof((ctx.includename_set)[])) else cast<none>(0)))
                 (ctx.includename_set) = nil
@@ -1623,14 +1623,14 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
     }
     loop i: u64 = 0 while i < (? (fileio[].file_reads) then (cast<*struc stbds_array_header>((fileio[].file_reads)) - 1)[].length else 0) .. ++i {
         if fileio[].file_reads[i].filename {
-            "@MACRO@:str_delete(fileio->file_reads[i].filename)"
+            " #@MACRO@:str_delete(fileio->file_reads[i].filename)"
             sdsfree(fileio[].file_reads[i].filename)
             fileio[].file_reads[i].filename = ? nil then sdsnew(nil) else nil
         }
         ;
     }
     if fileio[].file_reads {
-        "@MACRO@:vec_delete(fileio->file_reads)"
+        " #@MACRO@:vec_delete(fileio->file_reads)"
         loop .. while 0 {
             cast<none>((? (fileio[].file_reads) then free((cast<*struc stbds_array_header>((fileio[].file_reads)) - 1)) else cast<none>(0)))
             (fileio[].file_reads) = nil
@@ -1639,7 +1639,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
     }
     ;
     if includedirs[] {
-        "@MACRO@:vec_delete(*includedirs)"
+        " #@MACRO@:vec_delete(*includedirs)"
         loop .. while 0 {
             cast<none>((? (includedirs[]) then free((cast<*struc stbds_array_header>((includedirs[])) - 1)) else cast<none>(0)))
             (includedirs[]) = nil
@@ -1648,7 +1648,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
     }
     ;
     if stdlibdirs[] {
-        "@MACRO@:vec_delete(*stdlibdirs)"
+        " #@MACRO@:vec_delete(*stdlibdirs)"
         loop .. while 0 {
             cast<none>((? (stdlibdirs[]) then free((cast<*struc stbds_array_header>((stdlibdirs[])) - 1)) else cast<none>(0)))
             (stdlibdirs[]) = nil
