@@ -215,14 +215,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         }
         backend.symbol_table = map_new()
     }
-    if tokens {
-        " #@MACRO@:vec_delete(tokens)"
-        loop .. while 0 {
-            cast<none>((? (tokens) then free((cast<*struc stbds_array_header>((tokens)) - 1)) else cast<none>(0)))
-            (tokens) = nil
-        }
-        tokens = vec_new()
-    }
+    vec_delete(tokens)
     free_CProgram(@c_ast)
     free_TacProgram(@tac_ast)
     free_AsmProgram(@asm_ast)
@@ -394,22 +387,8 @@ pub fn main(argc: i32, argv: *string) i32 {
             errors.fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
-    if errors.fopen_lines {
-        " #@MACRO@:vec_delete(errors.fopen_lines)"
-        loop .. while 0 {
-            cast<none>((? (errors.fopen_lines) then free((cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)) else cast<none>(0)))
-            (errors.fopen_lines) = nil
-        }
-        errors.fopen_lines = vec_new()
-    }
-    if errors.token_infos {
-        " #@MACRO@:vec_delete(errors.token_infos)"
-        loop .. while 0 {
-            cast<none>((? (errors.token_infos) then free((cast<*struc stbds_array_header>((errors.token_infos)) - 1)) else cast<none>(0)))
-            (errors.token_infos) = nil
-        }
-        errors.token_infos = vec_new()
-    }
+    vec_delete(errors.fopen_lines)
+    vec_delete(errors.token_infos)
     if fileio.write_buf {
         " #@MACRO@:str_delete(fileio.write_buf)"
         sdsfree(fileio.write_buf)
@@ -427,34 +406,13 @@ pub fn main(argc: i32, argv: *string) i32 {
             fileio.file_reads[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
-    if fileio.file_reads {
-        " #@MACRO@:vec_delete(fileio.file_reads)"
-        loop .. while 0 {
-            cast<none>((? (fileio.file_reads) then free((cast<*struc stbds_array_header>((fileio.file_reads)) - 1)) else cast<none>(0)))
-            (fileio.file_reads) = nil
-        }
-        fileio.file_reads = vec_new()
-    }
+    vec_delete(fileio.file_reads)
     if ctx.filename {
         " #@MACRO@:str_delete(ctx.filename)"
         sdsfree(ctx.filename)
         ctx.filename = ? nil then sdsnew(nil) else nil
     }
-    if ctx.includedirs {
-        " #@MACRO@:vec_delete(ctx.includedirs)"
-        loop .. while 0 {
-            cast<none>((? (ctx.includedirs) then free((cast<*struc stbds_array_header>((ctx.includedirs)) - 1)) else cast<none>(0)))
-            (ctx.includedirs) = nil
-        }
-        ctx.includedirs = vec_new()
-    }
-    if ctx.stdlibdirs {
-        " #@MACRO@:vec_delete(ctx.stdlibdirs)"
-        loop .. while 0 {
-            cast<none>((? (ctx.stdlibdirs) then free((cast<*struc stbds_array_header>((ctx.stdlibdirs)) - 1)) else cast<none>(0)))
-            (ctx.stdlibdirs) = nil
-        }
-        ctx.stdlibdirs = vec_new()
-    }
+    vec_delete(ctx.includedirs)
+    vec_delete(ctx.stdlibdirs)
     return _errval
 }

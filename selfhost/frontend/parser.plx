@@ -131,14 +131,7 @@ fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiter
     }
     literal[] = make_CStringLiteral(@value)
     label _Lfinally
-    if value {
-        " #@MACRO@:vec_delete(value)"
-        loop .. while 0 {
-            cast<none>((? (value) then free((cast<*struc stbds_array_header>((value)) - 1)) else cast<none>(0)))
-            (value) = nil
-        }
-        value = vec_new()
-    }
+    vec_delete(value)
     return _errval
 }
 
@@ -1045,14 +1038,7 @@ fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     loop i: u64 = 0 while i < (? (args) then (cast<*struc stbds_array_header>((args)) - 1)[].length else 0) .. ++i {
         free_CExp(@args[i])
     }
-    if args {
-        " #@MACRO@:vec_delete(args)"
-        loop .. while 0 {
-            cast<none>((? (args) then free((cast<*struc stbds_array_header>((args)) - 1)) else cast<none>(0)))
-            (args) = nil
-        }
-        args = vec_new()
-    }
+    vec_delete(args)
     return _errval
 }
 
@@ -3300,14 +3286,7 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     loop i: u64 = 0 while i < (? (block_items) then (cast<*struc stbds_array_header>((block_items)) - 1)[].length else 0) .. ++i {
         free_CBlockItem(@block_items[i])
     }
-    if block_items {
-        " #@MACRO@:vec_delete(block_items)"
-        loop .. while 0 {
-            cast<none>((? (block_items) then free((cast<*struc stbds_array_header>((block_items)) - 1)) else cast<none>(0)))
-            (block_items) = nil
-        }
-        block_items = vec_new()
-    }
+    vec_delete(block_items)
     return _errval
 }
 
@@ -3468,14 +3447,7 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
     loop i: u64 = 0 while i < (? (initializers) then (cast<*struc stbds_array_header>((initializers)) - 1)[].length else 0) .. ++i {
         free_CInitializer(@initializers[i])
     }
-    if initializers {
-        " #@MACRO@:vec_delete(initializers)"
-        loop .. while 0 {
-            cast<none>((? (initializers) then free((cast<*struc stbds_array_header>((initializers)) - 1)) else cast<none>(0)))
-            (initializers) = nil
-        }
-        initializers = vec_new()
-    }
+    vec_delete(initializers)
     return _errval
 }
 
@@ -3738,14 +3710,7 @@ fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: 
     loop i: u64 = 0 while i < (? (param_types) then (cast<*struc stbds_array_header>((param_types)) - 1)[].length else 0) .. ++i {
         free_Type(@param_types[i])
     }
-    if param_types {
-        " #@MACRO@:vec_delete(param_types)"
-        loop .. while 0 {
-            cast<none>((? (param_types) then free((cast<*struc stbds_array_header>((param_types)) - 1)) else cast<none>(0)))
-            (param_types) = nil
-        }
-        param_types = vec_new()
-    }
+    vec_delete(param_types)
     return _errval
 }
 
@@ -3802,14 +3767,7 @@ fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
     label _Lfinally
     free_CBlock(@body)
     free_Type(@fun_type)
-    if params {
-        " #@MACRO@:vec_delete(params)"
-        loop .. while 0 {
-            cast<none>((? (params) then free((cast<*struc stbds_array_header>((params)) - 1)) else cast<none>(0)))
-            (params) = nil
-        }
-        params = vec_new()
-    }
+    vec_delete(params)
     return _errval
 }
 
@@ -4018,14 +3976,7 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
     loop i: u64 = 0 while i < (? (members) then (cast<*struc stbds_array_header>((members)) - 1)[].length else 0) .. ++i {
         free_CMemberDeclaration(@members[i])
     }
-    if members {
-        " #@MACRO@:vec_delete(members)"
-        loop .. while 0 {
-            cast<none>((? (members) then free((cast<*struc stbds_array_header>((members)) - 1)) else cast<none>(0)))
-            (members) = nil
-        }
-        members = vec_new()
-    }
+    vec_delete(members)
     return _errval
 }
 
@@ -4247,14 +4198,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     loop i: u64 = 0 while i < (? (declarations) then (cast<*struc stbds_array_header>((declarations)) - 1)[].length else 0) .. ++i {
         free_CDeclaration(@declarations[i])
     }
-    if declarations {
-        " #@MACRO@:vec_delete(declarations)"
-        loop .. while 0 {
-            cast<none>((? (declarations) then free((cast<*struc stbds_array_header>((declarations)) - 1)) else cast<none>(0)))
-            (declarations) = nil
-        }
-        declarations = vec_new()
-    }
+    vec_delete(declarations)
     return _errval
 }
 
@@ -4276,13 +4220,6 @@ pub fn parse_tokens(tokens: **struc Token, errors: *struc ErrorsContext, identif
         }
     }
     label _Lfinally
-    if tokens[] {
-        " #@MACRO@:vec_delete(*tokens)"
-        loop .. while 0 {
-            cast<none>((? (tokens[]) then free((cast<*struc stbds_array_header>((tokens[])) - 1)) else cast<none>(0)))
-            (tokens[]) = nil
-        }
-        tokens[] = vec_new()
-    }
+    vec_delete(tokens[])
     return _errval
 }

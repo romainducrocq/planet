@@ -1629,32 +1629,11 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         }
         ;
     }
-    if fileio[].file_reads {
-        " #@MACRO@:vec_delete(fileio->file_reads)"
-        loop .. while 0 {
-            cast<none>((? (fileio[].file_reads) then free((cast<*struc stbds_array_header>((fileio[].file_reads)) - 1)) else cast<none>(0)))
-            (fileio[].file_reads) = nil
-        }
-        fileio[].file_reads = vec_new()
-    }
+    vec_delete(fileio[].file_reads)
     ;
-    if includedirs[] {
-        " #@MACRO@:vec_delete(*includedirs)"
-        loop .. while 0 {
-            cast<none>((? (includedirs[]) then free((cast<*struc stbds_array_header>((includedirs[])) - 1)) else cast<none>(0)))
-            (includedirs[]) = nil
-        }
-        includedirs[] = vec_new()
-    }
+    vec_delete(includedirs[])
     ;
-    if stdlibdirs[] {
-        " #@MACRO@:vec_delete(*stdlibdirs)"
-        loop .. while 0 {
-            cast<none>((? (stdlibdirs[]) then free((cast<*struc stbds_array_header>((stdlibdirs[])) - 1)) else cast<none>(0)))
-            (stdlibdirs[]) = nil
-        }
-        stdlibdirs[] = vec_new()
-    }
+    vec_delete(stdlibdirs[])
     ;
     return _errval
 }

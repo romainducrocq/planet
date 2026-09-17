@@ -1642,14 +1642,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
         fix_alloc_stack_bytes(ctx, callee_saved_size)
     }
     ctx[].p_fix_instrs = nil
-    if instructions {
-        " #@MACRO@:vec_delete(instructions)"
-        loop .. while 0 {
-            cast<none>((? (instructions) then free((cast<*struc stbds_array_header>((instructions)) - 1)) else cast<none>(0)))
-            (instructions) = nil
-        }
-        instructions = vec_new()
-    }
+    vec_delete(instructions)
 }
 
 fn fix_toplvl(ctx: *struc StackFixContext, node: *struc AsmTopLevel) none {

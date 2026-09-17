@@ -1685,14 +1685,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
             push_instr(ctx, byte_instrs[i])
             byte_instrs[i] = uptr_new()
         }
-        if byte_instrs {
-            " #@MACRO@:vec_delete(byte_instrs)"
-            loop .. while 0 {
-                cast<none>((? (byte_instrs) then free((cast<*struc stbds_array_header>((byte_instrs)) - 1)) else cast<none>(0)))
-                (byte_instrs) = nil
-            }
-            byte_instrs = vec_new()
-        }
+        vec_delete(byte_instrs)
     }
     {
         binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
@@ -1809,14 +1802,7 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
         push_instr(ctx, stack_instrs[i])
         stack_instrs[i] = uptr_new()
     }
-    if stack_instrs {
-        " #@MACRO@:vec_delete(stack_instrs)"
-        loop .. while 0 {
-            cast<none>((? (stack_instrs) then free((cast<*struc stbds_array_header>((stack_instrs)) - 1)) else cast<none>(0)))
-            (stack_instrs) = nil
-        }
-        stack_instrs = vec_new()
-    }
+    vec_delete(stack_instrs)
     return stack_padding
 }
 
