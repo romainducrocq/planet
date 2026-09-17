@@ -132,19 +132,7 @@ pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
     }
     self[].tag = AST_CStringLiteral_t
     self[].value = vec_new()
-    if value[] ~= self[].value {
-        " #@MACRO@:vec_move(*value, self->value)"
-        if self[].value {
-            " #@MACRO@:vec_delete(self->value)"
-            loop .. while 0 {
-                cast<none>((? (self[].value) then free((cast<*struc stbds_array_header>((self[].value)) - 1)) else cast<none>(0)))
-                (self[].value) = nil
-            }
-            self[].value = vec_new()
-        }
-        self[].value = value[]
-        value[] = vec_new()
-    }
+    vec_move(value[], self[].value)
     return self
 }
 

@@ -85,19 +85,7 @@ pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc T
     self[].get._FunType.param_reg_mask = 0ul
     self[].get._FunType.ret_reg_mask = 0ul
     self[].get._FunType.param_types = vec_new()
-    if param_types[] ~= self[].get._FunType.param_types {
-        " #@MACRO@:vec_move(*param_types, self->get._FunType.param_types)"
-        if self[].get._FunType.param_types {
-            " #@MACRO@:vec_delete(self->get._FunType.param_types)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._FunType.param_types) then free((cast<*struc stbds_array_header>((self[].get._FunType.param_types)) - 1)) else cast<none>(0)))
-                (self[].get._FunType.param_types) = nil
-            }
-            self[].get._FunType.param_types = vec_new()
-        }
-        self[].get._FunType.param_types = param_types[]
-        param_types[] = vec_new()
-    }
+    vec_move(param_types[], self[].get._FunType.param_types)
     self[].get._FunType.ret_type = sptr_new()
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, *ret_type, self->get._FunType.ret_type)"
@@ -412,19 +400,7 @@ pub fn make_Initial(static_inits: ***struc StaticInit) *struc InitialValue {
     self: *struc InitialValue = make_InitialValue()
     self[].tag = AST_Initial_t
     self[].get._Initial.static_inits = vec_new()
-    if static_inits[] ~= self[].get._Initial.static_inits {
-        " #@MACRO@:vec_move(*static_inits, self->get._Initial.static_inits)"
-        if self[].get._Initial.static_inits {
-            " #@MACRO@:vec_delete(self->get._Initial.static_inits)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._Initial.static_inits) then free((cast<*struc stbds_array_header>((self[].get._Initial.static_inits)) - 1)) else cast<none>(0)))
-                (self[].get._Initial.static_inits) = nil
-            }
-            self[].get._Initial.static_inits = vec_new()
-        }
-        self[].get._Initial.static_inits = static_inits[]
-        static_inits[] = vec_new()
-    }
+    vec_move(static_inits[], self[].get._Initial.static_inits)
     return self
 }
 
@@ -691,19 +667,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, member
     self[].alignment = alignment
     self[].size = size
     self[].member_names = vec_new()
-    if member_names[] ~= self[].member_names {
-        " #@MACRO@:vec_move(*member_names, self->member_names)"
-        if self[].member_names {
-            " #@MACRO@:vec_delete(self->member_names)"
-            loop .. while 0 {
-                cast<none>((? (self[].member_names) then free((cast<*struc stbds_array_header>((self[].member_names)) - 1)) else cast<none>(0)))
-                (self[].member_names) = nil
-            }
-            self[].member_names = vec_new()
-        }
-        self[].member_names = member_names[]
-        member_names[] = vec_new()
-    }
+    vec_move(member_names[], self[].member_names)
     self[].members = map_new()
     if members[] ~= self[].members {
         " #@MACRO@:map_move(*members, self->members)"

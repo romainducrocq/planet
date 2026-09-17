@@ -261,19 +261,7 @@ pub fn make_CFunDeclarator(param_list: ***struc CParam, decltor: **struc CDeclar
     self: *struc CDeclarator = make_CDeclarator()
     self[].tag = AST_CFunDeclarator_t
     self[].get._CFunDeclarator.param_list = vec_new()
-    if param_list[] ~= self[].get._CFunDeclarator.param_list {
-        " #@MACRO@:vec_move(*param_list, self->get._CFunDeclarator.param_list)"
-        if self[].get._CFunDeclarator.param_list {
-            " #@MACRO@:vec_delete(self->get._CFunDeclarator.param_list)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._CFunDeclarator.param_list) then free((cast<*struc stbds_array_header>((self[].get._CFunDeclarator.param_list)) - 1)) else cast<none>(0)))
-                (self[].get._CFunDeclarator.param_list) = nil
-            }
-            self[].get._CFunDeclarator.param_list = vec_new()
-        }
-        self[].get._CFunDeclarator.param_list = param_list[]
-        param_list[] = vec_new()
-    }
+    vec_move(param_list[], self[].get._CFunDeclarator.param_list)
     self[].get._CFunDeclarator.decltor = uptr_new()
     if decltor[] ~= self[].get._CFunDeclarator.decltor {
         " #@MACRO@:uptr_move(CDeclarator, *decltor, self->get._CFunDeclarator.decltor)"
@@ -504,19 +492,7 @@ pub fn make_CFunctionCall(name: u64, args: ***struc CExp, info_at: u64) *struc C
     self[].tag = AST_CFunctionCall_t
     self[].get._CFunctionCall.name = name
     self[].get._CFunctionCall.args = vec_new()
-    if args[] ~= self[].get._CFunctionCall.args {
-        " #@MACRO@:vec_move(*args, self->get._CFunctionCall.args)"
-        if self[].get._CFunctionCall.args {
-            " #@MACRO@:vec_delete(self->get._CFunctionCall.args)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._CFunctionCall.args) then free((cast<*struc stbds_array_header>((self[].get._CFunctionCall.args)) - 1)) else cast<none>(0)))
-                (self[].get._CFunctionCall.args) = nil
-            }
-            self[].get._CFunctionCall.args = vec_new()
-        }
-        self[].get._CFunctionCall.args = args[]
-        args[] = vec_new()
-    }
+    vec_move(args[], self[].get._CFunctionCall.args)
     self[].get._CFunctionCall._base = self
     return self
 }
@@ -1175,19 +1151,7 @@ pub fn make_CB(block_items: ***struc CBlockItem) *struc CBlock {
     self: *struc CBlock = make_CBlock()
     self[].tag = AST_CB_t
     self[].get._CB.block_items = vec_new()
-    if block_items[] ~= self[].get._CB.block_items {
-        " #@MACRO@:vec_move(*block_items, self->get._CB.block_items)"
-        if self[].get._CB.block_items {
-            " #@MACRO@:vec_delete(self->get._CB.block_items)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._CB.block_items) then free((cast<*struc stbds_array_header>((self[].get._CB.block_items)) - 1)) else cast<none>(0)))
-                (self[].get._CB.block_items) = nil
-            }
-            self[].get._CB.block_items = vec_new()
-        }
-        self[].get._CB.block_items = block_items[]
-        block_items[] = vec_new()
-    }
+    vec_move(block_items[], self[].get._CB.block_items)
     return self
 }
 
@@ -1342,19 +1306,7 @@ pub fn make_CCompoundInit(initializers: ***struc CInitializer) *struc CInitializ
     self: *struc CInitializer = make_CInitializer()
     self[].tag = AST_CCompoundInit_t
     self[].get._CCompoundInit.initializers = vec_new()
-    if initializers[] ~= self[].get._CCompoundInit.initializers {
-        " #@MACRO@:vec_move(*initializers, self->get._CCompoundInit.initializers)"
-        if self[].get._CCompoundInit.initializers {
-            " #@MACRO@:vec_delete(self->get._CCompoundInit.initializers)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._CCompoundInit.initializers) then free((cast<*struc stbds_array_header>((self[].get._CCompoundInit.initializers)) - 1)) else cast<none>(0)))
-                (self[].get._CCompoundInit.initializers) = nil
-            }
-            self[].get._CCompoundInit.initializers = vec_new()
-        }
-        self[].get._CCompoundInit.initializers = initializers[]
-        initializers[] = vec_new()
-    }
+    vec_move(initializers[], self[].get._CCompoundInit.initializers)
     self[].get._CCompoundInit._base = self
     return self
 }
@@ -1459,19 +1411,7 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc C
     self[].tag_name = tag_name
     self[].is_union = is_union
     self[].members = vec_new()
-    if members[] ~= self[].members {
-        " #@MACRO@:vec_move(*members, self->members)"
-        if self[].members {
-            " #@MACRO@:vec_delete(self->members)"
-            loop .. while 0 {
-                cast<none>((? (self[].members) then free((cast<*struc stbds_array_header>((self[].members)) - 1)) else cast<none>(0)))
-                (self[].members) = nil
-            }
-            self[].members = vec_new()
-        }
-        self[].members = members[]
-        members[] = vec_new()
-    }
+    vec_move(members[], self[].members)
     self[].info_at = info_at
     return self
 }
@@ -1520,19 +1460,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock,
     self[].tag = AST_CFunctionDeclaration_t
     self[].name = name
     self[].params = vec_new()
-    if params[] ~= self[].params {
-        " #@MACRO@:vec_move(*params, self->params)"
-        if self[].params {
-            " #@MACRO@:vec_delete(self->params)"
-            loop .. while 0 {
-                cast<none>((? (self[].params) then free((cast<*struc stbds_array_header>((self[].params)) - 1)) else cast<none>(0)))
-                (self[].params) = nil
-            }
-            self[].params = vec_new()
-        }
-        self[].params = params[]
-        params[] = vec_new()
-    }
+    vec_move(params[], self[].params)
     self[].body = uptr_new()
     if body[] ~= self[].body {
         " #@MACRO@:uptr_move(CBlock, *body, self->body)"
@@ -1738,19 +1666,7 @@ pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
     }
     self[].tag = AST_CProgram_t
     self[].declarations = vec_new()
-    if declarations[] ~= self[].declarations {
-        " #@MACRO@:vec_move(*declarations, self->declarations)"
-        if self[].declarations {
-            " #@MACRO@:vec_delete(self->declarations)"
-            loop .. while 0 {
-                cast<none>((? (self[].declarations) then free((cast<*struc stbds_array_header>((self[].declarations)) - 1)) else cast<none>(0)))
-                (self[].declarations) = nil
-            }
-            self[].declarations = vec_new()
-        }
-        self[].declarations = declarations[]
-        declarations[] = vec_new()
-    }
+    vec_move(declarations[], self[].declarations)
     return self
 }
 
