@@ -46,7 +46,7 @@ m4_define(`_LIB_STB_DS_M4', `')m4_dnl
 
 m4_define(`arrlenu', `stbds_arrlenu($1)')m4_dnl
 m4_define(`arrput', `stbds_arrput($1, $2)')m4_dnl
-m4_define(`arrpop', `stbds_arrpop')m4_dnl
+m4_define(`arrpop', `stbds_arrpop($1)')m4_dnl
 m4_define(`arrfree', `stbds_arrfree')m4_dnl
 m4_define(`arrsetlen', `stbds_arrsetlen($1, $2)')m4_dnl
 m4_define(`arrdelswap', `stbds_arrdelswap')m4_dnl
@@ -76,7 +76,7 @@ m4_define(`stbds_arrput', `{
     stbds_arrmaybegrow($1, 1)
     ($1)[stbds_header($1)[].length++] = ($2)
 }')m4_dnl
-m4_define(`stbds_arrpop', `TODO')m4_dnl
+m4_define(`stbds_arrpop', `(stbds_header($1)[].length--)')m4_dnl
 m4_define(`stbds_arrlast', `TODO')m4_dnl
 m4_define(`stbds_arrfree', `TODO')m4_dnl
 m4_define(`stbds_arrdelswap', `TODO')m4_dnl
