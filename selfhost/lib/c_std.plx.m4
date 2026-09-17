@@ -55,7 +55,6 @@ m4_define(`str_to_string', `TODO')m4_dnl
 m4_define(`vector_t', `*$1')m4_dnl
 #TODO
 m4_define(`vec_new', `nil')m4_dnl
-#TODO
 m4_define(`vec_delete', `if $1 {
     arrfree($1)
     $1 = vec_new()
@@ -69,7 +68,6 @@ m4_define(`vec_move', `if $1 ~= $2 {
 m4_define(`vec_size', `arrlenu($1)')m4_dnl
 #TODO
 m4_define(`vec_back', `($1)[vec_size($1) - 1]')m4_dnl
-#TODO
 m4_define(`vec_clear', `if $1 {
     stbds_header($1)[].length = 0
 }')m4_dnl

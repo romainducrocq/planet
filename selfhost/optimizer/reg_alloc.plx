@@ -516,10 +516,7 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
         vec_delete(ctx[].cfg[].blocks[block_id].succ_ids) # TODO GET_CFG_BLOCK(block_id).succ_ids
         ;
     }
-    if ctx[].cfg[].blocks {
-        " #@MACRO@:vec_clear(ctx->cfg->blocks)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].blocks)
     ;
     loop .. while 0 {
         " #@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
@@ -557,15 +554,9 @@ fn init_control_flow_graph(ctx: *struc RegAllocContext) none {
     }
     ctx[].cfg[].exit_id = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     ctx[].cfg[].entry_id = ctx[].cfg[].exit_id + 1
-    if ctx[].cfg[].entry_succ_ids {
-        " #@MACRO@:vec_clear(ctx->cfg->entry_succ_ids)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].entry_succ_ids)
     ;
-    if ctx[].cfg[].exit_pred_ids {
-        " #@MACRO@:vec_clear(ctx->cfg->exit_pred_ids)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].exit_pred_ids)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].exit_pred_ids)
     ;
     if not ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) == 0) {
         cfg_add_pred_edge(ctx, 0, ctx[].cfg[].entry_id)
@@ -1616,10 +1607,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         return false
     }
     ctx[].callee_saved_reg_mask = 0ul
-    if ctx[].infer_graph[].unpruned_pseudo_names {
-        " #@MACRO@:vec_clear(ctx->infer_graph->unpruned_pseudo_names)"
-        (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].infer_graph[].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < (? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         vec_delete((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->infer_graph->pseudo_reg_map[i]).linked_pseudo_names
@@ -1637,10 +1625,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         }
         ;
     }
-    if ctx[].sse_infer_graph[].unpruned_pseudo_names {
-        " #@MACRO@:vec_clear(ctx->sse_infer_graph->unpruned_pseudo_names)"
-        (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].sse_infer_graph[].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < (? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         vec_delete((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->sse_infer_graph->pseudo_reg_map[i]).linked_pseudo_names
@@ -1713,10 +1698,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ctx[].hard_regs[i].degree = 11
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
-            if ctx[].hard_regs[i].linked_pseudo_names {
-                " #@MACRO@:vec_clear(ctx->hard_regs[i].linked_pseudo_names)"
-                (cast<*struc stbds_array_header>((ctx[].hard_regs[i].linked_pseudo_names)) - 1)[].length = 0
-            }
+            vec_clear(ctx[].hard_regs[i].linked_pseudo_names)
             ;
             ctx[].infer_graph[].unpruned_hard_mask_bits[i] = i
         }
@@ -1738,10 +1720,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ctx[].hard_regs[i].degree = 13
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
-            if ctx[].hard_regs[i].linked_pseudo_names {
-                " #@MACRO@:vec_clear(ctx->hard_regs[i].linked_pseudo_names)"
-                (cast<*struc stbds_array_header>((ctx[].hard_regs[i].linked_pseudo_names)) - 1)[].length = 0
-            }
+            vec_clear(ctx[].hard_regs[i].linked_pseudo_names)
             ;
             ctx[].sse_infer_graph[].unpruned_hard_mask_bits[i - 12] = i
         }
