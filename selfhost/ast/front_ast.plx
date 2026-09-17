@@ -297,14 +297,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
                 free_CParam(@(self[])[].get._CFunDeclarator.param_list[i])
             }
         }
-        if (self[])[].get._CFunDeclarator.param_list {
-            " #@MACRO@:vec_delete((*self)->get._CFunDeclarator.param_list)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._CFunDeclarator.param_list) then free((cast<*struc stbds_array_header>(((self[])[].get._CFunDeclarator.param_list)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CFunDeclarator.param_list) = nil
-            }
-            (self[])[].get._CFunDeclarator.param_list = vec_new()
-        }
+        vec_delete(self[][].get._CFunDeclarator.param_list)
         free_CDeclarator(@(self[])[].get._CFunDeclarator.decltor)
         break
         otherwise {
@@ -657,14 +650,7 @@ pub fn free_CExp(self: **struc CExp) none {
                 free_CExp(@(self[])[].get._CFunctionCall.args[i])
             }
         }
-        if (self[])[].get._CFunctionCall.args {
-            " #@MACRO@:vec_delete((*self)->get._CFunctionCall.args)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._CFunctionCall.args) then free((cast<*struc stbds_array_header>(((self[])[].get._CFunctionCall.args)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CFunctionCall.args) = nil
-            }
-            (self[])[].get._CFunctionCall.args = vec_new()
-        }
+        vec_delete(self[][].get._CFunctionCall.args)
         break
         -> AST_CDereference_t {
             free_CExp(@(self[])[].get._CDereference.exp)
@@ -1027,14 +1013,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
         loop i: u64 = 0 while i < (? ((self[])[].get._CSwitch.cases) then (cast<*struc stbds_array_header>(((self[])[].get._CSwitch.cases)) - 1)[].length else 0) .. ++i {
             free_CExp(@(self[])[].get._CSwitch.cases[i])
         }
-        if (self[])[].get._CSwitch.cases {
-            " #@MACRO@:vec_delete((*self)->get._CSwitch.cases)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._CSwitch.cases) then free((cast<*struc stbds_array_header>(((self[])[].get._CSwitch.cases)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CSwitch.cases) = nil
-            }
-            (self[])[].get._CSwitch.cases = vec_new()
-        }
+        vec_delete(self[][].get._CSwitch.cases)
         break
         -> AST_CCase_t {
             free_CExp(@(self[])[].get._CCase.value)
@@ -1169,14 +1148,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
                 free_CBlockItem(@(self[])[].get._CB.block_items[i])
             }
         }
-        if (self[])[].get._CB.block_items {
-            " #@MACRO@:vec_delete((*self)->get._CB.block_items)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._CB.block_items) then free((cast<*struc stbds_array_header>(((self[])[].get._CB.block_items)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CB.block_items) = nil
-            }
-            (self[])[].get._CB.block_items = vec_new()
-        }
+        vec_delete(self[][].get._CB.block_items)
         break
         otherwise {
             panic_sigabrt("abort")
@@ -1329,14 +1301,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
                 free_CInitializer(@(self[])[].get._CCompoundInit.initializers[i])
             }
         }
-        if (self[])[].get._CCompoundInit.initializers {
-            " #@MACRO@:vec_delete((*self)->get._CCompoundInit.initializers)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._CCompoundInit.initializers) then free((cast<*struc stbds_array_header>(((self[])[].get._CCompoundInit.initializers)) - 1)) else cast<none>(0)))
-                ((self[])[].get._CCompoundInit.initializers) = nil
-            }
-            (self[])[].get._CCompoundInit.initializers = vec_new()
-        }
+        vec_delete(self[][].get._CCompoundInit.initializers)
         break
         otherwise {
             panic_sigabrt("abort")
@@ -1432,14 +1397,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
     loop i: u64 = 0 while i < (? ((self[])[].members) then (cast<*struc stbds_array_header>(((self[])[].members)) - 1)[].length else 0) .. ++i {
         free_CMemberDeclaration(@(self[])[].members[i])
     }
-    if (self[])[].members {
-        " #@MACRO@:vec_delete((*self)->members)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].members) then free((cast<*struc stbds_array_header>(((self[])[].members)) - 1)) else cast<none>(0)))
-            ((self[])[].members) = nil
-        }
-        (self[])[].members = vec_new()
-    }
+    vec_delete(self[][].members)
     if self[] {
         " #@MACRO@:uptr_free(*self)"
         free(self[])
@@ -1496,14 +1454,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
             panic_sigabrt("abort")
         }
     }
-    if (self[])[].params {
-        " #@MACRO@:vec_delete((*self)->params)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].params) then free((cast<*struc stbds_array_header>(((self[])[].params)) - 1)) else cast<none>(0)))
-            ((self[])[].params) = nil
-        }
-        (self[])[].params = vec_new()
-    }
+    vec_delete(self[][].params)
     free_CBlock(@(self[])[].body)
     free_Type(@(self[])[].fun_type)
     if self[] {
@@ -1686,14 +1637,7 @@ pub fn free_CProgram(self: **struc CProgram) none {
     loop i: u64 = 0 while i < (? ((self[])[].declarations) then (cast<*struc stbds_array_header>(((self[])[].declarations)) - 1)[].length else 0) .. ++i {
         free_CDeclaration(@(self[])[].declarations[i])
     }
-    if (self[])[].declarations {
-        " #@MACRO@:vec_delete((*self)->declarations)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].declarations) then free((cast<*struc stbds_array_header>(((self[])[].declarations)) - 1)) else cast<none>(0)))
-            ((self[])[].declarations) = nil
-        }
-        (self[])[].declarations = vec_new()
-    }
+    vec_delete(self[][].declarations)
     if self[] {
         " #@MACRO@:uptr_free(*self)"
         free(self[])
