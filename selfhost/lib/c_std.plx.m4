@@ -65,7 +65,7 @@ m4_define(`vec_empty', `TODO')m4_dnl
 m4_define(`vec_move_back', `TODO')m4_dnl
 m4_define(`vec_pop_back', `arrpop($1)')m4_dnl
 m4_define(`vec_push_back', `arrput($1, $2)')m4_dnl
-m4_define(`vec_remove_swap', `TODO')m4_dnl
+m4_define(`vec_remove_swap', `arrdelswap($1, $2)')m4_dnl
 m4_define(`vec_resize', `arrsetlen($1, $2)')m4_dnl
 m4_define(`vec_reserve', `arrsetcap($1, $2)')m4_dnl
 
