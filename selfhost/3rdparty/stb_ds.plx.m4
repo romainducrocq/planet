@@ -44,7 +44,7 @@ m4_define(`_LIB_STB_DS_M4', `')m4_dnl
 # ------------------------------------------------------------------------------
 #
 
-m4_define(`arrlenu', `stbds_arrlenu')m4_dnl
+m4_define(`arrlenu', `stbds_arrlenu($1)')m4_dnl
 m4_define(`arrput', `stbds_arrput')m4_dnl
 m4_define(`arrpop', `stbds_arrpop')m4_dnl
 m4_define(`arrfree', `stbds_arrfree')m4_dnl
@@ -71,7 +71,7 @@ m4_define(`stbds_arrsetlen', `{
     ? ($1) then stbds_header($1)[].length = cast<u64>($2) else 0
 }')m4_dnl
 m4_define(`stbds_arrcap', `(? ($1) then stbds_header($1)[].capacity else 0)')m4_dnl
-m4_define(`stbds_arrlenu', `TODO')m4_dnl
+m4_define(`stbds_arrlenu', `(? ($1) then stbds_header($1).length else 0)')m4_dnl
 m4_define(`stbds_arrput', `TODO')m4_dnl
 m4_define(`stbds_arrpop', `TODO')m4_dnl
 m4_define(`stbds_arrlast', `TODO')m4_dnl
