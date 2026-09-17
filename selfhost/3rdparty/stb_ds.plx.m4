@@ -77,7 +77,7 @@ m4_define(`stbds_arrput', `{
     ($1)[stbds_header($1)[].length++] = ($2)
 }')m4_dnl
 m4_define(`stbds_arrpop', `(stbds_header($1)[].length--)')m4_dnl
-m4_define(`stbds_arrlast', `TODO')m4_dnl
+m4_define(`stbds_arrlast', `(($1)[stbds_header($1)[].length - 1])')m4_dnl
 m4_define(`stbds_arrfree', `TODO')m4_dnl
 m4_define(`stbds_arrdelswap', `TODO')m4_dnl
 m4_define(`stbds_arrmaybegrow', `(? (not ($1) or stbds_header($1)[].length + ($2) > stbds_header($1)[].capacity) then ((stbds_arrgrow($1, $2, 0)) and 0) else 0)')m4_dnl
