@@ -51,17 +51,21 @@ m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `TODO')m4_dnl
 
-m4_define(`vector_t', `TODO')m4_dnl
+m4_define(`vector_t', `*$1')m4_dnl
 m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `if $1 {
     arrfree($1)
     $1 = vec_new()
 }')m4_dnl
-m4_define(`vec_move', `TODO')m4_dnl
+m4_define(`vec_move', `if $1 ~= $2 {
+    vec_delete($2)
+    $2 = $1
+    $1 = vec_new()
+}')m4_dnl
 m4_define(`vec_size', `arrlenu($1)')m4_dnl
-m4_define(`vec_back', `TODO')m4_dnl
+m4_define(`vec_back', `($1)[vec_size($1) - 1]')m4_dnl
 m4_define(`vec_clear', `TODO')m4_dnl
-m4_define(`vec_empty', `TODO')m4_dnl
+m4_define(`vec_empty', `(vec_size($1) == 0)')m4_dnl
 m4_define(`vec_move_back', `TODO')m4_dnl
 m4_define(`vec_pop_back', `arrpop($1)')m4_dnl
 m4_define(`vec_push_back', `arrput($1, $2)')m4_dnl
