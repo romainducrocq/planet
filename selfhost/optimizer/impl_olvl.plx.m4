@@ -1,6 +1,12 @@
 m4_ifdef(`_OPTIMIZER_IMPL_OLVL_M4', `', `
 m4_define(`_OPTIMIZER_IMPL_OLVL_M4', `')m4_dnl
-m4_ifelse(__OPTIM_LEVEL__, `1', `
+
+m4_ifelse(__OPTIM_LEVEL__, `1', `', __OPTIM_LEVEL__, `2', `', `
+    m4_undefine(`__OPTIM_LEVEL__')
+')m4_dnl
+m4_ifdef(`__OPTIM_LEVEL__', `
+
+m4_ifelse(__OPTIM_LEVEL__, `1', ` # TODO rm
 
 m4_define(`GET_INSTR', `TODO')m4_dnl
 m4_define(`GET_CFG_BLOCK', `TODO')m4_dnl
@@ -2194,5 +2200,7 @@ fn init_data_flow_analysis(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     return true
 }
 
-')m4_dnl
+')m4_dnl # TODO rm
+
+', `')m4_dnl
 ')m4_dnl
