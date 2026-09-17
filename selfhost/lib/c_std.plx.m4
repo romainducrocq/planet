@@ -53,7 +53,6 @@ m4_define(`str_to_string', `TODO')m4_dnl
 
 #TODO
 m4_define(`vector_t', `*$1')m4_dnl
-#TODO
 m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `if $1 {
     arrfree($1)
