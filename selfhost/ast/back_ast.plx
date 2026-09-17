@@ -911,19 +911,7 @@ pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instruction
     self[].get._AsmFunction.is_glob = is_glob
     self[].get._AsmFunction.is_ret_memory = is_ret_memory
     self[].get._AsmFunction.instructions = vec_new()
-    if instructions[] ~= self[].get._AsmFunction.instructions {
-        " #@MACRO@:vec_move(*instructions, self->get._AsmFunction.instructions)"
-        if self[].get._AsmFunction.instructions {
-            " #@MACRO@:vec_delete(self->get._AsmFunction.instructions)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._AsmFunction.instructions) then free((cast<*struc stbds_array_header>((self[].get._AsmFunction.instructions)) - 1)) else cast<none>(0)))
-                (self[].get._AsmFunction.instructions) = nil
-            }
-            self[].get._AsmFunction.instructions = vec_new()
-        }
-        self[].get._AsmFunction.instructions = instructions[]
-        instructions[] = vec_new()
-    }
+    vec_move(instructions[], self[].get._AsmFunction.instructions)
     return self
 }
 
@@ -934,19 +922,7 @@ pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_in
     self[].get._AsmStaticVariable.alignment = alignment
     self[].get._AsmStaticVariable.is_glob = is_glob
     self[].get._AsmStaticVariable.static_inits = vec_new()
-    if static_inits[] ~= self[].get._AsmStaticVariable.static_inits {
-        " #@MACRO@:vec_move(*static_inits, self->get._AsmStaticVariable.static_inits)"
-        if self[].get._AsmStaticVariable.static_inits {
-            " #@MACRO@:vec_delete(self->get._AsmStaticVariable.static_inits)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._AsmStaticVariable.static_inits) then free((cast<*struc stbds_array_header>((self[].get._AsmStaticVariable.static_inits)) - 1)) else cast<none>(0)))
-                (self[].get._AsmStaticVariable.static_inits) = nil
-            }
-            self[].get._AsmStaticVariable.static_inits = vec_new()
-        }
-        self[].get._AsmStaticVariable.static_inits = static_inits[]
-        static_inits[] = vec_new()
-    }
+    vec_move(static_inits[], self[].get._AsmStaticVariable.static_inits)
     return self
 }
 
@@ -1032,33 +1008,9 @@ pub fn make_AsmProgram(static_const_toplvls: ***struc AsmTopLevel, top_levels: *
     }
     self[].tag = AST_AsmProgram_t
     self[].static_const_toplvls = vec_new()
-    if static_const_toplvls[] ~= self[].static_const_toplvls {
-        " #@MACRO@:vec_move(*static_const_toplvls, self->static_const_toplvls)"
-        if self[].static_const_toplvls {
-            " #@MACRO@:vec_delete(self->static_const_toplvls)"
-            loop .. while 0 {
-                cast<none>((? (self[].static_const_toplvls) then free((cast<*struc stbds_array_header>((self[].static_const_toplvls)) - 1)) else cast<none>(0)))
-                (self[].static_const_toplvls) = nil
-            }
-            self[].static_const_toplvls = vec_new()
-        }
-        self[].static_const_toplvls = static_const_toplvls[]
-        static_const_toplvls[] = vec_new()
-    }
+    vec_move(static_const_toplvls[], self[].static_const_toplvls)
     self[].top_levels = vec_new()
-    if top_levels[] ~= self[].top_levels {
-        " #@MACRO@:vec_move(*top_levels, self->top_levels)"
-        if self[].top_levels {
-            " #@MACRO@:vec_delete(self->top_levels)"
-            loop .. while 0 {
-                cast<none>((? (self[].top_levels) then free((cast<*struc stbds_array_header>((self[].top_levels)) - 1)) else cast<none>(0)))
-                (self[].top_levels) = nil
-            }
-            self[].top_levels = vec_new()
-        }
-        self[].top_levels = top_levels[]
-        top_levels[] = vec_new()
-    }
+    vec_move(top_levels[], self[].top_levels)
     return self
 }
 
