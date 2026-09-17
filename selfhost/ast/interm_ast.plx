@@ -451,19 +451,7 @@ pub fn make_TacFunCall(name: u64, args: ***struc TacValue, dst: **struc TacValue
     self[].tag = AST_TacFunCall_t
     self[].get._TacFunCall.name = name
     self[].get._TacFunCall.args = vec_new()
-    if args[] ~= self[].get._TacFunCall.args {
-        " #@MACRO@:vec_move(*args, self->get._TacFunCall.args)"
-        if self[].get._TacFunCall.args {
-            " #@MACRO@:vec_delete(self->get._TacFunCall.args)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._TacFunCall.args) then free((cast<*struc stbds_array_header>((self[].get._TacFunCall.args)) - 1)) else cast<none>(0)))
-                (self[].get._TacFunCall.args) = nil
-            }
-            self[].get._TacFunCall.args = vec_new()
-        }
-        self[].get._TacFunCall.args = args[]
-        args[] = vec_new()
-    }
+    vec_move(args[], self[].get._TacFunCall.args)
     self[].get._TacFunCall.dst = sptr_new()
     loop .. while 0 {
         " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacFunCall.dst)"
@@ -919,33 +907,9 @@ pub fn make_TacFunction(name: u64, is_glob: i32, params: **u64, body: ***struc T
     self[].get._TacFunction.name = name
     self[].get._TacFunction.is_glob = is_glob
     self[].get._TacFunction.params = vec_new()
-    if params[] ~= self[].get._TacFunction.params {
-        " #@MACRO@:vec_move(*params, self->get._TacFunction.params)"
-        if self[].get._TacFunction.params {
-            " #@MACRO@:vec_delete(self->get._TacFunction.params)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._TacFunction.params) then free((cast<*struc stbds_array_header>((self[].get._TacFunction.params)) - 1)) else cast<none>(0)))
-                (self[].get._TacFunction.params) = nil
-            }
-            self[].get._TacFunction.params = vec_new()
-        }
-        self[].get._TacFunction.params = params[]
-        params[] = vec_new()
-    }
+    vec_move(params[], self[].get._TacFunction.params)
     self[].get._TacFunction.body = vec_new()
-    if body[] ~= self[].get._TacFunction.body {
-        " #@MACRO@:vec_move(*body, self->get._TacFunction.body)"
-        if self[].get._TacFunction.body {
-            " #@MACRO@:vec_delete(self->get._TacFunction.body)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._TacFunction.body) then free((cast<*struc stbds_array_header>((self[].get._TacFunction.body)) - 1)) else cast<none>(0)))
-                (self[].get._TacFunction.body) = nil
-            }
-            self[].get._TacFunction.body = vec_new()
-        }
-        self[].get._TacFunction.body = body[]
-        body[] = vec_new()
-    }
+    vec_move(body[], self[].get._TacFunction.body)
     return self
 }
 
@@ -965,19 +929,7 @@ pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc
         }
     }
     self[].get._TacStaticVariable.static_inits = vec_new()
-    if static_inits[] ~= self[].get._TacStaticVariable.static_inits {
-        " #@MACRO@:vec_move(*static_inits, self->get._TacStaticVariable.static_inits)"
-        if self[].get._TacStaticVariable.static_inits {
-            " #@MACRO@:vec_delete(self->get._TacStaticVariable.static_inits)"
-            loop .. while 0 {
-                cast<none>((? (self[].get._TacStaticVariable.static_inits) then free((cast<*struc stbds_array_header>((self[].get._TacStaticVariable.static_inits)) - 1)) else cast<none>(0)))
-                (self[].get._TacStaticVariable.static_inits) = nil
-            }
-            self[].get._TacStaticVariable.static_inits = vec_new()
-        }
-        self[].get._TacStaticVariable.static_inits = static_inits[]
-        static_inits[] = vec_new()
-    }
+    vec_move(static_inits[], self[].get._TacStaticVariable.static_inits)
     return self
 }
 
@@ -1082,47 +1034,11 @@ pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_to
     }
     self[].tag = AST_TacProgram_t
     self[].static_const_toplvls = vec_new()
-    if static_const_toplvls[] ~= self[].static_const_toplvls {
-        " #@MACRO@:vec_move(*static_const_toplvls, self->static_const_toplvls)"
-        if self[].static_const_toplvls {
-            " #@MACRO@:vec_delete(self->static_const_toplvls)"
-            loop .. while 0 {
-                cast<none>((? (self[].static_const_toplvls) then free((cast<*struc stbds_array_header>((self[].static_const_toplvls)) - 1)) else cast<none>(0)))
-                (self[].static_const_toplvls) = nil
-            }
-            self[].static_const_toplvls = vec_new()
-        }
-        self[].static_const_toplvls = static_const_toplvls[]
-        static_const_toplvls[] = vec_new()
-    }
+    vec_move(static_const_toplvls[], self[].static_const_toplvls)
     self[].static_var_toplvls = vec_new()
-    if static_var_toplvls[] ~= self[].static_var_toplvls {
-        " #@MACRO@:vec_move(*static_var_toplvls, self->static_var_toplvls)"
-        if self[].static_var_toplvls {
-            " #@MACRO@:vec_delete(self->static_var_toplvls)"
-            loop .. while 0 {
-                cast<none>((? (self[].static_var_toplvls) then free((cast<*struc stbds_array_header>((self[].static_var_toplvls)) - 1)) else cast<none>(0)))
-                (self[].static_var_toplvls) = nil
-            }
-            self[].static_var_toplvls = vec_new()
-        }
-        self[].static_var_toplvls = static_var_toplvls[]
-        static_var_toplvls[] = vec_new()
-    }
+    vec_move(static_var_toplvls[], self[].static_var_toplvls)
     self[].fun_toplvls = vec_new()
-    if fun_toplvls[] ~= self[].fun_toplvls {
-        " #@MACRO@:vec_move(*fun_toplvls, self->fun_toplvls)"
-        if self[].fun_toplvls {
-            " #@MACRO@:vec_delete(self->fun_toplvls)"
-            loop .. while 0 {
-                cast<none>((? (self[].fun_toplvls) then free((cast<*struc stbds_array_header>((self[].fun_toplvls)) - 1)) else cast<none>(0)))
-                (self[].fun_toplvls) = nil
-            }
-            self[].fun_toplvls = vec_new()
-        }
-        self[].fun_toplvls = fun_toplvls[]
-        fun_toplvls[] = vec_new()
-    }
+    vec_move(fun_toplvls[], self[].fun_toplvls)
     return self
 }
 
