@@ -1590,19 +1590,7 @@ fn fix_instr(ctx: *struc StackFixContext, node: *struc AsmInstruction) none {
 
 fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
     instructions: **struc AsmInstruction = vec_new()
-    if node[].instructions ~= instructions {
-        " #@MACRO@:vec_move(node->instructions, instructions)"
-        if instructions {
-            " #@MACRO@:vec_delete(instructions)"
-            loop .. while 0 {
-                cast<none>((? (instructions) then free((cast<*struc stbds_array_header>((instructions)) - 1)) else cast<none>(0)))
-                (instructions) = nil
-            }
-            instructions = vec_new()
-        }
-        instructions = node[].instructions
-        node[].instructions = vec_new()
-    }
+    vec_move(node[].instructions, instructions)
     backend_fun: *struc BackendFun = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendFun
     if node[].instructions {
         " #@MACRO@:vec_clear(node->instructions)"
