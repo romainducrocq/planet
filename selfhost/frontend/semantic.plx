@@ -6544,14 +6544,8 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
                 }
             }
         }
-        if ctx[].break_loop_labels {
-            " #@MACRO@:vec_clear(ctx->break_loop_labels)"
-            (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length = 0
-        }
-        if ctx[].continue_loop_labels {
-            " #@MACRO@:vec_clear(ctx->continue_loop_labels)"
-            (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length = 0
-        }
+        vec_clear(ctx[].break_loop_labels)
+        vec_clear(ctx[].continue_loop_labels)
         ctx[].p_switch_statement = nil
     }
     loop .. while 0 {

@@ -444,10 +444,7 @@ fn init_control_flow_graph(ctx: *struc OptimTacContext) none {
         vec_delete(ctx[].cfg[].blocks[block_id].succ_ids) # TODO GET_CFG_BLOCK(block_id).succ_ids
         ;
     }
-    if ctx[].cfg[].blocks {
-        " #@MACRO@:vec_clear(ctx->cfg->blocks)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].blocks)
     ;
     loop .. while 0 {
         " #@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
@@ -485,15 +482,9 @@ fn init_control_flow_graph(ctx: *struc OptimTacContext) none {
     }
     ctx[].cfg[].exit_id = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     ctx[].cfg[].entry_id = ctx[].cfg[].exit_id + 1
-    if ctx[].cfg[].entry_succ_ids {
-        " #@MACRO@:vec_clear(ctx->cfg->entry_succ_ids)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].entry_succ_ids)
     ;
-    if ctx[].cfg[].exit_pred_ids {
-        " #@MACRO@:vec_clear(ctx->cfg->exit_pred_ids)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].exit_pred_ids)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].exit_pred_ids)
     ;
     if not ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) == 0) {
         cfg_add_pred_edge(ctx, 0, ctx[].cfg[].entry_id)
@@ -2665,15 +2656,9 @@ fn unreach_empty_block(ctx: *struc OptimTacContext, block_id: u64) none {
     }
     ctx[].cfg[].blocks[block_id].size = 0
     cfg_rm_empty_block(ctx, block_id, false)
-    if ctx[].cfg[].blocks[block_id].succ_ids {
-        " #@MACRO@:vec_clear(GET_CFG_BLOCK(block_id).succ_ids)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].blocks[block_id].succ_ids) # TODO GET_CFG_BLOCK(block_id).succ_ids
     ;
-    if ctx[].cfg[].blocks[block_id].pred_ids {
-        " #@MACRO@:vec_clear(GET_CFG_BLOCK(block_id).pred_ids)"
-        (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)[].length = 0
-    }
+    vec_clear(ctx[].cfg[].blocks[block_id].pred_ids) # TODO GET_CFG_BLOCK(block_id).pred_ids
     ;
 }
 
