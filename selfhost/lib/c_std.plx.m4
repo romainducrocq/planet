@@ -54,7 +54,7 @@ m4_define(`vector_t', `TODO')m4_dnl
 m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `TODO')m4_dnl
 m4_define(`vec_move', `TODO')m4_dnl
-m4_define(`vec_size', `TODO')m4_dnl
+m4_define(`vec_size', `arrlenu($1)')m4_dnl
 m4_define(`vec_back', `TODO')m4_dnl
 m4_define(`vec_clear', `TODO')m4_dnl
 m4_define(`vec_empty', `TODO')m4_dnl
