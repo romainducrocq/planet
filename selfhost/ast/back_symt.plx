@@ -155,14 +155,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
                 free_AsmOperand(@(self[])[].get._BackendFun.callee_saved_regs[i])
             }
         }
-        if (self[])[].get._BackendFun.callee_saved_regs {
-            " #@MACRO@:vec_delete((*self)->get._BackendFun.callee_saved_regs)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._BackendFun.callee_saved_regs) then free((cast<*struc stbds_array_header>(((self[])[].get._BackendFun.callee_saved_regs)) - 1)) else cast<none>(0)))
-                ((self[])[].get._BackendFun.callee_saved_regs) = nil
-            }
-            (self[])[].get._BackendFun.callee_saved_regs = vec_new()
-        }
+        vec_delete(self[][].get._BackendFun.callee_saved_regs)
         break
         otherwise {
             panic_sigabrt("abort")

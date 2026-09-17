@@ -182,14 +182,7 @@ pub fn free_Type(self: **struc Type) none {
                 free_Type(@(self[])[].get._FunType.param_types[i])
             }
         }
-        if (self[])[].get._FunType.param_types {
-            " #@MACRO@:vec_delete((*self)->get._FunType.param_types)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._FunType.param_types) then free((cast<*struc stbds_array_header>(((self[])[].get._FunType.param_types)) - 1)) else cast<none>(0)))
-                ((self[])[].get._FunType.param_types) = nil
-            }
-            (self[])[].get._FunType.param_types = vec_new()
-        }
+        vec_delete(self[][].get._FunType.param_types)
         free_Type(@(self[])[].get._FunType.ret_type)
         break
         -> AST_Pointer_t {
@@ -434,14 +427,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
                 free_StaticInit(@(self[])[].get._Initial.static_inits[i])
             }
         }
-        if (self[])[].get._Initial.static_inits {
-            " #@MACRO@:vec_delete((*self)->get._Initial.static_inits)"
-            loop .. while 0 {
-                cast<none>((? ((self[])[].get._Initial.static_inits) then free((cast<*struc stbds_array_header>(((self[])[].get._Initial.static_inits)) - 1)) else cast<none>(0)))
-                ((self[])[].get._Initial.static_inits) = nil
-            }
-            (self[])[].get._Initial.static_inits = vec_new()
-        }
+        vec_delete(self[][].get._Initial.static_inits)
         break
         -> AST_NoInitializer_t {
             break
@@ -698,14 +684,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
             panic_sigabrt("abort")
         }
     }
-    if (self[])[].member_names {
-        " #@MACRO@:vec_delete((*self)->member_names)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].member_names) then free((cast<*struc stbds_array_header>(((self[])[].member_names)) - 1)) else cast<none>(0)))
-            ((self[])[].member_names) = nil
-        }
-        (self[])[].member_names = vec_new()
-    }
+    vec_delete(self[][].member_names)
     loop i: u64 = 0 while i < (? ((self[])[].members) then (cast<*struc stbds_array_header>((((self[])[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructMember(@((self[])[].members[i]).value)
     }

@@ -157,14 +157,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
             panic_sigabrt("abort")
         }
     }
-    if (self[])[].value {
-        " #@MACRO@:vec_delete((*self)->value)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].value) then free((cast<*struc stbds_array_header>(((self[])[].value)) - 1)) else cast<none>(0)))
-            ((self[])[].value) = nil
-        }
-        (self[])[].value = vec_new()
-    }
+    vec_delete(self[][].value)
     loop .. while 0 {
         " #@MACRO@:sptr_free(*self)"
         if self[] {
