@@ -48,9 +48,9 @@ m4_define(`arrlenu', `stbds_arrlenu')m4_dnl
 m4_define(`arrput', `stbds_arrput')m4_dnl
 m4_define(`arrpop', `stbds_arrpop')m4_dnl
 m4_define(`arrfree', `stbds_arrfree')m4_dnl
-m4_define(`arrsetlen', `stbds_arrsetlen')m4_dnl
+m4_define(`arrsetlen', `stbds_arrsetlen($1, $2)')m4_dnl
 m4_define(`arrdelswap', `stbds_arrdelswap')m4_dnl
-m4_define(`arrsetcap', `stbds_arrsetcap')m4_dnl
+m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
 
 m4_define(`hmput', `stbds_hmput')m4_dnl
 m4_define(`hmget', `stbds_hmget')m4_dnl
