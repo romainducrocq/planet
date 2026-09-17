@@ -47,7 +47,7 @@ m4_define(`_LIB_STB_DS_M4', `')m4_dnl
 m4_define(`arrlenu', `stbds_arrlenu($1)')m4_dnl
 m4_define(`arrput', `stbds_arrput($1, $2)')m4_dnl
 m4_define(`arrpop', `stbds_arrpop($1)')m4_dnl
-m4_define(`arrfree', `stbds_arrfree')m4_dnl
+m4_define(`arrfree', `stbds_arrfree($1)')m4_dnl
 m4_define(`arrsetlen', `stbds_arrsetlen($1, $2)')m4_dnl
 m4_define(`arrdelswap', `stbds_arrdelswap')m4_dnl
 m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
@@ -78,15 +78,27 @@ m4_define(`stbds_arrput', `{
 }')m4_dnl
 m4_define(`stbds_arrpop', `(stbds_header($1)[].length--)')m4_dnl
 m4_define(`stbds_arrlast', `(($1)[stbds_header($1)[].length - 1])')m4_dnl
-m4_define(`stbds_arrfree', `TODO')m4_dnl
+m4_define(`stbds_arrfree', `{
+    cast<none>((? ($1) then free(stbds_header($1)) else cast<none>(0)))
+    ($1) = nil
+}')m4_dnl
 m4_define(`stbds_arrdelswap', `TODO')m4_dnl
-m4_define(`stbds_arrmaybegrow', `(? (not ($1) or stbds_header($1)[].length + ($2) > stbds_header($1)[].capacity) then ((stbds_arrgrow($1, $2, 0)) and 0) else 0)')m4_dnl
+
+m4_define(`stbds_arrmaybegrow', `
+    (? (not ($1) or stbds_header($1)[].length + ($2) > stbds_header($1)[].capacity) then ((stbds_arrgrow($1, $2, 0)) and 0) else 0)')m4_dnl
+
 m4_define(`stbds_arrgrow', `($1) = stbds_arrgrowf(($1), sizeof(($1)[]), ($2), ($3))')m4_dnl
+
 m4_define(`stbds_hmput', `TODO')m4_dnl
+
 m4_define(`stbds_hmgeti', `TODO')m4_dnl
+
 m4_define(`stbds_hmgetp', `TODO')m4_dnl
+
 m4_define(`stbds_hmdel', `TODO')m4_dnl
+
 m4_define(`stbds_hmfree', `TODO')m4_dnl
+
 m4_define(`stbds_hmget', `TODO')m4_dnl
 m4_define(`stbds_hmlenu', `TODO')m4_dnl
 
