@@ -64,9 +64,14 @@ m4_define(`vec_move', `if $1 ~= $2 {
 }')m4_dnl
 m4_define(`vec_size', `arrlenu($1)')m4_dnl
 m4_define(`vec_back', `($1)[vec_size($1) - 1]')m4_dnl
-m4_define(`vec_clear', `TODO')m4_dnl
+m4_define(`vec_clear', `if $1 {
+    stbds_header($1)[].length = 0
+}')m4_dnl
 m4_define(`vec_empty', `(vec_size($1) == 0)')m4_dnl
-m4_define(`vec_move_back', `TODO')m4_dnl
+m4_define(`vec_move_back', `{
+    vec_push_back($1, $2)
+    $2 = nil
+}')m4_dnl
 m4_define(`vec_pop_back', `arrpop($1)')m4_dnl
 m4_define(`vec_push_back', `arrput($1, $2)')m4_dnl
 m4_define(`vec_remove_swap', `arrdelswap($1, $2)')m4_dnl
