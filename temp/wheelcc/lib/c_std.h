@@ -28,7 +28,7 @@
     _Lfinally:
 #define TRY(X)               \
     do {                     \
-        "@MACRO@:TRY(@ARG@"#X"@ARG@)";  \
+        "@MACRO@(@ARG@"#X"@ARG@)";  \
         _errval = X;         \
         if (_errval != 0) {  \
             EARLY_EXIT;      \
@@ -40,7 +40,7 @@
 #define SET_ERROR_MSG(...) snprintf(ERROR_MSG_BUF, sizeof(char) * ERROR_MSG_SIZE, __VA_ARGS__)
 #define THROW_ERROR(X, Y, ...)                                  \
     do {                                                        \
-        "@MACRO@:THROW_ERROR(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         SET_ERROR_MSG(__VA_ARGS__) > 0 ? (void)Y : THROW_ABORT; \
         _errval = X;                                            \
         EARLY_EXIT;                                             \
@@ -61,12 +61,12 @@
 #define uptr_new() 000000
 #define uptr_delete(X) \
     if (!X) {          \
-        "@MACRO@:uptr_delete(@ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#X"@ARG@)"; \
         return;        \
     }
 #define uptr_alloc(T, X)                         \
     do {                                         \
-        "@MACRO@:uptr_alloc(@ARG@"#T", @ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#T", @ARG@"#X"@ARG@)"; \
         free_##T(&X);                            \
         X = (struct T*)malloc(sizeof(struct T)); \
         if (!X) {                                \
@@ -76,13 +76,13 @@
     while (0)
 #define uptr_free(X)    \
     if (X) {            \
-        "@MACRO@:uptr_free(@ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#X"@ARG@)"; \
         free(X);        \
         X = uptr_new(); \
     }
 #define uptr_move(T, X, Y) \
     if (X != Y) {          \
-        "@MACRO@:uptr_move(@ARG@"#T", @ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#T", @ARG@"#X", @ARG@"#Y"@ARG@)"; \
         free_##T(&Y);      \
         Y = X;             \
         X = uptr_new();    \
@@ -100,7 +100,7 @@
 #define sptr_new() 00000
 #define sptr_delete(X)                             \
     do {                                           \
-    "@MACRO@:sptr_delete(@ARG@"#X"@ARG@)"; \
+    "@MACRO@(@ARG@"#X"@ARG@)"; \
     uptr_delete(X) else if ((X)->_ref_count > 1) { \
         (X)->_ref_count--;                         \
         X = sptr_new();                            \
@@ -110,26 +110,26 @@
     while (0)
 #define sptr_alloc(T, X)     \
     do {                     \
-        "@MACRO@:sptr_alloc(@ARG@"#T", @ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#T", @ARG@"#X"@ARG@)"; \
         uptr_alloc(T, X);    \
         (X)->_ref_count = 1; \
     }                        \
     while (0)
 #define sptr_free(X) \
     do { \
-    "@MACRO@:sptr_free(@ARG@"#X"@ARG@)"; \
+    "@MACRO@(@ARG@"#X"@ARG@)"; \
     uptr_free(X) \
     } \
     while (0)
 #define sptr_move(T, X, Y) \
     do { \
-    "@MACRO@:sptr_move(@ARG@"#T", @ARG@"#X", @ARG@"#Y"@ARG@)"; \
+    "@MACRO@(@ARG@"#T", @ARG@"#X", @ARG@"#Y"@ARG@)"; \
     uptr_move(T, X, Y) \
     } \
     while (0)
 #define sptr_copy(T, X, Y) \
     if (X != Y) {          \
-        "@MACRO@:sptr_copy(@ARG@"#T", @ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#T", @ARG@"#X", @ARG@"#Y"@ARG@)"; \
         free_##T(&Y);      \
         Y = X;             \
         (Y)->_ref_count++; \
@@ -143,13 +143,13 @@
 #define str_new(X) X ? sdsnew(X) : NULL
 #define str_delete(X)      \
     if (X) {               \
-        "@MACRO@:str_delete(@ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#X"@ARG@)"; \
         sdsfree(X);        \
         X = str_new(NULL); \
     }
 #define str_move(X, Y)     \
     if (X != Y) {          \
-        "@MACRO@:str_move(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         str_delete(Y);     \
         Y = X;             \
         X = str_new(NULL); \
@@ -158,14 +158,14 @@
 #define str_back(X) (X)[str_size(X) - 1]
 #define str_append(X, Y)  \
     do {                  \
-        "@MACRO@:str_append(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         X = sdscat(X, Y); \
     }                     \
     while (0)
-#define str_clear(X) do { "@MACRO@:str_clear(@ARG@"#X"@ARG@)"; sdsclear(X); } while (0)
+#define str_clear(X) do { "@MACRO@(@ARG@"#X"@ARG@)"; sdsclear(X); } while (0)
 #define str_copy(X, Y) \
     if (X != Y) {      \
-        "@MACRO@:str_copy(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         str_delete(Y); \
         Y = sdsdup(X); \
     }
@@ -173,24 +173,24 @@
 #define str_pop_back(X) sdsrange(X, 0, -2)
 #define str_push_back(X, Y)             \
     do {                                \
-        "@MACRO@:str_push_back(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         str_resize(X, str_size(X) + 1); \
         str_back(X) = Y;                \
     }                                   \
     while (0)
 #define str_reserve(X, Y)         \
     do {                          \
-        "@MACRO@:str_reserve(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         X = sdsMakeRoomFor(X, Y); \
     }                             \
     while (0)
 #define str_resize(X, Y)       \
     do {                       \
-        "@MACRO@:str_resize(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         X = sdsgrowzero(X, Y); \
     }                          \
     while (0)
-#define str_substr(X, Y, Z) do { "@MACRO@:str_substr(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; sdsrange(X, Y, Z); } while (0)
+#define str_substr(X, Y, Z) do { "@MACRO@(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; sdsrange(X, Y, Z); } while (0)
 #define str_to_string(X) (X) > 0 ? sdsfromunsignedlong((unsigned long)(X)) : sdsfromlong((long)(X))
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,13 +202,13 @@
 #define vec_new() 0000
 #define vec_delete(X)  \
     if (X) {           \
-        "@MACRO@:vec_delete(@ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#X"@ARG@)"; \
         arrfree(X);    \
         X = vec_new(); \
     }
 #define vec_move(X, Y) \
     if (X != Y) {      \
-        "@MACRO@:vec_move(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         vec_delete(Y); \
         Y = X;         \
         X = vec_new(); \
@@ -217,22 +217,22 @@
 #define vec_back(X) (X)[vec_size(X) - 1]
 #define vec_clear(X)                 \
     if (X) {                         \
-        "@MACRO@:vec_clear(@ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#X"@ARG@)"; \
         stbds_header(X)->length = 0; \
     }
 #define vec_empty(X) (vec_size(X) == 0)
 #define vec_move_back(X, Y)  \
     do {                     \
-        "@MACRO@:vec_move_back(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         vec_push_back(X, Y); \
         Y = NULL;            \
     }                        \
     while (0)
-#define vec_pop_back(X) do { "@MACRO@:vec_pop_back(@ARG@"#X"@ARG@)"; arrpop(X); } while (0)
-#define vec_push_back(X, Y) do { "@MACRO@:vec_push_back(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrput(X, Y); } while (0)
-#define vec_remove_swap(X, Y) do { "@MACRO@:vec_remove_swap(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrdelswap(X, Y); } while (0)
-#define vec_resize(X, Y) do { "@MACRO@:vec_resize(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrsetlen(X, Y); } while (0)
-#define vec_reserve(X, Y) do { "@MACRO@:vec_reserve(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrsetcap(X, Y); } while (0)
+#define vec_pop_back(X) do { "@MACRO@(@ARG@"#X"@ARG@)"; arrpop(X); } while (0)
+#define vec_push_back(X, Y) do { "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrput(X, Y); } while (0)
+#define vec_remove_swap(X, Y) do { "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrdelswap(X, Y); } while (0)
+#define vec_resize(X, Y) do { "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrsetlen(X, Y); } while (0)
+#define vec_reserve(X, Y) do { "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; arrsetcap(X, Y); } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -252,28 +252,28 @@
 #define map_new() 000
 #define map_delete(X)  \
     if (X) {           \
-        "@MACRO@:map_delete(@ARG@"#X"@ARG@)"; \
+        "@MACRO@(@ARG@"#X"@ARG@)"; \
         hmfree(X);     \
         X = map_new(); \
     }
 #define map_move(X, Y) \
     if (X != Y) {      \
-        "@MACRO@:map_move(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; \
         map_delete(Y); \
         Y = X;         \
         X = map_new(); \
     }
 #define map_size(X) hmlenu(X)
-#define map_add(X, Y, Z) do { "@MACRO@:map_add(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; hmput(X, Y, Z); } while (0)
-#define map_clear(X) do { "@MACRO@:map_clear(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
+#define map_add(X, Y, Z) do { "@MACRO@(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; hmput(X, Y, Z); } while (0)
+#define map_clear(X) do { "@MACRO@(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
 #define map_empty(X) (map_size(X) == 0)
 #define map_end() -1
-#define map_erase(X, Y) do { "@MACRO@:map_erase(@ARG@"#X", @ARG@"#Y"@ARG@)"; hmdel(X, Y); } while (0)
+#define map_erase(X, Y) do { "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; hmdel(X, Y); } while (0)
 #define map_find(X, Y) hmgeti(X, Y)
 #define map_get(X, Y) hmget(X, Y)
 #define map_move_add(X, Y, Z) \
     do {                      \
-        "@MACRO@:map_move_add(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; \
+        "@MACRO@(@ARG@"#X", @ARG@"#Y", @ARG@"#Z"@ARG@)"; \
         map_add(X, Y, Z);     \
         Z = NULL;             \
     }                         \
@@ -294,11 +294,11 @@
 #define hashset_t(TK) struct Element##TK*
 // map_new()
 #define set_new() 00
-#define set_delete(X) do { "@MACRO@:set_delete(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
+#define set_delete(X) do { "@MACRO@(@ARG@"#X"@ARG@)"; map_delete(X); } while (0)
 #define set_size(X) map_size(X)
-#define set_clear(X) do { "@MACRO@:set_clear(@ARG@"#X"@ARG@)"; map_clear(X); } while (0)
+#define set_clear(X) do { "@MACRO@(@ARG@"#X"@ARG@)"; map_clear(X); } while (0)
 #define set_end() map_end()
 #define set_find(X, Y) map_find(X, Y)
-#define set_insert(X, Y) do { "@MACRO@:set_insert(@ARG@"#X", @ARG@"#Y"@ARG@)"; map_add(X, Y, 0); } while (0)
+#define set_insert(X, Y) do { "@MACRO@(@ARG@"#X", @ARG@"#Y"@ARG@)"; map_add(X, Y, 0); } while (0)
 
 #endif
