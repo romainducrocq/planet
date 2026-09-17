@@ -2,7 +2,7 @@ m4_ifdef(`_OPTIMIZER_IMPL_OLVL_M4', `', `
 m4_define(`_OPTIMIZER_IMPL_OLVL_M4', `')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `', __OPTIM_LEVEL__, `2', `', `
-    m4_undefine(`__OPTIM_LEVEL__')
+    m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 ')m4_dnl
 m4_ifdef(`__OPTIM_LEVEL__', `
 
@@ -10,15 +10,19 @@ m4_ifelse(__OPTIM_LEVEL__, `1', ` # TODO rm
 
 m4_define(`GET_INSTR', `TODO')m4_dnl
 m4_define(`GET_CFG_BLOCK', `TODO')m4_dnl
+
+m4_ifelse(__OPTIM_LEVEL__, `1', `
 m4_define(`mask_t', `TODO')m4_dnl
 m4_define(`AstInstruction', `TODO')m4_dnl
+m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`free_AstInstruction', `TODO')m4_dnl
+m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
+', __OPTIM_LEVEL__, `2', `
 m4_define(`AstInstruction', `TODO')m4_dnl
 m4_define(`Ctx', `TODO')m4_dnl
-m4_define(`Ctx', `TODO')m4_dnl
-m4_define(`free_AstInstruction', `TODO')m4_dnl
 m4_define(`free_AstInstruction', `TODO')m4_dnl
 m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
-m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
+')m4_dnl
 
 type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: *u64, succ_ids: *u64)
 
