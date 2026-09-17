@@ -13,9 +13,9 @@ pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
     value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((target))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
     if value ~= name {
-        "@MACRO@:str_copy(value, name)"
+        " #@MACRO@:str_copy(value, name)"
         if name {
-            "@MACRO@:str_delete(name)"
+            " #@MACRO@:str_delete(name)"
             sdsfree(name)
             name = ? nil then sdsnew(nil) else nil
         }
@@ -28,9 +28,9 @@ pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
     value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((variable))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
     if value ~= name {
-        "@MACRO@:str_copy(value, name)"
+        " #@MACRO@:str_copy(value, name)"
         if name {
-            "@MACRO@:str_delete(name)"
+            " #@MACRO@:str_delete(name)"
             sdsfree(name)
             name = ? nil then sdsnew(nil) else nil
         }
@@ -43,9 +43,9 @@ pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
     value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((structure))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
     if value ~= name {
-        "@MACRO@:str_copy(value, name)"
+        " #@MACRO@:str_copy(value, name)"
         if name {
-            "@MACRO@:str_delete(name)"
+            " #@MACRO@:str_delete(name)"
             sdsfree(name)
             name = ? nil then sdsnew(nil) else nil
         }
@@ -148,7 +148,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
         }
     }
     loop .. while 0 {
-        "@MACRO@:str_append(name, map_get(ctx->hash_table, target))"
+        " #@MACRO@:str_append(name, map_get(ctx->hash_table, target))"
         name = sdscat(name, ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((target))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value))
     }
     return make_string_identifier(ctx, @name)
@@ -159,17 +159,17 @@ pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label
     {
         strto_i: string = ? (i) > 0 then sdsfromunsignedlong(cast<u64>((i))) else sdsfromlong(cast<i64>((i)))
         loop .. while 0 {
-            "@MACRO@:str_append(name, strto_i)"
+            " #@MACRO@:str_append(name, strto_i)"
             name = sdscat(name, strto_i)
         }
         if strto_i {
-            "@MACRO@:str_delete(strto_i)"
+            " #@MACRO@:str_delete(strto_i)"
             sdsfree(strto_i)
             strto_i = ? nil then sdsnew(nil) else nil
         }
     }
     loop .. while 0 {
-        "@MACRO@:str_append(name, map_get(ctx->hash_table, target))"
+        " #@MACRO@:str_append(name, map_get(ctx->hash_table, target))"
         name = sdscat(name, ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((target))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value))
     }
     return make_string_identifier(ctx, @name)

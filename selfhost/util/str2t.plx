@@ -19,7 +19,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
             match str_char {
                 -> '\'' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 39)"
+                        " #@MACRO@:vec_push_back(*string_literal, 39)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (39)
@@ -29,7 +29,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> '"' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 34)"
+                        " #@MACRO@:vec_push_back(*string_literal, 34)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (34)
@@ -39,7 +39,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> '?' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 63)"
+                        " #@MACRO@:vec_push_back(*string_literal, 63)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (63)
@@ -49,7 +49,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> '\\' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 92)"
+                        " #@MACRO@:vec_push_back(*string_literal, 92)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (92)
@@ -59,7 +59,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 'a' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 7)"
+                        " #@MACRO@:vec_push_back(*string_literal, 7)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (7)
@@ -69,7 +69,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 'b' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 8)"
+                        " #@MACRO@:vec_push_back(*string_literal, 8)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (8)
@@ -79,7 +79,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 'f' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 12)"
+                        " #@MACRO@:vec_push_back(*string_literal, 12)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (12)
@@ -89,7 +89,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 'n' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 10)"
+                        " #@MACRO@:vec_push_back(*string_literal, 10)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (10)
@@ -99,7 +99,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 'r' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 13)"
+                        " #@MACRO@:vec_push_back(*string_literal, 13)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (13)
@@ -109,7 +109,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 't' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 9)"
+                        " #@MACRO@:vec_push_back(*string_literal, 9)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (9)
@@ -119,7 +119,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
                 break
                 -> 'v' {
                     loop .. while 0 {
-                        "@MACRO@:vec_push_back(*string_literal, 11)"
+                        " #@MACRO@:vec_push_back(*string_literal, 11)"
                         loop .. while 0 {
                             (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                             (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (11)
@@ -134,7 +134,7 @@ pub fn string_to_literal(str_string: string, string_literal: **i8) none {
         }
         else {
             loop .. while 0 {
-                "@MACRO@:vec_push_back(*string_literal, (int8_t)str_char)"
+                " #@MACRO@:vec_push_back(*string_literal, (int8_t)str_char)"
                 loop .. while 0 {
                     (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
                     (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (cast<i8>(str_char))
@@ -202,7 +202,7 @@ fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
     byte_hex: [3]char;
     sprintf(byte_hex, "%.2x", cast<u32>(value))
     loop .. while 0 {
-        "@MACRO@:str_append(*str_hex, byte_hex)"
+        " #@MACRO@:str_append(*str_hex, byte_hex)"
         str_hex[] = sdscat(str_hex[], byte_hex)
     }
 }
@@ -216,7 +216,7 @@ pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
     }
     hex_value: i8 = cast<i8>(hex_string_to_long(str_hex))
     if str_hex {
-        "@MACRO@:str_delete(str_hex)"
+        " #@MACRO@:str_delete(str_hex)"
         sdsfree(str_hex)
         str_hex = ? nil then sdsnew(nil) else nil
     }
@@ -232,7 +232,7 @@ pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32 {
     }
     hex_value: i32 = cast<i32>(hex_string_to_long(str_hex))
     if str_hex {
-        "@MACRO@:str_delete(str_hex)"
+        " #@MACRO@:str_delete(str_hex)"
         sdsfree(str_hex)
         str_hex = ? nil then sdsnew(nil) else nil
     }
@@ -248,7 +248,7 @@ pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64 {
     }
     hex_value: i64 = cast<i64>(hex_string_to_long(str_hex))
     if str_hex {
-        "@MACRO@:str_delete(str_hex)"
+        " #@MACRO@:str_delete(str_hex)"
         sdsfree(str_hex)
         str_hex = ? nil then sdsnew(nil) else nil
     }
@@ -262,86 +262,86 @@ pub fn string_literal_to_const(string_literal: *i8) string {
         match byte {
             -> 39 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\047\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\047\")"
                     string_const = sdscat(string_const, "\\047")
                 }
             }
             break
             -> 34 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\042\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\042\")"
                     string_const = sdscat(string_const, "\\042")
                 }
             }
             break
             -> 63 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\077\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\077\")"
                     string_const = sdscat(string_const, "\\077")
                 }
             }
             break
             -> 92 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\134\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\134\")"
                     string_const = sdscat(string_const, "\\134")
                 }
             }
             break
             -> 7 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\007\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\007\")"
                     string_const = sdscat(string_const, "\\007")
                 }
             }
             break
             -> 8 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\010\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\010\")"
                     string_const = sdscat(string_const, "\\010")
                 }
             }
             break
             -> 12 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\014\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\014\")"
                     string_const = sdscat(string_const, "\\014")
                 }
             }
             break
             -> 10 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\012\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\012\")"
                     string_const = sdscat(string_const, "\\012")
                 }
             }
             break
             -> 13 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\013\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\013\")"
                     string_const = sdscat(string_const, "\\013")
                 }
             }
             break
             -> 9 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\011\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\011\")"
                     string_const = sdscat(string_const, "\\011")
                 }
             }
             break
             -> 11 {
                 loop .. while 0 {
-                    "@MACRO@:str_append(string_const, \"\\\\013\")"
+                    " #@MACRO@:str_append(string_const, \"\\\\013\")"
                     string_const = sdscat(string_const, "\\013")
                 }
             }
             break
             otherwise {
                 loop .. while 0 {
-                    "@MACRO@:str_push_back(string_const, (char)byte)"
+                    " #@MACRO@:str_push_back(string_const, (char)byte)"
                     loop .. while 0 {
-                        "@MACRO@:str_resize(string_const, str_size(string_const) + 1)"
+                        " #@MACRO@:str_resize(string_const, str_size(string_const) + 1)"
                         string_const = sdsgrowzero(string_const, sdslen(string_const) + 1)
                     }
                     (string_const)[sdslen(string_const) - 1] = cast<char>(byte)
@@ -359,7 +359,7 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
     value[] = strtoimax(str_int, @end_ptr, 10)
     if end_ptr == str_int {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtoi), "MSG_failed_strtoi", "", "", str_int) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -375,7 +375,7 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
     value[] = strtoumax(str_uint, @end_ptr, 10)
     if end_ptr == str_uint {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtou), "MSG_failed_strtou", "", "", str_uint) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -391,7 +391,7 @@ pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, v
     value[] = strtod(str_dbl, @end_ptr)
     if end_ptr == str_dbl {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
+            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtod), "MSG_failed_strtod", "", "", str_dbl) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally

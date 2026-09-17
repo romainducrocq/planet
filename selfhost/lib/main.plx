@@ -38,11 +38,11 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
     loop i: u64 = sdslen(ctx[].filename) while i-- > 0 {
         if ctx[].filename[i] == '.' {
             loop .. while 0 {
-                "@MACRO@:str_substr(ctx->filename, 0, i)"
+                " #@MACRO@:str_substr(ctx->filename, 0, i)"
                 sdsrange(ctx[].filename, 0, i)
             }
             loop .. while 0 {
-                "@MACRO@:str_append(ctx->filename, ext)"
+                " #@MACRO@:str_append(ctx->filename, ext)"
                 ctx[].filename = sdscat(ctx[].filename, ext)
             }
             return none
@@ -79,7 +79,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     _errval: i32 = 0
     verbose(ctx, "-- Lexing ... ")
     loop .. while 0 {
-        "@MACRO@:TRY(lex_c_code(ctx->filename, &ctx->includedirs, &ctx->stdlibdirs, errors, fileio, &identifiers, &tokens))"
+        " #@MACRO@:TRY(lex_c_code(ctx->filename, &ctx->includedirs, &ctx->stdlibdirs, errors, fileio, &identifiers, &tokens))"
         _errval = lex_c_code(ctx[].filename, @ctx[].includedirs, @ctx[].stdlibdirs, errors, fileio, @identifiers, @tokens)
         if _errval ~= 0 {
             jump _Lfinally
@@ -91,7 +91,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     verbose(ctx, "-- Parsing ... ")
     loop .. while 0 {
-        "@MACRO@:TRY(parse_tokens(&tokens, errors, &identifiers, &c_ast))"
+        " #@MACRO@:TRY(parse_tokens(&tokens, errors, &identifiers, &c_ast))"
         _errval = parse_tokens(@tokens, errors, @identifiers, @c_ast)
         if _errval ~= 0 {
             jump _Lfinally
@@ -103,7 +103,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     verbose(ctx, "-- Semantic analysis ... ")
     loop .. while 0 {
-        "@MACRO@:TRY(analyze_semantic(c_ast, errors, &frontend, &identifiers))"
+        " #@MACRO@:TRY(analyze_semantic(c_ast, errors, &frontend, &identifiers))"
         _errval = analyze_semantic(c_ast, errors, @frontend, @identifiers)
         if _errval ~= 0 {
             jump _Lfinally
@@ -138,7 +138,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     verbose(ctx, "-- Code emission ... ")
     set_filename_ext(ctx, "s")
     loop .. while 0 {
-        "@MACRO@:TRY(open_fwrite(fileio, ctx->filename))"
+        " #@MACRO@:TRY(open_fwrite(fileio, ctx->filename))"
         _errval = open_fwrite(fileio, ctx[].filename)
         if _errval ~= 0 {
             jump _Lfinally
@@ -150,13 +150,13 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     label _Lfinally
     loop i: u64 = 0 while i < (? (identifiers.hash_table) then (cast<*struc stbds_array_header>(((identifiers.hash_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         if (identifiers.hash_table[i]).value {
-            "@MACRO@:str_delete(pair_second(identifiers.hash_table[i]))"
+            " #@MACRO@:str_delete(pair_second(identifiers.hash_table[i]))"
             sdsfree((identifiers.hash_table[i]).value)
             (identifiers.hash_table[i]).value = ? nil then sdsnew(nil) else nil
         }
     }
     if identifiers.hash_table {
-        "@MACRO@:map_delete(identifiers.hash_table)"
+        " #@MACRO@:map_delete(identifiers.hash_table)"
         loop .. while 0 {
             cast<none>((? (identifiers.hash_table) ~= nil then stbds_hmfree_func((identifiers.hash_table) - 1, sizeof((identifiers.hash_table)[])) else cast<none>(0)))
             (identifiers.hash_table) = nil
@@ -164,7 +164,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         identifiers.hash_table = map_new()
     }
     if frontend.string_const_table {
-        "@MACRO@:map_delete(frontend.string_const_table)"
+        " #@MACRO@:map_delete(frontend.string_const_table)"
         loop .. while 0 {
             cast<none>((? (frontend.string_const_table) ~= nil then stbds_hmfree_func((frontend.string_const_table) - 1, sizeof((frontend.string_const_table)[])) else cast<none>(0)))
             (frontend.string_const_table) = nil
@@ -175,7 +175,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         free_StructTypedef(@(frontend.struct_typedef_table[i]).value)
     }
     if frontend.struct_typedef_table {
-        "@MACRO@:map_delete(frontend.struct_typedef_table)"
+        " #@MACRO@:map_delete(frontend.struct_typedef_table)"
         loop .. while 0 {
             cast<none>((? (frontend.struct_typedef_table) ~= nil then stbds_hmfree_func((frontend.struct_typedef_table) - 1, sizeof((frontend.struct_typedef_table)[])) else cast<none>(0)))
             (frontend.struct_typedef_table) = nil
@@ -186,7 +186,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         free_Symbol(@(frontend.symbol_table[i]).value)
     }
     if frontend.symbol_table {
-        "@MACRO@:map_delete(frontend.symbol_table)"
+        " #@MACRO@:map_delete(frontend.symbol_table)"
         loop .. while 0 {
             cast<none>((? (frontend.symbol_table) ~= nil then stbds_hmfree_func((frontend.symbol_table) - 1, sizeof((frontend.symbol_table)[])) else cast<none>(0)))
             (frontend.symbol_table) = nil
@@ -194,9 +194,9 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         frontend.symbol_table = map_new()
     }
     loop .. while 0 {
-        "@MACRO@:set_delete(frontend.addressed_set)"
+        " #@MACRO@:set_delete(frontend.addressed_set)"
         if frontend.addressed_set {
-            "@MACRO@:map_delete(frontend.addressed_set)"
+            " #@MACRO@:map_delete(frontend.addressed_set)"
             loop .. while 0 {
                 cast<none>((? (frontend.addressed_set) ~= nil then stbds_hmfree_func((frontend.addressed_set) - 1, sizeof((frontend.addressed_set)[])) else cast<none>(0)))
                 (frontend.addressed_set) = nil
@@ -208,7 +208,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         free_BackendSymbol(@(backend.symbol_table[i]).value)
     }
     if backend.symbol_table {
-        "@MACRO@:map_delete(backend.symbol_table)"
+        " #@MACRO@:map_delete(backend.symbol_table)"
         loop .. while 0 {
             cast<none>((? (backend.symbol_table) ~= nil then stbds_hmfree_func((backend.symbol_table) - 1, sizeof((backend.symbol_table)[])) else cast<none>(0)))
             (backend.symbol_table) = nil
@@ -216,7 +216,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         backend.symbol_table = map_new()
     }
     if tokens {
-        "@MACRO@:vec_delete(tokens)"
+        " #@MACRO@:vec_delete(tokens)"
         loop .. while 0 {
             cast<none>((? (tokens) then free((cast<*struc stbds_array_header>((tokens)) - 1)) else cast<none>(0)))
             (tokens) = nil
@@ -240,7 +240,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_print_help), "MSG_print_help", "", "", argv[0]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -248,7 +248,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_debug_arg), "MSG_no_debug_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -256,7 +256,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_debug_arg), "MSG_invalid_debug_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -264,7 +264,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_1_arg), "MSG_no_optim_1_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -272,7 +272,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_1_arg), "MSG_invalid_optim_1_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -280,7 +280,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_2_arg), "MSG_no_optim_2_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -288,7 +288,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_2_arg), "MSG_invalid_optim_2_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -296,7 +296,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_input_files_arg), "MSG_no_input_files_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -305,14 +305,14 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     ctx[].filename = ? argv[i] then sdsnew(argv[i]) else nil
     if not argv[++i] {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_stdlib_dir_arg), "MSG_no_stdlib_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
         }
     }
     loop .. while 0 {
-        "@MACRO@:vec_push_back(ctx->stdlibdirs, (char*)argv[i])"
+        " #@MACRO@:vec_push_back(ctx->stdlibdirs, (char*)argv[i])"
         loop .. while 0 {
             (? (not (ctx[].stdlibdirs) or (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].capacity) then (((ctx[].stdlibdirs) = stbds_arrgrowf((ctx[].stdlibdirs), sizeof((ctx[].stdlibdirs)[]), (1), (0))) and 0) else 0)
             (ctx[].stdlibdirs)[(cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length++] = (cast<string>(argv[i]))
@@ -320,7 +320,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     if not argv[++i] {
         loop .. while 0 {
-            "@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
+            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_include_dir_arg), "MSG_no_include_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -328,7 +328,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     }
     loop .. while argv[++i] {
         loop .. while 0 {
-            "@MACRO@:vec_push_back(ctx->includedirs, (char*)argv[i])"
+            " #@MACRO@:vec_push_back(ctx->includedirs, (char*)argv[i])"
             loop .. while 0 {
                 (? (not (ctx[].includedirs) or (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].capacity) then (((ctx[].includedirs) = stbds_arrgrowf((ctx[].includedirs), sizeof((ctx[].includedirs)[]), (1), (0))) and 0) else 0)
                 (ctx[].includedirs)[(cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length++] = (cast<string>(argv[i]))
@@ -365,14 +365,14 @@ pub fn main(argc: i32, argv: *string) i32 {
 
     _errval: i32 = 0
     loop .. while 0 {
-        "@MACRO@:TRY(arg_parse(&ctx, argc, argv))"
+        " #@MACRO@:TRY(arg_parse(&ctx, argc, argv))"
         _errval = arg_parse(@ctx, argc, argv)
         if _errval ~= 0 {
             jump _Lfinally
         }
     }
     loop .. while 0 {
-        "@MACRO@:TRY(compile(&ctx, &errors, &fileio))"
+        " #@MACRO@:TRY(compile(&ctx, &errors, &fileio))"
         _errval = compile(@ctx, @errors, @fileio)
         if _errval ~= 0 {
             jump _Lfinally
@@ -380,7 +380,7 @@ pub fn main(argc: i32, argv: *string) i32 {
     }
     label _Lfinally
     if errors.info_at_map {
-        "@MACRO@:map_delete(errors.info_at_map)"
+        " #@MACRO@:map_delete(errors.info_at_map)"
         loop .. while 0 {
             cast<none>((? (errors.info_at_map) ~= nil then stbds_hmfree_func((errors.info_at_map) - 1, sizeof((errors.info_at_map)[])) else cast<none>(0)))
             (errors.info_at_map) = nil
@@ -389,13 +389,13 @@ pub fn main(argc: i32, argv: *string) i32 {
     }
     loop i: u64 = 0 while i < (? (errors.fopen_lines) then (cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)[].length else 0) .. ++i {
         if errors.fopen_lines[i].filename {
-            "@MACRO@:str_delete(errors.fopen_lines[i].filename)"
+            " #@MACRO@:str_delete(errors.fopen_lines[i].filename)"
             sdsfree(errors.fopen_lines[i].filename)
             errors.fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
     if errors.fopen_lines {
-        "@MACRO@:vec_delete(errors.fopen_lines)"
+        " #@MACRO@:vec_delete(errors.fopen_lines)"
         loop .. while 0 {
             cast<none>((? (errors.fopen_lines) then free((cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)) else cast<none>(0)))
             (errors.fopen_lines) = nil
@@ -403,7 +403,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         errors.fopen_lines = vec_new()
     }
     if errors.token_infos {
-        "@MACRO@:vec_delete(errors.token_infos)"
+        " #@MACRO@:vec_delete(errors.token_infos)"
         loop .. while 0 {
             cast<none>((? (errors.token_infos) then free((cast<*struc stbds_array_header>((errors.token_infos)) - 1)) else cast<none>(0)))
             (errors.token_infos) = nil
@@ -411,24 +411,24 @@ pub fn main(argc: i32, argv: *string) i32 {
         errors.token_infos = vec_new()
     }
     if fileio.write_buf {
-        "@MACRO@:str_delete(fileio.write_buf)"
+        " #@MACRO@:str_delete(fileio.write_buf)"
         sdsfree(fileio.write_buf)
         fileio.write_buf = ? nil then sdsnew(nil) else nil
     }
     if fileio.filename {
-        "@MACRO@:str_delete(fileio.filename)"
+        " #@MACRO@:str_delete(fileio.filename)"
         sdsfree(fileio.filename)
         fileio.filename = ? nil then sdsnew(nil) else nil
     }
     loop i: u64 = 0 while i < (? (fileio.file_reads) then (cast<*struc stbds_array_header>((fileio.file_reads)) - 1)[].length else 0) .. ++i {
         if fileio.file_reads[i].filename {
-            "@MACRO@:str_delete(fileio.file_reads[i].filename)"
+            " #@MACRO@:str_delete(fileio.file_reads[i].filename)"
             sdsfree(fileio.file_reads[i].filename)
             fileio.file_reads[i].filename = ? nil then sdsnew(nil) else nil
         }
     }
     if fileio.file_reads {
-        "@MACRO@:vec_delete(fileio.file_reads)"
+        " #@MACRO@:vec_delete(fileio.file_reads)"
         loop .. while 0 {
             cast<none>((? (fileio.file_reads) then free((cast<*struc stbds_array_header>((fileio.file_reads)) - 1)) else cast<none>(0)))
             (fileio.file_reads) = nil
@@ -436,12 +436,12 @@ pub fn main(argc: i32, argv: *string) i32 {
         fileio.file_reads = vec_new()
     }
     if ctx.filename {
-        "@MACRO@:str_delete(ctx.filename)"
+        " #@MACRO@:str_delete(ctx.filename)"
         sdsfree(ctx.filename)
         ctx.filename = ? nil then sdsnew(nil) else nil
     }
     if ctx.includedirs {
-        "@MACRO@:vec_delete(ctx.includedirs)"
+        " #@MACRO@:vec_delete(ctx.includedirs)"
         loop .. while 0 {
             cast<none>((? (ctx.includedirs) then free((cast<*struc stbds_array_header>((ctx.includedirs)) - 1)) else cast<none>(0)))
             (ctx.includedirs) = nil
@@ -449,7 +449,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         ctx.includedirs = vec_new()
     }
     if ctx.stdlibdirs {
-        "@MACRO@:vec_delete(ctx.stdlibdirs)"
+        " #@MACRO@:vec_delete(ctx.stdlibdirs)"
         loop .. while 0 {
             cast<none>((? (ctx.stdlibdirs) then free((cast<*struc stbds_array_header>((ctx.stdlibdirs)) - 1)) else cast<none>(0)))
             (ctx.stdlibdirs) = nil

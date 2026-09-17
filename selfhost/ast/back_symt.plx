@@ -9,9 +9,9 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 pub fn make_AssemblyType(none) *struc AssemblyType {
     self: *struc AssemblyType = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_alloc(AssemblyType, self)"
+        " #@MACRO@:sptr_alloc(AssemblyType, self)"
         loop .. while 0 {
-            "@MACRO@:uptr_alloc(AssemblyType, self)"
+            " #@MACRO@:uptr_alloc(AssemblyType, self)"
             free_AssemblyType(@self)
             self = cast<*struc AssemblyType>(malloc(sizeof<struc AssemblyType>))
             if not self {
@@ -58,9 +58,9 @@ pub fn make_ByteArray(size: i64, alignment: i32) *struc AssemblyType {
 
 pub fn free_AssemblyType(self: **struc AssemblyType) none {
     loop .. while 0 {
-        "@MACRO@:sptr_delete(*self)"
+        " #@MACRO@:sptr_delete(*self)"
         if not self[] {
-            "@MACRO@:uptr_delete(*self)"
+            " #@MACRO@:uptr_delete(*self)"
             return none
         }
         elif (self[])[]._ref_count > 1 {
@@ -88,9 +88,9 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
         }
     }
     loop .. while 0 {
-        "@MACRO@:sptr_free(*self)"
+        " #@MACRO@:sptr_free(*self)"
         if self[] {
-            "@MACRO@:uptr_free(*self)"
+            " #@MACRO@:uptr_free(*self)"
             free(self[])
             self[] = uptr_new()
         }
@@ -100,7 +100,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
 pub fn make_BackendSymbol(none) *struc BackendSymbol {
     self: *struc BackendSymbol = uptr_new()
     loop .. while 0 {
-        "@MACRO@:uptr_alloc(BackendSymbol, self)"
+        " #@MACRO@:uptr_alloc(BackendSymbol, self)"
         free_BackendSymbol(@self)
         self = cast<*struc BackendSymbol>(malloc(sizeof<struc BackendSymbol>))
         if not self {
@@ -118,9 +118,9 @@ pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc Assembly
     self[].get._BackendObj.is_const = is_const
     self[].get._BackendObj.asm_type = sptr_new()
     loop .. while 0 {
-        "@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
+        " #@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
         if asm_type[] ~= self[].get._BackendObj.asm_type {
-            "@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
+            " #@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
             free_AssemblyType(@self[].get._BackendObj.asm_type)
             self[].get._BackendObj.asm_type = asm_type[]
             asm_type[] = uptr_new()
@@ -139,7 +139,7 @@ pub fn make_BackendFun(is_def: i32) *struc BackendSymbol {
 
 pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
     if not self[] {
-        "@MACRO@:uptr_delete(*self)"
+        " #@MACRO@:uptr_delete(*self)"
         return none
     }
     match (self[])[].tag {
@@ -156,7 +156,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
             }
         }
         if (self[])[].get._BackendFun.callee_saved_regs {
-            "@MACRO@:vec_delete((*self)->get._BackendFun.callee_saved_regs)"
+            " #@MACRO@:vec_delete((*self)->get._BackendFun.callee_saved_regs)"
             loop .. while 0 {
                 cast<none>((? ((self[])[].get._BackendFun.callee_saved_regs) then free((cast<*struc stbds_array_header>(((self[])[].get._BackendFun.callee_saved_regs)) - 1)) else cast<none>(0)))
                 ((self[])[].get._BackendFun.callee_saved_regs) = nil
@@ -169,7 +169,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
         }
     }
     if self[] {
-        "@MACRO@:uptr_free(*self)"
+        " #@MACRO@:uptr_free(*self)"
         free(self[])
         self[] = uptr_new()
     }
