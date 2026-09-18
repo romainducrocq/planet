@@ -2907,10 +2907,7 @@ fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
 fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *struc CInitializer {
     zero_inits: **struc CInitializer = vec_new()
     arr_type_size: u64 = cast<u64>(arr_type[].size)
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(zero_inits, arr_type_size)"
-        (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (0), (arr_type_size))))
-    }
+    vec_reserve(zero_inits, arr_type_size)
     loop i: u64 = 0 while i < arr_type_size .. ++i {
         initializer: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
         loop .. while 0 {
@@ -2931,10 +2928,7 @@ fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *str
 fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) *struc CInitializer {
     zero_inits: **struc CInitializer = vec_new()
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(zero_inits, vec_size(struct_typedef->member_names))"
-        (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (0), ((? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0)))))
-    }
+    vec_reserve(zero_inits, vec_size(struct_typedef[].member_names))
     loop i: u64 = 0 while i < (? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         initializer: *struc CInitializer = check_zero_init(ctx, member[].member_type)
@@ -4343,10 +4337,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     }
     alignment = 0
     size = 0l
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(member_names, vec_size(node->members))"
-        (((member_names) = stbds_arrgrowf((member_names), sizeof((member_names)[]), (0), ((? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0)))))
-    }
+    vec_reserve(member_names, vec_size(node[].members))
     loop i: u64 = 0 while i < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++i {
         {
             name: u64 = node[].members[i][].member_name

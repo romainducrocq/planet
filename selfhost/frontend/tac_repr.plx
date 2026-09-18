@@ -926,10 +926,7 @@ fn conditional_res_instr(ctx: *struc TacReprContext, node: *struc CConditional) 
 fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc TacExpResult {
     name: u64 = node[].name
     args: **struc TacValue = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(args, vec_size(node->args))"
-        (((args) = stbds_arrgrowf((args), sizeof((args)[]), (0), ((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)))))
-    }
+    vec_reserve(args, vec_size(node[].args))
     loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
         arg: *struc TacValue = repr_exp_instr(ctx, node[].args[i])
         loop .. while 0 {
@@ -1943,10 +1940,7 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
 
 fn initial_static_toplvl(node: *struc Initial) **struc StaticInit {
     static_inits: **struc StaticInit = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(static_inits, vec_size(node->static_inits))"
-        (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (0), ((? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0)))))
-    }
+    vec_reserve(static_inits, vec_size(node[].static_inits))
     loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
         static_init: *struc StaticInit = sptr_new()
         if node[].static_inits[i] ~= static_init {
