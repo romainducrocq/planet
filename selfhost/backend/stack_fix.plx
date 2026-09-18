@@ -1593,10 +1593,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
     vec_move(node[].instructions, instructions)
     backend_fun: *struc BackendFun = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendFun
     vec_clear(node[].instructions)
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(node->instructions, vec_size(instructions))"
-        (((node[].instructions) = stbds_arrgrowf((node[].instructions), sizeof((node[].instructions)[]), (0), ((? (instructions) then (cast<*struc stbds_array_header>((instructions)) - 1)[].length else 0)))))
-    }
+    vec_reserve(node[].instructions, vec_size(instructions))
     ctx[].stack_bytes = ? node[].is_ret_memory then 8l else 0l
     loop .. while 0 {
         " #@MACRO@:map_clear(ctx->pseudo_stack_map)"

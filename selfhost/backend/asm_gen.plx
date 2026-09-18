@@ -3361,10 +3361,7 @@ fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc As
     is_glob: i32 = node[].is_glob
     is_ret_memory: i32 = false
     body: **struc AsmInstruction = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(body, vec_size(node->body))"
-        (((body) = stbds_arrgrowf((body), sizeof((body)[]), (0), ((? (node[].body) then (cast<*struc stbds_array_header>((node[].body)) - 1)[].length else 0)))))
-    }
+    vec_reserve(body, vec_size(node[].body))
     {
         ctx[].p_instrs = @body
         fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
@@ -3395,10 +3392,7 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
     is_glob: i32 = node[].is_glob
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_inits: **struc StaticInit = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(static_inits, vec_size(node->static_inits))"
-        (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (0), ((? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0)))))
-    }
+    vec_reserve(static_inits, vec_size(node[].static_inits))
     loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
         static_init: *struc StaticInit = sptr_new()
         if node[].static_inits[i] ~= static_init {
@@ -3475,10 +3469,7 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
 
 fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmProgram {
     static_const_toplvls: **struc AsmTopLevel = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(static_const_toplvls, vec_size(node->static_const_toplvls))"
-        (((static_const_toplvls) = stbds_arrgrowf((static_const_toplvls), sizeof((static_const_toplvls)[]), (0), ((? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0)))))
-    }
+    vec_reserve(static_const_toplvls, vec_size(node[].static_const_toplvls))
     loop i: u64 = 0 while i < (? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
         static_const_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_const_toplvls[i])
         loop .. while 0 {
@@ -3494,10 +3485,7 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
         }
     }
     top_levels: **struc AsmTopLevel = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_reserve(top_levels, vec_size(node->static_var_toplvls) + vec_size(node->fun_toplvls))"
-        (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (0), ((? (node[].static_var_toplvls) then (cast<*struc stbds_array_header>((node[].static_var_toplvls)) - 1)[].length else 0) + (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0)))))
-    }
+    vec_reserve(top_levels, vec_size(node[].static_var_toplvls) + vec_size(node[].fun_toplvls))
     {
         ctx[].p_static_consts = @static_const_toplvls
         loop i: u64 = 0 while i < (? (node[].static_var_toplvls) then (cast<*struc stbds_array_header>((node[].static_var_toplvls)) - 1)[].length else 0) .. ++i {
