@@ -864,7 +864,7 @@ fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceR
 fn alloc_color_infer_graph(ctx: *struc RegAllocContext) none;
 
 fn alloc_next_color_infer_graph(ctx: *struc RegAllocContext) none {
-    if not ((? (ctx[].p_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) == 0) or not ((? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) {
+    if not vec_empty(ctx[].p_infer_graph[].unpruned_hard_mask_bits) or not vec_empty(ctx[].p_infer_graph[].unpruned_pseudo_names) {
         alloc_color_infer_graph(ctx)
     }
 }
@@ -1446,12 +1446,12 @@ fn alloc_instr(ctx: *struc RegAllocContext, instr_idx: u64) none {
 }
 
 fn reallocate_registers(ctx: *struc RegAllocContext) none {
-    if not ((? (ctx[].infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) {
+    if not vec_empty(ctx[].infer_graph[].unpruned_pseudo_names) {
         set_p_infer_graph(ctx, false)
         alloc_color_infer_graph(ctx)
         alloc_color_reg_map(ctx)
     }
-    if not ((? (ctx[].sse_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) {
+    if not vec_empty(ctx[].sse_infer_graph[].unpruned_pseudo_names) {
         set_p_infer_graph(ctx, true)
         alloc_color_infer_graph(ctx)
         alloc_color_reg_map(ctx)
@@ -2183,7 +2183,7 @@ fn alloc_fun_toplvl(ctx: *struc RegAllocContext, node: *struc AsmFunction) none 
     label Ldowhile
     if init_inference_graph(ctx, node[].name) {
         if ctx[].is_with_coal and coalesce_registers(ctx) {
-            if ((? (ctx[].infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) and ((? (ctx[].sse_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) == 0) {
+            if vec_empty(ctx[].infer_graph[].unpruned_pseudo_names) and vec_empty(ctx[].sse_infer_graph[].unpruned_pseudo_names) {
                 jump Lbreak
             }
             jump Ldowhile

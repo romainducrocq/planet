@@ -788,9 +788,11 @@ fn get_const_ptr_value(node: *struc CConstant) u64 {
 }
 
 fn get_compound_info_at(node: *struc CCompoundInit) u64 {
+    # TODO THROW_ABORT_IF(vec_empty(node->initializers));
     initializer: *struc CInitializer = node[].initializers[0]
     loop while initializer[].tag == AST_CCompoundInit_t {
         node = @initializer[].get._CCompoundInit
+        # TODO THROW_ABORT_IF(vec_empty(node->initializers));
         initializer = node[].initializers[0]
     }
     return initializer[].get._CSingleInit.exp[].info_at
@@ -3278,7 +3280,7 @@ fn push_static_init(ctx: *struc SemanticContext, static_init: *struc StaticInit)
 }
 
 fn push_zero_static_init(ctx: *struc SemanticContext, byte: i64) none {
-    if not ((? (ctx[].p_static_inits[]) then (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length else 0) == 0) and (ctx[].p_static_inits[])[(? (ctx[].p_static_inits[]) then (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length else 0) - 1][].tag == AST_ZeroInit_t {
+    if not vec_empty(ctx[].p_static_inits[]) and (ctx[].p_static_inits[])[(? (ctx[].p_static_inits[]) then (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length else 0) - 1][].tag == AST_ZeroInit_t {
         (ctx[].p_static_inits[])[(? (ctx[].p_static_inits[]) then (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length else 0) - 1][].get._ZeroInit.byte += byte
     }
     else {
@@ -4449,7 +4451,7 @@ fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) i32
 
 fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
     _errval: i32 = 0
-    if ((? (ctx[].break_loop_labels) then (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length else 0) == 0) {
+    if vec_empty(ctx[].break_loop_labels) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_break_out_of_loop), "MSG_break_out_of_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
@@ -4464,7 +4466,7 @@ fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
 
 fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) i32 {
     _errval: i32 = 0
-    if ((? (ctx[].continue_loop_labels) then (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length else 0) == 0) {
+    if vec_empty(ctx[].continue_loop_labels) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_continue_out_of_loop), "MSG_continue_out_of_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
@@ -6104,7 +6106,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }
     }
     enter_scope(ctx)
-    if not ((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) == 0) {
+    if not vec_empty(node[].params) {
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_fun_params_decl(ctx, node))"
             _errval = reslv_fun_params_decl(ctx, node)
@@ -6318,7 +6320,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
             }
         }
     }
-    if not ((? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) == 0) {
+    if not vec_empty(node[].members) {
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_struct_members_decl(ctx, node))"
             _errval = reslv_struct_members_decl(ctx, node)

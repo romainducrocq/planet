@@ -566,7 +566,7 @@ pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i
 
 pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_fmt: *string) string {
     fun_fmt[] = ? "(" then sdsnew("(") else nil
-    if ((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) == 0) {
+    if vec_empty(fun_type[].param_types) {
         loop .. while 0 {
             " #@MACRO@:str_append(*fun_fmt, \"none\")"
             fun_fmt[] = sdscat(fun_fmt[], "none")

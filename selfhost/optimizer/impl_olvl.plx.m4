@@ -532,7 +532,7 @@ fn init_control_flow_graph(ctx: Ctx) none {
     ;
     vec_clear(ctx[].cfg[].exit_pred_ids)
     ;
-    if not ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) == 0) {
+    if not vec_empty(ctx[].cfg[].blocks) {
         cfg_add_pred_edge(ctx, 0, ctx[].cfg[].entry_id)
         loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
             cfg_init_edges(ctx, block_id)
