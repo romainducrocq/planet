@@ -222,7 +222,7 @@ fn cvt_program(ctx: *struc SymtCvtContext, node: *struc AsmProgram) none {
             cvt_obj_type(ctx, (symbol[]).value[].attrs)
         }
     }
-    loop i: u64 = 0 while i < (? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         cvt_toplvl(ctx, node[].static_const_toplvls[i])
     }
 }
