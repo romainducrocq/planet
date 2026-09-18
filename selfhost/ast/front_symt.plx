@@ -178,7 +178,7 @@ pub fn free_Type(self: **struc Type) none {
             }
         }
         -> AST_FunType_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._FunType.param_types) then (cast<*struc stbds_array_header>(((self[])[].get._FunType.param_types)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._FunType.param_types) .. ++i {
                 free_Type(@(self[])[].get._FunType.param_types[i])
             }
         }
@@ -423,7 +423,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             }
         }
         -> AST_Initial_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._Initial.static_inits) then (cast<*struc stbds_array_header>(((self[])[].get._Initial.static_inits)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._Initial.static_inits) .. ++i {
                 free_StaticInit(@(self[])[].get._Initial.static_inits[i])
             }
         }

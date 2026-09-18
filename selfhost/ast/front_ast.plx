@@ -293,7 +293,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
         }
         break
         -> AST_CFunDeclarator_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._CFunDeclarator.param_list) then (cast<*struc stbds_array_header>(((self[])[].get._CFunDeclarator.param_list)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._CFunDeclarator.param_list) .. ++i {
                 free_CParam(@(self[])[].get._CFunDeclarator.param_list[i])
             }
         }
@@ -646,7 +646,7 @@ pub fn free_CExp(self: **struc CExp) none {
         free_CExp(@(self[])[].get._CConditional.exp_right)
         break
         -> AST_CFunctionCall_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._CFunctionCall.args) then (cast<*struc stbds_array_header>(((self[])[].get._CFunctionCall.args)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._CFunctionCall.args) .. ++i {
                 free_CExp(@(self[])[].get._CFunctionCall.args[i])
             }
         }
@@ -1010,7 +1010,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
             free_CExp(@(self[])[].get._CSwitch.lookup)
         }
         free_CStatement(@(self[])[].get._CSwitch.body)
-        loop i: u64 = 0 while i < (? ((self[])[].get._CSwitch.cases) then (cast<*struc stbds_array_header>(((self[])[].get._CSwitch.cases)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(self[][].get._CSwitch.cases) .. ++i {
             free_CExp(@(self[])[].get._CSwitch.cases[i])
         }
         vec_delete(self[][].get._CSwitch.cases)
@@ -1144,7 +1144,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
             break
         }
         -> AST_CB_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._CB.block_items) then (cast<*struc stbds_array_header>(((self[])[].get._CB.block_items)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._CB.block_items) .. ++i {
                 free_CBlockItem(@(self[])[].get._CB.block_items[i])
             }
         }
@@ -1297,7 +1297,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
         }
         break
         -> AST_CCompoundInit_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._CCompoundInit.initializers) then (cast<*struc stbds_array_header>(((self[])[].get._CCompoundInit.initializers)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._CCompoundInit.initializers) .. ++i {
                 free_CInitializer(@(self[])[].get._CCompoundInit.initializers[i])
             }
         }
@@ -1394,7 +1394,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
             panic_sigabrt("abort")
         }
     }
-    loop i: u64 = 0 while i < (? ((self[])[].members) then (cast<*struc stbds_array_header>(((self[])[].members)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].members) .. ++i {
         free_CMemberDeclaration(@(self[])[].members[i])
     }
     vec_delete(self[][].members)
@@ -1634,7 +1634,7 @@ pub fn free_CProgram(self: **struc CProgram) none {
             panic_sigabrt("abort")
         }
     }
-    loop i: u64 = 0 while i < (? ((self[])[].declarations) then (cast<*struc stbds_array_header>(((self[])[].declarations)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].declarations) .. ++i {
         free_CDeclaration(@(self[])[].declarations[i])
     }
     vec_delete(self[][].declarations)
