@@ -1520,7 +1520,7 @@ fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none
         push_instr(ctx, make_TacJump(target_default))
         statement_instr(ctx, node[].body)
     }
-    elif not ((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0) == 0) {
+    elif not vec_empty(node[].cases) {
         push_instr(ctx, make_TacJump(target_break))
         statement_instr(ctx, node[].body)
     }
