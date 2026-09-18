@@ -1041,17 +1041,7 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
                 (callee_saved_reg)[]._ref_count++
             }
             ;
-            loop .. while 0 {
-                " #@MACRO@:vec_move_back(ctx->p_backend_fun->callee_saved_regs, callee_saved_reg)"
-                loop .. while 0 {
-                    " #@MACRO@:vec_push_back(ctx->p_backend_fun->callee_saved_regs, callee_saved_reg)"
-                    loop .. while 0 {
-                        (? (not (ctx[].p_backend_fun[].callee_saved_regs) or (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].capacity) then (((ctx[].p_backend_fun[].callee_saved_regs) = stbds_arrgrowf((ctx[].p_backend_fun[].callee_saved_regs), sizeof((ctx[].p_backend_fun[].callee_saved_regs)[]), (1), (0))) and 0) else 0)
-                        (ctx[].p_backend_fun[].callee_saved_regs)[(cast<*struc stbds_array_header>((ctx[].p_backend_fun[].callee_saved_regs)) - 1)[].length++] = (callee_saved_reg)
-                    }
-                }
-                callee_saved_reg = nil
-            }
+            vec_move_back(ctx[].p_backend_fun[].callee_saved_regs, callee_saved_reg)
         }
         return hard_reg
     }

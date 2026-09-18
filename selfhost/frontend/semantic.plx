@@ -2886,17 +2886,7 @@ fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *str
     vec_reserve(zero_inits, arr_type_size)
     loop i: u64 = 0 while i < arr_type_size .. ++i {
         initializer: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(zero_inits, initializer)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(zero_inits, initializer)"
-                loop .. while 0 {
-                    (? (not (zero_inits) or (cast<*struc stbds_array_header>((zero_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((zero_inits)) - 1)[].capacity) then (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (1), (0))) and 0) else 0)
-                    (zero_inits)[(cast<*struc stbds_array_header>((zero_inits)) - 1)[].length++] = (initializer)
-                }
-            }
-            initializer = nil
-        }
+        vec_move_back(zero_inits, initializer)
     }
     return make_CCompoundInit(@zero_inits)
 }
@@ -2908,17 +2898,7 @@ fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Struc
     loop i: u64 = 0 while i < (? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         initializer: *struc CInitializer = check_zero_init(ctx, member[].member_type)
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(zero_inits, initializer)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(zero_inits, initializer)"
-                loop .. while 0 {
-                    (? (not (zero_inits) or (cast<*struc stbds_array_header>((zero_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((zero_inits)) - 1)[].capacity) then (((zero_inits) = stbds_arrgrowf((zero_inits), sizeof((zero_inits)[]), (1), (0))) and 0) else 0)
-                    (zero_inits)[(cast<*struc stbds_array_header>((zero_inits)) - 1)[].length++] = (initializer)
-                }
-            }
-            initializer = nil
-        }
+        vec_move_back(zero_inits, initializer)
     }
     return make_CCompoundInit(@zero_inits)
 }
@@ -3010,17 +2990,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
 fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: **struc Type) none {
     loop while (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) < cast<u64>(arr_type[].size) {
         zero_init: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(node->initializers, zero_init)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(node->initializers, zero_init)"
-                loop .. while 0 {
-                    (? (not (node[].initializers) or (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].capacity) then (((node[].initializers) = stbds_arrgrowf((node[].initializers), sizeof((node[].initializers)[]), (1), (0))) and 0) else 0)
-                    (node[].initializers)[(cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length++] = (zero_init)
-                }
-            }
-            zero_init = nil
-        }
+        vec_move_back(node[].initializers, zero_init)
     }
     if init_type[] ~= node[]._base[].init_type {
         " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
@@ -3035,17 +3005,7 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
     loop i: u64 = (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) while i < (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(node->initializers, zero_init)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(node->initializers, zero_init)"
-                loop .. while 0 {
-                    (? (not (node[].initializers) or (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].capacity) then (((node[].initializers) = stbds_arrgrowf((node[].initializers), sizeof((node[].initializers)[]), (1), (0))) and 0) else 0)
-                    (node[].initializers)[(cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length++] = (zero_init)
-                }
-            }
-            zero_init = nil
-        }
+        vec_move_back(node[].initializers, zero_init)
     }
     if init_type[] ~= node[]._base[].init_type {
         " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
@@ -3314,17 +3274,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
 }
 
 fn push_static_init(ctx: *struc SemanticContext, static_init: *struc StaticInit) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_static_inits, static_init)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_static_inits, static_init)"
-            loop .. while 0 {
-                (? (not (ctx[].p_static_inits[]) or (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].capacity) then (((ctx[].p_static_inits[]) = stbds_arrgrowf((ctx[].p_static_inits[]), sizeof((ctx[].p_static_inits[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_static_inits[])[(cast<*struc stbds_array_header>((ctx[].p_static_inits[])) - 1)[].length++] = (static_init)
-            }
-        }
-        static_init = nil
-    }
+    vec_move_back(ctx[].p_static_inits[], static_init)
 }
 
 fn push_zero_static_init(ctx: *struc SemanticContext, byte: i64) none {
@@ -5711,17 +5661,7 @@ fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(ctx->p_switch_statement->cases, node->value)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(ctx->p_switch_statement->cases, node->value)"
-            loop .. while 0 {
-                (? (not (ctx[].p_switch_statement[].cases) or (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].capacity) then (((ctx[].p_switch_statement[].cases) = stbds_arrgrowf((ctx[].p_switch_statement[].cases), sizeof((ctx[].p_switch_statement[].cases)[]), (1), (0))) and 0) else 0)
-                (ctx[].p_switch_statement[].cases)[(cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length++] = (node[].value)
-            }
-        }
-        node[].value = nil
-    }
+    vec_move_back(ctx[].p_switch_statement[].cases, node[].value)
     loop .. while 0 {
         " #@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
         _errval = reslv_statement(ctx, node[].jump_to)

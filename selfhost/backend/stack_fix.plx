@@ -517,17 +517,7 @@ pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction {
 }
 
 fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_fix_instrs, instr)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_fix_instrs, instr)"
-            loop .. while 0 {
-                (? (not (ctx[].p_fix_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].capacity) then (((ctx[].p_fix_instrs[]) = stbds_arrgrowf((ctx[].p_fix_instrs[]), sizeof((ctx[].p_fix_instrs[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_fix_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length++] = (instr)
-            }
-        }
-        instr = nil
-    }
+    vec_move_back(ctx[].p_fix_instrs[], instr)
 }
 
 fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
