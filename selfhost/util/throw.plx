@@ -167,7 +167,7 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
 }
 
 fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
-    loop i: u64 = 0 while i < (? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1 .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx[].fopen_lines) - 1 .. ++i {
         if total_linenum < ctx[].fopen_lines[i + 1].total_linenum {
             set_filename(ctx[].fileio, ctx[].fopen_lines[i].filename)
             return total_linenum - ctx[].fopen_lines[i].total_linenum + ctx[].fopen_lines[i].linenum
@@ -178,6 +178,7 @@ fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
 }
 
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
+    # TODO THROW_ABORT_IF(info_at >= vec_size(ctx->errors->token_infos));
     token_info: *struc TokenInfo = @ctx[].errors[].token_infos[info_at]
     tok_linenum: u64 = get_token_linenum(ctx, token_info[].total_linenum)
     free_fileio(ctx[].fileio)
