@@ -1856,13 +1856,7 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
     name: u64 = node[].name
     is_glob: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].get._FunAttr.is_glob
     params: *u64 = vec_new()
-    loop .. while 0 {
-        " #@MACRO@:vec_resize(params, vec_size(node->params))"
-        loop .. while 0 {
-            (? (? (params) then (cast<*struc stbds_array_header>((params)) - 1)[].capacity else 0) < cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))) then ((((params)) = stbds_arrgrowf(((params)), sizeof(((params))[]), (0), (cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (params) then (cast<*struc stbds_array_header>((params)) - 1)[].length = cast<u64>(((? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))) else 0
-        }
-    }
+    vec_resize(params, vec_size(node[].params))
     memcpy(params, node[].params, sizeof<u64> * (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))
 
     body: **struc TacInstruction = vec_new()

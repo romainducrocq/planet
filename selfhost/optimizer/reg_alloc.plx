@@ -799,13 +799,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     if not ((? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
         if (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) < 12 {
-            loop .. while 0 {
-                " #@MACRO@:vec_resize(ctx->infer_graph->unpruned_hard_mask_bits, 12)"
-                loop .. while 0 {
-                    (? (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((12)) then ((((ctx[].infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((12)))))) and 0 else 0)
-                    ? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((12)) else 0
-                }
-            }
+            vec_resize(ctx[].infer_graph[].unpruned_hard_mask_bits, 12)
         }
         hard_reg_mask: u64 = ctx[].infer_graph[].hard_reg_mask
         loop i: u64 = 0 while i < 12 .. ++i {
@@ -821,13 +815,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     if not ((? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
         if (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) < 14 {
-            loop .. while 0 {
-                " #@MACRO@:vec_resize(ctx->sse_infer_graph->unpruned_hard_mask_bits, 14)"
-                loop .. while 0 {
-                    (? (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].capacity else 0) < cast<u64>((14)) then ((((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) = stbds_arrgrowf(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)), sizeof(((ctx[].sse_infer_graph[].unpruned_hard_mask_bits))[]), (0), (cast<u64>((14)))))) and 0 else 0)
-                    ? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length = cast<u64>((14)) else 0
-                }
-            }
+            vec_resize(ctx[].sse_infer_graph[].unpruned_hard_mask_bits, 14)
         }
         hard_reg_mask: u64 = ctx[].sse_infer_graph[].hard_reg_mask
         loop i: u64 = 12 while i < 26 .. ++i {
@@ -2236,13 +2224,7 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
     {
         open_data_map_size: u64 = ctx[].dfa[].set_size - REGISTER_MASK_SIZE
         if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < open_data_map_size {
-            loop .. while 0 {
-                " #@MACRO@:vec_resize(ctx->dfa->open_data_map, open_data_map_size)"
-                loop .. while 0 {
-                    (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>((open_data_map_size)) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>((open_data_map_size)))))) and 0 else 0)
-                    ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>((open_data_map_size)) else 0
-                }
-            }
+            vec_resize(ctx[].dfa[].open_data_map, open_data_map_size)
         }
     }
     loop i: u64 = REGISTER_MASK_SIZE while i < ctx[].dfa[].set_size .. ++i {
