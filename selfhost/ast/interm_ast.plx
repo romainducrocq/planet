@@ -803,7 +803,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
         free_TacValue(@(self[])[].get._TacUIntToDouble.dst)
         break
         -> AST_TacFunCall_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._TacFunCall.args) then (cast<*struc stbds_array_header>(((self[])[].get._TacFunCall.args)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._TacFunCall.args) .. ++i {
                 free_TacValue(@(self[])[].get._TacFunCall.args[i])
             }
         }
@@ -965,7 +965,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         -> AST_TacFunction_t {
             vec_delete(self[][].get._TacFunction.params)
         }
-        loop i: u64 = 0 while i < (? ((self[])[].get._TacFunction.body) then (cast<*struc stbds_array_header>(((self[])[].get._TacFunction.body)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(self[][].get._TacFunction.body) .. ++i {
             free_TacInstruction(@(self[])[].get._TacFunction.body[i])
         }
         vec_delete(self[][].get._TacFunction.body)
@@ -973,7 +973,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         -> AST_TacStaticVariable_t {
             free_Type(@(self[])[].get._TacStaticVariable.static_init_type)
         }
-        loop i: u64 = 0 while i < (? ((self[])[].get._TacStaticVariable.static_inits) then (cast<*struc stbds_array_header>(((self[])[].get._TacStaticVariable.static_inits)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(self[][].get._TacStaticVariable.static_inits) .. ++i {
             free_StaticInit(@(self[])[].get._TacStaticVariable.static_inits[i])
         }
         vec_delete(self[][].get._TacStaticVariable.static_inits)
@@ -1027,15 +1027,15 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
             panic_sigabrt("abort")
         }
     }
-    loop i: u64 = 0 while i < (? ((self[])[].static_const_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].static_const_toplvls) .. ++i {
         free_TacTopLevel(@(self[])[].static_const_toplvls[i])
     }
     vec_delete(self[][].static_const_toplvls)
-    loop i: u64 = 0 while i < (? ((self[])[].static_var_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_var_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].static_var_toplvls) .. ++i {
         free_TacTopLevel(@(self[])[].static_var_toplvls[i])
     }
     vec_delete(self[][].static_var_toplvls)
-    loop i: u64 = 0 while i < (? ((self[])[].fun_toplvls) then (cast<*struc stbds_array_header>(((self[])[].fun_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].fun_toplvls) .. ++i {
         free_TacTopLevel(@(self[])[].fun_toplvls[i])
     }
     vec_delete(self[][].fun_toplvls)

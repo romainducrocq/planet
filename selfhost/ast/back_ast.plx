@@ -954,14 +954,14 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
             break
         }
         -> AST_AsmFunction_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._AsmFunction.instructions) then (cast<*struc stbds_array_header>(((self[])[].get._AsmFunction.instructions)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._AsmFunction.instructions) .. ++i {
                 free_AsmInstruction(@(self[])[].get._AsmFunction.instructions[i])
             }
         }
         vec_delete(self[][].get._AsmFunction.instructions)
         break
         -> AST_AsmStaticVariable_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._AsmStaticVariable.static_inits) then (cast<*struc stbds_array_header>(((self[])[].get._AsmStaticVariable.static_inits)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._AsmStaticVariable.static_inits) .. ++i {
                 free_StaticInit(@(self[])[].get._AsmStaticVariable.static_inits[i])
             }
         }
@@ -1013,11 +1013,11 @@ pub fn free_AsmProgram(self: **struc AsmProgram) none {
             panic_sigabrt("abort")
         }
     }
-    loop i: u64 = 0 while i < (? ((self[])[].static_const_toplvls) then (cast<*struc stbds_array_header>(((self[])[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].static_const_toplvls) .. ++i {
         free_AsmTopLevel(@(self[])[].static_const_toplvls[i])
     }
     vec_delete(self[][].static_const_toplvls)
-    loop i: u64 = 0 while i < (? ((self[])[].top_levels) then (cast<*struc stbds_array_header>(((self[])[].top_levels)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(self[][].top_levels) .. ++i {
         free_AsmTopLevel(@(self[])[].top_levels[i])
     }
     vec_delete(self[][].top_levels)
