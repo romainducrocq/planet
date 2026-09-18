@@ -199,7 +199,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
 
             constant_type: *struc Type = sptr_new()
             {
-                size: i64 = (cast<i64>((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))) + 1l
+                size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
                 elem_type: *struc Type = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
@@ -789,7 +789,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                 ctx[].p_instrs = @noeval_instrs
                 res = repr_res_instr(ctx, exp_left)
                 ctx[].p_instrs = p_instrs
-                loop i: u64 = 0 while i < (? (noeval_instrs) then (cast<*struc stbds_array_header>((noeval_instrs)) - 1)[].length else 0) .. ++i {
+                loop i: u64 = 0 while i < vec_size(noeval_instrs) .. ++i {
                     free_TacInstruction(@noeval_instrs[i])
                 }
                 vec_delete(noeval_instrs)
@@ -917,7 +917,7 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc
     name: u64 = node[].name
     args: **struc TacValue = vec_new()
     vec_reserve(args, vec_size(node[].args))
-    loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         arg: *struc TacValue = repr_exp_instr(ctx, node[].args[i])
         vec_move_back(args, arg)
     }
@@ -1486,7 +1486,7 @@ fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none
     target_break: u64 = repr_loop_identifier(ctx[].identifiers, LBL_Lbreak, node[].target)
     {
         lookup: *struc TacValue = repr_exp_instr(ctx, node[].lookup)
-        loop i: u64 = 0 while i < (? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(node[].cases) .. ++i {
             target_case: u64 = repr_case_identifier(ctx[].identifiers, node[].target, true, i)
 
             case_match: *struc TacValue = sptr_new()
@@ -1621,7 +1621,7 @@ fn compound_init_instr(ctx: *struc TacReprContext, node: *struc CInitializer, in
 fn string_single_init_instr(ctx: *struc TacReprContext, node: *struc CString, arr_type: *struc Array, symbol: u64, size: i64) none {
     byte_at: u64 = 0
     bytes_size: u64 = cast<u64>(arr_type[].size)
-    bytes_copy: u64 = ? arr_type[].size > cast<i64>((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)) then (? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0) else bytes_size
+    bytes_copy: u64 = ? arr_type[].size > cast<i64>(vec_size(node[].literal[].value)) then vec_size(node[].literal[].value) else bytes_size
     loop while byte_at < bytes_copy {
         dst_name: u64 = symbol
         offset: i64 = size + (cast<i64>(byte_at))
@@ -1715,7 +1715,7 @@ fn scalar_compound_init_instr(ctx: *struc TacReprContext, node: *struc CSingleIn
 }
 
 fn arr_compound_init_instr(ctx: *struc TacReprContext, node: *struc CCompoundInit, arr_type: *struc Array, symbol: u64, size: *i64) none {
-    loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         compound_init_instr(ctx, node[].initializers[i], arr_type[].elem_type, symbol, size)
         if node[].initializers[i][].tag == AST_CSingleInit_t {
             size[] += get_type_scale(ctx, arr_type[].elem_type)
@@ -1724,7 +1724,7 @@ fn arr_compound_init_instr(ctx: *struc TacReprContext, node: *struc CCompoundIni
 }
 
 fn struct_compound_init_instr(ctx: *struc TacReprContext, node: *struc CCompoundInit, struct_type: *struc Structure, symbol: u64, size: *i64) none {
-    loop i: u64 = (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(node[].initializers) while i-- > 0 {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         offset: i64 = size[] + member[].offset
         compound_init_instr(ctx, node[].initializers[i], member[].member_type, symbol, @offset)
@@ -1806,7 +1806,7 @@ fn declaration_instr(ctx: *struc TacReprContext, node: *struc CDeclaration) none
 }
 
 fn repr_instr_list(ctx: *struc TacReprContext, node_list: **struc CBlockItem) none {
-    loop i: u64 = 0 while i < (? (node_list) then (cast<*struc stbds_array_header>((node_list)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {
             -> AST_CS_t {
                 statement_instr(ctx, node_list[i][].get._CS.statement)
@@ -1837,7 +1837,7 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
     is_glob: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].get._FunAttr.is_glob
     params: *u64 = vec_new()
     vec_resize(params, vec_size(node[].params))
-    memcpy(params, node[].params, sizeof<u64> * (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0))
+    memcpy(params, node[].params, sizeof<u64> * vec_size(node[].params))
 
     body: **struc TacInstruction = vec_new()
     {
@@ -1895,7 +1895,7 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
 fn initial_static_toplvl(node: *struc Initial) **struc StaticInit {
     static_inits: **struc StaticInit = vec_new()
     vec_reserve(static_inits, vec_size(node[].static_inits))
-    loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
         static_init: *struc StaticInit = sptr_new()
         if node[].static_inits[i] ~= static_init {
             " #@MACRO@:sptr_copy(StaticInit, node->static_inits[i], static_init)"
@@ -1982,7 +1982,7 @@ fn repr_program(ctx: *struc TacReprContext, node: *struc CProgram) *struc TacPro
     fun_toplvls: **struc TacTopLevel = vec_new()
     {
         ctx[].p_toplvls = @fun_toplvls
-        loop i: u64 = 0 while i < (? (node[].declarations) then (cast<*struc stbds_array_header>((node[].declarations)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(node[].declarations) .. ++i {
             declaration_toplvl(ctx, node[].declarations[i])
         }
         ctx[].p_toplvls = nil

@@ -56,10 +56,10 @@ fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32 {
 }
 
 fn is_same_fun_type(fun_type_1: *struc FunType, fun_type_2: *struc FunType) i32 {
-    if (? (fun_type_1[].param_types) then (cast<*struc stbds_array_header>((fun_type_1[].param_types)) - 1)[].length else 0) ~= (? (fun_type_2[].param_types) then (cast<*struc stbds_array_header>((fun_type_2[].param_types)) - 1)[].length else 0) or not is_same_type(fun_type_1[].ret_type, fun_type_2[].ret_type) {
+    if vec_size(fun_type_1[].param_types) ~= vec_size(fun_type_2[].param_types) or not is_same_type(fun_type_1[].ret_type, fun_type_2[].ret_type) {
         return false
     }
-    loop i: u64 = 0 while i < (? (fun_type_1[].param_types) then (cast<*struc stbds_array_header>((fun_type_1[].param_types)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(fun_type_1[].param_types) .. ++i {
         if not is_same_type(fun_type_1[].param_types[i], fun_type_2[].param_types[i]) {
             return false
         }
@@ -837,7 +837,7 @@ fn check_const_exp(node: *struc CConstant) none {
 }
 
 fn check_string_exp(node: *struc CString) none {
-    size: i64 = (cast<i64>((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))) + 1l
+    size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
     elem_type: *struc Type = make_Char()
     node[]._base[].exp_type = make_Array(size, @elem_type)
 }
@@ -1977,9 +1977,9 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
             jump _Lfinally
         }
     }
-    elif (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) ~= (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) {
-        strto_fmt_1 = ? ((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0))))
-        strto_fmt_2 = ? ((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0))))
+    elif vec_size(fun_type[].param_types) ~= vec_size(node[].args) {
+        strto_fmt_1 = str_to_string(vec_size(node[].args))
+        strto_fmt_2 = str_to_string(vec_size(fun_type[].param_types))
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_call_with_wrong_argc), "MSG_call_with_wrong_argc", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
@@ -1987,7 +1987,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
             jump _Lfinally
         }
     }
-    loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         if not is_same_type(node[].args[i][].exp_type, fun_type[].param_types[i]) {
             loop .. while 0 {
                 " #@MACRO@:TRY(cast_assign(ctx, &fun_type->param_types[i], &node->args[i]))"
@@ -2525,7 +2525,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     values: *i32 = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
-    loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(values) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_int_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -2563,7 +2563,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
     values: *i64 = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
-    loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(values) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_long_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -2601,7 +2601,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
     values: *u32 = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
-    loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(values) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_uint_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -2639,7 +2639,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
     values: *u64 = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
-    loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(values) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_ulong_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -2769,9 +2769,9 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
             jump _Lfinally
         }
     }
-    elif (? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0) > cast<u64>(arr_type[].size) {
+    elif vec_size(node[].literal[].value) > cast<u64>(arr_type[].size) {
         strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
-        strto_fmt_2 = ? ((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))))
+        strto_fmt_2 = str_to_string(vec_size(node[].literal[].value))
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_string_init_overflow), "MSG_string_init_overflow", "", strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
@@ -2897,7 +2897,7 @@ fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Struc
     zero_inits: **struc CInitializer = vec_new()
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
     vec_reserve(zero_inits, vec_size(struct_typedef[].member_names))
-    loop i: u64 = 0 while i < (? (struct_typedef[].member_names) then (cast<*struc stbds_array_header>((struct_typedef[].member_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(struct_typedef[].member_names) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         initializer: *struc CInitializer = check_zero_init(ctx, member[].member_type)
         vec_move_back(zero_inits, initializer)
@@ -2924,9 +2924,9 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
     strto_fmt_1: string = ? nil then sdsnew(nil) else nil
     strto_fmt_2: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    if (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) > cast<u64>(arr_type[].size) {
+    if vec_size(node[].initializers) > cast<u64>(arr_type[].size) {
         strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
-        strto_fmt_2 = ? ((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))))
+        strto_fmt_2 = str_to_string(vec_size(node[].initializers))
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arr_init_overflow), "MSG_arr_init_overflow", strto_fmt_1, get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt), strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
@@ -2960,8 +2960,8 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     _errval: i32 = 0
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
     bound: u64 = ? struct_type[].is_union then 1 else (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0)
-    if (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) > bound {
-        strto_fmt_1 = ? ((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)) > 0 then sdsfromunsignedlong(cast<u64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0)))) else sdsfromlong(cast<i64>(((? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))))
+    if vec_size(node[].initializers) > bound {
+        strto_fmt_1 = str_to_string(vec_size(node[].initializers))
         strto_fmt_2 = ? (bound) > 0 then sdsfromunsignedlong(cast<u64>((bound))) else sdsfromlong(cast<i64>((bound)))
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
@@ -2990,7 +2990,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
 }
 
 fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: **struc Type) none {
-    loop while (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) < cast<u64>(arr_type[].size) {
+    loop while vec_size(node[].initializers) < cast<u64>(arr_type[].size) {
         zero_init: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
         vec_move_back(node[].initializers, zero_init)
     }
@@ -3004,7 +3004,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
 
 fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) none {
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    loop i: u64 = (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) while i < (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = vec_size(node[].initializers) while i < (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
         vec_move_back(node[].initializers, zero_init)
@@ -3096,7 +3096,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     param_type: *struc Type = sptr_new()
     _errval: i32 = 0
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
-    loop i: u64 = 0 while i < (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         ctx[].errors[].info_at_buf = node[].info_at
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_struct_type(ctx, fun_type->param_types[i]))"
@@ -3190,7 +3190,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     if map_it ~= -1 {
         fun_symbol: *struc Symbol = (ctx[].frontend[].symbol_table[map_it]).value
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
-        if not (fun_symbol[].type_t[].tag == AST_FunType_t and (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) == (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
+        if not (fun_symbol[].type_t[].tag == AST_FunType_t and vec_size(fun_type[].param_types) == vec_size(node[].params) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_fun_conflict), "MSG_redecl_fun_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, fun_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
@@ -3490,7 +3490,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
 
             constant_type: *struc Type = sptr_new()
             {
-                size: i64 = (cast<i64>((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))) + 1l
+                size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
                 elem_type: *struc Type = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
@@ -3540,7 +3540,7 @@ fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
             jump _Lfinally
         }
     }
-    byte = static_arr_type[].size - (cast<i64>((? (node[].literal[].value) then (cast<*struc stbds_array_header>((node[].literal[].value)) - 1)[].length else 0))) - 1l
+    byte = static_arr_type[].size - cast<i64>(vec_size(node[].literal[].value)) - 1l
     {
         is_null_term: i32 = byte >= 0l
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
@@ -3643,7 +3643,7 @@ fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit
             jump _Lfinally
         }
     }
-    loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         loop .. while 0 {
             " #@MACRO@:TRY(check_static_init(ctx, node->initializers[i], arr_type->elem_type))"
             _errval = check_static_init(ctx, node[].initializers[i], arr_type[].elem_type)
@@ -3652,8 +3652,8 @@ fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit
             }
         }
     }
-    if cast<u64>(arr_type[].size) > (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) {
-        check_static_no_init(ctx, arr_type[].elem_type, arr_type[].size - (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0))
+    if cast<u64>(arr_type[].size) > vec_size(node[].initializers) {
+        check_static_no_init(ctx, arr_type[].elem_type, arr_type[].size - vec_size(node[].initializers))
     }
     label _Lfinally
     return _errval
@@ -3670,7 +3670,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
         }
     }
     size = 0l
-    loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         if member[].offset ~= size {
             check_static_no_init(ctx, nil, member[].offset - size)
@@ -3782,7 +3782,7 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     }
     init_value[] = make_Initial(@static_inits)
     label _Lfinally
-    loop i: u64 = 0 while i < (? (static_inits) then (cast<*struc stbds_array_header>((static_inits)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(static_inits) .. ++i {
         free_StaticInit(@static_inits[i])
     }
     vec_delete(static_inits)
@@ -4191,8 +4191,8 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
     struct_fmt: string = ? nil then sdsnew(nil) else nil
     type_fmt: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    loop i: u64 = 0 while i < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++i {
-        loop j: u64 = i + 1 while j < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++j {
+    loop i: u64 = 0 while i < vec_size(node[].members) .. ++i {
+        loop j: u64 = i + 1 while j < vec_size(node[].members) .. ++j {
             if node[].members[i][].member_name == node[].members[j][].member_name {
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->members[i]->info_at))"
@@ -4266,7 +4266,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     alignment = 0
     size = 0l
     vec_reserve(member_names, vec_size(node[].members))
-    loop i: u64 = 0 while i < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].members) .. ++i {
         {
             name: u64 = node[].members[i][].member_name
             vec_push_back(member_names, name)
@@ -4420,7 +4420,7 @@ fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) i32 {
             jump _Lfinally
         }
     }
-    node[].target = repr_case_identifier(ctx[].identifiers, ctx[].p_switch_statement[].target, false, (? (ctx[].p_switch_statement[].cases) then (cast<*struc stbds_array_header>((ctx[].p_switch_statement[].cases)) - 1)[].length else 0))
+    node[].target = repr_case_identifier(ctx[].identifiers, ctx[].p_switch_statement[].target, false, vec_size(ctx[].p_switch_statement[].cases))
     label _Lfinally
     return _errval
 }
@@ -4489,7 +4489,7 @@ fn deannotate_lookup(ctx: *struc SemanticContext) none {
 }
 
 fn is_file_scope(ctx: *struc SemanticContext) i32 {
-    return (? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) == 1
+    return vec_size(ctx[].scoped_identifier_maps) == 1
 }
 
 fn enter_scope(ctx: *struc SemanticContext) none {
@@ -4501,7 +4501,7 @@ fn exit_scope(ctx: *struc SemanticContext) none {
     loop i: u64 = 0 while i < (? ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) then (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].length - 1 else 0) .. ++i {
         identifier: u64 = ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1][i]).key
         map_it: i64 = (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp)
-        if map_it ~= -1 and (ctx[].extern_scope_map[map_it]).value == (? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) {
+        if map_it ~= -1 and (ctx[].extern_scope_map[map_it]).value == vec_size(ctx[].scoped_identifier_maps) {
             loop .. while 0 {
                 " #@MACRO@:map_erase(ctx->extern_scope_map, identifier)"
                 (? ((ctx[].extern_scope_map) = stbds_hmdel_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), (cast<string>(@((ctx[].extern_scope_map))[].key) - cast<string>(((ctx[].extern_scope_map)))), 0)) then (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp else 0)
@@ -4594,7 +4594,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
     elif (? ((ctx[].struct_def_set) = stbds_hmget_key((ctx[].struct_def_set), sizeof((ctx[].struct_def_set)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_def_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp) ~= -1 {
         jump _Lfinally
     }
-    loop i: u64 = (? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = (? ((ctx[].scoped_struct_maps[i]) = stbds_hmget_key((ctx[].scoped_struct_maps[i]), sizeof((ctx[].scoped_struct_maps[i])[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].scoped_struct_maps[i])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].scoped_struct_maps[i]) - 1)) - 1)[].temp)
         if map_it ~= -1 {
             structure: *struc Structure = @(ctx[].scoped_struct_maps[i][map_it]).value
@@ -4688,7 +4688,7 @@ fn reslv_string_exp(node: *struc CString) none {
 fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     name_fmt: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    loop i: u64 = (? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = (? ((ctx[].scoped_identifier_maps[i]) = stbds_hmget_key((ctx[].scoped_identifier_maps[i]), sizeof((ctx[].scoped_identifier_maps[i])[]), cast<*any>(@((node[].name))), sizeof((ctx[].scoped_identifier_maps[i])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].scoped_identifier_maps[i]) - 1)) - 1)[].temp)
         if map_it ~= -1 {
             node[].name = (ctx[].scoped_identifier_maps[i][map_it]).value
@@ -4851,7 +4851,7 @@ fn reslv_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
 fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     name_fmt: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    loop i: u64 = (? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = (? ((ctx[].scoped_identifier_maps[i]) = stbds_hmget_key((ctx[].scoped_identifier_maps[i]), sizeof((ctx[].scoped_identifier_maps[i])[]), cast<*any>(@((node[].name))), sizeof((ctx[].scoped_identifier_maps[i])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].scoped_identifier_maps[i]) - 1)) - 1)[].temp)
         if map_it ~= -1 {
             node[].name = (ctx[].scoped_identifier_maps[i][map_it]).value
@@ -4865,7 +4865,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         jump _Lfinally
     }
     label Lelse
-    loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->args[i]))"
             _errval = reslv_typed_exp(ctx, @node[].args[i])
@@ -5813,7 +5813,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
 
 fn reslv_block_items(ctx: *struc SemanticContext, node_list: **struc CBlockItem) i32 {
     _errval: i32 = 0
-    loop i: u64 = 0 while i < (? (node_list) then (cast<*struc stbds_array_header>((node_list)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {
             -> AST_CS_t {
                 loop .. while 0 {
@@ -5900,7 +5900,7 @@ fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
             jump _Lfinally
         }
     }
-    loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_initializer(ctx, node->initializers[i], &arr_type->elem_type))"
             _errval = reslv_initializer(ctx, node[].initializers[i], @arr_type[].elem_type)
@@ -5923,7 +5923,7 @@ fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
             jump _Lfinally
         }
     }
-    loop i: u64 = 0 while i < (? (node[].initializers) then (cast<*struc stbds_array_header>((node[].initializers)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_initializer(ctx, node->initializers[i], &member->member_type))"
@@ -6014,7 +6014,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
 fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
     name_fmt: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    loop i: u64 = 0 while i < (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
         if (? (((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmget_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((param))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp) ~= -1 {
             loop .. while 0 {
@@ -6483,7 +6483,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
 fn resolve_program(ctx: *struc SemanticContext, node: *struc CProgram) i32 {
     _errval: i32 = 0
     enter_scope(ctx)
-    loop i: u64 = 0 while i < (? (node[].declarations) then (cast<*struc stbds_array_header>((node[].declarations)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].declarations) .. ++i {
         loop .. while 0 {
             " #@MACRO@:TRY(reslv_declaration(ctx, node->declarations[i]))"
             _errval = reslv_declaration(ctx, node[].declarations[i])
@@ -6539,7 +6539,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
         }
         ctx.goto_map = map_new()
     }
-    loop i: u64 = 0 while i < (? (ctx.scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx.scoped_identifier_maps)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx.scoped_identifier_maps) .. ++i {
         if ctx.scoped_identifier_maps[i] {
             " #@MACRO@:map_delete(ctx.scoped_identifier_maps[i])"
             loop .. while 0 {
@@ -6550,7 +6550,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
         }
     }
     vec_delete(ctx.scoped_identifier_maps)
-    loop i: u64 = 0 while i < (? (ctx.scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx.scoped_struct_maps)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx.scoped_struct_maps) .. ++i {
         if ctx.scoped_struct_maps[i] {
             " #@MACRO@:map_delete(ctx.scoped_struct_maps[i])"
             loop .. while 0 {
@@ -6615,7 +6615,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
         }
         errors[].info_at_map = map_new()
     }
-    loop i: u64 = 0 while i < (? (errors[].fopen_lines) then (cast<*struc stbds_array_header>((errors[].fopen_lines)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(errors[].fopen_lines) .. ++i {
         if errors[].fopen_lines[i].filename {
             " #@MACRO@:str_delete(errors->fopen_lines[i].filename)"
             sdsfree(errors[].fopen_lines[i].filename)

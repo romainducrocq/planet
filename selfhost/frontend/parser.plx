@@ -32,7 +32,7 @@ fn expect_next(ctx: *struc ParserContext, next_tok: *struc Token, expect_tok: i3
 
 fn pop_next(ctx: *struc ParserContext) i32 {
     _errval: i32 = 0
-    if ctx[].pop_idx >= (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
+    if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*ctx->p_toks)[((*ctx->p_toks) ? ((struct stbds_array_header*)(*ctx->p_toks)-1)->length : 0) - 1].info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
@@ -48,7 +48,7 @@ fn pop_next(ctx: *struc ParserContext) i32 {
 
 fn peek_next(ctx: *struc ParserContext) i32 {
     _errval: i32 = 0
-    if ctx[].pop_idx >= (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
+    if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*ctx->p_toks)[((*ctx->p_toks) ? ((struct stbds_array_header*)(*ctx->p_toks)-1)->length : 0) - 1].info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
@@ -74,7 +74,7 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
         ctx[].peek_tok_i = ctx[].peek_tok
         jump _Lfinally
     }
-    if ctx[].pop_idx + i >= (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
+    if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*ctx->p_toks)[((*ctx->p_toks) ? ((struct stbds_array_header*)(*ctx->p_toks)-1)->length : 0) - 1].info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
@@ -1015,7 +1015,7 @@ fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     }
     exp[] = make_CFunctionCall(name, @args, info_at)
     label _Lfinally
-    loop i: u64 = 0 while i < (? (args) then (cast<*struc stbds_array_header>((args)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(args) .. ++i {
         free_CExp(@args[i])
     }
     vec_delete(args)
@@ -3243,7 +3243,7 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     block[] = make_CB(@block_items)
     label _Lfinally
     free_CBlockItem(@block_item)
-    loop i: u64 = 0 while i < (? (block_items) then (cast<*struc stbds_array_header>((block_items)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(block_items) .. ++i {
         free_CBlockItem(@block_items[i])
     }
     vec_delete(block_items)
@@ -3384,7 +3384,7 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
     }
     initializer[] = make_CCompoundInit(@initializers)
     label _Lfinally
-    loop i: u64 = 0 while i < (? (initializers) then (cast<*struc stbds_array_header>((initializers)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(initializers) .. ++i {
         free_CInitializer(@initializers[i])
     }
     vec_delete(initializers)
@@ -3615,7 +3615,7 @@ fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: 
     }
     fun_type[] = make_FunType(@param_types, fun_type)
     label _Lfinally
-    loop i: u64 = 0 while i < (? (param_types) then (cast<*struc stbds_array_header>((param_types)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(param_types) .. ++i {
         free_Type(@param_types[i])
     }
     vec_delete(param_types)
@@ -3861,7 +3861,7 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
     }
     struct_decl[] = make_CStructDeclaration(tag_name, is_union, @members, info_at)
     label _Lfinally
-    loop i: u64 = 0 while i < (? (members) then (cast<*struc stbds_array_header>((members)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(members) .. ++i {
         free_CMemberDeclaration(@members[i])
     }
     vec_delete(members)
@@ -4030,7 +4030,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     declaration: *struc CDeclaration = uptr_new()
     declarations: **struc CDeclaration = vec_new()
     _errval: i32 = 0
-    loop while ctx[].pop_idx < (? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) {
+    loop while ctx[].pop_idx < vec_size(ctx[].p_toks[]) {
         storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
         loop .. while 0 {
             " #@MACRO@:TRY(peek_next(ctx))"
@@ -4073,7 +4073,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     c_ast[] = make_CProgram(@declarations)
     label _Lfinally
     free_CDeclaration(@declaration)
-    loop i: u64 = 0 while i < (? (declarations) then (cast<*struc stbds_array_header>((declarations)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(declarations) .. ++i {
         free_CDeclaration(@declarations[i])
     }
     vec_delete(declarations)
@@ -4097,6 +4097,7 @@ pub fn parse_tokens(tokens: **struc Token, errors: *struc ErrorsContext, identif
             jump _Lfinally
         }
     }
+    # TODO THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
     label _Lfinally
     vec_delete(tokens[])
     return _errval

@@ -1172,7 +1172,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
 fn push_token_info(ctx: *struc LexerContext) u64 {
     token_info: struc TokenInfo = $(cast<i32>(ctx[].match_at), cast<i32>(ctx[].match_size), ctx[].total_linenum)
     vec_push_back(ctx[].errors[].token_infos, token_info)
-    return (? (ctx[].errors[].token_infos) then (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length else 0) - 1
+    return vec_size(ctx[].errors[].token_infos) - 1
 }
 
 fn tokenize_file(ctx: *struc LexerContext) i32 {
@@ -1298,7 +1298,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
 }
 
 fn find_include(dirnames: *string, filename: *string) i32 {
-    loop i: u64 = 0 while i < (? (dirnames) then (cast<*struc stbds_array_header>((dirnames)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(dirnames) .. ++i {
         dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
         loop .. while 0 {
             " #@MACRO@:str_append(dirname, *filename)"
@@ -1591,7 +1591,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
         }
         ;
     }
-    loop i: u64 = 0 while i < (? (fileio[].file_reads) then (cast<*struc stbds_array_header>((fileio[].file_reads)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(fileio[].file_reads) .. ++i {
         if fileio[].file_reads[i].filename {
             " #@MACRO@:str_delete(fileio->file_reads[i].filename)"
             sdsfree(fileio[].file_reads[i].filename)

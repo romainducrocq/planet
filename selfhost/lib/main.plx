@@ -366,7 +366,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         }
         errors.info_at_map = map_new()
     }
-    loop i: u64 = 0 while i < (? (errors.fopen_lines) then (cast<*struc stbds_array_header>((errors.fopen_lines)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(errors.fopen_lines) .. ++i {
         if errors.fopen_lines[i].filename {
             " #@MACRO@:str_delete(errors.fopen_lines[i].filename)"
             sdsfree(errors.fopen_lines[i].filename)
@@ -385,7 +385,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         sdsfree(fileio.filename)
         fileio.filename = ? nil then sdsnew(nil) else nil
     }
-    loop i: u64 = 0 while i < (? (fileio.file_reads) then (cast<*struc stbds_array_header>((fileio.file_reads)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(fileio.file_reads) .. ++i {
         if fileio.file_reads[i].filename {
             " #@MACRO@:str_delete(fileio.file_reads[i].filename)"
             sdsfree(fileio.file_reads[i].filename)
