@@ -858,7 +858,7 @@ fn emit_instr(ctx: *struc GasCodeContext, node: *struc AsmInstruction) none {
 }
 
 fn emit_instr_list(ctx: *struc GasCodeContext, node_list: **struc AsmInstruction) none {
-    loop i: u64 = ? node_list[0] then 0 else 1 while i < (? (node_list) then (cast<*struc stbds_array_header>((node_list)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = ? node_list[0] then 0 else 1 while i < vec_size(node_list) .. ++i {
         emit_instr(ctx, node_list[i])
     }
 }
@@ -880,7 +880,7 @@ fn emit_fun_toplvl(ctx: *struc GasCodeContext, node: *struc AsmFunction) none {
 }
 
 fn static_section_toplvl(ctx: *struc GasCodeContext, node_list: **struc StaticInit) none {
-    if (? (node_list) then (cast<*struc stbds_array_header>((node_list)) - 1)[].length else 0) == 1 and node_list[0][].tag == AST_ZeroInit_t {
+    if vec_size(node_list) == 1 and node_list[0][].tag == AST_ZeroInit_t {
         emit(ctx, "    "             ".bss"             "\n")
     }
     else {
@@ -975,7 +975,7 @@ fn emit_static_var_toplvl(ctx: *struc GasCodeContext, node: *struc AsmStaticVari
     align_directive_toplvl(ctx, node[].alignment)
     emit_identifier(ctx, node[].name)
     emit(ctx, ":"         "\n")
-    loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
         static_init_toplvl(ctx, node[].static_inits[i])
     }
 }
@@ -1011,10 +1011,10 @@ fn emit_toplvl(ctx: *struc GasCodeContext, node: *struc AsmTopLevel) none {
 }
 
 fn emit_program(ctx: *struc GasCodeContext, node: *struc AsmProgram) none {
-    loop i: u64 = 0 while i < (? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         emit_toplvl(ctx, node[].static_const_toplvls[i])
     }
-    loop i: u64 = 0 while i < (? (node[].top_levels) then (cast<*struc stbds_array_header>((node[].top_levels)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].top_levels) .. ++i {
         emit_toplvl(ctx, node[].top_levels[i])
     }
     emit(ctx, "    "         "    "         ".section .note.GNU-stack,\"\",@progbits"         "\n")

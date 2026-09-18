@@ -1661,7 +1661,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
 
             vec_move_back(byte_instrs, byte_instr)
         }
-        loop i: u64 = (? (byte_instrs) then (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length else 0) while i-- > 0 {
+        loop i: u64 = vec_size(byte_instrs) while i-- > 0 {
             push_instr(ctx, byte_instrs[i])
             byte_instrs[i] = uptr_new()
         }
@@ -1701,7 +1701,7 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
     stack_padding: i64 = 0l
     stack_instrs: **struc AsmInstruction = vec_new()
     p_instrs: ***struc AsmInstruction = ctx[].p_instrs
-    loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         arg: *struc TacValue = node[].args[i]
         if is_value_dbl(ctx, arg) {
             if sse_size < 8 {
@@ -1778,7 +1778,7 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
         stack_padding++
     }
     stack_padding *= 8l
-    loop i: u64 = (? (stack_instrs) then (cast<*struc stbds_array_header>((stack_instrs)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(stack_instrs) while i-- > 0 {
         push_instr(ctx, stack_instrs[i])
         stack_instrs[i] = uptr_new()
     }
@@ -3192,7 +3192,7 @@ fn gen_instr(ctx: *struc AsmGenContext, node: *struc TacInstruction) none {
 }
 
 fn gen_instr_list(ctx: *struc AsmGenContext, node_list: **struc TacInstruction) none {
-    loop i: u64 = 0 while i < (? (node_list) then (cast<*struc stbds_array_header>((node_list)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         if node_list[i] {
             gen_instr(ctx, node_list[i])
         }
@@ -3268,7 +3268,7 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
     stack_bytes: i64 = 16l
-    loop i: u64 = 0 while i < (? (node[].params) then (cast<*struc stbds_array_header>((node[].params)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
         param_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((param))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
         if param_type[].tag == AST_Double_t {
@@ -3373,7 +3373,7 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_inits: **struc StaticInit = vec_new()
     vec_reserve(static_inits, vec_size(node[].static_inits))
-    loop i: u64 = 0 while i < (? (node[].static_inits) then (cast<*struc stbds_array_header>((node[].static_inits)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
         static_init: *struc StaticInit = sptr_new()
         if node[].static_inits[i] ~= static_init {
             " #@MACRO@:sptr_copy(StaticInit, node->static_inits[i], static_init)"
@@ -3430,7 +3430,7 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
 fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmProgram {
     static_const_toplvls: **struc AsmTopLevel = vec_new()
     vec_reserve(static_const_toplvls, vec_size(node[].static_const_toplvls))
-    loop i: u64 = 0 while i < (? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         static_const_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_const_toplvls[i])
         vec_move_back(static_const_toplvls, static_const_toplvl)
     }
@@ -3438,11 +3438,11 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
     vec_reserve(top_levels, vec_size(node[].static_var_toplvls) + vec_size(node[].fun_toplvls))
     {
         ctx[].p_static_consts = @static_const_toplvls
-        loop i: u64 = 0 while i < (? (node[].static_var_toplvls) then (cast<*struc stbds_array_header>((node[].static_var_toplvls)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(node[].static_var_toplvls) .. ++i {
             static_var_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_var_toplvls[i])
             vec_move_back(top_levels, static_var_toplvl)
         }
-        loop i: u64 = 0 while i < (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(node[].fun_toplvls) .. ++i {
             fun_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].fun_toplvls[i])
             vec_move_back(top_levels, fun_toplvl)
         }
