@@ -151,7 +151,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
         }
         break
         -> AST_BackendFun_t {
-            loop i: u64 = 0 while i < (? ((self[])[].get._BackendFun.callee_saved_regs) then (cast<*struc stbds_array_header>(((self[])[].get._BackendFun.callee_saved_regs)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(self[][].get._BackendFun.callee_saved_regs) .. ++i {
                 free_AsmOperand(@(self[])[].get._BackendFun.callee_saved_regs[i])
             }
         }
