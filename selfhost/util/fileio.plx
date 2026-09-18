@@ -74,13 +74,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
         }
         file_read.filename = sdsdup(filename)
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->file_reads, file_read)"
-        loop .. while 0 {
-            (? (not (ctx[].file_reads) or (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].capacity) then (((ctx[].file_reads) = stbds_arrgrowf((ctx[].file_reads), sizeof((ctx[].file_reads)[]), (1), (0))) and 0) else 0)
-            (ctx[].file_reads)[(cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length++] = (file_read)
-        }
-    }
+    vec_push_back(ctx[].file_reads, file_read)
     label _Lfinally
     return _errval
 }

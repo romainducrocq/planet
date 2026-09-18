@@ -304,13 +304,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->stdlibdirs, (char*)argv[i])"
-        loop .. while 0 {
-            (? (not (ctx[].stdlibdirs) or (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].capacity) then (((ctx[].stdlibdirs) = stbds_arrgrowf((ctx[].stdlibdirs), sizeof((ctx[].stdlibdirs)[]), (1), (0))) and 0) else 0)
-            (ctx[].stdlibdirs)[(cast<*struc stbds_array_header>((ctx[].stdlibdirs)) - 1)[].length++] = (cast<string>(argv[i]))
-        }
-    }
+    vec_push_back(ctx[].stdlibdirs, cast<string>(argv[i]))
     if not argv[++i] {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
@@ -319,15 +313,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             jump _Lfinally
         }
     }
-    loop .. while argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(ctx->includedirs, (char*)argv[i])"
-            loop .. while 0 {
-                (? (not (ctx[].includedirs) or (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].capacity) then (((ctx[].includedirs) = stbds_arrgrowf((ctx[].includedirs), sizeof((ctx[].includedirs)[]), (1), (0))) and 0) else 0)
-                (ctx[].includedirs)[(cast<*struc stbds_array_header>((ctx[].includedirs)) - 1)[].length++] = (cast<string>(argv[i]))
-            }
-        }
-    }
+    vec_push_back(ctx[].includedirs, cast<string>(argv[i]))
     label _Lfinally
     return _errval
 }

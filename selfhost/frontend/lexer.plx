@@ -1171,13 +1171,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
 
 fn push_token_info(ctx: *struc LexerContext) u64 {
     token_info: struc TokenInfo = $(cast<i32>(ctx[].match_at), cast<i32>(ctx[].match_size), ctx[].total_linenum)
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->errors->token_infos, token_info)"
-        loop .. while 0 {
-            (? (not (ctx[].errors[].token_infos) or (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].capacity) then (((ctx[].errors[].token_infos) = stbds_arrgrowf((ctx[].errors[].token_infos), sizeof((ctx[].errors[].token_infos)[]), (1), (0))) and 0) else 0)
-            (ctx[].errors[].token_infos)[(cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length++] = (token_info)
-        }
-    }
+    vec_push_back(ctx[].errors[].token_infos, token_info)
     return (? (ctx[].errors[].token_infos) then (cast<*struc stbds_array_header>((ctx[].errors[].token_infos)) - 1)[].length else 0) - 1
 }
 
@@ -1285,13 +1279,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
             ;
             info_at: u64 = push_token_info(ctx)
             token: struc Token = $(match_kind, match_tok, info_at)
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(*ctx->p_toks, token)"
-                loop .. while 0 {
-                    (? (not (ctx[].p_toks[]) or (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].capacity) then (((ctx[].p_toks[]) = stbds_arrgrowf((ctx[].p_toks[]), sizeof((ctx[].p_toks[])[]), (1), (0))) and 0) else 0)
-                    (ctx[].p_toks[])[(cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length++] = (token)
-                }
-            }
+            vec_push_back(ctx[].p_toks[], token)
             if match_kind == TOK_line_break {
                 break
             }
@@ -1484,13 +1472,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             filename = ? nil then sdsnew(nil) else nil
         }
         ;
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(ctx->errors->fopen_lines, fopen_line)"
-            loop .. while 0 {
-                (? (not (ctx[].errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].capacity) then (((ctx[].errors[].fopen_lines) = stbds_arrgrowf((ctx[].errors[].fopen_lines), sizeof((ctx[].errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
-                (ctx[].errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
-            }
-        }
+        vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
     loop .. while 0 {
         " #@MACRO@:TRY(tokenize_file(ctx))"
@@ -1520,13 +1502,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             fopen_name = ? nil then sdsnew(nil) else nil
         }
         ;
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(ctx->errors->fopen_lines, fopen_line)"
-            loop .. while 0 {
-                (? (not (ctx[].errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].capacity) then (((ctx[].errors[].fopen_lines) = stbds_arrgrowf((ctx[].errors[].fopen_lines), sizeof((ctx[].errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
-                (ctx[].errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
-            }
-        }
+        vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
     ctx[].line = line
     ctx[].line_size = line_size
@@ -1584,13 +1560,7 @@ pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string,
             fopen_line.filename = sdsdup(filename)
         }
         ;
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(ctx.errors->fopen_lines, fopen_line)"
-            loop .. while 0 {
-                (? (not (ctx.errors[].fopen_lines) or (cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].capacity) then (((ctx.errors[].fopen_lines) = stbds_arrgrowf((ctx.errors[].fopen_lines), sizeof((ctx.errors[].fopen_lines)[]), (1), (0))) and 0) else 0)
-                (ctx.errors[].fopen_lines)[(cast<*struc stbds_array_header>((ctx.errors[].fopen_lines)) - 1)[].length++] = (fopen_line)
-            }
-        }
+        vec_push_back(ctx.errors[].fopen_lines, fopen_line)
     }
     loop .. while 0 {
         " #@MACRO@:TRY(tokenize_file(&ctx))"
