@@ -72,7 +72,6 @@ m4_define(`vec_clear', `if $1 {
 }')m4_dnl
 #TODO
 m4_define(`vec_empty', `(vec_size($1) == 0)')m4_dnl
-#TODO
 m4_define(`vec_move_back', `{
     vec_push_back($1, $2)
     $2 = nil

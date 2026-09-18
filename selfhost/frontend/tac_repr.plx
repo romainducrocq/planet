@@ -163,17 +163,7 @@ fn repr_value(node: *struc CExp) *struc TacValue {
 }
 
 fn push_instr(ctx: *struc TacReprContext, instr: *struc TacInstruction) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_instrs, instr)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_instrs, instr)"
-            loop .. while 0 {
-                (? (not (ctx[].p_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].capacity) then (((ctx[].p_instrs[]) = stbds_arrgrowf((ctx[].p_instrs[]), sizeof((ctx[].p_instrs[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length++] = (instr)
-            }
-        }
-        instr = nil
-    }
+    vec_move_back(ctx[].p_instrs[], instr)
 }
 fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacExpResult;
 fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue;
@@ -929,17 +919,7 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc
     vec_reserve(args, vec_size(node[].args))
     loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
         arg: *struc TacValue = repr_exp_instr(ctx, node[].args[i])
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(args, arg)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(args, arg)"
-                loop .. while 0 {
-                    (? (not (args) or (cast<*struc stbds_array_header>((args)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args)) - 1)[].capacity) then (((args) = stbds_arrgrowf((args), sizeof((args)[]), (1), (0))) and 0) else 0)
-                    (args)[(cast<*struc stbds_array_header>((args)) - 1)[].length++] = (arg)
-                }
-            }
-            arg = nil
-        }
+        vec_move_back(args, arg)
     }
     dst: *struc TacValue = sptr_new()
     if node[]._base[].exp_type[].tag ~= AST_Void_t {
@@ -1875,17 +1855,7 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
 }
 
 fn push_toplvl(ctx: *struc TacReprContext, top_level: *struc TacTopLevel) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_toplvls, top_level)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_toplvls, top_level)"
-            loop .. while 0 {
-                (? (not (ctx[].p_toplvls[]) or (cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].capacity) then (((ctx[].p_toplvls[]) = stbds_arrgrowf((ctx[].p_toplvls[]), sizeof((ctx[].p_toplvls[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_toplvls[])[(cast<*struc stbds_array_header>((ctx[].p_toplvls[])) - 1)[].length++] = (top_level)
-            }
-        }
-        top_level = nil
-    }
+    vec_move_back(ctx[].p_toplvls[], top_level)
 }
 
 fn fun_decl_toplvl(ctx: *struc TacReprContext, node: *struc CFunDecl) none {
@@ -1916,17 +1886,7 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
     {
         byte: i64 = get_type_scale(ctx, static_init_type)
         static_init: *struc StaticInit = make_ZeroInit(byte)
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(static_inits, static_init)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(static_inits, static_init)"
-                loop .. while 0 {
-                    (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
-                    (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
-                }
-            }
-            static_init = nil
-        }
+        vec_move_back(static_inits, static_init)
     }
 
     return static_inits
@@ -1943,17 +1903,7 @@ fn initial_static_toplvl(node: *struc Initial) **struc StaticInit {
             static_init = node[].static_inits[i]
             (static_init)[]._ref_count++
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(static_inits, static_init)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(static_inits, static_init)"
-                loop .. while 0 {
-                    (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
-                    (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
-                }
-            }
-            static_init = nil
-        }
+        vec_move_back(static_inits, static_init)
     }
     return static_inits
 }
@@ -1990,17 +1940,7 @@ fn repr_static_var_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbo
 }
 
 fn push_static_const_toplvl(ctx: *struc TacReprContext, static_const_toplvls: *struc TacTopLevel) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_static_consts, static_const_toplvls)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_static_consts, static_const_toplvls)"
-            loop .. while 0 {
-                (? (not (ctx[].p_static_consts[]) or (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].capacity) then (((ctx[].p_static_consts[]) = stbds_arrgrowf((ctx[].p_static_consts[]), sizeof((ctx[].p_static_consts[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_static_consts[])[(cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length++] = (static_const_toplvls)
-            }
-        }
-        static_const_toplvls = nil
-    }
+    vec_move_back(ctx[].p_static_consts[], static_const_toplvls)
 }
 
 fn repr_static_const_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbol: u64) none {
