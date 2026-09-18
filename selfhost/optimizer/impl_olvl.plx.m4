@@ -1130,13 +1130,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     ctx[].dfa[].set_size = 0
     ctx[].dfa[].incoming_idx = (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0)
     if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
-        loop .. while 0 {
-            " #@MACRO@:vec_resize(ctx->dfa->open_data_map, vec_size(ctx->cfg->blocks))"
-            loop .. while 0 {
-                (? (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].dfa[].open_data_map)) = stbds_arrgrowf(((ctx[].dfa[].open_data_map)), sizeof(((ctx[].dfa[].open_data_map))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-                ? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
-            }
-        }
+        vec_resize(ctx[].dfa[].open_data_map, vec_size(ctx[].cfg[].blocks))
     }
     {
         i: u64;
@@ -1146,23 +1140,11 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         i = 2
 ')m4_dnl
         if (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length else 0) < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i {
-            loop .. while 0 {
-                " #@MACRO@:vec_resize(ctx->dfa->instr_idx_map, vec_size(*ctx->p_instrs) + i)"
-                loop .. while 0 {
-                    (? (? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) then ((((ctx[].dfa[].instr_idx_map)) = stbds_arrgrowf(((ctx[].dfa[].instr_idx_map)), sizeof(((ctx[].dfa[].instr_idx_map))[]), (0), (cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)))))) and 0 else 0)
-                    ? (ctx[].dfa[].instr_idx_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].instr_idx_map)) - 1)[].length = cast<u64>(((? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) + i)) else 0
-                }
-            }
+            vec_resize(ctx[].dfa[].instr_idx_map, vec_size(ctx[].p_instrs[]) + i)
         }
     }
     if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
-        loop .. while 0 {
-            " #@MACRO@:vec_resize(ctx->cfg->reaching_code, vec_size(ctx->cfg->blocks))"
-            loop .. while 0 {
-                (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))))))) and 0 else 0)
-                ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>(((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))) else 0
-            }
-        }
+        vec_resize(ctx[].cfg[].reaching_code, vec_size(ctx[].cfg[].blocks))
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
     instrs_mask_sets_size: u64 = 0
@@ -1480,13 +1462,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
 m4_ifelse(__OPTIM_LEVEL__, `2', `
     if (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length else 0) < ctx[].dfa[].set_size {
-        loop .. while 0 {
-            " #@MACRO@:vec_resize(ctx->dfa_o2->data_name_map, ctx->dfa->set_size)"
-            loop .. while 0 {
-                (? (? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].dfa_o2[].data_name_map)) = stbds_arrgrowf(((ctx[].dfa_o2[].data_name_map)), sizeof(((ctx[].dfa_o2[].data_name_map))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
-                ? (ctx[].dfa_o2[].data_name_map) then (cast<*struc stbds_array_header>((ctx[].dfa_o2[].data_name_map)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
-            }
-        }
+        vec_resize(ctx[].dfa_o2[].data_name_map, ctx[].dfa[].set_size)
     }
     ctx[].dfa[].set_size += REGISTER_MASK_SIZE
 ')m4_dnl
@@ -1506,22 +1482,10 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     instrs_mask_sets_size *= ctx[].dfa[].mask_size
     blocks_mask_sets_size: u64 = ctx[].dfa[].mask_size * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
     if (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length else 0) < blocks_mask_sets_size {
-        loop .. while 0 {
-            " #@MACRO@:vec_resize(ctx->dfa->blocks_mask_sets, blocks_mask_sets_size)"
-            loop .. while 0 {
-                (? (? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].capacity else 0) < cast<u64>((blocks_mask_sets_size)) then ((((ctx[].dfa[].blocks_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].blocks_mask_sets)), sizeof(((ctx[].dfa[].blocks_mask_sets))[]), (0), (cast<u64>((blocks_mask_sets_size)))))) and 0 else 0)
-                ? (ctx[].dfa[].blocks_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].blocks_mask_sets)) - 1)[].length = cast<u64>((blocks_mask_sets_size)) else 0
-            }
-        }
+        vec_resize(ctx[].dfa[].blocks_mask_sets, blocks_mask_sets_size)
     }
     if (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length else 0) < instrs_mask_sets_size {
-        loop .. while 0 {
-            " #@MACRO@:vec_resize(ctx->dfa->instrs_mask_sets, instrs_mask_sets_size)"
-            loop .. while 0 {
-                (? (? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].capacity else 0) < cast<u64>((instrs_mask_sets_size)) then ((((ctx[].dfa[].instrs_mask_sets)) = stbds_arrgrowf(((ctx[].dfa[].instrs_mask_sets)), sizeof(((ctx[].dfa[].instrs_mask_sets))[]), (0), (cast<u64>((instrs_mask_sets_size)))))) and 0 else 0)
-                ? (ctx[].dfa[].instrs_mask_sets) then (cast<*struc stbds_array_header>((ctx[].dfa[].instrs_mask_sets)) - 1)[].length = cast<u64>((instrs_mask_sets_size)) else 0
-            }
-        }
+        vec_resize(ctx[].dfa[].instrs_mask_sets, instrs_mask_sets_size)
 m4_ifelse(__OPTIM_LEVEL__, `2', `
         memset(ctx[].dfa[].instrs_mask_sets, 0ul, sizeof<u64> * instrs_mask_sets_size)
 ')m4_dnl
@@ -1546,13 +1510,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             }
         }
         if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < ctx[].dfa[].set_size {
-            loop .. while 0 {
-                " #@MACRO@:vec_resize(ctx->cfg->reaching_code, ctx->dfa->set_size)"
-                loop .. while 0 {
-                    (? (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].capacity else 0) < cast<u64>((ctx[].dfa[].set_size)) then ((((ctx[].cfg[].reaching_code)) = stbds_arrgrowf(((ctx[].cfg[].reaching_code)), sizeof(((ctx[].cfg[].reaching_code))[]), (0), (cast<u64>((ctx[].dfa[].set_size)))))) and 0 else 0)
-                    ? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length = cast<u64>((ctx[].dfa[].set_size)) else 0
-                }
-            }
+            vec_resize(ctx[].cfg[].reaching_code, ctx[].dfa[].set_size)
         }
         loop j: u64 = (? (ctx[].dfa_o1[].bak_instrs) then (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length else 0) while j <= ctx[].dfa[].set_size .. ++j {
             loop .. while 0 {
