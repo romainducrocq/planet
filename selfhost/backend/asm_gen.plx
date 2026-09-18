@@ -731,17 +731,7 @@ fn ret_2_reg_mask(fun_type: *struc FunType, reg_size: i32, sse_size: i32) none {
 }
 
 fn push_instr(ctx: *struc AsmGenContext, instr: *struc AsmInstruction) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_instrs, instr)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_instrs, instr)"
-            loop .. while 0 {
-                (? (not (ctx[].p_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].capacity) then (((ctx[].p_instrs[]) = stbds_arrgrowf((ctx[].p_instrs[]), sizeof((ctx[].p_instrs[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length++] = (instr)
-            }
-        }
-        instr = nil
-    }
+    vec_move_back(ctx[].p_instrs[], instr)
 }
 
 fn ret_int_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
@@ -1669,17 +1659,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
                 byte_instr = make_AsmMov(@asm_type_src, @src, @dst)
             }
 
-            loop .. while 0 {
-                " #@MACRO@:vec_move_back(byte_instrs, byte_instr)"
-                loop .. while 0 {
-                    " #@MACRO@:vec_push_back(byte_instrs, byte_instr)"
-                    loop .. while 0 {
-                        (? (not (byte_instrs) or (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].capacity) then (((byte_instrs) = stbds_arrgrowf((byte_instrs), sizeof((byte_instrs)[]), (1), (0))) and 0) else 0)
-                        (byte_instrs)[(cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length++] = (byte_instr)
-                    }
-                }
-                byte_instr = nil
-            }
+            vec_move_back(byte_instrs, byte_instr)
         }
         loop i: u64 = (? (byte_instrs) then (cast<*struc stbds_array_header>((byte_instrs)) - 1)[].length else 0) while i-- > 0 {
             push_instr(ctx, byte_instrs[i])
@@ -3401,33 +3381,13 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
             static_init = node[].static_inits[i]
             (static_init)[]._ref_count++
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(static_inits, static_init)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(static_inits, static_init)"
-                loop .. while 0 {
-                    (? (not (static_inits) or (cast<*struc stbds_array_header>((static_inits)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_inits)) - 1)[].capacity) then (((static_inits) = stbds_arrgrowf((static_inits), sizeof((static_inits)[]), (1), (0))) and 0) else 0)
-                    (static_inits)[(cast<*struc stbds_array_header>((static_inits)) - 1)[].length++] = (static_init)
-                }
-            }
-            static_init = nil
-        }
+        vec_move_back(static_inits, static_init)
     }
     return make_AsmStaticVariable(name, alignment, is_glob, @static_inits)
 }
 
 fn push_static_const_toplvl(ctx: *struc AsmGenContext, static_const_toplvls: *struc AsmTopLevel) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*ctx->p_static_consts, static_const_toplvls)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*ctx->p_static_consts, static_const_toplvls)"
-            loop .. while 0 {
-                (? (not (ctx[].p_static_consts[]) or (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].capacity) then (((ctx[].p_static_consts[]) = stbds_arrgrowf((ctx[].p_static_consts[]), sizeof((ctx[].p_static_consts[])[]), (1), (0))) and 0) else 0)
-                (ctx[].p_static_consts[])[(cast<*struc stbds_array_header>((ctx[].p_static_consts[])) - 1)[].length++] = (static_const_toplvls)
-            }
-        }
-        static_const_toplvls = nil
-    }
+    vec_move_back(ctx[].p_static_consts[], static_const_toplvls)
 }
 
 fn dbl_static_const_toplvl(ctx: *struc AsmGenContext, identifier: u64, dbl_const: u64, byte: i32) none {
@@ -3472,17 +3432,7 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
     vec_reserve(static_const_toplvls, vec_size(node[].static_const_toplvls))
     loop i: u64 = 0 while i < (? (node[].static_const_toplvls) then (cast<*struc stbds_array_header>((node[].static_const_toplvls)) - 1)[].length else 0) .. ++i {
         static_const_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_const_toplvls[i])
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(static_const_toplvls, static_const_toplvl)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(static_const_toplvls, static_const_toplvl)"
-                loop .. while 0 {
-                    (? (not (static_const_toplvls) or (cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].capacity) then (((static_const_toplvls) = stbds_arrgrowf((static_const_toplvls), sizeof((static_const_toplvls)[]), (1), (0))) and 0) else 0)
-                    (static_const_toplvls)[(cast<*struc stbds_array_header>((static_const_toplvls)) - 1)[].length++] = (static_const_toplvl)
-                }
-            }
-            static_const_toplvl = nil
-        }
+        vec_move_back(static_const_toplvls, static_const_toplvl)
     }
     top_levels: **struc AsmTopLevel = vec_new()
     vec_reserve(top_levels, vec_size(node[].static_var_toplvls) + vec_size(node[].fun_toplvls))
@@ -3490,31 +3440,11 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
         ctx[].p_static_consts = @static_const_toplvls
         loop i: u64 = 0 while i < (? (node[].static_var_toplvls) then (cast<*struc stbds_array_header>((node[].static_var_toplvls)) - 1)[].length else 0) .. ++i {
             static_var_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_var_toplvls[i])
-            loop .. while 0 {
-                " #@MACRO@:vec_move_back(top_levels, static_var_toplvl)"
-                loop .. while 0 {
-                    " #@MACRO@:vec_push_back(top_levels, static_var_toplvl)"
-                    loop .. while 0 {
-                        (? (not (top_levels) or (cast<*struc stbds_array_header>((top_levels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((top_levels)) - 1)[].capacity) then (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (1), (0))) and 0) else 0)
-                        (top_levels)[(cast<*struc stbds_array_header>((top_levels)) - 1)[].length++] = (static_var_toplvl)
-                    }
-                }
-                static_var_toplvl = nil
-            }
+            vec_move_back(top_levels, static_var_toplvl)
         }
         loop i: u64 = 0 while i < (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0) .. ++i {
             fun_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].fun_toplvls[i])
-            loop .. while 0 {
-                " #@MACRO@:vec_move_back(top_levels, fun_toplvl)"
-                loop .. while 0 {
-                    " #@MACRO@:vec_push_back(top_levels, fun_toplvl)"
-                    loop .. while 0 {
-                        (? (not (top_levels) or (cast<*struc stbds_array_header>((top_levels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((top_levels)) - 1)[].capacity) then (((top_levels) = stbds_arrgrowf((top_levels), sizeof((top_levels)[]), (1), (0))) and 0) else 0)
-                        (top_levels)[(cast<*struc stbds_array_header>((top_levels)) - 1)[].length++] = (fun_toplvl)
-                    }
-                }
-                fun_toplvl = nil
-            }
+            vec_move_back(top_levels, fun_toplvl)
         }
         ctx[].p_static_consts = nil
     }

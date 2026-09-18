@@ -853,17 +853,7 @@ fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*args, arg)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*args, arg)"
-            loop .. while 0 {
-                (? (not (args[]) or (cast<*struc stbds_array_header>((args[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args[])) - 1)[].capacity) then (((args[]) = stbds_arrgrowf((args[]), sizeof((args[])[]), (1), (0))) and 0) else 0)
-                (args[])[(cast<*struc stbds_array_header>((args[])) - 1)[].length++] = (arg)
-            }
-        }
-        arg = nil
-    }
+    vec_move_back(args[], arg)
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -886,17 +876,7 @@ fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(*args, arg)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(*args, arg)"
-                loop .. while 0 {
-                    (? (not (args[]) or (cast<*struc stbds_array_header>((args[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((args[])) - 1)[].capacity) then (((args[]) = stbds_arrgrowf((args[]), sizeof((args[])[]), (1), (0))) and 0) else 0)
-                    (args[])[(cast<*struc stbds_array_header>((args[])) - 1)[].length++] = (arg)
-                }
-            }
-            arg = nil
-        }
+        vec_move_back(args[], arg)
         loop .. while 0 {
             " #@MACRO@:TRY(peek_next(ctx))"
             _errval = peek_next(ctx)
@@ -3208,17 +3188,7 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(block_items, block_item)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(block_items, block_item)"
-            loop .. while 0 {
-                (? (not (block_items) or (cast<*struc stbds_array_header>((block_items)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((block_items)) - 1)[].capacity) then (((block_items) = stbds_arrgrowf((block_items), sizeof((block_items)[]), (1), (0))) and 0) else 0)
-                (block_items)[(cast<*struc stbds_array_header>((block_items)) - 1)[].length++] = (block_item)
-            }
-        }
-        block_item = nil
-    }
+    vec_move_back(block_items, block_item)
     loop while true {
         loop .. while 0 {
             " #@MACRO@:TRY(pop_next(ctx))"
@@ -3261,17 +3231,7 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(block_items, block_item)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(block_items, block_item)"
-                loop .. while 0 {
-                    (? (not (block_items) or (cast<*struc stbds_array_header>((block_items)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((block_items)) - 1)[].capacity) then (((block_items) = stbds_arrgrowf((block_items), sizeof((block_items)[]), (1), (0))) and 0) else 0)
-                    (block_items)[(cast<*struc stbds_array_header>((block_items)) - 1)[].length++] = (block_item)
-                }
-            }
-            block_item = nil
-        }
+        vec_move_back(block_items, block_item)
     }
     loop .. while 0 {
         " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace))"
@@ -3390,17 +3350,7 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(initializers, *initializer)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(initializers, *initializer)"
-            loop .. while 0 {
-                (? (not (initializers) or (cast<*struc stbds_array_header>((initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((initializers)) - 1)[].capacity) then (((initializers) = stbds_arrgrowf((initializers), sizeof((initializers)[]), (1), (0))) and 0) else 0)
-                (initializers)[(cast<*struc stbds_array_header>((initializers)) - 1)[].length++] = (initializer[])
-            }
-        }
-        initializer[] = nil
-    }
+    vec_move_back(initializers, initializer[])
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -3416,17 +3366,7 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(initializers, *initializer)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(initializers, *initializer)"
-                loop .. while 0 {
-                    (? (not (initializers) or (cast<*struc stbds_array_header>((initializers)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((initializers)) - 1)[].capacity) then (((initializers) = stbds_arrgrowf((initializers), sizeof((initializers)[]), (1), (0))) and 0) else 0)
-                    (initializers)[(cast<*struc stbds_array_header>((initializers)) - 1)[].length++] = (initializer[])
-                }
-            }
-            initializer[] = nil
-        }
+        vec_move_back(initializers, initializer[])
         loop .. while 0 {
             " #@MACRO@:TRY(pop_next(ctx))"
             _errval = pop_next(ctx)
@@ -3571,17 +3511,7 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
             (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*param_types, param_type)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*param_types, param_type)"
-            loop .. while 0 {
-                (? (not (param_types[]) or (cast<*struc stbds_array_header>((param_types[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((param_types[])) - 1)[].capacity) then (((param_types[]) = stbds_arrgrowf((param_types[]), sizeof((param_types[])[]), (1), (0))) and 0) else 0)
-                (param_types[])[(cast<*struc stbds_array_header>((param_types[])) - 1)[].length++] = (param_type)
-            }
-        }
-        param_type = nil
-    }
+    vec_move_back(param_types[], param_type)
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -3618,17 +3548,7 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
                 (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(*param_types, param_type)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(*param_types, param_type)"
-                loop .. while 0 {
-                    (? (not (param_types[]) or (cast<*struc stbds_array_header>((param_types[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((param_types[])) - 1)[].capacity) then (((param_types[]) = stbds_arrgrowf((param_types[]), sizeof((param_types[])[]), (1), (0))) and 0) else 0)
-                    (param_types[])[(cast<*struc stbds_array_header>((param_types[])) - 1)[].length++] = (param_type)
-                }
-            }
-            param_type = nil
-        }
+        vec_move_back(param_types[], param_type)
         loop .. while 0 {
             " #@MACRO@:TRY(peek_next(ctx))"
             _errval = peek_next(ctx)
@@ -3857,17 +3777,7 @@ fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclara
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_move_back(*members, member)"
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*members, member)"
-            loop .. while 0 {
-                (? (not (members[]) or (cast<*struc stbds_array_header>((members[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((members[])) - 1)[].capacity) then (((members[]) = stbds_arrgrowf((members[]), sizeof((members[])[]), (1), (0))) and 0) else 0)
-                (members[])[(cast<*struc stbds_array_header>((members[])) - 1)[].length++] = (member)
-            }
-        }
-        member = nil
-    }
+    vec_move_back(members[], member)
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -3883,17 +3793,7 @@ fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclara
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(*members, member)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(*members, member)"
-                loop .. while 0 {
-                    (? (not (members[]) or (cast<*struc stbds_array_header>((members[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((members[])) - 1)[].capacity) then (((members[]) = stbds_arrgrowf((members[]), sizeof((members[])[]), (1), (0))) and 0) else 0)
-                    (members[])[(cast<*struc stbds_array_header>((members[])) - 1)[].length++] = (member)
-                }
-            }
-            member = nil
-        }
+        vec_move_back(members[], member)
         loop .. while 0 {
             " #@MACRO@:TRY(pop_next(ctx))"
             _errval = pop_next(ctx)
@@ -4166,17 +4066,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_move_back(declarations, declaration)"
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(declarations, declaration)"
-                loop .. while 0 {
-                    (? (not (declarations) or (cast<*struc stbds_array_header>((declarations)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((declarations)) - 1)[].capacity) then (((declarations) = stbds_arrgrowf((declarations), sizeof((declarations)[]), (1), (0))) and 0) else 0)
-                    (declarations)[(cast<*struc stbds_array_header>((declarations)) - 1)[].length++] = (declaration)
-                }
-            }
-            declaration = nil
-        }
+        vec_move_back(declarations, declaration)
         loop .. while 0 {
             " #@MACRO@:TRY(pop_next(ctx))"
             _errval = pop_next(ctx)
