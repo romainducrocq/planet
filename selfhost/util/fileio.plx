@@ -42,9 +42,9 @@ pub fn set_filename(ctx: *struc FileIoContext, filename: string) none {
 
 pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     _errval: i32 = 0
-    loop i: u64 = 0 while i < (? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         if ctx[].file_reads[i].fd {
-            n_fopens: u64 = (? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - i
+            n_fopens: u64 = vec_size(ctx[].file_reads) - i
             if n_fopens == FOPEN_MAX - 1 {
                 ctx[].file_reads[i].len = 0
                 free(ctx[].file_reads[i].buf)
@@ -182,7 +182,7 @@ pub fn close_fwrite(ctx: *struc FileIoContext) none {
 }
 
 pub fn free_fileio(ctx: *struc FileIoContext) none {
-    loop i: u64 = 0 while i < (? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         file_read: *struc FileRead = @ctx[].file_reads[i]
         if file_read[].buf ~= nil {
             free(file_read[].buf)

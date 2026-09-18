@@ -144,7 +144,7 @@ fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
 pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
     str_hex: string = ? "" then sdsnew("") else nil
     loop byte: u64 = byte_at + 1 while byte-- > byte_at {
-        if byte < (? (string_literal) then (cast<*struc stbds_array_header>((string_literal)) - 1)[].length else 0) {
+        if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
         }
     }
@@ -160,7 +160,7 @@ pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
 pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32 {
     str_hex: string = ? "" then sdsnew("") else nil
     loop byte: u64 = byte_at + 4 while byte-- > byte_at {
-        if byte < (? (string_literal) then (cast<*struc stbds_array_header>((string_literal)) - 1)[].length else 0) {
+        if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
         }
     }
@@ -176,7 +176,7 @@ pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32 {
 pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64 {
     str_hex: string = ? "" then sdsnew("") else nil
     loop byte: u64 = byte_at + 8 while byte-- > byte_at {
-        if byte < (? (string_literal) then (cast<*struc stbds_array_header>((string_literal)) - 1)[].length else 0) {
+        if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
         }
     }
@@ -191,7 +191,7 @@ pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64 {
 
 pub fn string_literal_to_const(string_literal: *i8) string {
     string_const: string = ? "" then sdsnew("") else nil
-    loop i: u64 = 0 while i < (? (string_literal) then (cast<*struc stbds_array_header>((string_literal)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(string_literal) .. ++i {
         byte: i8 = string_literal[i]
         match byte {
             -> 39 {
