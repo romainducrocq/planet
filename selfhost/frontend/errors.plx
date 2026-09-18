@@ -584,7 +584,7 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
             type_fmt = ? nil then sdsnew(nil) else nil
         }
     }
-    loop i: u64 = 1 while i < (? (fun_type[].param_types) then (cast<*struc stbds_array_header>((fun_type[].param_types)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 1 while i < vec_size(fun_type[].param_types) .. ++i {
         loop .. while 0 {
             " #@MACRO@:str_append(*fun_fmt, \", \")"
             fun_fmt[] = sdscat(fun_fmt[], ", ")
