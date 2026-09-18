@@ -49,7 +49,7 @@ m4_define(`str_push_back', `TODO')m4_dnl
 m4_define(`str_reserve', `TODO')m4_dnl
 m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `TODO')m4_dnl
-m4_define(`str_to_string', `TODO')m4_dnl
+m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
 
 #TODO
 m4_define(`vector_t', `*$1')m4_dnl
