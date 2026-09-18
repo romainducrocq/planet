@@ -4267,13 +4267,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     loop i: u64 = 0 while i < (? (node[].members) then (cast<*struc stbds_array_header>((node[].members)) - 1)[].length else 0) .. ++i {
         {
             name: u64 = node[].members[i][].member_name
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(member_names, name)"
-                loop .. while 0 {
-                    (? (not (member_names) or (cast<*struc stbds_array_header>((member_names)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((member_names)) - 1)[].capacity) then (((member_names) = stbds_arrgrowf((member_names), sizeof((member_names)[]), (1), (0))) and 0) else 0)
-                    (member_names)[(cast<*struc stbds_array_header>((member_names)) - 1)[].length++] = (name)
-                }
-            }
+            vec_push_back(member_names, name)
         }
         member_alignment: i32 = get_type_alignment(ctx, node[].members[i][].member_type)
         member_size: i64 = get_type_scale(ctx, node[].members[i][].member_type)
@@ -4392,68 +4386,26 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
 
 fn annotate_while_loop(ctx: *struc SemanticContext, node: *struc CWhile) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lwhile)
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->continue_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
+    vec_push_back(ctx[].break_loop_labels, node[].target)
+    vec_push_back(ctx[].continue_loop_labels, node[].target)
 }
 
 fn annotate_do_while_loop(ctx: *struc SemanticContext, node: *struc CDoWhile) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Ldo_while)
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->continue_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
+    vec_push_back(ctx[].break_loop_labels, node[].target)
+    vec_push_back(ctx[].continue_loop_labels, node[].target)
 }
 
 fn annotate_for_loop(ctx: *struc SemanticContext, node: *struc CFor) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lfor)
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->continue_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].continue_loop_labels) or (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].capacity) then (((ctx[].continue_loop_labels) = stbds_arrgrowf((ctx[].continue_loop_labels), sizeof((ctx[].continue_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].continue_loop_labels)[(cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
+    vec_push_back(ctx[].break_loop_labels, node[].target)
+    vec_push_back(ctx[].continue_loop_labels, node[].target)
 }
 
 fn annotate_switch_lookup(ctx: *struc SemanticContext, node: *struc CSwitch) none {
     node[].is_default = false
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lswitch)
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->break_loop_labels, node->target)"
-        loop .. while 0 {
-            (? (not (ctx[].break_loop_labels) or (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].capacity) then (((ctx[].break_loop_labels) = stbds_arrgrowf((ctx[].break_loop_labels), sizeof((ctx[].break_loop_labels)[]), (1), (0))) and 0) else 0)
-            (ctx[].break_loop_labels)[(cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length++] = (node[].target)
-        }
-    }
+    vec_push_back(ctx[].break_loop_labels, node[].target)
 }
 
 fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) i32 {
@@ -4539,20 +4491,8 @@ fn is_file_scope(ctx: *struc SemanticContext) i32 {
 }
 
 fn enter_scope(ctx: *struc SemanticContext) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->scoped_identifier_maps, map_new())"
-        loop .. while 0 {
-            (? (not (ctx[].scoped_identifier_maps) or (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].capacity) then (((ctx[].scoped_identifier_maps) = stbds_arrgrowf((ctx[].scoped_identifier_maps), sizeof((ctx[].scoped_identifier_maps)[]), (1), (0))) and 0) else 0)
-            (ctx[].scoped_identifier_maps)[(cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length++] = (map_new())
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(ctx->scoped_struct_maps, map_new())"
-        loop .. while 0 {
-            (? (not (ctx[].scoped_struct_maps) or (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].capacity) then (((ctx[].scoped_struct_maps) = stbds_arrgrowf((ctx[].scoped_struct_maps), sizeof((ctx[].scoped_struct_maps)[]), (1), (0))) and 0) else 0)
-            (ctx[].scoped_struct_maps)[(cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length++] = (map_new())
-        }
-    }
+    vec_push_back(ctx[].scoped_identifier_maps, map_new())
+    vec_push_back(ctx[].scoped_struct_maps, map_new())
 }
 
 fn exit_scope(ctx: *struc SemanticContext) none {

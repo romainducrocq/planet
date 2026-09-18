@@ -232,22 +232,10 @@ fn find_size_t(xs: *u64, x: u64) i32 {
 
 fn cfg_add_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64) none {
     if not find_size_t(succ_ids[], succ_id) {
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*succ_ids, succ_id)"
-            loop .. while 0 {
-                (? (not (succ_ids[]) or (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].capacity) then (((succ_ids[]) = stbds_arrgrowf((succ_ids[]), sizeof((succ_ids[])[]), (1), (0))) and 0) else 0)
-                (succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length++] = (succ_id)
-            }
-        }
+        vec_push_back(succ_ids[], succ_id)
     }
     if not find_size_t(pred_ids[], pred_id) {
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*pred_ids, pred_id)"
-            loop .. while 0 {
-                (? (not (pred_ids[]) or (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].capacity) then (((pred_ids[]) = stbds_arrgrowf((pred_ids[]), sizeof((pred_ids[])[]), (1), (0))) and 0) else 0)
-                (pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length++] = (pred_id)
-            }
-        }
+        vec_push_back(pred_ids[], pred_id)
     }
 }
 
@@ -404,13 +392,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             if instrs_back_idx[] ~= (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx[]
                 block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
-                loop .. while 0 {
-                    " #@MACRO@:vec_push_back(ctx->cfg->blocks, block)"
-                    loop .. while 0 {
-                        (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
-                        (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
-                    }
-                }
+                vec_push_back(ctx[].cfg[].blocks, block)
             }
 m4_ifelse(__OPTIM_LEVEL__, `1', `
             cfg_init_label_block(ctx, @node[].get._TacLabel)
@@ -534,13 +516,7 @@ fn init_control_flow_graph(ctx: Ctx) none {
             if (ctx[].p_instrs[])[instr_idx] {
                 if instrs_back_idx == (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) {
                     block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
-                    loop .. while 0 {
-                        " #@MACRO@:vec_push_back(ctx->cfg->blocks, block)"
-                        loop .. while 0 {
-                            (? (not (ctx[].cfg[].blocks) or (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].capacity) then (((ctx[].cfg[].blocks) = stbds_arrgrowf((ctx[].cfg[].blocks), sizeof((ctx[].cfg[].blocks)[]), (1), (0))) and 0) else 0)
-                            (ctx[].cfg[].blocks)[(cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length++] = (block)
-                        }
-                    }
+                    vec_push_back(ctx[].cfg[].blocks, block)
                 }
                 cfg_init_block(ctx, instr_idx, @instrs_back_idx)
                 (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].size++
@@ -919,13 +895,7 @@ fn dfa_forward_iter_alg(ctx: Ctx) none {
                         ctx[].dfa[].open_data_map[open_data_map_size] = succ_id
                     }
                     else {
-                        loop .. while 0 {
-                            " #@MACRO@:vec_push_back(ctx->dfa->open_data_map, succ_id)"
-                            loop .. while 0 {
-                                (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
-                                (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (succ_id)
-                            }
-                        }
+                        vec_push_back(ctx[].dfa[].open_data_map, succ_id)
                     }
                     open_data_map_size++
                     label Lelse
@@ -961,13 +931,7 @@ fn dfa_iter_alg(ctx: Ctx) none {
                         ctx[].dfa[].open_data_map[open_data_map_size] = pred_id
                     }
                     else {
-                        loop .. while 0 {
-                            " #@MACRO@:vec_push_back(ctx->dfa->open_data_map, pred_id)"
-                            loop .. while 0 {
-                                (? (not (ctx[].dfa[].open_data_map) or (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].capacity) then (((ctx[].dfa[].open_data_map) = stbds_arrgrowf((ctx[].dfa[].open_data_map), sizeof((ctx[].dfa[].open_data_map)[]), (1), (0))) and 0) else 0)
-                                (ctx[].dfa[].open_data_map)[(cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length++] = (pred_id)
-                            }
-                        }
+                        vec_push_back(ctx[].dfa[].open_data_map, pred_id)
                     }
                     open_data_map_size++
                     label Lelse
@@ -1054,13 +1018,7 @@ fn prop_add_data_idx(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u
             ctx[].dfa_o1[].data_idx_map[ctx[].dfa[].set_size] = instr_idx
         }
         else {
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(ctx->dfa_o1->data_idx_map, instr_idx)"
-                loop .. while 0 {
-                    (? (not (ctx[].dfa_o1[].data_idx_map) or (cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].capacity) then (((ctx[].dfa_o1[].data_idx_map) = stbds_arrgrowf((ctx[].dfa_o1[].data_idx_map), sizeof((ctx[].dfa_o1[].data_idx_map)[]), (1), (0))) and 0) else 0)
-                    (ctx[].dfa_o1[].data_idx_map)[(cast<*struc stbds_array_header>((ctx[].dfa_o1[].data_idx_map)) - 1)[].length++] = (instr_idx)
-                }
-            }
+            vec_push_back(ctx[].dfa_o1[].data_idx_map, instr_idx)
         }
         ctx[].dfa[].set_size++
         return true
@@ -1501,13 +1459,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             vec_resize(ctx[].cfg[].reaching_code, ctx[].dfa[].set_size)
         }
         loop j: u64 = (? (ctx[].dfa_o1[].bak_instrs) then (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length else 0) while j <= ctx[].dfa[].set_size .. ++j {
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(ctx->dfa_o1->bak_instrs, uptr_new())"
-                loop .. while 0 {
-                    (? (not (ctx[].dfa_o1[].bak_instrs) or (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].capacity) then (((ctx[].dfa_o1[].bak_instrs) = stbds_arrgrowf((ctx[].dfa_o1[].bak_instrs), sizeof((ctx[].dfa_o1[].bak_instrs)[]), (1), (0))) and 0) else 0)
-                    (ctx[].dfa_o1[].bak_instrs)[(cast<*struc stbds_array_header>((ctx[].dfa_o1[].bak_instrs)) - 1)[].length++] = (uptr_new())
-                }
-            }
+            vec_push_back(ctx[].dfa_o1[].bak_instrs, uptr_new())
         }
         memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * ctx[].dfa[].set_size)
         if ctx[].dfa[].mask_size > 1 {
