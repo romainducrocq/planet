@@ -1597,13 +1597,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
         }
     }
     ctx[].p_fix_instrs = @node[].instructions
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(*ctx->p_fix_instrs, uptr_new())"
-        loop .. while 0 {
-            (? (not (ctx[].p_fix_instrs[]) or (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].capacity) then (((ctx[].p_fix_instrs[]) = stbds_arrgrowf((ctx[].p_fix_instrs[]), sizeof((ctx[].p_fix_instrs[])[]), (1), (0))) and 0) else 0)
-            (ctx[].p_fix_instrs[])[(cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length++] = (uptr_new())
-        }
-    }
+    vec_push_back(ctx[].p_fix_instrs[], uptr_new())
     is_ret: i32 = false
     push_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
     loop i: u64 = 0 while i < (? (instructions) then (cast<*struc stbds_array_header>((instructions)) - 1)[].length else 0) .. ++i {

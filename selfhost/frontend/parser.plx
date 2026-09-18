@@ -3504,13 +3504,7 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_push_back(*params, param)"
-        loop .. while 0 {
-            (? (not (params[]) or (cast<*struc stbds_array_header>((params[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((params[])) - 1)[].capacity) then (((params[]) = stbds_arrgrowf((params[]), sizeof((params[])[]), (1), (0))) and 0) else 0)
-            (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
-        }
-    }
+    vec_push_back(params[], param)
     vec_move_back(param_types[], param_type)
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
@@ -3541,13 +3535,7 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:vec_push_back(*params, param)"
-            loop .. while 0 {
-                (? (not (params[]) or (cast<*struc stbds_array_header>((params[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((params[])) - 1)[].capacity) then (((params[]) = stbds_arrgrowf((params[]), sizeof((params[])[]), (1), (0))) and 0) else 0)
-                (params[])[(cast<*struc stbds_array_header>((params[])) - 1)[].length++] = (param)
-            }
-        }
+        vec_push_back(params[], param)
         vec_move_back(param_types[], param_type)
         loop .. while 0 {
             " #@MACRO@:TRY(peek_next(ctx))"
