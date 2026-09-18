@@ -4576,21 +4576,12 @@ fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) i
 }
 
 fn deannotate_loop(ctx: *struc SemanticContext) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_pop_back(ctx->break_loop_labels)"
-        ((cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length--)
-    }
-    loop .. while 0 {
-        " #@MACRO@:vec_pop_back(ctx->continue_loop_labels)"
-        ((cast<*struc stbds_array_header>((ctx[].continue_loop_labels)) - 1)[].length--)
-    }
+    vec_pop_back(ctx[].break_loop_labels)
+    vec_pop_back(ctx[].continue_loop_labels)
 }
 
 fn deannotate_lookup(ctx: *struc SemanticContext) none {
-    loop .. while 0 {
-        " #@MACRO@:vec_pop_back(ctx->break_loop_labels)"
-        ((cast<*struc stbds_array_header>((ctx[].break_loop_labels)) - 1)[].length--)
-    }
+    vec_pop_back(ctx[].break_loop_labels)
 }
 
 fn is_file_scope(ctx: *struc SemanticContext) i32 {
@@ -4633,10 +4624,7 @@ fn exit_scope(ctx: *struc SemanticContext) none {
         }
         (ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1] = map_new()
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_pop_back(ctx->scoped_identifier_maps)"
-        ((cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length--)
-    }
+    vec_pop_back(ctx[].scoped_identifier_maps)
     if (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] {
         " #@MACRO@:map_delete(vec_back(ctx->scoped_struct_maps))"
         loop .. while 0 {
@@ -4645,10 +4633,7 @@ fn exit_scope(ctx: *struc SemanticContext) none {
         }
         (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] = map_new()
     }
-    loop .. while 0 {
-        " #@MACRO@:vec_pop_back(ctx->scoped_struct_maps)"
-        ((cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length--)
-    }
+    vec_pop_back(ctx[].scoped_struct_maps)
 }
 
 fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {

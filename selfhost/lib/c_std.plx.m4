@@ -77,7 +77,6 @@ m4_define(`vec_move_back', `{
     vec_push_back($1, $2)
     $2 = nil
 }')m4_dnl
-#TODO
 m4_define(`vec_pop_back', `arrpop($1)')m4_dnl
 #TODO
 m4_define(`vec_push_back', `arrput($1, $2)')m4_dnl
