@@ -2522,13 +2522,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     strto_fmt: string = ? nil then sdsnew(nil) else nil
     values: *i32 = vec_new()
     _errval: i32 = 0
-    loop .. while 0 {
-        " #@MACRO@:vec_resize(values, vec_size(node->cases))"
-        loop .. while 0 {
-            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
-        }
-    }
+    vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_int_value(esac)
@@ -2566,13 +2560,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
     strto_fmt: string = ? nil then sdsnew(nil) else nil
     values: *i64 = vec_new()
     _errval: i32 = 0
-    loop .. while 0 {
-        " #@MACRO@:vec_resize(values, vec_size(node->cases))"
-        loop .. while 0 {
-            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
-        }
-    }
+    vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_long_value(esac)
@@ -2610,13 +2598,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
     strto_fmt: string = ? nil then sdsnew(nil) else nil
     values: *u32 = vec_new()
     _errval: i32 = 0
-    loop .. while 0 {
-        " #@MACRO@:vec_resize(values, vec_size(node->cases))"
-        loop .. while 0 {
-            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
-        }
-    }
+    vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_uint_value(esac)
@@ -2654,13 +2636,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
     strto_fmt: string = ? nil then sdsnew(nil) else nil
     values: *u64 = vec_new()
     _errval: i32 = 0
-    loop .. while 0 {
-        " #@MACRO@:vec_resize(values, vec_size(node->cases))"
-        loop .. while 0 {
-            (? (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].capacity else 0) < cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) then ((((values)) = stbds_arrgrowf(((values)), sizeof(((values))[]), (0), (cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))))))) and 0 else 0)
-            ? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length = cast<u64>(((? (node[].cases) then (cast<*struc stbds_array_header>((node[].cases)) - 1)[].length else 0))) else 0
-        }
-    }
+    vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < (? (values) then (cast<*struc stbds_array_header>((values)) - 1)[].length else 0) .. ++i {
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_ulong_value(esac)
