@@ -20,7 +20,7 @@ pub fn find_file(filename: string) i32 {
 }
 
 pub fn get_filename(ctx: *struc FileIoContext) string {
-    if not ((? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) == 0) {
+    if not vec_empty(ctx[].file_reads) {
         return (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename
     }
     else {
@@ -81,6 +81,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
 
 pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     _errval: i32 = 0
+    # TODO THROW_ABORT_IF(!vec_empty(ctx->file_reads));
     ctx[].fd_write = nil
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or sdslen(filename) >= 4096 {
@@ -145,7 +146,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename = ? nil then sdsnew(nil) else nil
     }
     vec_pop_back(ctx[].file_reads)
-    if not ((? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) == 0) and not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
+    if not vec_empty(ctx[].file_reads) and not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
         (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd = fopen((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename, "rb")
         if not (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].fd {
             loop .. while 0 {

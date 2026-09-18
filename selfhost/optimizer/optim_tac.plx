@@ -1405,7 +1405,7 @@ fn unreach_label_block(ctx: *struc OptimTacContext, block_id: u64, prev_block_id
 }
 
 fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
-    if ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) == 0) {
+    if vec_empty(ctx[].cfg[].blocks) {
         return none
     }
     if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
