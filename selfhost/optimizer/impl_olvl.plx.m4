@@ -279,26 +279,14 @@ fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_
     if is_reachable {
         loop i: u64 = (? (succ_ids[]) then (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length else 0) while i-- > 0 {
             if (succ_ids[])[i] == succ_id {
-                loop .. while 0 {
-                    " #@MACRO@:vec_remove_swap(*succ_ids, i)"
-                    loop .. while 0 {
-                        (succ_ids[])[i] = ((succ_ids[])[(cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length - 1])
-                        (cast<*struc stbds_array_header>((succ_ids[])) - 1)[].length -= 1
-                    }
-                }
+                vec_remove_swap(succ_ids[], i)
                 break
             }
         }
     }
     loop i: u64 = (? (pred_ids[]) then (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length else 0) while i-- > 0 {
         if (pred_ids[])[i] == pred_id {
-            loop .. while 0 {
-                " #@MACRO@:vec_remove_swap(*pred_ids, i)"
-                loop .. while 0 {
-                    (pred_ids[])[i] = ((pred_ids[])[(cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length - 1])
-                    (cast<*struc stbds_array_header>((pred_ids[])) - 1)[].length -= 1
-                }
-            }
+            vec_remove_swap(pred_ids[], i)
             break
         }
     }

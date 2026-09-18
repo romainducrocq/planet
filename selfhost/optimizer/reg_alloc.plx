@@ -406,13 +406,7 @@ fn infer_add_reg_edge(ctx: *struc RegAllocContext, reg_kind: i32, name: u64) non
 fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
     loop i: u64 = (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) while i-- > 0 {
         if infer[].linked_pseudo_names[i] == name {
-            loop .. while 0 {
-                " #@MACRO@:vec_remove_swap(infer->linked_pseudo_names, i)"
-                loop .. while 0 {
-                    (infer[].linked_pseudo_names)[i] = ((infer[].linked_pseudo_names)[(cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length - 1])
-                    (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length -= 1
-                }
-            }
+            vec_remove_swap(infer[].linked_pseudo_names, i)
             infer[].degree--
             return none
         }
@@ -423,13 +417,7 @@ fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
 fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
     loop i: u64 = (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) while i-- > 0 {
         if ctx[].p_infer_graph[].unpruned_pseudo_names[i] == name {
-            loop .. while 0 {
-                " #@MACRO@:vec_remove_swap(ctx->p_infer_graph->unpruned_pseudo_names, i)"
-                loop .. while 0 {
-                    (ctx[].p_infer_graph[].unpruned_pseudo_names)[i] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
-                    (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
-                }
-            }
+            vec_remove_swap(ctx[].p_infer_graph[].unpruned_pseudo_names, i)
             return none
         }
     }
@@ -862,22 +850,10 @@ fn is_reg_callee_saved(reg_kind: i32) i32 {
 
 fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceRegister, pruned_idx: u64) none {
     if infer[].reg_kind == REG_Sp {
-        loop .. while 0 {
-            " #@MACRO@:vec_remove_swap(ctx->p_infer_graph->unpruned_pseudo_names, pruned_idx)"
-            loop .. while 0 {
-                (ctx[].p_infer_graph[].unpruned_pseudo_names)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_pseudo_names)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length - 1])
-                (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length -= 1
-            }
-        }
+        vec_remove_swap(ctx[].p_infer_graph[].unpruned_pseudo_names, pruned_idx)
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:vec_remove_swap(ctx->p_infer_graph->unpruned_hard_mask_bits, pruned_idx)"
-            loop .. while 0 {
-                (ctx[].p_infer_graph[].unpruned_hard_mask_bits)[pruned_idx] = ((ctx[].p_infer_graph[].unpruned_hard_mask_bits)[(cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length - 1])
-                (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length -= 1
-            }
-        }
+        vec_remove_swap(ctx[].p_infer_graph[].unpruned_hard_mask_bits, pruned_idx)
     }
     if infer[].linked_hard_mask ~= 0ul {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
