@@ -523,7 +523,7 @@ fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) non
 fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
     swap_instr: *struc AsmInstruction = uptr_new()
     instr_back_1: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1]
-    instr_back_2: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 2]
+    instr_back_2: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
     if instr_back_1[] ~= swap_instr {
         " #@MACRO@:uptr_move(AsmInstruction, *instr_back_1, swap_instr)"
         free_AsmInstruction(@swap_instr)
@@ -555,7 +555,7 @@ fn fix_alloc_stack_bytes(ctx: *struc StackFixContext, callee_saved_size: i64) no
 }
 
 fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: **struc AsmOperand) none {
-    loop i: u64 = 0 while i < (? (callee_saved_regs) then (cast<*struc stbds_array_header>((callee_saved_regs)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(callee_saved_regs) .. ++i {
         src: *struc AsmOperand = sptr_new()
         if callee_saved_regs[i] ~= src {
             " #@MACRO@:sptr_copy(AsmOperand, callee_saved_regs[i], src)"
@@ -568,7 +568,7 @@ fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: **stru
 }
 
 fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: **struc AsmOperand) none {
-    loop i: u64 = (? (callee_saved_regs) then (cast<*struc stbds_array_header>((callee_saved_regs)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(callee_saved_regs) while i-- > 0 {
         reg_kind: i32 = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
         reg: struc AsmReg = make_AsmReg(AST_AsmReg_t)
         match reg_kind {
@@ -1600,7 +1600,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
     vec_push_back(ctx[].p_fix_instrs[], uptr_new())
     is_ret: i32 = false
     push_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
-    loop i: u64 = 0 while i < (? (instructions) then (cast<*struc stbds_array_header>((instructions)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(instructions) .. ++i {
         if instructions[i] {
             if instructions[i][].tag == AST_AsmRet_t {
                 pop_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
@@ -1616,7 +1616,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
         pop_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
     }
     {
-        callee_saved_size: i64 = cast<i64>((? (backend_fun[].callee_saved_regs) then (cast<*struc stbds_array_header>((backend_fun[].callee_saved_regs)) - 1)[].length else 0))
+        callee_saved_size: i64 = cast<i64>(vec_size(backend_fun[].callee_saved_regs))
         fix_alloc_stack_bytes(ctx, callee_saved_size)
     }
     ctx[].p_fix_instrs = nil
@@ -1639,7 +1639,7 @@ fn fix_toplvl(ctx: *struc StackFixContext, node: *struc AsmTopLevel) none {
 }
 
 fn fix_program(ctx: *struc StackFixContext, node: *struc AsmProgram) none {
-    loop i: u64 = 0 while i < (? (node[].top_levels) then (cast<*struc stbds_array_header>((node[].top_levels)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].top_levels) .. ++i {
         fix_toplvl(ctx, node[].top_levels[i])
     }
 }
