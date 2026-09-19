@@ -11,7 +11,7 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
 type struc PairTIdentifierTLong(key: u64, value: i64)
 
-type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: *struc PairTIdentifierTLong, p_fix_instrs: ***struc AsmInstruction)
+type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: *struc PairTIdentifierTLong, p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 
@@ -554,7 +554,7 @@ fn fix_alloc_stack_bytes(ctx: *struc StackFixContext, callee_saved_size: i64) no
     }
 }
 
-fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: **struc AsmOperand) none {
+fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = 0 while i < vec_size(callee_saved_regs) .. ++i {
         src: *struc AsmOperand = sptr_new()
         if callee_saved_regs[i] ~= src {
@@ -567,7 +567,7 @@ fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: **stru
     }
 }
 
-fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: **struc AsmOperand) none {
+fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = vec_size(callee_saved_regs) while i-- > 0 {
         reg_kind: i32 = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
         reg: struc AsmReg = make_AsmReg(AST_AsmReg_t)
@@ -1579,7 +1579,7 @@ fn fix_instr(ctx: *struc StackFixContext, node: *struc AsmInstruction) none {
 }
 
 fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
-    instructions: **struc AsmInstruction = vec_new()
+    instructions: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     vec_move(node[].instructions, instructions)
     backend_fun: *struc BackendFun = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendFun
     vec_clear(node[].instructions)
