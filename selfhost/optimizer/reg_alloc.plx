@@ -131,7 +131,7 @@ fn is_bitshift_cl(node: *struc AsmBinary) i32 {
 }
 
 fn find_identifier(xs: *u64, x: u64) i32 {
-    loop i: u64 = 0 while i < (? (xs) then (cast<*struc stbds_array_header>((xs)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(xs) .. ++i {
         if xs[i] == x {
             return true
         }
@@ -386,7 +386,7 @@ fn infer_add_reg_edge(ctx: *struc RegAllocContext, reg_kind: i32, name: u64) non
 }
 
 fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
-    loop i: u64 = (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(infer[].linked_pseudo_names) while i-- > 0 {
         if infer[].linked_pseudo_names[i] == name {
             vec_remove_swap(infer[].linked_pseudo_names, i)
             infer[].degree--
@@ -397,7 +397,7 @@ fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
 }
 
 fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
-    loop i: u64 = (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) while i-- > 0 {
+    loop i: u64 = vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) while i-- > 0 {
         if ctx[].p_infer_graph[].unpruned_pseudo_names[i] == name {
             vec_remove_swap(ctx[].p_infer_graph[].unpruned_pseudo_names, i)
             return none
@@ -756,7 +756,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         }
     }
     if not ((? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
-        if (? (ctx[].infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) < 12 {
+        if vec_size(ctx[].infer_graph[].unpruned_hard_mask_bits) < 12 {
             vec_resize(ctx[].infer_graph[].unpruned_hard_mask_bits, 12)
         }
         hard_reg_mask: u64 = ctx[].infer_graph[].hard_reg_mask
@@ -772,7 +772,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         }
     }
     if not ((? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
-        if (? (ctx[].sse_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].sse_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) < 14 {
+        if vec_size(ctx[].sse_infer_graph[].unpruned_hard_mask_bits) < 14 {
             vec_resize(ctx[].sse_infer_graph[].unpruned_hard_mask_bits, 14)
         }
         hard_reg_mask: u64 = ctx[].sse_infer_graph[].hard_reg_mask
@@ -787,7 +787,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ctx[].sse_infer_graph[].unpruned_hard_mask_bits[i - 12] = i
         }
     }
-    loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
+    loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
                 if (ctx[].p_instrs[])[instr_idx] {
@@ -833,7 +833,7 @@ fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceReg
             }
         }
     }
-    loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).degree--
     }
 }
@@ -856,7 +856,7 @@ fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceR
             }
         }
     }
-    loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         ((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value).degree++
     }
 }
@@ -872,7 +872,7 @@ fn alloc_next_color_infer_graph(ctx: *struc RegAllocContext) none {
 fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *struc InferenceRegister {
     pruned_idx: u64;
     infer: *struc InferenceRegister = nil
-    loop i: u64 = 0 while i < (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
         pruned_name[] = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
         infer = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((pruned_name[]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if infer[].degree < ctx[].p_infer_graph[].k {
@@ -882,7 +882,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
         infer = nil
     }
     if not infer {
-        loop i: u64 = 0 while i < (? (ctx[].p_infer_graph[].unpruned_hard_mask_bits) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_hard_mask_bits)) - 1)[].length else 0) .. ++i {
+        loop i: u64 = 0 while i < vec_size(ctx[].p_infer_graph[].unpruned_hard_mask_bits) .. ++i {
             pruned_mask_bit: u64 = ctx[].p_infer_graph[].unpruned_hard_mask_bits[i]
             infer = @ctx[].hard_regs[pruned_mask_bit]
             if infer[].degree < ctx[].p_infer_graph[].k {
@@ -894,7 +894,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
     }
     if not infer {
         i: u64 = 0
-        loop  while i < (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) .. ++i {
+        loop  while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
             pruned_name[] = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
             infer = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((pruned_name[]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
             if infer[].degree > 0 {
@@ -905,7 +905,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
         }
         ;
         min_spill_metric: f64 = (cast<f64>(infer[].spill_cost)) / infer[].degree
-        loop  while i < (? (ctx[].p_infer_graph[].unpruned_pseudo_names) then (cast<*struc stbds_array_header>((ctx[].p_infer_graph[].unpruned_pseudo_names)) - 1)[].length else 0) .. ++i {
+        loop  while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
             spill_name: u64 = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
             spill_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((spill_name))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
             if spill_infer[].degree > 0 {
@@ -935,7 +935,7 @@ fn alloc_unprune_infer_graph(ctx: *struc RegAllocContext, infer: *struc Inferenc
             }
         }
     }
-    loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if linked_infer[].color ~= REG_Sp {
             register_mask_set(@color_reg_mask, linked_infer[].color, false)
@@ -1456,7 +1456,7 @@ fn reallocate_registers(ctx: *struc RegAllocContext) none {
         alloc_color_infer_graph(ctx)
         alloc_color_reg_map(ctx)
     }
-    loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
+    loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
         if (ctx[].p_instrs[])[instr_idx] {
             alloc_instr(ctx, instr_idx)
         }
@@ -1583,11 +1583,11 @@ fn coal_briggs_test(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegi
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)] = 0ul
     }
-    loop i: u64 = 0 while i < (? (dst_infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((dst_infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(dst_infer[].linked_pseudo_names) .. ++i {
         j: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((dst_infer[].linked_pseudo_names[i]))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
         mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, true)
     }
-    loop i: u64 = 0 while i < (? (src_infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((src_infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(src_infer[].linked_pseudo_names) .. ++i {
         j: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((src_infer[].linked_pseudo_names[i]))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((src_infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j) {
@@ -1600,7 +1600,7 @@ fn coal_briggs_test(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegi
             degree++
         }
     }
-    loop i: u64 = 0 while i < (? (dst_infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((dst_infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(dst_infer[].linked_pseudo_names) .. ++i {
         j: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((dst_infer[].linked_pseudo_names[i]))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
         if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j) {
             linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((dst_infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
@@ -1613,7 +1613,7 @@ fn coal_briggs_test(ctx: *struc RegAllocContext, src_infer: *struc InferenceRegi
 }
 
 fn coal_george_test(ctx: *struc RegAllocContext, reg_kind: i32, infer: *struc InferenceRegister) i32 {
-    loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         if not register_mask_get(linked_infer[].linked_hard_mask, reg_kind) and linked_infer[].degree >= ctx[].p_infer_graph[].k {
             return false
@@ -1649,7 +1649,7 @@ fn coal_pseudo_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceReg
             }
         }
     }
-    loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         infer_rm_pseudo_edge(linked_infer, merge_name)
         infer_add_pseudo_edges(ctx, keep_name, infer[].linked_pseudo_names[i])
@@ -1667,7 +1667,7 @@ fn coal_hard_infer_reg(ctx: *struc RegAllocContext, reg_kind: i32, infer: *struc
             }
         }
     }
-    loop i: u64 = 0 while i < (? (infer[].linked_pseudo_names) then (cast<*struc stbds_array_header>((infer[].linked_pseudo_names)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         linked_infer: *struc InferenceRegister = @((? ((? ((ctx[].p_infer_graph[].pseudo_reg_map) = stbds_hmget_key((ctx[].p_infer_graph[].pseudo_reg_map), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((infer[].linked_pseudo_names[i]))), sizeof((ctx[].p_infer_graph[].pseudo_reg_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].p_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].p_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp])[].value)
         infer_rm_pseudo_edge(linked_infer, merge_name)
         infer_add_reg_edge(ctx, reg_kind, infer[].linked_pseudo_names[i])
@@ -2147,7 +2147,7 @@ fn coal_instr(ctx: *struc RegAllocContext, instr_idx: u64, block_id: u64) none {
 fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
     {
         open_data_map_size: u64 = ctx[].dfa[].set_size - REGISTER_MASK_SIZE
-        if (? (ctx[].dfa[].open_data_map) then (cast<*struc stbds_array_header>((ctx[].dfa[].open_data_map)) - 1)[].length else 0) < open_data_map_size {
+        if vec_size(ctx[].dfa[].open_data_map) < open_data_map_size {
             vec_resize(ctx[].dfa[].open_data_map, open_data_map_size)
         }
     }
@@ -2156,7 +2156,7 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
     }
     {
         is_fixed_point: i32 = true
-        loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
+        loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
             if (ctx[].p_instrs[])[instr_idx] and (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t and coal_infer_regs(ctx, @(ctx[].p_instrs[])[instr_idx][].get._AsmMov) {
                 is_fixed_point = false
             }
@@ -2165,7 +2165,7 @@ fn coalesce_registers(ctx: *struc RegAllocContext) i32 {
             return false
         }
     }
-    loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
+    loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
                 if (ctx[].p_instrs[])[instr_idx] {
@@ -2216,7 +2216,7 @@ fn alloc_toplvl(ctx: *struc RegAllocContext, node: *struc AsmTopLevel) none {
 }
 
 fn alloc_program(ctx: *struc RegAllocContext, node: *struc AsmProgram) none {
-    loop i: u64 = 0 while i < (? (node[].top_levels) then (cast<*struc stbds_array_header>((node[].top_levels)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].top_levels) .. ++i {
         alloc_toplvl(ctx, node[].top_levels[i])
     }
 }
