@@ -24,7 +24,7 @@ m4_include(`../backend/symt_cvt.plx.m4')m4_dnl
 m4_include(`../optimizer/optim_tac.plx.m4')m4_dnl
 m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
 
-type struc MainContext(errors: *struc ErrorsContext, is_verbose: i32, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string, includedirs: *string, stdlibdirs: *string)
+type struc MainContext(errors: *struc ErrorsContext, is_verbose: i32, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string, includedirs: vector_t(string), stdlibdirs: vector_t(string))
 
 m4_define(`Ctx', `TODO')m4_dnl
 
@@ -55,7 +55,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     identifiers: struc IdentifierContext;
     frontend: struc FrontEndContext;
     backend: struc BackEndContext;
-    tokens: *struc Token = vec_new()
+    tokens: vector_t(struc Token) = vec_new()
     c_ast: *struc CProgram = uptr_new()
     tac_ast: *struc TacProgram = uptr_new()
 

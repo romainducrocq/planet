@@ -9,7 +9,7 @@ type struc ErrorsContext;
 
 type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string)
 
-type struc FileIoContext(errors: *struc ErrorsContext, fd_write: *struc FILE, write_buf: string, filename: string, file_reads: *struc FileRead)
+type struc FileIoContext(errors: *struc ErrorsContext, fd_write: *struc FILE, write_buf: string, filename: string, file_reads: vector_t(struc FileRead))
 
 pub fn find_file(filename: string) i32;
 pub fn get_filename(ctx: *struc FileIoContext) string;
