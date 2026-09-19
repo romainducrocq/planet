@@ -11,11 +11,11 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-m4_define(`StStructure', `TODO')m4_dnl
+m4_define(`StStructure', `struc Structure')m4_dnl
 
 type struc PairTIdentifierStStructure(key: u64, value: struc Structure)
 
-type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: *struc PairTIdentifierulong_t, goto_map: *struc PairTIdentifierTIdentifier, scoped_identifier_maps: **struc PairTIdentifierTIdentifier, scoped_struct_maps: **struc PairTIdentifierStStructure, label_set: *struc ElementTIdentifier, break_loop_labels: *u64, continue_loop_labels: *u64, fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: *struc ElementTIdentifier, struct_def_set: *struc ElementTIdentifier, union_def_set: *struc ElementTIdentifier, p_static_inits: ***struc StaticInit)
+type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: *struc PairTIdentifierulong_t, goto_map: *struc PairTIdentifierTIdentifier, scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: *struc ElementTIdentifier, break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: *struc ElementTIdentifier, struct_def_set: *struc ElementTIdentifier, union_def_set: *struc ElementTIdentifier, p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32;
@@ -2522,7 +2522,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
 
 fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *i32 = vec_new()
+    values: vector_t(i32) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2560,7 +2560,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
 
 fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *i64 = vec_new()
+    values: vector_t(i64) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2598,7 +2598,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
 
 fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *u32 = vec_new()
+    values: vector_t(u32) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2636,7 +2636,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
 
 fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
     strto_fmt: string = ? nil then sdsnew(nil) else nil
-    values: *u64 = vec_new()
+    values: vector_t(u64) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2883,7 +2883,7 @@ fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
 }
 
 fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *struc CInitializer {
-    zero_inits: **struc CInitializer = vec_new()
+    zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     arr_type_size: u64 = cast<u64>(arr_type[].size)
     vec_reserve(zero_inits, arr_type_size)
     loop i: u64 = 0 while i < arr_type_size .. ++i {
@@ -2894,7 +2894,7 @@ fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *str
 }
 
 fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) *struc CInitializer {
-    zero_inits: **struc CInitializer = vec_new()
+    zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
     vec_reserve(zero_inits, vec_size(struct_typedef[].member_names))
     loop i: u64 = 0 while i < vec_size(struct_typedef[].member_names) .. ++i {
@@ -3296,7 +3296,7 @@ fn check_static_no_init(ctx: *struc SemanticContext, static_init_type: *struc Ty
 }
 
 fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Type) *struc InitialValue {
-    static_inits: **struc StaticInit = vec_new()
+    static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     {
         ctx[].p_static_inits = @static_inits
         check_static_no_init(ctx, static_init_type, 1l)
@@ -3767,7 +3767,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
 }
 
 fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type, init_value: **struc InitialValue) i32 {
-    static_inits: **struc StaticInit = vec_new()
+    static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     _errval: i32 = 0
     {
         ctx[].p_static_inits = @static_inits
@@ -4250,7 +4250,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     struct_member: *struc StructMember = uptr_new()
     struct_typedef: *struc StructTypedef = uptr_new()
     member_type: *struc Type = sptr_new()
-    member_names: *u64 = vec_new()
+    member_names: vector_t(TIdentifier) = vec_new()
     members: *struc PairTIdentifierUPtrStructMember = map_new()
     _errval: i32 = 0
     alignment: i32;
@@ -5812,7 +5812,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
 
 fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32;
 
-fn reslv_block_items(ctx: *struc SemanticContext, node_list: **struc CBlockItem) i32 {
+fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr_t(CBlockItem))) i32 {
     _errval: i32 = 0
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {

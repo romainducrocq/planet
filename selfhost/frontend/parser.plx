@@ -12,7 +12,7 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, pop_idx: u64, next_tok: *struc Token, peek_tok: *struc Token, peek_tok_i: *struc Token, p_toks: **struc Token)
+type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, pop_idx: u64, next_tok: *struc Token, peek_tok: *struc Token, peek_tok_i: *struc Token, p_toks: *vector_t(struc Token))
 
 m4_define(`Ctx', `TODO')m4_dnl
 
@@ -102,7 +102,7 @@ fn parse_identifier(ctx: *struc ParserContext, identifier: *u64) i32 {
 }
 
 fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiteral) i32 {
-    value: *i8 = vec_new()
+    value: vector_t(i8) = vec_new()
     _errval: i32 = 0
     string_to_literal(((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value), @value)
     loop .. while 0 {
@@ -843,7 +843,7 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
 fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32;
 fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) i32;
 
-fn parse_arg_list(ctx: *struc ParserContext, args: ***struc CExp) i32 {
+fn parse_arg_list(ctx: *struc ParserContext, args: *vector_t(unique_ptr_t(CExp))) i32 {
     arg: *struc CExp = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
@@ -965,7 +965,7 @@ fn parse_var_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 }
 
 fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    args: **struc CExp = vec_new()
+    args: vector_t(unique_ptr_t(CExp)) = vec_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
@@ -3148,7 +3148,7 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
 
 fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     block_item: *struc CBlockItem = uptr_new()
-    block_items: **struc CBlockItem = vec_new()
+    block_items: vector_t(unique_ptr_t(CBlockItem)) = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
@@ -3305,7 +3305,7 @@ fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitialize
 }
 
 fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
-    initializers: **struc CInitializer = vec_new()
+    initializers: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -3493,7 +3493,7 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
     return _errval
 }
 
-fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***struc Type) i32 {
+fn parse_decltor_list(ctx: *struc ParserContext, params: *vector_t(TIdentifier), param_types: *vector_t(shared_ptr_t(Type))) i32 {
     param_type: *struc Type = sptr_new()
     _errval: i32 = 0
     param: u64;
@@ -3550,8 +3550,8 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: **u64, param_types: ***
     return _errval
 }
 
-fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: **u64) i32 {
-    param_types: **struc Type = vec_new()
+fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: *vector_t(TIdentifier)) i32 {
+    param_types: vector_t(shared_ptr_t(Type)) = vec_new()
     _errval: i32 = 0
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -3625,7 +3625,7 @@ fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: 
 fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, fun_decl: **struc CFunctionDeclaration) i32 {
     body: *struc CBlock = uptr_new()
     fun_type: *struc Type = sptr_new()
-    params: *u64 = vec_new()
+    params: vector_t(TIdentifier) = vec_new()
     _errval: i32 = 0
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
@@ -3755,7 +3755,7 @@ fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMem
     return _errval
 }
 
-fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclaration) i32 {
+fn parse_member_list(ctx: *struc ParserContext, members: *vector_t(unique_ptr_t(CMemberDeclaration))) i32 {
     member: *struc CMemberDeclaration = uptr_new()
     _errval: i32 = 0
     loop .. while 0 {
@@ -3803,7 +3803,7 @@ fn parse_member_list(ctx: *struc ParserContext, members: ***struc CMemberDeclara
 }
 
 fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStructDeclaration) i32 {
-    members: **struc CMemberDeclaration = vec_new()
+    members: vector_t(unique_ptr_t(CMemberDeclaration)) = vec_new()
     _errval: i32 = 0
     is_union: i32;
     tag_name: u64;
@@ -4028,7 +4028,7 @@ fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageCl
 
 fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     declaration: *struc CDeclaration = uptr_new()
-    declarations: **struc CDeclaration = vec_new()
+    declarations: vector_t(unique_ptr_t(CDeclaration)) = vec_new()
     _errval: i32 = 0
     loop while ctx[].pop_idx < vec_size(ctx[].p_toks[]) {
         storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
@@ -4080,7 +4080,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     return _errval
 }
 
-pub fn parse_tokens(tokens: **struc Token, errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: **struc CProgram) i32 {
+pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: **struc CProgram) i32 {
     ctx: struc ParserContext;
     {
         ctx.errors = errors

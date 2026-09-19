@@ -15,6 +15,6 @@ type struc IdentifierContext;
 
 type struc Token(tok_kind: i32, tok: u64, info_at: u64)
 
-pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string, errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: **struc Token) i32;
+pub fn lex_c_code(filename: string, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) i32;
 
 ')m4_dnl

@@ -11,7 +11,7 @@ m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
-type struc TacReprContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_instrs: ***struc TacInstruction, p_toplvls: ***struc TacTopLevel, p_static_consts: ***struc TacTopLevel)
+type struc TacReprContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_instrs: *vector_t(unique_ptr_t(TacInstruction)), p_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), p_static_consts: *vector_t(unique_ptr_t(TacTopLevel)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 
@@ -784,8 +784,8 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                 exp_left = exp_left[].get._CCast.exp
             }
             {
-                noeval_instrs: **struc TacInstruction = vec_new()
-                p_instrs: ***struc TacInstruction = ctx[].p_instrs
+                noeval_instrs: vector_t(unique_ptr_t(TacInstruction)) = vec_new()
+                p_instrs: *vector_t(unique_ptr_t(TacInstruction)) = ctx[].p_instrs
                 ctx[].p_instrs = @noeval_instrs
                 res = repr_res_instr(ctx, exp_left)
                 ctx[].p_instrs = p_instrs
@@ -915,7 +915,7 @@ fn conditional_res_instr(ctx: *struc TacReprContext, node: *struc CConditional) 
 
 fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) *struc TacExpResult {
     name: u64 = node[].name
-    args: **struc TacValue = vec_new()
+    args: vector_t(shared_ptr_t(TacValue)) = vec_new()
     vec_reserve(args, vec_size(node[].args))
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         arg: *struc TacValue = repr_exp_instr(ctx, node[].args[i])
@@ -1805,7 +1805,7 @@ fn declaration_instr(ctx: *struc TacReprContext, node: *struc CDeclaration) none
     }
 }
 
-fn repr_instr_list(ctx: *struc TacReprContext, node_list: **struc CBlockItem) none {
+fn repr_instr_list(ctx: *struc TacReprContext, node_list: vector_t(unique_ptr_t(CBlockItem))) none {
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {
             -> AST_CS_t {
@@ -1835,11 +1835,11 @@ fn repr_block(ctx: *struc TacReprContext, node: *struc CBlock) none {
 fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration) *struc TacTopLevel {
     name: u64 = node[].name
     is_glob: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].get._FunAttr.is_glob
-    params: *u64 = vec_new()
+    params: vector_t(TIdentifier) = vec_new()
     vec_resize(params, vec_size(node[].params))
     memcpy(params, node[].params, sizeof<u64> * vec_size(node[].params))
 
-    body: **struc TacInstruction = vec_new()
+    body: vector_t(unique_ptr_t(TacInstruction)) = vec_new()
     {
         ctx[].p_instrs = @body
         repr_block(ctx, node[].body)
@@ -1881,8 +1881,8 @@ fn declaration_toplvl(ctx: *struc TacReprContext, node: *struc CDeclaration) non
     }
 }
 
-fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc Type) **struc StaticInit {
-    static_inits: **struc StaticInit = vec_new()
+fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc Type) vector_t(shared_ptr_t(StaticInit)) {
+    static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     {
         byte: i64 = get_type_scale(ctx, static_init_type)
         static_init: *struc StaticInit = make_ZeroInit(byte)
@@ -1892,8 +1892,8 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
     return static_inits
 }
 
-fn initial_static_toplvl(node: *struc Initial) **struc StaticInit {
-    static_inits: **struc StaticInit = vec_new()
+fn initial_static_toplvl(node: *struc Initial) vector_t(shared_ptr_t(StaticInit)) {
+    static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     vec_reserve(static_inits, vec_size(node[].static_inits))
     loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
         static_init: *struc StaticInit = sptr_new()
@@ -1922,7 +1922,7 @@ fn repr_static_var_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbo
         static_init_type = node[].type_t
         (static_init_type)[]._ref_count++
     }
-    static_inits: **struc StaticInit = vec_new()
+    static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     match static_attr[].init[].tag {
         -> AST_Tentative_t {
             static_inits = tentative_static_toplvl(ctx, static_init_type)
@@ -1979,7 +1979,7 @@ fn symbol_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbol: u64) n
 }
 
 fn repr_program(ctx: *struc TacReprContext, node: *struc CProgram) *struc TacProgram {
-    fun_toplvls: **struc TacTopLevel = vec_new()
+    fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
     {
         ctx[].p_toplvls = @fun_toplvls
         loop i: u64 = 0 while i < vec_size(node[].declarations) .. ++i {
@@ -1987,9 +1987,9 @@ fn repr_program(ctx: *struc TacReprContext, node: *struc CProgram) *struc TacPro
         }
         ctx[].p_toplvls = nil
     }
-    static_var_toplvls: **struc TacTopLevel = vec_new()
+    static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
 
-    static_const_toplvls: **struc TacTopLevel = vec_new()
+    static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
     {
         ctx[].p_toplvls = @static_var_toplvls
         ctx[].p_static_consts = @static_const_toplvls
