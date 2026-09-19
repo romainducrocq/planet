@@ -11,7 +11,7 @@ pub fn dbl_to_binary(decimal: f64) u64 {
     return binary
 }
 
-pub fn string_to_literal(str_string: string, string_literal: **i8) none {
+pub fn string_to_literal(str_string: string, string_literal: *vector_t(i8)) none {
     loop byte: u64 = 1 while byte < sdslen(str_string) - 1 .. ++byte {
         str_char: char = cast<char>(str_string[byte])
         if str_char == '\\' {
@@ -141,7 +141,7 @@ fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
     }
 }
 
-pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
+pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
     str_hex: string = ? "" then sdsnew("") else nil
     loop byte: u64 = byte_at + 1 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
@@ -157,7 +157,7 @@ pub fn string_bytes_to_int8(string_literal: *i8, byte_at: u64) i8 {
     return hex_value
 }
 
-pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32 {
+pub fn string_bytes_to_int32(string_literal: vector_t(i8), byte_at: u64) i32 {
     str_hex: string = ? "" then sdsnew("") else nil
     loop byte: u64 = byte_at + 4 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
@@ -173,7 +173,7 @@ pub fn string_bytes_to_int32(string_literal: *i8, byte_at: u64) i32 {
     return hex_value
 }
 
-pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64 {
+pub fn string_bytes_to_int64(string_literal: vector_t(i8), byte_at: u64) i64 {
     str_hex: string = ? "" then sdsnew("") else nil
     loop byte: u64 = byte_at + 8 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
@@ -189,7 +189,7 @@ pub fn string_bytes_to_int64(string_literal: *i8, byte_at: u64) i64 {
     return hex_value
 }
 
-pub fn string_literal_to_const(string_literal: *i8) string {
+pub fn string_literal_to_const(string_literal: vector_t(i8)) string {
     string_const: string = ? "" then sdsnew("") else nil
     loop i: u64 = 0 while i < vec_size(string_literal) .. ++i {
         byte: i8 = string_literal[i]
