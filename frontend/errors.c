@@ -503,8 +503,8 @@ const char* get_type_fmt(IdentifierContext* ctx, const Type* type, string_t* typ
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define EM_CSTR(X) "\033[1m‘" X "’\033[0m"
-#define EM_VARG "\033[1m‘%s’\033[0m"
+#define EM_CSTR(X) "‘" X "’"
+#define EM_VARG "‘%s’"
 #define RET_ERRNO return "(no. %i) "
 
 const char* get_fatal_msg(MESSAGE_FATAL msg) {
