@@ -85,7 +85,7 @@ m4_define(`pair_t', `TODO')m4_dnl
 m4_define(`PairKeyValue', `TODO')m4_dnl
 m4_define(`pair_first', `TODO')m4_dnl
 m4_define(`pair_second', `TODO')m4_dnl
-m4_define(`hashmap_t', `TODO')m4_dnl
+m4_define(`hashmap_t', `*struc Pair$1$2')m4_dnl
 m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
@@ -101,7 +101,7 @@ m4_define(`map_move_add', `TODO')m4_dnl
 m4_define(`element_t', `TODO')m4_dnl
 m4_define(`ElementKey', `TODO')m4_dnl
 m4_define(`element_get', `TODO')m4_dnl
-m4_define(`hashset_t', `TODO')m4_dnl
+m4_define(`hashset_t', `*struc Element$1')m4_dnl
 m4_define(`set_new', `nil')m4_dnl
 m4_define(`set_delete', `TODO')m4_dnl
 m4_define(`set_size', `TODO')m4_dnl
