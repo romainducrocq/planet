@@ -1334,7 +1334,7 @@ fn fold_instr(ctx: *struc OptimTacContext, instr_idx: u64) none {
 }
 
 fn fold_constants(ctx: *struc OptimTacContext) none {
-    loop instr_idx: u64 = 0 while instr_idx < (? (ctx[].p_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_instrs[])) - 1)[].length else 0) .. ++instr_idx {
+    loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
         if (ctx[].p_instrs[])[instr_idx] {
             fold_instr(ctx, instr_idx)
         }
@@ -1344,7 +1344,7 @@ fn fold_constants(ctx: *struc OptimTacContext) none {
 fn unreach_reachable_block(ctx: *struc OptimTacContext, block_id: u64) none;
 
 fn unreach_succ_reachable_blocks(ctx: *struc OptimTacContext, block_id: u64) none {
-    loop i: u64 = 0 while i < (? (ctx[].cfg[].blocks[block_id].succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i { # TODO GET_CFG_BLOCK(block_id).succ_ids
         unreach_reachable_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[i])
     }
 }
@@ -1388,7 +1388,7 @@ fn unreach_jump_instr(ctx: *struc OptimTacContext, block_id: u64) none {
 }
 
 fn unreach_jump_block(ctx: *struc OptimTacContext, block_id: u64, next_block_id: u64) none {
-    if (? (ctx[].cfg[].blocks[block_id].succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].succ_ids)) - 1)[].length else 0) == 1 and ctx[].cfg[].blocks[block_id].succ_ids[0] == next_block_id {
+    if vec_size(ctx[].cfg[].blocks[block_id].succ_ids) == 1 and ctx[].cfg[].blocks[block_id].succ_ids[0] == next_block_id { # TODO GET_CFG_BLOCK(block_id).succ_ids
         unreach_jump_instr(ctx, block_id)
     }
 }
@@ -1399,7 +1399,7 @@ fn unreach_label_instr(ctx: *struc OptimTacContext, block_id: u64) none {
 }
 
 fn unreach_label_block(ctx: *struc OptimTacContext, block_id: u64, prev_block_id: u64) none {
-    if (? (ctx[].cfg[].blocks[block_id].pred_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks[block_id].pred_ids)) - 1)[].length else 0) == 1 and ctx[].cfg[].blocks[block_id].pred_ids[0] == prev_block_id {
+    if vec_size(ctx[].cfg[].blocks[block_id].pred_ids) == 1 and ctx[].cfg[].blocks[block_id].pred_ids[0] == prev_block_id { # TODO GET_CFG_BLOCK(block_id).pred_ids
         unreach_label_instr(ctx, block_id)
     }
 }
@@ -1408,14 +1408,14 @@ fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
     if vec_empty(ctx[].cfg[].blocks) {
         return none
     }
-    if (? (ctx[].cfg[].reaching_code) then (cast<*struc stbds_array_header>((ctx[].cfg[].reaching_code)) - 1)[].length else 0) < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) {
+    if vec_size(ctx[].cfg[].reaching_code) < vec_size(ctx[].cfg[].blocks) {
         vec_resize(ctx[].cfg[].reaching_code, vec_size(ctx[].cfg[].blocks))
     }
-    memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0))
-    loop i: u64 = 0 while i < (? (ctx[].cfg[].entry_succ_ids) then (cast<*struc stbds_array_header>((ctx[].cfg[].entry_succ_ids)) - 1)[].length else 0) .. ++i {
+    memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * vec_size(ctx[].cfg[].blocks))
+    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].entry_succ_ids) .. ++i {
         unreach_reachable_block(ctx, ctx[].cfg[].entry_succ_ids[i])
     }
-    block_id: u64 = (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0)
+    block_id: u64 = vec_size(ctx[].cfg[].blocks)
     next_block_id: u64 = ctx[].cfg[].exit_id
     loop while block_id-- > 0 {
         if ctx[].cfg[].reaching_code[block_id] {
@@ -2131,7 +2131,7 @@ fn prop_uint_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDou
 }
 
 fn prop_call_instr(ctx: *struc OptimTacContext, node: *struc TacFunCall, instr_idx: u64) none {
-    loop i: u64 = 0 while i < (? (node[].args) then (cast<*struc stbds_array_header>((node[].args)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         if node[].args[i][].tag == AST_TacVariable_t {
             j: u64 = 0
             loop k: u64 = 0 while k < ctx[].dfa[].mask_size .. ++k {
@@ -2623,7 +2623,7 @@ fn propagate_copies(ctx: *struc OptimTacContext) none {
         return none
     }
     dfa_forward_iter_alg(ctx)
-    loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
+    loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             incoming_idx: u64 = block_id
             exit_block: u64 = 1
@@ -2776,7 +2776,7 @@ fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_i
             if p_node[].dst {
                 elim_transfer_dst_value(ctx, p_node[].dst, next_instr_idx)
             }
-            loop i: u64 = 0 while i < (? (p_node[].args) then (cast<*struc stbds_array_header>((p_node[].args)) - 1)[].length else 0) .. ++i {
+            loop i: u64 = 0 while i < vec_size(p_node[].args) .. ++i {
                 elim_transfer_src_value(ctx, p_node[].args[i], next_instr_idx)
             }
             elim_transfer_aliased(ctx, next_instr_idx)
@@ -2935,7 +2935,7 @@ fn eliminate_dead_stores(ctx: *struc OptimTacContext, is_addressed_set: i32) non
         return none
     }
     dfa_iter_alg(ctx)
-    loop block_id: u64 = 0 while block_id < (? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) .. ++block_id {
+    loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
                 if (ctx[].p_instrs[])[instr_idx] {
@@ -2985,7 +2985,7 @@ fn optim_toplvl(ctx: *struc OptimTacContext, node: *struc TacTopLevel) none {
 }
 
 fn optim_program(ctx: *struc OptimTacContext, node: *struc TacProgram) none {
-    loop i: u64 = 0 while i < (? (node[].fun_toplvls) then (cast<*struc stbds_array_header>((node[].fun_toplvls)) - 1)[].length else 0) .. ++i {
+    loop i: u64 = 0 while i < vec_size(node[].fun_toplvls) .. ++i {
         optim_toplvl(ctx, node[].fun_toplvls[i])
     }
     loop .. while 0 {
