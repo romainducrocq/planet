@@ -32,7 +32,7 @@ m4_define(`StStruct8Bytes', `TODO')m4_dnl
 
 type struc PairTIdentifierStStruct8Bytes(key: u64, value: struc Struct8Bytes)
 
-type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]i32, sse_arg_regs: [8]i32, dbl_const_table: *struc PairTIdentifierTIdentifier, struct_8b_map: *struc PairTIdentifierStStruct8Bytes, p_instrs: ***struc AsmInstruction, p_static_consts: ***struc AsmTopLevel)
+type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]i32, sse_arg_regs: [8]i32, dbl_const_table: *struc PairTIdentifierTIdentifier, struct_8b_map: *struc PairTIdentifierStStruct8Bytes, p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 
@@ -1637,7 +1637,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
     {
         to_offset: i64 = 0l
         size: i64 = bytearr_type[].size
-        byte_instrs: **struc AsmInstruction = vec_new()
+        byte_instrs: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
         loop while size > 0l {
             byte_instr: *struc AsmInstruction = uptr_new()
             {
@@ -1699,8 +1699,8 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
     stack_padding: i64 = 0l
-    stack_instrs: **struc AsmInstruction = vec_new()
-    p_instrs: ***struc AsmInstruction = ctx[].p_instrs
+    stack_instrs: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
+    p_instrs: *vector_t(unique_ptr_t(AsmInstruction)) = ctx[].p_instrs
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         arg: *struc TacValue = node[].args[i]
         if is_value_dbl(ctx, arg) {
@@ -3191,7 +3191,7 @@ fn gen_instr(ctx: *struc AsmGenContext, node: *struc TacInstruction) none {
     }
 }
 
-fn gen_instr_list(ctx: *struc AsmGenContext, node_list: **struc TacInstruction) none {
+fn gen_instr_list(ctx: *struc AsmGenContext, node_list: vector_t(unique_ptr_t(TacInstruction))) none {
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         if node_list[i] {
             gen_instr(ctx, node_list[i])
@@ -3340,7 +3340,7 @@ fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc As
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
     is_ret_memory: i32 = false
-    body: **struc AsmInstruction = vec_new()
+    body: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     vec_reserve(body, vec_size(node[].body))
     {
         ctx[].p_instrs = @body
@@ -3371,7 +3371,7 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
-    static_inits: **struc StaticInit = vec_new()
+    static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     vec_reserve(static_inits, vec_size(node[].static_inits))
     loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
         static_init: *struc StaticInit = sptr_new()
@@ -3428,13 +3428,13 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
 }
 
 fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmProgram {
-    static_const_toplvls: **struc AsmTopLevel = vec_new()
+    static_const_toplvls: vector_t(unique_ptr_t(AsmTopLevel)) = vec_new()
     vec_reserve(static_const_toplvls, vec_size(node[].static_const_toplvls))
     loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         static_const_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_const_toplvls[i])
         vec_move_back(static_const_toplvls, static_const_toplvl)
     }
-    top_levels: **struc AsmTopLevel = vec_new()
+    top_levels: vector_t(unique_ptr_t(AsmTopLevel)) = vec_new()
     vec_reserve(top_levels, vec_size(node[].static_var_toplvls) + vec_size(node[].fun_toplvls))
     {
         ctx[].p_static_consts = @static_const_toplvls

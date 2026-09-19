@@ -857,7 +857,7 @@ fn emit_instr(ctx: *struc GasCodeContext, node: *struc AsmInstruction) none {
     }
 }
 
-fn emit_instr_list(ctx: *struc GasCodeContext, node_list: **struc AsmInstruction) none {
+fn emit_instr_list(ctx: *struc GasCodeContext, node_list: vector_t(unique_ptr_t(AsmInstruction))) none {
     loop i: u64 = ? node_list[0] then 0 else 1 while i < vec_size(node_list) .. ++i {
         emit_instr(ctx, node_list[i])
     }
@@ -879,7 +879,7 @@ fn emit_fun_toplvl(ctx: *struc GasCodeContext, node: *struc AsmFunction) none {
     emit_instr_list(ctx, node[].instructions)
 }
 
-fn static_section_toplvl(ctx: *struc GasCodeContext, node_list: **struc StaticInit) none {
+fn static_section_toplvl(ctx: *struc GasCodeContext, node_list: vector_t(shared_ptr_t(StaticInit))) none {
     if vec_size(node_list) == 1 and node_list[0][].tag == AST_ZeroInit_t {
         emit(ctx, "    "             ".bss"             "\n")
     }
