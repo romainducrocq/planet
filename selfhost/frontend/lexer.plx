@@ -10,7 +10,7 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 
 type struc Elementhash_t(key: u64, value: char)
 
-type struc LexerContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, line: string, line_size: u64, match_at: u64, match_size: u64, includename_set: *struc Elementhash_t, p_includedirs: **string, p_stdlibdirs: **string, p_toks: **struc Token, paren_depth: u64, total_linenum: u64)
+type struc LexerContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, line: string, line_size: u64, match_at: u64, match_size: u64, includename_set: *struc Elementhash_t, p_includedirs: *vector_t(string), p_stdlibdirs: *vector_t(string), p_toks: *vector_t(struc Token), paren_depth: u64, total_linenum: u64)
 
 m4_define(`Ctx', `TODO')m4_dnl
 
@@ -1297,7 +1297,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
     return _errval
 }
 
-fn find_include(dirnames: *string, filename: *string) i32 {
+fn find_include(dirnames: vector_t(string), filename: *string) i32 {
     loop i: u64 = 0 while i < vec_size(dirnames) .. ++i {
         dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
         loop .. while 0 {
@@ -1525,7 +1525,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     return _errval
 }
 
-pub fn lex_c_code(filename: string, includedirs: **string, stdlibdirs: **string, errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: **struc Token) i32 {
+pub fn lex_c_code(filename: string, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) i32 {
     ctx: struc LexerContext;
     {
         ctx.errors = errors
