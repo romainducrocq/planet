@@ -395,7 +395,7 @@ function check_error () {
                 echo -n "${i}/"
             done
             echo -e "test-header_${ERR}.etc:8:13:${NC}"
-            echo -e "\033[0;31merror:${NC} (no. 547) cannot initialize scalar type \033[1m‘i32’${NC} with compound initializer"
+            echo -e "\033[0;31merror:${NC} (no. 547) cannot initialize scalar type ‘i32’ with compound initializer"
             echo -e "at line 8: \033[0;31m            v${NC}"
             echo -e "         | \033[1me1: i32 = \$(0, 1, 2)${NC}"
             echo -e "planet: \033[0;31merror:${NC} compilation failed, see \033[1m‘--help’${NC}"
