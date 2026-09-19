@@ -522,7 +522,7 @@ fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) non
 
 fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
     swap_instr: *struc AsmInstruction = uptr_new()
-    instr_back_1: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1]
+    instr_back_1: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
     instr_back_2: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
     if instr_back_1[] ~= swap_instr {
         " #@MACRO@:uptr_move(AsmInstruction, *instr_back_1, swap_instr)"
@@ -858,7 +858,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
         }
     }
     asm_type: *struc AssemblyType = make_LongWord()
-    instr_back: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1]
+    instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
     free_AsmInstruction(instr_back)
     instr_back[] = make_AsmMov(@asm_type, @src, @dst)
     return @(instr_back[])[].get._AsmMov
@@ -1480,7 +1480,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
             asm_type_src_cp = asm_type_src
             (asm_type_src_cp)[]._ref_count++
         }
-        instr_back: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1]
+        instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
         free_AsmInstruction(instr_back)
         instr_back[] = make_AsmBinary(@binop, @asm_type_src_cp, @src, @dst)
     }
@@ -1608,8 +1608,8 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
             }
             push_fix_instr(ctx, instructions[i])
             instructions[i] = uptr_new()
-            repl_pseudo_regs(ctx, (ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1])
-            fix_instr(ctx, (ctx[].p_fix_instrs[])[(? (ctx[].p_fix_instrs[]) then (cast<*struc stbds_array_header>((ctx[].p_fix_instrs[])) - 1)[].length else 0) - 1])
+            repl_pseudo_regs(ctx, vec_back(ctx[].p_fix_instrs[]))
+            fix_instr(ctx, vec_back(ctx[].p_fix_instrs[]))
         }
     }
     if not is_ret {
