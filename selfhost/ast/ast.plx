@@ -116,7 +116,7 @@ pub fn free_CConst(self: **struc CConst) none {
     }
 }
 
-pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral {
+pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral {
     self: *struc CStringLiteral = sptr_new()
     loop .. while 0 {
         " #@MACRO@:sptr_alloc(CStringLiteral, self)"

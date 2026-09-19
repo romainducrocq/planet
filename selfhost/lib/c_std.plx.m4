@@ -19,14 +19,14 @@ m4_define(`THROW_ERROR', `TODO')m4_dnl
 m4_define(`tagged_def_t', `TODO')m4_dnl
 m4_define(`tagged_def_impl', `TODO')m4_dnl
 m4_define(`tagged_def_init', `TODO')m4_dnl
-m4_define(`unique_ptr_t', `TODO')m4_dnl
+m4_define(`unique_ptr_t', `*struc $1')m4_dnl
 m4_define(`unique_ptr_impl', `TODO')m4_dnl
 m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
 m4_define(`uptr_move', `TODO')m4_dnl
-m4_define(`shared_ptr_t', `TODO')m4_dnl
+m4_define(`shared_ptr_t', `unique_ptr_t($1)')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
 m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl

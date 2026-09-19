@@ -3,13 +3,13 @@ m4_define(`_LIB_C_LIB_M4', `')m4_dnl
 
 extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
-m4_define(`bool', `TODO')m4_dnl
-m4_define(`int8_t', `TODO')m4_dnl
-m4_define(`int32_t', `TODO')m4_dnl
-m4_define(`int64_t', `TODO')m4_dnl
-m4_define(`uint8_t', `TODO')m4_dnl
-m4_define(`uint32_t', `TODO')m4_dnl
-m4_define(`uint64_t', `TODO')m4_dnl
+# m4_define(`bool', `TODO')m4_dnl
+# m4_define(`int8_t', `TODO')m4_dnl
+# m4_define(`int32_t', `TODO')m4_dnl
+# m4_define(`int64_t', `TODO')m4_dnl
+# m4_define(`uint8_t', `TODO')m4_dnl
+# m4_define(`uint32_t', `TODO')m4_dnl
+# m4_define(`uint64_t', `TODO')m4_dnl
 m4_define(`FOPEN_MAX', `8')m4_dnl
 type struc FILE;
 extrn fn fclose(stream: *struc FILE) i32;

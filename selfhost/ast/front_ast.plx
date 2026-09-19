@@ -257,7 +257,7 @@ pub fn make_CArrayDeclarator(size: i64, decltor: **struc CDeclarator) *struc CDe
     return self
 }
 
-pub fn make_CFunDeclarator(param_list: ***struc CParam, decltor: **struc CDeclarator) *struc CDeclarator {
+pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor: **struc CDeclarator) *struc CDeclarator {
     self: *struc CDeclarator = make_CDeclarator()
     self[].tag = AST_CFunDeclarator_t
     self[].get._CFunDeclarator.param_list = vec_new()
@@ -480,7 +480,7 @@ pub fn make_CConditional(condition: **struc CExp, exp_middle: **struc CExp, exp_
     return self
 }
 
-pub fn make_CFunctionCall(name: u64, args: ***struc CExp, info_at: u64) *struc CExp {
+pub fn make_CFunctionCall(name: u64, args: *vector_t(unique_ptr_t(CExp)), info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CFunctionCall_t
     self[].get._CFunctionCall.name = name
@@ -1126,7 +1126,7 @@ pub fn make_CBlock(none) *struc CBlock {
     return self
 }
 
-pub fn make_CB(block_items: ***struc CBlockItem) *struc CBlock {
+pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) *struc CBlock {
     self: *struc CBlock = make_CBlock()
     self[].tag = AST_CB_t
     self[].get._CB.block_items = vec_new()
@@ -1274,7 +1274,7 @@ pub fn make_CSingleInit(exp: **struc CExp) *struc CInitializer {
     return self
 }
 
-pub fn make_CCompoundInit(initializers: ***struc CInitializer) *struc CInitializer {
+pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) *struc CInitializer {
     self: *struc CInitializer = make_CInitializer()
     self[].tag = AST_CCompoundInit_t
     self[].get._CCompoundInit.initializers = vec_new()
@@ -1362,7 +1362,7 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
     }
 }
 
-pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: ***struc CMemberDeclaration, info_at: u64) *struc CStructDeclaration {
+pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) *struc CStructDeclaration {
     self: *struc CStructDeclaration = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(CStructDeclaration, self)"
@@ -1405,7 +1405,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
     }
 }
 
-pub fn make_CFunctionDeclaration(name: u64, params: **u64, body: **struc CBlock, fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
+pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: **struc CBlock, fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
     self: *struc CFunctionDeclaration = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(CFunctionDeclaration, self)"
@@ -1605,7 +1605,7 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
     }
 }
 
-pub fn make_CProgram(declarations: ***struc CDeclaration) *struc CProgram {
+pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) *struc CProgram {
     self: *struc CProgram = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(CProgram, self)"
