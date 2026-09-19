@@ -31,7 +31,7 @@ type struc Double(_empty: char)
 
 type struc Void(_empty: char)
 
-type struc FunType(param_reg_mask: u64, ret_reg_mask: u64, param_types: **struc Type, ret_type: *struc Type)
+type struc FunType(param_reg_mask: u64, ret_reg_mask: u64, param_types: vector_t(shared_ptr_t(Type)), ret_type: *struc Type)
 
 type struc Pointer(ref_type: *struc Type)
 
@@ -52,7 +52,7 @@ pub fn make_UInt(none) *struc Type;
 pub fn make_ULong(none) *struc Type;
 pub fn make_Double(none) *struc Type;
 pub fn make_Void(none) *struc Type;
-pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc Type;
+pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: **struc Type) *struc Type;
 pub fn make_Pointer(ref_type: **struc Type) *struc Type;
 pub fn make_Array(size: i64, elem_type: **struc Type) *struc Type;
 pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type;
@@ -96,7 +96,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none;
 
 type struc Tentative(_empty: char)
 
-type struc Initial(static_inits: **struc StaticInit)
+type struc Initial(static_inits: vector_t(shared_ptr_t(StaticInit)))
 
 type struc NoInitializer(_empty: char)
 
@@ -105,7 +105,7 @@ type union _InitialValue(_Tentative: struc Tentative, _Initial: struc Initial, _
 type struc InitialValue(_ref_count: u64, tag: i32, get: union _InitialValue)
 pub fn make_InitialValue(none) *struc InitialValue;
 pub fn make_Tentative(none) *struc InitialValue;
-pub fn make_Initial(static_inits: ***struc StaticInit) *struc InitialValue;
+pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc InitialValue;
 pub fn make_NoInitializer(none) *struc InitialValue;
 pub fn free_InitialValue(self: **struc InitialValue) none;
 
@@ -138,8 +138,8 @@ m4_define(`UPtrStructMember', `TODO')m4_dnl
 
 type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
 
-type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: *u64, members: *struc PairTIdentifierUPtrStructMember)
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
+type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: *struc PairTIdentifierUPtrStructMember)
+pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
 m4_define(`ulong_t', `TODO')m4_dnl
 

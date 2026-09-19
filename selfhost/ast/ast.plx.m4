@@ -35,8 +35,8 @@ pub fn make_CConstChar(value: i8) *struc CConst;
 pub fn make_CConstUChar(value: u8) *struc CConst;
 pub fn free_CConst(self: **struc CConst) none;
 
-type struc CStringLiteral(_ref_count: u64, tag: i32, value: *i8)
-pub fn make_CStringLiteral(value: **i8) *struc CStringLiteral;
+type struc CStringLiteral(_ref_count: u64, tag: i32, value: vector_t(i8))
+pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral;
 pub fn free_CStringLiteral(self: **struc CStringLiteral) none;
 
 type struc PairTIdentifierstring_t(key: u64, value: string)

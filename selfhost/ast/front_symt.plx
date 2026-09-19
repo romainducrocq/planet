@@ -79,7 +79,7 @@ pub fn make_Void(none) *struc Type {
     return self
 }
 
-pub fn make_FunType(param_types: ***struc Type, ret_type: **struc Type) *struc Type {
+pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: **struc Type) *struc Type {
     self: *struc Type = make_Type()
     self[].tag = AST_FunType_t
     self[].get._FunType.param_reg_mask = 0ul
@@ -389,7 +389,7 @@ pub fn make_Tentative(none) *struc InitialValue {
     return self
 }
 
-pub fn make_Initial(static_inits: ***struc StaticInit) *struc InitialValue {
+pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc InitialValue {
     self: *struc InitialValue = make_InitialValue()
     self[].tag = AST_Initial_t
     self[].get._Initial.static_inits = vec_new()
@@ -639,7 +639,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
     }
 }
 
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: **u64, members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef {
+pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef {
     self: *struc StructTypedef = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(StructTypedef, self)"

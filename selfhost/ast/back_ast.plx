@@ -904,7 +904,7 @@ pub fn make_AsmTopLevel(none) *struc AsmTopLevel {
     return self
 }
 
-pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: ***struc AsmInstruction) *struc AsmTopLevel {
+pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: *vector_t(unique_ptr_t(AsmInstruction))) *struc AsmTopLevel {
     self: *struc AsmTopLevel = make_AsmTopLevel()
     self[].tag = AST_AsmFunction_t
     self[].get._AsmFunction.name = name
@@ -915,7 +915,7 @@ pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instruction
     return self
 }
 
-pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: ***struc StaticInit) *struc AsmTopLevel {
+pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: *vector_t(unique_ptr_t(StaticInit))) *struc AsmTopLevel {
     self: *struc AsmTopLevel = make_AsmTopLevel()
     self[].tag = AST_AsmStaticVariable_t
     self[].get._AsmStaticVariable.name = name
@@ -982,7 +982,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
     }
 }
 
-pub fn make_AsmProgram(static_const_toplvls: ***struc AsmTopLevel, top_levels: ***struc AsmTopLevel) *struc AsmProgram {
+pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)), top_levels: *vector_t(unique_ptr_t(AsmTopLevel))) *struc AsmProgram {
     self: *struc AsmProgram = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(AsmProgram, self)"
