@@ -85,7 +85,7 @@ type struc TacIntToDouble(src: *struc TacValue, dst: *struc TacValue)
 
 type struc TacUIntToDouble(src: *struc TacValue, dst: *struc TacValue)
 
-type struc TacFunCall(name: u64, args: **struc TacValue, dst: *struc TacValue)
+type struc TacFunCall(name: u64, args: vector_t(shared_ptr_t(TacValue)), dst: *struc TacValue)
 
 type struc TacUnary(unop: struc TacUnaryOp, src: *struc TacValue, dst: *struc TacValue)
 
@@ -125,7 +125,7 @@ pub fn make_TacDoubleToInt(src: **struc TacValue, dst: **struc TacValue) *struc 
 pub fn make_TacDoubleToUInt(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
 pub fn make_TacIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
 pub fn make_TacUIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
-pub fn make_TacFunCall(name: u64, args: ***struc TacValue, dst: **struc TacValue) *struc TacInstruction;
+pub fn make_TacFunCall(name: u64, args: *vector_t(shared_ptr_t(TacValue)), dst: **struc TacValue) *struc TacInstruction;
 pub fn make_TacUnary(unop: *struc TacUnaryOp, src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
 pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: **struc TacValue, src2: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
 pub fn make_TacCopy(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
@@ -141,9 +141,9 @@ pub fn make_TacJumpIfNotZero(target: u64, condition: **struc TacValue) *struc Ta
 pub fn make_TacLabel(name: u64) *struc TacInstruction;
 pub fn free_TacInstruction(self: **struc TacInstruction) none;
 
-type struc TacFunction(name: u64, is_glob: i32, params: *u64, body: **struc TacInstruction)
+type struc TacFunction(name: u64, is_glob: i32, params: vector_t(TIdentifier), body: vector_t(unique_ptr_t(TacInstruction)))
 
-type struc TacStaticVariable(name: u64, is_glob: i32, static_init_type: *struc Type, static_inits: **struc StaticInit)
+type struc TacStaticVariable(name: u64, is_glob: i32, static_init_type: *struc Type, static_inits: vector_t(shared_ptr_t(StaticInit)))
 
 type struc TacStaticConstant(name: u64, static_init_type: *struc Type, static_init: *struc StaticInit)
 
@@ -151,13 +151,13 @@ type union _TacTopLevel(_TacFunction: struc TacFunction, _TacStaticVariable: str
 
 type struc TacTopLevel(tag: i32, get: union _TacTopLevel)
 pub fn make_TacTopLevel(none) *struc TacTopLevel;
-pub fn make_TacFunction(name: u64, is_glob: i32, params: **u64, body: ***struc TacInstruction) *struc TacTopLevel;
-pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: ***struc StaticInit) *struc TacTopLevel;
+pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) *struc TacTopLevel;
+pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc TacTopLevel;
 pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_init: **struc StaticInit) *struc TacTopLevel;
 pub fn free_TacTopLevel(self: **struc TacTopLevel) none;
 
-type struc TacProgram(tag: i32, static_const_toplvls: **struc TacTopLevel, static_var_toplvls: **struc TacTopLevel, fun_toplvls: **struc TacTopLevel)
-pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_toplvls: ***struc TacTopLevel, fun_toplvls: ***struc TacTopLevel) *struc TacProgram;
+type struc TacProgram(tag: i32, static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)))
+pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram;
 pub fn free_TacProgram(self: **struc TacProgram) none;
 
 ')m4_dnl

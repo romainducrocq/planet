@@ -32,7 +32,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none;
 
 type struc BackendObj(is_static: i32, is_const: i32, asm_type: *struc AssemblyType)
 
-type struc BackendFun(is_def: i32, callee_saved_regs: **struc AsmOperand)
+type struc BackendFun(is_def: i32, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand)))
 
 type union _BackendSymbol(_BackendObj: struc BackendObj, _BackendFun: struc BackendFun)
 

@@ -446,7 +446,7 @@ pub fn make_TacUIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc
     return self
 }
 
-pub fn make_TacFunCall(name: u64, args: ***struc TacValue, dst: **struc TacValue) *struc TacInstruction {
+pub fn make_TacFunCall(name: u64, args: *vector_t(shared_ptr_t(TacValue)), dst: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacFunCall_t
     self[].get._TacFunCall.name = name
@@ -894,7 +894,7 @@ pub fn make_TacTopLevel(none) *struc TacTopLevel {
     return self
 }
 
-pub fn make_TacFunction(name: u64, is_glob: i32, params: **u64, body: ***struc TacInstruction) *struc TacTopLevel {
+pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) *struc TacTopLevel {
     self: *struc TacTopLevel = make_TacTopLevel()
     self[].tag = AST_TacFunction_t
     self[].get._TacFunction.name = name
@@ -906,7 +906,7 @@ pub fn make_TacFunction(name: u64, is_glob: i32, params: **u64, body: ***struc T
     return self
 }
 
-pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: ***struc StaticInit) *struc TacTopLevel {
+pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc TacTopLevel {
     self: *struc TacTopLevel = make_TacTopLevel()
     self[].tag = AST_TacStaticVariable_t
     self[].get._TacStaticVariable.name = name
@@ -994,7 +994,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
     }
 }
 
-pub fn make_TacProgram(static_const_toplvls: ***struc TacTopLevel, static_var_toplvls: ***struc TacTopLevel, fun_toplvls: ***struc TacTopLevel) *struc TacProgram {
+pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram {
     self: *struc TacProgram = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(TacProgram, self)"
