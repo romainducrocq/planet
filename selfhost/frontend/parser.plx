@@ -34,7 +34,7 @@ fn pop_next(ctx: *struc ParserContext) i32 {
     _errval: i32 = 0
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*ctx->p_toks)[((*ctx->p_toks) ? ((struct stbds_array_header*)(*ctx->p_toks)-1)->length : 0) - 1].info_at))"
+            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -50,7 +50,7 @@ fn peek_next(ctx: *struc ParserContext) i32 {
     _errval: i32 = 0
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*ctx->p_toks)[((*ctx->p_toks) ? ((struct stbds_array_header*)(*ctx->p_toks)-1)->length : 0) - 1].info_at))"
+            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally
@@ -76,7 +76,7 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
     }
     if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*ctx->p_toks)[((*ctx->p_toks) ? ((struct stbds_array_header*)(*ctx->p_toks)-1)->length : 0) - 1].info_at))"
+            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
             _errval = 1
             jump _Lfinally

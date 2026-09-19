@@ -173,8 +173,8 @@ fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
             return total_linenum - ctx[].fopen_lines[i].total_linenum + ctx[].fopen_lines[i].linenum
         }
     }
-    set_filename(ctx[].fileio, (ctx[].fopen_lines)[(? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1].filename)
-    return total_linenum - (ctx[].fopen_lines)[(? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1].total_linenum + (ctx[].fopen_lines)[(? (ctx[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].fopen_lines)) - 1)[].length else 0) - 1].linenum
+    set_filename(ctx[].fileio, vec_back(ctx[].fopen_lines).filename)
+    return total_linenum - vec_back(ctx[].fopen_lines).total_linenum + vec_back(ctx[].fopen_lines).linenum
 }
 
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
