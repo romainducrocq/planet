@@ -10,7 +10,7 @@ m4_define(`GET_INSTR', `TODO')m4_dnl
 m4_define(`GET_CFG_BLOCK', `TODO')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-m4_define(`mask_t', `TODO')m4_dnl
+m4_define(`mask_t', `u64')m4_dnl
 m4_define(`AstInstruction', `TacInstruction')m4_dnl
 m4_define(`Ctx', `*struc OptimTacContext')m4_dnl
 m4_define(`free_AstInstruction', `free_TacInstruction($1)')m4_dnl
@@ -22,16 +22,16 @@ m4_define(`free_AstInstruction', `free_AsmInstruction($1)')m4_dnl
 m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
 ')m4_dnl
 
-type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: *u64, succ_ids: *u64)
+type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: vector_t(u64), succ_ids: vector_t(u64))
 
-type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: *u64, exit_pred_ids: *u64, reaching_code: *i32, blocks: *struc ControlFlowBlock, identifier_id_map: *struc PairTIdentifierulong_t)
+type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64), reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock), identifier_id_map: *struc PairTIdentifierulong_t)
 
-type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: *u64, instr_idx_map: *u64, blocks_mask_sets: *u64, instrs_mask_sets: *u64)
+type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64), instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t))
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-type struc DataFlowAnalysisO1(data_idx_map: *u64, bak_instrs: **struc TacInstruction, addressed_idx: u64)
+type struc DataFlowAnalysisO1(data_idx_map: vector_t(u64), bak_instrs: vector_t(unique_ptr_t(TacInstruction)), addressed_idx: u64)
 ', __OPTIM_LEVEL__, `2', `
-type struc DataFlowAnalysisO2(data_name_map: *u64)
+type struc DataFlowAnalysisO2(data_name_map: vector_t(TIdentifier))
 ')m4_dnl
 
 fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
@@ -221,7 +221,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 ')m4_dnl
 }
 
-fn find_size_t(xs: *u64, x: u64) i32 {
+fn find_size_t(xs: vector_t(u64), x: u64) i32 {
     loop i: u64 = 0 while i < vec_size(xs) .. ++i {
         if xs[i] == x {
             return true
@@ -230,7 +230,7 @@ fn find_size_t(xs: *u64, x: u64) i32 {
     return false
 }
 
-fn cfg_add_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64) none {
+fn cfg_add_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64) none {
     if not find_size_t(succ_ids[], succ_id) {
         vec_push_back(succ_ids[], succ_id)
     }
@@ -263,7 +263,7 @@ fn cfg_add_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
     }
 }
 
-fn cfg_rm_edge(succ_ids: **u64, pred_ids: **u64, succ_id: u64, pred_id: u64, is_reachable: i32) none {
+fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64, is_reachable: i32) none {
     if is_reachable {
         loop i: u64 = vec_size(succ_ids[]) while i-- > 0 {
             if (succ_ids[])[i] == succ_id {

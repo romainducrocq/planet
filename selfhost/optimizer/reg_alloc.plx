@@ -11,20 +11,20 @@ m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
 m4_include(`../backend/registers.plx.m4')m4_dnl
 
-m4_define(`mask_t', `TODO')m4_dnl
+m4_define(`mask_t', `u64')m4_dnl
 type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO2;
 
-type struc InferenceRegister(color: i32, reg_kind: i32, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: *u64)
+type struc InferenceRegister(color: i32, reg_kind: i32, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: vector_t(TIdentifier))
 
 m4_define(`StInferenceRegister', `TODO')m4_dnl
 
 type struc PairTIdentifierStInferenceRegister(key: u64, value: struc InferenceRegister)
 
-type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: u64, unpruned_hard_mask_bits: *u64, unpruned_pseudo_names: *u64, pseudo_reg_map: *struc PairTIdentifierStInferenceRegister)
+type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: u64, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: *struc PairTIdentifierStInferenceRegister)
 
-type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: u64, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]i32, hard_regs: [26]struc InferenceRegister, cfg: *struc ControlFlowGraph, dfa: *struc DataFlowAnalysis, dfa_o2: *struc DataFlowAnalysisO2, infer_graph: *struc InferenceGraph, sse_infer_graph: *struc InferenceGraph, p_instrs: ***struc AsmInstruction, is_with_coal: i32)
+type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: u64, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]i32, hard_regs: [26]struc InferenceRegister, cfg: *struc ControlFlowGraph, dfa: *struc DataFlowAnalysis, dfa_o2: *struc DataFlowAnalysisO2, infer_graph: *struc InferenceGraph, sse_infer_graph: *struc InferenceGraph, p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), is_with_coal: i32)
 
 fn free_InferenceGraph(self: **struc InferenceGraph) none {
     if not self[] {
@@ -130,7 +130,7 @@ fn is_bitshift_cl(node: *struc AsmBinary) i32 {
     }
 }
 
-fn find_identifier(xs: *u64, x: u64) i32 {
+fn find_identifier(xs: vector_t(TIdentifier), x: u64) i32 {
     loop i: u64 = 0 while i < vec_size(xs) .. ++i {
         if xs[i] == x {
             return true
