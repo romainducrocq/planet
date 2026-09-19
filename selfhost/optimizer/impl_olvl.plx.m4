@@ -390,7 +390,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_AsmLabel_t {
 ')m4_dnl
             if instrs_back_idx[] ~= vec_size(ctx[].p_instrs[]) {
-                (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx[]
+                vec_back(ctx[].cfg[].blocks).instrs_back_idx = instrs_back_idx[]
                 block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
                 vec_push_back(ctx[].cfg[].blocks, block)
             }
@@ -412,7 +412,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_AsmJmpCC_t;
         -> AST_AsmRet_t {
 ')m4_dnl
-            (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instr_idx
+            vec_back(ctx[].cfg[].blocks).instrs_back_idx = instr_idx
             instrs_back_idx[] = vec_size(ctx[].p_instrs[])
             break
         }
@@ -519,11 +519,11 @@ fn init_control_flow_graph(ctx: Ctx) none {
                     vec_push_back(ctx[].cfg[].blocks, block)
                 }
                 cfg_init_block(ctx, instr_idx, @instrs_back_idx)
-                (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].size++
+                vec_back(ctx[].cfg[].blocks).size++
             }
         }
         if instrs_back_idx ~= vec_size(ctx[].p_instrs[]) {
-            (ctx[].cfg[].blocks)[(? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1].instrs_back_idx = instrs_back_idx
+            vec_back(ctx[].cfg[].blocks).instrs_back_idx = instrs_back_idx
         }
     }
     ctx[].cfg[].exit_id = vec_size(ctx[].cfg[].blocks)
