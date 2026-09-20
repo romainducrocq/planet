@@ -52,7 +52,7 @@ m4_define(`arrsetlen', `stbds_arrsetlen($1, $2)')m4_dnl
 m4_define(`arrdelswap', `stbds_arrdelswap($1, $2)')m4_dnl
 m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
 
-m4_define(`hmput', `stbds_hmput')m4_dnl
+m4_define(`hmput', `stbds_hmput($1, $2, $3)')m4_dnl
 m4_define(`hmget', `stbds_hmget')m4_dnl
 m4_define(`hmgeti', `stbds_hmgeti')m4_dnl
 m4_define(`hmdel', `stbds_hmdel')m4_dnl
@@ -92,7 +92,11 @@ m4_define(`stbds_arrmaybegrow', `
 
 m4_define(`stbds_arrgrow', `($1) = stbds_arrgrowf(($1), sizeof(($1)[]), ($2), ($3))')m4_dnl
 
-m4_define(`stbds_hmput', `TODO')m4_dnl
+m4_define(`stbds_hmput', `{
+    ($1) = stbds_hmput_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0)
+    ($1)[(cast<*struc stbds_array_header>((($1) - 1)) - 1)[].temp].key = ($2)
+    ($1)[(cast<*struc stbds_array_header>((($1) - 1)) - 1)[].temp].value = ($3)
+}')m4_dnl
 
 m4_define(`stbds_hmgeti', `TODO')m4_dnl
 

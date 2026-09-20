@@ -1390,17 +1390,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             }
         }
         else {
-            loop .. while 0 {
-                " #@MACRO@:set_insert(ctx->includename_set, includename)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->includename_set, includename, 0)"
-                    loop .. while 0 {
-                        (ctx[].includename_set) = stbds_hmput_key((ctx[].includename_set), sizeof((ctx[].includename_set)[]), cast<*any>(@((includename))), sizeof((ctx[].includename_set)[].key), 0)
-                        (ctx[].includename_set)[(cast<*struc stbds_array_header>(((ctx[].includename_set) - 1)) - 1)[].temp].key = (includename)
-                        (ctx[].includename_set)[(cast<*struc stbds_array_header>(((ctx[].includename_set) - 1)) - 1)[].temp].value = (0)
-                    }
-                }
-            }
+            set_insert(ctx[].includename_set, includename)
         }
     }
     match match_tok {
