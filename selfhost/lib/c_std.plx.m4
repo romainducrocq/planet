@@ -89,7 +89,7 @@ m4_define(`map_new', `nil')m4_dnl
 m4_define(`map_delete', `TODO')m4_dnl
 m4_define(`map_move', `TODO')m4_dnl
 m4_define(`map_size', `TODO')m4_dnl
-m4_define(`map_add', `TODO')m4_dnl
+m4_define(`map_add', `hmput($1, $2, $3)')m4_dnl
 m4_define(`map_clear', `TODO')m4_dnl
 m4_define(`map_empty', `TODO')m4_dnl
 m4_define(`map_end', `TODO')m4_dnl
@@ -97,16 +97,27 @@ m4_define(`map_erase', `TODO')m4_dnl
 m4_define(`map_find', `TODO')m4_dnl
 m4_define(`map_get', `TODO')m4_dnl
 m4_define(`map_move_add', `TODO')m4_dnl
-m4_define(`element_t', `TODO')m4_dnl
-m4_define(`ElementKey', `TODO')m4_dnl
-m4_define(`element_get', `TODO')m4_dnl
+
+# TODO
+m4_define(`element_t', `struc Element$1')m4_dnl
+# TODO
+m4_define(`ElementKey', `type struc Element$1(key: $1, value: char)')m4_dnl
+# TODO
+m4_define(`element_get', `($1).key')m4_dnl
+# TODO
 m4_define(`hashset_t', `*struc Element$1')m4_dnl
-m4_define(`set_new', `nil')m4_dnl
+# TODO
+m4_define(`set_new', `map_new()')m4_dnl
+# TODO
 m4_define(`set_delete', `TODO')m4_dnl
+# TODO
 m4_define(`set_size', `TODO')m4_dnl
+# TODO
 m4_define(`set_clear', `TODO')m4_dnl
+# TODO
 m4_define(`set_end', `TODO')m4_dnl
+# TODO
 m4_define(`set_find', `TODO')m4_dnl
-m4_define(`set_insert', `TODO')m4_dnl
+m4_define(`set_insert', `map_add($1, $2, 0)')m4_dnl
 
 ')m4_dnl
