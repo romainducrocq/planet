@@ -991,17 +991,7 @@ fn is_aliased_name(ctx: Ctx, name: u64) i32 {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_add_aliased_value(ctx: Ctx, node: *struc TacValue) none {
     if node[].tag == AST_TacVariable_t {
-        loop .. while 0 {
-            " #@MACRO@:set_insert(ctx->frontend->addressed_set, node->get._TacVariable.name)"
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->frontend->addressed_set, node->get._TacVariable.name, 0)"
-                loop .. while 0 {
-                    (ctx[].frontend[].addressed_set) = stbds_hmput_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((node[].get._TacVariable.name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)
-                    (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].key = (node[].get._TacVariable.name)
-                    (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].value = (0)
-                }
-            }
-        }
+        set_insert(ctx[].frontend[].addressed_set, node[].get._TacVariable.name)
     }
 }
 

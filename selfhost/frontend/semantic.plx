@@ -3219,17 +3219,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         free_Symbol(@fun_symbol)
     }
     if node[].body {
-        loop .. while 0 {
-            " #@MACRO@:set_insert(ctx->fun_def_set, node->name)"
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->fun_def_set, node->name, 0)"
-                loop .. while 0 {
-                    (ctx[].fun_def_set) = stbds_hmput_key((ctx[].fun_def_set), sizeof((ctx[].fun_def_set)[]), cast<*any>(@((node[].name))), sizeof((ctx[].fun_def_set)[].key), 0)
-                    (ctx[].fun_def_set)[(cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp].key = (node[].name)
-                    (ctx[].fun_def_set)[(cast<*struc stbds_array_header>(((ctx[].fun_def_set) - 1)) - 1)[].temp].value = (0)
-                }
-            }
-        }
+        set_insert(ctx[].fun_def_set, node[].name)
         is_def = true
         ctx[].fun_def_name = node[].name
     }
@@ -4367,17 +4357,7 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:set_insert(ctx->label_set, node->target)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->label_set, node->target, 0)"
-            loop .. while 0 {
-                (ctx[].label_set) = stbds_hmput_key((ctx[].label_set), sizeof((ctx[].label_set)[]), cast<*any>(@((node[].target))), sizeof((ctx[].label_set)[].key), 0)
-                (ctx[].label_set)[(cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp].key = (node[].target)
-                (ctx[].label_set)[(cast<*struc stbds_array_header>(((ctx[].label_set) - 1)) - 1)[].temp].value = (0)
-            }
-        }
-    }
+    set_insert(ctx[].label_set, node[].target)
     label _Lfinally
     if name_fmt {
         " #@MACRO@:str_delete(name_fmt)"
@@ -6295,30 +6275,10 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
             node[].tag_name = structure.tag_name
         }
         if node[].is_union {
-            loop .. while 0 {
-                " #@MACRO@:set_insert(ctx->union_def_set, node->tag_name)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->union_def_set, node->tag_name, 0)"
-                    loop .. while 0 {
-                        (ctx[].union_def_set) = stbds_hmput_key((ctx[].union_def_set), sizeof((ctx[].union_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].union_def_set)[].key), 0)
-                        (ctx[].union_def_set)[(cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp].key = (node[].tag_name)
-                        (ctx[].union_def_set)[(cast<*struc stbds_array_header>(((ctx[].union_def_set) - 1)) - 1)[].temp].value = (0)
-                    }
-                }
-            }
+            set_insert(ctx[].union_def_set, node[].tag_name)
         }
         else {
-            loop .. while 0 {
-                " #@MACRO@:set_insert(ctx->struct_def_set, node->tag_name)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->struct_def_set, node->tag_name, 0)"
-                    loop .. while 0 {
-                        (ctx[].struct_def_set) = stbds_hmput_key((ctx[].struct_def_set), sizeof((ctx[].struct_def_set)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].struct_def_set)[].key), 0)
-                        (ctx[].struct_def_set)[(cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp].key = (node[].tag_name)
-                        (ctx[].struct_def_set)[(cast<*struc stbds_array_header>(((ctx[].struct_def_set) - 1)) - 1)[].temp].value = (0)
-                    }
-                }
-            }
+            set_insert(ctx[].struct_def_set, node[].tag_name)
         }
     }
     if not vec_empty(node[].members) {

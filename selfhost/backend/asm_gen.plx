@@ -2602,17 +2602,7 @@ fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
     {
         if node[].src[].tag == AST_TacVariable_t {
             name: u64 = node[].src[].get._TacVariable.name
-            loop .. while 0 {
-                " #@MACRO@:set_insert(ctx->frontend->addressed_set, name)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->frontend->addressed_set, name, 0)"
-                    loop .. while 0 {
-                        (ctx[].frontend[].addressed_set) = stbds_hmput_key((ctx[].frontend[].addressed_set), sizeof((ctx[].frontend[].addressed_set)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].addressed_set)[].key), 0)
-                        (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].key = (name)
-                        (ctx[].frontend[].addressed_set)[(cast<*struc stbds_array_header>(((ctx[].frontend[].addressed_set) - 1)) - 1)[].temp].value = (0)
-                    }
-                }
-            }
+            set_insert(ctx[].frontend[].addressed_set, name)
             map_it: i64 = (? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)
             if map_it ~= -1 and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == AST_ConstantAttr_t {
                 src = make_AsmData(name, 0l)
