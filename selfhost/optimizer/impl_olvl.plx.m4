@@ -24,7 +24,7 @@ m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
 
 type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: vector_t(u64), succ_ids: vector_t(u64))
 
-type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64), reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock), identifier_id_map: *struc PairTIdentifierulong_t)
+type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64), reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock), identifier_id_map: *struc PairTIdentifieru64)
 
 type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64), instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t))
 
@@ -1483,7 +1483,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 ')m4_dnl
         }
         loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
-            name_id: *struc PairTIdentifierulong_t = @ctx[].cfg[].identifier_id_map[i]
+            name_id: *struc PairTIdentifieru64 = @ctx[].cfg[].identifier_id_map[i]
 m4_ifelse(__OPTIM_LEVEL__, `1', `
             if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@(((name_id[]).key))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == AST_StaticAttr_t {
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)

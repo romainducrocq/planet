@@ -28,9 +28,9 @@ m4_define(`CLS_memory', `2')m4_dnl
 
 type struc Struct8Bytes(size: u64, clss: [2]i32)
 
-m4_define(`StStruct8Bytes', `TODO')m4_dnl
+m4_define(`StStruct8Bytes', `struc Struct8Bytes')m4_dnl
 
-type struc PairTIdentifierStStruct8Bytes(key: u64, value: struc Struct8Bytes)
+PairKeyValue(``TIdentifier'', ``StStruct8Bytes'')
 
 type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]i32, sse_arg_regs: [8]i32, dbl_const_table: *struc PairTIdentifierTIdentifier, struct_8b_map: *struc PairTIdentifierStStruct8Bytes, p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
 

@@ -39,7 +39,7 @@ type struc CStringLiteral(_ref_count: u64, tag: i32, value: vector_t(i8))
 pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral;
 pub fn free_CStringLiteral(self: **struc CStringLiteral) none;
 
-type struc PairTIdentifierstring_t(key: u64, value: string)
+PairKeyValue(``TIdentifier'', ``string_t'')
 
 type struc IdentifierContext(label_count: u32, var_count: u32, struct_count: u32, hash_table: *struc PairTIdentifierstring_t)
 

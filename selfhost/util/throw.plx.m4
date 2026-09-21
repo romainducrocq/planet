@@ -6,7 +6,7 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 type struc FileIoContext;
 m4_define(`hash_t', `u64')m4_dnl
 
-type struc Pairhash_thash_t(key: u64, value: u64)
+PairKeyValue(``hash_t'', ``hash_t'')
 
 type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string)
 

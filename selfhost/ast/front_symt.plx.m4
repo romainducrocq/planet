@@ -134,26 +134,25 @@ pub fn free_Symbol(self: **struc Symbol) none;
 type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
-m4_define(`UPtrStructMember', `TODO')m4_dnl
+m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
 
-type struc PairTIdentifierUPtrStructMember(key: u64, value: *struc StructMember)
+PairKeyValue(``TIdentifier'', ``UPtrStructMember'')
 
 type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: *struc PairTIdentifierUPtrStructMember)
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
-m4_define(`ulong_t', `TODO')m4_dnl
 
-type struc PairTIdentifierulong_t(key: u64, value: u64)
+PairKeyValue(``TIdentifier'', u64)
 
-type struc PairTIdentifierTIdentifier(key: u64, value: u64)
+PairKeyValue(``TIdentifier'', ``TIdentifier'')
 
-m4_define(`UPtrStructTypedef', `TODO')m4_dnl
+m4_define(`UPtrStructTypedef', `unique_ptr_t(StructTypedef)')m4_dnl
 
-type struc PairTIdentifierUPtrStructTypedef(key: u64, value: *struc StructTypedef)
+PairKeyValue(``TIdentifier'', ``UPtrStructTypedef'')
 
-m4_define(`UPtrSymbol', `TODO')m4_dnl
+m4_define(`UPtrSymbol', `unique_ptr_t(Symbol)')m4_dnl
 
-type struc PairTIdentifierUPtrSymbol(key: u64, value: *struc Symbol)
+PairKeyValue(``TIdentifier'', ``UPtrSymbol'')
 
 ElementKey(``TIdentifier'')
 
