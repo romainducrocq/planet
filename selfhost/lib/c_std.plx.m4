@@ -96,8 +96,11 @@ m4_define(`map_delete', `if $1 {
     hmfree($1)
     $1 = map_new()
 }')m4_dnl
-# TODO
-m4_define(`map_move', `TODO')m4_dnl
+m4_define(`map_move', `if $1 ~= $2 {
+    map_delete($2)
+    $2 = $1
+    $1 = map_new()
+}')m4_dnl
 # TODO
 m4_define(`map_size', `TODO')m4_dnl
 # TODO
