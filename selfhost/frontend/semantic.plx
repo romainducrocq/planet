@@ -3140,18 +3140,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
             }
             param_attrs = make_LocalAttr()
             symbol = make_Symbol(@param_type, @param_attrs)
-            loop .. while 0 {
-                " #@MACRO@:map_move_add(ctx->frontend->symbol_table, node->params[i], symbol)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->frontend->symbol_table, node->params[i], symbol)"
-                    loop .. while 0 {
-                        (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].params[i]))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].params[i])
-                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-                    }
-                }
-                symbol = nil
-            }
+            map_move_add(ctx[].frontend[].symbol_table, node[].params[i], symbol)
         }
     }
     label _Lfinally
@@ -3231,18 +3220,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     }
     glob_fun_attrs = make_FunAttr(is_def, is_glob)
     symbol = make_Symbol(@glob_fun_type, @glob_fun_attrs)
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
-            loop .. while 0 {
-                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-            }
-        }
-        symbol = nil
-    }
+    map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
     if name_fmt {
         " #@MACRO@:str_delete(name_fmt)"
@@ -3502,18 +3480,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
                 constant_attrs = make_ConstantAttr(@static_init)
             }
             symbol: *struc Symbol = make_Symbol(@constant_type, @constant_attrs)
-            loop .. while 0 {
-                " #@MACRO@:map_move_add(ctx->frontend->symbol_table, string_const_label, symbol)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->frontend->symbol_table, string_const_label, symbol)"
-                    loop .. while 0 {
-                        (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((string_const_label))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (string_const_label)
-                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-                    }
-                }
-                symbol = nil
-            }
+            map_move_add(ctx[].frontend[].symbol_table, string_const_label, symbol)
         }
     }
     push_static_init(ctx, make_PointerInit(string_const_label))
@@ -3898,18 +3865,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }
     glob_var_attrs = make_StaticAttr(is_glob, @init_value)
     symbol = make_Symbol(@glob_var_type, @glob_var_attrs)
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
-            loop .. while 0 {
-                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-            }
-        }
-        symbol = nil
-    }
+    map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
     if name_fmt {
         " #@MACRO@:str_delete(name_fmt)"
@@ -3973,18 +3929,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     init_value = make_NoInitializer()
     local_var_attrs = make_StaticAttr(true, @init_value)
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
-            loop .. while 0 {
-                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-            }
-        }
-        symbol = nil
-    }
+    map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
     if name_fmt {
         " #@MACRO@:str_delete(name_fmt)"
@@ -4034,18 +3979,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     }
     local_var_attrs = make_StaticAttr(false, @init_value)
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
-            loop .. while 0 {
-                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-            }
-        }
-        symbol = nil
-    }
+    map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
     free_IdentifierAttr(@local_var_attrs)
     free_Symbol(@symbol)
@@ -4077,18 +4011,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     }
     local_var_attrs = make_LocalAttr()
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->frontend->symbol_table, node->name, symbol)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->frontend->symbol_table, node->name, symbol)"
-            loop .. while 0 {
-                (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-            }
-        }
-        symbol = nil
-    }
+    map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
     if name_fmt {
         " #@MACRO@:str_delete(name_fmt)"
@@ -4286,18 +4209,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
             }
             # TODO THROW_ABORT_IF(map_find(members, vec_back(member_names)) != map_end());
             struct_member = make_StructMember(offset, @member_type)
-            loop .. while 0 {
-                " #@MACRO@:map_move_add(members, vec_back(member_names), struct_member)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(members, (member_names)[((member_names) ? ((struct stbds_array_header*)(member_names)-1)->length : 0) - 1], struct_member)"
-                    loop .. while 0 {
-                        (members) = stbds_hmput_key((members), sizeof((members)[]), cast<*any>(@(((member_names)[(? (member_names) then (cast<*struc stbds_array_header>((member_names)) - 1)[].length else 0) - 1]))), sizeof((members)[].key), 0)
-                        (members)[(cast<*struc stbds_array_header>(((members) - 1)) - 1)[].temp].key = ((member_names)[(? (member_names) then (cast<*struc stbds_array_header>((member_names)) - 1)[].length else 0) - 1])
-                        (members)[(cast<*struc stbds_array_header>(((members) - 1)) - 1)[].temp].value = (struct_member)
-                    }
-                }
-                struct_member = nil
-            }
+            map_move_add(members, vec_back(member_names), struct_member)
         }
         if alignment < member_alignment {
             alignment = member_alignment
@@ -4310,18 +4222,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
         }
     }
     struct_typedef = make_StructTypedef(alignment, size, @member_names, @members)
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->frontend->struct_typedef_table, node->tag_name, struct_typedef)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->frontend->struct_typedef_table, node->tag_name, struct_typedef)"
-            loop .. while 0 {
-                (ctx[].frontend[].struct_typedef_table) = stbds_hmput_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((node[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)
-                (ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp].key = (node[].tag_name)
-                (ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp].value = (struct_typedef)
-            }
-        }
-        struct_typedef = nil
-    }
+    map_move_add(ctx[].frontend[].struct_typedef_table, node[].tag_name, struct_typedef)
     label _Lfinally
     if struct_fmt {
         " #@MACRO@:str_delete(struct_fmt)"

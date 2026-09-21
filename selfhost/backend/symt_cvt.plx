@@ -142,18 +142,7 @@ pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc Assem
 }
 
 fn cvt_backend_symbol(ctx: *struc SymtCvtContext, node: *struc BackendSymbol) none {
-    loop .. while 0 {
-        " #@MACRO@:map_move_add(ctx->backend->symbol_table, ctx->symbol, node)"
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->backend->symbol_table, ctx->symbol, node)"
-            loop .. while 0 {
-                (ctx[].backend[].symbol_table) = stbds_hmput_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((ctx[].symbol))), sizeof((ctx[].backend[].symbol_table)[].key), 0)
-                (ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp].key = (ctx[].symbol)
-                (ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp].value = (node)
-            }
-        }
-        node = nil
-    }
+    map_move_add(ctx[].backend[].symbol_table, ctx[].symbol, node)
 }
 
 fn dbl_static_const(ctx: *struc SymtCvtContext) none {
