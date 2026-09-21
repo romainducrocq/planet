@@ -1372,7 +1372,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     }
     {
         includename: u64 = stbds_hash_string(filename, 42)
-        if (? ((ctx[].includename_set) = stbds_hmget_key((ctx[].includename_set), sizeof((ctx[].includename_set)[]), cast<*any>(@((includename))), sizeof((ctx[].includename_set)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].includename_set) - 1)) - 1)[].temp) ~= -1 {
+        if set_find(ctx[].includename_set, includename) ~= set_end() {
             match match_tok {
                 -> TOK_import_file {
                     -> TOK_use_file {
