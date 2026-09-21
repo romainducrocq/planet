@@ -41,9 +41,9 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol;
 pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc AssemblyType) *struc BackendSymbol;
 pub fn make_BackendFun(is_def: i32) *struc BackendSymbol;
 pub fn free_BackendSymbol(self: **struc BackendSymbol) none;
-m4_define(`UPtrBackendSymbol', `TODO')m4_dnl
+m4_define(`UPtrBackendSymbol', `unique_ptr_t(BackendSymbol)')m4_dnl
 
-type struc PairTIdentifierUPtrBackendSymbol(key: u64, value: *struc BackendSymbol)
+PairKeyValue(``TIdentifier'', ``UPtrBackendSymbol'')
 
 type struc BackEndContext(symbol_table: *struc PairTIdentifierUPtrBackendSymbol)
 
