@@ -1105,21 +1105,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa_o1[].addressed_idx = ctx[].dfa[].static_idx + 1
     }
     if is_addressed_set {
-        loop .. while 0 {
-            " #@MACRO@:set_clear(ctx->frontend->addressed_set)"
-            loop .. while 0 {
-                " #@MACRO@:map_clear(ctx->frontend->addressed_set)"
-                if ctx[].frontend[].addressed_set {
-                    " #@MACRO@:map_delete(ctx->frontend->addressed_set)"
-                    loop .. while 0 {
-                        cast<none>((? (ctx[].frontend[].addressed_set) ~= nil then stbds_hmfree_func((ctx[].frontend[].addressed_set) - 1, sizeof((ctx[].frontend[].addressed_set)[])) else cast<none>(0)))
-                        (ctx[].frontend[].addressed_set) = nil
-                    }
-                    ctx[].frontend[].addressed_set = map_new()
-                }
-                ;
-            }
-        }
+        set_clear(ctx[].frontend[].addressed_set)
     }
 ')m4_dnl
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
