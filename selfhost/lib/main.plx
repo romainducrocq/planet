@@ -148,7 +148,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     close_fwrite(fileio)
     verbose(ctx, "OK\n")
     label _Lfinally
-    loop i: u64 = 0 while i < (? (identifiers.hash_table) then (cast<*struc stbds_array_header>(((identifiers.hash_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(identifiers.hash_table) .. ++i {
         if (identifiers.hash_table[i]).value {
             " #@MACRO@:str_delete(pair_second(identifiers.hash_table[i]))"
             sdsfree((identifiers.hash_table[i]).value)
@@ -157,16 +157,16 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     map_delete(identifiers.hash_table)
     map_delete(frontend.string_const_table)
-    loop i: u64 = 0 while i < (? (frontend.struct_typedef_table) then (cast<*struc stbds_array_header>(((frontend.struct_typedef_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(frontend.struct_typedef_table) .. ++i {
         free_StructTypedef(@(frontend.struct_typedef_table[i]).value)
     }
     map_delete(frontend.struct_typedef_table)
-    loop i: u64 = 0 while i < (? (frontend.symbol_table) then (cast<*struc stbds_array_header>(((frontend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(frontend.symbol_table) .. ++i {
         free_Symbol(@(frontend.symbol_table[i]).value)
     }
     map_delete(frontend.symbol_table)
     set_delete(frontend.addressed_set)
-    loop i: u64 = 0 while i < (? (backend.symbol_table) then (cast<*struc stbds_array_header>(((backend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(backend.symbol_table) .. ++i {
         free_BackendSymbol(@(backend.symbol_table[i]).value)
     }
     map_delete(backend.symbol_table)
