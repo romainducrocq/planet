@@ -54,7 +54,7 @@ m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
 
 m4_define(`hmput', `stbds_hmput($1, $2, $3)')m4_dnl
 m4_define(`hmget', `stbds_hmget')m4_dnl
-m4_define(`hmgeti', `stbds_hmgeti')m4_dnl
+m4_define(`hmgeti', `stbds_hmgeti($1, $2)')m4_dnl
 m4_define(`hmdel', `stbds_hmdel')m4_dnl
 m4_define(`hmlenu', `stbds_hmlenu')m4_dnl
 m4_define(`hmfree', `stbds_hmfree($1)')m4_dnl
@@ -98,7 +98,8 @@ m4_define(`stbds_hmput', `{
     ($1)[(cast<*struc stbds_array_header>((($1) - 1)) - 1)[].temp].value = ($3)
 }')m4_dnl
 
-m4_define(`stbds_hmgeti', `TODO')m4_dnl
+m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0))
+    and 0 then 0 else`stbds_temp(($1) - 1))')m4_dnl
 
 m4_define(`stbds_hmgetp', `TODO')m4_dnl
 
