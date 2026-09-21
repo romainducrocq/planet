@@ -55,7 +55,7 @@ m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
 m4_define(`hmput', `stbds_hmput($1, $2, $3)')m4_dnl
 m4_define(`hmget', `stbds_hmget')m4_dnl
 m4_define(`hmgeti', `stbds_hmgeti($1, $2)')m4_dnl
-m4_define(`hmdel', `stbds_hmdel')m4_dnl
+m4_define(`hmdel', `stbds_hmdel($1, $2)')m4_dnl
 m4_define(`hmlenu', `stbds_hmlenu')m4_dnl
 m4_define(`hmfree', `stbds_hmfree($1)')m4_dnl
 
@@ -103,7 +103,8 @@ m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]), cast
 
 m4_define(`stbds_hmgetp', `TODO')m4_dnl
 
-m4_define(`stbds_hmdel', `TODO')m4_dnl
+m4_define(`stbds_hmdel', `(? (($1) = stbds_hmdel_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key),
+    STBDS_OFFSETOF(($1), key), 0)) then stbds_temp(($1) - 1) else 0)')m4_dnl
 
 m4_define(`stbds_hmfree', `{
     cast<none>(? ($1) ~= nil then stbds_hmfree_func(($1) - 1, sizeof(($1)[])) else cast<none>(0))

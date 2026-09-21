@@ -4370,10 +4370,7 @@ fn exit_scope(ctx: *struc SemanticContext) none {
         identifier: u64 = ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1][i]).key # pair_first(vec_back(ctx->scoped_identifier_maps)[i])
         map_it: i64 = (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp)
         if map_it ~= -1 and (ctx[].extern_scope_map[map_it]).value == vec_size(ctx[].scoped_identifier_maps) {
-            loop .. while 0 {
-                " #@MACRO@:map_erase(ctx->extern_scope_map, identifier)"
-                (? ((ctx[].extern_scope_map) = stbds_hmdel_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), (cast<string>(@((ctx[].extern_scope_map))[].key) - cast<string>(((ctx[].extern_scope_map)))), 0)) then (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp else 0)
-            }
+            map_erase(ctx[].extern_scope_map, identifier)
         }
     }
     map_delete(vec_back(ctx[].scoped_identifier_maps))
