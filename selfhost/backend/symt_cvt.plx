@@ -213,7 +213,7 @@ fn cvt_obj_type(ctx: *struc SymtCvtContext, node: *struc IdentifierAttr) none {
 
 fn cvt_program(ctx: *struc SymtCvtContext, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < (? (ctx[].frontend[].symbol_table) then (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
-        symbol: *struc PairTIdentifierUPtrSymbol = @ctx[].frontend[].symbol_table[i]
+        symbol: *pair_t(``TIdentifier'', ``UPtrSymbol'') = @ctx[].frontend[].symbol_table[i]
         ctx[].symbol = (symbol[]).key
         if (symbol[]).value[].type_t[].tag == AST_FunType_t {
             cvt_fun_type(ctx, @(symbol[]).value[].attrs[].get._FunAttr, @(symbol[]).value[].type_t[].get._FunType)

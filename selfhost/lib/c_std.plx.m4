@@ -81,25 +81,40 @@ m4_define(`vec_resize', `arrsetlen($1, $2)')m4_dnl
 m4_define(`vec_reserve', `arrsetcap($1, $2)')m4_dnl
 
 m4_define(`xarg', `$1')m4_dnl
-m4_define(`pair_t', `TODO')m4_dnl
-m4_define(`PairKeyValue', `type struc Pair$1$2(key: xarg($1), value: xarg($2))')m4_dnl
+m4_define(`pair_t', `struc Pair$1$2')m4_dnl
+m4_define(`PairKeyValue', `type pair_t($1, $2)(key: xarg($1), value: xarg($2))')m4_dnl
+# TODO
 m4_define(`pair_first', `($1).key')m4_dnl
+# TODO
 m4_define(`pair_second', `($1).value')m4_dnl
-m4_define(`hashmap_t', `*struc Pair$1$2')m4_dnl
+# TODO
+m4_define(`hashmap_t', `*pair_t($1, $2)')m4_dnl
+# TODO
 m4_define(`map_new', `nil')m4_dnl
+# TODO
 m4_define(`map_delete', `if $1 {
     hmfree($1)
     $1 = map_new()
 }')m4_dnl
+# TODO
 m4_define(`map_move', `TODO')m4_dnl
+# TODO
 m4_define(`map_size', `TODO')m4_dnl
+# TODO
 m4_define(`map_add', `hmput($1, $2, $3)')m4_dnl
+# TODO
 m4_define(`map_clear', `map_delete($1)')m4_dnl
+# TODO
 m4_define(`map_empty', `TODO')m4_dnl
+# TODO
 m4_define(`map_end', `-1')m4_dnl
+# TODO
 m4_define(`map_erase', `TODO')m4_dnl
+# TODO
 m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
+# TODO
 m4_define(`map_get', `TODO')m4_dnl
+# TODO
 m4_define(`map_move_add', `TODO')m4_dnl
 
 m4_define(`element_t', `struc Element$1')m4_dnl
