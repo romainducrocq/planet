@@ -655,19 +655,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TId
     self[].member_names = vec_new()
     vec_move(member_names[], self[].member_names)
     self[].members = map_new()
-    if members[] ~= self[].members {
-        " #@MACRO@:map_move(*members, self->members)"
-        if self[].members {
-            " #@MACRO@:map_delete(self->members)"
-            loop .. while 0 {
-                cast<none>((? (self[].members) ~= nil then stbds_hmfree_func((self[].members) - 1, sizeof((self[].members)[])) else cast<none>(0)))
-                (self[].members) = nil
-            }
-            self[].members = map_new()
-        }
-        self[].members = members[]
-        members[] = map_new()
-    }
+    map_move(members[], self[].members)
     return self
 }
 
