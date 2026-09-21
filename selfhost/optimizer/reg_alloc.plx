@@ -705,25 +705,11 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, vec_new())
         if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t {
             vec_push_back(ctx[].sse_infer_graph[].unpruned_pseudo_names, name)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->sse_infer_graph->pseudo_reg_map, name, infer)"
-                loop .. while 0 {
-                    (ctx[].sse_infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].sse_infer_graph[].pseudo_reg_map), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[].key), 0)
-                    (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
-                    (ctx[].sse_infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
-                }
-            }
+            map_add(ctx[].sse_infer_graph[].pseudo_reg_map, name, infer)
         }
         else {
             vec_push_back(ctx[].infer_graph[].unpruned_pseudo_names, name)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->infer_graph->pseudo_reg_map, name, infer)"
-                loop .. while 0 {
-                    (ctx[].infer_graph[].pseudo_reg_map) = stbds_hmput_key((ctx[].infer_graph[].pseudo_reg_map), sizeof((ctx[].infer_graph[].pseudo_reg_map)[]), cast<*any>(@((name))), sizeof((ctx[].infer_graph[].pseudo_reg_map)[].key), 0)
-                    (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].key = (name)
-                    (ctx[].infer_graph[].pseudo_reg_map)[(cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].temp].value = (infer)
-                }
-            }
+            map_add(ctx[].infer_graph[].pseudo_reg_map, name, infer)
         }
     }
     if not ((? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {

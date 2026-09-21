@@ -177,14 +177,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
         }
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->frontend->string_const_table, string_const, string_const_label)"
-                loop .. while 0 {
-                    (ctx[].frontend[].string_const_table) = stbds_hmput_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)
-                    (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].key = (string_const)
-                    (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].value = (string_const_label)
-                }
-            }
+            map_add(ctx[].frontend[].string_const_table, string_const, string_const_label)
 
             constant_type: *struc Type = sptr_new()
             {

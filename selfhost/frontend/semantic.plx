@@ -3447,14 +3447,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
         }
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->frontend->string_const_table, string_const, string_const_label)"
-                loop .. while 0 {
-                    (ctx[].frontend[].string_const_table) = stbds_hmput_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)
-                    (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].key = (string_const)
-                    (ctx[].frontend[].string_const_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp].value = (string_const_label)
-                }
-            }
+            map_add(ctx[].frontend[].string_const_table, string_const, string_const_label)
 
             constant_type: *struc Type = sptr_new()
             {
@@ -5222,34 +5215,13 @@ fn reslv_goto_statement(ctx: *struc SemanticContext, node: *struc CGoto) none {
     map_it: i64 = (? ((ctx[].goto_map) = stbds_hmget_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp)
     if map_it ~= -1 {
         node[].target = (ctx[].goto_map[map_it]).value
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->errors->info_at_map, node->target, node->info_at)"
-            loop .. while 0 {
-                (ctx[].errors[].info_at_map) = stbds_hmput_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].errors[].info_at_map)[].key), 0)
-                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].key = (node[].target)
-                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].value = (node[].info_at)
-            }
-        }
+        map_add(ctx[].errors[].info_at_map, node[].target, node[].info_at)
     }
     else {
         target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->goto_map, node->target, target)"
-            loop .. while 0 {
-                (ctx[].goto_map) = stbds_hmput_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)
-                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].key = (node[].target)
-                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].value = (target)
-            }
-        }
+        map_add(ctx[].goto_map, node[].target, target)
         node[].target = target
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->errors->info_at_map, node->target, node->info_at)"
-            loop .. while 0 {
-                (ctx[].errors[].info_at_map) = stbds_hmput_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].errors[].info_at_map)[].key), 0)
-                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].key = (node[].target)
-                (ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp].value = (node[].info_at)
-            }
-        }
+        map_add(ctx[].errors[].info_at_map, node[].target, node[].info_at)
     }
 }
 
@@ -5269,14 +5241,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     }
     else {
         target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->goto_map, node->target, target)"
-            loop .. while 0 {
-                (ctx[].goto_map) = stbds_hmput_key((ctx[].goto_map), sizeof((ctx[].goto_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].goto_map)[].key), 0)
-                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].key = (node[].target)
-                (ctx[].goto_map)[(cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].temp].value = (target)
-            }
-        }
+        map_add(ctx[].goto_map, node[].target, target)
         node[].target = target
     }
     loop .. while 0 {
@@ -5886,14 +5851,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
             }
         }
         param = rslv_var_identifier(ctx[].identifiers, param)
-        loop .. while 0 {
-            " #@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->params[i], param)"
-            loop .. while 0 {
-                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].params[i]))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].params[i])
-                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (param)
-            }
-        }
+        map_add(vec_back(ctx[].scoped_identifier_maps), node[].params[i], param)
         node[].params[i] = param
     }
     loop .. while 0 {
@@ -5942,23 +5900,9 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->extern_scope_map, node->name, vec_size(ctx->scoped_identifier_maps))"
-            loop .. while 0 {
-                (ctx[].extern_scope_map) = stbds_hmput_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)
-                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].value = ((? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0))
-            }
-        }
+        map_add(ctx[].extern_scope_map, node[].name, vec_size(ctx[].scoped_identifier_maps))
     }
-    loop .. while 0 {
-        " #@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->name, node->name)"
-        loop .. while 0 {
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
-        }
-    }
+    map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, node[].name)
     loop .. while 0 {
         " #@MACRO@:TRY(check_ret_fun_decl(ctx, node))"
         _errval = check_ret_fun_decl(ctx, node)
@@ -6005,23 +5949,9 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
 fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
     _errval: i32 = 0
     if (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp) == -1 {
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->extern_scope_map, node->name, vec_size(ctx->scoped_identifier_maps))"
-            loop .. while 0 {
-                (ctx[].extern_scope_map) = stbds_hmput_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].extern_scope_map)[].key), 0)
-                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].key = (node[].name)
-                (ctx[].extern_scope_map)[(cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp].value = ((? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0))
-            }
-        }
+        map_add(ctx[].extern_scope_map, node[].name, vec_size(ctx[].scoped_identifier_maps))
     }
-    loop .. while 0 {
-        " #@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->name, node->name)"
-        loop .. while 0 {
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (node[].name)
-        }
-    }
+    map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, node[].name)
     if is_file_scope(ctx) {
         loop .. while 0 {
             " #@MACRO@:TRY(check_file_var_decl(ctx, node))"
@@ -6067,14 +5997,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }
     {
         name: u64 = rslv_var_identifier(ctx[].identifiers, node[].name)
-        loop .. while 0 {
-            " #@MACRO@:map_add(vec_back(ctx->scoped_identifier_maps), node->name, name)"
-            loop .. while 0 {
-                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].name))), sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[].key), 0)
-                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].name)
-                ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (name)
-            }
-        }
+        map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, name)
         node[].name = name
     }
     loop .. while 0 {
@@ -6144,14 +6067,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
     else {
         {
             structure: struc Structure = $(rslv_struct_tag(ctx[].identifiers, node[].tag_name), node[].is_union)
-            loop .. while 0 {
-                " #@MACRO@:map_add(vec_back(ctx->scoped_struct_maps), node->tag_name, structure)"
-                loop .. while 0 {
-                    ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) = stbds_hmput_key(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]), sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[]), cast<*any>(@((node[].tag_name))), sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[].key), 0)
-                    ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].key = (node[].tag_name)
-                    ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[(cast<*struc stbds_array_header>((((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].temp].value = (structure)
-                }
-            }
+            map_add(vec_back(ctx[].scoped_struct_maps), node[].tag_name, structure)
             node[].tag_name = structure.tag_name
         }
         if node[].is_union {
