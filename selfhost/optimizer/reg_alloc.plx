@@ -699,36 +699,14 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         vec_delete((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->infer_graph->pseudo_reg_map[i]).linked_pseudo_names
         ;
     }
-    loop .. while 0 {
-        " #@MACRO@:map_clear(ctx->infer_graph->pseudo_reg_map)"
-        if ctx[].infer_graph[].pseudo_reg_map {
-            " #@MACRO@:map_delete(ctx->infer_graph->pseudo_reg_map)"
-            loop .. while 0 {
-                cast<none>((? (ctx[].infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
-                (ctx[].infer_graph[].pseudo_reg_map) = nil
-            }
-            ctx[].infer_graph[].pseudo_reg_map = map_new()
-        }
-        ;
-    }
+    map_clear(ctx[].infer_graph[].pseudo_reg_map)
     vec_clear(ctx[].sse_infer_graph[].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < (? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         vec_delete((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->sse_infer_graph->pseudo_reg_map[i]).linked_pseudo_names
         ;
     }
-    loop .. while 0 {
-        " #@MACRO@:map_clear(ctx->sse_infer_graph->pseudo_reg_map)"
-        if ctx[].sse_infer_graph[].pseudo_reg_map {
-            " #@MACRO@:map_delete(ctx->sse_infer_graph->pseudo_reg_map)"
-            loop .. while 0 {
-                cast<none>((? (ctx[].sse_infer_graph[].pseudo_reg_map) ~= nil then stbds_hmfree_func((ctx[].sse_infer_graph[].pseudo_reg_map) - 1, sizeof((ctx[].sse_infer_graph[].pseudo_reg_map)[])) else cast<none>(0)))
-                (ctx[].sse_infer_graph[].pseudo_reg_map) = nil
-            }
-            ctx[].sse_infer_graph[].pseudo_reg_map = map_new()
-        }
-        ;
-    }
+    map_clear(ctx[].sse_infer_graph[].pseudo_reg_map)
     loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
         name: u64 = (ctx[].cfg[].identifier_id_map[i]).key
         infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, vec_new())

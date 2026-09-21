@@ -6314,17 +6314,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
 fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
     _errval: i32 = 0
     if is_file_scope(ctx) {
-        loop .. while 0 {
-            " #@MACRO@:map_clear(ctx->goto_map)"
-            if ctx[].goto_map {
-                " #@MACRO@:map_delete(ctx->goto_map)"
-                loop .. while 0 {
-                    cast<none>((? (ctx[].goto_map) ~= nil then stbds_hmfree_func((ctx[].goto_map) - 1, sizeof((ctx[].goto_map)[])) else cast<none>(0)))
-                    (ctx[].goto_map) = nil
-                }
-                ctx[].goto_map = map_new()
-            }
-        }
+        map_clear(ctx[].goto_map)
         set_clear(ctx[].label_set)
         vec_clear(ctx[].break_loop_labels)
         vec_clear(ctx[].continue_loop_labels)
