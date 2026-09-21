@@ -547,7 +547,7 @@ fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) non
 fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
     struct_8b: struc Struct8Bytes = $(1, $(CLS_sse, CLS_memory))
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    members_front: u64 = ? struct_type[].is_union then (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) else 1
+    members_front: u64 = ? struct_type[].is_union then map_size(struct_typedef[].members) else 1
     loop i: u64 = 0 while i < members_front .. ++i {
         if struct_8b.clss[0] == CLS_integer {
             break
@@ -573,7 +573,7 @@ fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
 fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
     struct_8b: struc Struct8Bytes = $(2, $(CLS_sse, CLS_sse))
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    members_front: u64 = ? struct_type[].is_union then (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) else 1
+    members_front: u64 = ? struct_type[].is_union then map_size(struct_typedef[].members) else 1
     loop i: u64 = 0 while i < members_front .. ++i {
         if struct_8b.clss[0] == CLS_integer and struct_8b.clss[1] == CLS_integer {
             break

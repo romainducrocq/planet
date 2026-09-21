@@ -2959,7 +2959,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     strto_fmt_2: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    bound: u64 = ? struct_type[].is_union then 1 else (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0)
+    bound: u64 = ? struct_type[].is_union then 1 else map_size(struct_typedef[].members)
     if vec_size(node[].initializers) > bound {
         strto_fmt_1 = str_to_string(vec_size(node[].initializers))
         strto_fmt_2 = ? (bound) > 0 then sdsfromunsignedlong(cast<u64>((bound))) else sdsfromlong(cast<i64>((bound)))
@@ -3004,7 +3004,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
 
 fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) none {
     struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    loop i: u64 = vec_size(node[].initializers) while i < (? (struct_typedef[].members) then (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = vec_size(node[].initializers) while i < map_size(struct_typedef[].members) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
         vec_move_back(node[].initializers, zero_init)
@@ -4226,7 +4226,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     free_StructTypedef(@struct_typedef)
     free_Type(@member_type)
     vec_delete(member_names)
-    loop i: u64 = 0 while i < (? (members) then (cast<*struc stbds_array_header>(((members) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(members) .. ++i {
         free_StructMember(@(members[i]).value)
     }
     map_delete(members)
@@ -4366,7 +4366,7 @@ fn enter_scope(ctx: *struc SemanticContext) none {
 }
 
 fn exit_scope(ctx: *struc SemanticContext) none {
-    loop i: u64 = 0 while i < (? ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) then (cast<*struc stbds_array_header>((((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1)) - 1)[].length - 1 else 0) .. ++i { # TODO map_size(vec_back(ctx->scoped_identifier_maps))
+    loop i: u64 = 0 while i < map_size(vec_back(ctx[].scoped_identifier_maps)) .. ++i {
         identifier: u64 = ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1][i]).key # pair_first(vec_back(ctx->scoped_identifier_maps)[i])
         map_it: i64 = (? ((ctx[].extern_scope_map) = stbds_hmget_key((ctx[].extern_scope_map), sizeof((ctx[].extern_scope_map)[]), cast<*any>(@((identifier))), sizeof((ctx[].extern_scope_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].extern_scope_map) - 1)) - 1)[].temp)
         if map_it ~= -1 and (ctx[].extern_scope_map[map_it]).value == vec_size(ctx[].scoped_identifier_maps) {
@@ -4383,7 +4383,7 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
     name_fmt_1: string = ? nil then sdsnew(nil) else nil
     name_fmt_2: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    loop i: u64 = 0 while i < (? (ctx[].goto_map) then (cast<*struc stbds_array_header>(((ctx[].goto_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(ctx[].goto_map) .. ++i {
         if set_find(ctx[].label_set, pair_first(ctx[].goto_map[i])) == set_end() {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ((((((ctx->errors->info_at_map) = stbds_hmget_key((ctx->errors->info_at_map), sizeof(*(ctx->errors->info_at_map)), (void*)&(((ctx->goto_map[i]).value)), sizeof((ctx->errors->info_at_map)->key), 0)) && 0 ? 0 : ((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp)) && 0 ? 0 : &(ctx->errors->info_at_map)[((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp])->value)))"

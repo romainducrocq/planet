@@ -99,7 +99,6 @@ m4_define(`map_move', `if $1 ~= $2 {
     $2 = $1
     $1 = map_new()
 }')m4_dnl
-# TODO
 m4_define(`map_size', `hmlenu($1)')m4_dnl
 m4_define(`map_add', `hmput($1, $2, $3)')m4_dnl
 m4_define(`map_clear', `map_delete($1)')m4_dnl
@@ -122,6 +121,7 @@ m4_define(`element_get', `($1).key')m4_dnl
 m4_define(`hashset_t', `*element_t($1)')m4_dnl
 m4_define(`set_new', `map_new()')m4_dnl
 m4_define(`set_delete', `map_delete($1)')m4_dnl
+# m4_define(`set_size', `map_size($1)')m4_dnl
 m4_define(`set_clear', `map_clear($1)')m4_dnl
 m4_define(`set_end', `map_end()')m4_dnl
 m4_define(`set_find', `map_find($1, $2)')m4_dnl
