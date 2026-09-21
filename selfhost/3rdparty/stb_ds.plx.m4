@@ -99,7 +99,7 @@ m4_define(`stbds_hmput', `{
 }')m4_dnl
 
 m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0))
-    and 0 then 0 else`stbds_temp(($1) - 1))')m4_dnl
+    and 0 then 0 else stbds_temp(($1) - 1))')m4_dnl
 
 m4_define(`stbds_hmgetp', `TODO')m4_dnl
 
