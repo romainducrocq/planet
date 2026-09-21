@@ -1435,7 +1435,7 @@ fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
             unreach_empty_block(ctx, block_id)
         }
     }
-    loop i: u64 = 0 while i < (? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) .. ++i {
+    loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
         label_id: u64 = (ctx[].cfg[].identifier_id_map[i]).value
         if ctx[].cfg[].reaching_code[label_id] {
             loop block_id = label_id while block_id-- > 0 {
