@@ -682,7 +682,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
         return false
     }
     dfa_iter_alg(ctx)
-    if ((? (ctx[].cfg[].identifier_id_map) then (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].length - 1 else 0) == 0) {
+    if map_empty(ctx[].cfg[].identifier_id_map) {
         return false
     }
     ctx[].callee_saved_reg_mask = 0ul
@@ -712,7 +712,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             map_add(ctx[].infer_graph[].pseudo_reg_map, name, infer)
         }
     }
-    if not ((? (ctx[].infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
+    if not map_empty(ctx[].infer_graph[].pseudo_reg_map) {
         if vec_size(ctx[].infer_graph[].unpruned_hard_mask_bits) < 12 {
             vec_resize(ctx[].infer_graph[].unpruned_hard_mask_bits, 12)
         }
@@ -728,7 +728,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
             ctx[].infer_graph[].unpruned_hard_mask_bits[i] = i
         }
     }
-    if not ((? (ctx[].sse_infer_graph[].pseudo_reg_map) then (cast<*struc stbds_array_header>(((ctx[].sse_infer_graph[].pseudo_reg_map) - 1)) - 1)[].length - 1 else 0) == 0) {
+    if not map_empty(ctx[].sse_infer_graph[].pseudo_reg_map) {
         if vec_size(ctx[].sse_infer_graph[].unpruned_hard_mask_bits) < 14 {
             vec_resize(ctx[].sse_infer_graph[].unpruned_hard_mask_bits, 14)
         }
