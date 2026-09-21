@@ -173,18 +173,7 @@ m4_define(`Ctx', `TODO')m4_dnl
 pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64 {
     identifier: u64 = stbds_hash_string(value[], 42)
     if (? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp) == -1 {
-        loop .. while 0 {
-            " #@MACRO@:map_move_add(ctx->hash_table, identifier, *value)"
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->hash_table, identifier, *value)"
-                loop .. while 0 {
-                    (ctx[].hash_table) = stbds_hmput_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)
-                    (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].key = (identifier)
-                    (ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp].value = (value[])
-                }
-            }
-            value[] = nil
-        }
+        map_move_add(ctx[].hash_table, identifier, value[])
     }
     else {
         if value[] {

@@ -115,8 +115,10 @@ m4_define(`map_erase', `TODO')m4_dnl
 m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
 # TODO
 m4_define(`map_get', `TODO')m4_dnl
-# TODO
-m4_define(`map_move_add', `TODO')m4_dnl
+m4_define(`map_move_add', `{
+    map_add($1, $2, $3)
+    $3 = nil
+}')m4_dnl
 
 m4_define(`element_t', `struc Element$1')m4_dnl
 m4_define(`ElementKey', `type element_t($1)(key: xarg($1), value: char)')m4_dnl
