@@ -15,7 +15,7 @@ m4_define(`StStructure', `struc Structure')m4_dnl
 
 type struc PairTIdentifierStStructure(key: u64, value: struc Structure)
 
-type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: *struc PairTIdentifierulong_t, goto_map: *struc PairTIdentifierTIdentifier, scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: *struc ElementTIdentifier, break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: *struc ElementTIdentifier, struct_def_set: *struc ElementTIdentifier, union_def_set: *struc ElementTIdentifier, p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
+type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: *struc PairTIdentifierulong_t, goto_map: *struc PairTIdentifierTIdentifier, scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32;
