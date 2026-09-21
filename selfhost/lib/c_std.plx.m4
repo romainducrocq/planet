@@ -100,11 +100,10 @@ m4_define(`map_move', `if $1 ~= $2 {
     $1 = map_new()
 }')m4_dnl
 # TODO
-m4_define(`map_size', `TODO')m4_dnl
+m4_define(`map_size', `hmlenu($1)')m4_dnl
 m4_define(`map_add', `hmput($1, $2, $3)')m4_dnl
 m4_define(`map_clear', `map_delete($1)')m4_dnl
-# TODO
-m4_define(`map_empty', `TODO')m4_dnl
+m4_define(`map_empty', `(map_size($1) == 0)')m4_dnl
 # TODO
 m4_define(`map_end', `-1')m4_dnl
 m4_define(`map_erase', `hmdel($1, $2)')m4_dnl
