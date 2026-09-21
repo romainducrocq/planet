@@ -93,14 +93,7 @@ fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op
         }
         else {
             alloc_offset_pseudo(ctx, backend_obj[].asm_type)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->pseudo_stack_map, node->name, ctx->stack_bytes)"
-                loop .. while 0 {
-                    (ctx[].pseudo_stack_map) = stbds_hmput_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)
-                    (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].key = (node[].name)
-                    (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].value = (ctx[].stack_bytes)
-                }
-            }
+            map_add(ctx[].pseudo_stack_map, node[].name, ctx[].stack_bytes)
         }
     }
     pseudo_memory(ctx, node, pseudo_op)
@@ -115,14 +108,7 @@ fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, ps
         }
         else {
             alloc_offset_pseudo_mem(ctx, backend_obj[].asm_type)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->pseudo_stack_map, node->name, ctx->stack_bytes)"
-                loop .. while 0 {
-                    (ctx[].pseudo_stack_map) = stbds_hmput_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)
-                    (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].key = (node[].name)
-                    (ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp].value = (ctx[].stack_bytes)
-                }
-            }
+            map_add(ctx[].pseudo_stack_map, node[].name, ctx[].stack_bytes)
         }
     }
     pseudo_mem_memory(ctx, node, pseudo_op)

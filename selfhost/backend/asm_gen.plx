@@ -127,14 +127,7 @@ fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc
         }
         else {
             dbl_const_label = repr_asm_label(ctx, LBL_Ldouble)
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->dbl_const_table, dbl_const, dbl_const_label)"
-                loop .. while 0 {
-                    (ctx[].dbl_const_table) = stbds_hmput_key((ctx[].dbl_const_table), sizeof((ctx[].dbl_const_table)[]), cast<*any>(@((dbl_const))), sizeof((ctx[].dbl_const_table)[].key), 0)
-                    (ctx[].dbl_const_table)[(cast<*struc stbds_array_header>(((ctx[].dbl_const_table) - 1)) - 1)[].temp].key = (dbl_const)
-                    (ctx[].dbl_const_table)[(cast<*struc stbds_array_header>(((ctx[].dbl_const_table) - 1)) - 1)[].temp].value = (dbl_const_label)
-                }
-            }
+            map_add(ctx[].dbl_const_table, dbl_const, dbl_const_label)
             dbl_static_const_toplvl(ctx, dbl_const_label, dbl_const, byte)
         }
     }
@@ -574,14 +567,7 @@ fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
             struct_8b.clss[0] = CLS_integer
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:map_add(ctx->struct_8b_map, struct_type->tag_name, struct_8b)"
-        loop .. while 0 {
-            (ctx[].struct_8b_map) = stbds_hmput_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)
-            (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].key = (struct_type[].tag_name)
-            (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].value = (struct_8b)
-        }
-    }
+    map_add(ctx[].struct_8b_map, struct_type[].tag_name, struct_8b)
 }
 
 fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
@@ -659,14 +645,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
             }
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:map_add(ctx->struct_8b_map, struct_type->tag_name, struct_8b)"
-        loop .. while 0 {
-            (ctx[].struct_8b_map) = stbds_hmput_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)
-            (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].key = (struct_type[].tag_name)
-            (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].value = (struct_8b)
-        }
-    }
+    map_add(ctx[].struct_8b_map, struct_type[].tag_name, struct_8b)
 }
 
 fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
@@ -679,14 +658,7 @@ fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) non
                 struct_8b.size += 1
                 size -= 8l
             }
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->struct_8b_map, struct_type->tag_name, struct_8b)"
-                loop .. while 0 {
-                    (ctx[].struct_8b_map) = stbds_hmput_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)
-                    (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].key = (struct_type[].tag_name)
-                    (ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp].value = (struct_8b)
-                }
-            }
+            map_add(ctx[].struct_8b_map, struct_type[].tag_name, struct_8b)
         }
         elif size > 8l {
             struct_2_reg_8b_class(ctx, struct_type)

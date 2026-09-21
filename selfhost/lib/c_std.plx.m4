@@ -102,7 +102,6 @@ m4_define(`map_move', `if $1 ~= $2 {
 }')m4_dnl
 # TODO
 m4_define(`map_size', `TODO')m4_dnl
-# TODO
 m4_define(`map_add', `hmput($1, $2, $3)')m4_dnl
 m4_define(`map_clear', `map_delete($1)')m4_dnl
 # TODO
