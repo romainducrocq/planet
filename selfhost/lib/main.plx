@@ -193,17 +193,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         }
         frontend.symbol_table = map_new()
     }
-    loop .. while 0 {
-        " #@MACRO@:set_delete(frontend.addressed_set)"
-        if frontend.addressed_set {
-            " #@MACRO@:map_delete(frontend.addressed_set)"
-            loop .. while 0 {
-                cast<none>((? (frontend.addressed_set) ~= nil then stbds_hmfree_func((frontend.addressed_set) - 1, sizeof((frontend.addressed_set)[])) else cast<none>(0)))
-                (frontend.addressed_set) = nil
-            }
-            frontend.addressed_set = map_new()
-        }
-    }
+    set_delete(frontend.addressed_set)
     loop i: u64 = 0 while i < (? (backend.symbol_table) then (cast<*struc stbds_array_header>(((backend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_BackendSymbol(@(backend.symbol_table[i]).value)
     }
