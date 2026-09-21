@@ -6325,20 +6325,7 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
                 ctx[].goto_map = map_new()
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:set_clear(ctx->label_set)"
-            loop .. while 0 {
-                " #@MACRO@:map_clear(ctx->label_set)"
-                if ctx[].label_set {
-                    " #@MACRO@:map_delete(ctx->label_set)"
-                    loop .. while 0 {
-                        cast<none>((? (ctx[].label_set) ~= nil then stbds_hmfree_func((ctx[].label_set) - 1, sizeof((ctx[].label_set)[])) else cast<none>(0)))
-                        (ctx[].label_set) = nil
-                    }
-                    ctx[].label_set = map_new()
-                }
-            }
-        }
+        set_clear(ctx[].label_set)
         vec_clear(ctx[].break_loop_labels)
         vec_clear(ctx[].continue_loop_labels)
         ctx[].p_switch_statement = nil
