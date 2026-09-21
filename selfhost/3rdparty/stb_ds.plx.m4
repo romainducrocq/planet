@@ -57,7 +57,7 @@ m4_define(`hmget', `stbds_hmget')m4_dnl
 m4_define(`hmgeti', `stbds_hmgeti')m4_dnl
 m4_define(`hmdel', `stbds_hmdel')m4_dnl
 m4_define(`hmlenu', `stbds_hmlenu')m4_dnl
-m4_define(`hmfree', `stbds_hmfree')m4_dnl
+m4_define(`hmfree', `stbds_hmfree($1)')m4_dnl
 
 m4_define(`STBDS_ADDRESSOF', `@($2)')m4_dnl
 m4_define(`STBDS_OFFSETOF', `(cast<string>(@($1)[].$2) - cast<string>($1))')m4_dnl
@@ -104,7 +104,10 @@ m4_define(`stbds_hmgetp', `TODO')m4_dnl
 
 m4_define(`stbds_hmdel', `TODO')m4_dnl
 
-m4_define(`stbds_hmfree', `TODO')m4_dnl
+m4_define(`stbds_hmfree', `{
+    cast<none>(? ($1) ~= nil then stbds_hmfree_func(($1) - 1, sizeof(($1)[])) else cast<none>(0))
+    ($1) = nil
+}')m4_dnl
 
 m4_define(`stbds_hmget', `TODO')m4_dnl
 m4_define(`stbds_hmlenu', `TODO')m4_dnl

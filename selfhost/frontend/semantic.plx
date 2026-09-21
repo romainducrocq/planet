@@ -6522,52 +6522,12 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
         }
     }
     vec_delete(ctx.scoped_struct_maps)
-    loop .. while 0 {
-        " #@MACRO@:set_delete(ctx.label_set)"
-        if ctx.label_set {
-            " #@MACRO@:map_delete(ctx.label_set)"
-            loop .. while 0 {
-                cast<none>((? (ctx.label_set) ~= nil then stbds_hmfree_func((ctx.label_set) - 1, sizeof((ctx.label_set)[])) else cast<none>(0)))
-                (ctx.label_set) = nil
-            }
-            ctx.label_set = map_new()
-        }
-    }
+    set_delete(ctx.label_set)
     vec_delete(ctx.break_loop_labels)
     vec_delete(ctx.continue_loop_labels)
-    loop .. while 0 {
-        " #@MACRO@:set_delete(ctx.fun_def_set)"
-        if ctx.fun_def_set {
-            " #@MACRO@:map_delete(ctx.fun_def_set)"
-            loop .. while 0 {
-                cast<none>((? (ctx.fun_def_set) ~= nil then stbds_hmfree_func((ctx.fun_def_set) - 1, sizeof((ctx.fun_def_set)[])) else cast<none>(0)))
-                (ctx.fun_def_set) = nil
-            }
-            ctx.fun_def_set = map_new()
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:set_delete(ctx.struct_def_set)"
-        if ctx.struct_def_set {
-            " #@MACRO@:map_delete(ctx.struct_def_set)"
-            loop .. while 0 {
-                cast<none>((? (ctx.struct_def_set) ~= nil then stbds_hmfree_func((ctx.struct_def_set) - 1, sizeof((ctx.struct_def_set)[])) else cast<none>(0)))
-                (ctx.struct_def_set) = nil
-            }
-            ctx.struct_def_set = map_new()
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:set_delete(ctx.union_def_set)"
-        if ctx.union_def_set {
-            " #@MACRO@:map_delete(ctx.union_def_set)"
-            loop .. while 0 {
-                cast<none>((? (ctx.union_def_set) ~= nil then stbds_hmfree_func((ctx.union_def_set) - 1, sizeof((ctx.union_def_set)[])) else cast<none>(0)))
-                (ctx.union_def_set) = nil
-            }
-            ctx.union_def_set = map_new()
-        }
-    }
+    set_delete(ctx.fun_def_set)
+    set_delete(ctx.struct_def_set)
+    set_delete(ctx.union_def_set)
     if errors[].info_at_map {
         " #@MACRO@:map_delete(errors->info_at_map)"
         loop .. while 0 {
