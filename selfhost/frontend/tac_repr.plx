@@ -124,18 +124,7 @@ fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *
         }
         inner_attrs: *struc IdentifierAttr = make_LocalAttr()
         symbol: *struc Symbol = make_Symbol(@inner_type, @inner_attrs)
-        loop .. while 0 {
-            " #@MACRO@:map_move_add(ctx->frontend->symbol_table, inner_name, symbol)"
-            loop .. while 0 {
-                " #@MACRO@:map_add(ctx->frontend->symbol_table, inner_name, symbol)"
-                loop .. while 0 {
-                    (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((inner_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                    (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (inner_name)
-                    (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-                }
-            }
-            symbol = nil
-        }
+        map_move_add(ctx[].frontend[].symbol_table, inner_name, symbol)
     }
     return make_TacVariable(inner_name)
 }
@@ -221,18 +210,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
                 constant_attrs = make_ConstantAttr(@static_init)
             }
             symbol: *struc Symbol = make_Symbol(@constant_type, @constant_attrs)
-            loop .. while 0 {
-                " #@MACRO@:map_move_add(ctx->frontend->symbol_table, string_const_label, symbol)"
-                loop .. while 0 {
-                    " #@MACRO@:map_add(ctx->frontend->symbol_table, string_const_label, symbol)"
-                    loop .. while 0 {
-                        (ctx[].frontend[].symbol_table) = stbds_hmput_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((string_const_label))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)
-                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].key = (string_const_label)
-                        (ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp].value = (symbol)
-                    }
-                }
-                symbol = nil
-            }
+            map_move_add(ctx[].frontend[].symbol_table, string_const_label, symbol)
         }
     }
     val: *struc TacValue = make_TacVariable(string_const_label)
