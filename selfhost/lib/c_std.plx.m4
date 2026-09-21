@@ -34,7 +34,7 @@ m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
 m4_define(`sptr_move', `TODO')m4_dnl
 m4_define(`sptr_copy', `TODO')m4_dnl
-m4_define(`string_t', `TODO')m4_dnl
+m4_define(`string_t', `sds')m4_dnl
 m4_define(`str_new', `TODO')m4_dnl
 m4_define(`str_delete', `TODO')m4_dnl
 m4_define(`str_move', `TODO')m4_dnl

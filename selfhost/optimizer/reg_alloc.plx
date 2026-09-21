@@ -18,9 +18,9 @@ type struc DataFlowAnalysisO2;
 
 type struc InferenceRegister(color: i32, reg_kind: i32, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: vector_t(TIdentifier))
 
-m4_define(`StInferenceRegister', `TODO')m4_dnl
+m4_define(`StInferenceRegister', `struc InferenceRegister')m4_dnl
 
-type struc PairTIdentifierStInferenceRegister(key: u64, value: struc InferenceRegister)
+PairKeyValue(``TIdentifier'', ``StInferenceRegister'')
 
 type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: u64, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: *struc PairTIdentifierStInferenceRegister)
 
