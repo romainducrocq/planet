@@ -2988,21 +2988,7 @@ fn optim_program(ctx: *struc OptimTacContext, node: *struc TacProgram) none {
     loop i: u64 = 0 while i < vec_size(node[].fun_toplvls) .. ++i {
         optim_toplvl(ctx, node[].fun_toplvls[i])
     }
-    loop .. while 0 {
-        " #@MACRO@:set_clear(ctx->frontend->addressed_set)"
-        loop .. while 0 {
-            " #@MACRO@:map_clear(ctx->frontend->addressed_set)"
-            if ctx[].frontend[].addressed_set {
-                " #@MACRO@:map_delete(ctx->frontend->addressed_set)"
-                loop .. while 0 {
-                    cast<none>((? (ctx[].frontend[].addressed_set) ~= nil then stbds_hmfree_func((ctx[].frontend[].addressed_set) - 1, sizeof((ctx[].frontend[].addressed_set)[])) else cast<none>(0)))
-                    (ctx[].frontend[].addressed_set) = nil
-                }
-                ctx[].frontend[].addressed_set = map_new()
-            }
-            ;
-        }
-    }
+    set_clear(ctx[].frontend[].addressed_set)
 }
 
 pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none {
