@@ -54,14 +54,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     }
     vec_delete(self[][].blocks)
     ;
-    if (self[])[].identifier_id_map {
-        " #@MACRO@:map_delete((*self)->identifier_id_map)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].identifier_id_map) ~= nil then stbds_hmfree_func(((self[])[].identifier_id_map) - 1, sizeof(((self[])[].identifier_id_map)[])) else cast<none>(0)))
-            ((self[])[].identifier_id_map) = nil
-        }
-        (self[])[].identifier_id_map = map_new()
-    }
+    map_delete(self[][].identifier_id_map)
     ;
     if self[] {
         " #@MACRO@:uptr_free(*self)"

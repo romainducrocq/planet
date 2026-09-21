@@ -40,14 +40,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
         vec_delete((self[][].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second((*self)->pseudo_reg_map[i]).linked_pseudo_names 
         ;
     }
-    if (self[])[].pseudo_reg_map {
-        " #@MACRO@:map_delete((*self)->pseudo_reg_map)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].pseudo_reg_map) ~= nil then stbds_hmfree_func(((self[])[].pseudo_reg_map) - 1, sizeof(((self[])[].pseudo_reg_map)[])) else cast<none>(0)))
-            ((self[])[].pseudo_reg_map) = nil
-        }
-        (self[])[].pseudo_reg_map = map_new()
-    }
+    map_delete(self[][].pseudo_reg_map)
     ;
     if self[] {
         " #@MACRO@:uptr_free(*self)"

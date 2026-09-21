@@ -3465,21 +3465,7 @@ pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndC
     }
     asm_ast: *struc AsmProgram = gen_program(@ctx, tac_ast[])
     free_TacProgram(tac_ast)
-    if ctx.dbl_const_table {
-        " #@MACRO@:map_delete(ctx.dbl_const_table)"
-        loop .. while 0 {
-            cast<none>((? (ctx.dbl_const_table) ~= nil then stbds_hmfree_func((ctx.dbl_const_table) - 1, sizeof((ctx.dbl_const_table)[])) else cast<none>(0)))
-            (ctx.dbl_const_table) = nil
-        }
-        ctx.dbl_const_table = map_new()
-    }
-    if ctx.struct_8b_map {
-        " #@MACRO@:map_delete(ctx.struct_8b_map)"
-        loop .. while 0 {
-            cast<none>((? (ctx.struct_8b_map) ~= nil then stbds_hmfree_func((ctx.struct_8b_map) - 1, sizeof((ctx.struct_8b_map)[])) else cast<none>(0)))
-            (ctx.struct_8b_map) = nil
-        }
-        ctx.struct_8b_map = map_new()
-    }
+    map_delete(ctx.dbl_const_table)
+    map_delete(ctx.struct_8b_map)
     return asm_ast
 }

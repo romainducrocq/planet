@@ -676,14 +676,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
     loop i: u64 = 0 while i < (? ((self[])[].members) then (cast<*struc stbds_array_header>((((self[])[].members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructMember(@((self[])[].members[i]).value)
     }
-    if (self[])[].members {
-        " #@MACRO@:map_delete((*self)->members)"
-        loop .. while 0 {
-            cast<none>((? ((self[])[].members) ~= nil then stbds_hmfree_func(((self[])[].members) - 1, sizeof(((self[])[].members)[])) else cast<none>(0)))
-            ((self[])[].members) = nil
-        }
-        (self[])[].members = map_new()
-    }
+    map_delete(self[][].members)
     if self[] {
         " #@MACRO@:uptr_free(*self)"
         free(self[])
