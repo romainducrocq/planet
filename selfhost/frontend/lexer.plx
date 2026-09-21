@@ -1569,18 +1569,7 @@ pub fn lex_c_code(filename: string, includedirs: *vector_t(string), stdlibdirs: 
     set_filename(ctx.fileio, filename)
     label _Lfinally
     ;
-    loop .. while 0 {
-        " #@MACRO@:set_delete(ctx.includename_set)"
-        if ctx.includename_set {
-            " #@MACRO@:map_delete(ctx.includename_set)"
-            loop .. while 0 {
-                cast<none>((? (ctx.includename_set) ~= nil then stbds_hmfree_func((ctx.includename_set) - 1, sizeof((ctx.includename_set)[])) else cast<none>(0)))
-                (ctx.includename_set) = nil
-            }
-            ctx.includename_set = map_new()
-        }
-        ;
-    }
+    set_delete(ctx.includename_set)
     loop i: u64 = 0 while i < vec_size(fileio[].file_reads) .. ++i {
         if fileio[].file_reads[i].filename {
             " #@MACRO@:str_delete(fileio->file_reads[i].filename)"
