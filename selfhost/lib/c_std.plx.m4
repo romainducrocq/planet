@@ -80,8 +80,9 @@ m4_define(`vec_remove_swap', `arrdelswap($1, $2)')m4_dnl
 m4_define(`vec_resize', `arrsetlen($1, $2)')m4_dnl
 m4_define(`vec_reserve', `arrsetcap($1, $2)')m4_dnl
 
+m4_define(`xarg', `$1')m4_dnl
 m4_define(`pair_t', `TODO')m4_dnl
-m4_define(`PairKeyValue', `TODO')m4_dnl
+m4_define(`PairKeyValue', `type struc Pair$1$2(key: xarg($1), value: xarg($2))')m4_dnl
 m4_define(`pair_first', `($1).key')m4_dnl
 m4_define(`pair_second', `($1).value')m4_dnl
 m4_define(`hashmap_t', `*struc Pair$1$2')m4_dnl
@@ -103,8 +104,7 @@ m4_define(`map_move_add', `TODO')m4_dnl
 
 # TODO
 m4_define(`element_t', `struc Element$1')m4_dnl
-# TODO
-m4_define(`ElementKey', `type struc Element$1(key: $1, value: char)')m4_dnl
+m4_define(`ElementKey', `type struc Element$1(key: xarg($1), value: char)')m4_dnl
 # TODO
 m4_define(`element_get', `($1).key')m4_dnl
 m4_define(`hashset_t', `*struc Element$1')m4_dnl
