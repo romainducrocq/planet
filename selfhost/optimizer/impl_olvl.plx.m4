@@ -352,25 +352,11 @@ fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn cfg_init_label_block(ctx: Ctx, node: *struc TacLabel) none {
-    loop .. while 0 {
-        " #@MACRO@:map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1)"
-        loop .. while 0 {
-            (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
-        }
-    }
+    map_add(ctx[].cfg[].identifier_id_map, node[].name, vec_size(ctx[].cfg[].blocks) - 1)
 }
 ', __OPTIM_LEVEL__, `2', `
 fn cfg_init_label_block(ctx: Ctx, node: *struc AsmLabel) none {
-    loop .. while 0 {
-        " #@MACRO@:map_add(ctx->cfg->identifier_id_map, node->name, vec_size(ctx->cfg->blocks) - 1)"
-        loop .. while 0 {
-            (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (node[].name)
-            (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = ((? (ctx[].cfg[].blocks) then (cast<*struc stbds_array_header>((ctx[].cfg[].blocks)) - 1)[].length else 0) - 1)
-        }
-    }
+    map_add(ctx[].cfg[].identifier_id_map, node[].name, vec_size(ctx[].cfg[].blocks) - 1)
 }
 ')m4_dnl
 
@@ -999,14 +985,7 @@ fn prop_add_data_idx(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u
 
 fn elim_add_data_name(ctx: Ctx, name: u64) none {
     if (? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp) == -1 {
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->cfg->identifier_id_map, name, ctx->dfa->set_size)"
-            loop .. while 0 {
-                (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
-                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (ctx[].dfa[].set_size)
-            }
-        }
+        map_add(ctx[].cfg[].identifier_id_map, name, ctx[].dfa[].set_size)
         ctx[].dfa[].set_size++
     }
 }
@@ -1019,14 +998,7 @@ fn elim_add_data_value(ctx: Ctx, node: *struc TacValue) none {
 ', __OPTIM_LEVEL__, `2', `
 fn infer_add_data_name(ctx: Ctx, name: u64) none {
     if not is_aliased_name(ctx, name) and (? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp) == -1 {
-        loop .. while 0 {
-            " #@MACRO@:map_add(ctx->cfg->identifier_id_map, name, REGISTER_MASK_SIZE + ctx->dfa->set_size)"
-            loop .. while 0 {
-                (ctx[].cfg[].identifier_id_map) = stbds_hmput_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)
-                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].key = (name)
-                (ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp].value = (REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
-            }
-        }
+        map_add(ctx[].cfg[].identifier_id_map, name, REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
         ctx[].dfa[].set_size++
     }
 }
