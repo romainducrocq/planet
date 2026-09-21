@@ -97,7 +97,7 @@ m4_define(`map_clear', `map_delete($1)')m4_dnl
 m4_define(`map_empty', `TODO')m4_dnl
 m4_define(`map_end', `TODO')m4_dnl
 m4_define(`map_erase', `TODO')m4_dnl
-m4_define(`map_find', `TODO')m4_dnl
+m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
 m4_define(`map_get', `TODO')m4_dnl
 m4_define(`map_move_add', `TODO')m4_dnl
 
@@ -112,13 +112,12 @@ m4_define(`hashset_t', `*struc Element$1')m4_dnl
 # TODO
 m4_define(`set_new', `map_new()')m4_dnl
 m4_define(`set_delete', `map_delete($1)')m4_dnl
-# TODO
-m4_define(`set_size', `TODO')m4_dnl
+# m4_define(`set_size', `map_size($1)')m4_dnl
 m4_define(`set_clear', `map_clear($1)')m4_dnl
 # TODO
 m4_define(`set_end', `TODO')m4_dnl
 # TODO
-m4_define(`set_find', `TODO')m4_dnl
+m4_define(`set_find', `map_find($1, $2)')m4_dnl
 m4_define(`set_insert', `map_add($1, $2, 0)')m4_dnl
 
 ')m4_dnl
