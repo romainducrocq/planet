@@ -102,15 +102,12 @@ m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
 m4_define(`map_get', `TODO')m4_dnl
 m4_define(`map_move_add', `TODO')m4_dnl
 
-# TODO
 m4_define(`element_t', `struc Element$1')m4_dnl
-m4_define(`ElementKey', `type struc Element$1(key: xarg($1), value: char)')m4_dnl
-# TODO
+m4_define(`ElementKey', `type element_t($1)(key: xarg($1), value: char)')m4_dnl
 m4_define(`element_get', `($1).key')m4_dnl
-m4_define(`hashset_t', `*struc Element$1')m4_dnl
+m4_define(`hashset_t', `*element_t($1)')m4_dnl
 m4_define(`set_new', `map_new()')m4_dnl
 m4_define(`set_delete', `map_delete($1)')m4_dnl
-# m4_define(`set_size', `map_size($1)')m4_dnl
 m4_define(`set_clear', `map_clear($1)')m4_dnl
 m4_define(`set_end', `map_end()')m4_dnl
 m4_define(`set_find', `map_find($1, $2)')m4_dnl
