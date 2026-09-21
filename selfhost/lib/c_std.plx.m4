@@ -91,7 +91,6 @@ m4_define(`pair_second', `($1).value')m4_dnl
 m4_define(`hashmap_t', `*pair_t($1, $2)')m4_dnl
 # TODO
 m4_define(`map_new', `nil')m4_dnl
-# TODO
 m4_define(`map_delete', `if $1 {
     hmfree($1)
     $1 = map_new()

@@ -4335,14 +4335,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     loop i: u64 = 0 while i < (? (members) then (cast<*struc stbds_array_header>(((members) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructMember(@(members[i]).value)
     }
-    if members {
-        " #@MACRO@:map_delete(members)"
-        loop .. while 0 {
-            cast<none>((? (members) ~= nil then stbds_hmfree_func((members) - 1, sizeof((members)[])) else cast<none>(0)))
-            (members) = nil
-        }
-        members = map_new()
-    }
+    map_delete(members)
     return _errval
 }
 
@@ -4489,23 +4482,9 @@ fn exit_scope(ctx: *struc SemanticContext) none {
             }
         }
     }
-    if (ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1] {
-        " #@MACRO@:map_delete(vec_back(ctx->scoped_identifier_maps))"
-        loop .. while 0 {
-            cast<none>((? ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) ~= nil then stbds_hmfree_func(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) - 1, sizeof(((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1])[])) else cast<none>(0)))
-            ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1]) = nil
-        }
-        (ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1] = map_new()
-    }
+    map_delete(vec_back(ctx[].scoped_identifier_maps))
     vec_pop_back(ctx[].scoped_identifier_maps)
-    if (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] {
-        " #@MACRO@:map_delete(vec_back(ctx->scoped_struct_maps))"
-        loop .. while 0 {
-            cast<none>((? ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) ~= nil then stbds_hmfree_func(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) - 1, sizeof(((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1])[])) else cast<none>(0)))
-            ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1]) = nil
-        }
-        (ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1] = map_new()
-    }
+    map_delete(vec_back(ctx[].scoped_struct_maps))
     vec_pop_back(ctx[].scoped_struct_maps)
 }
 
@@ -6461,42 +6440,14 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
         }
     }
     label _Lfinally
-    if ctx.extern_scope_map {
-        " #@MACRO@:map_delete(ctx.extern_scope_map)"
-        loop .. while 0 {
-            cast<none>((? (ctx.extern_scope_map) ~= nil then stbds_hmfree_func((ctx.extern_scope_map) - 1, sizeof((ctx.extern_scope_map)[])) else cast<none>(0)))
-            (ctx.extern_scope_map) = nil
-        }
-        ctx.extern_scope_map = map_new()
-    }
-    if ctx.goto_map {
-        " #@MACRO@:map_delete(ctx.goto_map)"
-        loop .. while 0 {
-            cast<none>((? (ctx.goto_map) ~= nil then stbds_hmfree_func((ctx.goto_map) - 1, sizeof((ctx.goto_map)[])) else cast<none>(0)))
-            (ctx.goto_map) = nil
-        }
-        ctx.goto_map = map_new()
-    }
+    map_delete(ctx.extern_scope_map)
+    map_delete(ctx.goto_map)
     loop i: u64 = 0 while i < vec_size(ctx.scoped_identifier_maps) .. ++i {
-        if ctx.scoped_identifier_maps[i] {
-            " #@MACRO@:map_delete(ctx.scoped_identifier_maps[i])"
-            loop .. while 0 {
-                cast<none>((? (ctx.scoped_identifier_maps[i]) ~= nil then stbds_hmfree_func((ctx.scoped_identifier_maps[i]) - 1, sizeof((ctx.scoped_identifier_maps[i])[])) else cast<none>(0)))
-                (ctx.scoped_identifier_maps[i]) = nil
-            }
-            ctx.scoped_identifier_maps[i] = map_new()
-        }
+        map_delete(ctx.scoped_identifier_maps[i])
     }
     vec_delete(ctx.scoped_identifier_maps)
     loop i: u64 = 0 while i < vec_size(ctx.scoped_struct_maps) .. ++i {
-        if ctx.scoped_struct_maps[i] {
-            " #@MACRO@:map_delete(ctx.scoped_struct_maps[i])"
-            loop .. while 0 {
-                cast<none>((? (ctx.scoped_struct_maps[i]) ~= nil then stbds_hmfree_func((ctx.scoped_struct_maps[i]) - 1, sizeof((ctx.scoped_struct_maps[i])[])) else cast<none>(0)))
-                (ctx.scoped_struct_maps[i]) = nil
-            }
-            ctx.scoped_struct_maps[i] = map_new()
-        }
+        map_delete(ctx.scoped_struct_maps[i])
     }
     vec_delete(ctx.scoped_struct_maps)
     set_delete(ctx.label_set)
@@ -6505,14 +6456,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
     set_delete(ctx.fun_def_set)
     set_delete(ctx.struct_def_set)
     set_delete(ctx.union_def_set)
-    if errors[].info_at_map {
-        " #@MACRO@:map_delete(errors->info_at_map)"
-        loop .. while 0 {
-            cast<none>((? (errors[].info_at_map) ~= nil then stbds_hmfree_func((errors[].info_at_map) - 1, sizeof((errors[].info_at_map)[])) else cast<none>(0)))
-            (errors[].info_at_map) = nil
-        }
-        errors[].info_at_map = map_new()
-    }
+    map_delete(errors[].info_at_map)
     loop i: u64 = 0 while i < vec_size(errors[].fopen_lines) .. ++i {
         if errors[].fopen_lines[i].filename {
             " #@MACRO@:str_delete(errors->fopen_lines[i].filename)"
