@@ -1585,17 +1585,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
     vec_clear(node[].instructions)
     vec_reserve(node[].instructions, vec_size(instructions))
     ctx[].stack_bytes = ? node[].is_ret_memory then 8l else 0l
-    loop .. while 0 {
-        " #@MACRO@:map_clear(ctx->pseudo_stack_map)"
-        if ctx[].pseudo_stack_map {
-            " #@MACRO@:map_delete(ctx->pseudo_stack_map)"
-            loop .. while 0 {
-                cast<none>((? (ctx[].pseudo_stack_map) ~= nil then stbds_hmfree_func((ctx[].pseudo_stack_map) - 1, sizeof((ctx[].pseudo_stack_map)[])) else cast<none>(0)))
-                (ctx[].pseudo_stack_map) = nil
-            }
-            ctx[].pseudo_stack_map = map_new()
-        }
-    }
+    map_clear(ctx[].pseudo_stack_map)
     ctx[].p_fix_instrs = @node[].instructions
     vec_push_back(ctx[].p_fix_instrs[], uptr_new())
     is_ret: i32 = false

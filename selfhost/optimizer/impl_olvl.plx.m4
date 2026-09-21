@@ -498,18 +498,7 @@ fn init_control_flow_graph(ctx: Ctx) none {
     }
     vec_clear(ctx[].cfg[].blocks)
     ;
-    loop .. while 0 {
-        " #@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
-        if ctx[].cfg[].identifier_id_map {
-            " #@MACRO@:map_delete(ctx->cfg->identifier_id_map)"
-            loop .. while 0 {
-                cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-                (ctx[].cfg[].identifier_id_map) = nil
-            }
-            ctx[].cfg[].identifier_id_map = map_new()
-        }
-        ;
-    }
+    map_clear(ctx[].cfg[].identifier_id_map)
     {
         instrs_back_idx: u64 = vec_size(ctx[].p_instrs[])
         loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
@@ -1088,18 +1077,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     is_copy_prop: i32 = not is_store_elim
     if is_store_elim {
 ')m4_dnl
-        loop .. while 0 {
-            " #@MACRO@:map_clear(ctx->cfg->identifier_id_map)"
-            if ctx[].cfg[].identifier_id_map {
-                " #@MACRO@:map_delete(ctx->cfg->identifier_id_map)"
-                loop .. while 0 {
-                    cast<none>((? (ctx[].cfg[].identifier_id_map) ~= nil then stbds_hmfree_func((ctx[].cfg[].identifier_id_map) - 1, sizeof((ctx[].cfg[].identifier_id_map)[])) else cast<none>(0)))
-                    (ctx[].cfg[].identifier_id_map) = nil
-                }
-                ctx[].cfg[].identifier_id_map = map_new()
-            }
-            ;
-        }
+        map_clear(ctx[].cfg[].identifier_id_map)
         ctx[].dfa[].static_idx = ctx[].dfa[].incoming_idx + 1
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa_o1[].addressed_idx = ctx[].dfa[].static_idx + 1
