@@ -107,9 +107,7 @@ m4_define(`element_t', `struc Element$1')m4_dnl
 m4_define(`ElementKey', `type struc Element$1(key: $1, value: char)')m4_dnl
 # TODO
 m4_define(`element_get', `($1).key')m4_dnl
-# TODO
 m4_define(`hashset_t', `*struc Element$1')m4_dnl
-# TODO
 m4_define(`set_new', `map_new()')m4_dnl
 m4_define(`set_delete', `map_delete($1)')m4_dnl
 # m4_define(`set_size', `map_size($1)')m4_dnl
