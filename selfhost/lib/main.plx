@@ -155,56 +155,21 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
             (identifiers.hash_table[i]).value = ? nil then sdsnew(nil) else nil
         }
     }
-    if identifiers.hash_table {
-        " #@MACRO@:map_delete(identifiers.hash_table)"
-        loop .. while 0 {
-            cast<none>((? (identifiers.hash_table) ~= nil then stbds_hmfree_func((identifiers.hash_table) - 1, sizeof((identifiers.hash_table)[])) else cast<none>(0)))
-            (identifiers.hash_table) = nil
-        }
-        identifiers.hash_table = map_new()
-    }
-    if frontend.string_const_table {
-        " #@MACRO@:map_delete(frontend.string_const_table)"
-        loop .. while 0 {
-            cast<none>((? (frontend.string_const_table) ~= nil then stbds_hmfree_func((frontend.string_const_table) - 1, sizeof((frontend.string_const_table)[])) else cast<none>(0)))
-            (frontend.string_const_table) = nil
-        }
-        frontend.string_const_table = map_new()
-    }
+    map_delete(identifiers.hash_table)
+    map_delete(frontend.string_const_table)
     loop i: u64 = 0 while i < (? (frontend.struct_typedef_table) then (cast<*struc stbds_array_header>(((frontend.struct_typedef_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_StructTypedef(@(frontend.struct_typedef_table[i]).value)
     }
-    if frontend.struct_typedef_table {
-        " #@MACRO@:map_delete(frontend.struct_typedef_table)"
-        loop .. while 0 {
-            cast<none>((? (frontend.struct_typedef_table) ~= nil then stbds_hmfree_func((frontend.struct_typedef_table) - 1, sizeof((frontend.struct_typedef_table)[])) else cast<none>(0)))
-            (frontend.struct_typedef_table) = nil
-        }
-        frontend.struct_typedef_table = map_new()
-    }
+    map_delete(frontend.struct_typedef_table)
     loop i: u64 = 0 while i < (? (frontend.symbol_table) then (cast<*struc stbds_array_header>(((frontend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_Symbol(@(frontend.symbol_table[i]).value)
     }
-    if frontend.symbol_table {
-        " #@MACRO@:map_delete(frontend.symbol_table)"
-        loop .. while 0 {
-            cast<none>((? (frontend.symbol_table) ~= nil then stbds_hmfree_func((frontend.symbol_table) - 1, sizeof((frontend.symbol_table)[])) else cast<none>(0)))
-            (frontend.symbol_table) = nil
-        }
-        frontend.symbol_table = map_new()
-    }
+    map_delete(frontend.symbol_table)
     set_delete(frontend.addressed_set)
     loop i: u64 = 0 while i < (? (backend.symbol_table) then (cast<*struc stbds_array_header>(((backend.symbol_table) - 1)) - 1)[].length - 1 else 0) .. ++i {
         free_BackendSymbol(@(backend.symbol_table[i]).value)
     }
-    if backend.symbol_table {
-        " #@MACRO@:map_delete(backend.symbol_table)"
-        loop .. while 0 {
-            cast<none>((? (backend.symbol_table) ~= nil then stbds_hmfree_func((backend.symbol_table) - 1, sizeof((backend.symbol_table)[])) else cast<none>(0)))
-            (backend.symbol_table) = nil
-        }
-        backend.symbol_table = map_new()
-    }
+    map_delete(backend.symbol_table)
     vec_delete(tokens)
     free_CProgram(@c_ast)
     free_TacProgram(@tac_ast)
@@ -348,14 +313,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         }
     }
     label _Lfinally
-    if errors.info_at_map {
-        " #@MACRO@:map_delete(errors.info_at_map)"
-        loop .. while 0 {
-            cast<none>((? (errors.info_at_map) ~= nil then stbds_hmfree_func((errors.info_at_map) - 1, sizeof((errors.info_at_map)[])) else cast<none>(0)))
-            (errors.info_at_map) = nil
-        }
-        errors.info_at_map = map_new()
-    }
+    map_delete(errors.info_at_map)
     loop i: u64 = 0 while i < vec_size(errors.fopen_lines) .. ++i {
         if errors.fopen_lines[i].filename {
             " #@MACRO@:str_delete(errors.fopen_lines[i].filename)"
