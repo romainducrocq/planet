@@ -91,8 +91,8 @@ fn arr_asm_type(ctx: *struc FrontEndContext, arr_type: *struc Array) *struc Asse
 fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) *struc AssemblyType {
     size: i64;
     alignment: i32;
-    map_it: i64 = (? ((ctx[].struct_typedef_table) = stbds_hmget_key((ctx[].struct_typedef_table), sizeof((ctx[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_typedef_table) - 1)) - 1)[].temp)
-    if map_it ~= -1 {
+    map_it: i64 = map_find(ctx[].struct_typedef_table, struct_type[].tag_name)
+    if map_it ~= map_end() {
         struct_typedef: *struc StructTypedef = (ctx[].struct_typedef_table[map_it]).value
         size = struct_typedef[].size
         alignment = struct_typedef[].alignment

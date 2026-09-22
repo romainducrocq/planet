@@ -172,7 +172,7 @@ m4_define(`Ctx', `TODO')m4_dnl
 
 pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64 {
     identifier: u64 = stbds_hash_string(value[], 42)
-    if (? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp) == -1 {
+    if map_find(ctx[].hash_table, identifier) == map_end() {
         map_move_add(ctx[].hash_table, identifier, value[])
     }
     else {

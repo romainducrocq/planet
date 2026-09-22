@@ -85,7 +85,7 @@ fn alloc_offset_pseudo_mem(ctx: *struc StackFixContext, asm_type: *struc Assembl
 }
 
 fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: **struc AsmOperand) none {
-    if (? ((ctx[].pseudo_stack_map) = stbds_hmget_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp) == -1 {
+    if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
         backend_obj: *struc BackendObj = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendObj
         if backend_obj[].is_static {
             pseudo_data(node, pseudo_op)
@@ -100,7 +100,7 @@ fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op
 }
 
 fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) none {
-    if (? ((ctx[].pseudo_stack_map) = stbds_hmget_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp) == -1 {
+    if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
         backend_obj: *struc BackendObj = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendObj
         if backend_obj[].is_static {
             pseudo_mem_data(node, pseudo_op)

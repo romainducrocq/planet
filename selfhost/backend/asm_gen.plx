@@ -121,8 +121,8 @@ fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc
     dbl_const_label: u64;
     {
         dbl_const: u64 = make_binary_identifier(ctx, binary)
-        map_it: i64 = (? ((ctx[].dbl_const_table) = stbds_hmget_key((ctx[].dbl_const_table), sizeof((ctx[].dbl_const_table)[]), cast<*any>(@((dbl_const))), sizeof((ctx[].dbl_const_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].dbl_const_table) - 1)) - 1)[].temp)
-        if map_it ~= -1 {
+        map_it: i64 = map_find(ctx[].dbl_const_table, dbl_const)
+        if map_it ~= map_end() {
             dbl_const_label = (ctx[].dbl_const_table[map_it]).value
         }
         else {
@@ -649,7 +649,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
 }
 
 fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
-    if (? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp) == -1 {
+    if map_find(ctx[].struct_8b_map, struct_type[].tag_name) == map_end() {
         size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
         if size > 16l {
             struct_8b: struc Struct8Bytes = $(3, $(CLS_memory, CLS_memory))
@@ -2575,8 +2575,8 @@ fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
         if node[].src[].tag == AST_TacVariable_t {
             name: u64 = node[].src[].get._TacVariable.name
             set_insert(ctx[].frontend[].addressed_set, name)
-            map_it: i64 = (? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)
-            if map_it ~= -1 and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == AST_ConstantAttr_t {
+            map_it: i64 = map_find(ctx[].frontend[].symbol_table, name)
+            if map_it ~= map_end() and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == AST_ConstantAttr_t {
                 src = make_AsmData(name, 0l)
                 jump Lpass
             }
