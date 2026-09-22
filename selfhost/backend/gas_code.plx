@@ -431,8 +431,8 @@ fn memory_op(ctx: *struc GasCodeContext, node: *struc AsmMemory) none {
 }
 
 fn data_op(ctx: *struc GasCodeContext, node: *struc AsmData) none {
-    map_it: i64 = (? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)
-    if map_it ~= -1 {
+    map_it: i64 = map_find(ctx[].backend[].symbol_table, node[].name)
+    if map_it ~= map_end() {
         backend_obj_symbol: *struc BackendSymbol = (ctx[].backend[].symbol_table[map_it]).value
         if backend_obj_symbol[].tag == AST_BackendObj_t and backend_obj_symbol[].get._BackendObj.is_const {
             emit(ctx, ".L")
