@@ -53,7 +53,7 @@ m4_define(`arrdelswap', `stbds_arrdelswap($1, $2)')m4_dnl
 m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
 
 m4_define(`hmput', `stbds_hmput($1, $2, $3)')m4_dnl
-m4_define(`hmget', `stbds_hmget')m4_dnl
+m4_define(`hmget', `stbds_hmget($1, $2)')m4_dnl
 m4_define(`hmgeti', `stbds_hmgeti($1, $2)')m4_dnl
 m4_define(`hmdel', `stbds_hmdel($1, $2)')m4_dnl
 m4_define(`hmlenu', `stbds_hmlenu($1)')m4_dnl
@@ -101,7 +101,7 @@ m4_define(`stbds_hmput', `{
 m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0))
     and 0 then 0 else stbds_temp(($1) - 1))')m4_dnl
 
-m4_define(`stbds_hmgetp', `TODO')m4_dnl
+m4_define(`stbds_hmgetp', `(? (stbds_hmgeti($1, $2)) and 0 then 0 else @($1)[stbds_temp(($1) - 1)])')m4_dnl
 
 m4_define(`stbds_hmdel', `(? (($1) = stbds_hmdel_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key),
     STBDS_OFFSETOF(($1), key), 0)) then stbds_temp(($1) - 1) else 0)')m4_dnl
@@ -111,7 +111,7 @@ m4_define(`stbds_hmfree', `{
     ($1) = nil
 }')m4_dnl
 
-m4_define(`stbds_hmget', `TODO')m4_dnl
+m4_define(`stbds_hmget', `(stbds_hmgetp($1, $2)[].value)')m4_dnl
 m4_define(`stbds_hmlenu', `(? ($1) then stbds_header(($1) - 1)[].length - 1 else 0)')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
