@@ -52,6 +52,7 @@ m4_define(`arrsetlen', `stbds_arrsetlen($1, $2)')m4_dnl
 m4_define(`arrdelswap', `stbds_arrdelswap($1, $2)')m4_dnl
 m4_define(`arrsetcap', `stbds_arrsetcap($1, $2)')m4_dnl
 
+m4_define(`hmarg', `$1')m4_dnl
 m4_define(`hmput', `stbds_hmput($1, $2, $3)')m4_dnl
 m4_define(`hmget', `stbds_hmget($1, $2)')m4_dnl
 m4_define(`hmgeti', `stbds_hmgeti($1, $2)')m4_dnl
