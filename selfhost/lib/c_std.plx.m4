@@ -107,7 +107,7 @@ m4_define(`map_end', `-1')m4_dnl
 m4_define(`map_erase', `hmdel($1, $2)')m4_dnl
 m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
 # TODO
-m4_define(`map_get', `TODO')m4_dnl
+m4_define(`map_get', `hmget($1, $2)')m4_dnl
 m4_define(`map_move_add', `{
     map_add($1, $2, $3)
     $3 = nil
