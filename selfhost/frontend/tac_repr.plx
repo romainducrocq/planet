@@ -109,7 +109,7 @@ fn var_value(node: *struc CVar) *struc TacValue {
 
 fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *struc TacValue {
     inner_name: u64 = repr_var_identifier(ctx[].identifiers, node)
-    if (? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((inner_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp) == -1 {
+    if map_find(ctx[].frontend[].symbol_table, inner_name) == map_end() {
         inner_type: *struc Type = sptr_new()
         if is_ptr {
             inner_type = make_Long()
@@ -171,8 +171,8 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
     string_const_label: u64;
     {
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
-        map_it: i64 = (? ((ctx[].frontend[].string_const_table) = stbds_hmget_key((ctx[].frontend[].string_const_table), sizeof((ctx[].frontend[].string_const_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].frontend[].string_const_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].string_const_table) - 1)) - 1)[].temp)
-        if map_it ~= -1 {
+        map_it: i64 = map_find(ctx[].frontend[].string_const_table, string_const)
+        if map_it ~= map_end() {
             string_const_label = (ctx[].frontend[].string_const_table[map_it]).value
         }
         else {
