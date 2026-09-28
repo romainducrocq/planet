@@ -366,7 +366,7 @@ fn get_arr_scale(ctx: *struc SemanticContext, arr_type: *struc Array) i64 {
 
 fn get_struct_scale(ctx: *struc SemanticContext, struct_type: *struc Structure) i64 {
     # TODO THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) == map_end());
-    return ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+    return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
 }
 
 fn get_type_scale(ctx: *struc SemanticContext, type_t: *struc Type) i64 {
@@ -391,7 +391,7 @@ fn get_arr_alignment(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
 
 fn get_struct_alignment(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 {
     # TODO THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) == map_end());
-    return ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].alignment
+    return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].alignment
 }
 
 fn get_type_alignment(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
@@ -847,7 +847,7 @@ fn check_string_exp(node: *struc CString) none {
 fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     name_fmt: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    var_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
+    var_type: *struc Type = map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t
     if var_type[].tag == AST_FunType_t {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
@@ -1969,7 +1969,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     strto_fmt_1: string = ? nil then sdsnew(nil) else nil
     strto_fmt_2: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    fun_symbol: *struc Symbol = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)
+    fun_symbol: *struc Symbol = map_get(ctx[].frontend[].symbol_table, node[].name)
     fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
     if fun_symbol[].type_t[].tag ~= AST_FunType_t {
         loop .. while 0 {
@@ -2223,7 +2223,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
         }
     }
     struct_type = @node[].structure[].exp_type[].get._Structure
-    struct_typedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
+    struct_typedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     map_it = map_find(struct_typedef[].members, node[].member)
     if map_it == map_end() {
         loop .. while 0 {
@@ -2392,7 +2392,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     name_fmt: string = ? nil then sdsnew(nil) else nil
     type_fmt: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((ctx[].fun_def_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
+    fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, ctx[].fun_def_name)[].type_t[].get._FunType
     if fun_type[].ret_type[].tag == AST_Void_t {
         if node[].exp {
             loop .. while 0 {
@@ -2897,7 +2897,7 @@ fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *str
 
 fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) *struc CInitializer {
     zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     vec_reserve(zero_inits, vec_size(struct_typedef[].member_names))
     loop i: u64 = 0 while i < vec_size(struct_typedef[].member_names) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
@@ -2960,7 +2960,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     strto_fmt_1: string = ? nil then sdsnew(nil) else nil
     strto_fmt_2: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     bound: u64 = ? struct_type[].is_union then 1 else map_size(struct_typedef[].members)
     if vec_size(node[].initializers) > bound {
         strto_fmt_1 = str_to_string(vec_size(node[].initializers))
@@ -3005,7 +3005,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
 }
 
 fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) none {
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     loop i: u64 = vec_size(node[].initializers) while i < map_size(struct_typedef[].members) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
@@ -3638,7 +3638,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
         }
         size += get_type_scale(ctx, member[].member_type)
     }
-    size -= ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+    size -= map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
     if size ~= 0l {
         check_static_no_init(ctx, nil, -1l * size)
     }
@@ -4391,6 +4391,7 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
     loop i: u64 = 0 while i < map_size(ctx[].goto_map) .. ++i {
         if set_find(ctx[].label_set, pair_first(ctx[].goto_map[i])) == set_end() {
             loop .. while 0 {
+                # TODO THROW_AT_TOKEN(map_get(ctx->errors->info_at_map, pair_second(ctx->goto_map[i])), GET_SEMANTIC_MSG(2, MSG_undef_goto_target, str_fmt_name(pair_first(ctx->goto_map[i]), &name_fmt_1), str_fmt_name(node->name, &name_fmt_2)));
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ((((((ctx->errors->info_at_map) = stbds_hmget_key((ctx->errors->info_at_map), sizeof(*(ctx->errors->info_at_map)), (void*)&(((ctx->goto_map[i]).value)), sizeof((ctx->errors->info_at_map)->key), 0)) && 0 ? 0 : ((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp)) && 0 ? 0 : &(ctx->errors->info_at_map)[((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp])->value)))"
                 ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undef_goto_target), "MSG_undef_goto_target", "", get_name_fmt(ctx[].identifiers, (ctx[].goto_map[i]).key, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ((? ((? ((ctx[].errors[].info_at_map) = stbds_hmget_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@(((ctx[].goto_map[i]).value))), sizeof((ctx[].errors[].info_at_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp])[].value))) else panic_sigabrt("abort")
                 _errval = 1
