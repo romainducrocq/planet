@@ -52,7 +52,7 @@ fn get_arr_alignment(ctx: *struc FrontEndContext, arr_type: *struc Array, size: 
     alignment: i32 = gen_type_alignment(ctx, arr_type[].elem_type)
     if arr_type[].elem_type[].tag == AST_Structure_t {
         struct_type: *struc Structure = @arr_type[].elem_type[].get._Structure
-        size[] *= ((? ((? ((ctx[].struct_typedef_table) = stbds_hmget_key((ctx[].struct_typedef_table), sizeof((ctx[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+        size[] *= map_get(ctx[].struct_typedef_table, struct_type[].tag_name)[].size
     }
     else {
         size[] *= alignment
@@ -64,7 +64,7 @@ fn get_arr_alignment(ctx: *struc FrontEndContext, arr_type: *struc Array, size: 
 }
 
 fn get_struct_alignment(ctx: *struc FrontEndContext, struct_type: *struc Structure) i32 {
-    return ((? ((? ((ctx[].struct_typedef_table) = stbds_hmget_key((ctx[].struct_typedef_table), sizeof((ctx[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].alignment
+    return map_get(ctx[].struct_typedef_table, struct_type[].tag_name)[].alignment
 }
 
 pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) i32 {
@@ -105,7 +105,7 @@ fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) *
 }
 
 pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc AssemblyType {
-    symbol_type: *struc Type = ((? ((? ((ctx[].symbol_table) = stbds_hmget_key((ctx[].symbol_table), sizeof((ctx[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
+    symbol_type: *struc Type = map_get(ctx[].symbol_table, name)[].type_t
     match symbol_type[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -163,7 +163,7 @@ fn cvt_static_const_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmStaticCon
         }
         break
         -> AST_StringInit_t {
-            string_static_const(ctx, @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Array)
+            string_static_const(ctx, @map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].get._Array)
         }
         break
         otherwise {

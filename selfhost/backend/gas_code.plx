@@ -22,12 +22,12 @@ fn emit(ctx: *struc GasCodeContext, code: string) none {
 }
 
 fn emit_identifier(ctx: *struc GasCodeContext, identifier: u64) none {
-    value: string = ((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((identifier))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].identifiers[].hash_table, identifier)
     emit(ctx, value)
 }
 
 fn emit_string(ctx: *struc GasCodeContext, string_const: u64) none {
-    value: string = ((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((string_const))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].identifiers[].hash_table, string_const)
     emit(ctx, value)
 }
 
@@ -62,7 +62,7 @@ fn emit_long(ctx: *struc GasCodeContext, value: i64) none {
 }
 
 fn emit_dbl(ctx: *struc GasCodeContext, dbl_const: u64) none {
-    value: string = ((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((dbl_const))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].identifiers[].hash_table, dbl_const)
     emit(ctx, value)
 }
 
@@ -758,7 +758,7 @@ fn pop_instr(ctx: *struc GasCodeContext, node: *struc AsmPop) none {
 fn call_instr(ctx: *struc GasCodeContext, node: *struc AsmCall) none {
     emit(ctx, "    "         "    "         "call ")
     emit_identifier(ctx, node[].name)
-    backend_fun_symbol: *struc BackendSymbol = ((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)
+    backend_fun_symbol: *struc BackendSymbol = map_get(ctx[].backend[].symbol_table, node[].name)
     if not backend_fun_symbol[].get._BackendFun.is_def {
         emit(ctx, "@PLT")
     }

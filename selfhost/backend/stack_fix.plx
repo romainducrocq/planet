@@ -29,13 +29,13 @@ fn pseudo_mem_data(node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) non
 }
 
 fn pseudo_memory(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: **struc AsmOperand) none {
-    value: i64 = -1l * ((? ((? ((ctx[].pseudo_stack_map) = stbds_hmget_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp])[].value)
+    value: i64 = -1l * map_get(ctx[].pseudo_stack_map, node[].name)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
 fn pseudo_mem_memory(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) none {
-    value: i64 = -1l * (((? ((? ((ctx[].pseudo_stack_map) = stbds_hmget_key((ctx[].pseudo_stack_map), sizeof((ctx[].pseudo_stack_map)[]), cast<*any>(@((node[].name))), sizeof((ctx[].pseudo_stack_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].pseudo_stack_map)[(cast<*struc stbds_array_header>(((ctx[].pseudo_stack_map) - 1)) - 1)[].temp])[].value) - node[].offset)
+    value: i64 = -1l * (map_get(ctx[].pseudo_stack_map, node[].name) - node[].offset)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
@@ -86,7 +86,7 @@ fn alloc_offset_pseudo_mem(ctx: *struc StackFixContext, asm_type: *struc Assembl
 
 fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: **struc AsmOperand) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
-        backend_obj: *struc BackendObj = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendObj
+        backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
             pseudo_data(node, pseudo_op)
             return none
@@ -101,7 +101,7 @@ fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op
 
 fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
-        backend_obj: *struc BackendObj = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendObj
+        backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
             pseudo_mem_data(node, pseudo_op)
             return none
@@ -1567,7 +1567,7 @@ fn fix_instr(ctx: *struc StackFixContext, node: *struc AsmInstruction) none {
 fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
     instructions: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     vec_move(node[].instructions, instructions)
-    backend_fun: *struc BackendFun = @((? ((? ((ctx[].backend[].symbol_table) = stbds_hmget_key((ctx[].backend[].symbol_table), sizeof((ctx[].backend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].backend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].backend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].backend[].symbol_table) - 1)) - 1)[].temp])[].value)[].get._BackendFun
+    backend_fun: *struc BackendFun = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendFun
     vec_clear(node[].instructions)
     vec_reserve(node[].instructions, vec_size(instructions))
     ctx[].stack_bytes = ? node[].is_ret_memory then 8l else 0l
