@@ -37,7 +37,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
     vec_delete(self[][].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < map_size(self[][].pseudo_reg_map) .. ++i {
-        vec_delete((self[][].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second((*self)->pseudo_reg_map[i]).linked_pseudo_names 
+        vec_delete(pair_second(self[][].pseudo_reg_map[i]).linked_pseudo_names)
         ;
     }
     map_delete(self[][].pseudo_reg_map)
@@ -689,14 +689,14 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     vec_clear(ctx[].infer_graph[].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < map_size(ctx[].infer_graph[].pseudo_reg_map) .. ++i {
-        vec_delete((ctx[].infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->infer_graph->pseudo_reg_map[i]).linked_pseudo_names
+        vec_delete(pair_second(ctx[].infer_graph[].pseudo_reg_map[i]).linked_pseudo_names)
         ;
     }
     map_clear(ctx[].infer_graph[].pseudo_reg_map)
     vec_clear(ctx[].sse_infer_graph[].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < map_size(ctx[].sse_infer_graph[].pseudo_reg_map) .. ++i {
-        vec_delete((ctx[].sse_infer_graph[].pseudo_reg_map[i]).value.linked_pseudo_names) # TODO pair_second(ctx->sse_infer_graph->pseudo_reg_map[i]).linked_pseudo_names
+        vec_delete(pair_second(ctx[].sse_infer_graph[].pseudo_reg_map[i]).linked_pseudo_names)
         ;
     }
     map_clear(ctx[].sse_infer_graph[].pseudo_reg_map)

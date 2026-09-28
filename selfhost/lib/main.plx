@@ -158,16 +158,16 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     map_delete(identifiers.hash_table)
     map_delete(frontend.string_const_table)
     loop i: u64 = 0 while i < map_size(frontend.struct_typedef_table) .. ++i {
-        free_StructTypedef(@(frontend.struct_typedef_table[i]).value)
+        free_StructTypedef(@pair_second(frontend.struct_typedef_table[i]))
     }
     map_delete(frontend.struct_typedef_table)
     loop i: u64 = 0 while i < map_size(frontend.symbol_table) .. ++i {
-        free_Symbol(@(frontend.symbol_table[i]).value)
+        free_Symbol(@pair_second(frontend.symbol_table[i]))
     }
     map_delete(frontend.symbol_table)
     set_delete(frontend.addressed_set)
     loop i: u64 = 0 while i < map_size(backend.symbol_table) .. ++i {
-        free_BackendSymbol(@(backend.symbol_table[i]).value)
+        free_BackendSymbol(@pair_second(backend.symbol_table[i]))
     }
     map_delete(backend.symbol_table)
     vec_delete(tokens)

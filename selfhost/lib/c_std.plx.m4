@@ -81,7 +81,6 @@ m4_define(`vec_reserve', `arrsetcap($1, $2)')m4_dnl
 m4_define(`pair_t', `struc Pair$1$2')m4_dnl
 m4_define(`PairKeyValue', `type pair_t($1, $2)(key: hmarg($1), value: hmarg($2))')m4_dnl
 m4_define(`pair_first', `($1).key')m4_dnl
-# TODO
 m4_define(`pair_second', `($1).value')m4_dnl
 # TODO
 m4_define(`hashmap_t', `*pair_t($1, $2)')m4_dnl

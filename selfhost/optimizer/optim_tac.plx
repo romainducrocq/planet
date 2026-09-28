@@ -1436,7 +1436,7 @@ fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
         }
     }
     loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
-        label_id: u64 = (ctx[].cfg[].identifier_id_map[i]).value
+        label_id: u64 = pair_second(ctx[].cfg[].identifier_id_map[i])
         if ctx[].cfg[].reaching_code[label_id] {
             loop block_id = label_id while block_id-- > 0 {
                 if ctx[].cfg[].reaching_code[block_id] {
@@ -1449,7 +1449,7 @@ fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
             unreach_label_block(ctx, label_id, next_block_id)
         }
         else {
-            (ctx[].cfg[].identifier_id_map[i]).value = ctx[].cfg[].exit_id
+            pair_second(ctx[].cfg[].identifier_id_map[i]) = ctx[].cfg[].exit_id
         }
     }
 }

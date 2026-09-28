@@ -173,7 +173,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
         map_it: i64 = map_find(ctx[].frontend[].string_const_table, string_const)
         if map_it ~= map_end() {
-            string_const_label = (ctx[].frontend[].string_const_table[map_it]).value
+            string_const_label = pair_second(ctx[].frontend[].string_const_table[map_it])
         }
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)

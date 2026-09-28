@@ -93,7 +93,7 @@ fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) *
     alignment: i32;
     map_it: i64 = map_find(ctx[].struct_typedef_table, struct_type[].tag_name)
     if map_it ~= map_end() {
-        struct_typedef: *struc StructTypedef = (ctx[].struct_typedef_table[map_it]).value
+        struct_typedef: *struc StructTypedef = pair_second(ctx[].struct_typedef_table[map_it])
         size = struct_typedef[].size
         alignment = struct_typedef[].alignment
     }
@@ -204,11 +204,11 @@ fn cvt_program(ctx: *struc SymtCvtContext, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < map_size(ctx[].frontend[].symbol_table) .. ++i {
         symbol: *pair_t(``TIdentifier'', ``UPtrSymbol'') = @ctx[].frontend[].symbol_table[i]
         ctx[].symbol = pair_first(symbol[])
-        if (symbol[]).value[].type_t[].tag == AST_FunType_t {
-            cvt_fun_type(ctx, @(symbol[]).value[].attrs[].get._FunAttr, @(symbol[]).value[].type_t[].get._FunType)
+        if pair_second(symbol[])[].type_t[].tag == AST_FunType_t {
+            cvt_fun_type(ctx, @pair_second(symbol[])[].attrs[].get._FunAttr, @pair_second(symbol[])[].type_t[].get._FunType)
         }
         else {
-            cvt_obj_type(ctx, (symbol[]).value[].attrs)
+            cvt_obj_type(ctx, pair_second(symbol[])[].attrs)
         }
     }
     loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {

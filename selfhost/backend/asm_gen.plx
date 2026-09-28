@@ -123,7 +123,7 @@ fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc
         dbl_const: u64 = make_binary_identifier(ctx, binary)
         map_it: i64 = map_find(ctx[].dbl_const_table, dbl_const)
         if map_it ~= map_end() {
-            dbl_const_label = (ctx[].dbl_const_table[map_it]).value
+            dbl_const_label = pair_second(ctx[].dbl_const_table[map_it])
         }
         else {
             dbl_const_label = repr_asm_label(ctx, LBL_Ldouble)
@@ -2576,7 +2576,7 @@ fn getaddr_instr(ctx: *struc AsmGenContext, node: *struc TacGetAddress) none {
             name: u64 = node[].src[].get._TacVariable.name
             set_insert(ctx[].frontend[].addressed_set, name)
             map_it: i64 = map_find(ctx[].frontend[].symbol_table, name)
-            if map_it ~= map_end() and (ctx[].frontend[].symbol_table[map_it]).value[].attrs[].tag == AST_ConstantAttr_t {
+            if map_it ~= map_end() and pair_second(ctx[].frontend[].symbol_table[map_it])[].attrs[].tag == AST_ConstantAttr_t {
                 src = make_AsmData(name, 0l)
                 jump Lpass
             }
