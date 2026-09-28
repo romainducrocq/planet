@@ -4372,7 +4372,7 @@ fn enter_scope(ctx: *struc SemanticContext) none {
 
 fn exit_scope(ctx: *struc SemanticContext) none {
     loop i: u64 = 0 while i < map_size(vec_back(ctx[].scoped_identifier_maps)) .. ++i {
-        identifier: u64 = ((ctx[].scoped_identifier_maps)[(? (ctx[].scoped_identifier_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_identifier_maps)) - 1)[].length else 0) - 1][i]).key # pair_first(vec_back(ctx->scoped_identifier_maps)[i])
+        identifier: u64 = pair_first(vec_back(ctx[].scoped_identifier_maps)[i])
         map_it: i64 = map_find(ctx[].extern_scope_map, identifier)
         if map_it ~= map_end() and (ctx[].extern_scope_map[map_it]).value == vec_size(ctx[].scoped_identifier_maps) {
             map_erase(ctx[].extern_scope_map, identifier)
