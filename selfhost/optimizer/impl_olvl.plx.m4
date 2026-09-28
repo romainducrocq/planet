@@ -24,7 +24,7 @@ m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
 
 type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: vector_t(u64), succ_ids: vector_t(u64))
 
-type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64), reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock), identifier_id_map: *struc PairTIdentifieru64)
+type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64), reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock), identifier_id_map: hashmap_t(``TIdentifier'', u64))
 
 type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64), instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t))
 

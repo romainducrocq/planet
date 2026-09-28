@@ -15,7 +15,7 @@ m4_define(`StStructure', `struc Structure')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStructure'')
 
-type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: *struc PairTIdentifieru64, goto_map: *struc PairTIdentifierTIdentifier, scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
+type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32;
@@ -4162,7 +4162,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     struct_typedef: *struc StructTypedef = uptr_new()
     member_type: *struc Type = sptr_new()
     member_names: vector_t(TIdentifier) = vec_new()
-    members: *struc PairTIdentifierUPtrStructMember = map_new()
+    members: hashmap_t(``TIdentifier'', ``UPtrStructMember'') = map_new()
     _errval: i32 = 0
     alignment: i32;
     size: i64;
