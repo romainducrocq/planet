@@ -24,7 +24,7 @@ m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 ')m4_dnl
 
 fn fold_sign_extend_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstChar) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             value: i32 = cast<i32>(constant[].value)
             return make_CConstInt(value)
@@ -50,7 +50,7 @@ fn fold_sign_extend_char_const(ctx: *struc OptimTacContext, node: *struc TacVari
 }
 
 fn fold_sign_extend_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
                 value: i64 = cast<i64>(constant[].value)
@@ -102,7 +102,7 @@ fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
 }
 
 fn fold_truncate_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 value: i8 = cast<i8>(constant[].value)
@@ -120,7 +120,7 @@ fn fold_truncate_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable
 }
 
 fn fold_truncate_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstLong) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 value: i8 = cast<i8>(constant[].value)
@@ -146,7 +146,7 @@ fn fold_truncate_long_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
 }
 
 fn fold_truncate_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUInt) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 value: i8 = cast<i8>(constant[].value)
@@ -164,7 +164,7 @@ fn fold_truncate_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
 }
 
 fn fold_truncate_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstULong) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 value: i8 = cast<i8>(constant[].value)
@@ -232,7 +232,7 @@ fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
 }
 
 fn fold_zero_extend_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUChar) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             value: i32 = cast<i32>(constant[].value)
             return make_CConstInt(value)
@@ -258,7 +258,7 @@ fn fold_zero_extend_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVar
 }
 
 fn fold_zero_extend_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUInt) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
                 value: i64 = cast<i64>(constant[].value)
@@ -312,7 +312,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
 fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
     ;
     fold_constant: *struc CConst = sptr_new()
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 value: i8 = cast<i8>(constant[].get._CConstDouble.value)
@@ -356,7 +356,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
 fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
     ;
     fold_constant: *struc CConst = sptr_new()
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_UChar_t {
             value: u8 = cast<u8>(constant[].get._CConstDouble.value)
             fold_constant = make_CConstUChar(value)
@@ -422,7 +422,7 @@ fn fold_signed_to_dbl_const(constant: *struc CConst) *struc TacValue {
 
 fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # TODO THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t || map_get(ctx->frontend->symbol_table, node->dst->get._TacVariable.name)->type_t->tag != AST_Double_t);
         src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -463,7 +463,7 @@ fn fold_unsigned_to_dbl_const(constant: *struc CConst) *struc TacValue {
 
 fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # TODO THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t || map_get(ctx->frontend->symbol_table, node->dst->get._TacVariable.name)->type_t->tag != AST_Double_t);
         src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -1037,7 +1037,7 @@ fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
 }
 
 fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstChar) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 return sptr_new()
@@ -1054,7 +1054,7 @@ fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
 }
 
 fn fold_copy_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             return sptr_new()
         }
@@ -1069,7 +1069,7 @@ fn fold_copy_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
 }
 
 fn fold_copy_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstLong) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
                 return sptr_new()
@@ -1090,7 +1090,7 @@ fn fold_copy_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
 }
 
 fn fold_copy_dbl_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstDouble) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             value: i64 = cast<i64>(constant[].value)
             return make_CConstLong(value)
@@ -1109,7 +1109,7 @@ fn fold_copy_dbl_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
 }
 
 fn fold_copy_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUChar) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 value: i8 = cast<i8>(constant[].value)
@@ -1126,7 +1126,7 @@ fn fold_copy_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
 }
 
 fn fold_copy_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUInt) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             value: i32 = cast<i32>(constant[].value)
             return make_CConstInt(value)
@@ -1141,7 +1141,7 @@ fn fold_copy_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
 }
 
 fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstULong) *struc CConst {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             value: i64 = cast<i64>(constant[].value)
             return make_CConstLong(value)
@@ -1474,7 +1474,7 @@ fn is_const_signed(node: *struc TacConstant) i32 {
 }
 
 fn is_var_signed(ctx: *struc OptimTacContext, node: *struc TacVariable) i32 {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 -> AST_Int_t {
@@ -1613,7 +1613,7 @@ fn is_copy_same_signedness(ctx: *struc OptimTacContext, node: *struc TacCopy) i3
 }
 
 fn is_copy_null_ptr(ctx: *struc OptimTacContext, node: *struc TacCopy) i32 {
-    if node[].src[].tag == AST_TacConstant_t and node[].dst[].tag == AST_TacVariable_t and ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].dst[].get._TacVariable.name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Pointer_t {
+    if node[].src[].tag == AST_TacConstant_t and node[].dst[].tag == AST_TacVariable_t and map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag == AST_Pointer_t {
         return is_const_null_ptr(@node[].src[].get._TacConstant)
     }
     else {
@@ -2703,7 +2703,7 @@ fn elim_transfer_aliased(ctx: *struc OptimTacContext, next_instr_idx: u64) none 
 }
 
 fn elim_transfer_src_name(ctx: *struc OptimTacContext, name: u64, next_instr_idx: u64) none {
-    i: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
+    i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, true)
 }
 
@@ -2715,7 +2715,7 @@ fn elim_transfer_src_value(ctx: *struc OptimTacContext, node: *struc TacValue, n
 
 fn elim_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, next_instr_idx: u64) none {
     ;
-    i: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].get._TacVariable.name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
+    i: u64 = map_get(ctx[].cfg[].identifier_id_map, node[].get._TacVariable.name)
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
 }
 
@@ -2850,7 +2850,7 @@ fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_i
 }
 
 fn elim_dst_name_instr(ctx: *struc OptimTacContext, name: u64, instr_idx: u64) none {
-    i: u64 = ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((name))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value)
+    i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
     if not mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
         set_instr(ctx, uptr_new(), instr_idx)
     }

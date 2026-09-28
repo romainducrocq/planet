@@ -62,9 +62,7 @@ m4_define(`vec_move', `if $1 ~= $2 {
     $2 = $1
     $1 = vec_new()
 }')m4_dnl
-#TODO
 m4_define(`vec_size', `arrlenu($1)')m4_dnl
-#TODO
 m4_define(`vec_back', `($1)[vec_size($1) - 1]')m4_dnl
 m4_define(`vec_clear', `if $1 {
     stbds_header($1)[].length = 0
@@ -105,7 +103,6 @@ m4_define(`map_empty', `(map_size($1) == 0)')m4_dnl
 m4_define(`map_end', `-1')m4_dnl
 m4_define(`map_erase', `hmdel($1, $2)')m4_dnl
 m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
-# TODO
 m4_define(`map_get', `hmget($1, $2)')m4_dnl
 m4_define(`map_move_add', `{
     map_add($1, $2, $3)
