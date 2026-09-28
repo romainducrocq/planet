@@ -104,7 +104,7 @@ fn parse_identifier(ctx: *struc ParserContext, identifier: *u64) i32 {
 fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiteral) i32 {
     value: vector_t(i8) = vec_new()
     _errval: i32 = 0
-    string_to_literal(((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value), @value)
+    string_to_literal(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), @value)
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -120,7 +120,7 @@ fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiter
                 jump _Lfinally
             }
         }
-        string_to_literal(((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value), @value)
+        string_to_literal(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), @value)
         loop .. while 0 {
             " #@MACRO@:TRY(peek_next(ctx))"
             _errval = peek_next(ctx)
@@ -141,7 +141,7 @@ fn parse_int_const(intmax: i64) *struc CConst {
 }
 
 fn parse_char_const(ctx: *struc ParserContext) *struc CConst {
-    value: i32 = string_to_char_ascii(((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value))
+    value: i32 = string_to_char_ascii(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok))
     return make_CConstInt(value)
 }
 
@@ -213,7 +213,7 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
             break
         }
     }
-    strto_value = ((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value)
+    strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     loop .. while 0 {
         " #@MACRO@:TRY(string_to_long(ctx->errors, strto_value, ctx->next_tok->info_at, &value))"
         _errval = string_to_long(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value)
@@ -250,7 +250,7 @@ fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32
             jump _Lfinally
         }
     }
-    strto_value = ((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value)
+    strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     loop .. while 0 {
         " #@MACRO@:TRY(string_to_ulong(ctx->errors, strto_value, ctx->next_tok->info_at, &value))"
         _errval = string_to_ulong(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value)

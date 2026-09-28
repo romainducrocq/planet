@@ -11,7 +11,7 @@ m4_define(`Ctx', `TODO')m4_dnl
 
 pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
-    value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((target))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].hash_table, target)
     if value ~= name {
         " #@MACRO@:str_copy(value, name)"
         if name {
@@ -26,7 +26,7 @@ pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {
 
 pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
-    value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((variable))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].hash_table, variable)
     if value ~= name {
         " #@MACRO@:str_copy(value, name)"
         if name {
@@ -41,7 +41,7 @@ pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64 {
 
 pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
-    value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((structure))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].hash_table, structure)
     if value ~= name {
         " #@MACRO@:str_copy(value, name)"
         if name {
