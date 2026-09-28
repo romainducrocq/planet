@@ -1429,13 +1429,15 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             name_id: *pair_t(``TIdentifier'', u64) = @ctx[].cfg[].identifier_id_map[i]
 m4_ifelse(__OPTIM_LEVEL__, `1', `
             if map_get(ctx[].frontend[].symbol_table, pair_first(name_id[]))[].attrs[].tag == AST_StaticAttr_t {
+                # TODO SET_DFA_INSTR_SET_AT(ctx->dfa->static_idx, pair_second(*name_id), true);
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
             }
             if set_find(ctx[].frontend[].addressed_set, pair_first(name_id[])) ~= set_end() {
+                # TODO SET_DFA_INSTR_SET_AT(ctx->dfa_o1->addressed_idx, pair_second(*name_id), true);
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
             }
 ', __OPTIM_LEVEL__, `2', `
-        ctx[].dfa_o2[].data_name_map[(name_id[]).value - REGISTER_MASK_SIZE] = pair_first(name_id[])
+        ctx[].dfa_o2[].data_name_map[pair_second(name_id[]) - REGISTER_MASK_SIZE] = pair_first(name_id[])
 ')m4_dnl
         }
         memset(ctx[].dfa[].blocks_mask_sets, 0ul, sizeof<u64> * blocks_mask_sets_size)

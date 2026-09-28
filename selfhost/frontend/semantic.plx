@@ -2233,7 +2233,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
             jump _Lfinally
         }
     }
-    member_type = (struct_typedef[].members[map_it]).value[].member_type
+    member_type = pair_second(struct_typedef[].members[map_it])[].member_type
     if member_type ~= node[]._base[].exp_type {
         " #@MACRO@:sptr_copy(Type, member_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
@@ -2290,7 +2290,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
             jump _Lfinally
         }
     }
-    struct_typedef = (ctx[].frontend[].struct_typedef_table[map_it]).value
+    struct_typedef = pair_second(ctx[].frontend[].struct_typedef_table[map_it])
     map_it = map_find(struct_typedef[].members, node[].member)
     if map_it == map_end() {
         loop .. while 0 {
@@ -2300,7 +2300,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
             jump _Lfinally
         }
     }
-    member_type = (struct_typedef[].members[map_it]).value[].member_type
+    member_type = pair_second(struct_typedef[].members[map_it])[].member_type
     if member_type ~= node[]._base[].exp_type {
         " #@MACRO@:sptr_copy(Type, member_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
@@ -3180,7 +3180,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     is_glob: i32 = node[].storage_class.tag ~= AST_CStatic_t
     map_it: i64 = map_find(ctx[].frontend[].symbol_table, node[].name)
     if map_it ~= map_end() {
-        fun_symbol: *struc Symbol = (ctx[].frontend[].symbol_table[map_it]).value
+        fun_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
         if not (fun_symbol[].type_t[].tag == AST_FunType_t and vec_size(fun_type[].param_types) == vec_size(node[].params) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
             loop .. while 0 {
@@ -3446,7 +3446,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
         map_it: i64 = map_find(ctx[].frontend[].string_const_table, string_const)
         if map_it ~= map_end() {
-            string_const_label = (ctx[].frontend[].string_const_table[map_it]).value
+            string_const_label = pair_second(ctx[].frontend[].string_const_table[map_it])
         }
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
@@ -3812,7 +3812,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }
     map_it = map_find(ctx[].frontend[].symbol_table, node[].name)
     if map_it ~= map_end() {
-        var_symbol: *struc Symbol = (ctx[].frontend[].symbol_table[map_it]).value
+        var_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
         if not is_same_type(var_symbol[].type_t, node[].var_type) {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
@@ -3905,7 +3905,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     }
     map_it = map_find(ctx[].frontend[].symbol_table, node[].name)
     if map_it ~= map_end() {
-        var_type: *struc Type = (ctx[].frontend[].symbol_table[map_it]).value[].type_t
+        var_type: *struc Type = pair_second(ctx[].frontend[].symbol_table[map_it])[].type_t
         if not is_same_type(var_type, node[].var_type) {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
@@ -4232,7 +4232,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     free_Type(@member_type)
     vec_delete(member_names)
     loop i: u64 = 0 while i < map_size(members) .. ++i {
-        free_StructMember(@(members[i]).value)
+        free_StructMember(@pair_second(members[i]))
     }
     map_delete(members)
     return _errval
@@ -4374,7 +4374,7 @@ fn exit_scope(ctx: *struc SemanticContext) none {
     loop i: u64 = 0 while i < map_size(vec_back(ctx[].scoped_identifier_maps)) .. ++i {
         identifier: u64 = pair_first(vec_back(ctx[].scoped_identifier_maps)[i])
         map_it: i64 = map_find(ctx[].extern_scope_map, identifier)
-        if map_it ~= map_end() and (ctx[].extern_scope_map[map_it]).value == vec_size(ctx[].scoped_identifier_maps) {
+        if map_it ~= map_end() and pair_second(ctx[].extern_scope_map[map_it]) == vec_size(ctx[].scoped_identifier_maps) {
             map_erase(ctx[].extern_scope_map, identifier)
         }
     }
@@ -4454,7 +4454,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = map_find(ctx[].scoped_struct_maps[i], struct_type[].tag_name)
         if map_it ~= map_end() {
-            structure: *struc Structure = @(ctx[].scoped_struct_maps[i][map_it]).value
+            structure: *struc Structure = @pair_second(ctx[].scoped_struct_maps[i][map_it])
             if structure[].is_union ~= struct_type[].is_union {
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
@@ -4548,7 +4548,7 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = map_find(ctx[].scoped_identifier_maps[i], node[].name)
         if map_it ~= map_end() {
-            node[].name = (ctx[].scoped_identifier_maps[i][map_it]).value
+            node[].name = pair_second(ctx[].scoped_identifier_maps[i][map_it])
             jump Lelse
         }
     }
@@ -4711,7 +4711,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = map_find(ctx[].scoped_identifier_maps[i], node[].name)
         if map_it ~= map_end() {
-            node[].name = (ctx[].scoped_identifier_maps[i][map_it]).value
+            node[].name = pair_second(ctx[].scoped_identifier_maps[i][map_it])
             jump Lelse
         }
     }
@@ -5217,7 +5217,7 @@ fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
 fn reslv_goto_statement(ctx: *struc SemanticContext, node: *struc CGoto) none {
     map_it: i64 = map_find(ctx[].goto_map, node[].target)
     if map_it ~= map_end() {
-        node[].target = (ctx[].goto_map[map_it]).value
+        node[].target = pair_second(ctx[].goto_map[map_it])
         map_add(ctx[].errors[].info_at_map, node[].target, node[].info_at)
     }
     else {
@@ -5240,7 +5240,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     }
     map_it = map_find(ctx[].goto_map, node[].target)
     if map_it ~= map_end() {
-        node[].target = (ctx[].goto_map[map_it]).value
+        node[].target = pair_second(ctx[].goto_map[map_it])
     }
     else {
         target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
@@ -6047,7 +6047,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
     _errval: i32 = 0
     map_it: i64 = map_find(vec_back(ctx[].scoped_struct_maps), node[].tag_name)
     if map_it ~= map_end() {
-        node[].tag_name = ((ctx[].scoped_struct_maps)[(? (ctx[].scoped_struct_maps) then (cast<*struc stbds_array_header>((ctx[].scoped_struct_maps)) - 1)[].length else 0) - 1][map_it]).value.tag_name # TODO pair_second(vec_back(ctx->scoped_struct_maps)[map_it]).tag_name
+        node[].tag_name = pair_second(vec_back(ctx[].scoped_struct_maps)[map_it]).tag_name
         if node[].is_union {
             if set_find(ctx[].union_def_set, node[].tag_name) == set_end() {
                 loop .. while 0 {
