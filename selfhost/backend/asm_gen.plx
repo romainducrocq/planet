@@ -180,7 +180,7 @@ fn pseudo_mem_op(node: *struc TacVariable) *struc AsmOperand {
 }
 
 fn var_op(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc AsmOperand {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Array_t {
             -> AST_Structure_t {
                 return pseudo_mem_op(node)
@@ -326,7 +326,7 @@ fn is_const_signed(node: *struc TacConstant) i32 {
 }
 
 fn is_var_signed(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 -> AST_Int_t {
@@ -372,7 +372,7 @@ fn is_const_1b(node: *struc TacConstant) i32 {
 }
 
 fn is_var_1b(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
                 -> AST_UChar_t {
@@ -414,7 +414,7 @@ fn is_const_4b(node: *struc TacConstant) i32 {
 }
 
 fn is_var_4b(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    match ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             -> AST_UInt_t {
                 return true
@@ -445,7 +445,7 @@ fn is_const_dbl(node: *struc TacConstant) i32 {
 }
 
 fn is_var_dbl(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Double_t
+    return map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag == AST_Double_t
 }
 
 fn is_value_dbl(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
@@ -463,7 +463,7 @@ fn is_value_dbl(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
 }
 
 fn is_var_struct(ctx: *struc AsmGenContext, node: *struc TacVariable) i32 {
-    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].tag == AST_Structure_t
+    return map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag == AST_Structure_t
 }
 
 fn is_value_struct(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
@@ -525,7 +525,7 @@ fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) *struc Assembl
 }
 
 fn asm_type_8b(ctx: *struc AsmGenContext, struct_type: *struc Structure, offset: i64) *struc AssemblyType {
-    size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size - offset
+    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size - offset
     if size >= 8l {
         return make_QuadWord()
     }
@@ -546,7 +546,7 @@ fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) non
 
 fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
     struct_8b: struc Struct8Bytes = $(1, $(CLS_sse, CLS_memory))
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     members_front: u64 = ? struct_type[].is_union then map_size(struct_typedef[].members) else 1
     loop i: u64 = 0 while i < members_front .. ++i {
         if struct_8b.clss[0] == CLS_integer {
@@ -559,7 +559,7 @@ fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
         if member_type[].tag == AST_Structure_t {
             member_struct_type: *struc Structure = @member_type[].get._Structure
             struct_8b_class(ctx, member_struct_type)
-            if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_integer {
+            if map_get(ctx[].struct_8b_map, member_struct_type[].tag_name).clss[0] == CLS_integer {
                 struct_8b.clss[0] = CLS_integer
             }
         }
@@ -572,7 +572,7 @@ fn struct_1_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
 
 fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
     struct_8b: struc Struct8Bytes = $(2, $(CLS_sse, CLS_sse))
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     members_front: u64 = ? struct_type[].is_union then map_size(struct_typedef[].members) else 1
     loop i: u64 = 0 while i < members_front .. ++i {
         if struct_8b.clss[0] == CLS_integer and struct_8b.clss[1] == CLS_integer {
@@ -588,7 +588,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
             }
         }
         if member_type[].tag == AST_Structure_t {
-            size *= ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((member_type[].get._Structure.tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+            size *= map_get(ctx[].frontend[].struct_typedef_table, member_type[].get._Structure.tag_name)[].size
         }
         else {
             size *= gen_type_alignment(ctx[].frontend, member_type)
@@ -597,7 +597,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
             if member_type[].tag == AST_Structure_t {
                 member_struct_type: *struc Structure = @member_type[].get._Structure
                 struct_8b_class(ctx, member_struct_type)
-                member_struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
+                member_struct_8b: *struc Struct8Bytes = @map_get(ctx[].struct_8b_map, member_struct_type[].tag_name)
                 if member_struct_8b[].size > 1 {
                     if member_struct_8b[].clss[0] == CLS_integer {
                         struct_8b.clss[0] = CLS_integer
@@ -620,7 +620,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
             if member_type[].tag == AST_Structure_t {
                 member_struct_type: *struc Structure = @member_type[].get._Structure
                 struct_8b_class(ctx, member_struct_type)
-                if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_integer {
+                if map_get(ctx[].struct_8b_map, member_struct_type[].tag_name).clss[0] == CLS_integer {
                     struct_8b.clss[0] = CLS_integer
                 }
             }
@@ -635,7 +635,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
                 if member_type[].tag == AST_Structure_t {
                     member_struct_type: *struc Structure = @member_type[].get._Structure
                     struct_8b_class(ctx, member_struct_type)
-                    if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((member_struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_integer {
+                    if map_get(ctx[].struct_8b_map, member_struct_type[].tag_name).clss[0] == CLS_integer {
                         struct_8b.clss[1] = CLS_integer
                     }
                 }
@@ -650,7 +650,7 @@ fn struct_2_reg_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structur
 
 fn struct_8b_class(ctx: *struc AsmGenContext, struct_type: *struc Structure) none {
     if map_find(ctx[].struct_8b_map, struct_type[].tag_name) == map_end() {
-        size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+        size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
         if size > 16l {
             struct_8b: struc Struct8Bytes = $(3, $(CLS_memory, CLS_memory))
             size -= 24l
@@ -827,9 +827,9 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
 
 fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
     name: u64 = node[].val[].get._TacVariable.name
-    struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
+    struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
     struct_8b_class(ctx, struct_type)
-    struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
+    struct_8b: *struc Struct8Bytes = @map_get(ctx[].struct_8b_map, struct_type[].tag_name)
     if struct_8b[].clss[0] == CLS_memory {
         {
             src: *struc AsmOperand = gen_memory(REG_Bp, -8l)
@@ -839,7 +839,7 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
             ret_1_reg_mask(ctx[].p_fun_type, true)
         }
         {
-            size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+            size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
             offset: i64 = 0l
             loop while size > 0l {
                 src: *struc AsmOperand = gen_op(ctx, node[].val)
@@ -1703,9 +1703,9 @@ fn arg_call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall, fun_type: 
             struct_reg_size: u64 = 7
             struct_sse_size: u64 = 9
             name: u64 = arg[].get._TacVariable.name
-            struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
+            struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
             struct_8b_class(ctx, struct_type)
-            struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
+            struct_8b: *struc Struct8Bytes = @map_get(ctx[].struct_8b_map, struct_type[].tag_name)
             if struct_8b[].clss[0] ~= CLS_memory {
                 struct_reg_size = 0
                 struct_sse_size = 0
@@ -1869,12 +1869,12 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
 
 fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
     is_ret_memory: i32 = false
-    fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
+    fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].get._FunType
     if node[].dst and is_value_struct(ctx, node[].dst) {
         name: u64 = node[].dst[].get._TacVariable.name
-        struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
+        struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
         struct_8b_class(ctx, struct_type)
-        if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_memory {
+        if map_get(ctx[].struct_8b_map, struct_type[].tag_name).clss[0] == CLS_memory {
             is_ret_memory = true
             {
                 src: *struc AsmOperand = gen_op(ctx, node[].dst)
@@ -1910,8 +1910,8 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
     else {
         reg_size: i32 = false
         name: u64 = node[].dst[].get._TacVariable.name
-        struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
-        struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
+        struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
+        struct_8b: *struc Struct8Bytes = @map_get(ctx[].struct_8b_map, struct_type[].tag_name)
         match struct_8b[].clss[0] {
             -> CLS_integer {
                 ret_8b_call_instr(ctx, name, 0l, struct_type, REG_Ax)
@@ -2527,8 +2527,8 @@ fn binary_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
 fn copy_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopy) none {
     src_name: u64 = node[].src[].get._TacVariable.name
     dst_name: u64 = node[].dst[].get._TacVariable.name
-    struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
-    size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+    struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, src_name)[].type_t[].get._Structure
+    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
     offset: i64 = 0l
     loop while size > 0l {
         src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
@@ -2597,8 +2597,8 @@ fn load_struct_instr(ctx: *struc AsmGenContext, node: *struc TacLoad) none {
     }
     {
         name: u64 = node[].dst[].get._TacVariable.name
-        struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
-        size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+        struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
+        size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
         offset: i64 = 0l
         loop while size > 0l {
             src: *struc AsmOperand = gen_memory(REG_Ax, offset)
@@ -2657,8 +2657,8 @@ fn store_struct_instr(ctx: *struc AsmGenContext, node: *struc TacStore) none {
     }
     {
         name: u64 = node[].src[].get._TacVariable.name
-        struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
-        size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+        struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
+        size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
         offset: i64 = 0l
         loop while size > 0l {
             src: *struc AsmOperand = make_AsmPseudoMem(name, offset)
@@ -2844,8 +2844,8 @@ fn add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none {
 
 fn cp_to_offset_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopyToOffset) none {
     src_name: u64 = node[].src[].get._TacVariable.name
-    struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((src_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
-    size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+    struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, src_name)[].type_t[].get._Structure
+    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
     offset: i64 = 0l
     loop while size > 0l {
         src: *struc AsmOperand = make_AsmPseudoMem(src_name, offset)
@@ -2900,8 +2900,8 @@ fn cp_to_offset_instr(ctx: *struc AsmGenContext, node: *struc TacCopyToOffset) n
 
 fn cp_from_offset_struct_instr(ctx: *struc AsmGenContext, node: *struc TacCopyFromOffset) none {
     dst_name: u64 = node[].dst[].get._TacVariable.name
-    struct_type: *struc Structure = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((dst_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._Structure
-    size: i64 = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+    struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, dst_name)[].type_t[].get._Structure
+    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
     offset: i64 = 0l
     loop while size > 0l {
         src: *struc AsmOperand = sptr_new()
@@ -3232,7 +3232,7 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
     stack_bytes: i64 = 16l
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
-        param_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((param))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
+        param_type: *struc Type = map_get(ctx[].frontend[].symbol_table, param)[].type_t
         if param_type[].tag == AST_Double_t {
             if sse_size < 8 {
                 reg_fun_param_instr(ctx, param, ctx[].sse_arg_regs[sse_size])
@@ -3258,7 +3258,7 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
             struct_sse_size: u64 = 9
             struct_type: *struc Structure = @param_type[].get._Structure
             struct_8b_class(ctx, struct_type)
-            struct_8b: *struc Struct8Bytes = @((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value)
+            struct_8b: *struc Struct8Bytes = @map_get(ctx[].struct_8b_map, struct_type[].tag_name)
             if struct_8b[].clss[0] ~= CLS_memory {
                 struct_reg_size = 0
                 struct_sse_size = 0
@@ -3306,11 +3306,11 @@ fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc As
     vec_reserve(body, vec_size(node[].body))
     {
         ctx[].p_instrs = @body
-        fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
+        fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].get._FunType
         if fun_type[].ret_type[].tag == AST_Structure_t {
             struct_type: *struc Structure = @fun_type[].ret_type[].get._Structure
             struct_8b_class(ctx, struct_type)
-            if ((? ((? ((ctx[].struct_8b_map) = stbds_hmget_key((ctx[].struct_8b_map), sizeof((ctx[].struct_8b_map)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].struct_8b_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].struct_8b_map)[(cast<*struc stbds_array_header>(((ctx[].struct_8b_map) - 1)) - 1)[].temp])[].value).clss[0] == CLS_memory {
+            if map_get(ctx[].struct_8b_map, struct_type[].tag_name).clss[0] == CLS_memory {
                 is_ret_memory = true
                 {
                     src: *struc AsmOperand = gen_register(REG_Di)
