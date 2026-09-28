@@ -45,6 +45,6 @@ m4_define(`UPtrBackendSymbol', `unique_ptr_t(BackendSymbol)')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``UPtrBackendSymbol'')
 
-type struc BackEndContext(symbol_table: *struc PairTIdentifierUPtrBackendSymbol)
+type struc BackEndContext(symbol_table: hashmap_t(``TIdentifier'', ``UPtrBackendSymbol''))
 
 ')m4_dnl

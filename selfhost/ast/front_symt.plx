@@ -639,7 +639,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
     }
 }
 
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef {
+pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef {
     self: *struc StructTypedef = uptr_new()
     loop .. while 0 {
         " #@MACRO@:uptr_alloc(StructTypedef, self)"
