@@ -404,25 +404,25 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn cfg_init_jump_edges(ctx: Ctx, node: *struc TacJump, block_id: u64) none {
-    cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx[].cfg[].identifier_id_map, node[].target))
 }
 
 fn cfg_init_jmp_eq_0_edges(ctx: Ctx, node: *struc TacJumpIfZero, block_id: u64) none {
-    cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx[].cfg[].identifier_id_map, node[].target))
     cfg_add_succ_edge(ctx, block_id, block_id + 1)
 }
 
 fn cfg_init_jmp_ne_0_edges(ctx: Ctx, node: *struc TacJumpIfNotZero, block_id: u64) none {
-    cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx[].cfg[].identifier_id_map, node[].target))
     cfg_add_succ_edge(ctx, block_id, block_id + 1)
 }
 ', __OPTIM_LEVEL__, `2', `
 fn cfg_init_jmp_edges(ctx: Ctx, node: *struc AsmJmp, block_id: u64) none {
-    cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx[].cfg[].identifier_id_map, node[].target))
 }
 
 fn cfg_init_jmp_cc_edges(ctx: Ctx, node: *struc AsmJmpCC, block_id: u64) none {
-    cfg_add_succ_edge(ctx, block_id, ((? ((? ((ctx[].cfg[].identifier_id_map) = stbds_hmget_key((ctx[].cfg[].identifier_id_map), sizeof((ctx[].cfg[].identifier_id_map)[]), cast<*any>(@((node[].target))), sizeof((ctx[].cfg[].identifier_id_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].cfg[].identifier_id_map)[(cast<*struc stbds_array_header>(((ctx[].cfg[].identifier_id_map) - 1)) - 1)[].temp])[].value))
+    cfg_add_succ_edge(ctx, block_id, map_get(ctx[].cfg[].identifier_id_map, node[].target))
     cfg_add_succ_edge(ctx, block_id, block_id + 1)
 }
 ')m4_dnl
@@ -953,7 +953,7 @@ fn dfa_backward_open_block(ctx: Ctx, block_id: u64, i: *u64) none {
 }
 
 fn is_aliased_name(ctx: Ctx, name: u64) i32 {
-    return ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == AST_StaticAttr_t or set_find(ctx[].frontend[].addressed_set, name) ~= set_end()
+    return map_get(ctx[].frontend[].symbol_table, name)[].attrs[].tag == AST_StaticAttr_t or set_find(ctx[].frontend[].addressed_set, name) ~= set_end()
 }
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -1415,7 +1415,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (0)] = 0ul
 ', __OPTIM_LEVEL__, `2', `
     {
-        fun_type: *struc FunType = @((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((fun_name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t[].get._FunType
+        fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, fun_name)[].type_t[].get._FunType
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (0)] = fun_type[].ret_reg_mask
     }
 ')m4_dnl
@@ -1428,7 +1428,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
             name_id: *pair_t(``TIdentifier'', u64) = @ctx[].cfg[].identifier_id_map[i]
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-            if ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@(((name_id[]).key))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag == AST_StaticAttr_t {
+            if map_get(ctx[].frontend[].symbol_table, pair_first(name_id[]))[].attrs[].tag == AST_StaticAttr_t {
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
             }
             if set_find(ctx[].frontend[].addressed_set, pair_first(name_id[])) ~= set_end() {
