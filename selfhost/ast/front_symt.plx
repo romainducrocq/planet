@@ -674,7 +674,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
     }
     vec_delete(self[][].member_names)
     loop i: u64 = 0 while i < map_size(self[][].members) .. ++i {
-        free_StructMember(@((self[])[].members[i]).value)
+        free_StructMember(@pair_second(self[][].members[i]))
     }
     map_delete(self[][].members)
     if self[] {

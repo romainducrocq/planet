@@ -433,7 +433,7 @@ fn memory_op(ctx: *struc GasCodeContext, node: *struc AsmMemory) none {
 fn data_op(ctx: *struc GasCodeContext, node: *struc AsmData) none {
     map_it: i64 = map_find(ctx[].backend[].symbol_table, node[].name)
     if map_it ~= map_end() {
-        backend_obj_symbol: *struc BackendSymbol = (ctx[].backend[].symbol_table[map_it]).value
+        backend_obj_symbol: *struc BackendSymbol = pair_second(ctx[].backend[].symbol_table[map_it])
         if backend_obj_symbol[].tag == AST_BackendObj_t and backend_obj_symbol[].get._BackendObj.is_const {
             emit(ctx, ".L")
         }
