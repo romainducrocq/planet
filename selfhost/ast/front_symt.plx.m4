@@ -138,8 +138,8 @@ m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``UPtrStructMember'')
 
-type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: *struc PairTIdentifierUPtrStructMember)
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: **struc PairTIdentifierUPtrStructMember) *struc StructTypedef;
+type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
+pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
 
 PairKeyValue(``TIdentifier'', u64)
@@ -156,7 +156,7 @@ PairKeyValue(``TIdentifier'', ``UPtrSymbol'')
 
 ElementKey(``TIdentifier'')
 
-type struc FrontEndContext(string_const_table: *struc PairTIdentifierTIdentifier, struct_typedef_table: *struc PairTIdentifierUPtrStructTypedef, symbol_table: *struc PairTIdentifierUPtrSymbol, addressed_set: hashset_t(``TIdentifier''))
+type struc FrontEndContext(string_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_typedef_table: hashmap_t(``TIdentifier'', ``UPtrStructTypedef''), symbol_table: hashmap_t(``TIdentifier'', ``UPtrSymbol''), addressed_set: hashset_t(``TIdentifier''))
 pub fn get_struct_typedef_member(ctx: *struc FrontEndContext, tag_name: u64, member_name: u64) *struc StructMember;
 pub fn get_struct_typedef_back(ctx: *struc FrontEndContext, tag_name: u64) *struc StructMember;
 

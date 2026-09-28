@@ -11,7 +11,7 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
 PairKeyValue(``TIdentifier'', i64)
 
-type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: *struc PairTIdentifieri64, p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
+type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: hashmap_t(``TIdentifier'', i64), p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
 
 m4_define(`Ctx', `TODO')m4_dnl
 
