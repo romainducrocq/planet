@@ -306,7 +306,7 @@ pub fn get_tok_fmt(ctx: *struc IdentifierContext, token: *struc Token) string {
                             -> TOK_uint_const {
                                 -> TOK_ulong_const {
                                     -> TOK_dbl_const {
-                                        return ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((token[].tok))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
+                                        return map_get(ctx[].hash_table, token[].tok)
                                     }
                                 }
                             }
@@ -525,7 +525,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
 }
 
 pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string) string {
-    value: string = ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((name))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value)
+    value: string = map_get(ctx[].hash_table, name)
     if value ~= name_fmt[] {
         " #@MACRO@:str_copy(value, *name_fmt)"
         if name_fmt[] {

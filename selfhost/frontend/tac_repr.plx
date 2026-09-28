@@ -275,7 +275,7 @@ fn get_arr_scale(ctx: *struc TacReprContext, arr_type: *struc Array) i64 {
 }
 
 fn get_struct_scale(ctx: *struc TacReprContext, struct_type: *struc Structure) i64 {
-    return ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)[].size
+    return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
 }
 
 fn get_type_scale(ctx: *struc TacReprContext, type_t: *struc Type) i64 {
@@ -1122,8 +1122,8 @@ fn sub_obj_dot_res_instr(res: *struc TacSubObject, member_offset: i64) none {
 
 fn dot_res_instr(ctx: *struc TacReprContext, node: *struc CDot) *struc TacExpResult {
     struct_type: *struc Structure = @node[].structure[].exp_type[].get._Structure
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    member_offset: i64 = ((? ((? ((struct_typedef[].members) = stbds_hmget_key((struct_typedef[].members), sizeof((struct_typedef[].members)[]), cast<*any>(@((node[].member))), sizeof((struct_typedef[].members)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp)) and 0 then 0 else @(struct_typedef[].members)[(cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp])[].value)[].offset
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
+    member_offset: i64 = map_get(struct_typedef[].members, node[].member)[].offset
     res: *struc TacExpResult = repr_res_instr(ctx, node[].structure)
     match res[].tag {
         -> AST_TacPlainOperand_t {
@@ -1148,8 +1148,8 @@ fn dot_res_instr(ctx: *struc TacReprContext, node: *struc CDot) *struc TacExpRes
 fn arrow_res_instr(ctx: *struc TacReprContext, node: *struc CArrow) *struc TacExpResult {
     ptr_type: *struc Pointer = @node[].pointer[].exp_type[].get._Pointer
     struct_type: *struc Structure = @ptr_type[].ref_type[].get._Structure
-    struct_typedef: *struc StructTypedef = ((? ((? ((ctx[].frontend[].struct_typedef_table) = stbds_hmget_key((ctx[].frontend[].struct_typedef_table), sizeof((ctx[].frontend[].struct_typedef_table)[]), cast<*any>(@((struct_type[].tag_name))), sizeof((ctx[].frontend[].struct_typedef_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].struct_typedef_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].struct_typedef_table) - 1)) - 1)[].temp])[].value)
-    member_offset: i64 = ((? ((? ((struct_typedef[].members) = stbds_hmget_key((struct_typedef[].members), sizeof((struct_typedef[].members)[]), cast<*any>(@((node[].member))), sizeof((struct_typedef[].members)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp)) and 0 then 0 else @(struct_typedef[].members)[(cast<*struc stbds_array_header>(((struct_typedef[].members) - 1)) - 1)[].temp])[].value)[].offset
+    struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
+    member_offset: i64 = map_get(struct_typedef[].members, node[].member)[].offset
     val: *struc TacValue = repr_exp_instr(ctx, node[].pointer)
     if member_offset > 0l {
         idx: *struc TacValue = sptr_new()
@@ -1736,7 +1736,7 @@ fn compound_init_instr(ctx: *struc TacReprContext, node: *struc CInitializer, in
 }
 
 fn var_decl_instr(ctx: *struc TacReprContext, node: *struc CVariableDeclaration) none {
-    init_type: *struc Type = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].type_t
+    init_type: *struc Type = map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t
     match node[].init[].tag {
         -> AST_CSingleInit_t {
             single_init_instr(ctx, @node[].init[].get._CSingleInit, init_type, node[].name)
@@ -1754,7 +1754,7 @@ fn var_decl_instr(ctx: *struc TacReprContext, node: *struc CVariableDeclaration)
 }
 
 fn var_declaration_instr(ctx: *struc TacReprContext, node: *struc CVarDecl) none {
-    if node[].var_decl[].init and ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].var_decl[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].tag ~= AST_StaticAttr_t {
+    if node[].var_decl[].init and map_get(ctx[].frontend[].symbol_table, node[].var_decl[].name)[].attrs[].tag ~= AST_StaticAttr_t {
         var_decl_instr(ctx, node[].var_decl)
     }
 }
@@ -1805,7 +1805,7 @@ fn repr_block(ctx: *struc TacReprContext, node: *struc CBlock) none {
 
 fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration) *struc TacTopLevel {
     name: u64 = node[].name
-    is_glob: i32 = ((? ((? ((ctx[].frontend[].symbol_table) = stbds_hmget_key((ctx[].frontend[].symbol_table), sizeof((ctx[].frontend[].symbol_table)[]), cast<*any>(@((node[].name))), sizeof((ctx[].frontend[].symbol_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].frontend[].symbol_table)[(cast<*struc stbds_array_header>(((ctx[].frontend[].symbol_table) - 1)) - 1)[].temp])[].value)[].attrs[].get._FunAttr.is_glob
+    is_glob: i32 = map_get(ctx[].frontend[].symbol_table, node[].name)[].attrs[].get._FunAttr.is_glob
     params: vector_t(TIdentifier) = vec_new()
     vec_resize(params, vec_size(node[].params))
     memcpy(params, node[].params, sizeof<u64> * vec_size(node[].params))
