@@ -1435,7 +1435,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
             }
 ', __OPTIM_LEVEL__, `2', `
-        ctx[].dfa_o2[].data_name_map[(name_id[]).value - REGISTER_MASK_SIZE] = (name_id[]).key
+        ctx[].dfa_o2[].data_name_map[(name_id[]).value - REGISTER_MASK_SIZE] = pair_first(name_id[])
 ')m4_dnl
         }
         memset(ctx[].dfa[].blocks_mask_sets, 0ul, sizeof<u64> * blocks_mask_sets_size)

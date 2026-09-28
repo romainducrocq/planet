@@ -1966,7 +1966,7 @@ fn repr_program(ctx: *struc TacReprContext, node: *struc CProgram) *struc TacPro
         ctx[].p_static_consts = @static_const_toplvls
         loop i: u64 = 0 while i < map_size(ctx[].frontend[].symbol_table) .. ++i {
             symbol: *pair_t(``TIdentifier'', ``UPtrSymbol'') = @ctx[].frontend[].symbol_table[i]
-            symbol_toplvl(ctx, (symbol[]).value, (symbol[]).key)
+            symbol_toplvl(ctx, pair_second(symbol[]), pair_first(symbol[]))
         }
         ctx[].p_toplvls = nil
         ctx[].p_static_consts = nil
