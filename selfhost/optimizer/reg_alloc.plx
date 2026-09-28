@@ -701,7 +701,7 @@ fn init_inference_graph(ctx: *struc RegAllocContext, fun_name: u64) i32 {
     }
     map_clear(ctx[].sse_infer_graph[].pseudo_reg_map)
     loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
-        name: u64 = (ctx[].cfg[].identifier_id_map[i]).key
+        name: u64 = pair_first(ctx[].cfg[].identifier_id_map[i])
         infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, vec_new())
         if map_get(ctx[].frontend[].symbol_table, name)[].type_t[].tag == AST_Double_t {
             vec_push_back(ctx[].sse_infer_graph[].unpruned_pseudo_names, name)
