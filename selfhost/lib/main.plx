@@ -38,10 +38,7 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
     loop i: u64 = sdslen(ctx[].filename) while i-- > 0 {
         if ctx[].filename[i] == '.' {
             str_substr(ctx[].filename, 0, i)
-            loop .. while 0 {
-                " #@MACRO@:str_append(ctx->filename, ext)"
-                ctx[].filename = sdscat(ctx[].filename, ext)
-            }
+            str_append(ctx[].filename, ext)
             return none
         }
     }
