@@ -62,7 +62,6 @@ m4_define(`str_push_back', `{
 m4_define(`str_reserve', `{
     $1 = sdsMakeRoomFor($1, $2)
 }')m4_dnl
-# TODO
 m4_define(`str_resize', `{
     $1 = sdsgrowzero($1, $2)
 }')m4_dnl
