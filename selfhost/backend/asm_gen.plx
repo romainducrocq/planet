@@ -113,7 +113,7 @@ fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
 fn dbl_static_const_toplvl(ctx: *struc AsmGenContext, identifier: u64, dbl_const: u64, byte: i32) none;
 
 fn make_binary_identifier(ctx: *struc AsmGenContext, binary: u64) u64 {
-    strto_binary: string = ? (binary) > 0 then sdsfromunsignedlong(cast<u64>((binary))) else sdsfromlong(cast<i64>((binary)))
+    strto_binary: string = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 

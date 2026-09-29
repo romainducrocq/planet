@@ -157,7 +157,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
 pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label: i32, i: u64) u64 {
     name: string = ? is_label then ? "case_" then sdsnew("case_") else nil else ? "" then sdsnew("") else nil
     {
-        strto_i: string = ? (i) > 0 then sdsfromunsignedlong(cast<u64>((i))) else sdsfromlong(cast<i64>((i)))
+        strto_i: string = str_to_string(i)
         loop .. while 0 {
             " #@MACRO@:str_append(name, strto_i)"
             name = sdscat(name, strto_i)

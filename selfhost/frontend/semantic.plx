@@ -2532,7 +2532,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         values[i] = get_const_int_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
-                strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
+                strto_fmt = str_to_string(values[i])
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
@@ -2570,7 +2570,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         values[i] = get_const_long_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
-                strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
+                strto_fmt = str_to_string(values[i])
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
@@ -2608,7 +2608,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         values[i] = get_const_uint_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
-                strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
+                strto_fmt = str_to_string(values[i])
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
@@ -2646,7 +2646,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
         values[i] = get_const_ulong_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
-                strto_fmt = ? (values[i]) > 0 then sdsfromunsignedlong(cast<u64>((values[i]))) else sdsfromlong(cast<i64>((values[i])))
+                strto_fmt = str_to_string(values[i])
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
@@ -2772,7 +2772,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
         }
     }
     elif vec_size(node[].literal[].value) > cast<u64>(arr_type[].size) {
-        strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
+        strto_fmt_1 = str_to_string(arr_type[].size)
         strto_fmt_2 = str_to_string(vec_size(node[].literal[].value))
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
@@ -2927,7 +2927,7 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
     strto_fmt_2: string = ? nil then sdsnew(nil) else nil
     _errval: i32 = 0
     if vec_size(node[].initializers) > cast<u64>(arr_type[].size) {
-        strto_fmt_1 = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
+        strto_fmt_1 = str_to_string(arr_type[].size)
         strto_fmt_2 = str_to_string(vec_size(node[].initializers))
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
@@ -2964,7 +2964,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     bound: u64 = ? struct_type[].is_union then 1 else map_size(struct_typedef[].members)
     if vec_size(node[].initializers) > bound {
         strto_fmt_1 = str_to_string(vec_size(node[].initializers))
-        strto_fmt_2 = ? (bound) > 0 then sdsfromunsignedlong(cast<u64>((bound))) else sdsfromlong(cast<i64>((bound)))
+        strto_fmt_2 = str_to_string(bound)
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_struct_init_overflow), "MSG_struct_init_overflow", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
@@ -3278,7 +3278,7 @@ fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Ty
 }
 
 fn make_binary_identifier(ctx: *struc SemanticContext, binary: u64) u64 {
-    strto_binary: string = ? (binary) > 0 then sdsfromunsignedlong(cast<u64>((binary))) else sdsfromlong(cast<i64>((binary)))
+    strto_binary: string = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
@@ -3381,7 +3381,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
             }
             value: u64 = get_const_ptr_value(node)
             if value ~= 0ul {
-                strto_fmt = ? (value) > 0 then sdsfromunsignedlong(cast<u64>((value))) else sdsfromlong(cast<i64>((value)))
+                strto_fmt = str_to_string(value)
                 loop .. while 0 {
                     " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
                     ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_not_null), "MSG_static_ptr_init_not_null", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
