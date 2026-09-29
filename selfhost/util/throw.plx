@@ -232,8 +232,8 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         }
         pad_tok: string = ? "" then sdsnew("") else nil
         pad_linenum: string = ? "" then sdsnew("") else nil
-        strto_pos: string = ? (tok_pos) > 0 then sdsfromunsignedlong(cast<u64>((tok_pos))) else sdsfromlong(cast<i64>((tok_pos)))
-        strto_linenum: string = ? (tok_linenum) > 0 then sdsfromunsignedlong(cast<u64>((tok_linenum))) else sdsfromlong(cast<i64>((tok_linenum)))
+        strto_pos: string = str_to_string(tok_pos)
+        strto_linenum: string = str_to_string(tok_linenum)
         loop .. while 0 {
             " #@MACRO@:str_resize(pad_tok, tok_pos - 1)"
             pad_tok = sdsgrowzero(pad_tok, tok_pos - 1)
