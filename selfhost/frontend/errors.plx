@@ -654,7 +654,7 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string {
     arr_fmt[] = ? "[" then sdsnew("[") else nil
     {
-        strto_size: string = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
+        strto_size: string = str_to_string(arr_type[].size)
         loop .. while 0 {
             " #@MACRO@:str_append(*arr_fmt, strto_size)"
             arr_fmt[] = sdscat(arr_fmt[], strto_size)
@@ -676,7 +676,7 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
             arr_fmt[] = sdscat(arr_fmt[], "[")
         }
         {
-            strto_size: string = ? (arr_type[].size) > 0 then sdsfromunsignedlong(cast<u64>((arr_type[].size))) else sdsfromlong(cast<i64>((arr_type[].size)))
+            strto_size: string = str_to_string(arr_type[].size)
             loop .. while 0 {
                 " #@MACRO@:str_append(*arr_fmt, strto_size)"
                 arr_fmt[] = sdscat(arr_fmt[], strto_size)

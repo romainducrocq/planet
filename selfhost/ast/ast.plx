@@ -191,7 +191,7 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
         name[] = sdscat(name[], ".")
     }
     {
-        strto_uid: string = ? (ctx[].label_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].label_count))) else sdsfromlong(cast<i64>((ctx[].label_count)))
+        strto_uid: string = str_to_string(ctx[].label_count)
         loop .. while 0 {
             " #@MACRO@:str_append(*name, strto_uid)"
             name[] = sdscat(name[], strto_uid)
@@ -212,7 +212,7 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
         name[] = sdscat(name[], ".")
     }
     {
-        strto_uid: string = ? (ctx[].var_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].var_count))) else sdsfromlong(cast<i64>((ctx[].var_count)))
+        strto_uid: string = str_to_string(ctx[].var_count)
         loop .. while 0 {
             " #@MACRO@:str_append(*name, strto_uid)"
             name[] = sdscat(name[], strto_uid)
@@ -233,7 +233,7 @@ pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64 
         name[] = sdscat(name[], ".")
     }
     {
-        strto_uid: string = ? (ctx[].struct_count) > 0 then sdsfromunsignedlong(cast<u64>((ctx[].struct_count))) else sdsfromlong(cast<i64>((ctx[].struct_count)))
+        strto_uid: string = str_to_string(ctx[].struct_count)
         loop .. while 0 {
             " #@MACRO@:str_append(*name, strto_uid)"
             name[] = sdscat(name[], strto_uid)

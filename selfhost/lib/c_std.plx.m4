@@ -34,20 +34,36 @@ m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
 m4_define(`sptr_move', `TODO')m4_dnl
 m4_define(`sptr_copy', `TODO')m4_dnl
+
+# TODO
 m4_define(`string_t', `sds')m4_dnl
+# TODO
 m4_define(`str_new', `TODO')m4_dnl
+# TODO
 m4_define(`str_delete', `TODO')m4_dnl
+# TODO
 m4_define(`str_move', `TODO')m4_dnl
+# TODO
 m4_define(`str_size', `TODO')m4_dnl
+# TODO
 m4_define(`str_back', `TODO')m4_dnl
+# TODO
 m4_define(`str_append', `TODO')m4_dnl
+# TODO
 m4_define(`str_clear', `TODO')m4_dnl
+# TODO
 m4_define(`str_copy', `TODO')m4_dnl
+# TODO
 m4_define(`str_hash', `TODO')m4_dnl
+# TODO
 m4_define(`str_pop_back', `TODO')m4_dnl
+# TODO
 m4_define(`str_push_back', `TODO')m4_dnl
+# TODO
 m4_define(`str_reserve', `TODO')m4_dnl
+# TODO
 m4_define(`str_resize', `TODO')m4_dnl
+# TODO
 m4_define(`str_substr', `TODO')m4_dnl
 m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
 
