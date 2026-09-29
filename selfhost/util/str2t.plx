@@ -272,14 +272,7 @@ pub fn string_literal_to_const(string_literal: vector_t(i8)) string {
             }
             break
             otherwise {
-                loop .. while 0 {
-                    " #@MACRO@:str_push_back(string_const, (char)byte)"
-                    loop .. while 0 {
-                        " #@MACRO@:str_resize(string_const, str_size(string_const) + 1)"
-                        string_const = sdsgrowzero(string_const, sdslen(string_const) + 1)
-                    }
-                    (string_const)[sdslen(string_const) - 1] = cast<char>(byte)
-                }
+                str_push_back(string_const, cast<char>(byte))
             }
             break
         }
