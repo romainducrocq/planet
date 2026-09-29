@@ -29,15 +29,7 @@ pub fn get_filename(ctx: *struc FileIoContext) string {
 }
 
 pub fn set_filename(ctx: *struc FileIoContext, filename: string) none {
-    if filename ~= ctx[].filename {
-        " #@MACRO@:str_copy(filename, ctx->filename)"
-        if ctx[].filename {
-            " #@MACRO@:str_delete(ctx->filename)"
-            sdsfree(ctx[].filename)
-            ctx[].filename = ? nil then sdsnew(nil) else nil
-        }
-        ctx[].filename = sdsdup(filename)
-    }
+    str_copy(filename, ctx[].filename)
 }
 
 pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
@@ -65,15 +57,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
             jump _Lfinally
         }
     }
-    if filename ~= file_read.filename {
-        " #@MACRO@:str_copy(filename, file_read.filename)"
-        if file_read.filename {
-            " #@MACRO@:str_delete(file_read.filename)"
-            sdsfree(file_read.filename)
-            file_read.filename = ? nil then sdsnew(nil) else nil
-        }
-        file_read.filename = sdsdup(filename)
-    }
+    str_copy(filename, file_read.filename)
     vec_push_back(ctx[].file_reads, file_read)
     label _Lfinally
     return _errval

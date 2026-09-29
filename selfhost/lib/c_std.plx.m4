@@ -38,9 +38,12 @@ m4_define(`sptr_copy', `TODO')m4_dnl
 # TODO
 m4_define(`string_t', `sds')m4_dnl
 # TODO
-m4_define(`str_new', `TODO')m4_dnl
+m4_define(`str_new', `? $1 then sdsnew($1) else nil')m4_dnl
 # TODO
-m4_define(`str_delete', `TODO')m4_dnl
+m4_define(`str_delete', `if $1 {
+    sdsfree($1)
+    $1 = str_new(nil)
+}')m4_dnl
 # TODO
 m4_define(`str_move', `TODO')m4_dnl
 # TODO
@@ -50,9 +53,10 @@ m4_define(`str_back', `($1)[str_size($1) - 1]')m4_dnl
 # TODO
 m4_define(`str_append', `TODO')m4_dnl
 m4_define(`str_clear', `sdsclear($1)')m4_dnl
-# TODO
-m4_define(`str_copy', `TODO')m4_dnl
-# TODO
+m4_define(`str_copy', `if $1 ~= $2 {
+    str_delete($2)
+    $2 = sdsdup($1)
+}')m4_dnl
 m4_define(`str_hash', `stbds_hash_string($1, 42)')m4_dnl
 m4_define(`str_pop_back', `sdsrange($1, 0, -2)')m4_dnl
 m4_define(`str_push_back', `{
