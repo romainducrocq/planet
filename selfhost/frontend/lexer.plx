@@ -1299,17 +1299,7 @@ fn find_include(dirnames: vector_t(string), filename: *string) i32 {
         dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
         str_append(dirname, filename[])
         if find_file(dirname) {
-            if dirname ~= filename[] {
-                " #@MACRO@:str_move(dirname, *filename)"
-                if filename[] {
-                    " #@MACRO@:str_delete(*filename)"
-                    sdsfree(filename[])
-                    filename[] = ? nil then sdsnew(nil) else nil
-                }
-                ;
-                filename[] = dirname
-                dirname = ? nil then sdsnew(nil) else nil
-            }
+            str_move(dirname, filename[])
             ;
             return true
         }
@@ -1432,17 +1422,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     }
     {
         fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
-        if filename ~= fopen_line.filename {
-            " #@MACRO@:str_move(filename, fopen_line.filename)"
-            if fopen_line.filename {
-                " #@MACRO@:str_delete(fopen_line.filename)"
-                sdsfree(fopen_line.filename)
-                fopen_line.filename = ? nil then sdsnew(nil) else nil
-            }
-            ;
-            fopen_line.filename = filename
-            filename = ? nil then sdsnew(nil) else nil
-        }
+        str_move(filename, fopen_line.filename)
         ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
@@ -1462,17 +1442,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     }
     {
         fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
-        if fopen_name ~= fopen_line.filename {
-            " #@MACRO@:str_move(fopen_name, fopen_line.filename)"
-            if fopen_line.filename {
-                " #@MACRO@:str_delete(fopen_line.filename)"
-                sdsfree(fopen_line.filename)
-                fopen_line.filename = ? nil then sdsnew(nil) else nil
-            }
-            ;
-            fopen_line.filename = fopen_name
-            fopen_name = ? nil then sdsnew(nil) else nil
-        }
+        str_move(fopen_name, fopen_line.filename)
         ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
