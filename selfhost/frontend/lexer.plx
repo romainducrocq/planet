@@ -1371,7 +1371,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
     }
     {
-        includename: u64 = stbds_hash_string(filename, 42)
+        includename: u64 = str_hash(filename)
         if set_find(ctx[].includename_set, includename) ~= set_end() {
             match match_tok {
                 -> TOK_import_file {
