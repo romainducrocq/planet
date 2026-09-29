@@ -135,10 +135,7 @@ fn hex_string_to_long(str_hex: string) i64 {
 fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
     byte_hex: [3]char;
     sprintf(byte_hex, "%.2x", cast<u32>(value))
-    loop .. while 0 {
-        " #@MACRO@:str_append(*str_hex, byte_hex)"
-        str_hex[] = sdscat(str_hex[], byte_hex)
-    }
+    str_append(str_hex[], byte_hex)
 }
 
 pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
@@ -195,80 +192,47 @@ pub fn string_literal_to_const(string_literal: vector_t(i8)) string {
         byte: i8 = string_literal[i]
         match byte {
             -> 39 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\047\")"
-                    string_const = sdscat(string_const, "\\047")
-                }
+                str_append(string_const, "\\047")
             }
             break
             -> 34 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\042\")"
-                    string_const = sdscat(string_const, "\\042")
-                }
+                str_append(string_const, "\\042")
             }
             break
             -> 63 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\077\")"
-                    string_const = sdscat(string_const, "\\077")
-                }
+                str_append(string_const, "\\077")
             }
             break
             -> 92 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\134\")"
-                    string_const = sdscat(string_const, "\\134")
-                }
+                str_append(string_const, "\\134")
             }
             break
             -> 7 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\007\")"
-                    string_const = sdscat(string_const, "\\007")
-                }
+                str_append(string_const, "\\007")
             }
             break
             -> 8 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\010\")"
-                    string_const = sdscat(string_const, "\\010")
-                }
+                str_append(string_const, "\\010")
             }
             break
             -> 12 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\014\")"
-                    string_const = sdscat(string_const, "\\014")
-                }
+                str_append(string_const, "\\014")
             }
             break
             -> 10 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\012\")"
-                    string_const = sdscat(string_const, "\\012")
-                }
+                str_append(string_const, "\\012")
             }
             break
             -> 13 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\013\")"
-                    string_const = sdscat(string_const, "\\013")
-                }
+                str_append(string_const, "\\013")
             }
             break
             -> 9 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\011\")"
-                    string_const = sdscat(string_const, "\\011")
-                }
+                str_append(string_const, "\\011")
             }
             break
             -> 11 {
-                loop .. while 0 {
-                    " #@MACRO@:str_append(string_const, \"\\\\013\")"
-                    string_const = sdscat(string_const, "\\013")
-                }
+                str_append(string_const, "\\013")
             }
             break
             otherwise {
