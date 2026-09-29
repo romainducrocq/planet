@@ -526,15 +526,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
 
 pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string) string {
     value: string = map_get(ctx[].hash_table, name)
-    if value ~= name_fmt[] {
-        " #@MACRO@:str_copy(value, *name_fmt)"
-        if name_fmt[] {
-            " #@MACRO@:str_delete(*name_fmt)"
-            sdsfree(name_fmt[])
-            name_fmt[] = ? nil then sdsnew(nil) else nil
-        }
-        name_fmt[] = sdsdup(value)
-    }
+    str_copy(value, name_fmt[])
     loop i: u64 = sdslen(name_fmt[]) while i-- > 0 {
         if (name_fmt[])[i] == "."[0] {
             str_substr(name_fmt[], 0, i - 1)

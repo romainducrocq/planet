@@ -12,45 +12,21 @@ m4_define(`Ctx', `TODO')m4_dnl
 pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
     value: string = map_get(ctx[].hash_table, target)
-    if value ~= name {
-        " #@MACRO@:str_copy(value, name)"
-        if name {
-            " #@MACRO@:str_delete(name)"
-            sdsfree(name)
-            name = ? nil then sdsnew(nil) else nil
-        }
-        name = sdsdup(value)
-    }
+    str_copy(value, name)
     return make_label_identifier(ctx, @name)
 }
 
 pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
     value: string = map_get(ctx[].hash_table, variable)
-    if value ~= name {
-        " #@MACRO@:str_copy(value, name)"
-        if name {
-            " #@MACRO@:str_delete(name)"
-            sdsfree(name)
-            name = ? nil then sdsnew(nil) else nil
-        }
-        name = sdsdup(value)
-    }
+    str_copy(value, name)
     return make_var_identifier(ctx, @name)
 }
 
 pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: u64) u64 {
     name: string = ? nil then sdsnew(nil) else nil
     value: string = map_get(ctx[].hash_table, structure)
-    if value ~= name {
-        " #@MACRO@:str_copy(value, name)"
-        if name {
-            " #@MACRO@:str_delete(name)"
-            sdsfree(name)
-            name = ? nil then sdsnew(nil) else nil
-        }
-        name = sdsdup(value)
-    }
+    str_copy(value, name)
     return make_struct_identifier(ctx, @name)
 }
 
