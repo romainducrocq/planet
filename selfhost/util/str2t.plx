@@ -12,7 +12,8 @@ pub fn dbl_to_binary(decimal: f64) u64 {
 }
 
 pub fn string_to_literal(str_string: string, string_literal: *vector_t(i8)) none {
-    loop byte: u64 = 1 while byte < sdslen(str_string) - 1 .. ++byte {
+    # TODO THROW_ABORT_IF(str_size(str_string) < 2);
+    loop byte: u64 = 1 while byte < str_size(str_string) - 1 .. ++byte {
         str_char: char = cast<char>(str_string[byte])
         if str_char == '\\' {
             str_char = cast<char>(str_string[++byte])
@@ -79,6 +80,7 @@ pub fn string_to_literal(str_string: string, string_literal: *vector_t(i8)) none
 }
 
 pub fn string_to_char_ascii(str_char: string) i32 {
+    # TODO THROW_ABORT_IF(str_size(str_char) < 2 || str_size(str_char) > 4);
     c_char: char = cast<char>(str_char[1])
     if c_char == '\\' {
         c_char = cast<char>(str_char[2])
