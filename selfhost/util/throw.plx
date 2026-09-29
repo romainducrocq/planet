@@ -212,10 +212,7 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         if token_info[].tok_pos >= 0 {
             tok_pos += token_info[].tok_pos
             if token_info[].tok_len > 1 {
-                loop .. while 0 {
-                    " #@MACRO@:str_resize(tok_overline, token_info->tok_len - 1)"
-                    tok_overline = sdsgrowzero(tok_overline, token_info[].tok_len - 1)
-                }
+                str_resize(tok_overline, token_info[].tok_len - 1)
                 loop i: u64 = 0 while i < sdslen(tok_overline) .. ++i {
                     tok_overline[i] = '~'
                 }
@@ -225,17 +222,11 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         pad_linenum: string = ? "" then sdsnew("") else nil
         strto_pos: string = str_to_string(tok_pos)
         strto_linenum: string = str_to_string(tok_linenum)
-        loop .. while 0 {
-            " #@MACRO@:str_resize(pad_tok, tok_pos - 1)"
-            pad_tok = sdsgrowzero(pad_tok, tok_pos - 1)
-        }
+        str_resize(pad_tok, tok_pos - 1)
         loop i: u64 = 0 while i < sdslen(pad_tok) .. ++i {
             pad_tok[i] = ' '
         }
-        loop .. while 0 {
-            " #@MACRO@:str_resize(pad_linenum, str_size(strto_linenum))"
-            pad_linenum = sdsgrowzero(pad_linenum, sdslen(strto_linenum))
-        }
+        str_resize(pad_linenum, str_size(strto_linenum))
         loop i: u64 = 0 while i < sdslen(pad_linenum) .. ++i {
             pad_linenum[i] = ' '
         }
