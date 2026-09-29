@@ -35,7 +35,7 @@ fn verbose(ctx: *struc MainContext, msg: string) none {
 }
 
 fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
-    loop i: u64 = sdslen(ctx[].filename) while i-- > 0 {
+    loop i: u64 = str_size(ctx[].filename) while i-- > 0 {
         if ctx[].filename[i] == '.' {
             str_substr(ctx[].filename, 0, i)
             str_append(ctx[].filename, ext)

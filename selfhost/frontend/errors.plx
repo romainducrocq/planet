@@ -527,7 +527,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
 pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string) string {
     value: string = map_get(ctx[].hash_table, name)
     str_copy(value, name_fmt[])
-    loop i: u64 = sdslen(name_fmt[]) while i-- > 0 {
+    loop i: u64 = str_size(name_fmt[]) while i-- > 0 {
         if (name_fmt[])[i] == "."[0] {
             str_substr(name_fmt[], 0, i - 1)
             break

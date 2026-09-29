@@ -24,7 +24,7 @@ pub fn panic_sigabrt(msg: string) none {
         str_append(stderr_buf, " ")
         str_append(stderr_buf, msg)
         str_append(stderr_buf, "\n")
-        write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
+        write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
         if stderr_buf {
             " #@MACRO@:str_delete(stderr_buf)"
             sdsfree(stderr_buf)
@@ -48,7 +48,8 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     str_append(stderr_buf, " ")
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
-    write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
+    # THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
+    write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
     if stderr_buf {
         " #@MACRO@:str_delete(stderr_buf)"
         sdsfree(stderr_buf)
@@ -80,7 +81,8 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     str_append(stderr_buf, " ")
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
-    write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
+    # TODO THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
+    write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
     if stderr_buf {
         " #@MACRO@:str_delete(stderr_buf)"
         sdsfree(stderr_buf)
@@ -144,7 +146,7 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
             tok_pos += token_info[].tok_pos
             if token_info[].tok_len > 1 {
                 str_resize(tok_overline, token_info[].tok_len - 1)
-                loop i: u64 = 0 while i < sdslen(tok_overline) .. ++i {
+                loop i: u64 = 0 while i < str_size(tok_overline) .. ++i {
                     tok_overline[i] = '~'
                 }
             }
@@ -154,15 +156,15 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         strto_pos: string = str_to_string(tok_pos)
         strto_linenum: string = str_to_string(tok_linenum)
         str_resize(pad_tok, tok_pos - 1)
-        loop i: u64 = 0 while i < sdslen(pad_tok) .. ++i {
+        loop i: u64 = 0 while i < str_size(pad_tok) .. ++i {
             pad_tok[i] = ' '
         }
         str_resize(pad_linenum, str_size(strto_linenum))
-        loop i: u64 = 0 while i < sdslen(pad_linenum) .. ++i {
+        loop i: u64 = 0 while i < str_size(pad_linenum) .. ++i {
             pad_linenum[i] = ' '
         }
         stderr_buf: string = ? "" then sdsnew("") else nil
-        stderr_buf_size: u64 = strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename) + sdslen(strto_linenum) + sdslen(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg) + sdslen(strto_linenum) + ESC_RED_SIZE + sdslen(pad_tok) + sdslen(tok_overline) + ESC_RESET_SIZE + sdslen(pad_linenum) + ESC_BOLD_SIZE + sdslen(line) + ESC_RESET_SIZE
+        stderr_buf_size: u64 = strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename) + str_size(strto_linenum) + str_size(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg) + str_size(strto_linenum) + ESC_RED_SIZE + str_size(pad_tok) + str_size(tok_overline) + ESC_RESET_SIZE + str_size(pad_linenum) + ESC_BOLD_SIZE + str_size(line) + ESC_RESET_SIZE
         str_reserve(stderr_buf, stderr_buf_size)
         str_append(stderr_buf, esc_bold)
         str_append(stderr_buf, filename)
@@ -195,7 +197,8 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         str_append(stderr_buf, line)
         str_append(stderr_buf, esc_reset)
         str_append(stderr_buf, "\n")
-        write(STDERR_FILENO, stderr_buf, sdslen(stderr_buf))
+        # THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
+        write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
         if pad_tok {
             " #@MACRO@:str_delete(pad_tok)"
             sdsfree(pad_tok)

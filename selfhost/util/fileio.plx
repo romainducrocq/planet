@@ -49,7 +49,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     }
     file_read: struc FileRead = $(0, nil, nil, ? nil then sdsnew(nil) else nil)
     file_read.fd = fopen(filename, "rb")
-    if not file_read.fd or sdslen(filename) >= 4096 {
+    if not file_read.fd or str_size(filename) >= 4096 {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
@@ -68,7 +68,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
     # TODO THROW_ABORT_IF(!vec_empty(ctx->file_reads));
     ctx[].fd_write = nil
     ctx[].fd_write = fopen(filename, "wb")
-    if not ctx[].fd_write or sdslen(filename) >= 4096 {
+    if not ctx[].fd_write or str_size(filename) >= 4096 {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
             ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fwrite), "MSG_failed_fwrite", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
@@ -105,7 +105,7 @@ fn write_chunk(ctx: *struc FileIoContext, buf: string, buf_size: u64) none {
 
 pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     str_append(ctx[].write_buf, buf)
-    loop while sdslen(ctx[].write_buf) >= WRITE_BUF_SIZE {
+    loop while str_size(ctx[].write_buf) >= WRITE_BUF_SIZE {
         write_chunk(ctx, ctx[].write_buf, WRITE_BUF_SIZE)
         str_substr(ctx[].write_buf, WRITE_BUF_SIZE, -1)
     }
@@ -150,7 +150,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
 }
 
 pub fn close_fwrite(ctx: *struc FileIoContext) none {
-    write_chunk(ctx, ctx[].write_buf, sdslen(ctx[].write_buf))
+    write_chunk(ctx, ctx[].write_buf, str_size(ctx[].write_buf))
     str_clear(ctx[].write_buf)
     fclose(ctx[].fd_write)
     ctx[].fd_write = nil
