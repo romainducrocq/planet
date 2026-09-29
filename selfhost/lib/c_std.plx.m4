@@ -59,8 +59,9 @@ m4_define(`str_hash', `TODO')m4_dnl
 m4_define(`str_pop_back', `TODO')m4_dnl
 # TODO
 m4_define(`str_push_back', `TODO')m4_dnl
-# TODO
-m4_define(`str_reserve', `TODO')m4_dnl
+m4_define(`str_reserve', `{
+    $1 = sdsMakeRoomFor($1, $2)
+}')m4_dnl
 # TODO
 m4_define(`str_resize', `TODO')m4_dnl
 m4_define(`str_substr', `sdsrange($1, $2, $3)')m4_dnl

@@ -17,10 +17,7 @@ pub fn panic_sigabrt(msg: string) none {
     {
         stderr_buf: string = ? "" then sdsnew("") else nil
         stderr_buf_size: u64 = strlen("internal error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(msg)
-        loop .. while 0 {
-            " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
-            stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-        }
+        str_reserve(stderr_buf, stderr_buf_size)
         loop .. while 0 {
             " #@MACRO@:str_append(stderr_buf, esc_red)"
             stderr_buf = sdscat(stderr_buf, esc_red)
@@ -62,10 +59,7 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     }
     stderr_buf: string = ? "" then sdsnew("") else nil
     stderr_buf_size: u64 = strlen("error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg)
-    loop .. while 0 {
-        " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
-        stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-    }
+    str_reserve(stderr_buf, stderr_buf_size)
     loop .. while 0 {
         " #@MACRO@:str_append(stderr_buf, esc_red)"
         stderr_buf = sdscat(stderr_buf, esc_red)
@@ -110,10 +104,7 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     }
     stderr_buf: string = ? "" then sdsnew("") else nil
     stderr_buf_size: u64 = strlen(":\nerror: \n") + ESC_BOLD_SIZE + strlen(filename) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg)
-    loop .. while 0 {
-        " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
-        stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-    }
+    str_reserve(stderr_buf, stderr_buf_size)
     loop .. while 0 {
         " #@MACRO@:str_append(stderr_buf, esc_bold)"
         stderr_buf = sdscat(stderr_buf, esc_bold)
@@ -250,10 +241,7 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         }
         stderr_buf: string = ? "" then sdsnew("") else nil
         stderr_buf_size: u64 = strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename) + sdslen(strto_linenum) + sdslen(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg) + sdslen(strto_linenum) + ESC_RED_SIZE + sdslen(pad_tok) + sdslen(tok_overline) + ESC_RESET_SIZE + sdslen(pad_linenum) + ESC_BOLD_SIZE + sdslen(line) + ESC_RESET_SIZE
-        loop .. while 0 {
-            " #@MACRO@:str_reserve(stderr_buf, stderr_buf_size)"
-            stderr_buf = sdsMakeRoomFor(stderr_buf, stderr_buf_size)
-        }
+        str_reserve(stderr_buf, stderr_buf_size)
         loop .. while 0 {
             " #@MACRO@:str_append(stderr_buf, esc_bold)"
             stderr_buf = sdscat(stderr_buf, esc_bold)
