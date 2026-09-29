@@ -37,10 +37,7 @@ fn verbose(ctx: *struc MainContext, msg: string) none {
 fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
     loop i: u64 = sdslen(ctx[].filename) while i-- > 0 {
         if ctx[].filename[i] == '.' {
-            loop .. while 0 {
-                " #@MACRO@:str_substr(ctx->filename, 0, i)"
-                sdsrange(ctx[].filename, 0, i)
-            }
+            str_substr(ctx[].filename, 0, i)
             loop .. while 0 {
                 " #@MACRO@:str_append(ctx->filename, ext)"
                 ctx[].filename = sdscat(ctx[].filename, ext)

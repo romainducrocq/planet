@@ -129,10 +129,7 @@ pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     }
     loop while sdslen(ctx[].write_buf) >= WRITE_BUF_SIZE {
         write_chunk(ctx, ctx[].write_buf, WRITE_BUF_SIZE)
-        loop .. while 0 {
-            " #@MACRO@:str_substr(ctx->write_buf, WRITE_BUF_SIZE, -1)"
-            sdsrange(ctx[].write_buf, WRITE_BUF_SIZE, -1)
-        }
+        str_substr(ctx[].write_buf, WRITE_BUF_SIZE, -1)
     }
 }
 
