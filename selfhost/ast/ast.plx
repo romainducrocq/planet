@@ -186,16 +186,10 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 }
 
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
-    loop .. while 0 {
-        " #@MACRO@:str_append(*name, UID_SEPARATOR)"
-        name[] = sdscat(name[], ".")
-    }
+    str_append(name[], UID_SEPARATOR)
     {
         strto_uid: string = str_to_string(ctx[].label_count)
-        loop .. while 0 {
-            " #@MACRO@:str_append(*name, strto_uid)"
-            name[] = sdscat(name[], strto_uid)
-        }
+        str_append(name[], strto_uid)
         if strto_uid {
             " #@MACRO@:str_delete(strto_uid)"
             sdsfree(strto_uid)
@@ -207,16 +201,10 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
 }
 
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
-    loop .. while 0 {
-        " #@MACRO@:str_append(*name, UID_SEPARATOR)"
-        name[] = sdscat(name[], ".")
-    }
+    str_append(name[], UID_SEPARATOR)
     {
         strto_uid: string = str_to_string(ctx[].var_count)
-        loop .. while 0 {
-            " #@MACRO@:str_append(*name, strto_uid)"
-            name[] = sdscat(name[], strto_uid)
-        }
+        str_append(name[], strto_uid)
         if strto_uid {
             " #@MACRO@:str_delete(strto_uid)"
             sdsfree(strto_uid)
@@ -228,16 +216,10 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
 }
 
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
-    loop .. while 0 {
-        " #@MACRO@:str_append(*name, UID_SEPARATOR)"
-        name[] = sdscat(name[], ".")
-    }
+    str_append(name[], UID_SEPARATOR)
     {
         strto_uid: string = str_to_string(ctx[].struct_count)
-        loop .. while 0 {
-            " #@MACRO@:str_append(*name, strto_uid)"
-            name[] = sdscat(name[], strto_uid)
-        }
+        str_append(name[], strto_uid)
         if strto_uid {
             " #@MACRO@:str_delete(strto_uid)"
             sdsfree(strto_uid)

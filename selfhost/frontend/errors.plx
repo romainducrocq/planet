@@ -540,10 +540,7 @@ pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i
     struct_fmt[] = ? is_union then ? "union " then sdsnew("union ") else nil else ? "struc " then sdsnew("struc ") else nil
     {
         name_fmt: string = ? nil then sdsnew(nil) else nil
-        loop .. while 0 {
-            " #@MACRO@:str_append(*struct_fmt, get_name_fmt(ctx, name, &name_fmt))"
-            struct_fmt[] = sdscat(struct_fmt[], get_name_fmt(ctx, name, @name_fmt))
-        }
+        str_append(struct_fmt[], get_name_fmt(ctx, name, @name_fmt))
         if name_fmt {
             " #@MACRO@:str_delete(name_fmt)"
             sdsfree(name_fmt)
@@ -556,17 +553,11 @@ pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i
 pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_fmt: *string) string {
     fun_fmt[] = ? "(" then sdsnew("(") else nil
     if vec_empty(fun_type[].param_types) {
-        loop .. while 0 {
-            " #@MACRO@:str_append(*fun_fmt, \"none\")"
-            fun_fmt[] = sdscat(fun_fmt[], "none")
-        }
+        str_append(fun_fmt[], "none")
     }
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
-        loop .. while 0 {
-            " #@MACRO@:str_append(*fun_fmt, get_type_fmt(ctx, fun_type->param_types[0], &type_fmt))"
-            fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[0], @type_fmt))
-        }
+        str_append(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[0], @type_fmt))
         if type_fmt {
             " #@MACRO@:str_delete(type_fmt)"
             sdsfree(type_fmt)
@@ -574,16 +565,10 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
         }
     }
     loop i: u64 = 1 while i < vec_size(fun_type[].param_types) .. ++i {
-        loop .. while 0 {
-            " #@MACRO@:str_append(*fun_fmt, \", \")"
-            fun_fmt[] = sdscat(fun_fmt[], ", ")
-        }
+        str_append(fun_fmt[], `","' " ")
         {
             type_fmt: string = ? nil then sdsnew(nil) else nil
-            loop .. while 0 {
-                " #@MACRO@:str_append(*fun_fmt, get_type_fmt(ctx, fun_type->param_types[i], &type_fmt))"
-                fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[i], @type_fmt))
-            }
+            str_append(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[i], @type_fmt))
             if type_fmt {
                 " #@MACRO@:str_delete(type_fmt)"
                 sdsfree(type_fmt)
@@ -591,16 +576,10 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
             }
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:str_append(*fun_fmt, \") -> \")"
-        fun_fmt[] = sdscat(fun_fmt[], ") -> ")
-    }
+    str_append(fun_fmt[], `")"' " -> ")
     {
         type_fmt: string = ? nil then sdsnew(nil) else nil
-        loop .. while 0 {
-            " #@MACRO@:str_append(*fun_fmt, get_type_fmt(ctx, fun_type->ret_type, &type_fmt))"
-            fun_fmt[] = sdscat(fun_fmt[], get_type_fmt(ctx, fun_type[].ret_type, @type_fmt))
-        }
+        str_append(fun_fmt[], get_type_fmt(ctx, fun_type[].ret_type, @type_fmt))
         if type_fmt {
             " #@MACRO@:str_delete(type_fmt)"
             sdsfree(type_fmt)
@@ -614,23 +593,14 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
     ptr_fmt[] = ? "*" then sdsnew("*") else nil
     loop while ptr_type[].ref_type[].tag == AST_Pointer_t {
         ptr_type = @ptr_type[].ref_type[].get._Pointer
-        loop .. while 0 {
-            " #@MACRO@:str_append(*ptr_fmt, \"*\")"
-            ptr_fmt[] = sdscat(ptr_fmt[], "*")
-        }
+        str_append(ptr_fmt[], "*")
     }
     if ptr_type[].ref_type[].tag == AST_Void_t {
-        loop .. while 0 {
-            " #@MACRO@:str_append(*ptr_fmt, \"any\")"
-            ptr_fmt[] = sdscat(ptr_fmt[], "any")
-        }
+        str_append(ptr_fmt[], "any")
     }
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
-        loop .. while 0 {
-            " #@MACRO@:str_append(*ptr_fmt, get_type_fmt(ctx, ptr_type->ref_type, &type_fmt))"
-            ptr_fmt[] = sdscat(ptr_fmt[], get_type_fmt(ctx, ptr_type[].ref_type, @type_fmt))
-        }
+        str_append(ptr_fmt[], get_type_fmt(ctx, ptr_type[].ref_type, @type_fmt))
         if type_fmt {
             " #@MACRO@:str_delete(type_fmt)"
             sdsfree(type_fmt)
@@ -644,55 +614,34 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
     arr_fmt[] = ? "[" then sdsnew("[") else nil
     {
         strto_size: string = str_to_string(arr_type[].size)
-        loop .. while 0 {
-            " #@MACRO@:str_append(*arr_fmt, strto_size)"
-            arr_fmt[] = sdscat(arr_fmt[], strto_size)
-        }
+        str_append(arr_fmt[], strto_size)
         if strto_size {
             " #@MACRO@:str_delete(strto_size)"
             sdsfree(strto_size)
             strto_size = ? nil then sdsnew(nil) else nil
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:str_append(*arr_fmt, \"]\")"
-        arr_fmt[] = sdscat(arr_fmt[], "]")
-    }
+    str_append(arr_fmt[], "]")
     loop while arr_type[].elem_type[].tag == AST_Array_t {
         arr_type = @arr_type[].elem_type[].get._Array
-        loop .. while 0 {
-            " #@MACRO@:str_append(*arr_fmt, \"[\")"
-            arr_fmt[] = sdscat(arr_fmt[], "[")
-        }
+        str_append(arr_fmt[], "[")
         {
             strto_size: string = str_to_string(arr_type[].size)
-            loop .. while 0 {
-                " #@MACRO@:str_append(*arr_fmt, strto_size)"
-                arr_fmt[] = sdscat(arr_fmt[], strto_size)
-            }
+            str_append(arr_fmt[], strto_size)
             if strto_size {
                 " #@MACRO@:str_delete(strto_size)"
                 sdsfree(strto_size)
                 strto_size = ? nil then sdsnew(nil) else nil
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:str_append(*arr_fmt, \"]\")"
-            arr_fmt[] = sdscat(arr_fmt[], "]")
-        }
+        str_append(arr_fmt[], "]")
     }
     if arr_type[].elem_type[].tag == AST_Void_t {
-        loop .. while 0 {
-            " #@MACRO@:str_append(*arr_fmt, \"any\")"
-            arr_fmt[] = sdscat(arr_fmt[], "any")
-        }
+        str_append(arr_fmt[], "any")
     }
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
-        loop .. while 0 {
-            " #@MACRO@:str_append(*arr_fmt, get_type_fmt(ctx, arr_type->elem_type, &type_fmt))"
-            arr_fmt[] = sdscat(arr_fmt[], get_type_fmt(ctx, arr_type[].elem_type, @type_fmt))
-        }
+        str_append(arr_fmt[], get_type_fmt(ctx, arr_type[].elem_type, @type_fmt))
         if type_fmt {
             " #@MACRO@:str_delete(type_fmt)"
             sdsfree(type_fmt)
