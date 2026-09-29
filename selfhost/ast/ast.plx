@@ -171,7 +171,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
 m4_define(`Ctx', `TODO')m4_dnl
 
 pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64 {
-    identifier: u64 = stbds_hash_string(value[], 42)
+    identifier: u64 = str_hash(value[])
     if map_find(ctx[].hash_table, identifier) == map_end() {
         map_move_add(ctx[].hash_table, identifier, value[])
     }
