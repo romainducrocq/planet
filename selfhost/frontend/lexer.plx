@@ -1427,16 +1427,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     line_size = ctx[].line_size
     match_at = ctx[].match_at
     match_size = ctx[].match_size
-    if (ctx[].errors[].fopen_lines)[(? (ctx[].errors[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length else 0) - 1].filename ~= fopen_name {
-        " #@MACRO@:str_copy(vec_back(ctx->errors->fopen_lines).filename, fopen_name)"
-        if fopen_name {
-            " #@MACRO@:str_delete(fopen_name)"
-            sdsfree(fopen_name)
-            fopen_name = ? nil then sdsnew(nil) else nil
-        }
-        ;
-        fopen_name = sdsdup((ctx[].errors[].fopen_lines)[(? (ctx[].errors[].fopen_lines) then (cast<*struc stbds_array_header>((ctx[].errors[].fopen_lines)) - 1)[].length else 0) - 1].filename)
-    }
+    str_copy(vec_back(ctx[].errors[].fopen_lines).filename, fopen_name)
     ;
     loop .. while 0 {
         " #@MACRO@:TRY(open_fread(ctx->fileio, filename))"
@@ -1536,16 +1527,7 @@ pub fn lex_c_code(filename: string, includedirs: *vector_t(string), stdlibdirs: 
     }
     {
         fopen_line: struc FileOpenLine = $(1, 1, ? nil then sdsnew(nil) else nil)
-        if filename ~= fopen_line.filename {
-            " #@MACRO@:str_copy(filename, fopen_line.filename)"
-            if fopen_line.filename {
-                " #@MACRO@:str_delete(fopen_line.filename)"
-                sdsfree(fopen_line.filename)
-                fopen_line.filename = ? nil then sdsnew(nil) else nil
-            }
-            ;
-            fopen_line.filename = sdsdup(filename)
-        }
+        str_copy(filename, fopen_line.filename)
         ;
         vec_push_back(ctx.errors[].fopen_lines, fopen_line)
     }
