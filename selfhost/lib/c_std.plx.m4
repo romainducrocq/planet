@@ -49,8 +49,7 @@ m4_define(`str_size', `TODO')m4_dnl
 m4_define(`str_back', `TODO')m4_dnl
 # TODO
 m4_define(`str_append', `TODO')m4_dnl
-# TODO
-m4_define(`str_clear', `TODO')m4_dnl
+m4_define(`str_clear', `sdsclear($1)')m4_dnl
 # TODO
 m4_define(`str_copy', `TODO')m4_dnl
 # TODO
