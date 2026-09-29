@@ -1297,10 +1297,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
 fn find_include(dirnames: vector_t(string), filename: *string) i32 {
     loop i: u64 = 0 while i < vec_size(dirnames) .. ++i {
         dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
-        loop .. while 0 {
-            " #@MACRO@:str_append(dirname, *filename)"
-            dirname = sdscat(dirname, filename[])
-        }
+        str_append(dirname, filename[])
         if find_file(dirname) {
             if dirname ~= filename[] {
                 " #@MACRO@:str_move(dirname, *filename)"
@@ -1335,10 +1332,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     match_at: u64;
     match_size: u64;
     filename = get_match(ctx, ctx[].match_at + 1, ctx[].match_size - 2)
-    loop .. while 0 {
-        " #@MACRO@:str_append(filename, \".etc\")"
-        filename = sdscat(filename, ".etc")
-    }
+    str_append(filename, ".etc")
     if not is_empty {
         info_at: u64 = push_token_info(ctx)
         match match_tok {

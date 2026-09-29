@@ -47,6 +47,6 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
 pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
-m4_define(`UID_SEPARATOR', `TODO')m4_dnl
+m4_define(`UID_SEPARATOR', `"."')m4_dnl
 
 ')m4_dnl

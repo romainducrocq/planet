@@ -123,10 +123,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
             panic_sigabrt("abort")
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:str_append(name, map_get(ctx->hash_table, target))"
-        name = sdscat(name, ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((target))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value))
-    }
+    str_append(name, map_get(ctx[].hash_table, target))
     return make_string_identifier(ctx, @name)
 }
 
@@ -134,20 +131,14 @@ pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label
     name: string = ? is_label then ? "case_" then sdsnew("case_") else nil else ? "" then sdsnew("") else nil
     {
         strto_i: string = str_to_string(i)
-        loop .. while 0 {
-            " #@MACRO@:str_append(name, strto_i)"
-            name = sdscat(name, strto_i)
-        }
+        str_append(name, strto_i)
         if strto_i {
             " #@MACRO@:str_delete(strto_i)"
             sdsfree(strto_i)
             strto_i = ? nil then sdsnew(nil) else nil
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:str_append(name, map_get(ctx->hash_table, target))"
-        name = sdscat(name, ((? ((? ((ctx[].hash_table) = stbds_hmget_key((ctx[].hash_table), sizeof((ctx[].hash_table)[]), cast<*any>(@((target))), sizeof((ctx[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].hash_table) - 1)) - 1)[].temp])[].value))
-    }
+    str_append(name, map_get(ctx[].hash_table, target))
     return make_string_identifier(ctx, @name)
 }
 

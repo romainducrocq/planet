@@ -51,7 +51,9 @@ m4_define(`str_size', `sdslen($1)')m4_dnl
 # TODO
 m4_define(`str_back', `($1)[str_size($1) - 1]')m4_dnl
 # TODO
-m4_define(`str_append', `TODO')m4_dnl
+m4_define(`str_append', `{
+    $1 = sdscat($1, $2)
+}')m4_dnl
 m4_define(`str_clear', `sdsclear($1)')m4_dnl
 m4_define(`str_copy', `if $1 ~= $2 {
     str_delete($2)
