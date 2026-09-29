@@ -1157,10 +1157,7 @@ fn match_token(ctx: *struc LexerContext) i32 {
 
 fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string {
     smatch: string = ? "" then sdsnew("") else nil
-    loop .. while 0 {
-        " #@MACRO@:str_resize(smatch, match_size)"
-        smatch = sdsgrowzero(smatch, match_size)
-    }
+    str_resize(smatch, match_size)
     loop i: u64 = 0 while i < match_size .. ++i {
         smatch[i] = ctx[].line[match_at + i]
     }
