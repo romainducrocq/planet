@@ -93,10 +93,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
         }
     }
     ctx[].write_buf = ? "" then sdsnew("") else nil
-    loop .. while 0 {
-        " #@MACRO@:str_reserve(ctx->write_buf, WRITE_BUF_SIZE)"
-        ctx[].write_buf = sdsMakeRoomFor(ctx[].write_buf, WRITE_BUF_SIZE)
-    }
+    str_reserve(ctx[].write_buf, WRITE_BUF_SIZE)
     label _Lfinally
     return _errval
 }
