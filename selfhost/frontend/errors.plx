@@ -537,10 +537,7 @@ pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string)
     }
     loop i: u64 = sdslen(name_fmt[]) while i-- > 0 {
         if (name_fmt[])[i] == "."[0] {
-            loop .. while 0 {
-                " #@MACRO@:str_substr(*name_fmt, 0, i - 1)"
-                sdsrange(name_fmt[], 0, i - 1)
-            }
+            str_substr(name_fmt[], 0, i - 1)
             break
         }
     }
