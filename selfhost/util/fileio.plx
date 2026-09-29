@@ -170,10 +170,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
 
 pub fn close_fwrite(ctx: *struc FileIoContext) none {
     write_chunk(ctx, ctx[].write_buf, sdslen(ctx[].write_buf))
-    loop .. while 0 {
-        " #@MACRO@:str_clear(ctx->write_buf)"
-        sdsclear(ctx[].write_buf)
-    }
+    str_clear(ctx[].write_buf)
     fclose(ctx[].fd_write)
     ctx[].fd_write = nil
 }
