@@ -199,7 +199,7 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         buf = nil
         fd = nil
         if (line)[sdslen(line) - 1] == '\n' {
-            sdsrange(line, 0, -2)
+            str_pop_back(line)
         }
     }
     if ctx[].is_stdout {

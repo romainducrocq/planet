@@ -55,8 +55,7 @@ m4_define(`str_clear', `TODO')m4_dnl
 m4_define(`str_copy', `TODO')m4_dnl
 # TODO
 m4_define(`str_hash', `TODO')m4_dnl
-# TODO
-m4_define(`str_pop_back', `TODO')m4_dnl
+m4_define(`str_pop_back', `sdsrange($1, 0, -2)')m4_dnl
 # TODO
 m4_define(`str_push_back', `TODO')m4_dnl
 m4_define(`str_reserve', `{
