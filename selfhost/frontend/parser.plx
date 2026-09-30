@@ -17,7 +17,7 @@ type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc Ident
 m4_define(`Ctx', `TODO')m4_dnl
 
 fn expect_next(ctx: *struc ParserContext, next_tok: *struc Token, expect_tok: i32) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     if next_tok[].tok_kind ~= expect_tok {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, next_tok->info_at))"
@@ -26,12 +26,12 @@ fn expect_next(ctx: *struc ParserContext, next_tok: *struc Token, expect_tok: i3
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn pop_next(ctx: *struc ParserContext) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
@@ -42,12 +42,12 @@ fn pop_next(ctx: *struc ParserContext) i32 {
     }
     ctx[].next_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
     ctx[].pop_idx++
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn peek_next(ctx: *struc ParserContext) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
@@ -57,12 +57,12 @@ fn peek_next(ctx: *struc ParserContext) i32 {
         }
     }
     ctx[].peek_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     if i == 0 {
         loop .. while 0 {
             " #@MACRO@:TRY(peek_next(ctx))"
@@ -83,12 +83,12 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
         }
     }
     ctx[].peek_tok_i = @(ctx[].p_toks[])[ctx[].pop_idx + i]
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_identifier(ctx: *struc ParserContext, identifier: *u64) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -97,13 +97,13 @@ fn parse_identifier(ctx: *struc ParserContext, identifier: *u64) i32 {
         }
     }
     identifier[] = ctx[].next_tok[].tok
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiteral) i32 {
     value: vector_t(i8) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     string_to_literal(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), @value)
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
@@ -130,9 +130,9 @@ fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiter
         }
     }
     literal[] = make_CStringLiteral(@value)
-    label _Lfinally
+    FINALLY
     vec_delete(value)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_int_const(intmax: i64) *struc CConst {
@@ -151,7 +151,7 @@ fn parse_long_const(intmax: i64) *struc CConst {
 }
 
 fn parse_dbl_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     value: f64;
     loop .. while 0 {
         " #@MACRO@:TRY(string_to_dbl( ctx->errors, map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), ctx->next_tok->info_at, &value))"
@@ -161,8 +161,8 @@ fn parse_dbl_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
         }
     }
     constant[] = make_CConstDouble(value)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_uint_const(uintmax: u64) *struc CConst {
@@ -176,7 +176,7 @@ fn parse_ulong_const(uintmax: u64) *struc CConst {
 }
 
 fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     value: i64;
     strto_value: string;
     loop .. while 0 {
@@ -235,12 +235,12 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
     else {
         constant[] = parse_long_const(value)
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     value: u64;
     strto_value: string;
     loop .. while 0 {
@@ -272,12 +272,12 @@ fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32
     else {
         constant[] = parse_ulong_const(value)
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -307,12 +307,12 @@ fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -426,14 +426,14 @@ fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) i32;
 
 fn parse_datatype_specifier(ctx: *struc ParserContext, tag_name: *u64, is_union: *i32) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     match ctx[].next_tok[].tok_kind {
         -> TOK_key_struc {
             is_union[] = false
@@ -473,12 +473,12 @@ fn parse_datatype_specifier(ctx: *struc ParserContext, tag_name: *u64, is_union:
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -556,13 +556,13 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) i32 {
     constant: *struc CConst = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     size: i64 = 0
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -680,13 +680,13 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
         }
     }
     type_specifier[] = make_Array(size, type_specifier)
-    label _Lfinally
+    FINALLY
     free_CConst(@constant)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_ptr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -721,12 +721,12 @@ fn parse_ptr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
         }
     }
     type_specifier[] = make_Pointer(type_specifier)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -766,12 +766,12 @@ fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) i32 {
         }
         break
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -836,8 +836,8 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32;
@@ -845,7 +845,7 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
 
 fn parse_arg_list(ctx: *struc ParserContext, args: *vector_t(unique_ptr_t(CExp))) i32 {
     arg: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_exp(ctx, 0, &arg))"
         _errval = parse_exp(ctx, 0, @arg)
@@ -885,14 +885,14 @@ fn parse_arg_list(ctx: *struc ParserContext, args: *vector_t(unique_ptr_t(CExp))
             }
         }
     }
-    label _Lfinally
+    FINALLY
     free_CExp(@arg)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     constant: *struc CConst = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(parse_const(ctx, &constant))"
@@ -902,14 +902,14 @@ fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CConstant(@constant, info_at)
-    label _Lfinally
+    FINALLY
     free_CConst(@constant)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     constant: *struc CConst = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(parse_unsigned_const(ctx, &constant))"
@@ -919,14 +919,14 @@ fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
         }
     }
     exp[] = make_CConstant(@constant, info_at)
-    label _Lfinally
+    FINALLY
     free_CConst(@constant)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_string_literal_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     literal: *struc CStringLiteral = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -943,13 +943,13 @@ fn parse_string_literal_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
         }
     }
     exp[] = make_CString(@literal, info_at)
-    label _Lfinally
+    FINALLY
     free_CStringLiteral(@literal)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_var_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
     loop .. while 0 {
@@ -960,13 +960,13 @@ fn parse_var_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CVar(name, info_at)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     args: vector_t(unique_ptr_t(CExp)) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
     loop .. while 0 {
@@ -1014,18 +1014,18 @@ fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CFunctionCall(name, @args, info_at)
-    label _Lfinally
+    FINALLY
     loop i: u64 = 0 while i < vec_size(args) .. ++i {
         free_CExp(@args[i])
     }
     vec_delete(args)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_cast_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     cast_exp: *struc CExp = uptr_new()
     target_type: *struc Type = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -1105,14 +1105,14 @@ fn parse_cast_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CCast(@cast_exp, @target_type, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@cast_exp)
     free_Type(@target_type)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_inner_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -1141,12 +1141,12 @@ fn parse_inner_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_deref_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -1198,13 +1198,13 @@ fn parse_deref_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     else {
         exp[] = make_CDereference(exp, info_at)
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_subscript_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     subscript_exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(parse_exp(ctx, 0, &subscript_exp))"
@@ -1228,13 +1228,13 @@ fn parse_subscript_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CSubscript(exp, @subscript_exp, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@subscript_exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_arr_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -1267,12 +1267,12 @@ fn parse_arr_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_dot_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -1304,15 +1304,15 @@ fn parse_dot_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CDot(member, exp, info_at)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     exp_right: *struc CExp = uptr_new()
     exp_right_1: *struc CExp = uptr_new()
     constant: *struc CConst = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     exp_null: *struc CExp = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CPostfix_t)
@@ -1328,16 +1328,16 @@ fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     exp_right = make_CConstant(@constant, info_at)
     exp_right_1 = make_CBinary(@binop, exp, @exp_right, info_at)
     exp[] = make_CAssignment(@unop, @exp_null, @exp_right_1, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp_right)
     free_CExp(@exp_right_1)
     free_CConst(@constant)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     cast_exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
     loop .. while 0 {
@@ -1355,9 +1355,9 @@ fn parse_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CUnary(@unop, @cast_exp, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@cast_exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
@@ -1366,7 +1366,7 @@ fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     exp_left_1: *struc CExp = uptr_new()
     exp_right_1: *struc CExp = uptr_new()
     constant: *struc CConst = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CPrefix_t)
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
@@ -1388,18 +1388,18 @@ fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     exp_right = make_CConstant(@constant, info_at)
     exp_right_1 = make_CBinary(@binop, @exp_left, @exp_right, info_at)
     exp[] = make_CAssignment(@unop, @exp_left_1, @exp_right_1, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp_left)
     free_CExp(@exp_right)
     free_CExp(@exp_left_1)
     free_CExp(@exp_right_1)
     free_CConst(@constant)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_addrof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     cast_exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -1416,14 +1416,14 @@ fn parse_addrof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CAddrOf(@cast_exp, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@cast_exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_sizeoft_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     target_type: *struc Type = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].next_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(parse_type_name(ctx, &target_type))"
@@ -1447,14 +1447,14 @@ fn parse_sizeoft_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CSizeOfT(@target_type, info_at)
-    label _Lfinally
+    FINALLY
     free_Type(@target_type)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_sizeof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     unary_exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].next_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(parse_exp(ctx, 0, &unary_exp))"
@@ -1478,13 +1478,13 @@ fn parse_sizeof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CSizeOf(@unary_exp, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@unary_exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_sizeof_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -1529,12 +1529,12 @@ fn parse_sizeof_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -1642,12 +1642,12 @@ fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_postfix_op_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -1699,12 +1699,12 @@ fn parse_postfix_op_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_postfix_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_primary_exp_factor(ctx, exp))"
         _errval = parse_primary_exp_factor(ctx, exp)
@@ -1740,12 +1740,12 @@ fn parse_postfix_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
             break
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -1811,13 +1811,13 @@ fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
         break
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_assign_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **struc CExp) i32 {
     exp_right: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
     loop .. while 0 {
@@ -1835,15 +1835,15 @@ fn parse_assign_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
         }
     }
     exp_left[] = make_CAssignment(@unop, exp_left, @exp_right, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp_right)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_assign_compound_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **struc CExp) i32 {
     exp_right: *struc CExp = uptr_new()
     exp_right_1: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     exp_null: *struc CExp = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
@@ -1864,15 +1864,15 @@ fn parse_assign_compound_exp(ctx: *struc ParserContext, precedence: i32, exp_lef
     }
     exp_right_1 = make_CBinary(@binop, exp_left, @exp_right, info_at)
     exp_left[] = make_CAssignment(@unop, @exp_null, @exp_right_1, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp_right)
     free_CExp(@exp_right_1)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_binary_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **struc CExp) i32 {
     exp_right: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
     loop .. while 0 {
@@ -1890,16 +1890,16 @@ fn parse_binary_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
         }
     }
     exp_left[] = make_CBinary(@binop, exp_left, @exp_right, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp_right)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_ternary_exp(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     exp_left: *struc CExp = uptr_new()
     exp_middle: *struc CExp = uptr_new()
     exp_right: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -1958,11 +1958,11 @@ fn parse_ternary_exp(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
     }
     exp[] = make_CConditional(@exp_left, @exp_middle, @exp_right, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp_left)
     free_CExp(@exp_middle)
     free_CExp(@exp_right)
-    return _errval
+    CATCH_EXIT
 }
 
 fn get_tok_precedence(tok_kind: i32) i32 {
@@ -2043,7 +2043,7 @@ fn get_tok_precedence(tok_kind: i32) i32 {
 }
 
 fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -2174,8 +2174,8 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32;
@@ -2183,7 +2183,7 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
 
 fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2218,14 +2218,14 @@ fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement)
         }
     }
     statement[] = make_CReturn(@exp, info_at)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_exp_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
         _errval = parse_exp(ctx, 0, @exp)
@@ -2234,14 +2234,14 @@ fn parse_exp_statement(ctx: *struc ParserContext, statement: **struc CStatement)
         }
     }
     statement[] = make_CExpression(@exp)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_compound_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     block: *struc CBlock = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_block(ctx, &block))"
         _errval = parse_block(ctx, @block)
@@ -2255,16 +2255,16 @@ fn parse_compound_statement(ctx: *struc ParserContext, statement: **struc CState
     else {
         statement[] = make_CNull()
     }
-    label _Lfinally
+    FINALLY
     free_CBlock(@block)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_if_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     condition: *struc CExp = uptr_new()
     then_fi: *struc CStatement = uptr_new()
     else_fi: *struc CStatement = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -2349,15 +2349,15 @@ fn parse_if_statement(ctx: *struc ParserContext, statement: **struc CStatement) 
         }
     }
     statement[] = make_CIf(@condition, @then_fi, @else_fi)
-    label _Lfinally
+    FINALLY
     free_CExp(@condition)
     free_CStatement(@then_fi)
     free_CStatement(@else_fi)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_jump_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2389,13 +2389,13 @@ fn parse_jump_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
     }
     statement[] = make_CGoto(target, info_at)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_label_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     jump_to: *struc CStatement = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2428,14 +2428,14 @@ fn parse_label_statement(ctx: *struc ParserContext, statement: **struc CStatemen
     }
     jump_to = make_CNull()
     statement[] = make_CLabel(target, @jump_to, info_at)
-    label _Lfinally
+    FINALLY
     free_CStatement(@jump_to)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) i32 {
     var_decl: *struc CVariableDeclaration = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
     loop .. while 0 {
         " #@MACRO@:TRY(parse_var_declaration(ctx, &storage_class, &var_decl))"
@@ -2445,14 +2445,14 @@ fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) i
         }
     }
     for_init[] = make_CInitDecl(@var_decl)
-    label _Lfinally
+    FINALLY
     free_CVariableDeclaration(@var_decl)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_loop_init_exp(ctx: *struc ParserContext, for_init: **struc CForInit) i32 {
     init: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_exp(ctx, 0, &init))"
         _errval = parse_exp(ctx, 0, @init)
@@ -2461,9 +2461,9 @@ fn parse_loop_init_exp(ctx: *struc ParserContext, for_init: **struc CForInit) i3
         }
     }
     for_init[] = make_CInitExp(@init)
-    label _Lfinally
+    FINALLY
     free_CExp(@init)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
@@ -2471,7 +2471,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
     condition: *struc CExp = uptr_new()
     post: *struc CExp = uptr_new()
     body: *struc CStatement = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -2727,18 +2727,18 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
     }
     statement[] = make_CFor(@for_init, @condition, @post, @body)
-    label _Lfinally
+    FINALLY
     free_CForInit(@for_init)
     free_CExp(@condition)
     free_CExp(@post)
     free_CStatement(@body)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_match_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     lookup: *struc CExp = uptr_new()
     body: *struc CStatement = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -2761,17 +2761,17 @@ fn parse_match_statement(ctx: *struc ParserContext, statement: **struc CStatemen
         }
     }
     statement[] = make_CSwitch(@lookup, @body)
-    label _Lfinally
+    FINALLY
     free_CExp(@lookup)
     free_CStatement(@body)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     value: *struc CExp = uptr_new()
     jump_to: *struc CStatement = uptr_new()
     constant: *struc CConst = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2836,16 +2836,16 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
     }
     statement[] = make_CCase(@value, @jump_to)
-    label _Lfinally
+    FINALLY
     free_CExp(@value)
     free_CStatement(@jump_to)
     free_CConst(@constant)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_otherwise_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     jump_to: *struc CStatement = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2862,13 +2862,13 @@ fn parse_otherwise_statement(ctx: *struc ParserContext, statement: **struc CStat
         }
     }
     statement[] = make_CDefault(@jump_to, info_at)
-    label _Lfinally
+    FINALLY
     free_CStatement(@jump_to)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_break_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2878,12 +2878,12 @@ fn parse_break_statement(ctx: *struc ParserContext, statement: **struc CStatemen
         }
     }
     statement[] = make_CBreak(info_at)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_continue_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -2893,12 +2893,12 @@ fn parse_continue_statement(ctx: *struc ParserContext, statement: **struc CState
         }
     }
     statement[] = make_CContinue(info_at)
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_null_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -2907,12 +2907,12 @@ fn parse_null_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
     }
     statement[] = make_CNull()
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_return {
             loop .. while 0 {
@@ -3045,15 +3045,15 @@ fn parse_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32
         }
         break
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32;
 
 fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i32 {
     statement: *struc CStatement = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_statement(ctx, &statement))"
         _errval = parse_statement(ctx, @statement)
@@ -3062,14 +3062,14 @@ fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
         }
     }
     block_item[] = make_CS(@statement)
-    label _Lfinally
+    FINALLY
     free_CStatement(@statement)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i32 {
     declaration: *struc CDeclaration = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
     loop .. while 0 {
         " #@MACRO@:TRY(parse_declaration(ctx, &storage_class, &declaration))"
@@ -3079,13 +3079,13 @@ fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
         }
     }
     block_item[] = make_CD(@declaration)
-    label _Lfinally
+    FINALLY
     free_CDeclaration(@declaration)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
             loop .. while 0 {
@@ -3142,14 +3142,14 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     block_item: *struc CBlockItem = uptr_new()
     block_items: vector_t(unique_ptr_t(CBlockItem)) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -3241,17 +3241,17 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
         }
     }
     block[] = make_CB(@block_items)
-    label _Lfinally
+    FINALLY
     free_CBlockItem(@block_item)
     loop i: u64 = 0 while i < vec_size(block_items) .. ++i {
         free_CBlockItem(@block_items[i])
     }
     vec_delete(block_items)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -3282,15 +3282,15 @@ fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitializer) i32;
 
 fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
     exp: *struc CExp = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
         _errval = parse_exp(ctx, 0, @exp)
@@ -3299,14 +3299,14 @@ fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitialize
         }
     }
     initializer[] = make_CSingleInit(@exp)
-    label _Lfinally
+    FINALLY
     free_CExp(@exp)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
     initializers: vector_t(unique_ptr_t(CInitializer)) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -3383,16 +3383,16 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
         }
     }
     initializer[] = make_CCompoundInit(@initializers)
-    label _Lfinally
+    FINALLY
     loop i: u64 = 0 while i < vec_size(initializers) .. ++i {
         free_CInitializer(@initializers[i])
     }
     vec_delete(initializers)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(peek_next(ctx))"
         _errval = peek_next(ctx)
@@ -3418,12 +3418,12 @@ fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitialize
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **struc Type) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
         _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
@@ -3459,12 +3459,12 @@ fn parse_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **struc Ty
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **struc Type) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
             -> TOK_key_data {
@@ -3489,13 +3489,13 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_decltor_list(ctx: *struc ParserContext, params: *vector_t(TIdentifier), param_types: *vector_t(shared_ptr_t(Type))) i32 {
     param_type: *struc Type = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     param: u64;
     loop .. while 0 {
         " #@MACRO@:TRY(parse_item_decltor(ctx, &param, &param_type))"
@@ -3545,14 +3545,14 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: *vector_t(TIdentifier),
             }
         }
     }
-    label _Lfinally
+    FINALLY
     free_Type(@param_type)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: *vector_t(TIdentifier)) i32 {
     param_types: vector_t(shared_ptr_t(Type)) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
         _errval = pop_next(ctx)
@@ -3614,19 +3614,19 @@ fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: 
         }
     }
     fun_type[] = make_FunType(@param_types, fun_type)
-    label _Lfinally
+    FINALLY
     loop i: u64 = 0 while i < vec_size(param_types) .. ++i {
         free_Type(@param_types[i])
     }
     vec_delete(param_types)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, fun_decl: **struc CFunctionDeclaration) i32 {
     body: *struc CBlock = uptr_new()
     fun_type: *struc Type = sptr_new()
     params: vector_t(TIdentifier) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     loop .. while 0 {
         " #@MACRO@:TRY(pop_next(ctx))"
@@ -3672,17 +3672,17 @@ fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
         }
     }
     fun_decl[] = make_CFunctionDeclaration(name, @params, @body, @fun_type, storage_class, info_at)
-    label _Lfinally
+    FINALLY
     free_CBlock(@body)
     free_Type(@fun_type)
     vec_delete(params)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, var_decl: **struc CVariableDeclaration) i32 {
     initializer: *struc CInitializer = uptr_new()
     var_type: *struc Type = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
     loop .. while 0 {
@@ -3723,15 +3723,15 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
         }
     }
     var_decl[] = make_CVariableDeclaration(name, @initializer, @var_type, storage_class, info_at)
-    label _Lfinally
+    FINALLY
     free_CInitializer(@initializer)
     free_Type(@var_type)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMemberDeclaration) i32 {
     member_type: *struc Type = sptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     info_at: u64;
     member_name: u64;
     loop .. while 0 {
@@ -3750,14 +3750,14 @@ fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMem
         }
     }
     member_decl[] = make_CMemberDeclaration(member_name, @member_type, info_at)
-    label _Lfinally
+    FINALLY
     free_Type(@member_type)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_member_list(ctx: *struc ParserContext, members: *vector_t(unique_ptr_t(CMemberDeclaration))) i32 {
     member: *struc CMemberDeclaration = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_member_declaration(ctx, &member))"
         _errval = parse_member_declaration(ctx, @member)
@@ -3797,14 +3797,14 @@ fn parse_member_list(ctx: *struc ParserContext, members: *vector_t(unique_ptr_t(
             jump _Lfinally
         }
     }
-    label _Lfinally
+    FINALLY
     free_CMemberDeclaration(@member)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStructDeclaration) i32 {
     members: vector_t(unique_ptr_t(CMemberDeclaration)) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     is_union: i32;
     tag_name: u64;
     info_at: u64 = ctx[].peek_tok[].info_at
@@ -3860,17 +3860,17 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
         }
     }
     struct_decl[] = make_CStructDeclaration(tag_name, is_union, @members, info_at)
-    label _Lfinally
+    FINALLY
     loop i: u64 = 0 while i < vec_size(members) .. ++i {
         free_CMemberDeclaration(@members[i])
     }
     vec_delete(members)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_fun_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
     fun_decl: *struc CFunctionDeclaration = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_fun_declaration(ctx, storage_class, &fun_decl))"
         _errval = parse_fun_declaration(ctx, storage_class, @fun_decl)
@@ -3879,14 +3879,14 @@ fn parse_fun_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass
         }
     }
     declaration[] = make_CFunDecl(@fun_decl)
-    label _Lfinally
+    FINALLY
     free_CFunctionDeclaration(@fun_decl)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_var_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
     var_decl: *struc CVariableDeclaration = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_var_declaration(ctx, storage_class, &var_decl))"
         _errval = parse_var_declaration(ctx, storage_class, @var_decl)
@@ -3895,14 +3895,14 @@ fn parse_var_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass
         }
     }
     declaration[] = make_CVarDecl(@var_decl)
-    label _Lfinally
+    FINALLY
     free_CVariableDeclaration(@var_decl)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_type_decl(ctx: *struc ParserContext, declaration: **struc CDeclaration) i32 {
     struct_decl: *struc CStructDeclaration = uptr_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_type_declaration(ctx, &struct_decl))"
         _errval = parse_type_declaration(ctx, @struct_decl)
@@ -3911,13 +3911,13 @@ fn parse_type_decl(ctx: *struc ParserContext, declaration: **struc CDeclaration)
         }
     }
     declaration[] = make_CStructDecl(@struct_decl)
-    label _Lfinally
+    FINALLY
     free_CStructDeclaration(@struct_decl)
-    return _errval
+    CATCH_EXIT
 }
 
 fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorageClass) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
             storage_class[] = make_CStorageClass(AST_CStorageClass_t)
@@ -3969,12 +3969,12 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_storage_class(ctx, storage_class))"
         _errval = parse_storage_class(ctx, storage_class)
@@ -4022,14 +4022,14 @@ fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageCl
             }
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     declaration: *struc CDeclaration = uptr_new()
     declarations: vector_t(unique_ptr_t(CDeclaration)) = vec_new()
-    _errval: i32 = 0
+    CATCH_ENTER
     loop while ctx[].pop_idx < vec_size(ctx[].p_toks[]) {
         storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
         loop .. while 0 {
@@ -4071,13 +4071,13 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
         }
     }
     c_ast[] = make_CProgram(@declarations)
-    label _Lfinally
+    FINALLY
     free_CDeclaration(@declaration)
     loop i: u64 = 0 while i < vec_size(declarations) .. ++i {
         free_CDeclaration(@declarations[i])
     }
     vec_delete(declarations)
-    return _errval
+    CATCH_EXIT
 }
 
 pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: **struc CProgram) i32 {
@@ -4089,7 +4089,7 @@ pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext
         ctx.p_toks = tokens
     }
 
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(parse_program(&ctx, c_ast))"
         _errval = parse_program(@ctx, c_ast)
@@ -4098,7 +4098,7 @@ pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext
         }
     }
     # TODO THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
-    label _Lfinally
+    FINALLY
     vec_delete(tokens[])
-    return _errval
+    CATCH_EXIT
 }
