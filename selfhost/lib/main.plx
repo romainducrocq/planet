@@ -70,7 +70,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
         backend.symbol_table = map_new()
     }
 
-    _errval: i32 = 0
+    CATCH_ENTER
     verbose(ctx, "-- Lexing ... ")
     loop .. while 0 {
         " #@MACRO@:TRY(lex_c_code(ctx->filename, &ctx->includedirs, &ctx->stdlibdirs, errors, fileio, &identifiers, &tokens))"
@@ -141,7 +141,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     emit_gas_code(@asm_ast, @backend, fileio, @identifiers)
     close_fwrite(fileio)
     verbose(ctx, "OK\n")
-    label _Lfinally
+    FINALLY
     loop i: u64 = 0 while i < map_size(identifiers.hash_table) .. ++i {
         str_delete(pair_second(identifiers.hash_table[i]))
     }
@@ -164,7 +164,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     free_CProgram(@c_ast)
     free_TacProgram(@tac_ast)
     free_AsmProgram(@asm_ast)
-    return _errval
+    CATCH_EXIT
 }
 
 fn arg_parse_uint8(arg: string, value: *u8) i32 {
@@ -174,7 +174,7 @@ fn arg_parse_uint8(arg: string, value: *u8) i32 {
 }
 
 fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
         loop .. while 0 {
@@ -259,8 +259,8 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
         }
     }
     vec_push_back(ctx[].includedirs, cast<string>(argv[i]))
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 pub fn main(argc: i32, argv: *string) i32 {
@@ -287,7 +287,7 @@ pub fn main(argc: i32, argv: *string) i32 {
         ctx.stdlibdirs = vec_new()
     }
 
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(arg_parse(&ctx, argc, argv))"
         _errval = arg_parse(@ctx, argc, argv)
@@ -302,7 +302,7 @@ pub fn main(argc: i32, argv: *string) i32 {
             jump _Lfinally
         }
     }
-    label _Lfinally
+    FINALLY
     map_delete(errors.info_at_map)
     loop i: u64 = 0 while i < vec_size(errors.fopen_lines) .. ++i {
         str_delete(errors.fopen_lines[i].filename)
@@ -318,5 +318,5 @@ pub fn main(argc: i32, argv: *string) i32 {
     str_delete(ctx.filename)
     vec_delete(ctx.includedirs)
     vec_delete(ctx.stdlibdirs)
-    return _errval
+    CATCH_EXIT
 }
