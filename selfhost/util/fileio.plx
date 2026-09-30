@@ -28,11 +28,11 @@ pub fn get_filename(ctx: *struc FileIoContext) string {
     }
 }
 
-pub fn set_filename(ctx: *struc FileIoContext, filename: string) none {
+pub fn set_filename(ctx: *struc FileIoContext, filename: string_t) none {
     str_copy(filename, ctx[].filename)
 }
 
-pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
+pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) i32 {
     _errval: i32 = 0
     loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         if ctx[].file_reads[i].fd {
@@ -63,7 +63,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
     return _errval
 }
 
-pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
+pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) i32 {
     _errval: i32 = 0
     # TODO THROW_ABORT_IF(!vec_empty(ctx->file_reads));
     ctx[].fd_write = nil

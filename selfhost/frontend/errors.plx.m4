@@ -26,13 +26,13 @@ pub fn get_storage_class_fmt(node: *struc CStorageClass) string;
 pub fn get_unop_fmt(node: *struc CUnaryOp) string;
 pub fn get_binop_fmt(node: *struc CBinaryOp) string;
 pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string;
-pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string) string;
-pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i32, struct_fmt: *string) string;
-pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_fmt: *string) string;
-pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_fmt: *string) string;
-pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string) string;
-pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string) string;
-pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string) string;
+pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string_t) string;
+pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i32, struct_fmt: *string_t) string;
+pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_fmt: *string_t) string;
+pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_fmt: *string_t) string;
+pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string_t) string;
+pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string_t) string;
+pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string_t) string;
 m4_define(`str_get_fmt', `TODO')m4_dnl
 m4_define(`str_fmt_tok', `TODO')m4_dnl
 m4_define(`str_fmt_name', `TODO')m4_dnl

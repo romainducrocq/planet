@@ -35,7 +35,6 @@ m4_define(`sptr_free', `TODO')m4_dnl
 m4_define(`sptr_move', `TODO')m4_dnl
 m4_define(`sptr_copy', `TODO')m4_dnl
 
-# TODO
 m4_define(`string_t', `sds')m4_dnl
 m4_define(`str_new', `? $1 then sdsnew($1) else nil')m4_dnl
 m4_define(`str_delete', `if $1 {

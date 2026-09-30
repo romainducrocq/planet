@@ -32,19 +32,19 @@ fn emit_string(ctx: *struc GasCodeContext, string_const: u64) none {
 }
 
 fn emit_char(ctx: *struc GasCodeContext, value: i8) none {
-    strto_value: string = str_to_string(value)
+    strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
 fn emit_int(ctx: *struc GasCodeContext, value: i32) none {
-    strto_value: string = str_to_string(value)
+    strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
 fn emit_long(ctx: *struc GasCodeContext, value: i64) none {
-    strto_value: string = str_to_string(value)
+    strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
@@ -55,19 +55,19 @@ fn emit_dbl(ctx: *struc GasCodeContext, dbl_const: u64) none {
 }
 
 fn emit_uchar(ctx: *struc GasCodeContext, value: u8) none {
-    strto_value: string = str_to_string(value)
+    strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
 fn emit_uint(ctx: *struc GasCodeContext, value: u32) none {
-    strto_value: string = str_to_string(value)
+    strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
 fn emit_ulong(ctx: *struc GasCodeContext, value: u64) none {
-    strto_value: string = str_to_string(value)
+    strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }

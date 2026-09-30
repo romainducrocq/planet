@@ -163,7 +163,7 @@ fn const_res_instr(node: *struc CConstant) *struc TacExpResult {
 }
 
 fn make_literal_identifier(ctx: *struc TacReprContext, node: *struc CStringLiteral) u64 {
-    value: string = string_literal_to_const(node[].value)
+    value: string_t = string_literal_to_const(node[].value)
     return make_string_identifier(ctx[].identifiers, @value)
 }
 

@@ -210,8 +210,8 @@ fn is_valid_ptr(ctx: *struc SemanticContext, ptr_type: *struc Pointer) i32 {
 }
 
 fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_complete(ctx, arr_type[].elem_type) {
         loop .. while 0 {
@@ -501,8 +501,8 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
 }
 
 fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: *struc CExp, joint_type: **struc Type) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if is_same_type(node_1[].exp_type, node_2[].exp_type) {
         if node_1[].exp_type ~= joint_type[] {
@@ -829,7 +829,7 @@ fn check_string_exp(node: *struc CString) none {
 }
 
 fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     var_type: *struc Type = map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t
     if var_type[].tag == AST_FunType_t {
@@ -852,8 +852,8 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
 }
 
 fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     loop .. while 0 {
@@ -914,8 +914,8 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CE
 }
 
 fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CExp) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if (is_type_arithmetic((exp[])[].exp_type) and is_type_arithmetic(exp_type[])) or ((exp[])[].tag == AST_CConstant_t and (exp_type[])[].tag == AST_Pointer_t and is_const_null_ptr(@(exp[])[].get._CConstant)) or ((exp_type[])[].tag == AST_Pointer_t and (exp_type[])[].get._Pointer.ref_type[].tag == AST_Void_t and (exp[])[].exp_type[].tag == AST_Pointer_t) or ((exp[])[].exp_type[].tag == AST_Pointer_t and (exp[])[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and (exp_type[])[].tag == AST_Pointer_t) {
         loop .. while 0 {
@@ -957,7 +957,7 @@ fn promote_char_to_int(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
 }
 
 fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp[].exp_type) {
         loop .. while 0 {
@@ -1006,7 +1006,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
 }
 
 fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp[].exp_type) {
         loop .. while 0 {
@@ -1047,7 +1047,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
 }
 
 fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_scalar(node[].exp[].exp_type) {
         loop .. while 0 {
@@ -1105,8 +1105,8 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
 }
 
 fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
@@ -1193,8 +1193,8 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
 }
 
 fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
@@ -1285,8 +1285,8 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 }
 
 fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
@@ -1333,8 +1333,8 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 }
 
 fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
@@ -1389,8 +1389,8 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
 }
 
 fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_int(node[].exp_right[].exp_type) {
         loop .. while 0 {
@@ -1455,8 +1455,8 @@ fn check_bitshift_right_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
 }
 
 fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) {
         loop .. while 0 {
@@ -1474,8 +1474,8 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
 }
 
 fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if node[].exp_left[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
@@ -1525,8 +1525,8 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 }
 
 fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
@@ -1752,8 +1752,8 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
 }
 
 fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     common_type: *struc Type = sptr_new()
     _errval: i32 = 0
     if not is_type_scalar(node[].condition[].exp_type) {
@@ -1845,9 +1845,9 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
 }
 
 fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
-    name_fmt: string = str_new(nil)
-    strto_fmt_1: string = str_new(nil)
-    strto_fmt_2: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    strto_fmt_1: string_t = str_new(nil)
+    strto_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     fun_symbol: *struc Symbol = map_get(ctx[].frontend[].symbol_table, node[].name)
     fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
@@ -1894,7 +1894,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
 }
 
 fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if node[].exp[].exp_type[].tag ~= AST_Pointer_t {
         loop .. while 0 {
@@ -1939,8 +1939,8 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
 }
 
 fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32 {
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     ref_type: *struc Type = sptr_new()
     subscript_type: *struc Type = sptr_new()
     _errval: i32 = 0
@@ -2006,7 +2006,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
 }
 
 fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_complete(ctx, node[].exp[].exp_type) {
         loop .. while 0 {
@@ -2023,7 +2023,7 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
 }
 
 fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     loop .. while 0 {
@@ -2055,8 +2055,8 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
 }
 
 fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     struct_type: *struc Structure;
     struct_typedef: *struc StructTypedef;
@@ -2095,8 +2095,8 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
 }
 
 fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     ptr_type: *struc Pointer;
     struct_type: *struc Structure;
@@ -2176,7 +2176,7 @@ fn check_arr_typed_exp(addrof: **struc CExp) none {
 }
 
 fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_struct_complete(ctx, @node[].exp_type[].get._Structure) {
         loop .. while 0 {
@@ -2217,8 +2217,8 @@ fn check_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
 }
 
 fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, ctx[].fun_def_name)[].type_t[].get._FunType
     if fun_type[].ret_type[].tag == AST_Void_t {
@@ -2263,7 +2263,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
 }
 
 fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
@@ -2279,7 +2279,7 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
 }
 
 fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
@@ -2295,7 +2295,7 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
 }
 
 fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
@@ -2311,7 +2311,7 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
 }
 
 fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         loop .. while 0 {
@@ -2327,7 +2327,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
 }
 
 fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
-    strto_fmt: string = str_new(nil)
+    strto_fmt: string_t = str_new(nil)
     values: vector_t(i32) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
@@ -2361,7 +2361,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
 }
 
 fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
-    strto_fmt: string = str_new(nil)
+    strto_fmt: string_t = str_new(nil)
     values: vector_t(i64) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
@@ -2395,7 +2395,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
 }
 
 fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
-    strto_fmt: string = str_new(nil)
+    strto_fmt: string_t = str_new(nil)
     values: vector_t(u32) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
@@ -2429,7 +2429,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
 }
 
 fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
-    strto_fmt: string = str_new(nil)
+    strto_fmt: string_t = str_new(nil)
     values: vector_t(u64) = vec_new()
     _errval: i32 = 0
     vec_resize(values, vec_size(node[].cases))
@@ -2463,7 +2463,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
 }
 
 fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_int(node[].lookup[].exp_type) {
         loop .. while 0 {
@@ -2543,9 +2543,9 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
 }
 
 fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, arr_type: *struc Array) i32 {
-    type_fmt: string = str_new(nil)
-    strto_fmt_1: string = str_new(nil)
-    strto_fmt_2: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
+    strto_fmt_1: string_t = str_new(nil)
+    strto_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_type_char(arr_type[].elem_type) {
         loop .. while 0 {
@@ -2694,9 +2694,9 @@ fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc C
 }
 
 fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array) i32 {
-    type_fmt: string = str_new(nil)
-    strto_fmt_1: string = str_new(nil)
-    strto_fmt_2: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
+    strto_fmt_1: string_t = str_new(nil)
+    strto_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     if vec_size(node[].initializers) > cast<u64>(arr_type[].size) {
         strto_fmt_1 = str_to_string(arr_type[].size)
@@ -2716,9 +2716,9 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
 }
 
 fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure) i32 {
-    type_fmt: string = str_new(nil)
-    strto_fmt_1: string = str_new(nil)
-    strto_fmt_2: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
+    strto_fmt_1: string_t = str_new(nil)
+    strto_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     bound: u64 = ? struct_type[].is_union then 1 else map_size(struct_typedef[].members)
@@ -2768,8 +2768,8 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
 }
 
 fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
     ctx[].errors[].info_at_buf = node[].info_at
@@ -2830,9 +2830,9 @@ fn check_arr_param_decl(fun_type: *struc FunType, i: u64) none {
 }
 
 fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
-    name_fmt_1: string = str_new(nil)
-    name_fmt_2: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt_1: string_t = str_new(nil)
+    name_fmt_2: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     param_attrs: *struc IdentifierAttr = uptr_new()
     symbol: *struc Symbol = uptr_new()
     param_type: *struc Type = sptr_new()
@@ -2897,9 +2897,9 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
 }
 
 fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     glob_fun_attrs: *struc IdentifierAttr = uptr_new()
     symbol: *struc Symbol = uptr_new()
     glob_fun_type: *struc Type = sptr_new()
@@ -2994,13 +2994,13 @@ fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Ty
 }
 
 fn make_binary_identifier(ctx: *struc SemanticContext, binary: u64) u64 {
-    strto_binary: string = str_to_string(binary)
+    strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
 fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, static_init_type: *struc Type) i32 {
-    type_fmt: string = str_new(nil)
-    strto_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
+    strto_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     match static_init_type[].tag {
         -> AST_Char_t {
@@ -3124,7 +3124,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
 }
 
 fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, static_ptr_type: *struc Pointer) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if static_ptr_type[].ref_type[].tag ~= AST_Char_t {
         loop .. while 0 {
@@ -3140,7 +3140,7 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
 }
 
 fn make_literal_identifier(ctx: *struc SemanticContext, node: *struc CStringLiteral) u64 {
-    value: string = string_literal_to_const(node[].value)
+    value: string_t = string_literal_to_const(node[].value)
     return make_string_identifier(ctx[].identifiers, @value)
 }
 
@@ -3250,7 +3250,7 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
 }
 
 fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleInit, static_init_type: *struc Type) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     match node[].exp[].tag {
         -> AST_CConstant_t {
@@ -3347,7 +3347,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
 }
 
 fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, static_init_type: *struc Type) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     match static_init_type[].tag {
         -> AST_Array_t {
@@ -3439,9 +3439,9 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
 }
 
 fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     glob_var_attrs: *struc IdentifierAttr = uptr_new()
     symbol: *struc Symbol = uptr_new()
     init_value: *struc InitialValue = sptr_new()
@@ -3570,9 +3570,9 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
 }
 
 fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt_1: string = str_new(nil)
-    type_fmt_2: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt_1: string_t = str_new(nil)
+    type_fmt_2: string_t = str_new(nil)
     local_var_attrs: *struc IdentifierAttr = uptr_new()
     symbol: *struc Symbol = uptr_new()
     init_value: *struc InitialValue = sptr_new()
@@ -3658,8 +3658,8 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
 }
 
 fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
-    name_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     local_var_attrs: *struc IdentifierAttr = uptr_new()
     symbol: *struc Symbol = uptr_new()
     local_var_type: *struc Type = sptr_new()
@@ -3692,7 +3692,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
 }
 
 fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     ctx[].errors[].info_at_buf = node[].info_at
     loop .. while 0 {
@@ -3758,9 +3758,9 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
 }
 
 fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) i32 {
-    name_fmt: string = str_new(nil)
-    struct_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
+    struct_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     loop i: u64 = 0 while i < vec_size(node[].members) .. ++i {
         loop j: u64 = i + 1 while j < vec_size(node[].members) .. ++j {
@@ -3805,7 +3805,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
 }
 
 fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) i32 {
-    struct_fmt: string = str_new(nil)
+    struct_fmt: string_t = str_new(nil)
     struct_member: *struc StructMember = uptr_new()
     struct_typedef: *struc StructTypedef = uptr_new()
     member_type: *struc Type = sptr_new()
@@ -3883,7 +3883,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
 }
 
 fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if set_find(ctx[].label_set, node[].target) ~= set_end() {
         loop .. while 0 {
@@ -4025,8 +4025,8 @@ fn exit_scope(ctx: *struc SemanticContext) none {
 }
 
 fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
-    name_fmt_1: string = str_new(nil)
-    name_fmt_2: string = str_new(nil)
+    name_fmt_1: string_t = str_new(nil)
+    name_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     loop i: u64 = 0 while i < map_size(ctx[].goto_map) .. ++i {
         if set_find(ctx[].label_set, pair_first(ctx[].goto_map[i])) == set_end() {
@@ -4072,8 +4072,8 @@ fn reslv_arr_struct(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
 }
 
 fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 {
-    struct_fmt: string = str_new(nil)
-    type_fmt: string = str_new(nil)
+    struct_fmt: string_t = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if struct_type[].is_union {
         if set_find(ctx[].union_def_set, struct_type[].tag_name) ~= set_end() {
@@ -4167,7 +4167,7 @@ fn reslv_string_exp(node: *struc CString) none {
 }
 
 fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = map_find(ctx[].scoped_identifier_maps[i], node[].name)
@@ -4326,7 +4326,7 @@ fn reslv_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
 }
 
 fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = map_find(ctx[].scoped_identifier_maps[i], node[].name)
@@ -4687,7 +4687,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
 fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32;
 
 fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if node[].init[].storage_class.tag ~= AST_CStorageClass_t {
         loop .. while 0 {
@@ -5380,7 +5380,7 @@ fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
 }
 
 fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, init_type: **struc Type) i32 {
-    type_fmt: string = str_new(nil)
+    type_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     match (init_type[])[].tag {
         -> AST_Array_t {
@@ -5449,7 +5449,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
 }
 
 fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
@@ -5478,7 +5478,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
 }
 
 fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if not is_file_scope(ctx) {
         if node[].body {
@@ -5578,7 +5578,7 @@ fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
 }
 
 fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32 {
-    name_fmt: string = str_new(nil)
+    name_fmt: string_t = str_new(nil)
     _errval: i32 = 0
     if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() and not (map_find(ctx[].extern_scope_map, node[].name) ~= map_end() and node[].storage_class.tag == AST_CExtern_t) {
         loop .. while 0 {
@@ -5638,8 +5638,8 @@ fn reslv_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
 }
 
 fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDeclaration) i32 {
-    struct_fmt_1: string = str_new(nil)
-    struct_fmt_2: string = str_new(nil)
+    struct_fmt_1: string_t = str_new(nil)
+    struct_fmt_2: string_t = str_new(nil)
     _errval: i32 = 0
     map_it: i64 = map_find(vec_back(ctx[].scoped_struct_maps), node[].tag_name)
     if map_it ~= map_end() {

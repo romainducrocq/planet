@@ -77,7 +77,7 @@ fn ulong_imm_op(node: *struc CConstULong) *struc AsmOperand {
 }
 
 fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
-    name: string = str_new(nil)
+    name: string_t = str_new(nil)
     match asm_label_kind {
         -> LBL_Lcomisd_nan {
             name = str_new("comisd_nan")
@@ -113,7 +113,7 @@ fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
 fn dbl_static_const_toplvl(ctx: *struc AsmGenContext, identifier: u64, dbl_const: u64, byte: i32) none;
 
 fn make_binary_identifier(ctx: *struc AsmGenContext, binary: u64) u64 {
-    strto_binary: string = str_to_string(binary)
+    strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
