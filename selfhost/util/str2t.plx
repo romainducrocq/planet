@@ -235,7 +235,7 @@ pub fn string_literal_to_const(string_literal: vector_t(i8)) string_t {
 }
 
 pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, value: *i64) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     end_ptr: string = nil
     value[] = strtoimax(str_int, @end_ptr, 10)
     if end_ptr == str_int {
@@ -246,12 +246,12 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64, value: *u64) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     end_ptr: string = nil
     value[] = strtoumax(str_uint, @end_ptr, 10)
     if end_ptr == str_uint {
@@ -262,12 +262,12 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }
 
 pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, value: *f64) i32 {
-    _errval: i32 = 0
+    CATCH_ENTER
     end_ptr: string = nil
     value[] = strtod(str_dbl, @end_ptr)
     if end_ptr == str_dbl {
@@ -278,6 +278,6 @@ pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, v
             jump _Lfinally
         }
     }
-    label _Lfinally
-    return _errval
+    FINALLY
+    CATCH_EXIT
 }

@@ -1174,7 +1174,7 @@ fn push_token_info(ctx: *struc LexerContext) u64 {
 
 fn tokenize_file(ctx: *struc LexerContext) i32 {
     smatch: string_t = str_new(nil)
-    _errval: i32 = 0
+    CATCH_ENTER
     loop linenum: u64 = 1 while read_line(ctx[].fileio, @ctx[].line, @ctx[].line_size) .. ++linenum {
         ctx[].total_linenum++
         is_empty: i32 = true
@@ -1283,11 +1283,11 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
             is_empty = false
         }
     }
-    label _Lfinally
+    FINALLY
     ;
     str_delete(smatch)
     ;
-    return _errval
+    CATCH_EXIT
 }
 
 fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
@@ -1308,7 +1308,7 @@ fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
 fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) i32 {
     filename: string_t = str_new(nil)
     fopen_name: string_t = str_new(nil)
-    _errval: i32 = 0
+    CATCH_ENTER
     line: string;
     line_size: u64;
     match_at: u64;
@@ -1442,13 +1442,13 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     ctx[].line_size = line_size
     ctx[].match_at = match_at
     ctx[].match_size = match_size
-    label _Lfinally
+    FINALLY
     ;
     str_delete(filename)
     ;
     str_delete(fopen_name)
     ;
-    return _errval
+    CATCH_EXIT
 }
 
 pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) i32 {
@@ -1465,7 +1465,7 @@ pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs
         ctx.total_linenum = 0
     }
 
-    _errval: i32 = 0
+    CATCH_ENTER
     loop .. while 0 {
         " #@MACRO@:TRY(open_fread(ctx.fileio, filename))"
         _errval = open_fread(ctx.fileio, filename)
@@ -1494,7 +1494,7 @@ pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs
         }
     }
     set_filename(ctx.fileio, filename)
-    label _Lfinally
+    FINALLY
     ;
     set_delete(ctx.includename_set)
     loop i: u64 = 0 while i < vec_size(fileio[].file_reads) .. ++i {
@@ -1507,5 +1507,5 @@ pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs
     ;
     vec_delete(stdlibdirs[])
     ;
-    return _errval
+    CATCH_EXIT
 }
