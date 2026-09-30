@@ -77,30 +77,30 @@ fn ulong_imm_op(node: *struc CConstULong) *struc AsmOperand {
 }
 
 fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     match asm_label_kind {
         -> LBL_Lcomisd_nan {
-            name = ? "comisd_nan" then sdsnew("comisd_nan") else nil
+            name = str_new("comisd_nan")
             break
         }
         -> LBL_Ldouble {
-            name = ? "double" then sdsnew("double") else nil
+            name = str_new("double")
             break
         }
         -> LBL_Lsd2si_after {
-            name = ? "sd2si_after" then sdsnew("sd2si_after") else nil
+            name = str_new("sd2si_after")
             break
         }
         -> LBL_Lsd2si_out_of_range {
-            name = ? "sd2si_out_of_range" then sdsnew("sd2si_out_of_range") else nil
+            name = str_new("sd2si_out_of_range")
             break
         }
         -> LBL_Lsi2sd_after {
-            name = ? "si2sd_after" then sdsnew("si2sd_after") else nil
+            name = str_new("si2sd_after")
             break
         }
         -> LBL_Lsi2sd_out_of_range {
-            name = ? "si2sd_out_of_range" then sdsnew("si2sd_out_of_range") else nil
+            name = str_new("si2sd_out_of_range")
             break
         }
         otherwise {

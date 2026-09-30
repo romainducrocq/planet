@@ -10,87 +10,87 @@ m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_define(`Ctx', `TODO')m4_dnl
 
 pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     value: string = map_get(ctx[].hash_table, target)
     str_copy(value, name)
     return make_label_identifier(ctx, @name)
 }
 
 pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     value: string = map_get(ctx[].hash_table, variable)
     str_copy(value, name)
     return make_var_identifier(ctx, @name)
 }
 
 pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: u64) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     value: string = map_get(ctx[].hash_table, structure)
     str_copy(value, name)
     return make_struct_identifier(ctx, @name)
 }
 
 pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: i32) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     match label_kind {
         -> LBL_Land_false {
-            name = ? "and_false" then sdsnew("and_false") else nil
+            name = str_new("and_false")
             break
         }
         -> LBL_Land_true {
-            name = ? "and_true" then sdsnew("and_true") else nil
+            name = str_new("and_true")
             break
         }
         -> LBL_Ldo_while {
-            name = ? "do_while" then sdsnew("do_while") else nil
+            name = str_new("do_while")
             break
         }
         -> LBL_Ldo_while_start {
-            name = ? "do_while_start" then sdsnew("do_while_start") else nil
+            name = str_new("do_while_start")
             break
         }
         -> LBL_Lfor {
-            name = ? "for" then sdsnew("for") else nil
+            name = str_new("for")
             break
         }
         -> LBL_Lswitch {
-            name = ? "switch" then sdsnew("switch") else nil
+            name = str_new("switch")
             break
         }
         -> LBL_Lfor_start {
-            name = ? "for_start" then sdsnew("for_start") else nil
+            name = str_new("for_start")
             break
         }
         -> LBL_Lif_else {
-            name = ? "if_else" then sdsnew("if_else") else nil
+            name = str_new("if_else")
             break
         }
         -> LBL_Lif_false {
-            name = ? "if_false" then sdsnew("if_false") else nil
+            name = str_new("if_false")
             break
         }
         -> LBL_Lor_false {
-            name = ? "or_false" then sdsnew("or_false") else nil
+            name = str_new("or_false")
             break
         }
         -> LBL_Lor_true {
-            name = ? "or_true" then sdsnew("or_true") else nil
+            name = str_new("or_true")
             break
         }
         -> LBL_Lstring {
-            name = ? "string" then sdsnew("string") else nil
+            name = str_new("string")
             break
         }
         -> LBL_Lternary_else {
-            name = ? "ternary_else" then sdsnew("ternary_else") else nil
+            name = str_new("ternary_else")
             break
         }
         -> LBL_Lternary_false {
-            name = ? "ternary_false" then sdsnew("ternary_false") else nil
+            name = str_new("ternary_false")
             break
         }
         -> LBL_Lwhile {
-            name = ? "while" then sdsnew("while") else nil
+            name = str_new("while")
             break
         }
         otherwise {
@@ -101,22 +101,22 @@ pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: i32) u64
 }
 
 pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, target: u64) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     match label_kind {
         -> LBL_Lbreak {
-            name = ? "break_" then sdsnew("break_") else nil
+            name = str_new("break_")
             break
         }
         -> LBL_Lcase {
-            name = ? "case_" then sdsnew("case_") else nil
+            name = str_new("case_")
             break
         }
         -> LBL_Lcontinue {
-            name = ? "continue_" then sdsnew("continue_") else nil
+            name = str_new("continue_")
             break
         }
         -> LBL_Ldefault {
-            name = ? "default_" then sdsnew("default_") else nil
+            name = str_new("default_")
             break
         }
         otherwise {
@@ -128,7 +128,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
 }
 
 pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label: i32, i: u64) u64 {
-    name: string = ? is_label then ? "case_" then sdsnew("case_") else nil else ? "" then sdsnew("") else nil
+    name: string = ? is_label then str_new("case_") else str_new("")
     {
         strto_i: string = str_to_string(i)
         str_append(name, strto_i)
@@ -139,62 +139,62 @@ pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label
 }
 
 pub fn repr_var_identifier(ctx: *struc IdentifierContext, node: *struc CExp) u64 {
-    name: string = ? nil then sdsnew(nil) else nil
+    name: string = str_new(nil)
     match node[].tag {
         -> AST_CConstant_t {
-            name = ? "const" then sdsnew("const") else nil
+            name = str_new("const")
             break
         }
         -> AST_CString_t {
-            name = ? "string" then sdsnew("string") else nil
+            name = str_new("string")
             break
         }
         -> AST_CVar_t {
-            name = ? "var" then sdsnew("var") else nil
+            name = str_new("var")
             break
         }
         -> AST_CCast_t {
-            name = ? "cast" then sdsnew("cast") else nil
+            name = str_new("cast")
             break
         }
         -> AST_CUnary_t {
-            name = ? "unop" then sdsnew("unop") else nil
+            name = str_new("unop")
             break
         }
         -> AST_CBinary_t {
-            name = ? "binop" then sdsnew("binop") else nil
+            name = str_new("binop")
             break
         }
         -> AST_CAssignment_t {
-            name = ? "assign" then sdsnew("assign") else nil
+            name = str_new("assign")
             break
         }
         -> AST_CConditional_t {
-            name = ? "ternop" then sdsnew("ternop") else nil
+            name = str_new("ternop")
             break
         }
         -> AST_CFunctionCall_t {
-            name = ? "call" then sdsnew("call") else nil
+            name = str_new("call")
             break
         }
         -> AST_CDereference_t {
-            name = ? "deref" then sdsnew("deref") else nil
+            name = str_new("deref")
             break
         }
         -> AST_CAddrOf_t {
-            name = ? "addr" then sdsnew("addr") else nil
+            name = str_new("addr")
             break
         }
         -> AST_CSubscript_t {
-            name = ? "subscr" then sdsnew("subscr") else nil
+            name = str_new("subscr")
             break
         }
         -> AST_CDot_t {
-            name = ? "smem" then sdsnew("smem") else nil
+            name = str_new("smem")
             break
         }
         -> AST_CArrow_t {
-            name = ? "sptr" then sdsnew("sptr") else nil
+            name = str_new("sptr")
             break
         }
         otherwise {
