@@ -240,7 +240,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
             jump _Lfinally
         }
     }
-    ctx[].filename = ? argv[i] then sdsnew(argv[i]) else nil
+    ctx[].filename = str_new(argv[i])
     if not argv[++i] {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
@@ -277,12 +277,12 @@ pub fn main(argc: i32, argv: *string) i32 {
         errors.token_infos = vec_new()
         fileio.errors = @errors
         fileio.fd_write = nil
-        fileio.write_buf = ? nil then sdsnew(nil) else nil
-        fileio.filename = ? nil then sdsnew(nil) else nil
+        fileio.write_buf = str_new(nil)
+        fileio.filename = str_new(nil)
         fileio.file_reads = vec_new()
         ctx.errors = @errors
         ctx.is_verbose = false
-        ctx.filename = ? nil then sdsnew(nil) else nil
+        ctx.filename = str_new(nil)
         ctx.includedirs = vec_new()
         ctx.stdlibdirs = vec_new()
     }

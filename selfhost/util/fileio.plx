@@ -47,7 +47,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string) i32 {
             break
         }
     }
-    file_read: struc FileRead = $(0, nil, nil, ? nil then sdsnew(nil) else nil)
+    file_read: struc FileRead = $(0, nil, nil, str_new(nil))
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or str_size(filename) >= 4096 {
         loop .. while 0 {
@@ -76,7 +76,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string) i32 {
             jump _Lfinally
         }
     }
-    ctx[].write_buf = ? "" then sdsnew("") else nil
+    ctx[].write_buf = str_new("")
     str_reserve(ctx[].write_buf, WRITE_BUF_SIZE)
     label _Lfinally
     return _errval

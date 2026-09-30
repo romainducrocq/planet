@@ -141,7 +141,7 @@ fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
 }
 
 pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
-    str_hex: string = ? "" then sdsnew("") else nil
+    str_hex: string = str_new("")
     loop byte: u64 = byte_at + 1 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
@@ -153,7 +153,7 @@ pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
 }
 
 pub fn string_bytes_to_int32(string_literal: vector_t(i8), byte_at: u64) i32 {
-    str_hex: string = ? "" then sdsnew("") else nil
+    str_hex: string = str_new("")
     loop byte: u64 = byte_at + 4 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
@@ -165,7 +165,7 @@ pub fn string_bytes_to_int32(string_literal: vector_t(i8), byte_at: u64) i32 {
 }
 
 pub fn string_bytes_to_int64(string_literal: vector_t(i8), byte_at: u64) i64 {
-    str_hex: string = ? "" then sdsnew("") else nil
+    str_hex: string = str_new("")
     loop byte: u64 = byte_at + 8 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
@@ -177,7 +177,7 @@ pub fn string_bytes_to_int64(string_literal: vector_t(i8), byte_at: u64) i64 {
 }
 
 pub fn string_literal_to_const(string_literal: vector_t(i8)) string {
-    string_const: string = ? "" then sdsnew("") else nil
+    string_const: string = str_new("")
     loop i: u64 = 0 while i < vec_size(string_literal) .. ++i {
         byte: i8 = string_literal[i]
         match byte {
