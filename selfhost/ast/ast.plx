@@ -170,7 +170,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
 
 m4_define(`Ctx', `TODO')m4_dnl
 
-pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64 {
+pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string_t) u64 {
     identifier: u64 = str_hash(value[])
     if map_find(ctx[].hash_table, identifier) == map_end() {
         map_move_add(ctx[].hash_table, identifier, value[])
@@ -181,10 +181,10 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
     return identifier
 }
 
-pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
+pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
     str_append(name[], UID_SEPARATOR)
     {
-        strto_uid: string = str_to_string(ctx[].label_count)
+        strto_uid: string_t = str_to_string(ctx[].label_count)
         str_append(name[], strto_uid)
         str_delete(strto_uid)
     }
@@ -192,10 +192,10 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     return make_string_identifier(ctx, name)
 }
 
-pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
+pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
     str_append(name[], UID_SEPARATOR)
     {
-        strto_uid: string = str_to_string(ctx[].var_count)
+        strto_uid: string_t = str_to_string(ctx[].var_count)
         str_append(name[], strto_uid)
         str_delete(strto_uid)
     }
@@ -203,10 +203,10 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     return make_string_identifier(ctx, name)
 }
 
-pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
+pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
     str_append(name[], UID_SEPARATOR)
     {
-        strto_uid: string = str_to_string(ctx[].struct_count)
+        strto_uid: string_t = str_to_string(ctx[].struct_count)
         str_append(name[], strto_uid)
         str_delete(strto_uid)
     }
