@@ -143,11 +143,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     verbose(ctx, "OK\n")
     label _Lfinally
     loop i: u64 = 0 while i < map_size(identifiers.hash_table) .. ++i {
-        if (identifiers.hash_table[i]).value {
-            " #@MACRO@:str_delete(pair_second(identifiers.hash_table[i]))"
-            sdsfree((identifiers.hash_table[i]).value)
-            (identifiers.hash_table[i]).value = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(pair_second(identifiers.hash_table[i]))
     }
     map_delete(identifiers.hash_table)
     map_delete(frontend.string_const_table)
@@ -309,37 +305,17 @@ pub fn main(argc: i32, argv: *string) i32 {
     label _Lfinally
     map_delete(errors.info_at_map)
     loop i: u64 = 0 while i < vec_size(errors.fopen_lines) .. ++i {
-        if errors.fopen_lines[i].filename {
-            " #@MACRO@:str_delete(errors.fopen_lines[i].filename)"
-            sdsfree(errors.fopen_lines[i].filename)
-            errors.fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(errors.fopen_lines[i].filename)
     }
     vec_delete(errors.fopen_lines)
     vec_delete(errors.token_infos)
-    if fileio.write_buf {
-        " #@MACRO@:str_delete(fileio.write_buf)"
-        sdsfree(fileio.write_buf)
-        fileio.write_buf = ? nil then sdsnew(nil) else nil
-    }
-    if fileio.filename {
-        " #@MACRO@:str_delete(fileio.filename)"
-        sdsfree(fileio.filename)
-        fileio.filename = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(fileio.write_buf)
+    str_delete(fileio.filename)
     loop i: u64 = 0 while i < vec_size(fileio.file_reads) .. ++i {
-        if fileio.file_reads[i].filename {
-            " #@MACRO@:str_delete(fileio.file_reads[i].filename)"
-            sdsfree(fileio.file_reads[i].filename)
-            fileio.file_reads[i].filename = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(fileio.file_reads[i].filename)
     }
     vec_delete(fileio.file_reads)
-    if ctx.filename {
-        " #@MACRO@:str_delete(ctx.filename)"
-        sdsfree(ctx.filename)
-        ctx.filename = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(ctx.filename)
     vec_delete(ctx.includedirs)
     vec_delete(ctx.stdlibdirs)
     return _errval

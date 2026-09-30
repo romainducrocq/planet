@@ -25,11 +25,7 @@ pub fn panic_sigabrt(msg: string) none {
         str_append(stderr_buf, msg)
         str_append(stderr_buf, "\n")
         write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
-        if stderr_buf {
-            " #@MACRO@:str_delete(stderr_buf)"
-            sdsfree(stderr_buf)
-            stderr_buf = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(stderr_buf)
     }
     abort()
 }
@@ -50,11 +46,7 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     str_append(stderr_buf, "\n")
     # THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
     write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
-    if stderr_buf {
-        " #@MACRO@:str_delete(stderr_buf)"
-        sdsfree(stderr_buf)
-        stderr_buf = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(stderr_buf)
 }
 
 pub fn raise_base_error(ctx: *struc ErrorsContext) none {
@@ -83,11 +75,7 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     str_append(stderr_buf, "\n")
     # TODO THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
     write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
-    if stderr_buf {
-        " #@MACRO@:str_delete(stderr_buf)"
-        sdsfree(stderr_buf)
-        stderr_buf = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(stderr_buf)
 }
 
 fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
@@ -199,40 +187,12 @@ pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
         str_append(stderr_buf, "\n")
         # THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
         write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
-        if pad_tok {
-            " #@MACRO@:str_delete(pad_tok)"
-            sdsfree(pad_tok)
-            pad_tok = ? nil then sdsnew(nil) else nil
-        }
-        if pad_linenum {
-            " #@MACRO@:str_delete(pad_linenum)"
-            sdsfree(pad_linenum)
-            pad_linenum = ? nil then sdsnew(nil) else nil
-        }
-        if strto_linenum {
-            " #@MACRO@:str_delete(strto_linenum)"
-            sdsfree(strto_linenum)
-            strto_linenum = ? nil then sdsnew(nil) else nil
-        }
-        if strto_pos {
-            " #@MACRO@:str_delete(strto_pos)"
-            sdsfree(strto_pos)
-            strto_pos = ? nil then sdsnew(nil) else nil
-        }
-        if tok_overline {
-            " #@MACRO@:str_delete(tok_overline)"
-            sdsfree(tok_overline)
-            tok_overline = ? nil then sdsnew(nil) else nil
-        }
-        if stderr_buf {
-            " #@MACRO@:str_delete(stderr_buf)"
-            sdsfree(stderr_buf)
-            stderr_buf = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(pad_tok)
+        str_delete(pad_linenum)
+        str_delete(strto_linenum)
+        str_delete(strto_pos)
+        str_delete(tok_overline)
+        str_delete(stderr_buf)
     }
-    if line {
-        " #@MACRO@:str_delete(line)"
-        sdsfree(line)
-        line = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(line)
 }
