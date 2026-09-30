@@ -1156,7 +1156,7 @@ fn match_token(ctx: *struc LexerContext) i32 {
 }
 
 fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string {
-    smatch: string = ? "" then sdsnew("") else nil
+    smatch: string = str_new("")
     str_resize(smatch, match_size)
     loop i: u64 = 0 while i < match_size .. ++i {
         smatch[i] = ctx[].line[match_at + i]
@@ -1173,7 +1173,7 @@ fn push_token_info(ctx: *struc LexerContext) u64 {
 }
 
 fn tokenize_file(ctx: *struc LexerContext) i32 {
-    smatch: string = ? nil then sdsnew(nil) else nil
+    smatch: string = str_new(nil)
     _errval: i32 = 0
     loop linenum: u64 = 1 while read_line(ctx[].fileio, @ctx[].line, @ctx[].line_size) .. ++linenum {
         ctx[].total_linenum++
@@ -1292,7 +1292,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
 
 fn find_include(dirnames: vector_t(string), filename: *string) i32 {
     loop i: u64 = 0 while i < vec_size(dirnames) .. ++i {
-        dirname: string = ? dirnames[i] then sdsnew(dirnames[i]) else nil
+        dirname: string = str_new(dirnames[i])
         str_append(dirname, filename[])
         if find_file(dirname) {
             str_move(dirname, filename[])
@@ -1306,8 +1306,8 @@ fn find_include(dirnames: vector_t(string), filename: *string) i32 {
 }
 
 fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) i32 {
-    filename: string = ? nil then sdsnew(nil) else nil
-    fopen_name: string = ? nil then sdsnew(nil) else nil
+    filename: string = str_new(nil)
+    fopen_name: string = str_new(nil)
     _errval: i32 = 0
     line: string;
     line_size: u64;
@@ -1413,7 +1413,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
     }
     {
-        fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
+        fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, str_new(nil))
         str_move(filename, fopen_line.filename)
         ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
@@ -1433,7 +1433,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         }
     }
     {
-        fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, ? nil then sdsnew(nil) else nil)
+        fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, str_new(nil))
         str_move(fopen_name, fopen_line.filename)
         ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
@@ -1474,7 +1474,7 @@ pub fn lex_c_code(filename: string, includedirs: *vector_t(string), stdlibdirs: 
         }
     }
     {
-        fopen_line: struc FileOpenLine = $(1, 1, ? nil then sdsnew(nil) else nil)
+        fopen_line: struc FileOpenLine = $(1, 1, str_new(nil))
         str_copy(filename, fopen_line.filename)
         ;
         vec_push_back(ctx.errors[].fopen_lines, fopen_line)
