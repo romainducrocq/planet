@@ -115,11 +115,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
     _errval: i32 = 0
     fclose(vec_back(ctx[].file_reads).fd)
     vec_back(ctx[].file_reads).fd = nil
-    if (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename {
-        " #@MACRO@:str_delete(vec_back(ctx->file_reads).filename)"
-        sdsfree((ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename)
-        (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(vec_back(ctx[].file_reads).filename)
     vec_pop_back(ctx[].file_reads)
     if not vec_empty(ctx[].file_reads) and not vec_back(ctx[].file_reads).fd {
         # TODO THROW_ABORT_IF(vec_back(ctx->file_reads).buf || vec_back(ctx->file_reads).len != 0);

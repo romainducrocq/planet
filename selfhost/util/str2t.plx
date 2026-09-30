@@ -148,11 +148,7 @@ pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
         }
     }
     hex_value: i8 = cast<i8>(hex_string_to_long(str_hex))
-    if str_hex {
-        " #@MACRO@:str_delete(str_hex)"
-        sdsfree(str_hex)
-        str_hex = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(str_hex)
     return hex_value
 }
 
@@ -164,11 +160,7 @@ pub fn string_bytes_to_int32(string_literal: vector_t(i8), byte_at: u64) i32 {
         }
     }
     hex_value: i32 = cast<i32>(hex_string_to_long(str_hex))
-    if str_hex {
-        " #@MACRO@:str_delete(str_hex)"
-        sdsfree(str_hex)
-        str_hex = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(str_hex)
     return hex_value
 }
 
@@ -180,11 +172,7 @@ pub fn string_bytes_to_int64(string_literal: vector_t(i8), byte_at: u64) i64 {
         }
     }
     hex_value: i64 = cast<i64>(hex_string_to_long(str_hex))
-    if str_hex {
-        " #@MACRO@:str_delete(str_hex)"
-        sdsfree(str_hex)
-        str_hex = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(str_hex)
     return hex_value
 }
 

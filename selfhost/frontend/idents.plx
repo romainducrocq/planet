@@ -132,11 +132,7 @@ pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label
     {
         strto_i: string = str_to_string(i)
         str_append(name, strto_i)
-        if strto_i {
-            " #@MACRO@:str_delete(strto_i)"
-            sdsfree(strto_i)
-            strto_i = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(strto_i)
     }
     str_append(name, map_get(ctx[].hash_table, target))
     return make_string_identifier(ctx, @name)
