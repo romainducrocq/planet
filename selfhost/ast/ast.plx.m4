@@ -43,10 +43,10 @@ PairKeyValue(``TIdentifier'', ``string_t'')
 
 type struc IdentifierContext(label_count: u32, var_count: u32, struct_count: u32, hash_table: hashmap_t(``TIdentifier'', ``string_t''))
 
-pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64;
-pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64;
-pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64;
-pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64;
+pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string_t) u64;
+pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string_t) u64;
+pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string_t) u64;
+pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string_t) u64;
 m4_define(`UID_SEPARATOR', `"."')m4_dnl
 
 ')m4_dnl

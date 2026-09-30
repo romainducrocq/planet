@@ -11,7 +11,7 @@ pub fn dbl_to_binary(decimal: f64) u64 {
     return binary
 }
 
-pub fn string_to_literal(str_string: string, string_literal: *vector_t(i8)) none {
+pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) none {
     # TODO THROW_ABORT_IF(str_size(str_string) < 2);
     loop byte: u64 = 1 while byte < str_size(str_string) - 1 .. ++byte {
         str_char: char = cast<char>(str_string[byte])
@@ -79,7 +79,7 @@ pub fn string_to_literal(str_string: string, string_literal: *vector_t(i8)) none
     }
 }
 
-pub fn string_to_char_ascii(str_char: string) i32 {
+pub fn string_to_char_ascii(str_char: string_t) i32 {
     # TODO THROW_ABORT_IF(str_size(str_char) < 2 || str_size(str_char) > 4);
     c_char: char = cast<char>(str_char[1])
     if c_char == '\\' {
@@ -134,14 +134,14 @@ fn hex_string_to_long(str_hex: string) i64 {
     return value
 }
 
-fn string_literal_byte_to_hex(value: i8, str_hex: *string) none {
+fn string_literal_byte_to_hex(value: i8, str_hex: *string_t) none {
     byte_hex: [3]char;
     sprintf(byte_hex, "%.2x", cast<u32>(value))
     str_append(str_hex[], byte_hex)
 }
 
 pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
-    str_hex: string = str_new("")
+    str_hex: string_t = str_new("")
     loop byte: u64 = byte_at + 1 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
@@ -153,7 +153,7 @@ pub fn string_bytes_to_int8(string_literal: vector_t(i8), byte_at: u64) i8 {
 }
 
 pub fn string_bytes_to_int32(string_literal: vector_t(i8), byte_at: u64) i32 {
-    str_hex: string = str_new("")
+    str_hex: string_t = str_new("")
     loop byte: u64 = byte_at + 4 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
@@ -165,7 +165,7 @@ pub fn string_bytes_to_int32(string_literal: vector_t(i8), byte_at: u64) i32 {
 }
 
 pub fn string_bytes_to_int64(string_literal: vector_t(i8), byte_at: u64) i64 {
-    str_hex: string = str_new("")
+    str_hex: string_t = str_new("")
     loop byte: u64 = byte_at + 8 while byte-- > byte_at {
         if byte < vec_size(string_literal) {
             string_literal_byte_to_hex(string_literal[byte], @str_hex)
@@ -176,8 +176,8 @@ pub fn string_bytes_to_int64(string_literal: vector_t(i8), byte_at: u64) i64 {
     return hex_value
 }
 
-pub fn string_literal_to_const(string_literal: vector_t(i8)) string {
-    string_const: string = str_new("")
+pub fn string_literal_to_const(string_literal: vector_t(i8)) string_t {
+    string_const: string_t = str_new("")
     loop i: u64 = 0 while i < vec_size(string_literal) .. ++i {
         byte: i8 = string_literal[i]
         match byte {
