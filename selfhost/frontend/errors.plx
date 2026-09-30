@@ -541,11 +541,7 @@ pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: u64, is_union: i
     {
         name_fmt: string = ? nil then sdsnew(nil) else nil
         str_append(struct_fmt[], get_name_fmt(ctx, name, @name_fmt))
-        if name_fmt {
-            " #@MACRO@:str_delete(name_fmt)"
-            sdsfree(name_fmt)
-            name_fmt = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(name_fmt)
     }
     return struct_fmt[]
 }
@@ -558,33 +554,21 @@ pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         str_append(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[0], @type_fmt))
-        if type_fmt {
-            " #@MACRO@:str_delete(type_fmt)"
-            sdsfree(type_fmt)
-            type_fmt = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(type_fmt)
     }
     loop i: u64 = 1 while i < vec_size(fun_type[].param_types) .. ++i {
         str_append(fun_fmt[], `","' " ")
         {
             type_fmt: string = ? nil then sdsnew(nil) else nil
             str_append(fun_fmt[], get_type_fmt(ctx, fun_type[].param_types[i], @type_fmt))
-            if type_fmt {
-                " #@MACRO@:str_delete(type_fmt)"
-                sdsfree(type_fmt)
-                type_fmt = ? nil then sdsnew(nil) else nil
-            }
+            str_delete(type_fmt)
         }
     }
     str_append(fun_fmt[], `")"' " -> ")
     {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         str_append(fun_fmt[], get_type_fmt(ctx, fun_type[].ret_type, @type_fmt))
-        if type_fmt {
-            " #@MACRO@:str_delete(type_fmt)"
-            sdsfree(type_fmt)
-            type_fmt = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(type_fmt)
     }
     return fun_fmt[]
 }
@@ -601,11 +585,7 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         str_append(ptr_fmt[], get_type_fmt(ctx, ptr_type[].ref_type, @type_fmt))
-        if type_fmt {
-            " #@MACRO@:str_delete(type_fmt)"
-            sdsfree(type_fmt)
-            type_fmt = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(type_fmt)
     }
     return ptr_fmt[]
 }
@@ -615,11 +595,7 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
     {
         strto_size: string = str_to_string(arr_type[].size)
         str_append(arr_fmt[], strto_size)
-        if strto_size {
-            " #@MACRO@:str_delete(strto_size)"
-            sdsfree(strto_size)
-            strto_size = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(strto_size)
     }
     str_append(arr_fmt[], "]")
     loop while arr_type[].elem_type[].tag == AST_Array_t {
@@ -628,11 +604,7 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
         {
             strto_size: string = str_to_string(arr_type[].size)
             str_append(arr_fmt[], strto_size)
-            if strto_size {
-                " #@MACRO@:str_delete(strto_size)"
-                sdsfree(strto_size)
-                strto_size = ? nil then sdsnew(nil) else nil
-            }
+            str_delete(strto_size)
         }
         str_append(arr_fmt[], "]")
     }
@@ -642,11 +614,7 @@ pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fm
     else {
         type_fmt: string = ? nil then sdsnew(nil) else nil
         str_append(arr_fmt[], get_type_fmt(ctx, arr_type[].elem_type, @type_fmt))
-        if type_fmt {
-            " #@MACRO@:str_delete(type_fmt)"
-            sdsfree(type_fmt)
-            type_fmt = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(type_fmt)
     }
     return arr_fmt[]
 }

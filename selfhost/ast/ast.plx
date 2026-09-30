@@ -176,11 +176,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string) u64
         map_move_add(ctx[].hash_table, identifier, value[])
     }
     else {
-        if value[] {
-            " #@MACRO@:str_delete(*value)"
-            sdsfree(value[])
-            value[] = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(value[])
     }
     return identifier
 }
@@ -190,11 +186,7 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     {
         strto_uid: string = str_to_string(ctx[].label_count)
         str_append(name[], strto_uid)
-        if strto_uid {
-            " #@MACRO@:str_delete(strto_uid)"
-            sdsfree(strto_uid)
-            strto_uid = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(strto_uid)
     }
     ctx[].label_count++
     return make_string_identifier(ctx, name)
@@ -205,11 +197,7 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string) u64 {
     {
         strto_uid: string = str_to_string(ctx[].var_count)
         str_append(name[], strto_uid)
-        if strto_uid {
-            " #@MACRO@:str_delete(strto_uid)"
-            sdsfree(strto_uid)
-            strto_uid = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(strto_uid)
     }
     ctx[].var_count++
     return make_string_identifier(ctx, name)
@@ -220,11 +208,7 @@ pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string) u64 
     {
         strto_uid: string = str_to_string(ctx[].struct_count)
         str_append(name[], strto_uid)
-        if strto_uid {
-            " #@MACRO@:str_delete(strto_uid)"
-            sdsfree(strto_uid)
-            strto_uid = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(strto_uid)
     }
     ctx[].struct_count++
     return make_string_identifier(ctx, name)

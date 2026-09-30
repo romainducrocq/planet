@@ -229,16 +229,8 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     return _errval
 }
 
@@ -553,16 +545,8 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     return _errval
 }
 
@@ -863,11 +847,7 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -905,16 +885,8 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     return _errval
 }
 
@@ -963,16 +935,8 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     return _errval
 }
 
@@ -1037,11 +1001,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -1082,11 +1042,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -1103,11 +1059,7 @@ fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     }
     node[]._base[].exp_type = make_Int()
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -1234,16 +1186,8 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -1334,16 +1278,8 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -1390,16 +1326,8 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -1454,16 +1382,8 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -1513,16 +1433,8 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     return _errval
 }
 
@@ -1556,16 +1468,8 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
     }
     node[]._base[].exp_type = make_Int()
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     return _errval
 }
 
@@ -1614,16 +1518,8 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     node[]._base[].exp_type = make_Int()
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -1662,16 +1558,8 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     node[]._base[].exp_type = make_Int()
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -1950,16 +1838,8 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@common_type)
     return _errval
 }
@@ -2007,21 +1887,9 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_1 {
-        " #@MACRO@:str_delete(strto_fmt_1)"
-        sdsfree(strto_fmt_1)
-        strto_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_2 {
-        " #@MACRO@:str_delete(strto_fmt_2)"
-        sdsfree(strto_fmt_2)
-        strto_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(strto_fmt_1)
+    str_delete(strto_fmt_2)
     return _errval
 }
 
@@ -2043,11 +1911,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2134,16 +1998,8 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
         }
     }
     label _Lfinally
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_Type(@ref_type)
     free_Type(@subscript_type)
     return _errval
@@ -2162,11 +2018,7 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     }
     node[]._base[].exp_type = make_ULong()
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2198,11 +2050,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     }
     node[]._base[].exp_type = make_ULong()
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2241,16 +2089,8 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2308,16 +2148,8 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
         (node[]._base[].exp_type)[]._ref_count++
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2355,11 +2187,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2429,16 +2257,8 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2454,11 +2274,7 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2474,11 +2290,7 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2494,11 +2306,7 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2514,11 +2322,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2551,11 +2355,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         }
     }
     label _Lfinally
-    if strto_fmt {
-        " #@MACRO@:str_delete(strto_fmt)"
-        sdsfree(strto_fmt)
-        strto_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(strto_fmt)
     vec_delete(values)
     return _errval
 }
@@ -2589,11 +2389,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         }
     }
     label _Lfinally
-    if strto_fmt {
-        " #@MACRO@:str_delete(strto_fmt)"
-        sdsfree(strto_fmt)
-        strto_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(strto_fmt)
     vec_delete(values)
     return _errval
 }
@@ -2627,11 +2423,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         }
     }
     label _Lfinally
-    if strto_fmt {
-        " #@MACRO@:str_delete(strto_fmt)"
-        sdsfree(strto_fmt)
-        strto_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(strto_fmt)
     vec_delete(values)
     return _errval
 }
@@ -2665,11 +2457,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
         }
     }
     label _Lfinally
-    if strto_fmt {
-        " #@MACRO@:str_delete(strto_fmt)"
-        sdsfree(strto_fmt)
-        strto_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(strto_fmt)
     vec_delete(values)
     return _errval
 }
@@ -2750,11 +2538,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -2782,21 +2566,9 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_1 {
-        " #@MACRO@:str_delete(strto_fmt_1)"
-        sdsfree(strto_fmt_1)
-        strto_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_2 {
-        " #@MACRO@:str_delete(strto_fmt_2)"
-        sdsfree(strto_fmt_2)
-        strto_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
+    str_delete(strto_fmt_1)
+    str_delete(strto_fmt_2)
     return _errval
 }
 
@@ -2937,21 +2709,9 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_1 {
-        " #@MACRO@:str_delete(strto_fmt_1)"
-        sdsfree(strto_fmt_1)
-        strto_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_2 {
-        " #@MACRO@:str_delete(strto_fmt_2)"
-        sdsfree(strto_fmt_2)
-        strto_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
+    str_delete(strto_fmt_1)
+    str_delete(strto_fmt_2)
     return _errval
 }
 
@@ -2973,21 +2733,9 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_1 {
-        " #@MACRO@:str_delete(strto_fmt_1)"
-        sdsfree(strto_fmt_1)
-        strto_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt_2 {
-        " #@MACRO@:str_delete(strto_fmt_2)"
-        sdsfree(strto_fmt_2)
-        strto_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
+    str_delete(strto_fmt_1)
+    str_delete(strto_fmt_2)
     return _errval
 }
 
@@ -3064,16 +2812,8 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -3147,21 +2887,9 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }
     }
     label _Lfinally
-    if name_fmt_1 {
-        " #@MACRO@:str_delete(name_fmt_1)"
-        sdsfree(name_fmt_1)
-        name_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if name_fmt_2 {
-        " #@MACRO@:str_delete(name_fmt_2)"
-        sdsfree(name_fmt_2)
-        name_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt_1)
+    str_delete(name_fmt_2)
+    str_delete(type_fmt)
     free_IdentifierAttr(@param_attrs)
     free_Symbol(@symbol)
     free_Type(@param_type)
@@ -3225,21 +2953,9 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     symbol = make_Symbol(@glob_fun_type, @glob_fun_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_IdentifierAttr(@glob_fun_attrs)
     free_Symbol(@symbol)
     free_Type(@glob_fun_type)
@@ -3402,16 +3118,8 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if strto_fmt {
-        " #@MACRO@:str_delete(strto_fmt)"
-        sdsfree(strto_fmt)
-        strto_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
+    str_delete(strto_fmt)
     return _errval
 }
 
@@ -3427,11 +3135,7 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -3579,11 +3283,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -3680,11 +3380,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -3863,21 +3559,9 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     symbol = make_Symbol(@glob_var_type, @glob_var_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_IdentifierAttr(@glob_var_attrs)
     free_Symbol(@symbol)
     free_InitialValue(@init_value)
@@ -3927,21 +3611,9 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_1 {
-        " #@MACRO@:str_delete(type_fmt_1)"
-        sdsfree(type_fmt_1)
-        type_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt_2 {
-        " #@MACRO@:str_delete(type_fmt_2)"
-        sdsfree(type_fmt_2)
-        type_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt_1)
+    str_delete(type_fmt_2)
     free_IdentifierAttr(@local_var_attrs)
     free_Symbol(@symbol)
     free_InitialValue(@init_value)
@@ -4011,16 +3683,8 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(type_fmt)
     free_IdentifierAttr(@local_var_attrs)
     free_Symbol(@symbol)
     free_Type(@local_var_type)
@@ -4089,11 +3753,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -4138,21 +3798,9 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if struct_fmt {
-        " #@MACRO@:str_delete(struct_fmt)"
-        sdsfree(struct_fmt)
-        struct_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
+    str_delete(struct_fmt)
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -4222,11 +3870,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     struct_typedef = make_StructTypedef(alignment, size, @member_names, @members)
     map_move_add(ctx[].frontend[].struct_typedef_table, node[].tag_name, struct_typedef)
     label _Lfinally
-    if struct_fmt {
-        " #@MACRO@:str_delete(struct_fmt)"
-        sdsfree(struct_fmt)
-        struct_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(struct_fmt)
     free_StructMember(@struct_member)
     free_StructTypedef(@struct_typedef)
     free_Type(@member_type)
@@ -4251,11 +3895,7 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     }
     set_insert(ctx[].label_set, node[].target)
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -4400,16 +4040,8 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
         }
     }
     label _Lfinally
-    if name_fmt_1 {
-        " #@MACRO@:str_delete(name_fmt_1)"
-        sdsfree(name_fmt_1)
-        name_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if name_fmt_2 {
-        " #@MACRO@:str_delete(name_fmt_2)"
-        sdsfree(name_fmt_2)
-        name_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt_1)
+    str_delete(name_fmt_2)
     return _errval
 }
 
@@ -4474,16 +4106,8 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
         jump _Lfinally
     }
     label _Lfinally
-    if struct_fmt {
-        " #@MACRO@:str_delete(struct_fmt)"
-        sdsfree(struct_fmt)
-        struct_fmt = ? nil then sdsnew(nil) else nil
-    }
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(struct_fmt)
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -4567,11 +4191,7 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -4739,11 +4359,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -5089,11 +4705,7 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -5801,11 +5413,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
         }
     }
     label _Lfinally
-    if type_fmt {
-        " #@MACRO@:str_delete(type_fmt)"
-        sdsfree(type_fmt)
-        type_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(type_fmt)
     return _errval
 }
 
@@ -5865,11 +5473,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -5941,11 +5545,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     }
     exit_scope(ctx)
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -6020,11 +5620,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         }
     }
     label _Lfinally
-    if name_fmt {
-        " #@MACRO@:str_delete(name_fmt)"
-        sdsfree(name_fmt)
-        name_fmt = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(name_fmt)
     return _errval
 }
 
@@ -6097,16 +5693,8 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         }
     }
     label _Lfinally
-    if struct_fmt_1 {
-        " #@MACRO@:str_delete(struct_fmt_1)"
-        sdsfree(struct_fmt_1)
-        struct_fmt_1 = ? nil then sdsnew(nil) else nil
-    }
-    if struct_fmt_2 {
-        " #@MACRO@:str_delete(struct_fmt_2)"
-        sdsfree(struct_fmt_2)
-        struct_fmt_2 = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(struct_fmt_1)
+    str_delete(struct_fmt_2)
     return _errval
 }
 
@@ -6278,11 +5866,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
     set_delete(ctx.union_def_set)
     map_delete(errors[].info_at_map)
     loop i: u64 = 0 while i < vec_size(errors[].fopen_lines) .. ++i {
-        if errors[].fopen_lines[i].filename {
-            " #@MACRO@:str_delete(errors->fopen_lines[i].filename)"
-            sdsfree(errors[].fopen_lines[i].filename)
-            errors[].fopen_lines[i].filename = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(errors[].fopen_lines[i].filename)
     }
     vec_delete(errors[].fopen_lines)
     vec_delete(errors[].token_infos)

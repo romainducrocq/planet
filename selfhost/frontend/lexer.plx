@@ -1285,11 +1285,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
     }
     label _Lfinally
     ;
-    if smatch {
-        " #@MACRO@:str_delete(smatch)"
-        sdsfree(smatch)
-        smatch = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(smatch)
     ;
     return _errval
 }
@@ -1303,11 +1299,7 @@ fn find_include(dirnames: vector_t(string), filename: *string) i32 {
             ;
             return true
         }
-        if dirname {
-            " #@MACRO@:str_delete(dirname)"
-            sdsfree(dirname)
-            dirname = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(dirname)
         ;
     }
     return false
@@ -1452,17 +1444,9 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     ctx[].match_size = match_size
     label _Lfinally
     ;
-    if filename {
-        " #@MACRO@:str_delete(filename)"
-        sdsfree(filename)
-        filename = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(filename)
     ;
-    if fopen_name {
-        " #@MACRO@:str_delete(fopen_name)"
-        sdsfree(fopen_name)
-        fopen_name = ? nil then sdsnew(nil) else nil
-    }
+    str_delete(fopen_name)
     ;
     return _errval
 }
@@ -1514,11 +1498,7 @@ pub fn lex_c_code(filename: string, includedirs: *vector_t(string), stdlibdirs: 
     ;
     set_delete(ctx.includename_set)
     loop i: u64 = 0 while i < vec_size(fileio[].file_reads) .. ++i {
-        if fileio[].file_reads[i].filename {
-            " #@MACRO@:str_delete(fileio->file_reads[i].filename)"
-            sdsfree(fileio[].file_reads[i].filename)
-            fileio[].file_reads[i].filename = ? nil then sdsnew(nil) else nil
-        }
+        str_delete(fileio[].file_reads[i].filename)
         ;
     }
     vec_delete(fileio[].file_reads)
