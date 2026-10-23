@@ -72,37 +72,19 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
 
     CATCH_ENTER
     verbose(ctx, "-- Lexing ... ")
-    loop .. while 0 {
-        " #@MACRO@:TRY(lex_c_code(ctx->filename, &ctx->includedirs, &ctx->stdlibdirs, errors, fileio, &identifiers, &tokens))"
-        _errval = lex_c_code(ctx[].filename, @ctx[].includedirs, @ctx[].stdlibdirs, errors, fileio, @identifiers, @tokens)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(lex_c_code(ctx[].filename, @ctx[].includedirs, @ctx[].stdlibdirs, errors, fileio, @identifiers, @tokens))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 255 {
         jump _Lfinally
     }
     verbose(ctx, "-- Parsing ... ")
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_tokens(&tokens, errors, &identifiers, &c_ast))"
-        _errval = parse_tokens(@tokens, errors, @identifiers, @c_ast)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_tokens(@tokens, errors, @identifiers, @c_ast))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 254 {
         jump _Lfinally
     }
     verbose(ctx, "-- Semantic analysis ... ")
-    loop .. while 0 {
-        " #@MACRO@:TRY(analyze_semantic(c_ast, errors, &frontend, &identifiers))"
-        _errval = analyze_semantic(c_ast, errors, @frontend, @identifiers)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(analyze_semantic(c_ast, errors, @frontend, @identifiers))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 253 {
         jump _Lfinally
@@ -131,13 +113,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     verbose(ctx, "-- Code emission ... ")
     set_filename_ext(ctx, "s")
-    loop .. while 0 {
-        " #@MACRO@:TRY(open_fwrite(fileio, ctx->filename))"
-        _errval = open_fwrite(fileio, ctx[].filename)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(open_fwrite(fileio, ctx[].filename))
     emit_gas_code(@asm_ast, @backend, fileio, @identifiers)
     close_fwrite(fileio)
     verbose(ctx, "OK\n")
@@ -288,20 +264,8 @@ pub fn main(argc: i32, argv: *string) i32 {
     }
 
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(arg_parse(&ctx, argc, argv))"
-        _errval = arg_parse(@ctx, argc, argv)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(compile(&ctx, &errors, &fileio))"
-        _errval = compile(@ctx, @errors, @fileio)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(arg_parse(@ctx, argc, argv))
+    TRY(compile(@ctx, @errors, @fileio))
     FINALLY
     map_delete(errors.info_at_map)
     loop i: u64 = 0 while i < vec_size(errors.fopen_lines) .. ++i {
