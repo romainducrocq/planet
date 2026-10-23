@@ -198,13 +198,7 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32;
 
 fn is_valid_ptr(ctx: *struc SemanticContext, ptr_type: *struc Pointer) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, ptr_type->ref_type))"
-        _errval = is_valid_type(ctx, ptr_type[].ref_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(is_valid_type(ctx, ptr_type[].ref_type))
     FINALLY
     CATCH_EXIT
 }
@@ -221,13 +215,7 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, arr_type->elem_type))"
-        _errval = is_valid_type(ctx, arr_type[].elem_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(is_valid_type(ctx, arr_type[].elem_type))
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)
@@ -238,23 +226,11 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     CATCH_ENTER
     match type_t[].tag {
         -> AST_Pointer_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(is_valid_ptr(ctx, &type_t->get._Pointer))"
-                _errval = is_valid_ptr(ctx, @type_t[].get._Pointer)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(is_valid_ptr(ctx, @type_t[].get._Pointer))
         }
         break
         -> AST_Array_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(is_valid_arr(ctx, &type_t->get._Array))"
-                _errval = is_valid_arr(ctx, @type_t[].get._Array)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(is_valid_arr(ctx, @type_t[].get._Array))
         }
         break
         -> AST_FunType_t {
@@ -856,13 +832,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     ctx[].errors[].info_at_buf = node[]._base[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, node->target_type))"
-        _errval = reslv_struct_type(ctx, node[].target_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, node[].target_type))
     if node[].target_type[].tag ~= AST_Void_t and ((node[].exp[].exp_type[].tag == AST_Double_t and node[].target_type[].tag == AST_Pointer_t) or (node[].exp[].exp_type[].tag == AST_Pointer_t and node[].target_type[].tag == AST_Double_t) or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type)) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
@@ -871,13 +841,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, node->target_type))"
-        _errval = is_valid_type(ctx, node[].target_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(is_valid_type(ctx, node[].target_type))
     if node[].target_type ~= node[]._base[].exp_type {
         " #@MACRO@:sptr_copy(Type, node->target_type, node->_base->exp_type)"
         free_Type(@node[]._base[].exp_type)
@@ -901,13 +865,7 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CE
         (exp_type_cp)[]._ref_count++
     }
     exp[] = make_CCast(exp, @exp_type_cp, info_at)
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_cast_exp(ctx, &(*exp)->get._CCast))"
-        _errval = check_cast_exp(ctx, @(exp[])[].get._CCast)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_cast_exp(ctx, @(exp[])[].get._CCast))
     FINALLY
     free_Type(@exp_type_cp)
     CATCH_EXIT
@@ -918,13 +876,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if (is_type_arithmetic((exp[])[].exp_type) and is_type_arithmetic(exp_type[])) or ((exp[])[].tag == AST_CConstant_t and (exp_type[])[].tag == AST_Pointer_t and is_const_null_ptr(@(exp[])[].get._CConstant)) or ((exp_type[])[].tag == AST_Pointer_t and (exp_type[])[].get._Pointer.ref_type[].tag == AST_Void_t and (exp[])[].exp_type[].tag == AST_Pointer_t) or ((exp[])[].exp_type[].tag == AST_Pointer_t and (exp[])[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and (exp_type[])[].tag == AST_Pointer_t) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, exp_type, exp))"
-            _errval = cast_exp(ctx, exp_type, exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, exp_type, exp))
     }
     else {
         loop .. while 0 {
@@ -944,13 +896,7 @@ fn promote_char_to_int(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
     promote_type: *struc Type = sptr_new()
     CATCH_ENTER
     promote_type = make_Int()
-    loop .. while 0 {
-        " #@MACRO@:TRY(cast_exp(ctx, &promote_type, exp))"
-        _errval = cast_exp(ctx, @promote_type, exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(cast_exp(ctx, @promote_type, exp))
     FINALLY
     free_Type(@promote_type)
     CATCH_EXIT
@@ -979,13 +925,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
         -> AST_Char_t {
             -> AST_SChar_t {
                 -> AST_UChar_t {
-                    loop .. while 0 {
-                        " #@MACRO@:TRY(promote_char_to_int(ctx, &node->exp))"
-                        _errval = promote_char_to_int(ctx, @node[].exp)
-                        if _errval ~= 0 {
-                            jump _Lfinally
-                        }
-                    }
+                    TRY(promote_char_to_int(ctx, @node[].exp))
                 }
             }
         }
@@ -1020,13 +960,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         -> AST_Char_t {
             -> AST_SChar_t {
                 -> AST_UChar_t {
-                    loop .. while 0 {
-                        " #@MACRO@:TRY(promote_char_to_int(ctx, &node->exp))"
-                        _errval = promote_char_to_int(ctx, @node[].exp)
-                        if _errval ~= 0 {
-                            jump _Lfinally
-                        }
-                    }
+                    TRY(promote_char_to_int(ctx, @node[].exp))
                 }
             }
         }
@@ -1067,33 +1001,15 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     CATCH_ENTER
     match node[].unop.tag {
         -> AST_CComplement_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_unary_complement_exp(ctx, node))"
-                _errval = check_unary_complement_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_unary_complement_exp(ctx, node))
         }
         break
         -> AST_CNegate_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_unary_neg_exp(ctx, node))"
-                _errval = check_unary_neg_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_unary_neg_exp(ctx, node))
         }
         break
         -> AST_CNot_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_unary_not_exp(ctx, node))"
-                _errval = check_unary_not_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_unary_not_exp(ctx, node))
         }
         break
         otherwise {
@@ -1115,13 +1031,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     elif node[].exp_left[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type) and is_type_int(node[].exp_right[].exp_type) {
         common_type = make_Long()
         if not is_same_type(node[].exp_right[].exp_type, common_type) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-                _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_exp(ctx, @common_type, @node[].exp_right))
         }
         if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
             " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
@@ -1134,13 +1044,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     elif is_type_int(node[].exp_left[].exp_type) and node[].exp_right[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_right[].exp_type[].get._Pointer.ref_type) {
         common_type = make_Long()
         if not is_same_type(node[].exp_left[].exp_type, common_type) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-                _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_exp(ctx, @common_type, @node[].exp_left))
         }
         if node[].exp_right[].exp_type ~= node[]._base[].exp_type {
             " #@MACRO@:sptr_copy(Type, node->exp_right->exp_type, node->_base->exp_type)"
@@ -1159,22 +1063,10 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         }
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_left))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
@@ -1204,13 +1096,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         if is_type_int(node[].exp_right[].exp_type) {
             common_type = make_Long()
             if not is_same_type(node[].exp_right[].exp_type, common_type) {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-                    _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(cast_exp(ctx, @common_type, @node[].exp_right))
             }
             if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
                 " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
@@ -1251,22 +1137,10 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_left))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
@@ -1299,22 +1173,10 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     }
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_left))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
@@ -1347,22 +1209,10 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_left))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
@@ -1401,22 +1251,10 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
     }
     elif is_type_char(node[].exp_left[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(promote_char_to_int(ctx, &node->exp_left))"
-            _errval = promote_char_to_int(ctx, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(promote_char_to_int(ctx, @node[].exp_left))
     }
     if not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &node->exp_left->exp_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @node[].exp_left[].exp_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @node[].exp_left[].exp_type, @node[].exp_right))
     }
     if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
         " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
@@ -1440,13 +1278,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 
 fn check_bitshift_right_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_binary_bitshift_exp(ctx, node))"
-        _errval = check_binary_bitshift_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_binary_bitshift_exp(ctx, node))
     if is_type_signed(node[].exp_left[].exp_type) {
         node[].binop = make_CBinaryOp(AST_CBitShrArithmetic_t)
     }
@@ -1479,13 +1311,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     common_type: *struc Type = sptr_new()
     CATCH_ENTER
     if node[].exp_left[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
-        loop .. while 0 {
-            " #@MACRO@:TRY(get_joint_ptr_type(ctx, node->exp_left, node->exp_right, &common_type))"
-            _errval = get_joint_ptr_type(ctx, node[].exp_left, node[].exp_right, @common_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(get_joint_ptr_type(ctx, node[].exp_left, node[].exp_right, @common_type))
     }
     elif is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
@@ -1499,22 +1325,10 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_left))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     node[]._base[].exp_type = make_Int()
     FINALLY
@@ -1539,22 +1353,10 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     }
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_left))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_left))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     node[]._base[].exp_type = make_Int()
     FINALLY
@@ -1568,34 +1370,16 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     CATCH_ENTER
     match node[].binop.tag {
         -> AST_CAdd_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_binary_add_exp(ctx, node))"
-                _errval = check_binary_add_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_binary_add_exp(ctx, node))
         }
         break
         -> AST_CSubtract_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_binary_subtract_exp(ctx, node))"
-                _errval = check_binary_subtract_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_binary_subtract_exp(ctx, node))
         }
         break
         -> AST_CMultiply_t {
             -> AST_CDivide_t {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(check_multiply_divide_exp(ctx, node))"
-                    _errval = check_multiply_divide_exp(ctx, node)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(check_multiply_divide_exp(ctx, node))
             }
         }
         break
@@ -1603,59 +1387,29 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             -> AST_CBitAnd_t {
                 -> AST_CBitOr_t {
                     -> AST_CBitXor_t {
-                        loop .. while 0 {
-                            " #@MACRO@:TRY(check_remainder_bitwise_exp(ctx, node))"
-                            _errval = check_remainder_bitwise_exp(ctx, node)
-                            if _errval ~= 0 {
-                                jump _Lfinally
-                            }
-                        }
+                        TRY(check_remainder_bitwise_exp(ctx, node))
                     }
                 }
             }
         }
         break
         -> AST_CBitShiftLeft_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_binary_bitshift_exp(ctx, node))"
-                _errval = check_binary_bitshift_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_binary_bitshift_exp(ctx, node))
         }
         break
         -> AST_CBitShiftRight_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_bitshift_right_exp(ctx, node))"
-                _errval = check_bitshift_right_exp(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_bitshift_right_exp(ctx, node))
         }
         break
         -> AST_CAnd_t {
             -> AST_COr_t {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(check_binary_logical_exp(ctx, node))"
-                    _errval = check_binary_logical_exp(ctx, node)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(check_binary_logical_exp(ctx, node))
             }
         }
         break
         -> AST_CEqual_t {
             -> AST_CNotEqual_t {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(check_binary_equality_exp(ctx, node))"
-                    _errval = check_binary_equality_exp(ctx, node)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(check_binary_equality_exp(ctx, node))
             }
         }
         break
@@ -1663,13 +1417,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             -> AST_CLessOrEqual_t {
                 -> AST_CGreaterThan_t {
                     -> AST_CGreaterOrEqual_t {
-                        loop .. while 0 {
-                            " #@MACRO@:TRY(check_binary_relational_exp(ctx, node))"
-                            _errval = check_binary_relational_exp(ctx, node)
-                            if _errval ~= 0 {
-                                jump _Lfinally
-                            }
-                        }
+                        TRY(check_binary_relational_exp(ctx, node))
                     }
                 }
             }
@@ -1703,13 +1451,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
             }
         }
         elif not is_same_type(node[].exp_right[].exp_type, node[].exp_left[].exp_type) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_assign(ctx, &node->exp_left->exp_type, &node->exp_right))"
-                _errval = cast_assign(ctx, @node[].exp_left[].exp_type, @node[].exp_right)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_assign(ctx, @node[].exp_left[].exp_type, @node[].exp_right))
         }
         if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
             " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
@@ -1732,13 +1474,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
             }
         }
         elif not is_same_type(node[].exp_right[].exp_type, exp_left[].exp_type) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_assign(ctx, &exp_left->exp_type, &node->exp_right))"
-                _errval = cast_assign(ctx, @exp_left[].exp_type, @node[].exp_right)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_assign(ctx, @exp_left[].exp_type, @node[].exp_right))
         }
         if exp_left[].exp_type ~= node[]._base[].exp_type {
             " #@MACRO@:sptr_copy(Type, exp_left->exp_type, node->_base->exp_type)"
@@ -1794,13 +1530,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
         common_type = get_joint_type(node[].exp_middle, node[].exp_right)
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
-        loop .. while 0 {
-            " #@MACRO@:TRY(get_joint_ptr_type(ctx, node->exp_middle, node->exp_right, &common_type))"
-            _errval = get_joint_ptr_type(ctx, node[].exp_middle, node[].exp_right, @common_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(get_joint_ptr_type(ctx, node[].exp_middle, node[].exp_right, @common_type))
     }
     else {
         loop .. while 0 {
@@ -1811,22 +1541,10 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
         }
     }
     if not is_same_type(node[].exp_middle[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_middle))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_middle)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_middle))
     }
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_exp(ctx, &common_type, &node->exp_right))"
-            _errval = cast_exp(ctx, @common_type, @node[].exp_right)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
@@ -1871,13 +1589,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     }
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         if not is_same_type(node[].args[i][].exp_type, fun_type[].param_types[i]) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_assign(ctx, &fun_type->param_types[i], &node->args[i]))"
-                _errval = cast_assign(ctx, @fun_type[].param_types[i], @node[].args[i])
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_assign(ctx, @fun_type[].param_types[i], @node[].args[i]))
         }
     }
     if fun_type[].ret_type ~= node[]._base[].exp_type {
@@ -1947,13 +1659,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
     if node[].primary_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].primary_exp[].exp_type[].get._Pointer.ref_type) and is_type_int(node[].subscript_exp[].exp_type) {
         subscript_type = make_Long()
         if not is_same_type(node[].subscript_exp[].exp_type, subscript_type) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_exp(ctx, &subscript_type, &node->subscript_exp))"
-                _errval = cast_exp(ctx, @subscript_type, @node[].subscript_exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_exp(ctx, @subscript_type, @node[].subscript_exp))
         }
         if node[].primary_exp[].exp_type[].get._Pointer.ref_type ~= ref_type {
             " #@MACRO@:sptr_copy(Type, node->primary_exp->exp_type->get._Pointer.ref_type, ref_type)"
@@ -1965,13 +1671,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
     elif is_type_int(node[].primary_exp[].exp_type) and node[].subscript_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].subscript_exp[].exp_type[].get._Pointer.ref_type) {
         subscript_type = make_Long()
         if not is_same_type(node[].primary_exp[].exp_type, subscript_type) {
-            loop .. while 0 {
-                " #@MACRO@:TRY(cast_exp(ctx, &subscript_type, &node->primary_exp))"
-                _errval = cast_exp(ctx, @subscript_type, @node[].primary_exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(cast_exp(ctx, @subscript_type, @node[].primary_exp))
         }
         if node[].subscript_exp[].exp_type[].get._Pointer.ref_type ~= ref_type {
             " #@MACRO@:sptr_copy(Type, node->subscript_exp->exp_type->get._Pointer.ref_type, ref_type)"
@@ -2026,13 +1726,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     ctx[].errors[].info_at_buf = node[]._base[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, node->target_type))"
-        _errval = reslv_struct_type(ctx, node[].target_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, node[].target_type))
     if not is_type_complete(ctx, node[].target_type) {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
@@ -2041,13 +1735,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, node->target_type))"
-        _errval = is_valid_type(ctx, node[].target_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(is_valid_type(ctx, node[].target_type))
     node[]._base[].exp_type = make_ULong()
     FINALLY
     str_delete(type_fmt)
@@ -2199,13 +1887,7 @@ fn check_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
         }
         break
         -> AST_Structure_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_struct_typed_exp(ctx, *exp))"
-                _errval = check_struct_typed_exp(ctx, exp[])
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_struct_typed_exp(ctx, exp[]))
         }
         break
         otherwise {
@@ -2241,21 +1923,9 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
         }
     }
     elif not is_same_type(node[].exp[].exp_type, fun_type[].ret_type) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_assign(ctx, &fun_type->ret_type, &node->exp))"
-            _errval = cast_assign(ctx, @fun_type[].ret_type, @node[].exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_assign(ctx, @fun_type[].ret_type, @node[].exp))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_typed_exp(ctx, &node->exp))"
-        _errval = check_typed_exp(ctx, @node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_typed_exp(ctx, @node[].exp))
     FINALLY
     str_delete(name_fmt)
     str_delete(type_fmt)
@@ -2477,13 +2147,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         -> AST_Char_t {
             -> AST_SChar_t {
                 -> AST_UChar_t {
-                    loop .. while 0 {
-                        " #@MACRO@:TRY(promote_char_to_int(ctx, &node->lookup))"
-                        _errval = promote_char_to_int(ctx, @node[].lookup)
-                        if _errval ~= 0 {
-                            jump _Lfinally
-                        }
-                    }
+                    TRY(promote_char_to_int(ctx, @node[].lookup))
                 }
             }
         }
@@ -2494,43 +2158,19 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     }
     match node[].lookup[].exp_type[].tag {
         -> AST_Int_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_switch_int_cases(ctx, node))"
-                _errval = check_switch_int_cases(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_switch_int_cases(ctx, node))
         }
         break
         -> AST_Long_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_switch_long_cases(ctx, node))"
-                _errval = check_switch_long_cases(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_switch_long_cases(ctx, node))
         }
         break
         -> AST_UInt_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_switch_uint_cases(ctx, node))"
-                _errval = check_switch_uint_cases(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_switch_uint_cases(ctx, node))
         }
         break
         -> AST_ULong_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_switch_ulong_cases(ctx, node))"
-                _errval = check_switch_ulong_cases(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_switch_ulong_cases(ctx, node))
         }
         break
         otherwise {
@@ -2575,13 +2215,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
 fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: **struc Type) i32 {
     CATCH_ENTER
     if not is_same_type(node[].exp[].exp_type, init_type[]) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(cast_assign(ctx, init_type, &node->exp))"
-            _errval = cast_assign(ctx, init_type, @node[].exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(cast_assign(ctx, init_type, @node[].exp))
     }
     if init_type[] ~= node[]._base[].init_type {
         " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
@@ -2773,20 +2407,8 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
     CATCH_ENTER
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
     ctx[].errors[].info_at_buf = node[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, fun_type->ret_type))"
-        _errval = reslv_struct_type(ctx, fun_type[].ret_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, fun_type->ret_type))"
-        _errval = is_valid_type(ctx, fun_type[].ret_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, fun_type[].ret_type))
+    TRY(is_valid_type(ctx, fun_type[].ret_type))
     match fun_type[].ret_type[].tag {
         -> AST_Array_t {
             loop .. while 0 {
@@ -2840,13 +2462,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         ctx[].errors[].info_at_buf = node[].info_at
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_struct_type(ctx, fun_type->param_types[i]))"
-            _errval = reslv_struct_type(ctx, fun_type[].param_types[i])
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_struct_type(ctx, fun_type[].param_types[i]))
         if fun_type[].param_types[i][].tag == AST_Void_t {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
@@ -2855,13 +2471,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(is_valid_type(ctx, fun_type->param_types[i]))"
-            _errval = is_valid_type(ctx, fun_type[].param_types[i])
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(is_valid_type(ctx, fun_type[].param_types[i]))
         if fun_type[].param_types[i][].tag == AST_Array_t {
             check_arr_param_decl(fun_type, i)
         }
@@ -3190,13 +2800,7 @@ fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
     literal: *struc CStringLiteral = sptr_new()
     CATCH_ENTER
     byte: i64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_bound_string_init(ctx, node, static_arr_type))"
-        _errval = check_bound_string_init(ctx, node, static_arr_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_bound_string_init(ctx, node, static_arr_type))
     byte = static_arr_type[].size - cast<i64>(vec_size(node[].literal[].value)) - 1l
     {
         is_null_term: i32 = byte >= 0l
@@ -3221,24 +2825,12 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
     CATCH_ENTER
     match static_init_type[].tag {
         -> AST_Pointer_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_literal_string_init(ctx, node, &static_init_type->get._Pointer))"
-                _errval = check_literal_string_init(ctx, node, @static_init_type[].get._Pointer)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_literal_string_init(ctx, node, @static_init_type[].get._Pointer))
         }
         check_static_ptr_string_init(ctx, node)
         break
         -> AST_Array_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_arr_string_init(ctx, node, &static_init_type->get._Array))"
-                _errval = check_static_arr_string_init(ctx, node, @static_init_type[].get._Array)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_arr_string_init(ctx, node, @static_init_type[].get._Array))
         }
         break
         otherwise {
@@ -3254,23 +2846,11 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
     CATCH_ENTER
     match node[].exp[].tag {
         -> AST_CConstant_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_const_init(ctx, &node->exp->get._CConstant, static_init_type))"
-                _errval = check_static_const_init(ctx, @node[].exp[].get._CConstant, static_init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_const_init(ctx, @node[].exp[].get._CConstant, static_init_type))
         }
         break
         -> AST_CString_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_string_init(ctx, &node->exp->get._CString, static_init_type))"
-                _errval = check_static_string_init(ctx, @node[].exp[].get._CString, static_init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_string_init(ctx, @node[].exp[].get._CString, static_init_type))
         }
         break
         otherwise {
@@ -3289,21 +2869,9 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
 
 fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_bound_arr_init(ctx, node, arr_type))"
-        _errval = check_bound_arr_init(ctx, node, arr_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_bound_arr_init(ctx, node, arr_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_static_init(ctx, node->initializers[i], arr_type->elem_type))"
-            _errval = check_static_init(ctx, node[].initializers[i], arr_type[].elem_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_static_init(ctx, node[].initializers[i], arr_type[].elem_type))
     }
     if cast<u64>(arr_type[].size) > vec_size(node[].initializers) {
         check_static_no_init(ctx, arr_type[].elem_type, arr_type[].size - vec_size(node[].initializers))
@@ -3315,13 +2883,7 @@ fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit
 fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure) i32 {
     CATCH_ENTER
     size: i64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_bound_struct_init(ctx, node, struct_type))"
-        _errval = check_bound_struct_init(ctx, node, struct_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_bound_struct_init(ctx, node, struct_type))
     size = 0l
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
@@ -3329,13 +2891,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
             check_static_no_init(ctx, nil, member[].offset - size)
             size = member[].offset
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_static_init(ctx, node->initializers[i], member->member_type))"
-            _errval = check_static_init(ctx, node[].initializers[i], member[].member_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_static_init(ctx, node[].initializers[i], member[].member_type))
         size += get_type_scale(ctx, member[].member_type)
     }
     size -= map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
@@ -3351,23 +2907,11 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
     CATCH_ENTER
     match static_init_type[].tag {
         -> AST_Array_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_arr_init(ctx, node, &static_init_type->get._Array))"
-                _errval = check_static_arr_init(ctx, node, @static_init_type[].get._Array)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_arr_init(ctx, node, @static_init_type[].get._Array))
         }
         break
         -> AST_Structure_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_struct_init(ctx, node, &static_init_type->get._Structure))"
-                _errval = check_static_struct_init(ctx, node, @static_init_type[].get._Structure)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_struct_init(ctx, node, @static_init_type[].get._Structure))
         }
         break
         otherwise {
@@ -3388,23 +2932,11 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     CATCH_ENTER
     match node[].tag {
         -> AST_CSingleInit_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_single_static_init(ctx, &node->get._CSingleInit, static_init_type))"
-                _errval = check_single_static_init(ctx, @node[].get._CSingleInit, static_init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_single_static_init(ctx, @node[].get._CSingleInit, static_init_type))
         }
         break
         -> AST_CCompoundInit_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_compound_init(ctx, &node->get._CCompoundInit, static_init_type))"
-                _errval = check_static_compound_init(ctx, @node[].get._CCompoundInit, static_init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_compound_init(ctx, @node[].get._CCompoundInit, static_init_type))
         }
         break
         otherwise {
@@ -3420,13 +2952,7 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     CATCH_ENTER
     {
         ctx[].p_static_inits = @static_inits
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_static_init(ctx, node, static_init_type))"
-            _errval = check_static_init(ctx, node, static_init_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_static_init(ctx, node, static_init_type))
         ctx[].p_static_inits = nil
     }
     init_value[] = make_Initial(@static_inits)
@@ -3450,13 +2976,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     is_glob: i32;
     map_it: i64;
     ctx[].errors[].info_at_buf = node[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, node->var_type))"
-        _errval = reslv_struct_type(ctx, node[].var_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, node[].var_type))
     if node[].var_type[].tag == AST_Void_t {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
@@ -3465,13 +2985,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, node->var_type))"
-        _errval = is_valid_type(ctx, node[].var_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(is_valid_type(ctx, node[].var_type))
     is_glob = node[].storage_class.tag ~= AST_CStatic_t
     if node[].init {
         if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
@@ -3482,13 +2996,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_initializer(ctx, node->init, node->var_type, &init_value))"
-            _errval = check_initializer(ctx, node[].init, node[].var_type, @init_value)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_initializer(ctx, node[].init, node[].var_type, @init_value))
     }
     else {
         if node[].storage_class.tag == AST_CExtern_t {
@@ -3628,13 +3136,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     local_var_type: *struc Type = sptr_new()
     CATCH_ENTER
     if node[].init {
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_initializer(ctx, node->init, node->var_type, &init_value))"
-            _errval = check_initializer(ctx, node[].init, node[].var_type, @init_value)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_initializer(ctx, node[].init, node[].var_type, @init_value))
     }
     else {
         init_value = check_no_initializer(ctx, node[].var_type)
@@ -3695,13 +3197,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     ctx[].errors[].info_at_buf = node[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, node->var_type))"
-        _errval = reslv_struct_type(ctx, node[].var_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, node[].var_type))
     if node[].var_type[].tag == AST_Void_t {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
@@ -3710,42 +3206,18 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(is_valid_type(ctx, node->var_type))"
-        _errval = is_valid_type(ctx, node[].var_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(is_valid_type(ctx, node[].var_type))
     match node[].storage_class.tag {
         -> AST_CStorageClass_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_auto_block_var_decl(ctx, node))"
-                _errval = check_auto_block_var_decl(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_auto_block_var_decl(ctx, node))
         }
         break
         -> AST_CExtern_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_extern_block_var_decl(ctx, node))"
-                _errval = check_extern_block_var_decl(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_extern_block_var_decl(ctx, node))
         }
         break
         -> AST_CStatic_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(check_static_block_var_decl(ctx, node))"
-                _errval = check_static_block_var_decl(ctx, node)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(check_static_block_var_decl(ctx, node))
         }
         break
         otherwise {
@@ -3774,13 +3246,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
             }
         }
         ctx[].errors[].info_at_buf = node[].members[i][].info_at
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_struct_type(ctx, node->members[i]->member_type))"
-            _errval = reslv_struct_type(ctx, node[].members[i][].member_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_struct_type(ctx, node[].members[i][].member_type))
         if not is_type_complete(ctx, node[].members[i][].member_type) {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->members[i]->info_at))"
@@ -3789,13 +3255,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(is_valid_type(ctx, node->members[i]->member_type))"
-            _errval = is_valid_type(ctx, node[].members[i][].member_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(is_valid_type(ctx, node[].members[i][].member_type))
     }
     FINALLY
     str_delete(name_fmt)
@@ -4047,26 +3507,14 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
 
 fn reslv_ptr_struct(ctx: *struc SemanticContext, ptr_type: *struc Pointer) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, ptr_type->ref_type))"
-        _errval = reslv_struct_type(ctx, ptr_type[].ref_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, ptr_type[].ref_type))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_arr_struct(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_type(ctx, arr_type->elem_type))"
-        _errval = reslv_struct_type(ctx, arr_type[].elem_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_type(ctx, arr_type[].elem_type))
     FINALLY
     CATCH_EXIT
 }
@@ -4115,33 +3563,15 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     CATCH_ENTER
     match type_t[].tag {
         -> AST_Pointer_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_ptr_struct(ctx, &type_t->get._Pointer))"
-                _errval = reslv_ptr_struct(ctx, @type_t[].get._Pointer)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_ptr_struct(ctx, @type_t[].get._Pointer))
         }
         break
         -> AST_Array_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_arr_struct(ctx, &type_t->get._Array))"
-                _errval = reslv_arr_struct(ctx, @type_t[].get._Array)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_arr_struct(ctx, @type_t[].get._Array))
         }
         break
         -> AST_Structure_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_struct(ctx, &type_t->get._Structure))"
-                _errval = reslv_struct(ctx, @type_t[].get._Structure)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_struct(ctx, @type_t[].get._Structure))
         }
         break
         -> AST_FunType_t {
@@ -4183,13 +3613,7 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
         jump _Lfinally
     }
     label Lelse
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_var_exp(ctx, node))"
-        _errval = check_var_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_var_exp(ctx, node))
     FINALLY
     str_delete(name_fmt)
     CATCH_EXIT
@@ -4197,67 +3621,25 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
 
 fn reslv_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
-        _errval = reslv_typed_exp(ctx, @node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_cast_exp(ctx, node))"
-        _errval = check_cast_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].exp))
+    TRY(check_cast_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
-        _errval = reslv_typed_exp(ctx, @node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_unary_exp(ctx, node))"
-        _errval = check_unary_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].exp))
+    TRY(check_unary_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_left))"
-        _errval = reslv_typed_exp(ctx, @node[].exp_left)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_right))"
-        _errval = reslv_typed_exp(ctx, @node[].exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_binary_exp(ctx, node))"
-        _errval = check_binary_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].exp_left))
+    TRY(reslv_typed_exp(ctx, @node[].exp_right))
+    TRY(check_binary_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4265,62 +3647,20 @@ fn reslv_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
 fn reslv_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
     CATCH_ENTER
     if node[].exp_left {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_left))"
-            _errval = reslv_typed_exp(ctx, @node[].exp_left)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].exp_left))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_right))"
-        _errval = reslv_typed_exp(ctx, @node[].exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_assign_exp(ctx, node))"
-        _errval = check_assign_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].exp_right))
+    TRY(check_assign_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
-        _errval = reslv_typed_exp(ctx, @node[].condition)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_middle))"
-        _errval = reslv_typed_exp(ctx, @node[].exp_middle)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp_right))"
-        _errval = reslv_typed_exp(ctx, @node[].exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_conditional_exp(ctx, node))"
-        _errval = check_conditional_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].condition))
+    TRY(reslv_typed_exp(ctx, @node[].exp_middle))
+    TRY(reslv_typed_exp(ctx, @node[].exp_right))
+    TRY(check_conditional_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4343,21 +3683,9 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     }
     label Lelse
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->args[i]))"
-            _errval = reslv_typed_exp(ctx, @node[].args[i])
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].args[i]))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_call_exp(ctx, node))"
-        _errval = check_call_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_call_exp(ctx, node))
     FINALLY
     str_delete(name_fmt)
     CATCH_EXIT
@@ -4365,140 +3693,56 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
 
 fn reslv_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
-        _errval = reslv_typed_exp(ctx, @node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_deref_exp(ctx, node))"
-        _errval = check_deref_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].exp))
+    TRY(check_deref_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_addrof_expr(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_exp(ctx, node->exp))"
-        _errval = reslv_exp(ctx, node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_addrof_exp(ctx, node))"
-        _errval = check_addrof_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_exp(ctx, node[].exp))
+    TRY(check_addrof_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->primary_exp))"
-        _errval = reslv_typed_exp(ctx, @node[].primary_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->subscript_exp))"
-        _errval = reslv_typed_exp(ctx, @node[].subscript_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_subscript_exp(ctx, node))"
-        _errval = check_subscript_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].primary_exp))
+    TRY(reslv_typed_exp(ctx, @node[].subscript_exp))
+    TRY(check_subscript_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_exp(ctx, node->exp))"
-        _errval = reslv_exp(ctx, node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_sizeof_exp(ctx, node))"
-        _errval = check_sizeof_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_exp(ctx, node[].exp))
+    TRY(check_sizeof_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_sizeoft_exp(ctx, node))"
-        _errval = check_sizeoft_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_sizeoft_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->structure))"
-        _errval = reslv_typed_exp(ctx, @node[].structure)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_dot_exp(ctx, node))"
-        _errval = check_dot_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].structure))
+    TRY(check_dot_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->pointer))"
-        _errval = reslv_typed_exp(ctx, @node[].pointer)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_arrow_exp(ctx, node))"
-        _errval = check_arrow_exp(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].pointer))
+    TRY(check_arrow_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4515,143 +3759,59 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         }
         break
         -> AST_CVar_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_var_exp(ctx, &node->get._CVar))"
-                _errval = reslv_var_exp(ctx, @node[].get._CVar)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_var_exp(ctx, @node[].get._CVar))
         }
         break
         -> AST_CCast_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_cast_exp(ctx, &node->get._CCast))"
-                _errval = reslv_cast_exp(ctx, @node[].get._CCast)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_cast_exp(ctx, @node[].get._CCast))
         }
         break
         -> AST_CUnary_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_unary_exp(ctx, &node->get._CUnary))"
-                _errval = reslv_unary_exp(ctx, @node[].get._CUnary)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_unary_exp(ctx, @node[].get._CUnary))
         }
         break
         -> AST_CBinary_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_binary_exp(ctx, &node->get._CBinary))"
-                _errval = reslv_binary_exp(ctx, @node[].get._CBinary)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_binary_exp(ctx, @node[].get._CBinary))
         }
         break
         -> AST_CAssignment_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_assign_exp(ctx, &node->get._CAssignment))"
-                _errval = reslv_assign_exp(ctx, @node[].get._CAssignment)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_assign_exp(ctx, @node[].get._CAssignment))
         }
         break
         -> AST_CConditional_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_conditional_exp(ctx, &node->get._CConditional))"
-                _errval = reslv_conditional_exp(ctx, @node[].get._CConditional)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_conditional_exp(ctx, @node[].get._CConditional))
         }
         break
         -> AST_CFunctionCall_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_call_exp(ctx, &node->get._CFunctionCall))"
-                _errval = reslv_call_exp(ctx, @node[].get._CFunctionCall)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_call_exp(ctx, @node[].get._CFunctionCall))
         }
         break
         -> AST_CDereference_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_deref_exp(ctx, &node->get._CDereference))"
-                _errval = reslv_deref_exp(ctx, @node[].get._CDereference)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_deref_exp(ctx, @node[].get._CDereference))
         }
         break
         -> AST_CAddrOf_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_addrof_expr(ctx, &node->get._CAddrOf))"
-                _errval = reslv_addrof_expr(ctx, @node[].get._CAddrOf)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_addrof_expr(ctx, @node[].get._CAddrOf))
         }
         break
         -> AST_CSubscript_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_subscript_exp(ctx, &node->get._CSubscript))"
-                _errval = reslv_subscript_exp(ctx, @node[].get._CSubscript)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_subscript_exp(ctx, @node[].get._CSubscript))
         }
         break
         -> AST_CSizeOf_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_sizeof_exp(ctx, &node->get._CSizeOf))"
-                _errval = reslv_sizeof_exp(ctx, @node[].get._CSizeOf)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_sizeof_exp(ctx, @node[].get._CSizeOf))
         }
         break
         -> AST_CSizeOfT_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_sizeoft_exp(ctx, &node->get._CSizeOfT))"
-                _errval = reslv_sizeoft_exp(ctx, @node[].get._CSizeOfT)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_sizeoft_exp(ctx, @node[].get._CSizeOfT))
         }
         break
         -> AST_CDot_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_dot_exp(ctx, &node->get._CDot))"
-                _errval = reslv_dot_exp(ctx, @node[].get._CDot)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_dot_exp(ctx, @node[].get._CDot))
         }
         break
         -> AST_CArrow_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_arrow_exp(ctx, &node->get._CArrow))"
-                _errval = reslv_arrow_exp(ctx, @node[].get._CArrow)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_arrow_exp(ctx, @node[].get._CArrow))
         }
         break
         otherwise {
@@ -4664,20 +3824,8 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
 
 fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_exp(ctx, *exp))"
-        _errval = reslv_exp(ctx, exp[])
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_typed_exp(ctx, exp))"
-        _errval = check_typed_exp(ctx, exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_exp(ctx, exp[]))
+    TRY(check_typed_exp(ctx, exp))
     FINALLY
     CATCH_EXIT
 }
@@ -4697,13 +3845,7 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_block_var_decl(ctx, node->init))"
-        _errval = reslv_block_var_decl(ctx, node[].init)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_block_var_decl(ctx, node[].init))
     FINALLY
     str_delete(name_fmt)
     CATCH_EXIT
@@ -4712,13 +3854,7 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
 fn reslv_for_init_exp(ctx: *struc SemanticContext, node: *struc CInitExp) i32 {
     CATCH_ENTER
     if node[].init {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->init))"
-            _errval = reslv_typed_exp(ctx, @node[].init)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].init))
     }
     FINALLY
     CATCH_EXIT
@@ -4728,23 +3864,11 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) i32 {
     CATCH_ENTER
     match node[].tag {
         -> AST_CInitDecl_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_for_init_decl(ctx, &node->get._CInitDecl))"
-                _errval = reslv_for_init_decl(ctx, @node[].get._CInitDecl)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_for_init_decl(ctx, @node[].get._CInitDecl))
         }
         break
         -> AST_CInitExp_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_for_init_exp(ctx, &node->get._CInitExp))"
-                _errval = reslv_for_init_exp(ctx, @node[].get._CInitExp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_for_init_exp(ctx, @node[].get._CInitExp))
             break
         }
         otherwise {
@@ -4758,70 +3882,28 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) i32 {
 fn reslv_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     CATCH_ENTER
     if node[].exp {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
-            _errval = reslv_typed_exp(ctx, @node[].exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].exp))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_ret_statement(ctx, node))"
-        _errval = check_ret_statement(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_ret_statement(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_exp_statement(ctx: *struc SemanticContext, node: *struc CExpression) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
-        _errval = reslv_typed_exp(ctx, @node[].exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].exp))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
-        _errval = reslv_typed_exp(ctx, @node[].condition)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->then_fi))"
-        _errval = reslv_statement(ctx, node[].then_fi)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].condition))
+    TRY(reslv_statement(ctx, node[].then_fi))
     if node[].else_fi {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_statement(ctx, node->else_fi))"
-            _errval = reslv_statement(ctx, node[].else_fi)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_statement(ctx, node[].else_fi))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_if_statement(ctx, node))"
-        _errval = check_if_statement(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_if_statement(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4843,13 +3925,7 @@ fn reslv_goto_statement(ctx: *struc SemanticContext, node: *struc CGoto) none {
 fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     CATCH_ENTER
     map_it: i64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(annotate_goto_label(ctx, node))"
-        _errval = annotate_goto_label(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(annotate_goto_label(ctx, node))
     map_it = map_find(ctx[].goto_map, node[].target)
     if map_it ~= map_end() {
         node[].target = pair_second(ctx[].goto_map[map_it])
@@ -4859,13 +3935,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
         map_add(ctx[].goto_map, node[].target, target)
         node[].target = target
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
-        _errval = reslv_statement(ctx, node[].jump_to)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_statement(ctx, node[].jump_to))
     FINALLY
     CATCH_EXIT
 }
@@ -4873,13 +3943,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
 fn reslv_compound_statement(ctx: *struc SemanticContext, node: *struc CCompound) i32 {
     CATCH_ENTER
     enter_scope(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_block(ctx, node->block))"
-        _errval = reslv_block(ctx, node[].block)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_block(ctx, node[].block))
     exit_scope(ctx)
     FINALLY
     CATCH_EXIT
@@ -4888,28 +3952,10 @@ fn reslv_compound_statement(ctx: *struc SemanticContext, node: *struc CCompound)
 fn reslv_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     CATCH_ENTER
     annotate_while_loop(ctx, node)
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
-        _errval = reslv_typed_exp(ctx, @node[].condition)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->body))"
-        _errval = reslv_statement(ctx, node[].body)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].condition))
+    TRY(reslv_statement(ctx, node[].body))
     deannotate_loop(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_while_statement(ctx, node))"
-        _errval = check_while_statement(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_while_statement(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4917,28 +3963,10 @@ fn reslv_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
 fn reslv_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) i32 {
     CATCH_ENTER
     annotate_do_while_loop(ctx, node)
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->body))"
-        _errval = reslv_statement(ctx, node[].body)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
-        _errval = reslv_typed_exp(ctx, @node[].condition)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_statement(ctx, node[].body))
+    TRY(reslv_typed_exp(ctx, @node[].condition))
     deannotate_loop(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_do_while_statement(ctx, node))"
-        _errval = check_do_while_statement(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_do_while_statement(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4947,47 +3975,17 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     CATCH_ENTER
     annotate_for_loop(ctx, node)
     enter_scope(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_for_init(ctx, node->init))"
-        _errval = reslv_for_init(ctx, node[].init)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_for_init(ctx, node[].init))
     if node[].condition {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->condition))"
-            _errval = reslv_typed_exp(ctx, @node[].condition)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].condition))
     }
     if node[].post {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->post))"
-            _errval = reslv_typed_exp(ctx, @node[].post)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].post))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->body))"
-        _errval = reslv_statement(ctx, node[].body)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_statement(ctx, node[].body))
     exit_scope(ctx)
     deannotate_loop(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_for_statement(ctx, node))"
-        _errval = check_for_statement(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_for_statement(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -4996,108 +3994,48 @@ fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     CATCH_ENTER
     annotate_switch_lookup(ctx, node)
     enter_scope(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->lookup))"
-        _errval = reslv_typed_exp(ctx, @node[].lookup)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_typed_exp(ctx, @node[].lookup))
     {
         p_switch_statement: *struc CSwitch = ctx[].p_switch_statement
         ctx[].p_switch_statement = node
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_statement(ctx, node->body))"
-            _errval = reslv_statement(ctx, node[].body)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_statement(ctx, node[].body))
         ctx[].p_switch_statement = p_switch_statement
     }
     exit_scope(ctx)
     deannotate_lookup(ctx)
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_switch_statement(ctx, node))"
-        _errval = check_switch_statement(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_switch_statement(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(annotate_case_jump(ctx, node))"
-        _errval = annotate_case_jump(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->value))"
-        _errval = reslv_typed_exp(ctx, @node[].value)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(annotate_case_jump(ctx, node))
+    TRY(reslv_typed_exp(ctx, @node[].value))
     vec_move_back(ctx[].p_switch_statement[].cases, node[].value)
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
-        _errval = reslv_statement(ctx, node[].jump_to)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_statement(ctx, node[].jump_to))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_default_statement(ctx: *struc SemanticContext, node: *struc CDefault) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(annotate_default_jump(ctx, node))"
-        _errval = annotate_default_jump(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_statement(ctx, node->jump_to))"
-        _errval = reslv_statement(ctx, node[].jump_to)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(annotate_default_jump(ctx, node))
+    TRY(reslv_statement(ctx, node[].jump_to))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_break_statement(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(annotate_break_jump(ctx, node))"
-        _errval = annotate_break_jump(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(annotate_break_jump(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
 fn reslv_continue_statement(ctx: *struc SemanticContext, node: *struc CContinue) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(annotate_continue_jump(ctx, node))"
-        _errval = annotate_continue_jump(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(annotate_continue_jump(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -5106,33 +4044,15 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
     CATCH_ENTER
     match node[].tag {
         -> AST_CReturn_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_ret_statement(ctx, &node->get._CReturn))"
-                _errval = reslv_ret_statement(ctx, @node[].get._CReturn)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_ret_statement(ctx, @node[].get._CReturn))
         }
         break
         -> AST_CExpression_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_exp_statement(ctx, &node->get._CExpression))"
-                _errval = reslv_exp_statement(ctx, @node[].get._CExpression)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_exp_statement(ctx, @node[].get._CExpression))
         }
         break
         -> AST_CIf_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_if_statement(ctx, &node->get._CIf))"
-                _errval = reslv_if_statement(ctx, @node[].get._CIf)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_if_statement(ctx, @node[].get._CIf))
         }
         break
         -> AST_CGoto_t {
@@ -5140,103 +4060,43 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
         }
         break
         -> AST_CLabel_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_label_statement(ctx, &node->get._CLabel))"
-                _errval = reslv_label_statement(ctx, @node[].get._CLabel)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_label_statement(ctx, @node[].get._CLabel))
         }
         break
         -> AST_CCompound_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_compound_statement(ctx, &node->get._CCompound))"
-                _errval = reslv_compound_statement(ctx, @node[].get._CCompound)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_compound_statement(ctx, @node[].get._CCompound))
         }
         break
         -> AST_CWhile_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_while_statement(ctx, &node->get._CWhile))"
-                _errval = reslv_while_statement(ctx, @node[].get._CWhile)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_while_statement(ctx, @node[].get._CWhile))
         }
         break
         -> AST_CDoWhile_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_do_while_statement(ctx, &node->get._CDoWhile))"
-                _errval = reslv_do_while_statement(ctx, @node[].get._CDoWhile)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_do_while_statement(ctx, @node[].get._CDoWhile))
         }
         break
         -> AST_CFor_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_for_statement(ctx, &node->get._CFor))"
-                _errval = reslv_for_statement(ctx, @node[].get._CFor)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_for_statement(ctx, @node[].get._CFor))
         }
         break
         -> AST_CSwitch_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_switch_statement(ctx, &node->get._CSwitch))"
-                _errval = reslv_switch_statement(ctx, @node[].get._CSwitch)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_switch_statement(ctx, @node[].get._CSwitch))
         }
         break
         -> AST_CCase_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_case_statement(ctx, &node->get._CCase))"
-                _errval = reslv_case_statement(ctx, @node[].get._CCase)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_case_statement(ctx, @node[].get._CCase))
         }
         break
         -> AST_CDefault_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_default_statement(ctx, &node->get._CDefault))"
-                _errval = reslv_default_statement(ctx, @node[].get._CDefault)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_default_statement(ctx, @node[].get._CDefault))
         }
         break
         -> AST_CBreak_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_break_statement(ctx, &node->get._CBreak))"
-                _errval = reslv_break_statement(ctx, @node[].get._CBreak)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_break_statement(ctx, @node[].get._CBreak))
         }
         break
         -> AST_CContinue_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_continue_statement(ctx, &node->get._CContinue))"
-                _errval = reslv_continue_statement(ctx, @node[].get._CContinue)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_continue_statement(ctx, @node[].get._CContinue))
         }
         break
         -> AST_CNull_t {
@@ -5257,23 +4117,11 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {
             -> AST_CS_t {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(reslv_statement(ctx, node_list[i]->get._CS.statement))"
-                    _errval = reslv_statement(ctx, node_list[i][].get._CS.statement)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(reslv_statement(ctx, node_list[i][].get._CS.statement))
             }
             break
             -> AST_CD_t {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(reslv_declaration(ctx, node_list[i]->get._CD.declaration))"
-                    _errval = reslv_declaration(ctx, node_list[i][].get._CD.declaration)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(reslv_declaration(ctx, node_list[i][].get._CD.declaration))
             }
             break
             otherwise {
@@ -5287,13 +4135,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr
 
 fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_block_items(ctx, node->get._CB.block_items))"
-        _errval = reslv_block_items(ctx, node[].get._CB.block_items)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_block_items(ctx, node[].get._CB.block_items))
     FINALLY
     CATCH_EXIT
 }
@@ -5303,30 +4145,12 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
 fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: **struc Type) i32 {
     CATCH_ENTER
     if node[].exp[].tag == AST_CString_t and (init_type[])[].tag == AST_Array_t {
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_bound_string_init(ctx, &node->exp->get._CString, &(*init_type)->get._Array))"
-            _errval = check_bound_string_init(ctx, @node[].exp[].get._CString, @(init_type[])[].get._Array)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_bound_string_init(ctx, @node[].exp[].get._CString, @init_type[][].get._Array))
         check_string_init(node, init_type)
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_typed_exp(ctx, &node->exp))"
-            _errval = reslv_typed_exp(ctx, @node[].exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_single_init(ctx, node, init_type))"
-            _errval = check_single_init(ctx, node, init_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_typed_exp(ctx, @node[].exp))
+        TRY(check_single_init(ctx, node, init_type))
     }
     FINALLY
     CATCH_EXIT
@@ -5334,21 +4158,9 @@ fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
 
 fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_bound_arr_init(ctx, node, arr_type))"
-        _errval = check_bound_arr_init(ctx, node, arr_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_bound_arr_init(ctx, node, arr_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_initializer(ctx, node->initializers[i], &arr_type->elem_type))"
-            _errval = reslv_initializer(ctx, node[].initializers[i], @arr_type[].elem_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_initializer(ctx, node[].initializers[i], @arr_type[].elem_type))
     }
     check_arr_init(ctx, node, arr_type, init_type)
     FINALLY
@@ -5357,22 +4169,10 @@ fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
 
 fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_bound_struct_init(ctx, node, struct_type))"
-        _errval = check_bound_struct_init(ctx, node, struct_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_bound_struct_init(ctx, node, struct_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_initializer(ctx, node->initializers[i], &member->member_type))"
-            _errval = reslv_initializer(ctx, node[].initializers[i], @member[].member_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_initializer(ctx, node[].initializers[i], @member[].member_type))
     }
     check_struct_init(ctx, node, struct_type, init_type)
     FINALLY
@@ -5384,23 +4184,11 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
     CATCH_ENTER
     match (init_type[])[].tag {
         -> AST_Array_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_arr_init(ctx, node, &(*init_type)->get._Array, init_type))"
-                _errval = reslv_arr_init(ctx, node, @(init_type[])[].get._Array, init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_arr_init(ctx, node, @init_type[][].get._Array, init_type))
         }
         break
         -> AST_Structure_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_struct_init(ctx, node, &(*init_type)->get._Structure, init_type))"
-                _errval = reslv_struct_init(ctx, node, @(init_type[])[].get._Structure, init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_struct_init(ctx, node, @init_type[][].get._Structure, init_type))
         }
         break
         otherwise {
@@ -5421,23 +4209,11 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
     CATCH_ENTER
     match node[].tag {
         -> AST_CSingleInit_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_single_init(ctx, &node->get._CSingleInit, init_type))"
-                _errval = reslv_single_init(ctx, @node[].get._CSingleInit, init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_single_init(ctx, @node[].get._CSingleInit, init_type))
         }
         break
         -> AST_CCompoundInit_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_compound_init(ctx, &node->get._CCompoundInit, init_type))"
-                _errval = reslv_compound_init(ctx, @node[].get._CCompoundInit, init_type)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_compound_init(ctx, @node[].get._CCompoundInit, init_type))
         }
         break
         otherwise {
@@ -5465,13 +4241,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         map_add(vec_back(ctx[].scoped_identifier_maps), node[].params[i], param)
         node[].params[i] = param
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_fun_params_decl(ctx, node))"
-        _errval = check_fun_params_decl(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_fun_params_decl(ctx, node))
     FINALLY
     str_delete(name_fmt)
     CATCH_EXIT
@@ -5510,38 +4280,14 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         map_add(ctx[].extern_scope_map, node[].name, vec_size(ctx[].scoped_identifier_maps))
     }
     map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, node[].name)
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_ret_fun_decl(ctx, node))"
-        _errval = check_ret_fun_decl(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_ret_fun_decl(ctx, node))
     enter_scope(ctx)
     if not vec_empty(node[].params) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_fun_params_decl(ctx, node))"
-            _errval = reslv_fun_params_decl(ctx, node)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_fun_params_decl(ctx, node))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_fun_decl(ctx, node))"
-        _errval = check_fun_decl(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_fun_decl(ctx, node))
     if node[].body {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_block(ctx, node->body))"
-            _errval = reslv_block(ctx, node[].body)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_block(ctx, node[].body))
     }
     exit_scope(ctx)
     FINALLY
@@ -5556,22 +4302,10 @@ fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     }
     map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, node[].name)
     if is_file_scope(ctx) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_file_var_decl(ctx, node))"
-            _errval = check_file_var_decl(ctx, node)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_file_var_decl(ctx, node))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_block_var_decl(ctx, node))"
-            _errval = check_block_var_decl(ctx, node)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(check_block_var_decl(ctx, node))
     }
     FINALLY
     CATCH_EXIT
@@ -5589,13 +4323,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         }
     }
     elif node[].storage_class.tag == AST_CExtern_t {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_file_var_decl(ctx, node))"
-            _errval = reslv_file_var_decl(ctx, node)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_file_var_decl(ctx, node))
         jump _Lfinally
     }
     {
@@ -5603,21 +4331,9 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, name)
         node[].name = name
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_block_var_decl(ctx, node))"
-        _errval = check_block_var_decl(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_block_var_decl(ctx, node))
     if node[].init and node[].storage_class.tag == AST_CStorageClass_t {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_initializer(ctx, node->init, &node->var_type))"
-            _errval = reslv_initializer(ctx, node[].init, @node[].var_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_initializer(ctx, node[].init, @node[].var_type))
     }
     FINALLY
     str_delete(name_fmt)
@@ -5626,13 +4342,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
 
 fn reslv_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(check_struct_members_decl(ctx, node))"
-        _errval = check_struct_members_decl(ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(check_struct_members_decl(ctx, node))
     FINALLY
     CATCH_EXIT
 }
@@ -5677,20 +4387,8 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         }
     }
     if not vec_empty(node[].members) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_struct_members_decl(ctx, node))"
-            _errval = reslv_struct_members_decl(ctx, node)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(check_struct_decl(ctx, node))"
-            _errval = check_struct_decl(ctx, node)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_struct_members_decl(ctx, node))
+        TRY(check_struct_decl(ctx, node))
     }
     FINALLY
     str_delete(struct_fmt_1)
@@ -5707,21 +4405,9 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
         vec_clear(ctx[].continue_loop_labels)
         ctx[].p_switch_statement = nil
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_fun_declaration(ctx, node->fun_decl))"
-        _errval = reslv_fun_declaration(ctx, node[].fun_decl)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_fun_declaration(ctx, node[].fun_decl))
     if is_file_scope(ctx) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_label(ctx, node->fun_decl))"
-            _errval = reslv_label(ctx, node[].fun_decl)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_label(ctx, node[].fun_decl))
     }
     FINALLY
     CATCH_EXIT
@@ -5730,22 +4416,10 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) i32 {
 fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) i32 {
     CATCH_ENTER
     if is_file_scope(ctx) {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_file_var_decl(ctx, node->var_decl))"
-            _errval = reslv_file_var_decl(ctx, node[].var_decl)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_file_var_decl(ctx, node[].var_decl))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_block_var_decl(ctx, node->var_decl))"
-            _errval = reslv_block_var_decl(ctx, node[].var_decl)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_block_var_decl(ctx, node[].var_decl))
     }
     FINALLY
     CATCH_EXIT
@@ -5753,13 +4427,7 @@ fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) i32 {
 
 fn reslv_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDecl) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(reslv_struct_declaration(ctx, node->struct_decl))"
-        _errval = reslv_struct_declaration(ctx, node[].struct_decl)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(reslv_struct_declaration(ctx, node[].struct_decl))
     FINALLY
     CATCH_EXIT
 }
@@ -5768,33 +4436,15 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
     CATCH_ENTER
     match node[].tag {
         -> AST_CFunDecl_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_fun_decl(ctx, &node->get._CFunDecl))"
-                _errval = reslv_fun_decl(ctx, @node[].get._CFunDecl)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_fun_decl(ctx, @node[].get._CFunDecl))
         }
         break
         -> AST_CVarDecl_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_var_decl(ctx, &node->get._CVarDecl))"
-                _errval = reslv_var_decl(ctx, @node[].get._CVarDecl)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_var_decl(ctx, @node[].get._CVarDecl))
         }
         break
         -> AST_CStructDecl_t {
-            loop .. while 0 {
-                " #@MACRO@:TRY(reslv_struct_decl(ctx, &node->get._CStructDecl))"
-                _errval = reslv_struct_decl(ctx, @node[].get._CStructDecl)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(reslv_struct_decl(ctx, @node[].get._CStructDecl))
         }
         break
         otherwise {
@@ -5809,13 +4459,7 @@ fn resolve_program(ctx: *struc SemanticContext, node: *struc CProgram) i32 {
     CATCH_ENTER
     enter_scope(ctx)
     loop i: u64 = 0 while i < vec_size(node[].declarations) .. ++i {
-        loop .. while 0 {
-            " #@MACRO@:TRY(reslv_declaration(ctx, node->declarations[i]))"
-            _errval = reslv_declaration(ctx, node[].declarations[i])
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(reslv_declaration(ctx, node[].declarations[i]))
     }
     FINALLY
     CATCH_EXIT
@@ -5840,13 +4484,7 @@ pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, fro
     }
 
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(resolve_program(&ctx, node))"
-        _errval = resolve_program(@ctx, node)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(resolve_program(@ctx, node))
     FINALLY
     map_delete(ctx.extern_scope_map)
     map_delete(ctx.goto_map)
