@@ -1189,13 +1189,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                     -> TOK_import_force {
                         -> TOK_use_file {
                             -> TOK_use_force {
-                                loop .. while 0 {
-                                    " #@MACRO@:TRY(tokenize_include(ctx, match_kind, linenum, is_empty))"
-                                    _errval = tokenize_include(ctx, match_kind, linenum, is_empty)
-                                    if _errval ~= 0 {
-                                        jump _Lfinally
-                                    }
-                                }
+                                TRY(tokenize_include(ctx, match_kind, linenum, is_empty))
                             }
                         }
                     }
@@ -1405,33 +1399,15 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     match_size = ctx[].match_size
     str_copy(vec_back(ctx[].errors[].fopen_lines).filename, fopen_name)
     ;
-    loop .. while 0 {
-        " #@MACRO@:TRY(open_fread(ctx->fileio, filename))"
-        _errval = open_fread(ctx[].fileio, filename)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(open_fread(ctx[].fileio, filename))
     {
         fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, str_new(nil))
         str_move(filename, fopen_line.filename)
         ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(tokenize_file(ctx))"
-        _errval = tokenize_file(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(close_fread(ctx->fileio, linenum))"
-        _errval = close_fread(ctx[].fileio, linenum)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(tokenize_file(ctx))
+    TRY(close_fread(ctx[].fileio, linenum))
     {
         fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, str_new(nil))
         str_move(fopen_name, fopen_line.filename)
@@ -1466,33 +1442,15 @@ pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs
     }
 
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(open_fread(ctx.fileio, filename))"
-        _errval = open_fread(ctx.fileio, filename)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(open_fread(ctx.fileio, filename))
     {
         fopen_line: struc FileOpenLine = $(1, 1, str_new(nil))
         str_copy(filename, fopen_line.filename)
         ;
         vec_push_back(ctx.errors[].fopen_lines, fopen_line)
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(tokenize_file(&ctx))"
-        _errval = tokenize_file(@ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(close_fread(ctx.fileio, 0))"
-        _errval = close_fread(ctx.fileio, 0)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(tokenize_file(@ctx))
+    TRY(close_fread(ctx.fileio, 0))
     set_filename(ctx.fileio, filename)
     FINALLY
     ;
