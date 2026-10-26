@@ -15,7 +15,6 @@ m4_define(`CATCH_EXIT', `return _errval')m4_dnl
 # TODO
 m4_define(`EARLY_EXIT', `jump _Lfinally')m4_dnl
 m4_define(`FINALLY', `label _Lfinally')m4_dnl
-# TODO
 m4_define(`TRY', `{
     _errval = $1
     if _errval ~= 0 {
