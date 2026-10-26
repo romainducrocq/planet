@@ -22,11 +22,15 @@ m4_define(`TRY', `{
     }
 }')m4_dnl
 # TODO
-m4_define(`THROW_PANIC', `TODO')m4_dnl
+m4_define(`THROW_PANIC', `PANIC_FUNC($@)')m4_dnl
 # TODO
-m4_define(`SET_ERROR_MSG', `TODO')m4_dnl
+m4_define(`SET_ERROR_MSG', `snprintf(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $@)')m4_dnl
 # TODO
-m4_define(`THROW_ERROR', `TODO')m4_dnl
+m4_define(`THROW_ERROR', `{
+    ? SET_ERROR_MSG(m4_shift(m4_shift($@))) > 0 then cast<none>($2) else THROW_ABORT
+    _errval = $1
+    EARLY_EXIT
+}')m4_dnl
 
 m4_define(`tagged_def_t', `TODO')m4_dnl
 m4_define(`tagged_def_impl', `TODO')m4_dnl

@@ -1209,12 +1209,7 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                     if ctx[].paren_depth == 0 {
                         smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                         info_at: u64 = push_token_info(ctx)
-                        loop .. while 0 {
-                            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_unmatched_close), "MSG_unmatched_close", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                            _errval = 1
-                            jump _Lfinally
-                        }
+                        THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_unmatched_close, smatch))
                     }
                     ctx[].paren_depth--
                     jump Lpass
@@ -1241,22 +1236,12 @@ fn tokenize_file(ctx: *struc LexerContext) i32 {
                 -> TOK_m4_prefix {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                     info_at: u64 = push_token_info(ctx)
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_preproc_macro), "MSG_preproc_macro", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_preproc_macro, smatch))
                 }
                 -> TOK_error {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
                     info_at: u64 = push_token_info(ctx)
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_invalid_tok), "MSG_invalid_tok", "", "", smatch) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_invalid_tok, smatch))
                 }
                 otherwise {
                     jump Lpass
@@ -1314,22 +1299,12 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
         match match_tok {
             -> TOK_import_file {
                 -> TOK_import_force {
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_import_in_line), "MSG_import_in_line", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_import_in_line, filename))
                 }
             }
             -> TOK_use_file {
                 -> TOK_use_force {
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_use_in_line), "MSG_use_in_line", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_use_in_line, filename))
                 }
             }
             otherwise {
@@ -1365,12 +1340,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             -> TOK_import_force {
                 if not find_include(ctx[].p_includedirs[], @filename) {
                     info_at: u64 = push_token_info(ctx)
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_failed_import), "MSG_failed_import", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_failed_import, filename))
                 }
                 break
             }
@@ -1379,12 +1349,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             -> TOK_use_force {
                 if not find_include(ctx[].p_stdlibdirs[], @filename) {
                     info_at: u64 = push_token_info(ctx)
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_lexer_msg(MSG_failed_use), "MSG_failed_use", "", "", filename) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(1, MSG_failed_use, filename))
                 }
                 break
             }
