@@ -33,32 +33,32 @@ pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string_t) string;
 pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structure, struct_fmt: *string_t) string;
 pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string_t) string;
-m4_define(`str_get_fmt', `TODO')m4_dnl
-m4_define(`str_fmt_tok', `TODO')m4_dnl
-m4_define(`str_fmt_name', `TODO')m4_dnl
-m4_define(`str_fmt_struct_name', `TODO')m4_dnl
-m4_define(`str_fmt_fun', `TODO')m4_dnl
-m4_define(`str_fmt_ptr', `TODO')m4_dnl
-m4_define(`str_fmt_arr', `TODO')m4_dnl
-m4_define(`str_fmt_struct', `TODO')m4_dnl
-m4_define(`str_fmt_type', `TODO')m4_dnl
+m4_define(`str_get_fmt', `get_$1_fmt(ctx[].identifiers, m4_shift($@))')m4_dnl
+m4_define(`str_fmt_tok', `str_get_fmt(tok, $1)')m4_dnl
+m4_define(`str_fmt_name', `str_get_fmt(name, $1, $2)')m4_dnl
+m4_define(`str_fmt_struct_name', `str_get_fmt(struct_name, $1, $2, $3)')m4_dnl
+m4_define(`str_fmt_fun', `str_get_fmt(fun, $1, $2)')m4_dnl
+m4_define(`str_fmt_ptr', `str_get_fmt(ptr, $1, $2)')m4_dnl
+m4_define(`str_fmt_arr', `str_get_fmt(arr, $1, $2)')m4_dnl
+m4_define(`str_fmt_struct', `str_get_fmt(struct, $1, $2)')m4_dnl
+m4_define(`str_fmt_type', `str_get_fmt(type, $1, $2)')m4_dnl
 pub fn get_fatal_msg(msg: i32) string;
 pub fn get_arg_msg(msg: i32) string;
 pub fn get_util_msg(msg: i32) string;
 pub fn get_lexer_msg(msg: i32) string;
 pub fn get_parser_msg(msg: i32) string;
 pub fn get_semantic_msg(msg: i32) string;
-m4_define(`GET_MESSAGE', `TODO')m4_dnl
-m4_define(`GET_MESSAGE_0', `TODO')m4_dnl
-m4_define(`GET_MESSAGE_1', `TODO')m4_dnl
-m4_define(`GET_MESSAGE_2', `TODO')m4_dnl
-m4_define(`GET_MESSAGE_3', `TODO')m4_dnl
-m4_define(`GET_FATAL_MSG', `TODO')m4_dnl
-m4_define(`GET_ARG_MSG', `TODO')m4_dnl
-m4_define(`GET_UTIL_MSG', `TODO')m4_dnl
-m4_define(`GET_LEXER_MSG', `TODO')m4_dnl
-m4_define(`GET_PARSER_MSG', `TODO')m4_dnl
-m4_define(`GET_SEMANTIC_MSG', `TODO')m4_dnl
+m4_define(`GET_MESSAGE', `get_$1_msg($2), "$2"')m4_dnl
+m4_define(`GET_MESSAGE_0', `GET_MESSAGE($1, $2), "", "", ""')m4_dnl
+m4_define(`GET_MESSAGE_1', `GET_MESSAGE($1, $2), "", "", $3')m4_dnl
+m4_define(`GET_MESSAGE_2', `GET_MESSAGE($1, $2), "", $3, $4')m4_dnl
+m4_define(`GET_MESSAGE_3', `GET_MESSAGE($1, $2), $3, $4, $5')m4_dnl
+m4_define(`GET_FATAL_MSG', `GET_MESSAGE_$1(fatal, m4_shift($@))')m4_dnl
+m4_define(`GET_ARG_MSG', `GET_MESSAGE_$1(arg, m4_shift($@))')m4_dnl
+m4_define(`GET_UTIL_MSG', `GET_MESSAGE_$1(util, m4_shift($@))')m4_dnl
+m4_define(`GET_LEXER_MSG', `GET_MESSAGE_$1(lexer, m4_shift($@))')m4_dnl
+m4_define(`GET_PARSER_MSG', `GET_MESSAGE_$1(parser, m4_shift($@))')m4_dnl
+m4_define(`GET_SEMANTIC_MSG', `GET_MESSAGE_$1(semantic, m4_shift($@))')m4_dnl
 m4_define(`STRINGIFY', `TODO')m4_dnl
 m4_define(`GET_VERSION', `TODO')m4_dnl
 m4_define(`GCC_VERSION', `TODO')m4_dnl
