@@ -64,13 +64,7 @@ fn peek_next(ctx: *struc ParserContext) i32 {
 fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
     CATCH_ENTER
     if i == 0 {
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
         ctx[].peek_tok_i = ctx[].peek_tok
         jump _Lfinally
     }
@@ -89,13 +83,7 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
 
 fn parse_identifier(ctx: *struc ParserContext, identifier: *u64) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     identifier[] = ctx[].next_tok[].tok
     FINALLY
     CATCH_EXIT
@@ -105,29 +93,11 @@ fn parse_string_literal(ctx: *struc ParserContext, literal: **struc CStringLiter
     value: vector_t(i8) = vec_new()
     CATCH_ENTER
     string_to_literal(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), @value)
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     loop while ctx[].peek_tok[].tok_kind == TOK_string_literal {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
         string_to_literal(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), @value)
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
     }
     literal[] = make_CStringLiteral(@value)
     FINALLY
@@ -153,13 +123,7 @@ fn parse_long_const(intmax: i64) *struc CConst {
 fn parse_dbl_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
     CATCH_ENTER
     value: f64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(string_to_dbl( ctx->errors, map_get(ctx->identifiers->hash_table, ctx->next_tok->tok), ctx->next_tok->info_at, &value))"
-        _errval = string_to_dbl(ctx[].errors, ((? ((? ((ctx[].identifiers[].hash_table) = stbds_hmget_key((ctx[].identifiers[].hash_table), sizeof((ctx[].identifiers[].hash_table)[]), cast<*any>(@((ctx[].next_tok[].tok))), sizeof((ctx[].identifiers[].hash_table)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].identifiers[].hash_table)[(cast<*struc stbds_array_header>(((ctx[].identifiers[].hash_table) - 1)) - 1)[].temp])[].value), ctx[].next_tok[].info_at, @value)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(string_to_dbl(ctx[].errors, map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), ctx[].next_tok[].info_at, @value))
     constant[] = make_CConstDouble(value)
     FINALLY
     CATCH_EXIT
@@ -179,13 +143,7 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
     CATCH_ENTER
     value: i64;
     strto_value: string;
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_key_true {
             constant[] = make_CConstInt(1)
@@ -200,13 +158,7 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
             jump _Lfinally
         }
         -> TOK_dbl_const {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_dbl_const(ctx, constant))"
-                _errval = parse_dbl_const(ctx, constant)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_dbl_const(ctx, constant))
         }
         jump _Lfinally
         otherwise {
@@ -214,13 +166,7 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
         }
     }
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
-    loop .. while 0 {
-        " #@MACRO@:TRY(string_to_long(ctx->errors, strto_value, ctx->next_tok->info_at, &value))"
-        _errval = string_to_long(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(string_to_long(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 9223372036854775807l {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
@@ -243,21 +189,9 @@ fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32
     CATCH_ENTER
     value: u64;
     strto_value: string;
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
-    loop .. while 0 {
-        " #@MACRO@:TRY(string_to_ulong(ctx->errors, strto_value, ctx->next_tok->info_at, &value))"
-        _errval = string_to_ulong(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(string_to_ulong(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 18446744073709551615ul {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
@@ -278,13 +212,7 @@ fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32
 
 fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_unop_complement {
             unop[] = make_CUnaryOp(AST_CComplement_t)
@@ -313,13 +241,7 @@ fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) i32 {
 
 fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_binop_add {
             -> TOK_assign_add {
@@ -452,40 +374,16 @@ fn parse_datatype_specifier(ctx: *struc ParserContext, tag_name: *u64, is_union:
             }
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-        _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, tag_name))"
-        _errval = parse_identifier(ctx, tag_name)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
+    TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
+    TRY(parse_identifier(ctx, tag_name))
     FINALLY
     CATCH_EXIT
 }
 
 fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_key_char {
             type_specifier[] = make_Char()
@@ -536,13 +434,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
             -> TOK_key_union {
                 is_union: i32;
                 tag_name: u64;
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_datatype_specifier(ctx, &tag_name, &is_union))"
-                    _errval = parse_datatype_specifier(ctx, @tag_name, @is_union)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_datatype_specifier(ctx, @tag_name, @is_union))
                 type_specifier[] = make_Structure(tag_name, is_union)
                 break
             }
@@ -564,33 +456,15 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
     constant: *struc CConst = sptr_new()
     CATCH_ENTER
     size: i64 = 0
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_true {
             -> TOK_key_false {
                 -> TOK_int_const {
                     -> TOK_long_const {
                         -> TOK_char_const {
-                            loop .. while 0 {
-                                " #@MACRO@:TRY(parse_const(ctx, &constant))"
-                                _errval = parse_const(ctx, @constant)
-                                if _errval ~= 0 {
-                                    jump _Lfinally
-                                }
-                            }
+                            TRY(parse_const(ctx, @constant))
                         }
                     }
                 }
@@ -599,13 +473,7 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
         break
         -> TOK_uint_const {
             -> TOK_ulong_const {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_unsigned_const(ctx, &constant))"
-                    _errval = parse_unsigned_const(ctx, @constant)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_unsigned_const(ctx, @constant))
             }
         }
         break
@@ -618,20 +486,8 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
             }
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_bracket)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_bracket))
     match constant[].tag {
         -> AST_CConstInt_t {
             size = cast<i64>(constant[].get._CConstInt.value)
@@ -653,31 +509,13 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
             panic_sigabrt("abort")
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_any {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
         type_specifier[] = make_Void()
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_type_name(ctx, type_specifier))"
-            _errval = parse_type_name(ctx, type_specifier)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_type_name(ctx, type_specifier))
     }
     type_specifier[] = make_Array(size, type_specifier)
     FINALLY
@@ -687,38 +525,14 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
 
 fn parse_ptr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_any {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
         type_specifier[] = make_Void()
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_type_name(ctx, type_specifier))"
-            _errval = parse_type_name(ctx, type_specifier)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_type_name(ctx, type_specifier))
     }
     type_specifier[] = make_Pointer(type_specifier)
     FINALLY
@@ -727,42 +541,18 @@ fn parse_ptr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
 
 fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_open_bracket {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_arr_specifier(ctx, type_name))"
-                _errval = parse_arr_specifier(ctx, type_name)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_arr_specifier(ctx, type_name))
         }
         break
         -> TOK_binop_multiply {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_ptr_specifier(ctx, type_name))"
-                _errval = parse_ptr_specifier(ctx, type_name)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_ptr_specifier(ctx, type_name))
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_type_specifier(ctx, type_name))"
-                _errval = parse_type_specifier(ctx, type_name)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_type_specifier(ctx, type_name))
         }
         break
     }
@@ -772,13 +562,7 @@ fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) i32 {
 
 fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_char {
             -> TOK_key_string {
@@ -794,13 +578,7 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
                                                     -> TOK_key_union {
                                                         -> TOK_open_bracket {
                                                             -> TOK_binop_multiply {
-                                                                loop .. while 0 {
-                                                                    " #@MACRO@:TRY(parse_type_name(ctx, maybe_type))"
-                                                                    _errval = parse_type_name(ctx, maybe_type)
-                                                                    if _errval ~= 0 {
-                                                                        jump _Lfinally
-                                                                    }
-                                                                }
+                                                                TRY(parse_type_name(ctx, maybe_type))
                                                             }
                                                         }
                                                     }
@@ -817,13 +595,7 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
         }
         break
         -> TOK_key_none {
-            loop .. while 0 {
-                " #@MACRO@:TRY(pop_next(ctx))"
-                _errval = pop_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(pop_next(ctx))
             maybe_type[] = make_Void()
             break
         }
@@ -846,44 +618,14 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
 fn parse_arg_list(ctx: *struc ParserContext, args: *vector_t(unique_ptr_t(CExp))) i32 {
     arg: *struc CExp = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &arg))"
-        _errval = parse_exp(ctx, 0, @arg)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_exp(ctx, 0, @arg))
     vec_move_back(args[], arg)
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     loop while ctx[].peek_tok[].tok_kind == TOK_comma_separator {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_exp(ctx, 0, &arg))"
-            _errval = parse_exp(ctx, 0, @arg)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(parse_exp(ctx, 0, @arg))
         vec_move_back(args[], arg)
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
     }
     FINALLY
     free_CExp(@arg)
@@ -894,13 +636,7 @@ fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     constant: *struc CConst = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_const(ctx, &constant))"
-        _errval = parse_const(ctx, @constant)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_const(ctx, @constant))
     exp[] = make_CConstant(@constant, info_at)
     FINALLY
     free_CConst(@constant)
@@ -911,13 +647,7 @@ fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
     constant: *struc CConst = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_unsigned_const(ctx, &constant))"
-        _errval = parse_unsigned_const(ctx, @constant)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_unsigned_const(ctx, @constant))
     exp[] = make_CConstant(@constant, info_at)
     FINALLY
     free_CConst(@constant)
@@ -928,20 +658,8 @@ fn parse_string_literal_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
     literal: *struc CStringLiteral = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_string_literal(ctx, &literal))"
-        _errval = parse_string_literal(ctx, @literal)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_string_literal(ctx, @literal))
     exp[] = make_CString(@literal, info_at)
     FINALLY
     free_CStringLiteral(@literal)
@@ -952,13 +670,7 @@ fn parse_var_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, &name))"
-        _errval = parse_identifier(ctx, @name)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_identifier(ctx, @name))
     exp[] = make_CVar(name, info_at)
     FINALLY
     CATCH_EXIT
@@ -969,50 +681,14 @@ fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, &name))"
-        _errval = parse_identifier(ctx, @name)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_identifier(ctx, @name))
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind ~= TOK_close_paren {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_arg_list(ctx, &args))"
-            _errval = parse_arg_list(ctx, @args)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_arg_list(ctx, @args))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
     exp[] = make_CFunctionCall(name, @args, info_at)
     FINALLY
     loop i: u64 = 0 while i < vec_size(args) .. ++i {
@@ -1027,83 +703,17 @@ fn parse_cast_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     target_type: *struc Type = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_binop_lt))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_binop_lt)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_maybe_type(ctx, &target_type))"
-        _errval = parse_maybe_type(ctx, @target_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_binop_gt)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_open_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &cast_exp))"
-        _errval = parse_exp(ctx, 0, @cast_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_binop_lt))
+    TRY(parse_maybe_type(ctx, @target_type))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_binop_gt))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_open_paren))
+    TRY(parse_exp(ctx, 0, @cast_exp))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
     exp[] = make_CCast(@cast_exp, @target_type, info_at)
     FINALLY
     free_CExp(@cast_exp)
@@ -1113,34 +723,10 @@ fn parse_cast_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 
 fn parse_inner_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, exp))"
-        _errval = parse_exp(ctx, 0, exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_exp(ctx, 0, exp))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
     FINALLY
     CATCH_EXIT
 }
@@ -1148,51 +734,15 @@ fn parse_inner_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 fn parse_deref_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_typeop_member {
         info_at = ctx[].peek_tok[].info_at
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-            _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(peek_next(ctx))
+        TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
         member: u64;
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_identifier(ctx, &member))"
-            _errval = parse_identifier(ctx, @member)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_identifier(ctx, @member))
         exp[] = make_CArrow(member, exp, info_at)
     }
     else {
@@ -1206,27 +756,9 @@ fn parse_subscript_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     subscript_exp: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &subscript_exp))"
-        _errval = parse_exp(ctx, 0, @subscript_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_bracket))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_bracket)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_exp(ctx, 0, @subscript_exp))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_bracket))
     exp[] = make_CSubscript(exp, @subscript_exp, info_at)
     FINALLY
     free_CExp(@subscript_exp)
@@ -1235,37 +767,13 @@ fn parse_subscript_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 
 fn parse_arr_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_close_bracket {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_deref_factor(ctx, exp))"
-            _errval = parse_deref_factor(ctx, exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_deref_factor(ctx, exp))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_subscript_factor(ctx, exp))"
-            _errval = parse_subscript_factor(ctx, exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_subscript_factor(ctx, exp))
     }
     FINALLY
     CATCH_EXIT
@@ -1274,35 +782,11 @@ fn parse_arr_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 fn parse_dot_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-        _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
+    TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
     member: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, &member))"
-        _errval = parse_identifier(ctx, @member)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_identifier(ctx, @member))
     exp[] = make_CDot(member, exp, info_at)
     FINALLY
     CATCH_EXIT
@@ -1317,13 +801,7 @@ fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CPostfix_t)
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_binop(ctx, &binop))"
-        _errval = parse_binop(ctx, @binop)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_binop(ctx, @binop))
     constant = make_CConstInt(1)
     exp_right = make_CConstant(@constant, info_at)
     exp_right_1 = make_CBinary(@binop, exp, @exp_right, info_at)
@@ -1340,20 +818,8 @@ fn parse_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_unop(ctx, &unop))"
-        _errval = parse_unop(ctx, @unop)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_unary_exp_factor(ctx, &cast_exp))"
-        _errval = parse_unary_exp_factor(ctx, @cast_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_unop(ctx, @unop))
+    TRY(parse_unary_exp_factor(ctx, @cast_exp))
     exp[] = make_CUnary(@unop, @cast_exp, info_at)
     FINALLY
     free_CExp(@cast_exp)
@@ -1370,20 +836,8 @@ fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CPrefix_t)
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_binop(ctx, &binop))"
-        _errval = parse_binop(ctx, @binop)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_unary_exp_factor(ctx, &exp_left))"
-        _errval = parse_unary_exp_factor(ctx, @exp_left)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_binop(ctx, @binop))
+    TRY(parse_unary_exp_factor(ctx, @exp_left))
     constant = make_CConstInt(1)
     exp_right = make_CConstant(@constant, info_at)
     exp_right_1 = make_CBinary(@binop, @exp_left, @exp_right, info_at)
@@ -1401,20 +855,8 @@ fn parse_addrof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     cast_exp: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_unary_exp_factor(ctx, &cast_exp))"
-        _errval = parse_unary_exp_factor(ctx, @cast_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_unary_exp_factor(ctx, @cast_exp))
     exp[] = make_CAddrOf(@cast_exp, info_at)
     FINALLY
     free_CExp(@cast_exp)
@@ -1425,27 +867,9 @@ fn parse_sizeoft_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     target_type: *struc Type = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].next_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_type_name(ctx, &target_type))"
-        _errval = parse_type_name(ctx, @target_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_binop_gt))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_binop_gt)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_type_name(ctx, @target_type))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_binop_gt))
     exp[] = make_CSizeOfT(@target_type, info_at)
     FINALLY
     free_Type(@target_type)
@@ -1456,27 +880,9 @@ fn parse_sizeof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     unary_exp: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].next_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &unary_exp))"
-        _errval = parse_exp(ctx, 0, @unary_exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_exp(ctx, 0, @unary_exp))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
     exp[] = make_CSizeOf(@unary_exp, info_at)
     FINALLY
     free_CExp(@unary_exp)
@@ -1485,39 +891,15 @@ fn parse_sizeof_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 
 fn parse_sizeof_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_binop_lt {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_sizeoft_factor(ctx, exp))"
-                _errval = parse_sizeoft_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_sizeoft_factor(ctx, exp))
         }
         break
         -> TOK_open_paren {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_sizeof_factor(ctx, exp))"
-                _errval = parse_sizeof_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_sizeof_factor(ctx, exp))
         }
         break
         otherwise {
@@ -1535,13 +917,7 @@ fn parse_sizeof_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 
 fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_true {
             -> TOK_key_false {
@@ -1549,13 +925,7 @@ fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
                     -> TOK_long_const {
                         -> TOK_char_const {
                             -> TOK_dbl_const {
-                                loop .. while 0 {
-                                    " #@MACRO@:TRY(parse_const_factor(ctx, exp))"
-                                    _errval = parse_const_factor(ctx, exp)
-                                    if _errval ~= 0 {
-                                        jump _Lfinally
-                                    }
-                                }
+                                TRY(parse_const_factor(ctx, exp))
                             }
                         }
                     }
@@ -1565,72 +935,30 @@ fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         break
         -> TOK_uint_const {
             -> TOK_ulong_const {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_unsigned_const_factor(ctx, exp))"
-                    _errval = parse_unsigned_const_factor(ctx, exp)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_unsigned_const_factor(ctx, exp))
             }
         }
         break
         -> TOK_string_literal {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_string_literal_factor(ctx, exp))"
-                _errval = parse_string_literal_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_string_literal_factor(ctx, exp))
         }
         break
         -> TOK_key_cast {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_cast_factor(ctx, exp))"
-                _errval = parse_cast_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_cast_factor(ctx, exp))
         }
         break
         -> TOK_identifier {
-            loop .. while 0 {
-                " #@MACRO@:TRY(peek_next_i(ctx, 1))"
-                _errval = peek_next_i(ctx, 1)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(peek_next_i(ctx, 1))
             if ctx[].peek_tok_i[].tok_kind == TOK_open_paren {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_call_factor(ctx, exp))"
-                    _errval = parse_call_factor(ctx, exp)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_call_factor(ctx, exp))
             }
             else {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_var_factor(ctx, exp))"
-                    _errval = parse_var_factor(ctx, exp)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_var_factor(ctx, exp))
             }
             break
         }
         -> TOK_open_paren {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_inner_exp_factor(ctx, exp))"
-                _errval = parse_inner_exp_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_inner_exp_factor(ctx, exp))
         }
         break
         otherwise {
@@ -1648,43 +976,19 @@ fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 
 fn parse_postfix_op_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_open_bracket {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_arr_unary_factor(ctx, exp))"
-                _errval = parse_arr_unary_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_arr_unary_factor(ctx, exp))
         }
         break
         -> TOK_typeop_member {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_dot_factor(ctx, exp))"
-                _errval = parse_dot_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_dot_factor(ctx, exp))
         }
         break
         -> TOK_unop_incr {
             -> TOK_unop_decr {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_postfix_incr_factor(ctx, exp))"
-                    _errval = parse_postfix_incr_factor(ctx, exp)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_postfix_incr_factor(ctx, exp))
             }
         }
         break
@@ -1692,45 +996,21 @@ fn parse_postfix_op_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_postfix_op_exp_factor(ctx, exp))"
-        _errval = parse_postfix_op_exp_factor(ctx, exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_postfix_op_exp_factor(ctx, exp))
     FINALLY
     CATCH_EXIT
 }
 
 fn parse_postfix_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_primary_exp_factor(ctx, exp))"
-        _errval = parse_primary_exp_factor(ctx, exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_primary_exp_factor(ctx, exp))
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_open_bracket {
             -> TOK_typeop_member {
                 -> TOK_unop_incr {
                     -> TOK_unop_decr {
-                        loop .. while 0 {
-                            " #@MACRO@:TRY(parse_postfix_op_exp_factor(ctx, exp))"
-                            _errval = parse_postfix_op_exp_factor(ctx, exp)
-                            if _errval ~= 0 {
-                                jump _Lfinally
-                            }
-                        }
+                        TRY(parse_postfix_op_exp_factor(ctx, exp))
                     }
                 }
             }
@@ -1746,68 +1026,32 @@ fn parse_postfix_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
 
 fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_unop_complement {
             -> TOK_unop_neg {
                 -> TOK_unop_not {
-                    loop .. while 0 {
-                        " #@MACRO@:TRY(parse_unary_factor(ctx, exp))"
-                        _errval = parse_unary_factor(ctx, exp)
-                        if _errval ~= 0 {
-                            jump _Lfinally
-                        }
-                    }
+                    TRY(parse_unary_factor(ctx, exp))
                 }
             }
         }
         break
         -> TOK_unop_incr {
             -> TOK_unop_decr {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_incr_factor(ctx, exp))"
-                    _errval = parse_incr_factor(ctx, exp)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_incr_factor(ctx, exp))
             }
         }
         break
         -> TOK_unop_addrof {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_addrof_factor(ctx, exp))"
-                _errval = parse_addrof_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_addrof_factor(ctx, exp))
         }
         break
         -> TOK_key_sizeof {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_sizeof_unary_factor(ctx, exp))"
-                _errval = parse_sizeof_unary_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_sizeof_unary_factor(ctx, exp))
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_postfix_exp_factor(ctx, exp))"
-                _errval = parse_postfix_exp_factor(ctx, exp)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_postfix_exp_factor(ctx, exp))
         }
         break
     }
@@ -1820,20 +1064,8 @@ fn parse_assign_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, precedence, &exp_right))"
-        _errval = parse_exp(ctx, precedence, @exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_exp(ctx, precedence, @exp_right))
     exp_left[] = make_CAssignment(@unop, exp_left, @exp_right, info_at)
     FINALLY
     free_CExp(@exp_right)
@@ -1848,20 +1080,8 @@ fn parse_assign_compound_exp(ctx: *struc ParserContext, precedence: i32, exp_lef
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_binop(ctx, &binop))"
-        _errval = parse_binop(ctx, @binop)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, precedence, &exp_right))"
-        _errval = parse_exp(ctx, precedence, @exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_binop(ctx, @binop))
+    TRY(parse_exp(ctx, precedence, @exp_right))
     exp_right_1 = make_CBinary(@binop, exp_left, @exp_right, info_at)
     exp_left[] = make_CAssignment(@unop, @exp_null, @exp_right_1, info_at)
     FINALLY
@@ -1875,20 +1095,8 @@ fn parse_binary_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_binop(ctx, &binop))"
-        _errval = parse_binop(ctx, @binop)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, precedence + 1, &exp_right))"
-        _errval = parse_exp(ctx, precedence + 1, @exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_binop(ctx, @binop))
+    TRY(parse_exp(ctx, precedence + 1, @exp_right))
     exp_left[] = make_CBinary(@binop, exp_left, @exp_right, info_at)
     FINALLY
     free_CExp(@exp_right)
@@ -1901,62 +1109,14 @@ fn parse_ternary_exp(ctx: *struc ParserContext, exp: **struc CExp) i32 {
     exp_right: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &exp_left))"
-        _errval = parse_exp(ctx, 0, @exp_left)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_key_then))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_key_then)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &exp_middle))"
-        _errval = parse_exp(ctx, 0, @exp_middle)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_key_else))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_key_else)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &exp_right))"
-        _errval = parse_exp(ctx, 0, @exp_right)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_exp(ctx, 0, @exp_left))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_key_then))
+    TRY(parse_exp(ctx, 0, @exp_middle))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_key_else))
+    TRY(parse_exp(ctx, 0, @exp_right))
     exp[] = make_CConditional(@exp_left, @exp_middle, @exp_right, info_at)
     FINALLY
     free_CExp(@exp_left)
@@ -2044,39 +1204,15 @@ fn get_tok_precedence(tok_kind: i32) i32 {
 
 fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_ternary_if {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_ternary_exp(ctx, exp))"
-            _errval = parse_ternary_exp(ctx, exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_ternary_exp(ctx, exp))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_unary_exp_factor(ctx, exp))"
-            _errval = parse_unary_exp_factor(ctx, exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_unary_exp_factor(ctx, exp))
     }
     loop while true {
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
         precedence: i32 = get_tok_precedence(ctx[].peek_tok[].tok_kind)
         if precedence < min_precedence {
             break
@@ -2100,13 +1236,7 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
                                                                         -> TOK_binop_ne {
                                                                             -> TOK_binop_and {
                                                                                 -> TOK_binop_or {
-                                                                                    loop .. while 0 {
-                                                                                        " #@MACRO@:TRY(parse_binary_exp(ctx, precedence, exp))"
-                                                                                        _errval = parse_binary_exp(ctx, precedence, exp)
-                                                                                        if _errval ~= 0 {
-                                                                                            jump _Lfinally
-                                                                                        }
-                                                                                    }
+                                                                                    TRY(parse_binary_exp(ctx, precedence, exp))
                                                                                 }
                                                                             }
                                                                         }
@@ -2127,13 +1257,7 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
             }
             break
             -> TOK_assign {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_assign_exp(ctx, precedence, exp))"
-                    _errval = parse_assign_exp(ctx, precedence, exp)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_assign_exp(ctx, precedence, exp))
             }
             break
             -> TOK_assign_add {
@@ -2146,13 +1270,7 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
                                         -> TOK_assign_xor {
                                             -> TOK_assign_shiftleft {
                                                 -> TOK_assign_shiftright {
-                                                    loop .. while 0 {
-                                                        " #@MACRO@:TRY(parse_assign_compound_exp(ctx, precedence, exp))"
-                                                        _errval = parse_assign_compound_exp(ctx, precedence, exp)
-                                                        if _errval ~= 0 {
-                                                            jump _Lfinally
-                                                        }
-                                                    }
+                                                    TRY(parse_assign_compound_exp(ctx, precedence, exp))
                                                 }
                                             }
                                         }
@@ -2185,37 +1303,13 @@ fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement)
     exp: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_none {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
-            _errval = parse_exp(ctx, 0, @exp)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_exp(ctx, 0, @exp))
     }
     statement[] = make_CReturn(@exp, info_at)
     FINALLY
@@ -2226,13 +1320,7 @@ fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement)
 fn parse_exp_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     exp: *struc CExp = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
-        _errval = parse_exp(ctx, 0, @exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_exp(ctx, 0, @exp))
     statement[] = make_CExpression(@exp)
     FINALLY
     free_CExp(@exp)
@@ -2242,13 +1330,7 @@ fn parse_exp_statement(ctx: *struc ParserContext, statement: **struc CStatement)
 fn parse_compound_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     block: *struc CBlock = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_block(ctx, &block))"
-        _errval = parse_block(ctx, @block)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_block(ctx, @block))
     if block {
         statement[] = make_CCompound(@block)
     }
@@ -2265,83 +1347,23 @@ fn parse_if_statement(ctx: *struc ParserContext, statement: **struc CStatement) 
     then_fi: *struc CStatement = uptr_new()
     else_fi: *struc CStatement = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &condition))"
-        _errval = parse_exp(ctx, 0, @condition)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_compound_statement(ctx, &then_fi))"
-        _errval = parse_compound_statement(ctx, @then_fi)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_exp(ctx, 0, @condition))
+    TRY(parse_compound_statement(ctx, @then_fi))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_line_break {
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next_i(ctx, 1))"
-            _errval = peek_next_i(ctx, 1)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next_i(ctx, 1))
         match ctx[].peek_tok_i[].tok_kind {
             -> TOK_key_elif {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(pop_next(ctx))"
-                    _errval = pop_next(ctx)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(pop_next(ctx))
             }
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_if_statement(ctx, &else_fi))"
-                _errval = parse_if_statement(ctx, @else_fi)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_if_statement(ctx, @else_fi))
             break
             -> TOK_key_else {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(pop_next(ctx))"
-                    _errval = pop_next(ctx)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(pop_next(ctx))
             }
-            loop .. while 0 {
-                " #@MACRO@:TRY(pop_next(ctx))"
-                _errval = pop_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_compound_statement(ctx, &else_fi))"
-                _errval = parse_compound_statement(ctx, @else_fi)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(pop_next(ctx))
+            TRY(parse_compound_statement(ctx, @else_fi))
             break
             otherwise {
                 break
@@ -2359,35 +1381,11 @@ fn parse_if_statement(ctx: *struc ParserContext, statement: **struc CStatement) 
 fn parse_jump_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-        _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
+    TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
     target: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, &target))"
-        _errval = parse_identifier(ctx, @target)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_identifier(ctx, @target))
     statement[] = make_CGoto(target, info_at)
     FINALLY
     CATCH_EXIT
@@ -2397,35 +1395,11 @@ fn parse_label_statement(ctx: *struc ParserContext, statement: **struc CStatemen
     jump_to: *struc CStatement = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-        _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
+    TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
     target: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, &target))"
-        _errval = parse_identifier(ctx, @target)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_identifier(ctx, @target))
     jump_to = make_CNull()
     statement[] = make_CLabel(target, @jump_to, info_at)
     FINALLY
@@ -2437,13 +1411,7 @@ fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) i
     var_decl: *struc CVariableDeclaration = uptr_new()
     CATCH_ENTER
     storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_var_declaration(ctx, &storage_class, &var_decl))"
-        _errval = parse_var_declaration(ctx, @storage_class, @var_decl)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_var_declaration(ctx, @storage_class, @var_decl))
     for_init[] = make_CInitDecl(@var_decl)
     FINALLY
     free_CVariableDeclaration(@var_decl)
@@ -2453,13 +1421,7 @@ fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) i
 fn parse_loop_init_exp(ctx: *struc ParserContext, for_init: **struc CForInit) i32 {
     init: *struc CExp = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &init))"
-        _errval = parse_exp(ctx, 0, @init)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_exp(ctx, 0, @init))
     for_init[] = make_CInitExp(@init)
     FINALLY
     free_CExp(@init)
@@ -2472,20 +1434,8 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
     post: *struc CExp = uptr_new()
     body: *struc CStatement = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_open_brace {
             jump Lbreak
@@ -2499,103 +1449,31 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
             }
         }
         -> TOK_loop_post {
-            loop .. while 0 {
-                " #@MACRO@:TRY(pop_next(ctx))"
-                _errval = pop_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
-            loop .. while 0 {
-                " #@MACRO@:TRY(peek_next(ctx))"
-                _errval = peek_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(pop_next(ctx))
+            TRY(peek_next(ctx))
             if ctx[].peek_tok[].tok_kind == TOK_key_while {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(pop_next(ctx))"
-                    _errval = pop_next(ctx)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_exp(ctx, 0, &condition))"
-                    _errval = parse_exp(ctx, 0, @condition)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_compound_statement(ctx, &body))"
-                    _errval = parse_compound_statement(ctx, @body)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(pop_next(ctx))
+                TRY(parse_exp(ctx, 0, @condition))
+                TRY(parse_compound_statement(ctx, @body))
                 statement[] = make_CDoWhile(@condition, @body)
                 jump _Lfinally
             }
             else {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_exp(ctx, 0, &post))"
-                    _errval = parse_exp(ctx, 0, @post)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_exp(ctx, 0, @post))
                 jump Lbreak
             }
         }
         -> TOK_key_while {
-            loop .. while 0 {
-                " #@MACRO@:TRY(pop_next(ctx))"
-                _errval = pop_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_exp(ctx, 0, &condition))"
-                _errval = parse_exp(ctx, 0, @condition)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
-            loop .. while 0 {
-                " #@MACRO@:TRY(peek_next(ctx))"
-                _errval = peek_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(pop_next(ctx))
+            TRY(parse_exp(ctx, 0, @condition))
+            TRY(peek_next(ctx))
             if ctx[].peek_tok[].tok_kind == TOK_loop_post {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(pop_next(ctx))"
-                    _errval = pop_next(ctx)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_exp(ctx, 0, &post))"
-                    _errval = parse_exp(ctx, 0, @post)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(pop_next(ctx))
+                TRY(parse_exp(ctx, 0, @post))
                 jump Lbreak
             }
             else {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_compound_statement(ctx, &body))"
-                    _errval = parse_compound_statement(ctx, @body)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_compound_statement(ctx, @body))
                 statement[] = make_CWhile(@condition, @body)
                 jump _Lfinally
             }
@@ -2613,89 +1491,29 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
             }
         }
         -> TOK_identifier {
-            loop .. while 0 {
-                " #@MACRO@:TRY(peek_next_i(ctx, 1))"
-                _errval = peek_next_i(ctx, 1)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(peek_next_i(ctx, 1))
             if ctx[].peek_tok_i[].tok_kind == TOK_assign_type {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_loop_init_decl(ctx, &for_init))"
-                    _errval = parse_loop_init_decl(ctx, @for_init)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_loop_init_decl(ctx, @for_init))
             }
             else {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_loop_init_exp(ctx, &for_init))"
-                    _errval = parse_loop_init_exp(ctx, @for_init)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_loop_init_exp(ctx, @for_init))
             }
             break
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_loop_init_exp(ctx, &for_init))"
-                _errval = parse_loop_init_exp(ctx, @for_init)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_loop_init_exp(ctx, @for_init))
         }
         break
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_while {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_exp(ctx, 0, &condition))"
-            _errval = parse_exp(ctx, 0, @condition)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(parse_exp(ctx, 0, @condition))
+        TRY(peek_next(ctx))
     }
     if ctx[].peek_tok[].tok_kind == TOK_loop_post {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_exp(ctx, 0, &post))"
-            _errval = parse_exp(ctx, 0, @post)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(parse_exp(ctx, 0, @post))
     }
     label Lbreak
     if not for_init {
@@ -2703,13 +1521,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
         for_init = make_CInitExp(@exp_null)
     }
     if not condition {
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_semicolon {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
@@ -2719,13 +1531,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
             }
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_compound_statement(ctx, &body))"
-        _errval = parse_compound_statement(ctx, @body)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_compound_statement(ctx, @body))
     statement[] = make_CFor(@for_init, @condition, @post, @body)
     FINALLY
     free_CForInit(@for_init)
@@ -2739,27 +1545,9 @@ fn parse_match_statement(ctx: *struc ParserContext, statement: **struc CStatemen
     lookup: *struc CExp = uptr_new()
     body: *struc CStatement = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &lookup))"
-        _errval = parse_exp(ctx, 0, @lookup)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_compound_statement(ctx, &body))"
-        _errval = parse_compound_statement(ctx, @body)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_exp(ctx, 0, @lookup))
+    TRY(parse_compound_statement(ctx, @body))
     statement[] = make_CSwitch(@lookup, @body)
     FINALLY
     free_CExp(@lookup)
@@ -2773,33 +1561,15 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
     constant: *struc CConst = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_true {
             -> TOK_key_false {
                 -> TOK_int_const {
                     -> TOK_long_const {
                         -> TOK_char_const {
-                            loop .. while 0 {
-                                " #@MACRO@:TRY(parse_const(ctx, &constant))"
-                                _errval = parse_const(ctx, @constant)
-                                if _errval ~= 0 {
-                                    jump _Lfinally
-                                }
-                            }
+                            TRY(parse_const(ctx, @constant))
                         }
                     }
                 }
@@ -2808,13 +1578,7 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
         break
         -> TOK_uint_const {
             -> TOK_ulong_const {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_unsigned_const(ctx, &constant))"
-                    _errval = parse_unsigned_const(ctx, @constant)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_unsigned_const(ctx, @constant))
             }
         }
         break
@@ -2828,13 +1592,7 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
     }
     value = make_CConstant(@constant, info_at)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_compound_statement(ctx, &jump_to))"
-        _errval = parse_compound_statement(ctx, @jump_to)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_compound_statement(ctx, @jump_to))
     statement[] = make_CCase(@value, @jump_to)
     FINALLY
     free_CExp(@value)
@@ -2847,20 +1605,8 @@ fn parse_otherwise_statement(ctx: *struc ParserContext, statement: **struc CStat
     jump_to: *struc CStatement = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_compound_statement(ctx, &jump_to))"
-        _errval = parse_compound_statement(ctx, @jump_to)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(parse_compound_statement(ctx, @jump_to))
     statement[] = make_CDefault(@jump_to, info_at)
     FINALLY
     free_CStatement(@jump_to)
@@ -2870,13 +1616,7 @@ fn parse_otherwise_statement(ctx: *struc ParserContext, statement: **struc CStat
 fn parse_break_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     statement[] = make_CBreak(info_at)
     FINALLY
     CATCH_EXIT
@@ -2885,13 +1625,7 @@ fn parse_break_statement(ctx: *struc ParserContext, statement: **struc CStatemen
 fn parse_continue_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     statement[] = make_CContinue(info_at)
     FINALLY
     CATCH_EXIT
@@ -2899,13 +1633,7 @@ fn parse_continue_statement(ctx: *struc ParserContext, statement: **struc CState
 
 fn parse_null_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     statement[] = make_CNull()
     FINALLY
     CATCH_EXIT
@@ -2915,133 +1643,55 @@ fn parse_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_return {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_ret_statement(ctx, statement))"
-                _errval = parse_ret_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_ret_statement(ctx, statement))
         }
         jump _Lfinally
         -> TOK_key_if {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_if_statement(ctx, statement))"
-                _errval = parse_if_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_if_statement(ctx, statement))
         }
         break
         -> TOK_key_jump {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_jump_statement(ctx, statement))"
-                _errval = parse_jump_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_jump_statement(ctx, statement))
         }
         break
         -> TOK_key_label {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_label_statement(ctx, statement))"
-                _errval = parse_label_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_label_statement(ctx, statement))
         }
         break
         -> TOK_open_brace {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_compound_statement(ctx, statement))"
-                _errval = parse_compound_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_compound_statement(ctx, statement))
         }
         break
         -> TOK_key_loop {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_loop_statement(ctx, statement))"
-                _errval = parse_loop_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_loop_statement(ctx, statement))
         }
         break
         -> TOK_key_match {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_match_statement(ctx, statement))"
-                _errval = parse_match_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_match_statement(ctx, statement))
         }
         break
         -> TOK_match_with {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_with_statement(ctx, statement))"
-                _errval = parse_with_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_with_statement(ctx, statement))
         }
         break
         -> TOK_key_otherwise {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_otherwise_statement(ctx, statement))"
-                _errval = parse_otherwise_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_otherwise_statement(ctx, statement))
         }
         break
         -> TOK_key_break {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_break_statement(ctx, statement))"
-                _errval = parse_break_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_break_statement(ctx, statement))
         }
         break
         -> TOK_key_continue {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_continue_statement(ctx, statement))"
-                _errval = parse_continue_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_continue_statement(ctx, statement))
         }
         break
         -> TOK_semicolon {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_null_statement(ctx, statement))"
-                _errval = parse_null_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_null_statement(ctx, statement))
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_exp_statement(ctx, statement))"
-                _errval = parse_exp_statement(ctx, statement)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_exp_statement(ctx, statement))
         }
         break
     }
@@ -3054,13 +1704,7 @@ fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageCl
 fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i32 {
     statement: *struc CStatement = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_statement(ctx, &statement))"
-        _errval = parse_statement(ctx, @statement)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_statement(ctx, @statement))
     block_item[] = make_CS(@statement)
     FINALLY
     free_CStatement(@statement)
@@ -3071,13 +1715,7 @@ fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
     declaration: *struc CDeclaration = uptr_new()
     CATCH_ENTER
     storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_declaration(ctx, &storage_class, &declaration))"
-        _errval = parse_declaration(ctx, @storage_class, @declaration)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_declaration(ctx, @storage_class, @declaration))
     block_item[] = make_CD(@declaration)
     FINALLY
     free_CDeclaration(@declaration)
@@ -3099,34 +1737,16 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
             -> TOK_key_extrn {
                 -> TOK_key_fn {
                     -> TOK_key_type {
-                        loop .. while 0 {
-                            " #@MACRO@:TRY(parse_d_block_item(ctx, block_item))"
-                            _errval = parse_d_block_item(ctx, block_item)
-                            if _errval ~= 0 {
-                                jump _Lfinally
-                            }
-                        }
+                        TRY(parse_d_block_item(ctx, block_item))
                     }
                 }
             }
         }
         jump _Lfinally
         -> TOK_identifier {
-            loop .. while 0 {
-                " #@MACRO@:TRY(peek_next_i(ctx, 1))"
-                _errval = peek_next_i(ctx, 1)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(peek_next_i(ctx, 1))
             if ctx[].peek_tok_i[].tok_kind == TOK_assign_type {
-                loop .. while 0 {
-                    " #@MACRO@:TRY(parse_d_block_item(ctx, block_item))"
-                    _errval = parse_d_block_item(ctx, block_item)
-                    if _errval ~= 0 {
-                        jump _Lfinally
-                    }
-                }
+                TRY(parse_d_block_item(ctx, block_item))
                 jump _Lfinally
             }
             break
@@ -3135,13 +1755,7 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
             break
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_s_block_item(ctx, block_item))"
-        _errval = parse_s_block_item(ctx, block_item)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_s_block_item(ctx, block_item))
     FINALLY
     CATCH_EXIT
 }
@@ -3150,28 +1764,10 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     block_item: *struc CBlockItem = uptr_new()
     block_items: vector_t(unique_ptr_t(CBlockItem)) = vec_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_line_break {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(peek_next(ctx))
     }
     if ctx[].peek_tok[].tok_kind == TOK_close_brace {
         loop .. while 0 {
@@ -3181,65 +1777,23 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_block_item(ctx, &block_item))"
-        _errval = parse_block_item(ctx, @block_item)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_block_item(ctx, @block_item))
     vec_move_back(block_items, block_item)
     loop while true {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
         if ctx[].next_tok[].tok_kind == TOK_close_brace {
             break
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_line_break))"
-            _errval = expect_next(ctx, ctx[].next_tok, TOK_line_break)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(expect_next(ctx, ctx[].next_tok, TOK_line_break))
+        TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_close_brace {
-            loop .. while 0 {
-                " #@MACRO@:TRY(pop_next(ctx))"
-                _errval = pop_next(ctx)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(pop_next(ctx))
             break
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_block_item(ctx, &block_item))"
-            _errval = parse_block_item(ctx, @block_item)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_block_item(ctx, @block_item))
         vec_move_back(block_items, block_item)
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_brace))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_brace)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_brace))
     block[] = make_CB(@block_items)
     FINALLY
     free_CBlockItem(@block_item)
@@ -3252,25 +1806,13 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
 
 fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_semicolon {
             break
         }
         -> TOK_open_brace {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_b_block(ctx, block))"
-                _errval = parse_b_block(ctx, block)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_b_block(ctx, block))
         }
         break
         otherwise {
@@ -3291,13 +1833,7 @@ fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitialize
 fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
     exp: *struc CExp = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_exp(ctx, 0, &exp))"
-        _errval = parse_exp(ctx, 0, @exp)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_exp(ctx, 0, @exp))
     initializer[] = make_CSingleInit(@exp)
     FINALLY
     free_CExp(@exp)
@@ -3307,34 +1843,10 @@ fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitialize
 fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
     initializers: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_open_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_open_paren))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_close_paren {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
@@ -3343,45 +1855,15 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_initializer(ctx, initializer))"
-        _errval = parse_initializer(ctx, initializer)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_initializer(ctx, initializer))
     vec_move_back(initializers, initializer[])
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     loop while ctx[].next_tok[].tok_kind == TOK_comma_separator {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_initializer(ctx, initializer))"
-            _errval = parse_initializer(ctx, initializer)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_initializer(ctx, initializer))
         vec_move_back(initializers, initializer[])
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
     initializer[] = make_CCompoundInit(@initializers)
     FINALLY
     loop i: u64 = 0 while i < vec_size(initializers) .. ++i {
@@ -3393,30 +1875,12 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
 
 fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitializer) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_compound_init {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_compound_init(ctx, initializer))"
-            _errval = parse_compound_init(ctx, initializer)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_compound_init(ctx, initializer))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_single_init(ctx, initializer))"
-            _errval = parse_single_init(ctx, initializer)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_single_init(ctx, initializer))
     }
     FINALLY
     CATCH_EXIT
@@ -3424,41 +1888,11 @@ fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitialize
 
 fn parse_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **struc Type) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-        _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, name))"
-        _errval = parse_identifier(ctx, name)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_assign_type))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_assign_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_type_name(ctx, derived_type))"
-        _errval = parse_type_name(ctx, derived_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
+    TRY(parse_identifier(ctx, name))
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_assign_type))
+    TRY(parse_type_name(ctx, derived_type))
     FINALLY
     CATCH_EXIT
 }
@@ -3482,13 +1916,7 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
             break
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_decltor(ctx, name, derived_type))"
-        _errval = parse_decltor(ctx, name, derived_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_decltor(ctx, name, derived_type))
     FINALLY
     CATCH_EXIT
 }
@@ -3497,53 +1925,17 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: *vector_t(TIdentifier),
     param_type: *struc Type = sptr_new()
     CATCH_ENTER
     param: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_item_decltor(ctx, &param, &param_type))"
-        _errval = parse_item_decltor(ctx, @param, @param_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_item_decltor(ctx, @param, @param_type))
     vec_push_back(params[], param)
     vec_move_back(param_types[], param_type)
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     loop while ctx[].peek_tok[].tok_kind == TOK_comma_separator {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_item_decltor(ctx, &param, &param_type))"
-            _errval = parse_item_decltor(ctx, @param, @param_type)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(peek_next(ctx))
+        TRY(parse_item_decltor(ctx, @param, @param_type))
         vec_push_back(params[], param)
         vec_move_back(param_types[], param_type)
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
     }
     FINALLY
     free_Type(@param_type)
@@ -3553,66 +1945,18 @@ fn parse_decltor_list(ctx: *struc ParserContext, params: *vector_t(TIdentifier),
 fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: *vector_t(TIdentifier)) i32 {
     param_types: vector_t(shared_ptr_t(Type)) = vec_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_open_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_open_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_open_paren))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_none {
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_decltor_list(ctx, params, &param_types))"
-            _errval = parse_decltor_list(ctx, params, @param_types)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_decltor_list(ctx, params, @param_types))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_maybe_type(ctx, fun_type))"
-        _errval = parse_maybe_type(ctx, fun_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
+    TRY(parse_maybe_type(ctx, fun_type))
     fun_type[] = make_FunType(@param_types, fun_type)
     FINALLY
     loop i: u64 = 0 while i < vec_size(param_types) .. ++i {
@@ -3628,49 +1972,13 @@ fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
     params: vector_t(TIdentifier) = vec_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->peek_tok, TOK_identifier))"
-        _errval = expect_next(ctx, ctx[].peek_tok, TOK_identifier)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
+    TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
     name: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_identifier(ctx, &name))"
-        _errval = parse_identifier(ctx, @name)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_fun_decltor(ctx, &fun_type, &params))"
-        _errval = parse_fun_decltor(ctx, @fun_type, @params)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_block(ctx, &body))"
-        _errval = parse_block(ctx, @body)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_identifier(ctx, @name))
+    TRY(parse_fun_decltor(ctx, @fun_type, @params))
+    TRY(parse_block(ctx, @body))
     fun_decl[] = make_CFunctionDeclaration(name, @params, @body, @fun_type, storage_class, info_at)
     FINALLY
     free_CBlock(@body)
@@ -3685,32 +1993,14 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_decltor(ctx, &name, &var_type))"
-        _errval = parse_decltor(ctx, @name, @var_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_decltor(ctx, @name, @var_type))
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_semicolon {
             break
         }
         -> TOK_assign {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_initializer(ctx, &initializer))"
-                _errval = parse_initializer(ctx, @initializer)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_initializer(ctx, @initializer))
         }
         break
         otherwise {
@@ -3734,21 +2024,9 @@ fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMem
     CATCH_ENTER
     info_at: u64;
     member_name: u64;
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(peek_next(ctx))
     info_at = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_item_decltor(ctx, &member_name, &member_type))"
-        _errval = parse_item_decltor(ctx, @member_name, @member_type)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_item_decltor(ctx, @member_name, @member_type))
     member_decl[] = make_CMemberDeclaration(member_name, @member_type, info_at)
     FINALLY
     free_Type(@member_type)
@@ -3758,45 +2036,15 @@ fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMem
 fn parse_member_list(ctx: *struc ParserContext, members: *vector_t(unique_ptr_t(CMemberDeclaration))) i32 {
     member: *struc CMemberDeclaration = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_member_declaration(ctx, &member))"
-        _errval = parse_member_declaration(ctx, @member)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_member_declaration(ctx, @member))
     vec_move_back(members[], member)
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
     loop while ctx[].next_tok[].tok_kind == TOK_comma_separator {
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_member_declaration(ctx, &member))"
-            _errval = parse_member_declaration(ctx, @member)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_member_declaration(ctx, @member))
         vec_move_back(members[], member)
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_close_paren))"
-        _errval = expect_next(ctx, ctx[].next_tok, TOK_close_paren)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(expect_next(ctx, ctx[].next_tok, TOK_close_paren))
     FINALLY
     free_CMemberDeclaration(@member)
     CATCH_EXIT
@@ -3808,46 +2056,16 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
     is_union: i32;
     tag_name: u64;
     info_at: u64 = ctx[].peek_tok[].info_at
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_datatype_specifier(ctx, &tag_name, &is_union))"
-        _errval = parse_datatype_specifier(ctx, @tag_name, @is_union)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(pop_next(ctx))
+    TRY(parse_datatype_specifier(ctx, @tag_name, @is_union))
+    TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_semicolon {
             break
         }
         -> TOK_open_paren {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_member_list(ctx, &members))"
-                _errval = parse_member_list(ctx, @members)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_member_list(ctx, @members))
         }
         break
         otherwise {
@@ -3871,13 +2089,7 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
 fn parse_fun_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
     fun_decl: *struc CFunctionDeclaration = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_fun_declaration(ctx, storage_class, &fun_decl))"
-        _errval = parse_fun_declaration(ctx, storage_class, @fun_decl)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_fun_declaration(ctx, storage_class, @fun_decl))
     declaration[] = make_CFunDecl(@fun_decl)
     FINALLY
     free_CFunctionDeclaration(@fun_decl)
@@ -3887,13 +2099,7 @@ fn parse_fun_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass
 fn parse_var_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
     var_decl: *struc CVariableDeclaration = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_var_declaration(ctx, storage_class, &var_decl))"
-        _errval = parse_var_declaration(ctx, storage_class, @var_decl)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_var_declaration(ctx, storage_class, @var_decl))
     declaration[] = make_CVarDecl(@var_decl)
     FINALLY
     free_CVariableDeclaration(@var_decl)
@@ -3903,13 +2109,7 @@ fn parse_var_decl(ctx: *struc ParserContext, storage_class: *struc CStorageClass
 fn parse_type_decl(ctx: *struc ParserContext, declaration: **struc CDeclaration) i32 {
     struct_decl: *struc CStructDeclaration = uptr_new()
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_type_declaration(ctx, &struct_decl))"
-        _errval = parse_type_declaration(ctx, @struct_decl)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_type_declaration(ctx, @struct_decl))
     declaration[] = make_CStructDecl(@struct_decl)
     FINALLY
     free_CStructDeclaration(@struct_decl)
@@ -3947,20 +2147,8 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
             }
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:TRY(pop_next(ctx))"
-        _errval = pop_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
-    loop .. while 0 {
-        " #@MACRO@:TRY(peek_next(ctx))"
-        _errval = peek_next(ctx)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(pop_next(ctx))
+    TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_type {
         loop .. while 0 {
             " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
@@ -3975,42 +2163,18 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
 
 fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32 {
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_storage_class(ctx, storage_class))"
-        _errval = parse_storage_class(ctx, storage_class)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_storage_class(ctx, storage_class))
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_fn {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_fun_decl(ctx, storage_class, declaration))"
-                _errval = parse_fun_decl(ctx, storage_class, declaration)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_fun_decl(ctx, storage_class, declaration))
         }
         break
         -> TOK_identifier {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_var_decl(ctx, storage_class, declaration))"
-                _errval = parse_var_decl(ctx, storage_class, declaration)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_var_decl(ctx, storage_class, declaration))
         }
         break
         -> TOK_key_type {
-            loop .. while 0 {
-                " #@MACRO@:TRY(parse_type_decl(ctx, declaration))"
-                _errval = parse_type_decl(ctx, declaration)
-                if _errval ~= 0 {
-                    jump _Lfinally
-                }
-            }
+            TRY(parse_type_decl(ctx, declaration))
         }
         break
         otherwise {
@@ -4032,13 +2196,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
     CATCH_ENTER
     loop while ctx[].pop_idx < vec_size(ctx[].p_toks[]) {
         storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
-        loop .. while 0 {
-            " #@MACRO@:TRY(peek_next(ctx))"
-            _errval = peek_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_key_data {
             loop .. while 0 {
                 " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
@@ -4047,28 +2205,10 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
                 jump _Lfinally
             }
         }
-        loop .. while 0 {
-            " #@MACRO@:TRY(parse_declaration(ctx, &storage_class, &declaration))"
-            _errval = parse_declaration(ctx, @storage_class, @declaration)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(parse_declaration(ctx, @storage_class, @declaration))
         vec_move_back(declarations, declaration)
-        loop .. while 0 {
-            " #@MACRO@:TRY(pop_next(ctx))"
-            _errval = pop_next(ctx)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
-        loop .. while 0 {
-            " #@MACRO@:TRY(expect_next(ctx, ctx->next_tok, TOK_line_break))"
-            _errval = expect_next(ctx, ctx[].next_tok, TOK_line_break)
-            if _errval ~= 0 {
-                jump _Lfinally
-            }
-        }
+        TRY(pop_next(ctx))
+        TRY(expect_next(ctx, ctx[].next_tok, TOK_line_break))
     }
     c_ast[] = make_CProgram(@declarations)
     FINALLY
@@ -4090,13 +2230,7 @@ pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext
     }
 
     CATCH_ENTER
-    loop .. while 0 {
-        " #@MACRO@:TRY(parse_program(&ctx, c_ast))"
-        _errval = parse_program(@ctx, c_ast)
-        if _errval ~= 0 {
-            jump _Lfinally
-        }
-    }
+    TRY(parse_program(@ctx, c_ast))
     # TODO THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
     FINALLY
     vec_delete(tokens[])
