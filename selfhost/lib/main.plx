@@ -153,86 +153,36 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     CATCH_ENTER
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_print_help), "MSG_print_help", "", "", argv[0]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(1, MSG_print_help, argv[0]))
     }
     if not argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_debug_arg), "MSG_no_debug_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_debug_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_debug_arg), "MSG_invalid_debug_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_debug_arg, argv[i]))
     }
     if not argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_1_arg), "MSG_no_optim_1_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_optim_1_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_1_arg), "MSG_invalid_optim_1_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_optim_1_arg, argv[i]))
     }
     if not argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_optim_2_arg), "MSG_no_optim_2_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_optim_2_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_invalid_optim_2_arg), "MSG_invalid_optim_2_arg", "", "", argv[i]) > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_optim_2_arg, argv[i]))
     }
     if not argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_input_files_arg), "MSG_no_input_files_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_input_files_arg))
     }
     ctx[].filename = str_new(argv[i])
     if not argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_stdlib_dir_arg), "MSG_no_stdlib_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_stdlib_dir_arg))
     }
     vec_push_back(ctx[].stdlibdirs, cast<string>(argv[i]))
     if not argv[++i] {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_init_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_arg_msg(MSG_no_include_dir_arg), "MSG_no_include_dir_arg", "", "", "") > 0 then cast<none>(raise_init_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_INIT(GET_ARG_MSG(0, MSG_no_include_dir_arg))
     }
     vec_push_back(ctx[].includedirs, cast<string>(argv[i]))
     FINALLY

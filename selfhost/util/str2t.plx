@@ -239,12 +239,7 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
     end_ptr: string = nil
     value[] = strtoimax(str_int, @end_ptr, 10)
     if end_ptr == str_int {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtoi), "MSG_failed_strtoi", "", "", str_int) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(1, MSG_failed_strtoi, str_int))
     }
     FINALLY
     CATCH_EXIT
@@ -255,12 +250,7 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
     end_ptr: string = nil
     value[] = strtoumax(str_uint, @end_ptr, 10)
     if end_ptr == str_uint {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtou), "MSG_failed_strtou", "", "", str_uint) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(1, MSG_failed_strtou, str_uint))
     }
     FINALLY
     CATCH_EXIT
@@ -271,12 +261,7 @@ pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, v
     end_ptr: string = nil
     value[] = strtod(str_dbl, @end_ptr)
     if end_ptr == str_dbl {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_strtod), "MSG_failed_strtod", "", "", str_dbl) > 0 then cast<none>(raise_error_at_token(ctx[].errors, info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(1, MSG_failed_strtod, str_dbl))
     }
     FINALLY
     CATCH_EXIT

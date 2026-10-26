@@ -50,12 +50,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) i32 {
     file_read: struc FileRead = $(0, nil, nil, str_new(nil))
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or str_size(filename) >= 4096 {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fread, filename))
     }
     str_copy(filename, file_read.filename)
     vec_push_back(ctx[].file_reads, file_read)
@@ -69,12 +64,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) i32 {
     ctx[].fd_write = nil
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or str_size(filename) >= 4096 {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fwrite), "MSG_failed_fwrite", "", "", filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fwrite, filename))
     }
     ctx[].write_buf = str_new("")
     str_reserve(ctx[].write_buf, WRITE_BUF_SIZE)
@@ -121,23 +111,11 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
         # TODO THROW_ABORT_IF(vec_back(ctx->file_reads).buf || vec_back(ctx->file_reads).len != 0);
         vec_back(ctx[].file_reads).fd = fopen(vec_back(ctx[].file_reads).filename, "rb")
         if not vec_back(ctx[].file_reads).fd {
-            loop .. while 0 {
-                # TODO THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fread, vec_back(ctx->file_reads).filename));
-                " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fread, vec_back(ctx[].file_reads).filename))
         }
         loop i: u64 = 0 while i < linenum .. ++i {
             if getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len, vec_back(ctx[].file_reads).fd) == -1 {
-                loop .. while 0 {
-                    # TODO THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fread, vec_back(ctx->file_reads).filename));
-                    " #@MACRO@:THROW_ERROR(1, raise_base_error(ctx->errors))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_util_msg(MSG_failed_fread), "MSG_failed_fread", "", "", (ctx[].file_reads)[(? (ctx[].file_reads) then (cast<*struc stbds_array_header>((ctx[].file_reads)) - 1)[].length else 0) - 1].filename) > 0 then cast<none>(raise_base_error(ctx[].errors)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fread, vec_back(ctx[].file_reads).filename))
             }
         }
     }
