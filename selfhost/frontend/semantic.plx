@@ -208,12 +208,9 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_complete(ctx, arr_type[].elem_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_arr), "MSG_incomplete_arr", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, arr_type[].elem_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            ctx[].errors[].info_at_buf, GET_SEMANTIC_MSG(2, MSG_incomplete_arr, str_fmt_arr(arr_type, @type_fmt_1),
+                                            str_fmt_type(arr_type[].elem_type, @type_fmt_2)))
     }
     TRY(is_valid_type(ctx, arr_type[].elem_type))
     FINALLY
@@ -513,12 +510,9 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
         }
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node_1->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_joint_ptr_mismatch), "MSG_joint_ptr_mismatch", "", get_type_fmt(ctx[].identifiers, node_1[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node_2[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node_1[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node_1[].info_at, GET_SEMANTIC_MSG(2, MSG_joint_ptr_mismatch, str_fmt_type(node_1[].exp_type, @type_fmt_1),
+                                  str_fmt_type(node_2[].exp_type, @type_fmt_2)))
     }
     FINALLY
     str_delete(type_fmt_1)
@@ -809,12 +803,8 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
     CATCH_ENTER
     var_type: *struc Type = map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t
     if var_type[].tag == AST_FunType_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_fun_used_as_var), "MSG_fun_used_as_var", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_fun_used_as_var, str_fmt_name(node[].name, @name_fmt)))
     }
     if var_type ~= node[]._base[].exp_type {
         " #@MACRO@:sptr_copy(Type, var_type, node->_base->exp_type)"
@@ -834,12 +824,9 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) i32 {
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     TRY(reslv_struct_type(ctx, node[].target_type))
     if node[].target_type[].tag ~= AST_Void_t and ((node[].exp[].exp_type[].tag == AST_Double_t and node[].target_type[].tag == AST_Pointer_t) or (node[].exp[].exp_type[].tag == AST_Pointer_t and node[].target_type[].tag == AST_Double_t) or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type)) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_illegal_cast), "MSG_illegal_cast", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_illegal_cast, str_fmt_type(node[].exp[].exp_type, @type_fmt_1),
+                                        str_fmt_type(node[].target_type, @type_fmt_2)))
     }
     TRY(is_valid_type(ctx, node[].target_type))
     if node[].target_type ~= node[]._base[].exp_type {
@@ -879,12 +866,9 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
         TRY(cast_exp(ctx, exp_type, exp))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, (*exp)->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_illegal_cast), "MSG_illegal_cast", "", get_type_fmt(ctx[].identifiers, (exp[])[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, exp_type[], @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, (exp[])[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            exp[][].info_at, GET_SEMANTIC_MSG(2, MSG_illegal_cast, str_fmt_type(exp[][].exp_type, @type_fmt_1),
+                                 str_fmt_type(exp_type[], @type_fmt_2)))
     }
     FINALLY
     str_delete(type_fmt_1)
@@ -906,21 +890,13 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+                                                   str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     match node[].exp[].exp_type[].tag {
         -> AST_Double_t {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+                                                       str_fmt_type(node[].exp[].exp_type, @type_fmt)))
         }
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -949,12 +925,8 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+                                                   str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     match node[].exp[].exp_type[].tag {
         -> AST_Char_t {
@@ -984,12 +956,8 @@ fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_scalar(node[].exp[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_unary_op), "MSG_invalid_unary_op", "", get_unop_fmt(@node[].unop), get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+                                                   str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     node[]._base[].exp_type = make_Int()
     FINALLY
@@ -1055,12 +1023,9 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         jump _Lfinally
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_left))
@@ -1120,21 +1085,16 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
             jump _Lfinally
         }
         else {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                            str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                            str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
         }
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_left))
@@ -1164,12 +1124,9 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     common_type: *struc Type = sptr_new()
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
@@ -1200,12 +1157,9 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     common_type: *struc Type = sptr_new()
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
@@ -1224,12 +1178,8 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
         }
     }
     if node[]._base[].exp_type[].tag == AST_Double_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_op), "MSG_invalid_binary_op", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[]._base[].exp_type, @type_fmt_1)))
     }
     FINALLY
     str_delete(type_fmt_1)
@@ -1243,12 +1193,9 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_int(node[].exp_right[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     elif is_type_char(node[].exp_left[].exp_type) {
         TRY(promote_char_to_int(ctx, @node[].exp_left))
@@ -1263,12 +1210,8 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         (node[]._base[].exp_type)[]._ref_count++
     }
     if node[]._base[].exp_type[].tag == AST_Double_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_op), "MSG_invalid_binary_op", "", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[]._base[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[]._base[].exp_type, @type_fmt_1)))
     }
     FINALLY
     str_delete(type_fmt_1)
@@ -1291,12 +1234,9 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) i
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     node[]._base[].exp_type = make_Int()
     FINALLY
@@ -1317,12 +1257,9 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_left))
@@ -1344,12 +1281,9 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     common_type: *struc Type = sptr_new()
     CATCH_ENTER
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_binary_ops), "MSG_invalid_binary_ops", get_binop_fmt(@node[].binop), get_type_fmt(ctx[].identifiers, node[].exp_left[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                                                   str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
+                                                   str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     common_type = get_joint_type(node[].exp_left, node[].exp_right)
     if not is_same_type(node[].exp_left[].exp_type, common_type) {
@@ -1435,20 +1369,11 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
     CATCH_ENTER
     if node[].exp_left {
         if node[].exp_left[].exp_type[].tag == AST_Void_t {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_assign_to_void), "MSG_assign_to_void", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(0, MSG_assign_to_void))
         }
         elif not is_exp_lvalue(node[].exp_left) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_assign_to_rvalue), "MSG_assign_to_rvalue", "", "", get_assign_fmt(nil, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_assign_to_rvalue, get_assign_fmt(nil, @node[].unop)))
         }
         elif not is_same_type(node[].exp_right[].exp_type, node[].exp_left[].exp_type) {
             TRY(cast_assign(ctx, @node[].exp_left[].exp_type, @node[].exp_right))
@@ -1466,12 +1391,9 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) i32 {
             exp_left = exp_left[].get._CCast.exp
         }
         if not is_exp_lvalue(exp_left) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_assign_to_rvalue), "MSG_assign_to_rvalue", "", "", get_assign_fmt(@node[].exp_right[].get._CBinary.binop, @node[].unop)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_assign_to_rvalue,
+                                            get_assign_fmt(@node[].exp_right[].get._CBinary.binop, @node[].unop)))
         }
         elif not is_same_type(node[].exp_right[].exp_type, exp_left[].exp_type) {
             TRY(cast_assign(ctx, @exp_left[].exp_type, @node[].exp_right))
@@ -1493,12 +1415,8 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     common_type: *struc Type = sptr_new()
     CATCH_ENTER
     if not is_type_scalar(node[].condition[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_condition), "MSG_invalid_condition", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_condition, str_fmt_type(node[].condition[].exp_type, @type_fmt_1)))
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Void_t and node[].exp_right[].exp_type[].tag == AST_Void_t {
         if node[].exp_middle[].exp_type ~= node[]._base[].exp_type {
@@ -1511,12 +1429,9 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Structure_t or node[].exp_right[].exp_type[].tag == AST_Structure_t {
         if not is_same_type(node[].exp_middle[].exp_type, node[].exp_right[].exp_type) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_ternary_op), "MSG_invalid_ternary_op", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[]._base[].info_at,
+                GET_SEMANTIC_MSG(2, MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
+                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
         }
         if node[].exp_middle[].exp_type ~= node[]._base[].exp_type {
             " #@MACRO@:sptr_copy(Type, node->exp_middle->exp_type, node->_base->exp_type)"
@@ -1533,12 +1448,9 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
         TRY(get_joint_ptr_type(ctx, node[].exp_middle, node[].exp_right, @common_type))
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_ternary_op), "MSG_invalid_ternary_op", "", get_type_fmt(ctx[].identifiers, node[].exp_middle[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].exp_right[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at,
+            GET_SEMANTIC_MSG(2, MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
+                str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     if not is_same_type(node[].exp_middle[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_middle))
@@ -1570,22 +1482,14 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
     fun_symbol: *struc Symbol = map_get(ctx[].frontend[].symbol_table, node[].name)
     fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
     if fun_symbol[].type_t[].tag ~= AST_FunType_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_var_used_as_fun), "MSG_var_used_as_fun", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_var_used_as_fun, str_fmt_name(node[].name, @name_fmt)))
     }
     elif vec_size(fun_type[].param_types) ~= vec_size(node[].args) {
         strto_fmt_1 = str_to_string(vec_size(node[].args))
         strto_fmt_2 = str_to_string(vec_size(fun_type[].param_types))
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_call_with_wrong_argc), "MSG_call_with_wrong_argc", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_call_with_wrong_argc,
+                                                   str_fmt_name(node[].name, @name_fmt), strto_fmt_1, strto_fmt_2))
     }
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         if not is_same_type(node[].args[i][].exp_type, fun_type[].param_types[i]) {
@@ -1609,12 +1513,8 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].exp[].exp_type[].tag ~= AST_Pointer_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_deref_not_ptr), "MSG_deref_not_ptr", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_deref_not_ptr, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     if node[].exp[].exp_type[].get._Pointer.ref_type ~= node[]._base[].exp_type {
         " #@MACRO@:sptr_copy(Type, node->exp->exp_type->get._Pointer.ref_type, node->_base->exp_type)"
@@ -1631,12 +1531,7 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) i32 {
     ref_type: *struc Type = sptr_new()
     CATCH_ENTER
     if not is_exp_lvalue(node[].exp) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_addrof_rvalue), "MSG_addrof_rvalue", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(0, MSG_addrof_rvalue))
     }
     if node[].exp[].exp_type ~= ref_type {
         " #@MACRO@:sptr_copy(Type, node->exp->exp_type, ref_type)"
@@ -1681,12 +1576,9 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) i32
         }
     }
     else {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_subscript), "MSG_invalid_subscript", "", get_type_fmt(ctx[].identifiers, node[].primary_exp[].exp_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, node[].subscript_exp[].exp_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at,
+            GET_SEMANTIC_MSG(2, MSG_invalid_subscript, str_fmt_type(node[].primary_exp[].exp_type, @type_fmt_1),
+                str_fmt_type(node[].subscript_exp[].exp_type, @type_fmt_2)))
     }
     loop .. while 0 {
         " #@MACRO@:sptr_move(Type, ref_type, node->_base->exp_type)"
@@ -1709,12 +1601,8 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_complete(ctx, node[].exp[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_sizeof_incomplete), "MSG_sizeof_incomplete", "", "", get_type_fmt(ctx[].identifiers, node[].exp[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_sizeof_incomplete, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     node[]._base[].exp_type = make_ULong()
     FINALLY
@@ -1728,12 +1616,8 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) i32 {
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     TRY(reslv_struct_type(ctx, node[].target_type))
     if not is_type_complete(ctx, node[].target_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_sizeof_incomplete), "MSG_sizeof_incomplete", "", "", get_type_fmt(ctx[].identifiers, node[].target_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_sizeof_incomplete, str_fmt_type(node[].target_type, @type_fmt)))
     }
     TRY(is_valid_type(ctx, node[].target_type))
     node[]._base[].exp_type = make_ULong()
@@ -1751,23 +1635,17 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) i32 {
     member_type: *struc Type;
     map_it: i64;
     if node[].structure[].exp_type[].tag ~= AST_Structure_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_dot_not_struct), "MSG_dot_not_struct", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].structure[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_dot_not_struct, str_fmt_name(node[].member, @name_fmt),
+                                        str_fmt_type(node[].structure[].exp_type, @type_fmt)))
     }
     struct_type = @node[].structure[].exp_type[].get._Structure
     struct_typedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     map_it = map_find(struct_typedef[].members, node[].member)
     if map_it == map_end() {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_member_not_in_struct), "MSG_member_not_in_struct", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_member_not_in_struct, str_fmt_struct(struct_type, @type_fmt),
+                                        str_fmt_name(node[].member, @name_fmt)))
     }
     member_type = pair_second(struct_typedef[].members[map_it])[].member_type
     if member_type ~= node[]._base[].exp_type {
@@ -1792,41 +1670,29 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) i32 {
     member_type: *struc Type;
     map_it: i64;
     if node[].pointer[].exp_type[].tag ~= AST_Pointer_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arrow_not_struct_ptr), "MSG_arrow_not_struct_ptr", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_arrow_not_struct_ptr, str_fmt_name(node[].member, @name_fmt),
+                                        str_fmt_type(node[].pointer[].exp_type, @type_fmt)))
     }
     ptr_type = @node[].pointer[].exp_type[].get._Pointer
     if ptr_type[].ref_type[].tag ~= AST_Structure_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arrow_not_struct_ptr), "MSG_arrow_not_struct_ptr", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_type_fmt(ctx[].identifiers, node[].pointer[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_arrow_not_struct_ptr, str_fmt_name(node[].member, @name_fmt),
+                                        str_fmt_type(node[].pointer[].exp_type, @type_fmt)))
     }
     struct_type = @ptr_type[].ref_type[].get._Structure
     map_it = map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     if map_it == map_end() {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arrow_incomplete), "MSG_arrow_incomplete", "", get_name_fmt(ctx[].identifiers, node[].member, @name_fmt), get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_arrow_incomplete, str_fmt_name(node[].member, @name_fmt),
+                                        str_fmt_struct(struct_type, @type_fmt)))
     }
     struct_typedef = pair_second(ctx[].frontend[].struct_typedef_table[map_it])
     map_it = map_find(struct_typedef[].members, node[].member)
     if map_it == map_end() {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_member_not_in_struct), "MSG_member_not_in_struct", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_name_fmt(ctx[].identifiers, node[].member, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_member_not_in_struct, str_fmt_struct(struct_type, @type_fmt),
+                                        str_fmt_name(node[].member, @name_fmt)))
     }
     member_type = pair_second(struct_typedef[].members[map_it])[].member_type
     if member_type ~= node[]._base[].exp_type {
@@ -1867,12 +1733,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_struct_complete(ctx, @node[].exp_type[].get._Structure) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_exp_incomplete), "MSG_exp_incomplete", "", "", get_type_fmt(ctx[].identifiers, node[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_exp_incomplete, str_fmt_type(node[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1905,22 +1766,15 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
     fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, ctx[].fun_def_name)[].type_t[].get._FunType
     if fun_type[].ret_type[].tag == AST_Void_t {
         if node[].exp {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_ret_value_in_void_fun), "MSG_ret_value_in_void_fun", "", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at,
+                GET_SEMANTIC_MSG(1, MSG_ret_value_in_void_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt)))
         }
         jump _Lfinally
     }
     elif not node[].exp {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_no_ret_value_in_fun), "MSG_no_ret_value_in_fun", "", get_name_fmt(ctx[].identifiers, ctx[].fun_def_name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[].info_at, GET_SEMANTIC_MSG(2, MSG_no_ret_value_in_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt),
+                                str_fmt_type(fun_type[].ret_type, @type_fmt)))
     }
     elif not is_same_type(node[].exp[].exp_type, fun_type[].ret_type) {
         TRY(cast_assign(ctx, @fun_type[].ret_type, @node[].exp))
@@ -1936,12 +1790,8 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_if), "MSG_invalid_if", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].condition[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_if, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1952,12 +1802,8 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_while), "MSG_invalid_while", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].condition[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_while, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1968,12 +1814,8 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_do_while), "MSG_invalid_do_while", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].condition[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_do_while, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1984,12 +1826,8 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) i32 {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->condition->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_for), "MSG_invalid_for", "", "", get_type_fmt(ctx[].identifiers, node[].condition[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].condition[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].condition[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_for, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -2007,12 +1845,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -2041,12 +1874,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -2075,12 +1903,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i3
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -2109,12 +1932,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) i
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->cases[i]->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_case_value), "MSG_duplicate_case_value", "", "", strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].cases[i][].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -2136,12 +1954,8 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_int(node[].lookup[].exp_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->lookup->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_invalid_switch), "MSG_invalid_switch", "", "", get_type_fmt(ctx[].identifiers, node[].lookup[].exp_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].lookup[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].lookup[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_invalid_switch, str_fmt_type(node[].lookup[].exp_type, @type_fmt)))
     }
     match node[].lookup[].exp_type[].tag {
         -> AST_Char_t {
@@ -2188,22 +2002,13 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
     strto_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_char(arr_type[].elem_type) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_string_init_not_char_arr), "MSG_string_init_not_char_arr", "", "", get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_string_init_not_char_arr, str_fmt_arr(arr_type, @type_fmt)))
     }
     elif vec_size(node[].literal[].value) > cast<u64>(arr_type[].size) {
         strto_fmt_1 = str_to_string(arr_type[].size)
         strto_fmt_2 = str_to_string(vec_size(node[].literal[].value))
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_string_init_overflow), "MSG_string_init_overflow", "", strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_string_init_overflow, strto_fmt_1, strto_fmt_2))
     }
     FINALLY
     str_delete(type_fmt)
@@ -2335,12 +2140,8 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
     if vec_size(node[].initializers) > cast<u64>(arr_type[].size) {
         strto_fmt_1 = str_to_string(arr_type[].size)
         strto_fmt_2 = str_to_string(vec_size(node[].initializers))
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_arr_init_overflow), "MSG_arr_init_overflow", strto_fmt_1, get_arr_fmt(ctx[].identifiers, arr_type, @type_fmt), strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(get_compound_info_at(node),
+            GET_SEMANTIC_MSG(3, MSG_arr_init_overflow, strto_fmt_1, str_fmt_arr(arr_type, @type_fmt), strto_fmt_2))
     }
     FINALLY
     str_delete(type_fmt)
@@ -2359,12 +2160,9 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     if vec_size(node[].initializers) > bound {
         strto_fmt_1 = str_to_string(vec_size(node[].initializers))
         strto_fmt_2 = str_to_string(bound)
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_struct_init_overflow), "MSG_struct_init_overflow", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), strto_fmt_1, strto_fmt_2) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            get_compound_info_at(node), GET_SEMANTIC_MSG(3, MSG_struct_init_overflow,
+                                            str_fmt_struct(struct_type, @type_fmt), strto_fmt_1, strto_fmt_2))
     }
     FINALLY
     str_delete(type_fmt)
@@ -2411,21 +2209,14 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
     TRY(is_valid_type(ctx, fun_type[].ret_type))
     match fun_type[].ret_type[].tag {
         -> AST_Array_t {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_ret_arr), "MSG_ret_arr", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_ret_arr, str_fmt_name(node[].name, @name_fmt),
+                                               str_fmt_type(fun_type[].ret_type, @type_fmt)))
         }
         -> AST_Structure_t {
             if node[].body and not is_struct_complete(ctx, @fun_type[].ret_type[].get._Structure) {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_ret_incomplete), "MSG_ret_incomplete", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, fun_type[].ret_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(
+                    node[].info_at, GET_SEMANTIC_MSG(2, MSG_ret_incomplete, str_fmt_name(node[].name, @name_fmt),
+                                        str_fmt_type(fun_type[].ret_type, @type_fmt)))
             }
             break
         }
@@ -2464,12 +2255,8 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         ctx[].errors[].info_at_buf = node[].info_at
         TRY(reslv_struct_type(ctx, fun_type[].param_types[i]))
         if fun_type[].param_types[i][].tag == AST_Void_t {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_void_param), "MSG_void_param", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_void_param, str_fmt_name(node[].name, @name_fmt_1),
+                                               str_fmt_name(node[].params[i], @name_fmt_2)))
         }
         TRY(is_valid_type(ctx, fun_type[].param_types[i]))
         if fun_type[].param_types[i][].tag == AST_Array_t {
@@ -2477,12 +2264,9 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
         }
         if node[].body {
             if fun_type[].param_types[i][].tag == AST_Structure_t and not is_struct_complete(ctx, @fun_type[].param_types[i][].get._Structure) {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_param), "MSG_incomplete_param", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].params[i], @name_fmt_2), get_type_fmt(ctx[].identifiers, fun_type[].param_types[i], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[].info_at,
+                    GET_SEMANTIC_MSG(3, MSG_incomplete_param, str_fmt_name(node[].name, @name_fmt_1),
+                        str_fmt_name(node[].params[i], @name_fmt_2), str_fmt_type(fun_type[].param_types[i], @type_fmt)))
             }
             if fun_type[].param_types[i] ~= param_type {
                 " #@MACRO@:sptr_copy(Type, fun_type->param_types[i], param_type)"
@@ -2521,29 +2305,18 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         fun_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
         if not (fun_symbol[].type_t[].tag == AST_FunType_t and vec_size(fun_type[].param_types) == vec_size(node[].params) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_fun_conflict), "MSG_redecl_fun_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, fun_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at,
+                GET_SEMANTIC_MSG(3, MSG_redecl_fun_conflict, str_fmt_name(node[].name, @name_fmt),
+                    str_fmt_type(node[].fun_type, @type_fmt_1), str_fmt_type(fun_symbol[].type_t, @type_fmt_2)))
         }
         elif is_def and node[].body {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redef_fun), "MSG_redef_fun", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].fun_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_redef_fun, str_fmt_name(node[].name, @name_fmt),
+                                               str_fmt_type(node[].fun_type, @type_fmt_1)))
         }
         fun_attrs: *struc FunAttr = @fun_symbol[].attrs[].get._FunAttr
         if not is_glob and fun_attrs[].is_glob {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_static_conflict), "MSG_redecl_static_conflict", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_static_conflict, str_fmt_name(node[].name, @name_fmt)))
         }
         is_glob = fun_attrs[].is_glob
         free_Symbol(@fun_symbol)
@@ -2692,12 +2465,9 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
                 -> AST_CConstChar_t {
                     -> AST_CConstDouble_t {
                         -> AST_CConstUChar_t {
-                            loop .. while 0 {
-                                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_not_int), "MSG_static_ptr_init_not_int", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), get_const_fmt(node[].constant)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                                _errval = 1
-                                jump _Lfinally
-                            }
+                    THROW_AT_TOKEN(node[]._base[].info_at,
+                        GET_SEMANTIC_MSG(2, MSG_static_ptr_init_not_int, str_fmt_type(static_init_type, @type_fmt),
+                            get_const_fmt(node[].constant)))
                         }
                     }
                 }
@@ -2708,23 +2478,15 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
             value: u64 = get_const_ptr_value(node)
             if value ~= 0ul {
                 strto_fmt = str_to_string(value)
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_not_null), "MSG_static_ptr_init_not_null", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt), strto_fmt) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_static_ptr_init_not_null,
+                                                           str_fmt_type(static_init_type, @type_fmt), strto_fmt))
             }
             push_zero_static_init(ctx, 8l)
             break
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_agg_init_with_single), "MSG_agg_init_with_single", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[]._base[].info_at,
+                GET_SEMANTIC_MSG(1, MSG_agg_init_with_single, str_fmt_type(static_init_type, @type_fmt)))
         }
     }
     FINALLY
@@ -2737,12 +2499,8 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if static_ptr_type[].ref_type[].tag ~= AST_Char_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_ptr_init_string), "MSG_static_ptr_init_string", "", "", get_ptr_fmt(ctx[].identifiers, static_ptr_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[]._base[].info_at,
+            GET_SEMANTIC_MSG(1, MSG_static_ptr_init_string, str_fmt_ptr(static_ptr_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -2854,12 +2612,8 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->exp->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_static_init_not_const), "MSG_static_init_not_const", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].exp[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].exp[].info_at,
+                GET_SEMANTIC_MSG(1, MSG_static_init_not_const, str_fmt_type(static_init_type, @type_fmt)))
         }
     }
     FINALLY
@@ -2915,12 +2669,8 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_scalar_init_with_compound), "MSG_scalar_init_with_compound", "", "", get_type_fmt(ctx[].identifiers, static_init_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(get_compound_info_at(node),
+                GET_SEMANTIC_MSG(1, MSG_scalar_init_with_compound, str_fmt_type(static_init_type, @type_fmt)))
         }
     }
     FINALLY
@@ -2978,23 +2728,15 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     ctx[].errors[].info_at_buf = node[].info_at
     TRY(reslv_struct_type(ctx, node[].var_type))
     if node[].var_type[].tag == AST_Void_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_void_var_decl), "MSG_void_var_decl", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_void_var_decl, str_fmt_name(node[].name, @name_fmt)))
     }
     TRY(is_valid_type(ctx, node[].var_type))
     is_glob = node[].storage_class.tag ~= AST_CStatic_t
     if node[].init {
         if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_var_decl), "MSG_incomplete_var_decl", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
+                                    str_fmt_type(node[].var_type, @type_fmt_1)))
         }
         TRY(check_initializer(ctx, node[].init, node[].var_type, @init_value))
     }
@@ -3004,12 +2746,9 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
         }
         else {
             if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_var_decl), "MSG_incomplete_var_decl", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(
+                    node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
+                                        str_fmt_type(node[].var_type, @type_fmt_1)))
             }
             init_value = make_Tentative()
         }
@@ -3018,33 +2757,22 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     if map_it ~= map_end() {
         var_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
         if not is_same_type(var_symbol[].type_t, node[].var_type) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_conflict), "MSG_redecl_var_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_symbol[].type_t, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at,
+                GET_SEMANTIC_MSG(3, MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
+                    str_fmt_type(node[].var_type, @type_fmt_1), str_fmt_type(var_symbol[].type_t, @type_fmt_2)))
         }
         var_attrs: *struc StaticAttr = @var_symbol[].attrs[].get._StaticAttr
         if node[].storage_class.tag == AST_CExtern_t {
             is_glob = var_attrs[].is_glob
         }
         elif is_glob ~= var_attrs[].is_glob {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_storage), "MSG_redecl_var_storage", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
         }
         if var_attrs[].init[].tag == AST_Initial_t {
             if init_value[].tag == AST_Initial_t {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_storage), "MSG_redecl_var_storage", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(
+                    node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
             }
             else {
                 if var_attrs[].init ~= init_value {
@@ -3088,23 +2816,15 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     CATCH_ENTER
     map_it: i64;
     if node[].init {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redef_extern_var), "MSG_redef_extern_var", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_redef_extern_var, str_fmt_name(node[].name, @name_fmt)))
     }
     map_it = map_find(ctx[].frontend[].symbol_table, node[].name)
     if map_it ~= map_end() {
         var_type: *struc Type = pair_second(ctx[].frontend[].symbol_table[map_it])[].type_t
         if not is_same_type(var_type, node[].var_type) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_conflict), "MSG_redecl_var_conflict", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt_1), get_type_fmt(ctx[].identifiers, var_type, @type_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[].info_at, GET_SEMANTIC_MSG(3, MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
+                                    str_fmt_type(node[].var_type, @type_fmt_1), str_fmt_type(var_type, @type_fmt_2)))
         }
         jump _Lfinally
     }
@@ -3167,12 +2887,8 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     local_var_type: *struc Type = sptr_new()
     CATCH_ENTER
     if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_var_decl), "MSG_incomplete_var_decl", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].var_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
+                                           str_fmt_type(node[].var_type, @type_fmt)))
     }
     if node[].var_type ~= local_var_type {
         " #@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
@@ -3199,12 +2915,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     ctx[].errors[].info_at_buf = node[].info_at
     TRY(reslv_struct_type(ctx, node[].var_type))
     if node[].var_type[].tag == AST_Void_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_void_var_decl), "MSG_void_var_decl", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_void_var_decl, str_fmt_name(node[].name, @name_fmt)))
     }
     TRY(is_valid_type(ctx, node[].var_type))
     match node[].storage_class.tag {
@@ -3237,23 +2948,19 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
     loop i: u64 = 0 while i < vec_size(node[].members) .. ++i {
         loop j: u64 = i + 1 while j < vec_size(node[].members) .. ++j {
             if node[].members[i][].member_name == node[].members[j][].member_name {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->members[i]->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_duplicate_member_decl), "MSG_duplicate_member_decl", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(
+                    node[].members[i][].info_at, GET_SEMANTIC_MSG(2, MSG_duplicate_member_decl,
+                                                     str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt),
+                                                     str_fmt_name(node[].members[i][].member_name, @name_fmt)))
             }
         }
         ctx[].errors[].info_at_buf = node[].members[i][].info_at
         TRY(reslv_struct_type(ctx, node[].members[i][].member_type))
         if not is_type_complete(ctx, node[].members[i][].member_type) {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->members[i]->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_incomplete_member_decl), "MSG_incomplete_member_decl", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt), get_name_fmt(ctx[].identifiers, node[].members[i][].member_name, @name_fmt), get_type_fmt(ctx[].identifiers, node[].members[i][].member_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].members[i][].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].members[i][].info_at, GET_SEMANTIC_MSG(3, MSG_incomplete_member_decl,
+                                                            str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt),
+                                                            str_fmt_name(node[].members[i][].member_name, @name_fmt),
+                                                            str_fmt_type(node[].members[i][].member_type, @type_fmt)))
         }
         TRY(is_valid_type(ctx, node[].members[i][].member_type))
     }
@@ -3275,12 +2982,8 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     alignment: i32;
     size: i64;
     if map_find(ctx[].frontend[].struct_typedef_table, node[].tag_name) ~= map_end() {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_in_scope), "MSG_redecl_struct_in_scope", "", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_struct_in_scope,
+                                           str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt)))
     }
     alignment = 0
     size = 0l
@@ -3346,12 +3049,8 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) i32 {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if set_find(ctx[].label_set, node[].target) ~= set_end() {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redef_label_in_scope), "MSG_redef_label_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].target, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[].info_at, GET_SEMANTIC_MSG(1, MSG_redef_label_in_scope, str_fmt_name(node[].target, @name_fmt)))
     }
     set_insert(ctx[].label_set, node[].target)
     FINALLY
@@ -3386,12 +3085,7 @@ fn annotate_switch_lookup(ctx: *struc SemanticContext, node: *struc CSwitch) non
 fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) i32 {
     CATCH_ENTER
     if not ctx[].p_switch_statement {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->value->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_case_out_of_switch), "MSG_case_out_of_switch", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].value[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].value[].info_at, GET_SEMANTIC_MSG(0, MSG_case_out_of_switch))
     }
     node[].target = repr_case_identifier(ctx[].identifiers, ctx[].p_switch_statement[].target, false, vec_size(ctx[].p_switch_statement[].cases))
     FINALLY
@@ -3401,20 +3095,10 @@ fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) i32 {
 fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) i32 {
     CATCH_ENTER
     if not ctx[].p_switch_statement {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_default_out_of_switch), "MSG_default_out_of_switch", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_default_out_of_switch))
     }
     elif ctx[].p_switch_statement[].is_default {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_multiple_default), "MSG_multiple_default", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_multiple_default))
     }
     node[].target = ctx[].p_switch_statement[].target
     ctx[].p_switch_statement[].is_default = true
@@ -3425,12 +3109,7 @@ fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) i32
 fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
     CATCH_ENTER
     if vec_empty(ctx[].break_loop_labels) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_break_out_of_loop), "MSG_break_out_of_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_break_out_of_loop))
     }
     node[].target = vec_back(ctx[].break_loop_labels)
     FINALLY
@@ -3440,12 +3119,7 @@ fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) i32 {
 fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) i32 {
     CATCH_ENTER
     if vec_empty(ctx[].continue_loop_labels) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_continue_out_of_loop), "MSG_continue_out_of_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_continue_out_of_loop))
     }
     node[].target = vec_back(ctx[].continue_loop_labels)
     FINALLY
@@ -3490,13 +3164,9 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) i
     CATCH_ENTER
     loop i: u64 = 0 while i < map_size(ctx[].goto_map) .. ++i {
         if set_find(ctx[].label_set, pair_first(ctx[].goto_map[i])) == set_end() {
-            loop .. while 0 {
-                # TODO THROW_AT_TOKEN(map_get(ctx->errors->info_at_map, pair_second(ctx->goto_map[i])), GET_SEMANTIC_MSG(2, MSG_undef_goto_target, str_fmt_name(pair_first(ctx->goto_map[i]), &name_fmt_1), str_fmt_name(node->name, &name_fmt_2)));
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ((((((ctx->errors->info_at_map) = stbds_hmget_key((ctx->errors->info_at_map), sizeof(*(ctx->errors->info_at_map)), (void*)&(((ctx->goto_map[i]).value)), sizeof((ctx->errors->info_at_map)->key), 0)) && 0 ? 0 : ((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp)) && 0 ? 0 : &(ctx->errors->info_at_map)[((struct stbds_array_header*)((ctx->errors->info_at_map)-1)-1)->temp])->value)))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undef_goto_target), "MSG_undef_goto_target", "", get_name_fmt(ctx[].identifiers, (ctx[].goto_map[i]).key, @name_fmt_1), get_name_fmt(ctx[].identifiers, node[].name, @name_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ((? ((? ((ctx[].errors[].info_at_map) = stbds_hmget_key((ctx[].errors[].info_at_map), sizeof((ctx[].errors[].info_at_map)[]), cast<*any>(@(((ctx[].goto_map[i]).value))), sizeof((ctx[].errors[].info_at_map)[].key), 0)) and 0 then 0 else (cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp)) and 0 then 0 else @(ctx[].errors[].info_at_map)[(cast<*struc stbds_array_header>(((ctx[].errors[].info_at_map) - 1)) - 1)[].temp])[].value))) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(map_get(ctx[].errors[].info_at_map, pair_second(ctx[].goto_map[i])),
+                GET_SEMANTIC_MSG(2, MSG_undef_goto_target, str_fmt_name(pair_first(ctx[].goto_map[i]), @name_fmt_1),
+                    str_fmt_name(node[].name, @name_fmt_2)))
         }
     }
     FINALLY
@@ -3536,23 +3206,16 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
         if map_it ~= map_end() {
             structure: *struc Structure = @pair_second(ctx[].scoped_struct_maps[i][map_it])
             if structure[].is_union ~= struct_type[].is_union {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_conflict), "MSG_redecl_struct_conflict", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt), get_struct_name_fmt(ctx[].identifiers, struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(ctx[].errors[].info_at_buf,
+                    GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict, str_fmt_struct(struct_type, @type_fmt),
+                        str_fmt_struct_name(struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)))
             }
             struct_type[].tag_name = structure[].tag_name
             jump _Lfinally
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->errors->info_at_buf))"
-        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undef_struct_in_scope), "MSG_undef_struct_in_scope", "", "", get_struct_fmt(ctx[].identifiers, struct_type, @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].errors[].info_at_buf)) else panic_sigabrt("abort")
-        _errval = 1
-        jump _Lfinally
-    }
+    THROW_AT_TOKEN(ctx[].errors[].info_at_buf,
+        GET_SEMANTIC_MSG(1, MSG_undef_struct_in_scope, str_fmt_struct(struct_type, @type_fmt)))
     FINALLY
     str_delete(struct_fmt)
     str_delete(type_fmt)
@@ -3606,12 +3269,8 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) i32 {
             jump Lelse
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undecl_var_in_scope), "MSG_undecl_var_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-        _errval = 1
-        jump _Lfinally
-    }
+    THROW_AT_TOKEN(
+        node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_undecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
     label Lelse
     TRY(check_var_exp(ctx, node))
     FINALLY
@@ -3675,12 +3334,8 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) i32 {
             jump Lelse
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->_base->info_at))"
-        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_undecl_fun_in_scope), "MSG_undecl_fun_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[]._base[].info_at)) else panic_sigabrt("abort")
-        _errval = 1
-        jump _Lfinally
-    }
+    THROW_AT_TOKEN(
+        node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_undecl_fun_in_scope, str_fmt_name(node[].name, @name_fmt)))
     label Lelse
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         TRY(reslv_typed_exp(ctx, @node[].args[i]))
@@ -3838,12 +3493,9 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) i32 
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].init[].storage_class.tag ~= AST_CStorageClass_t {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->init->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_for_init_decl_not_auto), "MSG_for_init_decl_not_auto", "", get_name_fmt(ctx[].identifiers, node[].init[].name, @name_fmt), get_storage_class_fmt(@node[].init[].storage_class)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].init[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(node[].init[].info_at,
+            GET_SEMANTIC_MSG(2, MSG_for_init_decl_not_auto, str_fmt_name(node[].init[].name, @name_fmt),
+                get_storage_class_fmt(@node[].init[].storage_class)))
     }
     TRY(reslv_block_var_decl(ctx, node[].init))
     FINALLY
@@ -4192,12 +3844,8 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, get_compound_info_at(node)))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_scalar_init_with_compound), "MSG_scalar_init_with_compound", "", "", get_type_fmt(ctx[].identifiers, init_type[], @type_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, get_compound_info_at(node))) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(get_compound_info_at(node),
+                GET_SEMANTIC_MSG(1, MSG_scalar_init_with_compound, str_fmt_type(init_type[], @type_fmt)))
         }
     }
     FINALLY
@@ -4230,12 +3878,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
         if map_find(vec_back(ctx[].scoped_identifier_maps), param) ~= map_end() {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_in_scope), "MSG_redecl_var_in_scope", "", "", get_name_fmt(ctx[].identifiers, param, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_in_scope, str_fmt_name(param, @name_fmt)))
         }
         param = rslv_var_identifier(ctx[].identifiers, param)
         map_add(vec_back(ctx[].scoped_identifier_maps), node[].params[i], param)
@@ -4252,30 +3895,17 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     CATCH_ENTER
     if not is_file_scope(ctx) {
         if node[].body {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_def_nested_fun), "MSG_def_nested_fun", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_def_nested_fun, str_fmt_name(node[].name, @name_fmt)))
         }
         elif node[].storage_class.tag == AST_CStatic_t {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_decl_nested_static_fun), "MSG_decl_nested_static_fun", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[].info_at, GET_SEMANTIC_MSG(1, MSG_decl_nested_static_fun, str_fmt_name(node[].name, @name_fmt)))
         }
     }
     if map_find(ctx[].extern_scope_map, node[].name) == map_end() {
         if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_fun_in_scope), "MSG_redecl_fun_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_fun_in_scope, str_fmt_name(node[].name, @name_fmt)))
         }
         map_add(ctx[].extern_scope_map, node[].name, vec_size(ctx[].scoped_identifier_maps))
     }
@@ -4315,12 +3945,8 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() and not (map_find(ctx[].extern_scope_map, node[].name) ~= map_end() and node[].storage_class.tag == AST_CExtern_t) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_var_in_scope), "MSG_redecl_var_in_scope", "", "", get_name_fmt(ctx[].identifiers, node[].name, @name_fmt)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(
+            node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
     }
     elif node[].storage_class.tag == AST_CExtern_t {
         TRY(reslv_file_var_decl(ctx, node))
@@ -4356,21 +3982,15 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
         node[].tag_name = pair_second(vec_back(ctx[].scoped_struct_maps)[map_it]).tag_name
         if node[].is_union {
             if set_find(ctx[].union_def_set, node[].tag_name) == set_end() {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_conflict), "MSG_redecl_struct_conflict", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict,
+                                                   str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt_1),
+                                                   str_fmt_struct_name(node[].tag_name, not node[].is_union, @struct_fmt_2)))
             }
         }
         elif set_find(ctx[].struct_def_set, node[].tag_name) == set_end() {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, node->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_semantic_msg(MSG_redecl_struct_conflict), "MSG_redecl_struct_conflict", "", get_struct_name_fmt(ctx[].identifiers, node[].tag_name, node[].is_union, @struct_fmt_1), get_struct_name_fmt(ctx[].identifiers, node[].tag_name, not node[].is_union, @struct_fmt_2)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, node[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict,
+                                               str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt_1),
+                                               str_fmt_struct_name(node[].tag_name, not node[].is_union, @struct_fmt_2)))
         }
     }
     else {
