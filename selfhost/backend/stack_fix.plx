@@ -69,7 +69,7 @@ fn alloc_offset_pseudo(ctx: *struc StackFixContext, asm_type: *struc AssemblyTyp
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -80,7 +80,7 @@ fn alloc_offset_pseudo_mem(ctx: *struc StackFixContext, asm_type: *struc Assembl
         align_offset_pseudo(ctx, bytearray_type[].size, bytearray_type[].alignment)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -579,7 +579,7 @@ fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_
                 break
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
         push_fix_instr(ctx, make_AsmPop(@reg))
@@ -1609,7 +1609,7 @@ fn fix_toplvl(ctx: *struc StackFixContext, node: *struc AsmTopLevel) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }

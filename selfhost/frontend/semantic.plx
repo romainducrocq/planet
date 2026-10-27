@@ -45,7 +45,7 @@ fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32 {
                 return is_same_struct(@type_1[].get._Structure, @type_2[].get._Structure)
             }
             -> AST_FunType_t {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
             otherwise {
                 return true
@@ -231,7 +231,7 @@ fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         }
         break
         -> AST_FunType_t {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
         otherwise {
             break
@@ -313,7 +313,7 @@ fn get_scalar_size(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -544,7 +544,7 @@ fn get_const_char_value(node: *struc CConstant) i8 {
             return cast<i8>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -573,7 +573,7 @@ fn get_const_int_value(node: *struc CConstant) i32 {
             return cast<i32>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -602,7 +602,7 @@ fn get_const_long_value(node: *struc CConstant) i64 {
             return cast<i64>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -631,7 +631,7 @@ fn get_const_dbl_value(node: *struc CConstant) f64 {
             return cast<f64>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -660,7 +660,7 @@ fn get_const_uchar_value(node: *struc CConstant) u8 {
             return cast<u8>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -689,7 +689,7 @@ fn get_const_uint_value(node: *struc CConstant) u32 {
             return cast<u32>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -718,7 +718,7 @@ fn get_const_ulong_value(node: *struc CConstant) u64 {
             return node[].constant[].get._CConstULong.value
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -738,7 +738,7 @@ fn get_const_ptr_value(node: *struc CConstant) u64 {
             return node[].constant[].get._CConstULong.value
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -787,7 +787,7 @@ fn check_const_exp(node: *struc CConstant) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -981,7 +981,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) i32 {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -1358,7 +1358,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -1988,7 +1988,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) i32
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -2086,7 +2086,7 @@ fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
                 }
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
         exp = make_CConstant(@constant, 0)
@@ -2592,7 +2592,7 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -2690,7 +2690,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -2932,7 +2932,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -3238,7 +3238,7 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
         }
         break
         -> AST_FunType_t {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
         otherwise {
             break
@@ -3470,7 +3470,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32 {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -3524,7 +3524,7 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) i32 {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -3755,7 +3755,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32 {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -3777,7 +3777,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr
             }
             break
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
     }
@@ -3865,7 +3865,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY
@@ -4068,7 +4068,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     FINALLY

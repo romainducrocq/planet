@@ -240,7 +240,7 @@ fn cfg_add_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64) none {
         cfg_add_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -252,7 +252,7 @@ fn cfg_add_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
         cfg_add_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -281,7 +281,7 @@ fn cfg_rm_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64, is_reachable: i32) no
         cfg_rm_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id, is_reachable)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -293,7 +293,7 @@ fn cfg_rm_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
         cfg_rm_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, true)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -643,7 +643,7 @@ fn get_dfa_data_idx(ctx: Ctx, instr_idx: u64) u64 {
             return i
         }
     }
-    panic_sigabrt("abort")
+    THROW_ABORT
 }
 
 fn get_dfa_bak_instr(ctx: Ctx, i: u64) *struc TacInstruction {
@@ -652,14 +652,14 @@ fn get_dfa_bak_instr(ctx: Ctx, i: u64) *struc TacInstruction {
             return ctx[].dfa_o1[].bak_instrs[i]
         }
         else {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     elif (ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]] {
         return (ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]]
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -786,7 +786,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
             break
         }
         else {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if instr_idx < ctx[].dfa[].incoming_idx {
@@ -829,7 +829,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             break
         }
         else {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if instr_idx < ctx[].dfa[].incoming_idx {

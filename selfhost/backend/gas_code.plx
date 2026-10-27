@@ -129,7 +129,7 @@ fn get_reg_rsp_sse(node: *struc AsmReg) string {
             return "%xmm15"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -320,7 +320,7 @@ fn get_cond_code(node: *struc AsmCondCode) string {
             return "p"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -342,7 +342,7 @@ fn type_align_bytes(node: *struc AssemblyType) i32 {
             return node[].get._ByteArray.alignment
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -362,7 +362,7 @@ fn get_type_suffix(node: *struc AssemblyType, is_packed: i32) string {
             return ? is_packed then "pd" else "sd"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -392,7 +392,7 @@ fn reg_op(ctx: *struc GasCodeContext, node: *struc AsmRegister, byte: i32) none 
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -455,7 +455,7 @@ fn emit_op(ctx: *struc GasCodeContext, node: *struc AsmOperand, byte: i32) none 
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -472,7 +472,7 @@ fn get_unop(node: *struc AsmUnaryOp) string {
             return "shr"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -510,7 +510,7 @@ fn get_binop(node: *struc AsmBinaryOp, is_dbl: i32) string {
             return "sar"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -686,7 +686,7 @@ fn cdq_instr(ctx: *struc GasCodeContext, node: *struc AsmCdq) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -828,7 +828,7 @@ fn emit_instr(ctx: *struc GasCodeContext, node: *struc AsmInstruction) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -940,7 +940,7 @@ fn static_init_toplvl(ctx: *struc GasCodeContext, node: *struc StaticInit) none 
         emit(ctx, "\n")
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -981,7 +981,7 @@ fn emit_toplvl(ctx: *struc GasCodeContext, node: *struc AsmTopLevel) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }

@@ -84,7 +84,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -158,7 +158,7 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
         vec_delete(self[][].get._BackendFun.callee_saved_regs)
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {

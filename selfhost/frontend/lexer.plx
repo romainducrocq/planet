@@ -259,7 +259,7 @@ fn match_include(ctx: *struc LexerContext, tok_kind: i32) i32 {
                 break
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
         loop while match_space(ctx) {
@@ -1308,7 +1308,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                 }
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
     }
@@ -1327,7 +1327,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
                     }
                 }
                 otherwise {
-                    panic_sigabrt("abort")
+                    THROW_ABORT
                 }
             }
         }
@@ -1355,7 +1355,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     line = ctx[].line

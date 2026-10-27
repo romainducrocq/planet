@@ -44,7 +44,7 @@ fn fold_sign_extend_char_const(ctx: *struc OptimTacContext, node: *struc TacVari
             return make_CConstULong(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -62,7 +62,7 @@ fn fold_sign_extend_int_const(ctx: *struc OptimTacContext, node: *struc TacVaria
             return make_CConstULong(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -79,7 +79,7 @@ fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -114,7 +114,7 @@ fn fold_truncate_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable
             return make_CConstUChar(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -140,7 +140,7 @@ fn fold_truncate_long_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
             return make_CConstUInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -158,7 +158,7 @@ fn fold_truncate_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
             return make_CConstUChar(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -184,7 +184,7 @@ fn fold_truncate_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariab
             return make_CConstUInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -209,7 +209,7 @@ fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -252,7 +252,7 @@ fn fold_zero_extend_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVar
             return make_CConstULong(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -270,7 +270,7 @@ fn fold_zero_extend_uint_const(ctx: *struc OptimTacContext, node: *struc TacVari
             return make_CConstULong(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -287,7 +287,7 @@ fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -331,7 +331,7 @@ fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -373,7 +373,7 @@ fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVaria
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -414,7 +414,7 @@ fn fold_signed_to_dbl_const(constant: *struc CConst) *struc TacValue {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -455,7 +455,7 @@ fn fold_unsigned_to_dbl_const(constant: *struc CConst) *struc TacValue {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -483,7 +483,7 @@ fn fold_unary_char_const(node: *struc TacUnaryOp, constant: *struc CConstChar) *
         return make_CConstInt(value)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -502,7 +502,7 @@ fn fold_unary_int_const(node: *struc TacUnaryOp, constant: *struc CConstInt) *st
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -522,7 +522,7 @@ fn fold_unary_long_const(node: *struc TacUnaryOp, constant: *struc CConstLong) *
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -538,7 +538,7 @@ fn fold_unary_dbl_const(node: *struc TacUnaryOp, constant: *struc CConstDouble) 
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -549,7 +549,7 @@ fn fold_unary_uchar_const(node: *struc TacUnaryOp, constant: *struc CConstUChar)
         return make_CConstInt(value)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -568,7 +568,7 @@ fn fold_unary_uint_const(node: *struc TacUnaryOp, constant: *struc CConstUInt) *
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -588,7 +588,7 @@ fn fold_unary_ulong_const(node: *struc TacUnaryOp, constant: *struc CConstULong)
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -625,7 +625,7 @@ fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) *struc Tac
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -715,7 +715,7 @@ fn fold_binary_int_const(node: *struc TacBinaryOp, constant_1: *struc CConstInt,
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -789,7 +789,7 @@ fn fold_binary_long_const(node: *struc TacBinaryOp, constant_1: *struc CConstLon
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -837,7 +837,7 @@ fn fold_binary_dbl_const(node: *struc TacBinaryOp, constant_1: *struc CConstDoub
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -911,7 +911,7 @@ fn fold_binary_uint_const(node: *struc TacBinaryOp, constant_1: *struc CConstUIn
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -985,7 +985,7 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
             return make_CConstInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1015,7 +1015,7 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_TacConstant(@fold_constant)
@@ -1048,7 +1048,7 @@ fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
             return make_CConstUChar(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1063,7 +1063,7 @@ fn fold_copy_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
             return make_CConstUInt(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1084,7 +1084,7 @@ fn fold_copy_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
             return make_CConstULong(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1103,7 +1103,7 @@ fn fold_copy_dbl_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
             return make_CConstULong(value)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1120,7 +1120,7 @@ fn fold_copy_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
             return sptr_new()
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1135,7 +1135,7 @@ fn fold_copy_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
             return sptr_new()
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1156,7 +1156,7 @@ fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1193,7 +1193,7 @@ fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, consta
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if fold_constant {
@@ -1247,7 +1247,7 @@ fn is_const_zero(constant: *struc CConst) i32 {
             return constant[].get._CConstULong.value == 0ul
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1499,7 +1499,7 @@ fn is_value_signed(ctx: *struc OptimTacContext, node: *struc TacValue) i32 {
             return is_var_signed(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1566,7 +1566,7 @@ fn is_same_const(node_1: *struc TacConstant, node_2: *struc TacConstant) i32 {
                 return node_1[].constant[].get._CConstULong.value == node_2[].constant[].get._CConstULong.value
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
     }
@@ -1587,7 +1587,7 @@ fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) i32 {
                 return is_same_var(@node_1[].get._TacVariable, @node_2[].get._TacVariable)
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
     }
@@ -1603,7 +1603,7 @@ fn is_same_name(node: *struc TacValue, name: u64) i32 {
             return node[].get._TacVariable.name == name
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1830,7 +1830,7 @@ fn prop_transfer_reach_copies(ctx: *struc OptimTacContext, instr_idx: u64, next_
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return true
@@ -2613,7 +2613,7 @@ fn prop_instr(ctx: *struc OptimTacContext, instr_idx: u64, copy_instr_idx: u64, 
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -2844,7 +2844,7 @@ fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_i
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -2980,7 +2980,7 @@ fn optim_toplvl(ctx: *struc OptimTacContext, node: *struc TacTopLevel) none {
         optim_fun_toplvl(ctx, @node[].get._TacFunction)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
