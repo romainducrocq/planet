@@ -27,7 +27,7 @@ fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
             return make_TacUnaryOp(AST_TacNot_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -86,7 +86,7 @@ fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
             return make_TacBinaryOp(AST_TacGreaterOrEqual_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -146,7 +146,7 @@ fn repr_value(node: *struc CExp) *struc TacValue {
             return var_value(@node[].get._CVar)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -258,7 +258,7 @@ fn get_scalar_size(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -784,7 +784,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
                     }
                     break
                     otherwise {
-                        panic_sigabrt("abort")
+                        THROW_ABORT
                     }
                 }
                 res_postfix = make_TacPlainOperand(@dst)
@@ -805,7 +805,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if node[].unop.tag == AST_CPostfix_t {
@@ -1017,7 +1017,7 @@ fn addrof_res_instr(ctx: *struc TacReprContext, node: *struc CAddrOf) *struc Tac
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return res
@@ -1139,7 +1139,7 @@ fn dot_res_instr(ctx: *struc TacReprContext, node: *struc CDot) *struc TacExpRes
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return res
@@ -1231,7 +1231,7 @@ fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacExpRe
             return arrow_res_instr(ctx, @node[].get._CArrow)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1305,7 +1305,7 @@ fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_TacExpResult(@res)
@@ -1428,7 +1428,7 @@ fn for_init_statement_instr(ctx: *struc TacReprContext, node: *struc CForInit) n
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1582,7 +1582,7 @@ fn statement_instr(ctx: *struc TacReprContext, node: *struc CStatement) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1714,7 +1714,7 @@ fn aggr_compound_init_instr(ctx: *struc TacReprContext, node: *struc CCompoundIn
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1730,7 +1730,7 @@ fn compound_init_instr(ctx: *struc TacReprContext, node: *struc CInitializer, in
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1748,7 +1748,7 @@ fn var_decl_instr(ctx: *struc TacReprContext, node: *struc CVariableDeclaration)
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1771,7 +1771,7 @@ fn declaration_instr(ctx: *struc TacReprContext, node: *struc CDeclaration) none
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1788,7 +1788,7 @@ fn repr_instr_list(ctx: *struc TacReprContext, node_list: vector_t(unique_ptr_t(
             }
             break
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
     }
@@ -1799,7 +1799,7 @@ fn repr_block(ctx: *struc TacReprContext, node: *struc CBlock) none {
         repr_instr_list(ctx, node[].get._CB.block_items)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 
@@ -1847,7 +1847,7 @@ fn declaration_toplvl(ctx: *struc TacReprContext, node: *struc CDeclaration) non
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1904,7 +1904,7 @@ fn repr_static_var_toplvl(ctx: *struc TacReprContext, node: *struc Symbol, symbo
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     push_toplvl(ctx, make_TacStaticVariable(name, is_glob, @static_init_type, @static_inits))

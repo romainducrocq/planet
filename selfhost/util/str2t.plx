@@ -63,7 +63,7 @@ pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) no
                 }
                 break
                 otherwise {
-                    panic_sigabrt("abort")
+                    THROW_ABORT
                 }
             }
         }
@@ -119,7 +119,7 @@ pub fn string_to_char_ascii(str_char: string_t) i32 {
                 return 11
             }
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
     }

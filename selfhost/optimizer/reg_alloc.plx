@@ -219,7 +219,7 @@ fn infer_transfer_updated_op(ctx: *struc RegAllocContext, node: *struc AsmOperan
             break
         }
         -> AST_AsmIndexed_t {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
         otherwise {
             break
@@ -335,7 +335,7 @@ fn infer_transfer_live_regs(ctx: *struc RegAllocContext, instr_idx: u64, next_in
         infer_transfer_used_call(ctx, @node[].get._AsmCall, next_instr_idx)
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -386,7 +386,7 @@ fn infer_rm_pseudo_edge(infer: *struc InferenceRegister, name: u64) none {
             return none
         }
     }
-    panic_sigabrt("abort")
+    THROW_ABORT
 }
 
 fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
@@ -396,7 +396,7 @@ fn infer_rm_unpruned_pseudo_name(ctx: *struc RegAllocContext, name: u64) none {
             return none
         }
     }
-    panic_sigabrt("abort")
+    THROW_ABORT
 }
 
 fn infer_init_used_name_edges(ctx: *struc RegAllocContext, name: u64) none {
@@ -517,7 +517,7 @@ fn infer_init_updated_name_edges(ctx: *struc RegAllocContext, name: u64, instr_i
                 break
             }
             -> AST_AsmIndexed_t {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
             otherwise {
                 is_mov = false
@@ -988,7 +988,7 @@ fn get_op_reg_kind(ctx: *struc RegAllocContext, node: *struc AsmOperand) i32 {
             return REG_Sp
         }
         -> AST_AsmIndexed_t {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
         otherwise {
             return REG_Sp
@@ -1444,7 +1444,7 @@ fn get_type_size(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -2167,7 +2167,7 @@ fn alloc_toplvl(ctx: *struc RegAllocContext, node: *struc AsmTopLevel) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }

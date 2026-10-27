@@ -42,7 +42,7 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
             return none
         }
     }
-    panic_sigabrt("abort")
+    THROW_ABORT
 }
 
 fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc FileIoContext) i32 {

@@ -78,7 +78,7 @@ pub fn make_AsmReg(tag: i32) struc AsmReg {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -112,7 +112,7 @@ pub fn make_AsmCondCode(tag: i32) struc AsmCondCode {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -230,7 +230,7 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -270,7 +270,7 @@ pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -288,7 +288,7 @@ pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -880,7 +880,7 @@ pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -972,7 +972,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1010,7 +1010,7 @@ pub fn free_AsmProgram(self: **struc AsmProgram) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].static_const_toplvls) .. ++i {

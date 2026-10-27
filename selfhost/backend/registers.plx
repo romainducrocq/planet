@@ -105,7 +105,7 @@ fn gen_reg(reg_kind: i32) struc AsmReg {
             return make_AsmReg(AST_AsmXMM15_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -215,13 +215,13 @@ pub fn register_mask_kind(node: *struc AsmReg) i32 {
             -> AST_AsmR11_t {
                 -> AST_AsmXMM14_t {
                     -> AST_AsmXMM15_t {
-                        panic_sigabrt("abort")
+                        THROW_ABORT
                     }
                 }
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -312,7 +312,7 @@ pub fn register_mask_bit(reg_kind: i32) u64 {
                     -> REG_Bp {
                         -> REG_Xmm14 {
                             -> REG_Xmm15 {
-                                panic_sigabrt("abort")
+                                THROW_ABORT
                             }
                         }
                     }
@@ -320,7 +320,7 @@ pub fn register_mask_bit(reg_kind: i32) u64 {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }

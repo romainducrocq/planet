@@ -8,7 +8,6 @@ m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
 # TODO
 m4_define(`error_t', `i32')m4_dnl
-# TODO
 m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
 m4_define(`CATCH_ENTER', `_errval: i32 = 0')m4_dnl
 m4_define(`CATCH_EXIT', `return _errval')m4_dnl
@@ -21,11 +20,8 @@ m4_define(`TRY', `{
         EARLY_EXIT
     }
 }')m4_dnl
-# TODO
 m4_define(`THROW_PANIC', `PANIC_FUNC($@)')m4_dnl
-# TODO
 m4_define(`SET_ERROR_MSG', `snprintf(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $@)')m4_dnl
-# TODO
 m4_define(`THROW_ERROR', `{
     ? SET_ERROR_MSG(m4_shift(m4_shift($@))) > 0 then cast<none>($2) else THROW_ABORT
     _errval = $1

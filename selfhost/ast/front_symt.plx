@@ -197,7 +197,7 @@ pub fn free_Type(self: **struc Type) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -352,7 +352,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -433,7 +433,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -530,7 +530,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -581,7 +581,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_Type(@(self[])[].type_t)
@@ -628,7 +628,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_Type(@(self[])[].member_type)
@@ -669,7 +669,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     vec_delete(self[][].member_names)
