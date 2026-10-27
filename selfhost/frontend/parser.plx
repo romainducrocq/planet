@@ -19,12 +19,8 @@ m4_define(`Ctx', `TODO')m4_dnl
 fn expect_next(ctx: *struc ParserContext, next_tok: *struc Token, expect_tok: i32) i32 {
     CATCH_ENTER
     if next_tok[].tok_kind ~= expect_tok {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, next_tok->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_unexpected_next_tok), "MSG_unexpected_next_tok", "", get_tok_fmt(ctx[].identifiers, next_tok), get_tok_kind_fmt(expect_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, next_tok[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(next_tok[].info_at,
+            GET_PARSER_MSG(2, MSG_unexpected_next_tok, str_fmt_tok(next_tok), get_tok_kind_fmt(expect_tok)))
     }
     FINALLY
     CATCH_EXIT
@@ -33,12 +29,7 @@ fn expect_next(ctx: *struc ParserContext, next_tok: *struc Token, expect_tok: i3
 fn pop_next(ctx: *struc ParserContext) i32 {
     CATCH_ENTER
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
     }
     ctx[].next_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
     ctx[].pop_idx++
@@ -49,12 +40,7 @@ fn pop_next(ctx: *struc ParserContext) i32 {
 fn peek_next(ctx: *struc ParserContext) i32 {
     CATCH_ENTER
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
     }
     ctx[].peek_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
     FINALLY
@@ -69,12 +55,7 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
         jump _Lfinally
     }
     if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, vec_back(ctx[].p_toks[]).info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_reached_eof), "MSG_reached_eof", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, (ctx[].p_toks[])[(? (ctx[].p_toks[]) then (cast<*struc stbds_array_header>((ctx[].p_toks[])) - 1)[].length else 0) - 1].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
     }
     ctx[].peek_tok_i = @(ctx[].p_toks[])[ctx[].pop_idx + i]
     FINALLY
@@ -168,12 +149,7 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     TRY(string_to_long(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 9223372036854775807l {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_overflow_long_const), "MSG_overflow_long_const", "", "", strto_value) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_overflow_long_const, strto_value))
     }
     elif ctx[].next_tok[].tok_kind == TOK_int_const and value <= 2147483647l {
         constant[] = parse_int_const(value)
@@ -193,12 +169,7 @@ fn parse_unsigned_const(ctx: *struc ParserContext, constant: **struc CConst) i32
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     TRY(string_to_ulong(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 18446744073709551615ul {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_overflow_ulong_const), "MSG_overflow_ulong_const", "", "", strto_value) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_overflow_ulong_const, strto_value))
     }
     elif ctx[].next_tok[].tok_kind == TOK_uint_const and value <= 4294967295ul {
         constant[] = parse_uint_const(value)
@@ -227,12 +198,7 @@ fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) i32 {
             break
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_unop), "MSG_expect_unop", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_unop, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -340,12 +306,7 @@ fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) i32 {
             break
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_binop), "MSG_expect_binop", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_binop, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -366,12 +327,8 @@ fn parse_datatype_specifier(ctx: *struc ParserContext, tag_name: *u64, is_union:
             break
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_data_specifier), "MSG_expect_data_specifier", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_data_specifier, str_fmt_tok(ctx[].next_tok)))
         }
     }
     TRY(peek_next(ctx))
@@ -423,12 +380,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
             break
         }
         -> TOK_key_any {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_incomplete_any), "MSG_incomplete_any", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(0, MSG_incomplete_any))
         }
         -> TOK_key_struc {
             -> TOK_key_union {
@@ -440,12 +392,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
             }
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_specifier), "MSG_expect_specifier", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_specifier, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -478,12 +425,8 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_arr_size_not_int_const), "MSG_arr_size_not_int_const", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_arr_size_not_int_const, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     TRY(pop_next(ctx))
@@ -600,12 +543,8 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) i32 {
             break
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_maybe_type), "MSG_expect_maybe_type", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_maybe_type, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -903,12 +842,8 @@ fn parse_sizeof_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_open_sizeof), "MSG_expect_open_sizeof", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_open_sizeof, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -962,12 +897,8 @@ fn parse_primary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32 {
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_expression), "MSG_expect_expression", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_expression, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -1283,12 +1214,7 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
             }
             break
             otherwise {
-                loop .. while 0 {
-                    " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                    ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_binop), "MSG_expect_binop", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                    _errval = 1
-                    jump _Lfinally
-                }
+                THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_binop, str_fmt_tok(ctx[].peek_tok)))
             }
         }
     }
@@ -1441,12 +1367,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
             jump Lbreak
         }
         -> TOK_semicolon {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_infinite_loop), "MSG_infinite_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_infinite_loop))
         }
         -> TOK_loop_post {
             TRY(pop_next(ctx))
@@ -1481,12 +1402,8 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
         -> TOK_key_pub {
             -> TOK_key_data {
                 -> TOK_key_extrn {
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_loop_decl_not_auto), "MSG_loop_decl_not_auto", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_loop_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
                 }
             }
         }
@@ -1523,12 +1440,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
     if not condition {
         TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_semicolon {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_infinite_loop), "MSG_infinite_loop", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_infinite_loop))
         }
     }
     TRY(parse_compound_statement(ctx, @body))
@@ -1583,12 +1495,8 @@ fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_case_value_not_int_const), "MSG_case_value_not_int_const", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_case_value_not_int_const, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     value = make_CConstant(@constant, info_at)
@@ -1726,12 +1634,7 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_pub_in_block), "MSG_pub_in_block", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_pub_in_block))
         }
         -> TOK_key_data {
             -> TOK_key_extrn {
@@ -1770,12 +1673,7 @@ fn parse_b_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
         TRY(peek_next(ctx))
     }
     if ctx[].peek_tok[].tok_kind == TOK_close_brace {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_empty_block), "MSG_empty_block", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_empty_block))
     }
     TRY(parse_block_item(ctx, @block_item))
     vec_move_back(block_items, block_item)
@@ -1816,12 +1714,7 @@ fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32 {
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_block), "MSG_expect_block", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_block, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -1848,12 +1741,7 @@ fn parse_compound_init(ctx: *struc ParserContext, initializer: **struc CInitiali
     TRY(expect_next(ctx, ctx[].next_tok, TOK_open_paren))
     TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_close_paren {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_empty_compound_init), "MSG_empty_compound_init", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_empty_compound_init))
     }
     TRY(parse_initializer(ctx, initializer))
     vec_move_back(initializers, initializer[])
@@ -1903,12 +1791,8 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
         -> TOK_key_pub {
             -> TOK_key_data {
                 -> TOK_key_extrn {
-                    loop .. while 0 {
-                        " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                        ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_list_decl_not_auto), "MSG_list_decl_not_auto", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                        _errval = 1
-                        jump _Lfinally
-                    }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_list_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
                 }
             }
         }
@@ -2004,12 +1888,7 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_assign), "MSG_expect_assign", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_assign, str_fmt_tok(ctx[].next_tok)))
         }
     }
     var_decl[] = make_CVariableDeclaration(name, @initializer, @var_type, storage_class, info_at)
@@ -2069,12 +1948,7 @@ fn parse_type_declaration(ctx: *struc ParserContext, struct_decl: **struc CStruc
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->next_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_datatype), "MSG_expect_datatype", "", "", get_tok_fmt(ctx[].identifiers, ctx[].next_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].next_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_datatype, str_fmt_tok(ctx[].next_tok)))
         }
     }
     struct_decl[] = make_CStructDeclaration(tag_name, is_union, @members, info_at)
@@ -2139,23 +2013,14 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
             }
         }
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_storage_class), "MSG_expect_storage_class", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_storage_class, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_type {
-        loop .. while 0 {
-            " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-            ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_type_decl_not_auto), "MSG_type_decl_not_auto", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-            _errval = 1
-            jump _Lfinally
-        }
+        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_type_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
     }
     FINALLY
     CATCH_EXIT
@@ -2178,12 +2043,8 @@ fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageCl
         }
         break
         otherwise {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_expect_declaration), "MSG_expect_declaration", "", "", get_tok_fmt(ctx[].identifiers, ctx[].peek_tok)) > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_declaration, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -2198,12 +2059,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) i32 {
         storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
         TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_key_data {
-            loop .. while 0 {
-                " #@MACRO@:THROW_ERROR(1, raise_error_at_token(ctx->errors, ctx->peek_tok->info_at))"
-                ? snprintf(ctx[].errors[].msg, sizeof<char> * ERROR_MSG_SIZE, get_parser_msg(MSG_data_at_toplvl), "MSG_data_at_toplvl", "", "", "") > 0 then cast<none>(raise_error_at_token(ctx[].errors, ctx[].peek_tok[].info_at)) else panic_sigabrt("abort")
-                _errval = 1
-                jump _Lfinally
-            }
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_data_at_toplvl))
         }
         TRY(parse_declaration(ctx, @storage_class, @declaration))
         vec_move_back(declarations, declaration)
