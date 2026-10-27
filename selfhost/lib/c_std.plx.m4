@@ -11,7 +11,6 @@ m4_define(`error_t', `i32')m4_dnl
 m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
 m4_define(`CATCH_ENTER', `_errval: i32 = 0')m4_dnl
 m4_define(`CATCH_EXIT', `return _errval')m4_dnl
-# TODO
 m4_define(`EARLY_EXIT', `jump _Lfinally')m4_dnl
 m4_define(`FINALLY', `label _Lfinally')m4_dnl
 m4_define(`TRY', `{

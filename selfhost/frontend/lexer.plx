@@ -1318,7 +1318,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
             match match_tok {
                 -> TOK_import_file {
                     -> TOK_use_file {
-                        jump _Lfinally
+                        EARLY_EXIT
                     }
                 }
                 -> TOK_import_force {
