@@ -1007,7 +1007,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             node[]._base[].exp_type = node[].exp_left[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
         }
-        jump _Lfinally
+        EARLY_EXIT
     }
     elif is_type_int(node[].exp_left[].exp_type) and node[].exp_right[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_right[].exp_type[].get._Pointer.ref_type) {
         common_type = make_Long()
@@ -1020,7 +1020,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) i32 {
             node[]._base[].exp_type = node[].exp_right[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
         }
-        jump _Lfinally
+        EARLY_EXIT
     }
     else {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
@@ -1069,7 +1069,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
                 node[]._base[].exp_type = node[].exp_left[].exp_type
                 (node[]._base[].exp_type)[]._ref_count++
             }
-            jump _Lfinally
+            EARLY_EXIT
         }
         elif is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) and not (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) {
             common_type = make_Long()
@@ -1082,7 +1082,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
                     common_type = uptr_new()
                 }
             }
-            jump _Lfinally
+            EARLY_EXIT
         }
         else {
             THROW_AT_TOKEN(
@@ -1425,7 +1425,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
             node[]._base[].exp_type = node[].exp_middle[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
         }
-        jump _Lfinally
+        EARLY_EXIT
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Structure_t or node[].exp_right[].exp_type[].tag == AST_Structure_t {
         if not is_same_type(node[].exp_middle[].exp_type, node[].exp_right[].exp_type) {
@@ -1439,7 +1439,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
             node[]._base[].exp_type = node[].exp_middle[].exp_type
             (node[]._base[].exp_type)[]._ref_count++
         }
-        jump _Lfinally
+        EARLY_EXIT
     }
     if is_type_arithmetic(node[].exp_middle[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_middle, node[].exp_right)
@@ -1769,7 +1769,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) i32 {
             THROW_AT_TOKEN(node[].info_at,
                 GET_SEMANTIC_MSG(1, MSG_ret_value_in_void_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt)))
         }
-        jump _Lfinally
+        EARLY_EXIT
     }
     elif not node[].exp {
         THROW_AT_TOKEN(
@@ -2826,7 +2826,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
                 node[].info_at, GET_SEMANTIC_MSG(3, MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
                                     str_fmt_type(node[].var_type, @type_fmt_1), str_fmt_type(var_type, @type_fmt_2)))
         }
-        jump _Lfinally
+        EARLY_EXIT
     }
     if node[].var_type ~= local_var_type {
         " #@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
@@ -3195,11 +3195,11 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
     CATCH_ENTER
     if struct_type[].is_union {
         if set_find(ctx[].union_def_set, struct_type[].tag_name) ~= set_end() {
-            jump _Lfinally
+            EARLY_EXIT
         }
     }
     elif set_find(ctx[].struct_def_set, struct_type[].tag_name) ~= set_end() {
-        jump _Lfinally
+        EARLY_EXIT
     }
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
         map_it: i64 = map_find(ctx[].scoped_struct_maps[i], struct_type[].tag_name)
@@ -3211,7 +3211,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 
                         str_fmt_struct_name(struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)))
             }
             struct_type[].tag_name = structure[].tag_name
-            jump _Lfinally
+            EARLY_EXIT
         }
     }
     THROW_AT_TOKEN(ctx[].errors[].info_at_buf,
@@ -3950,7 +3950,7 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     }
     elif node[].storage_class.tag == AST_CExtern_t {
         TRY(reslv_file_var_decl(ctx, node))
-        jump _Lfinally
+        EARLY_EXIT
     }
     {
         name: u64 = rslv_var_identifier(ctx[].identifiers, node[].name)
