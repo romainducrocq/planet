@@ -75,19 +75,19 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     TRY(lex_c_code(ctx[].filename, @ctx[].includedirs, @ctx[].stdlibdirs, errors, fileio, @identifiers, @tokens))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 255 {
-        jump _Lfinally
+        EARLY_EXIT
     }
     verbose(ctx, "-- Parsing ... ")
     TRY(parse_tokens(@tokens, errors, @identifiers, @c_ast))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 254 {
-        jump _Lfinally
+        EARLY_EXIT
     }
     verbose(ctx, "-- Semantic analysis ... ")
     TRY(analyze_semantic(c_ast, errors, @frontend, @identifiers))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 253 {
-        jump _Lfinally
+        EARLY_EXIT
     }
     verbose(ctx, "-- TAC representation ... ")
     tac_ast = represent_three_address_code(@c_ast, @frontend, @identifiers)
@@ -97,7 +97,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     }
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 252 {
-        jump _Lfinally
+        EARLY_EXIT
     }
     verbose(ctx, "-- Assembly generation ... ")
     asm_ast = generate_assembly(@tac_ast, @frontend, @identifiers)
@@ -109,7 +109,7 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     fix_stack(asm_ast, @backend)
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 251 {
-        jump _Lfinally
+        EARLY_EXIT
     }
     verbose(ctx, "-- Code emission ... ")
     set_filename_ext(ctx, "s")

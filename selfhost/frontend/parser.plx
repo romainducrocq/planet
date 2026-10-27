@@ -52,7 +52,7 @@ fn peek_next_i(ctx: *struc ParserContext, i: u64) i32 {
     if i == 0 {
         TRY(peek_next(ctx))
         ctx[].peek_tok_i = ctx[].peek_tok
-        jump _Lfinally
+        EARLY_EXIT
     }
     if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
@@ -128,20 +128,20 @@ fn parse_const(ctx: *struc ParserContext, constant: **struc CConst) i32 {
     match ctx[].next_tok[].tok_kind {
         -> TOK_key_true {
             constant[] = make_CConstInt(1)
-            jump _Lfinally
+            EARLY_EXIT
         }
         -> TOK_key_false {
             constant[] = make_CConstInt(0)
-            jump _Lfinally
+            EARLY_EXIT
         }
         -> TOK_char_const {
             constant[] = parse_char_const(ctx)
-            jump _Lfinally
+            EARLY_EXIT
         }
         -> TOK_dbl_const {
             TRY(parse_dbl_const(ctx, constant))
         }
-        jump _Lfinally
+        EARLY_EXIT
         otherwise {
             break
         }
@@ -924,7 +924,7 @@ fn parse_postfix_op_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32
         }
         break
         otherwise {
-            jump _Lfinally
+            EARLY_EXIT
         }
     }
     TRY(parse_postfix_op_exp_factor(ctx, exp))
@@ -1377,7 +1377,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
                 TRY(parse_exp(ctx, 0, @condition))
                 TRY(parse_compound_statement(ctx, @body))
                 statement[] = make_CDoWhile(@condition, @body)
-                jump _Lfinally
+                EARLY_EXIT
             }
             else {
                 TRY(parse_exp(ctx, 0, @post))
@@ -1396,7 +1396,7 @@ fn parse_loop_statement(ctx: *struc ParserContext, statement: **struc CStatement
             else {
                 TRY(parse_compound_statement(ctx, @body))
                 statement[] = make_CWhile(@condition, @body)
-                jump _Lfinally
+                EARLY_EXIT
             }
         }
         -> TOK_key_pub {
@@ -1553,7 +1553,7 @@ fn parse_statement(ctx: *struc ParserContext, statement: **struc CStatement) i32
         -> TOK_key_return {
             TRY(parse_ret_statement(ctx, statement))
         }
-        jump _Lfinally
+        EARLY_EXIT
         -> TOK_key_if {
             TRY(parse_if_statement(ctx, statement))
         }
@@ -1645,12 +1645,12 @@ fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) i
                 }
             }
         }
-        jump _Lfinally
+        EARLY_EXIT
         -> TOK_identifier {
             TRY(peek_next_i(ctx, 1))
             if ctx[].peek_tok_i[].tok_kind == TOK_assign_type {
                 TRY(parse_d_block_item(ctx, block_item))
-                jump _Lfinally
+                EARLY_EXIT
             }
             break
         }
@@ -2008,7 +2008,7 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
         -> TOK_key_fn {
             -> TOK_identifier {
                 -> TOK_key_type {
-                    jump _Lfinally
+                    EARLY_EXIT
                 }
             }
         }
