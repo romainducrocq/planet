@@ -23,7 +23,7 @@ pub fn make_CUnaryOp(tag: i32) struc CUnaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -73,7 +73,7 @@ pub fn make_CBinaryOp(tag: i32) struc CBinaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -146,7 +146,7 @@ pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -197,7 +197,7 @@ pub fn free_CParam(self: **struc CParam) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_CDeclarator(@(self[])[].decltor)
@@ -301,7 +301,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
         free_CDeclarator(@(self[])[].get._CFunDeclarator.decltor)
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -682,7 +682,7 @@ pub fn free_CExp(self: **struc CExp) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_Type(@(self[])[].exp_type)
@@ -1034,7 +1034,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1102,7 +1102,7 @@ pub fn free_CForInit(self: **struc CForInit) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1151,7 +1151,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
         vec_delete(self[][].get._CB.block_items)
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1219,7 +1219,7 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1240,7 +1240,7 @@ pub fn make_CStorageClass(tag: i32) struc CStorageClass {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1304,7 +1304,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
         vec_delete(self[][].get._CCompoundInit.initializers)
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_Type(@(self[])[].init_type)
@@ -1351,7 +1351,7 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_Type(@(self[])[].member_type)
@@ -1391,7 +1391,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].members) .. ++i {
@@ -1451,7 +1451,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     vec_delete(self[][].params)
@@ -1508,7 +1508,7 @@ pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     free_CInitializer(@(self[])[].init)
@@ -1595,7 +1595,7 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1631,7 +1631,7 @@ pub fn free_CProgram(self: **struc CProgram) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].declarations) .. ++i {

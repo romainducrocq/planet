@@ -94,7 +94,7 @@ pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: i32) u64
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_label_identifier(ctx, @name)
@@ -120,7 +120,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     str_append(name, map_get(ctx[].hash_table, target))
@@ -198,7 +198,7 @@ pub fn repr_var_identifier(ctx: *struc IdentifierContext, node: *struc CExp) u64
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_var_identifier(ctx, @name)

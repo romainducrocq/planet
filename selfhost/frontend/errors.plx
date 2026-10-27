@@ -291,7 +291,7 @@ pub fn get_tok_kind_fmt(tok_kind: i32) string {
             return "const f64"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -345,7 +345,7 @@ pub fn get_const_fmt(node: *struc CConst) string {
             return "u8"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -359,7 +359,7 @@ pub fn get_storage_class_fmt(node: *struc CStorageClass) string {
             return "extrn"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -376,7 +376,7 @@ pub fn get_unop_fmt(node: *struc CUnaryOp) string {
             return "not"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -441,7 +441,7 @@ pub fn get_binop_fmt(node: *struc CBinaryOp) string {
             return ">="
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -463,7 +463,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
                     return "prefix --"
                 }
                 otherwise {
-                    panic_sigabrt("abort")
+                    THROW_ABORT
                 }
             }
         }
@@ -476,12 +476,12 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
                     return "postfix --"
                 }
                 otherwise {
-                    panic_sigabrt("abort")
+                    THROW_ABORT
                 }
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     match node[].tag {
@@ -519,7 +519,7 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
             return ">>="
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -665,7 +665,7 @@ pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt
             return get_struct_fmt(ctx, @type_t[].get._Structure, type_fmt)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -693,7 +693,7 @@ pub fn get_fatal_msg(msg: i32) string {
             return "(no. %s) "             ""             "‘"             "gcc"             "’"             " %s.%s.%s is not supported, requires "             "‘"             "gcc"             "’"             " >= 8.1.0"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -731,7 +731,7 @@ pub fn get_arg_msg(msg: i32) string {
             return "(no. %s) "             "%s%s%s"             "no include directories passed in sixth argument, see "             "‘"             "--help"             "’"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -754,7 +754,7 @@ pub fn get_util_msg(msg: i32) string {
             return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to a floating point value"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -783,7 +783,7 @@ pub fn get_lexer_msg(msg: i32) string {
             return "(no. %s) "             "%s%s"             "found unmatched bracket "             "‘%s’"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -872,7 +872,7 @@ pub fn get_parser_msg(msg: i32) string {
             return "(no. %s) "             "%s%s%s"             "illegal storage class, cannot use "             "‘"             "data"             "’"             " declaration at top level"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -1093,7 +1093,7 @@ pub fn get_semantic_msg(msg: i32) string {
             return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " already declared in this scope"
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }

@@ -38,7 +38,7 @@ fn get_scalar_alignment(type_t: *struc Type) i32 {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -136,7 +136,7 @@ pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc Assem
             return struct_asm_type(ctx, @symbol_type[].get._Structure)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -167,7 +167,7 @@ fn cvt_static_const_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmStaticCon
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -177,7 +177,7 @@ fn cvt_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmTopLevel) none {
         cvt_static_const_toplvl(ctx, @node[].get._AsmStaticConstant)
     }
     else {
-        panic_sigabrt("abort")
+        THROW_ABORT
     }
 }
 

@@ -449,7 +449,7 @@ fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) 
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     TRY(peek_next(ctx))

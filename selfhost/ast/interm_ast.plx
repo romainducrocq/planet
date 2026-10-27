@@ -19,7 +19,7 @@ pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -65,7 +65,7 @@ pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -136,7 +136,7 @@ pub fn free_TacValue(self: **struc TacValue) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -224,7 +224,7 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -870,7 +870,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -984,7 +984,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
         free_StaticInit(@(self[])[].get._TacStaticConstant.static_init)
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     if self[] {
@@ -1024,7 +1024,7 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].static_const_toplvls) .. ++i {

@@ -103,7 +103,7 @@ pub fn free_CConst(self: **struc CConst) none {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     loop .. while 0 {
@@ -154,7 +154,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     vec_delete(self[][].value)

@@ -104,7 +104,7 @@ fn repr_asm_label(ctx: *struc AsmGenContext, asm_label_kind: i32) u64 {
             break
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
     return make_label_identifier(ctx[].identifiers, @name)
@@ -164,7 +164,7 @@ fn const_op(ctx: *struc AsmGenContext, node: *struc TacConstant) *struc AsmOpera
             return ulong_imm_op(@node[].constant[].get._CConstULong)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -201,7 +201,7 @@ fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AsmOperand {
             return var_op(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -227,7 +227,7 @@ fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
             return make_AsmCondCode(AST_AsmGE_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -253,7 +253,7 @@ fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
             return make_AsmCondCode(AST_AsmAE_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -267,7 +267,7 @@ fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
             return make_AsmUnaryOp(AST_AsmNeg_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -305,7 +305,7 @@ fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
             return make_AsmBinaryOp(AST_AsmBitShrArithmetic_t)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -353,7 +353,7 @@ fn is_value_signed(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_signed(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -395,7 +395,7 @@ fn is_value_1b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_1b(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -435,7 +435,7 @@ fn is_value_4b(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_4b(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -457,7 +457,7 @@ fn is_value_dbl(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return is_var_dbl(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -475,7 +475,7 @@ fn is_value_struct(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
             return false
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -501,7 +501,7 @@ fn const_asm_type(node: *struc TacConstant) *struc AssemblyType {
             }
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -519,7 +519,7 @@ fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) *struc Assembl
             return var_asm_type(ctx, @node[].get._TacVariable)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -878,7 +878,7 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
             }
             break
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
         if struct_8b[].size == 2 {
@@ -894,7 +894,7 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
                     break
                 }
                 otherwise {
-                    panic_sigabrt("abort")
+                    THROW_ABORT
                 }
             }
             ret_2_reg_mask(ctx[].p_fun_type, reg_size, sse_size)
@@ -1923,7 +1923,7 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
             }
             break
             otherwise {
-                panic_sigabrt("abort")
+                THROW_ABORT
             }
         }
         if struct_8b[].size == 2 {
@@ -1939,7 +1939,7 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
                     break
                 }
                 otherwise {
-                    panic_sigabrt("abort")
+                    THROW_ABORT
                 }
             }
             ret_2_reg_mask(fun_type, reg_size, sse_size)
@@ -2123,7 +2123,7 @@ fn unary_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -2519,7 +2519,7 @@ fn binary_instr(ctx: *struc AsmGenContext, node: *struc TacBinary) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -2837,7 +2837,7 @@ fn add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -3148,7 +3148,7 @@ fn gen_instr(ctx: *struc AsmGenContext, node: *struc TacInstruction) none {
         }
         break
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
@@ -3384,7 +3384,7 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
             return gen_static_const_toplvl(ctx, @node[].get._TacStaticConstant)
         }
         otherwise {
-            panic_sigabrt("abort")
+            THROW_ABORT
         }
     }
 }
