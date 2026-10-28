@@ -7,6 +7,6 @@ type struc CProgram;
 type struc ErrorsContext;
 type struc FrontEndContext;
 type struc IdentifierContext;
-pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) i32;
+pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) error_t;
 
 ')m4_dnl

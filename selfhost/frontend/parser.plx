@@ -313,7 +313,7 @@ fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) error_t {
     CATCH_EXIT
 }
 
-fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) i32;
+fn parse_type_name(ctx: *struc ParserContext, type_name: **struc Type) error_t;
 
 fn parse_datatype_specifier(ctx: *struc ParserContext, tag_name: *u64, is_union: *i32) error_t {
     CATCH_ENTER
@@ -551,8 +551,8 @@ fn parse_maybe_type(ctx: *struc ParserContext, maybe_type: **struc Type) error_t
     CATCH_EXIT
 }
 
-fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) i32;
-fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) i32;
+fn parse_unary_exp_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t;
+fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) error_t;
 
 fn parse_arg_list(ctx: *struc ParserContext, args: *vector_t(unique_ptr_t(CExp))) error_t {
     arg: *struc CExp = uptr_new()
@@ -1222,8 +1222,8 @@ fn parse_exp(ctx: *struc ParserContext, min_precedence: i32, exp: **struc CExp) 
     CATCH_EXIT
 }
 
-fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) i32;
-fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, var_decl: **struc CVariableDeclaration) i32;
+fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) error_t;
+fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, var_decl: **struc CVariableDeclaration) error_t;
 
 fn parse_ret_statement(ctx: *struc ParserContext, statement: **struc CStatement) error_t {
     exp: *struc CExp = uptr_new()
@@ -1607,7 +1607,7 @@ fn parse_statement(ctx: *struc ParserContext, statement: **struc CStatement) err
     CATCH_EXIT
 }
 
-fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) i32;
+fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: **struc CDeclaration) error_t;
 
 fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) error_t {
     statement: *struc CStatement = uptr_new()
@@ -1721,7 +1721,7 @@ fn parse_block(ctx: *struc ParserContext, block: **struc CBlock) error_t {
     CATCH_EXIT
 }
 
-fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitializer) i32;
+fn parse_initializer(ctx: *struc ParserContext, initializer: **struc CInitializer) error_t;
 
 fn parse_single_init(ctx: *struc ParserContext, initializer: **struc CInitializer) error_t {
     exp: *struc CExp = uptr_new()
