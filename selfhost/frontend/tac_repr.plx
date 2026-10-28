@@ -1070,6 +1070,7 @@ fn sizeoft_res_instr(ctx: *struc TacReprContext, node: *struc CSizeOfT) *struc T
 }
 
 fn plain_op_dot_res_instr(res: *struc TacPlainOperand, member_offset: i64, exp_res: **struc TacExpResult) none {
+    # THROW_ABORT_IF(res->val->tag != AST_TacVariable_t);
     base_name: u64 = res[].val[].get._TacVariable.name
     offset: i64 = member_offset
     free_TacExpResult(exp_res)
@@ -1121,6 +1122,7 @@ fn sub_obj_dot_res_instr(res: *struc TacSubObject, member_offset: i64) none {
 }
 
 fn dot_res_instr(ctx: *struc TacReprContext, node: *struc CDot) *struc TacExpResult {
+    # THROW_ABORT_IF(node->structure->exp_type->tag != AST_Structure_t);
     struct_type: *struc Structure = @node[].structure[].exp_type[].get._Structure
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     member_offset: i64 = map_get(struct_typedef[].members, node[].member)[].offset
@@ -1146,7 +1148,9 @@ fn dot_res_instr(ctx: *struc TacReprContext, node: *struc CDot) *struc TacExpRes
 }
 
 fn arrow_res_instr(ctx: *struc TacReprContext, node: *struc CArrow) *struc TacExpResult {
+    # THROW_ABORT_IF(node->pointer->exp_type->tag != AST_Pointer_t);
     ptr_type: *struc Pointer = @node[].pointer[].exp_type[].get._Pointer
+    # THROW_ABORT_IF(ptr_type->ref_type->tag != AST_Structure_t);
     struct_type: *struc Structure = @ptr_type[].ref_type[].get._Structure
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     member_offset: i64 = map_get(struct_typedef[].members, node[].member)[].offset
@@ -1983,5 +1987,6 @@ pub fn represent_three_address_code(c_ast: **struc CProgram, frontend: *struc Fr
     }
     tac_ast: *struc TacProgram = repr_program(@ctx, c_ast[])
     free_CProgram(c_ast)
+    # THROW_ABORT_IF(!tac_ast);
     return tac_ast
 }

@@ -73,7 +73,7 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     str_append(stderr_buf, " ")
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
-    # TODO THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
+    # THROW_ABORT_IF(str_size(stderr_buf) != stderr_buf_size);
     write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
     str_delete(stderr_buf)
 }
@@ -90,7 +90,7 @@ fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
 }
 
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
-    # TODO THROW_ABORT_IF(info_at >= vec_size(ctx->errors->token_infos));
+    # THROW_ABORT_IF(info_at >= vec_size(ctx->errors->token_infos));
     token_info: *struc TokenInfo = @ctx[].errors[].token_infos[info_at]
     tok_linenum: u64 = get_token_linenum(ctx, token_info[].total_linenum)
     free_fileio(ctx[].fileio)
