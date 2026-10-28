@@ -32,7 +32,7 @@ pub fn set_filename(ctx: *struc FileIoContext, filename: string_t) none {
     str_copy(filename, ctx[].filename)
 }
 
-pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) i32 {
+pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) error_t {
     CATCH_ENTER
     loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         if ctx[].file_reads[i].fd {
@@ -58,7 +58,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) i32 {
     CATCH_EXIT
 }
 
-pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) i32 {
+pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) error_t {
     CATCH_ENTER
     # TODO THROW_ABORT_IF(!vec_empty(ctx->file_reads));
     ctx[].fd_write = nil
@@ -101,7 +101,7 @@ pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     }
 }
 
-pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32 {
+pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) error_t {
     CATCH_ENTER
     fclose(vec_back(ctx[].file_reads).fd)
     vec_back(ctx[].file_reads).fd = nil
