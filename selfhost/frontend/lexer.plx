@@ -1164,7 +1164,7 @@ fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string_t 
     return smatch
 }
 
-fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) i32;
+fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) error_t;
 
 fn push_token_info(ctx: *struc LexerContext) u64 {
     token_info: struc TokenInfo = $(cast<i32>(ctx[].match_at), cast<i32>(ctx[].match_size), ctx[].total_linenum)

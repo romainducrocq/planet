@@ -194,7 +194,7 @@ fn is_type_complete(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     }
 }
 
-fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) i32;
+fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t;
 
 fn is_valid_ptr(ctx: *struc SemanticContext, ptr_type: *struc Pointer) error_t {
     CATCH_ENTER
@@ -754,7 +754,7 @@ fn get_compound_info_at(node: *struc CCompoundInit) u64 {
     return initializer[].get._CSingleInit.exp[].info_at
 }
 
-fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) i32;
+fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t;
 
 fn check_const_exp(node: *struc CConstant) none {
     match node[].constant[].tag {
@@ -2358,7 +2358,7 @@ fn push_zero_static_init(ctx: *struc SemanticContext, byte: i64) none {
     }
 }
 
-fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type) i32;
+fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type) error_t;
 
 fn check_static_no_init(ctx: *struc SemanticContext, static_init_type: *struc Type, size: i64) none {
     byte: i64 = ? static_init_type == nil then size else get_type_scale(ctx, static_init_type) * size
@@ -3248,8 +3248,8 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t {
     CATCH_EXIT
 }
 
-fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) i32;
-fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) i32;
+fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t;
+fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) error_t;
 
 fn reslv_const_exp(node: *struc CConstant) none {
     check_const_exp(node)
@@ -3485,9 +3485,9 @@ fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) error_t {
     CATCH_EXIT
 }
 
-fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) i32;
-fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) i32;
-fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) i32;
+fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t;
+fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t;
+fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) error_t;
 
 fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) error_t {
     name_fmt: string_t = str_new(nil)
@@ -3762,7 +3762,7 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) error_t
     CATCH_EXIT
 }
 
-fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) i32;
+fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) error_t;
 
 fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr_t(CBlockItem))) error_t {
     CATCH_ENTER
@@ -3792,7 +3792,7 @@ fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t {
     CATCH_EXIT
 }
 
-fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: **struc Type) i32;
+fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: **struc Type) error_t;
 
 fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: **struc Type) error_t {
     CATCH_ENTER
