@@ -14,11 +14,11 @@ type struc FileIoContext(errors: *struc ErrorsContext, fd_write: *struc FILE, wr
 pub fn find_file(filename: string) i32;
 pub fn get_filename(ctx: *struc FileIoContext) string;
 pub fn set_filename(ctx: *struc FileIoContext, filename: string_t) none;
-pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) i32;
-pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) i32;
+pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) error_t;
+pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) error_t;
 pub fn read_line(ctx: *struc FileIoContext, line: *string, line_size: *u64) i32;
 pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none;
-pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) i32;
+pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) error_t;
 pub fn close_fwrite(ctx: *struc FileIoContext) none;
 pub fn free_fileio(ctx: *struc FileIoContext) none;
 
