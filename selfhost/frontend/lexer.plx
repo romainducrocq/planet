@@ -1172,7 +1172,7 @@ fn push_token_info(ctx: *struc LexerContext) u64 {
     return vec_size(ctx[].errors[].token_infos) - 1
 }
 
-fn tokenize_file(ctx: *struc LexerContext) i32 {
+fn tokenize_file(ctx: *struc LexerContext) error_t {
     smatch: string_t = str_new(nil)
     CATCH_ENTER
     loop linenum: u64 = 1 while read_line(ctx[].fileio, @ctx[].line, @ctx[].line_size) .. ++linenum {
@@ -1284,7 +1284,7 @@ fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
     return false
 }
 
-fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) i32 {
+fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) error_t {
     filename: string_t = str_new(nil)
     fopen_name: string_t = str_new(nil)
     CATCH_ENTER
@@ -1392,7 +1392,7 @@ fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_e
     CATCH_EXIT
 }
 
-pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) i32 {
+pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) error_t {
     ctx: struc LexerContext;
     {
         ctx.errors = errors

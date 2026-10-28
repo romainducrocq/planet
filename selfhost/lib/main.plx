@@ -45,7 +45,7 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
     THROW_ABORT
 }
 
-fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc FileIoContext) i32 {
+fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc FileIoContext) error_t {
     identifiers: struc IdentifierContext;
     frontend: struc FrontEndContext;
     backend: struc BackEndContext;
@@ -149,7 +149,7 @@ fn arg_parse_uint8(arg: string, value: *u8) i32 {
     return end_ptr == arg
 }
 
-fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
+fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) error_t {
     CATCH_ENTER
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
@@ -189,7 +189,7 @@ fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) i32 {
     CATCH_EXIT
 }
 
-pub fn main(argc: i32, argv: *string) i32 {
+pub fn main(argc: i32, argv: *string) error_t {
     errors: struc ErrorsContext;
     fileio: struc FileIoContext;
 
