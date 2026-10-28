@@ -234,7 +234,7 @@ pub fn string_literal_to_const(string_literal: vector_t(i8)) string_t {
     return string_const
 }
 
-pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, value: *i64) i32 {
+pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, value: *i64) error_t {
     CATCH_ENTER
     end_ptr: string = nil
     value[] = strtoimax(str_int, @end_ptr, 10)
@@ -245,7 +245,7 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
     CATCH_EXIT
 }
 
-pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64, value: *u64) i32 {
+pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64, value: *u64) error_t {
     CATCH_ENTER
     end_ptr: string = nil
     value[] = strtoumax(str_uint, @end_ptr, 10)
@@ -256,7 +256,7 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
     CATCH_EXIT
 }
 
-pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, value: *f64) i32 {
+pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, value: *f64) error_t {
     CATCH_ENTER
     end_ptr: string = nil
     value[] = strtod(str_dbl, @end_ptr)
