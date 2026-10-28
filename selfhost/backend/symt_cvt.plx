@@ -183,6 +183,7 @@ fn cvt_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmTopLevel) none {
 
 fn cvt_fun_type(ctx: *struc SymtCvtContext, node: *struc FunAttr, fun_type: *struc FunType) none {
     if fun_type[].param_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
+        # THROW_ABORT_IF(node->is_def);
         fun_type[].param_reg_mask = 0ul
     }
     if fun_type[].ret_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {

@@ -12,7 +12,7 @@ pub fn dbl_to_binary(decimal: f64) u64 {
 }
 
 pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) none {
-    # TODO THROW_ABORT_IF(str_size(str_string) < 2);
+    # THROW_ABORT_IF(str_size(str_string) < 2);
     loop byte: u64 = 1 while byte < str_size(str_string) - 1 .. ++byte {
         str_char: char = cast<char>(str_string[byte])
         if str_char == '\\' {
@@ -80,7 +80,7 @@ pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) no
 }
 
 pub fn string_to_char_ascii(str_char: string_t) i32 {
-    # TODO THROW_ABORT_IF(str_size(str_char) < 2 || str_size(str_char) > 4);
+    # THROW_ABORT_IF(str_size(str_char) < 2 || str_size(str_char) > 4);
     c_char: char = cast<char>(str_char[1])
     if c_char == '\\' {
         c_char = cast<char>(str_char[2])
@@ -131,6 +131,7 @@ pub fn string_to_char_ascii(str_char: string_t) i32 {
 fn hex_string_to_long(str_hex: string) i64 {
     end_ptr: string = nil
     value: i64 = strtoimax(str_hex, @end_ptr, 16)
+    # THROW_ABORT_IF(end_ptr == str_hex);
     return value
 }
 

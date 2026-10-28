@@ -87,7 +87,7 @@ fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
 
 fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
         src: *struc TacValue = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -217,7 +217,7 @@ fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
 
 fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
         src: *struc TacValue = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -295,7 +295,7 @@ fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
 
 fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
         src: *struc TacValue = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -310,7 +310,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
 }
 
 fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    ;
+    # THROW_ABORT_IF(constant->tag != AST_CConstDouble_t);
     fold_constant: *struc CConst = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
@@ -339,7 +339,7 @@ fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
 
 fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
         src: *struc TacValue = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -354,7 +354,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
 }
 
 fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    ;
+    # THROW_ABORT_IF(constant->tag != AST_CConstDouble_t);
     fold_constant: *struc CConst = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_UChar_t {
@@ -381,7 +381,7 @@ fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVaria
 
 fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToUInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
         src: *struc TacValue = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -422,7 +422,9 @@ fn fold_signed_to_dbl_const(constant: *struc CConst) *struc TacValue {
 
 fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        # TODO THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t || map_get(ctx->frontend->symbol_table, node->dst->get._TacVariable.name)->type_t->tag != AST_Double_t);
+        # THROW_ABORT_IF(
+        #     node->dst->tag != AST_TacVariable_t
+        #     || map_get(ctx->frontend->symbol_table, node->dst->get._TacVariable.name)->type_t->tag != AST_Double_t);
         src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -463,7 +465,9 @@ fn fold_unsigned_to_dbl_const(constant: *struc CConst) *struc TacValue {
 
 fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        # TODO THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t || map_get(ctx->frontend->symbol_table, node->dst->get._TacVariable.name)->type_t->tag != AST_Double_t);
+        # THROW_ABORT_IF(
+        #     node->dst->tag != AST_TacVariable_t
+        #     || map_get(ctx->frontend->symbol_table, node->dst->get._TacVariable.name)->type_t->tag != AST_Double_t);
         src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
         if node[].dst ~= dst {
@@ -991,7 +995,7 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
 }
 
 fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, constant_2: *struc CConst) *struc TacValue {
-    ;
+    # THROW_ABORT_IF(constant_1->tag != constant_2->tag);
     fold_constant: *struc CConst = sptr_new()
     match constant_1[].tag {
         -> AST_CConstInt_t {
@@ -1206,7 +1210,7 @@ fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, consta
 
 fn fold_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy) none {
     if node[].src[].tag == AST_TacConstant_t {
-        ;
+        # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
         src: *struc TacValue = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         if src {
             loop .. while 0 {
@@ -1394,7 +1398,7 @@ fn unreach_jump_block(ctx: *struc OptimTacContext, block_id: u64, next_block_id:
 }
 
 fn unreach_label_instr(ctx: *struc OptimTacContext, block_id: u64) none {
-    ;
+    # THROW_ABORT_IF(GET_INSTR(GET_CFG_BLOCK(block_id).instrs_front_idx)->tag != AST_TacLabel_t);
     cfg_rm_block_instr(ctx, ctx[].cfg[].blocks[block_id].instrs_front_idx, block_id)
 }
 
@@ -1622,7 +1626,7 @@ fn is_copy_null_ptr(ctx: *struc OptimTacContext, node: *struc TacCopy) i32 {
 }
 
 fn prop_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, next_instr_idx: u64) none {
-    ;
+    # THROW_ABORT_IF(node->tag != AST_TacVariable_t);
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
         if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1635,9 +1639,9 @@ fn prop_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, n
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                ;
+                # THROW_ABORT_IF(GET_DFA_INSTR(i)->tag != AST_TacCopy_t);
                 copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
-                ;
+                # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                 if is_same_value(node, copy[].src) or is_same_value(node, copy[].dst) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
                     if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1650,7 +1654,7 @@ fn prop_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, n
 }
 
 fn prop_transfer_call(ctx: *struc OptimTacContext, node: *struc TacFunCall, next_instr_idx: u64) none {
-    ;
+    # THROW_ABORT_IF(node->dst && node->dst->tag != AST_TacVariable_t);
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
         if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1663,9 +1667,9 @@ fn prop_transfer_call(ctx: *struc OptimTacContext, node: *struc TacFunCall, next
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                ;
+                # THROW_ABORT_IF(GET_DFA_INSTR(i)->tag != AST_TacCopy_t);
                 copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
-                ;
+                # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                 if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) or (node[].dst and (is_same_value(node[].dst, copy[].src) or is_same_value(node[].dst, copy[].dst))) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
                     if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1678,11 +1682,11 @@ fn prop_transfer_call(ctx: *struc OptimTacContext, node: *struc TacFunCall, next
 }
 
 fn prop_transfer_copy(ctx: *struc OptimTacContext, node: *struc TacCopy, next_instr_idx: u64) i32 {
-    ;
+    # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
     loop i: u64 = 0 while i < ctx[].dfa[].set_size .. ++i {
-        ;
+        # THROW_ABORT_IF(GET_DFA_INSTR(i)->tag != AST_TacCopy_t);
         copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
-        ;
+        # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
         if is_same_value(node[].dst, copy[].dst) {
             if (is_copy_same_signedness(ctx, copy) or is_copy_null_ptr(ctx, copy)) and is_same_value(node[].src, copy[].src) {
                 mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, true)
@@ -1718,9 +1722,9 @@ fn prop_transfer_store(ctx: *struc OptimTacContext, next_instr_idx: u64) none {
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                ;
+                # THROW_ABORT_IF(GET_DFA_INSTR(i)->tag != AST_TacCopy_t);
                 copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
-                ;
+                # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                 if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
                     if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1745,9 +1749,9 @@ fn prop_transfer_cp_to_offset(ctx: *struc OptimTacContext, node: *struc TacCopyT
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                ;
+                # THROW_ABORT_IF(GET_DFA_INSTR(i)->tag != AST_TacCopy_t);
                 copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
-                ;
+                # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                 if is_same_name(copy[].src, node[].dst_name) or is_same_name(copy[].dst, node[].dst_name) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
                     if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1838,7 +1842,7 @@ fn prop_transfer_reach_copies(ctx: *struc OptimTacContext, instr_idx: u64, next_
 
 fn get_dfa_bak_copy_instr(ctx: *struc OptimTacContext, i: u64) *struc TacCopy {
     node: *struc TacInstruction = get_dfa_bak_instr(ctx, i)
-    ;
+    # THROW_ABORT_IF(node->tag != AST_TacCopy_t);
     return @node[].get._TacCopy
 }
 
@@ -1881,7 +1885,7 @@ fn prop_ret_instr(ctx: *struc OptimTacContext, node: *struc TacReturn, incoming_
             loop  while i < mask_set_size .. ++i {
                 if ((exit_block and mask_get(ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].val, copy[].dst) {
                         if copy[].src ~= node[].val {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->val)"
@@ -1914,7 +1918,7 @@ fn prop_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -1947,7 +1951,7 @@ fn prop_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -1980,7 +1984,7 @@ fn prop_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2013,7 +2017,7 @@ fn prop_dbl_to_int_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToIn
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2046,7 +2050,7 @@ fn prop_dbl_to_uint_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToU
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2079,7 +2083,7 @@ fn prop_int_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDoubl
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2112,7 +2116,7 @@ fn prop_uint_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDou
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2146,7 +2150,7 @@ fn prop_call_instr(ctx: *struc OptimTacContext, node: *struc TacFunCall, instr_i
                 loop  while j < mask_set_size .. ++j {
                     if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j) {
                         copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, j)
-                        ;
+                        # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                         if is_same_value(node[].args[i], copy[].dst) {
                             if copy[].src ~= node[].args[i] {
                                 " #@MACRO@:sptr_copy(TacValue, copy->src, node->args[i])"
@@ -2182,7 +2186,7 @@ fn prop_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_id
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2217,7 +2221,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_src1 and is_same_value(node[].src1, copy[].dst) {
                         if copy[].src ~= node[].src1 {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src1)"
@@ -2253,7 +2257,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
 }
 
 fn prop_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx: u64, block_id: u64) none {
-    ;
+    # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
         if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -2267,7 +2271,7 @@ fn prop_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx:
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                 copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                ;
+                # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                 if ctx[].dfa_o1[].data_idx_map[i] == instr_idx or (is_same_value(node[].src, copy[].dst) and is_same_value(node[].dst, copy[].src)) {
                     set_dfa_bak_copy_instr(ctx, node, instr_idx)
                     cfg_rm_block_instr(ctx, instr_idx, block_id)
@@ -2305,7 +2309,7 @@ fn prop_load_instr(ctx: *struc OptimTacContext, node: *struc TacLoad, instr_idx:
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src_ptr, copy[].dst) {
                         if copy[].src ~= node[].src_ptr {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src_ptr)"
@@ -2338,7 +2342,7 @@ fn prop_store_instr(ctx: *struc OptimTacContext, node: *struc TacStore, instr_id
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2373,7 +2377,7 @@ fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_src_ptr and is_same_value(node[].src_ptr, copy[].dst) {
                         if copy[].src ~= node[].src_ptr {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src_ptr)"
@@ -2423,7 +2427,7 @@ fn prop_cp_to_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyToOf
             loop  while i < mask_set_size .. ++i {
                 if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].src, copy[].dst) {
                         if copy[].src ~= node[].src {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
@@ -2455,9 +2459,9 @@ fn prop_cp_from_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyFr
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
                 copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                ;
+                # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                 if is_same_name(copy[].dst, node[].src_name) {
-                    ;
+                    # THROW_ABORT_IF(copy->src->tag != AST_TacVariable_t);
                     node[].src_name = copy[].src[].get._TacVariable.name
                     ctx[].is_fixed_point = false
                     return none
@@ -2482,7 +2486,7 @@ fn prop_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
             loop  while i < mask_set_size .. ++i {
                 if ((exit_block and mask_get(ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].condition, copy[].dst) {
                         if copy[].src ~= node[].condition {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->condition)"
@@ -2515,7 +2519,7 @@ fn prop_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZer
             loop  while i < mask_set_size .. ++i {
                 if ((exit_block and mask_get(ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
-                    ;
+                    # THROW_ABORT_IF(copy->dst->tag != AST_TacVariable_t);
                     if is_same_value(node[].condition, copy[].dst) {
                         if copy[].src ~= node[].condition {
                             " #@MACRO@:sptr_copy(TacValue, copy->src, node->condition)"
@@ -2714,7 +2718,7 @@ fn elim_transfer_src_value(ctx: *struc OptimTacContext, node: *struc TacValue, n
 }
 
 fn elim_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, next_instr_idx: u64) none {
-    ;
+    # THROW_ABORT_IF(node->tag != AST_TacVariable_t);
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, node[].get._TacVariable.name)
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
 }
@@ -2857,7 +2861,7 @@ fn elim_dst_name_instr(ctx: *struc OptimTacContext, name: u64, instr_idx: u64) n
 }
 
 fn elim_dst_value_instr(ctx: *struc OptimTacContext, node: *struc TacValue, instr_idx: u64) none {
-    ;
+    # THROW_ABORT_IF(node->tag != AST_TacVariable_t);
     elim_dst_name_instr(ctx, node[].get._TacVariable.name, instr_idx)
 }
 
