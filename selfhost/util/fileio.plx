@@ -37,6 +37,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) error_t {
     loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         if ctx[].file_reads[i].fd {
             n_fopens: u64 = vec_size(ctx[].file_reads) - i
+            # THROW_ABORT_IF(n_fopens > FOPEN_MAX - 1);
             if n_fopens == FOPEN_MAX - 1 {
                 ctx[].file_reads[i].len = 0
                 free(ctx[].file_reads[i].buf)
@@ -60,7 +61,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) error_t {
 
 pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) error_t {
     CATCH_ENTER
-    # TODO THROW_ABORT_IF(!vec_empty(ctx->file_reads));
+    # THROW_ABORT_IF(!vec_empty(ctx->file_reads));
     ctx[].fd_write = nil
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or str_size(filename) >= 4096 {
@@ -108,7 +109,7 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) error_t {
     str_delete(vec_back(ctx[].file_reads).filename)
     vec_pop_back(ctx[].file_reads)
     if not vec_empty(ctx[].file_reads) and not vec_back(ctx[].file_reads).fd {
-        # TODO THROW_ABORT_IF(vec_back(ctx->file_reads).buf || vec_back(ctx->file_reads).len != 0);
+        # THROW_ABORT_IF(vec_back(ctx->file_reads).buf || vec_back(ctx->file_reads).len != 0);
         vec_back(ctx[].file_reads).fd = fopen(vec_back(ctx[].file_reads).filename, "rb")
         if not vec_back(ctx[].file_reads).fd {
             THROW_BASE(GET_UTIL_MSG(1, MSG_failed_fread, vec_back(ctx[].file_reads).filename))

@@ -19,12 +19,12 @@ m4_define(`PANIC_FUNC', `panic_sigabrt($1)')m4_dnl
 m4_define(`THROW_ABORT', `THROW_PANIC("abort")')m4_dnl
 m4_define(`THROW_ALLOC', `THROW_PANIC("alloc $1")')m4_dnl
 # TODO
-m4_ifelse(1, `0', `
+m4_ifelse(0, `0', `
 m4_define(`THROW_ABORT_IF', `if $1 {
     THROW_ABORT
 }')m4_dnl
 ', `
-m4_define(`THROW_ABORT_IF', `')m4_dnl
+m4_define(`THROW_ABORT_IF', `;')m4_dnl
 ')m4_dnl
 pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
