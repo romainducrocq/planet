@@ -16,8 +16,8 @@ type struc AsmInstruction;
 type struc AsmTopLevel;
 type struc AsmProgram;
 
-type struc AsmReg(tag: i32)
-pub fn make_AsmReg(tag: i32) struc AsmReg;
+type struc AsmReg(tagged_def_impl(AST_T))
+pub fn make_AsmReg(tagged_def_impl(AST_T)) struc AsmReg;
 m4_define(`init_AsmReg', `TODO')m4_dnl
 m4_define(`init_AsmAx', `TODO')m4_dnl
 m4_define(`init_AsmBx', `TODO')m4_dnl
@@ -52,8 +52,8 @@ m4_define(`init_AsmXMM13', `TODO')m4_dnl
 m4_define(`init_AsmXMM14', `TODO')m4_dnl
 m4_define(`init_AsmXMM15', `TODO')m4_dnl
 
-type struc AsmCondCode(tag: i32)
-pub fn make_AsmCondCode(tag: i32) struc AsmCondCode;
+type struc AsmCondCode(tagged_def_impl(AST_T))
+pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode;
 m4_define(`init_AsmCondCode', `TODO')m4_dnl
 m4_define(`init_AsmE', `TODO')m4_dnl
 m4_define(`init_AsmNE', `TODO')m4_dnl
@@ -94,8 +94,8 @@ pub fn make_AsmPseudoMem(name: u64, offset: i64) *struc AsmOperand;
 pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc AsmReg) *struc AsmOperand;
 pub fn free_AsmOperand(self: **struc AsmOperand) none;
 
-type struc AsmBinaryOp(tag: i32)
-pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp;
+type struc AsmBinaryOp(tagged_def_impl(AST_T))
+pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp;
 m4_define(`init_AsmBinaryOp', `TODO')m4_dnl
 m4_define(`init_AsmAdd', `TODO')m4_dnl
 m4_define(`init_AsmSub', `TODO')m4_dnl
@@ -108,8 +108,8 @@ m4_define(`init_AsmBitShiftLeft', `TODO')m4_dnl
 m4_define(`init_AsmBitShiftRight', `TODO')m4_dnl
 m4_define(`init_AsmBitShrArithmetic', `TODO')m4_dnl
 
-type struc AsmUnaryOp(tag: i32)
-pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp;
+type struc AsmUnaryOp(tagged_def_impl(AST_T))
+pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp;
 m4_define(`init_AsmUnaryOp', `TODO')m4_dnl
 m4_define(`init_AsmNot', `TODO')m4_dnl
 m4_define(`init_AsmNeg', `TODO')m4_dnl
