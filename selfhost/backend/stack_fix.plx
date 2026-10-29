@@ -487,7 +487,7 @@ fn repl_pseudo_regs(ctx: *struc StackFixContext, node: *struc AsmInstruction) no
 }
 
 pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction {
-    binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
+    binop: struc AsmBinaryOp = init_AsmSub()
     asm_type: *struc AssemblyType = make_QuadWord()
 
     src: *struc AsmOperand = sptr_new()
@@ -557,26 +557,26 @@ fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_
     loop i: u64 = vec_size(callee_saved_regs) while i-- > 0 {
         THROW_ABORT_IF(callee_saved_regs[i][].tag ~= AST_AsmRegister_t)
         reg_kind: i32 = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
-        reg: struc AsmReg = make_AsmReg(AST_AsmReg_t)
+        reg: struc AsmReg = init_AsmReg()
         match reg_kind {
             -> REG_Bx {
-                reg = make_AsmReg(AST_AsmBx_t)
+                reg = init_AsmBx()
                 break
             }
             -> REG_R12 {
-                reg = make_AsmReg(AST_AsmR12_t)
+                reg = init_AsmR12()
                 break
             }
             -> REG_R13 {
-                reg = make_AsmReg(AST_AsmR13_t)
+                reg = init_AsmR13()
                 break
             }
             -> REG_R14 {
-                reg = make_AsmReg(AST_AsmR14_t)
+                reg = init_AsmR14()
                 break
             }
             -> REG_R15 {
-                reg = make_AsmReg(AST_AsmR15_t)
+                reg = init_AsmR15()
                 break
             }
             otherwise {
@@ -1457,7 +1457,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
 
     asm_type_src: *struc AssemblyType = make_QuadWord()
     {
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
+        binop: struc AsmBinaryOp = init_AsmSub()
         src: *struc AsmOperand = make_AsmImm(8ul, true, false, false)
         dst: *struc AsmOperand = gen_register(REG_Sp)
         asm_type_src_cp: *struc AssemblyType = sptr_new()

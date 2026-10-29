@@ -9,100 +9,100 @@ m4_include(`../ast/back_ast.plx.m4')m4_dnl
 fn gen_reg(reg_kind: i32) struc AsmReg {
     match reg_kind {
         -> REG_Ax {
-            return make_AsmReg(AST_AsmAx_t)
+            return init_AsmAx()
         }
         -> REG_Bx {
-            return make_AsmReg(AST_AsmBx_t)
+            return init_AsmBx()
         }
         -> REG_Cx {
-            return make_AsmReg(AST_AsmCx_t)
+            return init_AsmCx()
         }
         -> REG_Dx {
-            return make_AsmReg(AST_AsmDx_t)
+            return init_AsmDx()
         }
         -> REG_Di {
-            return make_AsmReg(AST_AsmDi_t)
+            return init_AsmDi()
         }
         -> REG_Si {
-            return make_AsmReg(AST_AsmSi_t)
+            return init_AsmSi()
         }
         -> REG_R8 {
-            return make_AsmReg(AST_AsmR8_t)
+            return init_AsmR8()
         }
         -> REG_R9 {
-            return make_AsmReg(AST_AsmR9_t)
+            return init_AsmR9()
         }
         -> REG_R10 {
-            return make_AsmReg(AST_AsmR10_t)
+            return init_AsmR10()
         }
         -> REG_R11 {
-            return make_AsmReg(AST_AsmR11_t)
+            return init_AsmR11()
         }
         -> REG_R12 {
-            return make_AsmReg(AST_AsmR12_t)
+            return init_AsmR12()
         }
         -> REG_R13 {
-            return make_AsmReg(AST_AsmR13_t)
+            return init_AsmR13()
         }
         -> REG_R14 {
-            return make_AsmReg(AST_AsmR14_t)
+            return init_AsmR14()
         }
         -> REG_R15 {
-            return make_AsmReg(AST_AsmR15_t)
+            return init_AsmR15()
         }
         -> REG_Sp {
-            return make_AsmReg(AST_AsmSp_t)
+            return init_AsmSp()
         }
         -> REG_Bp {
-            return make_AsmReg(AST_AsmBp_t)
+            return init_AsmBp()
         }
         -> REG_Xmm0 {
-            return make_AsmReg(AST_AsmXMM0_t)
+            return init_AsmXMM0()
         }
         -> REG_Xmm1 {
-            return make_AsmReg(AST_AsmXMM1_t)
+            return init_AsmXMM1()
         }
         -> REG_Xmm2 {
-            return make_AsmReg(AST_AsmXMM2_t)
+            return init_AsmXMM2()
         }
         -> REG_Xmm3 {
-            return make_AsmReg(AST_AsmXMM3_t)
+            return init_AsmXMM3()
         }
         -> REG_Xmm4 {
-            return make_AsmReg(AST_AsmXMM4_t)
+            return init_AsmXMM4()
         }
         -> REG_Xmm5 {
-            return make_AsmReg(AST_AsmXMM5_t)
+            return init_AsmXMM5()
         }
         -> REG_Xmm6 {
-            return make_AsmReg(AST_AsmXMM6_t)
+            return init_AsmXMM6()
         }
         -> REG_Xmm7 {
-            return make_AsmReg(AST_AsmXMM7_t)
+            return init_AsmXMM7()
         }
         -> REG_Xmm8 {
-            return make_AsmReg(AST_AsmXMM8_t)
+            return init_AsmXMM8()
         }
         -> REG_Xmm9 {
-            return make_AsmReg(AST_AsmXMM9_t)
+            return init_AsmXMM9()
         }
         -> REG_Xmm10 {
-            return make_AsmReg(AST_AsmXMM10_t)
+            return init_AsmXMM10()
         }
         -> REG_Xmm11 {
-            return make_AsmReg(AST_AsmXMM11_t)
+            return init_AsmXMM11()
         }
         -> REG_Xmm12 {
-            return make_AsmReg(AST_AsmXMM12_t)
+            return init_AsmXMM12()
         }
         -> REG_Xmm13 {
-            return make_AsmReg(AST_AsmXMM13_t)
+            return init_AsmXMM13()
         }
         -> REG_Xmm14 {
-            return make_AsmReg(AST_AsmXMM14_t)
+            return init_AsmXMM14()
         }
         -> REG_Xmm15 {
-            return make_AsmReg(AST_AsmXMM15_t)
+            return init_AsmXMM15()
         }
         otherwise {
             THROW_ABORT
