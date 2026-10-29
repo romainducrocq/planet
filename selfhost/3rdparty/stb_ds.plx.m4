@@ -84,7 +84,7 @@ m4_define(`stbds_arrfree', `{
     ($1) = nil
 }')m4_dnl
 m4_define(`stbds_arrdelswap', `{
-    ($1)[$2] = stbds_arrlast($1)
+    ($1)[($2)] = stbds_arrlast($1)
     stbds_header($1)[].length -= 1
 }')m4_dnl
 
