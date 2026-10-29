@@ -1224,7 +1224,7 @@ fn check_bitshift_right_exp(ctx: *struc SemanticContext, node: *struc CBinary) e
     CATCH_ENTER
     TRY(check_binary_bitshift_exp(ctx, node))
     if is_type_signed(node[].exp_left[].exp_type) {
-        node[].binop = make_CBinaryOp(AST_CBitShrArithmetic_t)
+        node[].binop = init_CBitShrArithmetic()
     }
     FINALLY
     CATCH_EXIT

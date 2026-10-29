@@ -186,15 +186,15 @@ fn parse_unop(ctx: *struc ParserContext, unop: *struc CUnaryOp) error_t {
     TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
         -> TOK_unop_complement {
-            unop[] = make_CUnaryOp(AST_CComplement_t)
+            unop[] = init_CComplement()
             break
         }
         -> TOK_unop_neg {
-            unop[] = make_CUnaryOp(AST_CNegate_t)
+            unop[] = init_CNegate()
             break
         }
         -> TOK_unop_not {
-            unop[] = make_CUnaryOp(AST_CNot_t)
+            unop[] = init_CNot()
             break
         }
         otherwise {
@@ -212,7 +212,7 @@ fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) error_t {
         -> TOK_binop_add {
             -> TOK_assign_add {
                 -> TOK_unop_incr {
-                    binop[] = make_CBinaryOp(AST_CAdd_t)
+                    binop[] = init_CAdd()
                     break
                 }
             }
@@ -220,89 +220,89 @@ fn parse_binop(ctx: *struc ParserContext, binop: *struc CBinaryOp) error_t {
         -> TOK_unop_neg {
             -> TOK_assign_subtract {
                 -> TOK_unop_decr {
-                    binop[] = make_CBinaryOp(AST_CSubtract_t)
+                    binop[] = init_CSubtract()
                     break
                 }
             }
         }
         -> TOK_binop_multiply {
             -> TOK_assign_multiply {
-                binop[] = make_CBinaryOp(AST_CMultiply_t)
+                binop[] = init_CMultiply()
                 break
             }
         }
         -> TOK_binop_divide {
             -> TOK_assign_divide {
-                binop[] = make_CBinaryOp(AST_CDivide_t)
+                binop[] = init_CDivide()
                 break
             }
         }
         -> TOK_binop_remainder {
             -> TOK_assign_remainder {
-                binop[] = make_CBinaryOp(AST_CRemainder_t)
+                binop[] = init_CRemainder()
                 break
             }
         }
         -> TOK_binop_bitand {
             -> TOK_assign_bitand {
-                binop[] = make_CBinaryOp(AST_CBitAnd_t)
+                binop[] = init_CBitAnd()
                 break
             }
         }
         -> TOK_binop_bitor {
             -> TOK_assign_bitor {
-                binop[] = make_CBinaryOp(AST_CBitOr_t)
+                binop[] = init_CBitOr()
                 break
             }
         }
         -> TOK_binop_xor {
             -> TOK_assign_xor {
-                binop[] = make_CBinaryOp(AST_CBitXor_t)
+                binop[] = init_CBitXor()
                 break
             }
         }
         -> TOK_binop_shiftleft {
             -> TOK_assign_shiftleft {
-                binop[] = make_CBinaryOp(AST_CBitShiftLeft_t)
+                binop[] = init_CBitShiftLeft()
                 break
             }
         }
         -> TOK_binop_shiftright {
             -> TOK_assign_shiftright {
-                binop[] = make_CBinaryOp(AST_CBitShiftRight_t)
+                binop[] = init_CBitShiftRight()
                 break
             }
         }
         -> TOK_binop_and {
-            binop[] = make_CBinaryOp(AST_CAnd_t)
+            binop[] = init_CAnd()
             break
         }
         -> TOK_binop_or {
-            binop[] = make_CBinaryOp(AST_COr_t)
+            binop[] = init_COr()
             break
         }
         -> TOK_binop_eq {
-            binop[] = make_CBinaryOp(AST_CEqual_t)
+            binop[] = init_CEqual()
             break
         }
         -> TOK_binop_ne {
-            binop[] = make_CBinaryOp(AST_CNotEqual_t)
+            binop[] = init_CNotEqual()
             break
         }
         -> TOK_binop_lt {
-            binop[] = make_CBinaryOp(AST_CLessThan_t)
+            binop[] = init_CLessThan()
             break
         }
         -> TOK_binop_le {
-            binop[] = make_CBinaryOp(AST_CLessOrEqual_t)
+            binop[] = init_CLessOrEqual()
             break
         }
         -> TOK_binop_gt {
-            binop[] = make_CBinaryOp(AST_CGreaterThan_t)
+            binop[] = init_CGreaterThan()
             break
         }
         -> TOK_binop_ge {
-            binop[] = make_CBinaryOp(AST_CGreaterOrEqual_t)
+            binop[] = init_CGreaterOrEqual()
             break
         }
         otherwise {
@@ -738,8 +738,8 @@ fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) error
     CATCH_ENTER
     exp_null: *struc CExp = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
-    unop: struc CUnaryOp = make_CUnaryOp(AST_CPostfix_t)
-    binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
+    unop: struc CUnaryOp = init_CPostfix()
+    binop: struc CBinaryOp = init_CBinaryOp()
     TRY(parse_binop(ctx, @binop))
     constant = make_CConstInt(1)
     exp_right = make_CConstant(@constant, info_at)
@@ -756,7 +756,7 @@ fn parse_unary_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
     cast_exp: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
+    unop: struc CUnaryOp = init_CUnaryOp()
     TRY(parse_unop(ctx, @unop))
     TRY(parse_unary_exp_factor(ctx, @cast_exp))
     exp[] = make_CUnary(@unop, @cast_exp, info_at)
@@ -773,8 +773,8 @@ fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
     constant: *struc CConst = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    unop: struc CUnaryOp = make_CUnaryOp(AST_CPrefix_t)
-    binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
+    unop: struc CUnaryOp = init_CPrefix()
+    binop: struc CBinaryOp = init_CBinaryOp()
     TRY(parse_binop(ctx, @binop))
     TRY(parse_unary_exp_factor(ctx, @exp_left))
     constant = make_CConstInt(1)
@@ -994,7 +994,7 @@ fn parse_assign_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
     exp_right: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
+    unop: struc CUnaryOp = init_CUnaryOp()
     TRY(pop_next(ctx))
     TRY(parse_exp(ctx, precedence, @exp_right))
     exp_left[] = make_CAssignment(@unop, exp_left, @exp_right, info_at)
@@ -1009,8 +1009,8 @@ fn parse_assign_compound_exp(ctx: *struc ParserContext, precedence: i32, exp_lef
     CATCH_ENTER
     exp_null: *struc CExp = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
-    unop: struc CUnaryOp = make_CUnaryOp(AST_CUnaryOp_t)
-    binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
+    unop: struc CUnaryOp = init_CUnaryOp()
+    binop: struc CBinaryOp = init_CBinaryOp()
     TRY(parse_binop(ctx, @binop))
     TRY(parse_exp(ctx, precedence, @exp_right))
     exp_right_1 = make_CBinary(@binop, exp_left, @exp_right, info_at)
@@ -1025,7 +1025,7 @@ fn parse_binary_exp(ctx: *struc ParserContext, precedence: i32, exp_left: **stru
     exp_right: *struc CExp = uptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    binop: struc CBinaryOp = make_CBinaryOp(AST_CBinaryOp_t)
+    binop: struc CBinaryOp = init_CBinaryOp()
     TRY(parse_binop(ctx, @binop))
     TRY(parse_exp(ctx, precedence + 1, @exp_right))
     exp_left[] = make_CBinary(@binop, exp_left, @exp_right, info_at)
@@ -1336,7 +1336,7 @@ fn parse_label_statement(ctx: *struc ParserContext, statement: **struc CStatemen
 fn parse_loop_init_decl(ctx: *struc ParserContext, for_init: **struc CForInit) error_t {
     var_decl: *struc CVariableDeclaration = uptr_new()
     CATCH_ENTER
-    storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
+    storage_class: struc CStorageClass = init_CStorageClass()
     TRY(parse_var_declaration(ctx, @storage_class, @var_decl))
     for_init[] = make_CInitDecl(@var_decl)
     FINALLY
@@ -1622,7 +1622,7 @@ fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
 fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) error_t {
     declaration: *struc CDeclaration = uptr_new()
     CATCH_ENTER
-    storage_class: struc CStorageClass = make_CStorageClass(AST_CStorageClass_t)
+    storage_class: struc CStorageClass = init_CStorageClass()
     TRY(parse_declaration(ctx, @storage_class, @declaration))
     block_item[] = make_CD(@declaration)
     FINALLY
@@ -1994,15 +1994,15 @@ fn parse_storage_class(ctx: *struc ParserContext, storage_class: *struc CStorage
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
-            storage_class[] = make_CStorageClass(AST_CStorageClass_t)
+            storage_class[] = init_CStorageClass()
             break
         }
         -> TOK_key_data {
-            storage_class[] = make_CStorageClass(AST_CStatic_t)
+            storage_class[] = init_CStatic()
             break
         }
         -> TOK_key_extrn {
-            storage_class[] = make_CStorageClass(AST_CExtern_t)
+            storage_class[] = init_CExtern()
             break
         }
         -> TOK_key_fn {
@@ -2056,7 +2056,7 @@ fn parse_program(ctx: *struc ParserContext, c_ast: **struc CProgram) error_t {
     declarations: vector_t(unique_ptr_t(CDeclaration)) = vec_new()
     CATCH_ENTER
     loop while ctx[].pop_idx < vec_size(ctx[].p_toks[]) {
-        storage_class: struc CStorageClass = make_CStorageClass(AST_CStatic_t)
+        storage_class: struc CStorageClass = init_CStatic()
         TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_key_data {
             THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_data_at_toplvl))
