@@ -16,31 +16,31 @@ type struc TacProgram;
 
 type struc TacUnaryOp(tagged_def_impl(AST_T))
 pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp;
-m4_define(`init_TacUnaryOp', `tagged_def_init(AST, TacUnaryOp, TacUnaryOp)')m4_dnl # TODO
-m4_define(`init_TacComplement', `tagged_def_init(AST, TacUnaryOp, TacComplement)')m4_dnl # TODO
-m4_define(`init_TacNegate', `tagged_def_init(AST, TacUnaryOp, TacNegate)')m4_dnl # TODO
-m4_define(`init_TacNot', `tagged_def_init(AST, TacUnaryOp, TacNot)')m4_dnl # TODO
+m4_define(`init_TacUnaryOp', `tagged_def_init(AST, TacUnaryOp, TacUnaryOp)')m4_dnl
+m4_define(`init_TacComplement', `tagged_def_init(AST, TacUnaryOp, TacComplement)')m4_dnl
+m4_define(`init_TacNegate', `tagged_def_init(AST, TacUnaryOp, TacNegate)')m4_dnl
+m4_define(`init_TacNot', `tagged_def_init(AST, TacUnaryOp, TacNot)')m4_dnl
 
 type struc TacBinaryOp(tagged_def_impl(AST_T))
 pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp;
-m4_define(`init_TacBinaryOp', `tagged_def_init(AST, TacBinaryOp, TacBinaryOp)')m4_dnl # TODO
-m4_define(`init_TacAdd', `tagged_def_init(AST, TacBinaryOp, TacAdd)')m4_dnl # TODO
-m4_define(`init_TacSubtract', `tagged_def_init(AST, TacBinaryOp, TacSubtract)')m4_dnl # TODO
-m4_define(`init_TacMultiply', `tagged_def_init(AST, TacBinaryOp, TacMultiply)')m4_dnl # TODO
-m4_define(`init_TacDivide', `tagged_def_init(AST, TacBinaryOp, TacDivide)')m4_dnl # TODO
-m4_define(`init_TacRemainder', `tagged_def_init(AST, TacBinaryOp, TacRemainder)')m4_dnl # TODO
-m4_define(`init_TacBitAnd', `tagged_def_init(AST, TacBinaryOp, TacBitAnd)')m4_dnl # TODO
-m4_define(`init_TacBitOr', `tagged_def_init(AST, TacBinaryOp, TacBitOr)')m4_dnl # TODO
-m4_define(`init_TacBitXor', `tagged_def_init(AST, TacBinaryOp, TacBitXor)')m4_dnl # TODO
-m4_define(`init_TacBitShiftLeft', `tagged_def_init(AST, TacBinaryOp, TacBitShiftLeft)')m4_dnl # TODO
-m4_define(`init_TacBitShiftRight', `tagged_def_init(AST, TacBinaryOp, TacBitShiftRight)')m4_dnl # TODO
-m4_define(`init_TacBitShrArithmetic', `tagged_def_init(AST, TacBinaryOp, TacBitShrArithmetic)')m4_dnl # TODO
-m4_define(`init_TacEqual', `tagged_def_init(AST, TacBinaryOp, TacEqual)')m4_dnl # TODO
-m4_define(`init_TacNotEqual', `tagged_def_init(AST, TacBinaryOp, TacNotEqual)')m4_dnl # TODO
-m4_define(`init_TacLessThan', `tagged_def_init(AST, TacBinaryOp, TacLessThan)')m4_dnl # TODO
-m4_define(`init_TacLessOrEqual', `tagged_def_init(AST, TacBinaryOp, TacLessOrEqual)')m4_dnl # TODO
-m4_define(`init_TacGreaterThan', `tagged_def_init(AST, TacBinaryOp, TacGreaterThan)')m4_dnl # TODO
-m4_define(`init_TacGreaterOrEqual', `tagged_def_init(AST, TacBinaryOp, TacGreaterOrEqual)')m4_dnl # TODO
+m4_define(`init_TacBinaryOp', `tagged_def_init(AST, TacBinaryOp, TacBinaryOp)')m4_dnl
+m4_define(`init_TacAdd', `tagged_def_init(AST, TacBinaryOp, TacAdd)')m4_dnl
+m4_define(`init_TacSubtract', `tagged_def_init(AST, TacBinaryOp, TacSubtract)')m4_dnl
+m4_define(`init_TacMultiply', `tagged_def_init(AST, TacBinaryOp, TacMultiply)')m4_dnl
+m4_define(`init_TacDivide', `tagged_def_init(AST, TacBinaryOp, TacDivide)')m4_dnl
+m4_define(`init_TacRemainder', `tagged_def_init(AST, TacBinaryOp, TacRemainder)')m4_dnl
+m4_define(`init_TacBitAnd', `tagged_def_init(AST, TacBinaryOp, TacBitAnd)')m4_dnl
+m4_define(`init_TacBitOr', `tagged_def_init(AST, TacBinaryOp, TacBitOr)')m4_dnl
+m4_define(`init_TacBitXor', `tagged_def_init(AST, TacBinaryOp, TacBitXor)')m4_dnl
+m4_define(`init_TacBitShiftLeft', `tagged_def_init(AST, TacBinaryOp, TacBitShiftLeft)')m4_dnl
+m4_define(`init_TacBitShiftRight', `tagged_def_init(AST, TacBinaryOp, TacBitShiftRight)')m4_dnl
+m4_define(`init_TacBitShrArithmetic', `tagged_def_init(AST, TacBinaryOp, TacBitShrArithmetic)')m4_dnl
+m4_define(`init_TacEqual', `tagged_def_init(AST, TacBinaryOp, TacEqual)')m4_dnl
+m4_define(`init_TacNotEqual', `tagged_def_init(AST, TacBinaryOp, TacNotEqual)')m4_dnl
+m4_define(`init_TacLessThan', `tagged_def_init(AST, TacBinaryOp, TacLessThan)')m4_dnl
+m4_define(`init_TacLessOrEqual', `tagged_def_init(AST, TacBinaryOp, TacLessOrEqual)')m4_dnl
+m4_define(`init_TacGreaterThan', `tagged_def_init(AST, TacBinaryOp, TacGreaterThan)')m4_dnl
+m4_define(`init_TacGreaterOrEqual', `tagged_def_init(AST, TacBinaryOp, TacGreaterOrEqual)')m4_dnl
 
 type struc TacConstant(constant: *struc CConst)
 

@@ -18,13 +18,13 @@ m4_define(`Ctx', `TODO')m4_dnl
 fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
     match node[].tag {
         -> AST_CComplement_t {
-            return make_TacUnaryOp(AST_TacComplement_t)
+            return init_TacComplement()
         }
         -> AST_CNegate_t {
-            return make_TacUnaryOp(AST_TacNegate_t)
+            return init_TacNegate()
         }
         -> AST_CNot_t {
-            return make_TacUnaryOp(AST_TacNot_t)
+            return init_TacNot()
         }
         otherwise {
             THROW_ABORT
@@ -35,55 +35,55 @@ fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
 fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
     match node[].tag {
         -> AST_CAdd_t {
-            return make_TacBinaryOp(AST_TacAdd_t)
+            return init_TacAdd()
         }
         -> AST_CSubtract_t {
-            return make_TacBinaryOp(AST_TacSubtract_t)
+            return init_TacSubtract()
         }
         -> AST_CMultiply_t {
-            return make_TacBinaryOp(AST_TacMultiply_t)
+            return init_TacMultiply()
         }
         -> AST_CDivide_t {
-            return make_TacBinaryOp(AST_TacDivide_t)
+            return init_TacDivide()
         }
         -> AST_CRemainder_t {
-            return make_TacBinaryOp(AST_TacRemainder_t)
+            return init_TacRemainder()
         }
         -> AST_CBitAnd_t {
-            return make_TacBinaryOp(AST_TacBitAnd_t)
+            return init_TacBitAnd()
         }
         -> AST_CBitOr_t {
-            return make_TacBinaryOp(AST_TacBitOr_t)
+            return init_TacBitOr()
         }
         -> AST_CBitXor_t {
-            return make_TacBinaryOp(AST_TacBitXor_t)
+            return init_TacBitXor()
         }
         -> AST_CBitShiftLeft_t {
-            return make_TacBinaryOp(AST_TacBitShiftLeft_t)
+            return init_TacBitShiftLeft()
         }
         -> AST_CBitShiftRight_t {
-            return make_TacBinaryOp(AST_TacBitShiftRight_t)
+            return init_TacBitShiftRight()
         }
         -> AST_CBitShrArithmetic_t {
-            return make_TacBinaryOp(AST_TacBitShrArithmetic_t)
+            return init_TacBitShrArithmetic()
         }
         -> AST_CEqual_t {
-            return make_TacBinaryOp(AST_TacEqual_t)
+            return init_TacEqual()
         }
         -> AST_CNotEqual_t {
-            return make_TacBinaryOp(AST_TacNotEqual_t)
+            return init_TacNotEqual()
         }
         -> AST_CLessThan_t {
-            return make_TacBinaryOp(AST_TacLessThan_t)
+            return init_TacLessThan()
         }
         -> AST_CLessOrEqual_t {
-            return make_TacBinaryOp(AST_TacLessOrEqual_t)
+            return init_TacLessOrEqual()
         }
         -> AST_CGreaterThan_t {
-            return make_TacBinaryOp(AST_TacGreaterThan_t)
+            return init_TacGreaterThan()
         }
         -> AST_CGreaterOrEqual_t {
-            return make_TacBinaryOp(AST_TacGreaterOrEqual_t)
+            return init_TacGreaterOrEqual()
         }
         otherwise {
             THROW_ABORT
@@ -421,7 +421,7 @@ fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary)
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
-        unop: struc TacUnaryOp = make_TacUnaryOp(AST_TacNegate_t)
+        unop: struc TacUnaryOp = init_TacNegate()
         push_instr(ctx, make_TacUnary(@unop, @idx, @dst_cp))
         loop .. while 0 {
             " #@MACRO@:sptr_move(TacValue, dst, idx)"
@@ -458,7 +458,7 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
             dst_cp = dst
             (dst_cp)[]._ref_count++
         }
-        binop: struc TacBinaryOp = make_TacBinaryOp(AST_TacSubtract_t)
+        binop: struc TacBinaryOp = init_TacSubtract()
         push_instr(ctx, make_TacBinary(@binop, @src_1, @src_2, @dst_cp))
         loop .. while 0 {
             " #@MACRO@:sptr_move(TacValue, dst, src_1)"
@@ -485,7 +485,7 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
         dst_cp = dst
         (dst_cp)[]._ref_count++
     }
-    binop: struc TacBinaryOp = make_TacBinaryOp(AST_TacDivide_t)
+    binop: struc TacBinaryOp = init_TacDivide()
     push_instr(ctx, make_TacBinary(@binop, @src_1, @src_2, @dst_cp))
     return make_TacPlainOperand(@dst)
 }
@@ -1482,7 +1482,7 @@ fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none
                     case_match_cp = case_match
                     (case_match_cp)[]._ref_count++
                 }
-                binop: struc TacBinaryOp = make_TacBinaryOp(AST_TacEqual_t)
+                binop: struc TacBinaryOp = init_TacEqual()
                 push_instr(ctx, make_TacBinary(@binop, @lookup_cp, @esac, @case_match_cp))
             }
 
