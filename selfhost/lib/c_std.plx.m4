@@ -13,7 +13,7 @@ m4_define(`CATCH_EXIT', `return _errval')m4_dnl
 m4_define(`EARLY_EXIT', `jump _Lfinally')m4_dnl
 m4_define(`FINALLY', `label _Lfinally')m4_dnl
 m4_define(`TRY', `{
-    _errval = $1
+    _errval = ($1)
     if _errval ~= 0 {
         EARLY_EXIT
     }
@@ -22,7 +22,7 @@ m4_define(`THROW_PANIC', `PANIC_FUNC($@)')m4_dnl
 m4_define(`SET_ERROR_MSG', `snprintf(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $@)')m4_dnl
 m4_define(`THROW_ERROR', `{
     ? SET_ERROR_MSG(m4_shift(m4_shift($@))) > 0 then cast<none>($2) else THROW_ABORT
-    _errval = $1
+    _errval = ($1)
     EARLY_EXIT
 }')m4_dnl
 
@@ -46,61 +46,61 @@ m4_define(`sptr_move', `TODO')m4_dnl
 m4_define(`sptr_copy', `TODO')m4_dnl
 
 m4_define(`string_t', `sds')m4_dnl
-m4_define(`str_new', `? $1 then sdsnew($1) else nil')m4_dnl
-m4_define(`str_delete', `if $1 {
+m4_define(`str_new', `? ($1) then sdsnew($1) else nil')m4_dnl
+m4_define(`str_delete', `if ($1) {
     sdsfree($1)
-    $1 = str_new(nil)
+    ($1) = str_new(nil)
 }')m4_dnl
-m4_define(`str_move', `if $1 ~= $2 {
+m4_define(`str_move', `if ($1) ~= ($2) {
     str_delete($2)
-    $2 = $1
-    $1 = str_new(nil)
+    ($2) = ($1)
+    ($1) = str_new(nil)
 }')m4_dnl
 m4_define(`str_size', `sdslen($1)')m4_dnl
 m4_define(`str_back', `($1)[str_size($1) - 1]')m4_dnl
 m4_define(`str_append', `{
-    $1 = sdscat($1, $2)
+    ($1) = sdscat($1, $2)
 }')m4_dnl
 m4_define(`str_clear', `sdsclear($1)')m4_dnl
-m4_define(`str_copy', `if $1 ~= $2 {
+m4_define(`str_copy', `if ($1) ~= ($2) {
     str_delete($2)
-    $2 = sdsdup($1)
+    ($2) = sdsdup($1)
 }')m4_dnl
 m4_define(`str_hash', `stbds_hash_string($1, 42)')m4_dnl
 m4_define(`str_pop_back', `sdsrange($1, 0, -2)')m4_dnl
 m4_define(`str_push_back', `{
     str_resize($1, str_size($1) + 1)
-    str_back($1) = $2
+    str_back($1) = ($2)
 }')m4_dnl
 m4_define(`str_reserve', `{
-    $1 = sdsMakeRoomFor($1, $2)
+    ($1) = sdsMakeRoomFor($1, $2)
 }')m4_dnl
 m4_define(`str_resize', `{
-    $1 = sdsgrowzero($1, $2)
+    ($1) = sdsgrowzero($1, $2)
 }')m4_dnl
 m4_define(`str_substr', `sdsrange($1, $2, $3)')m4_dnl
 m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
 
 m4_define(`vector_t', `*$1')m4_dnl
 m4_define(`vec_new', `nil')m4_dnl
-m4_define(`vec_delete', `if $1 {
+m4_define(`vec_delete', `if ($1) {
     arrfree($1)
-    $1 = vec_new()
+    ($1) = vec_new()
 }')m4_dnl
-m4_define(`vec_move', `if $1 ~= $2 {
+m4_define(`vec_move', `if ($1) ~= ($2) {
     vec_delete($2)
-    $2 = $1
-    $1 = vec_new()
+    ($2) = ($1)
+    ($1) = vec_new()
 }')m4_dnl
 m4_define(`vec_size', `arrlenu($1)')m4_dnl
 m4_define(`vec_back', `($1)[vec_size($1) - 1]')m4_dnl
-m4_define(`vec_clear', `if $1 {
+m4_define(`vec_clear', `if ($1) {
     stbds_header($1)[].length = 0
 }')m4_dnl
 m4_define(`vec_empty', `(vec_size($1) == 0)')m4_dnl
 m4_define(`vec_move_back', `{
     vec_push_back($1, $2)
-    $2 = nil
+    ($2) = nil
 }')m4_dnl
 m4_define(`vec_pop_back', `arrpop($1)')m4_dnl
 m4_define(`vec_push_back', `arrput($1, $2)')m4_dnl
@@ -114,14 +114,14 @@ m4_define(`pair_first', `($1).key')m4_dnl
 m4_define(`pair_second', `($1).value')m4_dnl
 m4_define(`hashmap_t', `*pair_t($1, $2)')m4_dnl
 m4_define(`map_new', `nil')m4_dnl
-m4_define(`map_delete', `if $1 {
+m4_define(`map_delete', `if ($1) {
     hmfree($1)
-    $1 = map_new()
+    ($1) = map_new()
 }')m4_dnl
-m4_define(`map_move', `if $1 ~= $2 {
+m4_define(`map_move', `if ($1) ~= ($2) {
     map_delete($2)
-    $2 = $1
-    $1 = map_new()
+    ($2) = ($1)
+    ($1) = map_new()
 }')m4_dnl
 m4_define(`map_size', `hmlenu($1)')m4_dnl
 m4_define(`map_add', `hmput($1, $2, $3)')m4_dnl
@@ -133,7 +133,7 @@ m4_define(`map_find', `hmgeti($1, $2)')m4_dnl
 m4_define(`map_get', `hmget($1, $2)')m4_dnl
 m4_define(`map_move_add', `{
     map_add($1, $2, $3)
-    $3 = nil
+    ($3) = nil
 }')m4_dnl
 
 m4_define(`element_t', `struc Element$1')m4_dnl
