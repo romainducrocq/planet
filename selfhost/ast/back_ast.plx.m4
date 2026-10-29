@@ -18,54 +18,54 @@ type struc AsmProgram;
 
 type struc AsmReg(tagged_def_impl(AST_T))
 pub fn make_AsmReg(tagged_def_impl(AST_T)) struc AsmReg;
-m4_define(`init_AsmReg', `TODO')m4_dnl
-m4_define(`init_AsmAx', `TODO')m4_dnl
-m4_define(`init_AsmBx', `TODO')m4_dnl
-m4_define(`init_AsmCx', `TODO')m4_dnl
-m4_define(`init_AsmDx', `TODO')m4_dnl
-m4_define(`init_AsmDi', `TODO')m4_dnl
-m4_define(`init_AsmSi', `TODO')m4_dnl
-m4_define(`init_AsmR8', `TODO')m4_dnl
-m4_define(`init_AsmR9', `TODO')m4_dnl
-m4_define(`init_AsmR10', `TODO')m4_dnl
-m4_define(`init_AsmR11', `TODO')m4_dnl
-m4_define(`init_AsmR12', `TODO')m4_dnl
-m4_define(`init_AsmR13', `TODO')m4_dnl
-m4_define(`init_AsmR14', `TODO')m4_dnl
-m4_define(`init_AsmR15', `TODO')m4_dnl
-m4_define(`init_AsmSp', `TODO')m4_dnl
-m4_define(`init_AsmBp', `TODO')m4_dnl
-m4_define(`init_AsmXMM0', `TODO')m4_dnl
-m4_define(`init_AsmXMM1', `TODO')m4_dnl
-m4_define(`init_AsmXMM2', `TODO')m4_dnl
-m4_define(`init_AsmXMM3', `TODO')m4_dnl
-m4_define(`init_AsmXMM4', `TODO')m4_dnl
-m4_define(`init_AsmXMM5', `TODO')m4_dnl
-m4_define(`init_AsmXMM6', `TODO')m4_dnl
-m4_define(`init_AsmXMM7', `TODO')m4_dnl
-m4_define(`init_AsmXMM8', `TODO')m4_dnl
-m4_define(`init_AsmXMM9', `TODO')m4_dnl
-m4_define(`init_AsmXMM10', `TODO')m4_dnl
-m4_define(`init_AsmXMM11', `TODO')m4_dnl
-m4_define(`init_AsmXMM12', `TODO')m4_dnl
-m4_define(`init_AsmXMM13', `TODO')m4_dnl
-m4_define(`init_AsmXMM14', `TODO')m4_dnl
-m4_define(`init_AsmXMM15', `TODO')m4_dnl
+m4_define(`init_AsmReg', `tagged_def_init(AST, AsmReg, AsmReg)')m4_dnl # TODO
+m4_define(`init_AsmAx', `tagged_def_init(AST, AsmReg, AsmAx)')m4_dnl # TODO
+m4_define(`init_AsmBx', `tagged_def_init(AST, AsmReg, AsmBx)')m4_dnl # TODO
+m4_define(`init_AsmCx', `tagged_def_init(AST, AsmReg, AsmCx)')m4_dnl # TODO
+m4_define(`init_AsmDx', `tagged_def_init(AST, AsmReg, AsmDx)')m4_dnl # TODO
+m4_define(`init_AsmDi', `tagged_def_init(AST, AsmReg, AsmDi)')m4_dnl # TODO
+m4_define(`init_AsmSi', `tagged_def_init(AST, AsmReg, AsmSi)')m4_dnl # TODO
+m4_define(`init_AsmR8', `tagged_def_init(AST, AsmReg, AsmR8)')m4_dnl # TODO
+m4_define(`init_AsmR9', `tagged_def_init(AST, AsmReg, AsmR9)')m4_dnl # TODO
+m4_define(`init_AsmR10', `tagged_def_init(AST, AsmReg, AsmR10)')m4_dnl # TODO
+m4_define(`init_AsmR11', `tagged_def_init(AST, AsmReg, AsmR11)')m4_dnl # TODO
+m4_define(`init_AsmR12', `tagged_def_init(AST, AsmReg, AsmR12)')m4_dnl # TODO
+m4_define(`init_AsmR13', `tagged_def_init(AST, AsmReg, AsmR13)')m4_dnl # TODO
+m4_define(`init_AsmR14', `tagged_def_init(AST, AsmReg, AsmR14)')m4_dnl # TODO
+m4_define(`init_AsmR15', `tagged_def_init(AST, AsmReg, AsmR15)')m4_dnl # TODO
+m4_define(`init_AsmSp', `tagged_def_init(AST, AsmReg, AsmSp)')m4_dnl # TODO
+m4_define(`init_AsmBp', `tagged_def_init(AST, AsmReg, AsmBp)')m4_dnl # TODO
+m4_define(`init_AsmXMM0', `tagged_def_init(AST, AsmReg, AsmXMM0)')m4_dnl # TODO
+m4_define(`init_AsmXMM1', `tagged_def_init(AST, AsmReg, AsmXMM1)')m4_dnl # TODO
+m4_define(`init_AsmXMM2', `tagged_def_init(AST, AsmReg, AsmXMM2)')m4_dnl # TODO
+m4_define(`init_AsmXMM3', `tagged_def_init(AST, AsmReg, AsmXMM3)')m4_dnl # TODO
+m4_define(`init_AsmXMM4', `tagged_def_init(AST, AsmReg, AsmXMM4)')m4_dnl # TODO
+m4_define(`init_AsmXMM5', `tagged_def_init(AST, AsmReg, AsmXMM5)')m4_dnl # TODO
+m4_define(`init_AsmXMM6', `tagged_def_init(AST, AsmReg, AsmXMM6)')m4_dnl # TODO
+m4_define(`init_AsmXMM7', `tagged_def_init(AST, AsmReg, AsmXMM7)')m4_dnl # TODO
+m4_define(`init_AsmXMM8', `tagged_def_init(AST, AsmReg, AsmXMM8)')m4_dnl # TODO
+m4_define(`init_AsmXMM9', `tagged_def_init(AST, AsmReg, AsmXMM9)')m4_dnl # TODO
+m4_define(`init_AsmXMM10', `tagged_def_init(AST, AsmReg, AsmXMM10)')m4_dnl # TODO
+m4_define(`init_AsmXMM11', `tagged_def_init(AST, AsmReg, AsmXMM11)')m4_dnl # TODO
+m4_define(`init_AsmXMM12', `tagged_def_init(AST, AsmReg, AsmXMM12)')m4_dnl # TODO
+m4_define(`init_AsmXMM13', `tagged_def_init(AST, AsmReg, AsmXMM13)')m4_dnl # TODO
+m4_define(`init_AsmXMM14', `tagged_def_init(AST, AsmReg, AsmXMM14)')m4_dnl # TODO
+m4_define(`init_AsmXMM15', `tagged_def_init(AST, AsmReg, AsmXMM15)')m4_dnl # TODO
 
 type struc AsmCondCode(tagged_def_impl(AST_T))
 pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode;
-m4_define(`init_AsmCondCode', `TODO')m4_dnl
-m4_define(`init_AsmE', `TODO')m4_dnl
-m4_define(`init_AsmNE', `TODO')m4_dnl
-m4_define(`init_AsmG', `TODO')m4_dnl
-m4_define(`init_AsmGE', `TODO')m4_dnl
-m4_define(`init_AsmL', `TODO')m4_dnl
-m4_define(`init_AsmLE', `TODO')m4_dnl
-m4_define(`init_AsmA', `TODO')m4_dnl
-m4_define(`init_AsmAE', `TODO')m4_dnl
-m4_define(`init_AsmB', `TODO')m4_dnl
-m4_define(`init_AsmBE', `TODO')m4_dnl
-m4_define(`init_AsmP', `TODO')m4_dnl
+m4_define(`init_AsmCondCode', `tagged_def_init(AST, AsmCondCode, AsmCondCode)')m4_dnl # TODO
+m4_define(`init_AsmE', `tagged_def_init(AST, AsmCondCode, AsmE)')m4_dnl # TODO
+m4_define(`init_AsmNE', `tagged_def_init(AST, AsmCondCode, AsmNE)')m4_dnl # TODO
+m4_define(`init_AsmG', `tagged_def_init(AST, AsmCondCode, AsmG)')m4_dnl # TODO
+m4_define(`init_AsmGE', `tagged_def_init(AST, AsmCondCode, AsmGE)')m4_dnl # TODO
+m4_define(`init_AsmL', `tagged_def_init(AST, AsmCondCode, AsmL)')m4_dnl # TODO
+m4_define(`init_AsmLE', `tagged_def_init(AST, AsmCondCode, AsmLE)')m4_dnl # TODO
+m4_define(`init_AsmA', `tagged_def_init(AST, AsmCondCode, AsmA)')m4_dnl # TODO
+m4_define(`init_AsmAE', `tagged_def_init(AST, AsmCondCode, AsmAE)')m4_dnl # TODO
+m4_define(`init_AsmB', `tagged_def_init(AST, AsmCondCode, AsmB)')m4_dnl # TODO
+m4_define(`init_AsmBE', `tagged_def_init(AST, AsmCondCode, AsmBE)')m4_dnl # TODO
+m4_define(`init_AsmP', `tagged_def_init(AST, AsmCondCode, AsmP)')m4_dnl # TODO
 
 type struc AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32)
 
@@ -96,24 +96,24 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none;
 
 type struc AsmBinaryOp(tagged_def_impl(AST_T))
 pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp;
-m4_define(`init_AsmBinaryOp', `TODO')m4_dnl
-m4_define(`init_AsmAdd', `TODO')m4_dnl
-m4_define(`init_AsmSub', `TODO')m4_dnl
-m4_define(`init_AsmMult', `TODO')m4_dnl
-m4_define(`init_AsmDivDouble', `TODO')m4_dnl
-m4_define(`init_AsmBitAnd', `TODO')m4_dnl
-m4_define(`init_AsmBitOr', `TODO')m4_dnl
-m4_define(`init_AsmBitXor', `TODO')m4_dnl
-m4_define(`init_AsmBitShiftLeft', `TODO')m4_dnl
-m4_define(`init_AsmBitShiftRight', `TODO')m4_dnl
-m4_define(`init_AsmBitShrArithmetic', `TODO')m4_dnl
+m4_define(`init_AsmBinaryOp', `tagged_def_init(AST, AsmBinaryOp, AsmBinaryOp)')m4_dnl # TODO
+m4_define(`init_AsmAdd', `tagged_def_init(AST, AsmBinaryOp, AsmAdd)')m4_dnl # TODO
+m4_define(`init_AsmSub', `tagged_def_init(AST, AsmBinaryOp, AsmSub)')m4_dnl # TODO
+m4_define(`init_AsmMult', `tagged_def_init(AST, AsmBinaryOp, AsmMult)')m4_dnl # TODO
+m4_define(`init_AsmDivDouble', `tagged_def_init(AST, AsmBinaryOp, AsmDivDouble)')m4_dnl # TODO
+m4_define(`init_AsmBitAnd', `tagged_def_init(AST, AsmBinaryOp, AsmBitAnd)')m4_dnl # TODO
+m4_define(`init_AsmBitOr', `tagged_def_init(AST, AsmBinaryOp, AsmBitOr)')m4_dnl # TODO
+m4_define(`init_AsmBitXor', `tagged_def_init(AST, AsmBinaryOp, AsmBitXor)')m4_dnl # TODO
+m4_define(`init_AsmBitShiftLeft', `tagged_def_init(AST, AsmBinaryOp, AsmBitShiftLeft)')m4_dnl # TODO
+m4_define(`init_AsmBitShiftRight', `tagged_def_init(AST, AsmBinaryOp, AsmBitShiftRight)')m4_dnl # TODO
+m4_define(`init_AsmBitShrArithmetic', `tagged_def_init(AST, AsmBinaryOp, AsmBitShrArithmetic)')m4_dnl # TODO
 
 type struc AsmUnaryOp(tagged_def_impl(AST_T))
 pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp;
-m4_define(`init_AsmUnaryOp', `TODO')m4_dnl
-m4_define(`init_AsmNot', `TODO')m4_dnl
-m4_define(`init_AsmNeg', `TODO')m4_dnl
-m4_define(`init_AsmShr', `TODO')m4_dnl
+m4_define(`init_AsmUnaryOp', `tagged_def_init(AST, AsmUnaryOp, AsmUnaryOp)')m4_dnl # TODO
+m4_define(`init_AsmNot', `tagged_def_init(AST, AsmUnaryOp, AsmNot)')m4_dnl # TODO
+m4_define(`init_AsmNeg', `tagged_def_init(AST, AsmUnaryOp, AsmNeg)')m4_dnl # TODO
+m4_define(`init_AsmShr', `tagged_def_init(AST, AsmUnaryOp, AsmShr)')m4_dnl # TODO
 
 type struc AsmMov(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
 
