@@ -6,7 +6,7 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-pub fn make_CUnaryOp(tag: i32) struc CUnaryOp {
+pub fn make_CUnaryOp(tagged_def_impl(AST_T)) struc CUnaryOp {
     self: struc CUnaryOp = $(tag)
     match tag {
         -> AST_CUnaryOp_t {
@@ -28,7 +28,7 @@ pub fn make_CUnaryOp(tag: i32) struc CUnaryOp {
     }
 }
 
-pub fn make_CBinaryOp(tag: i32) struc CBinaryOp {
+pub fn make_CBinaryOp(tagged_def_impl(AST_T)) struc CBinaryOp {
     self: struc CBinaryOp = $(tag)
     match tag {
         -> AST_CBinaryOp_t {
@@ -1229,7 +1229,7 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none {
     }
 }
 
-pub fn make_CStorageClass(tag: i32) struc CStorageClass {
+pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass {
     self: struc CStorageClass = $(tag)
     match tag {
         -> AST_CStorageClass_t {

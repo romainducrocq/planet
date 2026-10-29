@@ -6,7 +6,7 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
+pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp {
     self: struc TacUnaryOp = $(tag)
     match tag {
         -> AST_TacUnaryOp_t {
@@ -24,7 +24,7 @@ pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp {
     }
 }
 
-pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp {
+pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp {
     self: struc TacBinaryOp = $(tag)
     match tag {
         -> AST_TacBinaryOp_t {

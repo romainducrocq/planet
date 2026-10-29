@@ -14,15 +14,15 @@ type struc TacInstruction;
 type struc TacTopLevel;
 type struc TacProgram;
 
-type struc TacUnaryOp(tag: i32)
-pub fn make_TacUnaryOp(tag: i32) struc TacUnaryOp;
+type struc TacUnaryOp(tagged_def_impl(AST_T))
+pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp;
 m4_define(`init_TacUnaryOp', `TODO')m4_dnl
 m4_define(`init_TacComplement', `TODO')m4_dnl
 m4_define(`init_TacNegate', `TODO')m4_dnl
 m4_define(`init_TacNot', `TODO')m4_dnl
 
-type struc TacBinaryOp(tag: i32)
-pub fn make_TacBinaryOp(tag: i32) struc TacBinaryOp;
+type struc TacBinaryOp(tagged_def_impl(AST_T))
+pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp;
 m4_define(`init_TacBinaryOp', `TODO')m4_dnl
 m4_define(`init_TacAdd', `TODO')m4_dnl
 m4_define(`init_TacSubtract', `TODO')m4_dnl

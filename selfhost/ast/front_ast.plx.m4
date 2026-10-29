@@ -25,8 +25,8 @@ type struc CVariableDeclaration;
 type struc CDeclaration;
 type struc CProgram;
 
-type struc CUnaryOp(tag: i32)
-pub fn make_CUnaryOp(tag: i32) struc CUnaryOp;
+type struc CUnaryOp(tagged_def_impl(AST_T))
+pub fn make_CUnaryOp(tagged_def_impl(AST_T)) struc CUnaryOp;
 m4_define(`init_CUnaryOp', `TODO')m4_dnl
 m4_define(`init_CComplement', `TODO')m4_dnl
 m4_define(`init_CNegate', `TODO')m4_dnl
@@ -34,8 +34,8 @@ m4_define(`init_CNot', `TODO')m4_dnl
 m4_define(`init_CPrefix', `TODO')m4_dnl
 m4_define(`init_CPostfix', `TODO')m4_dnl
 
-type struc CBinaryOp(tag: i32)
-pub fn make_CBinaryOp(tag: i32) struc CBinaryOp;
+type struc CBinaryOp(tagged_def_impl(AST_T))
+pub fn make_CBinaryOp(tagged_def_impl(AST_T)) struc CBinaryOp;
 m4_define(`init_CBinaryOp', `TODO')m4_dnl
 m4_define(`init_CAdd', `TODO')m4_dnl
 m4_define(`init_CSubtract', `TODO')m4_dnl
@@ -232,8 +232,8 @@ pub fn make_CS(statement: **struc CStatement) *struc CBlockItem;
 pub fn make_CD(declaration: **struc CDeclaration) *struc CBlockItem;
 pub fn free_CBlockItem(self: **struc CBlockItem) none;
 
-type struc CStorageClass(tag: i32)
-pub fn make_CStorageClass(tag: i32) struc CStorageClass;
+type struc CStorageClass(tagged_def_impl(AST_T))
+pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass;
 m4_define(`init_CStorageClass', `TODO')m4_dnl
 m4_define(`init_CStatic', `TODO')m4_dnl
 m4_define(`init_CExtern', `TODO')m4_dnl

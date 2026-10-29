@@ -7,7 +7,7 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-pub fn make_AsmReg(tag: i32) struc AsmReg {
+pub fn make_AsmReg(tagged_def_impl(AST_T)) struc AsmReg {
     self: struc AsmReg = $(tag)
     match tag {
         -> AST_AsmReg_t {
@@ -83,7 +83,7 @@ pub fn make_AsmReg(tag: i32) struc AsmReg {
     }
 }
 
-pub fn make_AsmCondCode(tag: i32) struc AsmCondCode {
+pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode {
     self: struc AsmCondCode = $(tag)
     match tag {
         -> AST_AsmCondCode_t {
@@ -243,7 +243,7 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none {
     }
 }
 
-pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp {
+pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp {
     self: struc AsmBinaryOp = $(tag)
     match tag {
         -> AST_AsmBinaryOp_t {
@@ -275,7 +275,7 @@ pub fn make_AsmBinaryOp(tag: i32) struc AsmBinaryOp {
     }
 }
 
-pub fn make_AsmUnaryOp(tag: i32) struc AsmUnaryOp {
+pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp {
     self: struc AsmUnaryOp = $(tag)
     match tag {
         -> AST_AsmUnaryOp_t {
