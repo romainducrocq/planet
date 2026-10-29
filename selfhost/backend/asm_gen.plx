@@ -209,22 +209,22 @@ fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AsmOperand {
 fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
         -> AST_TacEqual_t {
-            return make_AsmCondCode(AST_AsmE_t)
+            return init_AsmE()
         }
         -> AST_TacNotEqual_t {
-            return make_AsmCondCode(AST_AsmNE_t)
+            return init_AsmNE()
         }
         -> AST_TacLessThan_t {
-            return make_AsmCondCode(AST_AsmL_t)
+            return init_AsmL()
         }
         -> AST_TacLessOrEqual_t {
-            return make_AsmCondCode(AST_AsmLE_t)
+            return init_AsmLE()
         }
         -> AST_TacGreaterThan_t {
-            return make_AsmCondCode(AST_AsmG_t)
+            return init_AsmG()
         }
         -> AST_TacGreaterOrEqual_t {
-            return make_AsmCondCode(AST_AsmGE_t)
+            return init_AsmGE()
         }
         otherwise {
             THROW_ABORT
@@ -235,22 +235,22 @@ fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
 fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
         -> AST_TacEqual_t {
-            return make_AsmCondCode(AST_AsmE_t)
+            return init_AsmE()
         }
         -> AST_TacNotEqual_t {
-            return make_AsmCondCode(AST_AsmNE_t)
+            return init_AsmNE()
         }
         -> AST_TacLessThan_t {
-            return make_AsmCondCode(AST_AsmB_t)
+            return init_AsmB()
         }
         -> AST_TacLessOrEqual_t {
-            return make_AsmCondCode(AST_AsmBE_t)
+            return init_AsmBE()
         }
         -> AST_TacGreaterThan_t {
-            return make_AsmCondCode(AST_AsmA_t)
+            return init_AsmA()
         }
         -> AST_TacGreaterOrEqual_t {
-            return make_AsmCondCode(AST_AsmAE_t)
+            return init_AsmAE()
         }
         otherwise {
             THROW_ABORT
@@ -261,10 +261,10 @@ fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
 fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
     match node[].tag {
         -> AST_TacComplement_t {
-            return make_AsmUnaryOp(AST_AsmNot_t)
+            return init_AsmNot()
         }
         -> AST_TacNegate_t {
-            return make_AsmUnaryOp(AST_AsmNeg_t)
+            return init_AsmNeg()
         }
         otherwise {
             THROW_ABORT
@@ -275,34 +275,34 @@ fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
 fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
     match node[].tag {
         -> AST_TacAdd_t {
-            return make_AsmBinaryOp(AST_AsmAdd_t)
+            return init_AsmAdd()
         }
         -> AST_TacSubtract_t {
-            return make_AsmBinaryOp(AST_AsmSub_t)
+            return init_AsmSub()
         }
         -> AST_TacMultiply_t {
-            return make_AsmBinaryOp(AST_AsmMult_t)
+            return init_AsmMult()
         }
         -> AST_TacDivide_t {
-            return make_AsmBinaryOp(AST_AsmDivDouble_t)
+            return init_AsmDivDouble()
         }
         -> AST_TacBitAnd_t {
-            return make_AsmBinaryOp(AST_AsmBitAnd_t)
+            return init_AsmBitAnd()
         }
         -> AST_TacBitOr_t {
-            return make_AsmBinaryOp(AST_AsmBitOr_t)
+            return init_AsmBitOr()
         }
         -> AST_TacBitXor_t {
-            return make_AsmBinaryOp(AST_AsmBitXor_t)
+            return init_AsmBitXor()
         }
         -> AST_TacBitShiftLeft_t {
-            return make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
+            return init_AsmBitShiftLeft()
         }
         -> AST_TacBitShiftRight_t {
-            return make_AsmBinaryOp(AST_AsmBitShiftRight_t)
+            return init_AsmBitShiftRight()
         }
         -> AST_TacBitShrArithmetic_t {
-            return make_AsmBinaryOp(AST_AsmBitShrArithmetic_t)
+            return init_AsmBitShrArithmetic()
         }
         otherwise {
             THROW_ABORT
@@ -753,7 +753,7 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
                 push_instr(ctx, make_AsmMov(@asm_type_src_cp, @src, @dst_cp))
             }
             {
-                binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
+                binop: struc AsmBinaryOp = init_AsmBitShiftLeft()
                 asm_type_shl_cp: *struc AssemblyType = sptr_new()
                 if asm_type_shl ~= asm_type_shl_cp {
                     " #@MACRO@:sptr_copy(AssemblyType, asm_type_shl, asm_type_shl_cp)"
@@ -798,7 +798,7 @@ fn ret_8b_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_type: 
             push_instr(ctx, make_AsmMov(@asm_type_src_cp, @src, @dst_cp))
         }
         {
-            binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftLeft_t)
+            binop: struc AsmBinaryOp = init_AsmBitShiftLeft()
             dst_cp: *struc AsmOperand = sptr_new()
             if dst ~= dst_cp {
                 " #@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
@@ -1099,7 +1099,7 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
     }
 
     {
-        cond_code_ae: struc AsmCondCode = make_AsmCondCode(AST_AsmAE_t)
+        cond_code_ae: struc AsmCondCode = init_AsmAE()
         push_instr(ctx, make_AsmJmpCC(target_out_of_range, @cond_code_ae))
     }
     {
@@ -1146,7 +1146,7 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         push_instr(ctx, make_AsmMov(@asm_type_sd_cp, @src, @dst_out_of_range_sd_cp))
     }
     {
-        binop_out_of_range_sd_sub: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
+        binop_out_of_range_sd_sub: struc AsmBinaryOp = init_AsmSub()
         dst_out_of_range_sd_cp: *struc AsmOperand = sptr_new()
         if dst_out_of_range_sd ~= dst_out_of_range_sd_cp {
             " #@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_sd, dst_out_of_range_sd_cp)"
@@ -1174,7 +1174,7 @@ fn dbl_to_ulong_instr(ctx: *struc AsmGenContext, node: *struc TacDoubleToUInt) n
         push_instr(ctx, make_AsmCvttsd2si(@asm_type_si_cp, @dst_out_of_range_sd, @dst_cp))
     }
     {
-        binop_out_of_range_si_add: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
+        binop_out_of_range_si_add: struc AsmBinaryOp = init_AsmAdd()
         upper_bound_si: *struc AsmOperand = make_AsmImm(9223372036854775808ul, false, true, false)
         push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_add, @asm_type_si, @upper_bound_si, @dst))
     }
@@ -1328,7 +1328,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
     }
 
     {
-        cond_code_l: struc AsmCondCode = make_AsmCondCode(AST_AsmL_t)
+        cond_code_l: struc AsmCondCode = init_AsmL()
         push_instr(ctx, make_AsmJmpCC(target_out_of_range, @cond_code_l))
     }
     {
@@ -1399,7 +1399,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmMov(@asm_type_si_cp, @dst_out_of_range_si_cp, @dst_out_of_range_si_shr_cp))
     }
     {
-        unop_out_of_range_si_shr: struc AsmUnaryOp = make_AsmUnaryOp(AST_AsmShr_t)
+        unop_out_of_range_si_shr: struc AsmUnaryOp = init_AsmShr()
         dst_out_of_range_si_shr_cp: *struc AsmOperand = sptr_new()
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
             " #@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si_shr, dst_out_of_range_si_shr_cp)"
@@ -1417,7 +1417,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmUnary(@unop_out_of_range_si_shr, @asm_type_si_cp, @dst_out_of_range_si_shr_cp))
     }
     {
-        binop_out_of_range_si_and: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitAnd_t)
+        binop_out_of_range_si_and: struc AsmBinaryOp = init_AsmBitAnd()
         set_bit_si: *struc AsmOperand = make_AsmImm(1ul, true, false, false)
         dst_out_of_range_si_cp: *struc AsmOperand = sptr_new()
         if dst_out_of_range_si ~= dst_out_of_range_si_cp {
@@ -1436,7 +1436,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_and, @asm_type_si_cp, @set_bit_si, @dst_out_of_range_si_cp))
     }
     {
-        binop_out_of_range_si_or: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitOr_t)
+        binop_out_of_range_si_or: struc AsmBinaryOp = init_AsmBitOr()
         dst_out_of_range_si_shr_cp: *struc AsmOperand = sptr_new()
         if dst_out_of_range_si_shr ~= dst_out_of_range_si_shr_cp {
             " #@MACRO@:sptr_copy(AsmOperand, dst_out_of_range_si_shr, dst_out_of_range_si_shr_cp)"
@@ -1464,7 +1464,7 @@ fn ulong_to_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacUIntToDouble) n
         push_instr(ctx, make_AsmCvtsi2sd(@asm_type_si, @dst_out_of_range_si_shr, @dst_cp))
     }
     {
-        binop_out_of_range_sq_add: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
+        binop_out_of_range_sq_add: struc AsmBinaryOp = init_AsmAdd()
         dst_cp: *struc AsmOperand = sptr_new()
         if dst ~= dst_cp {
             " #@MACRO@:sptr_copy(AsmOperand, dst, dst_cp)"
@@ -1495,7 +1495,7 @@ fn alloc_stack_instr(ctx: *struc AsmGenContext, byte: i64) none {
 }
 
 fn dealloc_stack_instr(ctx: *struc AsmGenContext, byte: i64) none {
-    binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmAdd_t)
+    binop: struc AsmBinaryOp = init_AsmAdd()
     asm_type: *struc AssemblyType = make_QuadWord()
 
     src: *struc AsmOperand = sptr_new()
@@ -1641,7 +1641,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
         vec_delete(byte_instrs)
     }
     {
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmSub_t)
+        binop: struc AsmBinaryOp = init_AsmSub()
         src: *struc AsmOperand = make_AsmImm(8ul, true, false, false)
         dst: *struc AsmOperand = gen_register(REG_Sp)
         asm_type_src: *struc AssemblyType = make_QuadWord()
@@ -1796,7 +1796,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
                 push_instr(ctx, make_AsmMov(@asm_type_dst_cp, @src_cp, @dst))
             }
             {
-                binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftRight_t)
+                binop: struc AsmBinaryOp = init_AsmBitShiftRight()
                 src_shr2op_cp: *struc AsmOperand = sptr_new()
                 if src_shr2op ~= src_shr2op_cp {
                     " #@MACRO@:sptr_copy(AsmOperand, src_shr2op, src_shr2op_cp)"
@@ -1841,7 +1841,7 @@ fn ret_8b_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, struct_t
             push_instr(ctx, make_AsmMov(@asm_type_dst_cp, @src_cp, @dst))
         }
         {
-            binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitShiftRight_t)
+            binop: struc AsmBinaryOp = init_AsmBitShiftRight()
             src_cp: *struc AsmOperand = sptr_new()
             if src ~= src_cp {
                 " #@MACRO@:sptr_copy(AsmOperand, src, src_cp)"
@@ -1952,7 +1952,7 @@ fn call_instr(ctx: *struc AsmGenContext, node: *struc TacFunCall) none {
 }
 
 fn zero_xmm_reg_instr(ctx: *struc AsmGenContext) none {
-    binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitXor_t)
+    binop: struc AsmBinaryOp = init_AsmBitXor()
     src: *struc AsmOperand = gen_register(REG_Xmm0)
     src_cp: *struc AsmOperand = sptr_new()
     if src ~= src_cp {
@@ -2018,7 +2018,7 @@ fn unop_dbl_neg_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) none {
     }
 
     {
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmBitXor_t)
+        binop: struc AsmBinaryOp = init_AsmBitXor()
         src2: *struc AsmOperand = dbl_static_const_op(ctx, 9223372036854775808ul, 16)
         push_instr(ctx, make_AsmBinary(@binop, @asm_type_src1, @src2, @src1_dst))
     }
@@ -2062,7 +2062,7 @@ fn unop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
+        cond_code_e: struc AsmCondCode = init_AsmE()
         push_instr(ctx, make_AsmSetCC(@cond_code_e, @cmp_dst))
     }
 }
@@ -2090,11 +2090,11 @@ fn unop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacUnary) 
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
+        cond_code_p: struc AsmCondCode = init_AsmP()
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
+        cond_code_e: struc AsmCondCode = init_AsmE()
         push_instr(ctx, make_AsmSetCC(@cond_code_e, @cmp_dst))
     }
     push_instr(ctx, make_AsmLabel(target_nan))
@@ -2399,7 +2399,7 @@ fn binop_int_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code: struc AsmCondCode = make_AsmCondCode(AST_AsmCondCode_t)
+        cond_code: struc AsmCondCode = init_AsmCondCode()
         if is_value_signed(ctx, node[].src1) {
             cond_code = gen_signed_cond_code(@node[].binop)
         }
@@ -2434,7 +2434,7 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
         push_instr(ctx, make_AsmMov(@asm_type_dst, @imm_zero, @cmp_dst_cp))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
+        cond_code_p: struc AsmCondCode = init_AsmP()
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
@@ -2454,7 +2454,7 @@ fn binop_dbl_conditional_instr(ctx: *struc AsmGenContext, node: *struc TacBinary
             push_instr(ctx, make_AsmJmp(target_nan_ne))
             push_instr(ctx, make_AsmLabel(target_nan))
             {
-                cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
+                cond_code_e: struc AsmCondCode = init_AsmE()
                 push_instr(ctx, make_AsmSetCC(@cond_code_e, @cmp_dst))
             }
             push_instr(ctx, make_AsmLabel(target_nan_ne))
@@ -2799,7 +2799,7 @@ fn aggr_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) non
             is_neg: i32 = node[].scale < 0l
             src = make_AsmImm(value, is_byte, is_quad, is_neg)
         }
-        binop: struc AsmBinaryOp = make_AsmBinaryOp(AST_AsmMult_t)
+        binop: struc AsmBinaryOp = init_AsmMult()
         push_instr(ctx, make_AsmBinary(@binop, @asm_type_src, @src, @src_dst))
     }
     {
@@ -2968,7 +2968,7 @@ fn jmp_eq_0_int_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfZero) non
     }
     {
         target: u64 = node[].target
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
+        cond_code_e: struc AsmCondCode = init_AsmE()
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_e))
     }
 }
@@ -2983,12 +2983,12 @@ fn jmp_eq_0_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfZero) non
         push_instr(ctx, make_AsmCmp(@asm_type_cond, @condition, @reg_zero))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
+        cond_code_p: struc AsmCondCode = init_AsmP()
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
         target: u64 = node[].target
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
+        cond_code_e: struc AsmCondCode = init_AsmE()
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_e))
     }
     push_instr(ctx, make_AsmLabel(target_nan))
@@ -3012,7 +3012,7 @@ fn jmp_ne_0_int_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfNotZero) 
     }
     {
         target: u64 = node[].target
-        cond_code_ne: struc AsmCondCode = make_AsmCondCode(AST_AsmNE_t)
+        cond_code_ne: struc AsmCondCode = init_AsmNE()
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_ne))
     }
 }
@@ -3029,17 +3029,17 @@ fn jmp_ne_0_dbl_instr(ctx: *struc AsmGenContext, node: *struc TacJumpIfNotZero) 
         push_instr(ctx, make_AsmCmp(@asm_type_cond, @condition, @reg_zero))
     }
     {
-        cond_code_p: struc AsmCondCode = make_AsmCondCode(AST_AsmP_t)
+        cond_code_p: struc AsmCondCode = init_AsmP()
         push_instr(ctx, make_AsmJmpCC(target_nan, @cond_code_p))
     }
     {
-        cond_code_ne: struc AsmCondCode = make_AsmCondCode(AST_AsmNE_t)
+        cond_code_ne: struc AsmCondCode = init_AsmNE()
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_ne))
     }
     push_instr(ctx, make_AsmJmp(target_nan_ne))
     push_instr(ctx, make_AsmLabel(target_nan))
     {
-        cond_code_e: struc AsmCondCode = make_AsmCondCode(AST_AsmE_t)
+        cond_code_e: struc AsmCondCode = init_AsmE()
         push_instr(ctx, make_AsmJmpCC(target, @cond_code_e))
     }
     push_instr(ctx, make_AsmLabel(target_nan_ne))
