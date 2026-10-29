@@ -330,7 +330,7 @@ fn get_arr_scale(ctx: *struc SemanticContext, arr_type: *struc Array) i64 {
 }
 
 fn get_struct_scale(ctx: *struc SemanticContext, struct_type: *struc Structure) i64 {
-    # THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) == map_end());
+    THROW_ABORT_IF(map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) == map_end())
     return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
 }
 
@@ -355,7 +355,7 @@ fn get_arr_alignment(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
 }
 
 fn get_struct_alignment(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 {
-    # THROW_ABORT_IF(map_find(ctx->frontend->struct_typedef_table, struct_type->tag_name) == map_end());
+    THROW_ABORT_IF(map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) == map_end())
     return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].alignment
 }
 
@@ -744,14 +744,14 @@ fn get_const_ptr_value(node: *struc CConstant) u64 {
 }
 
 fn get_compound_info_at(node: *struc CCompoundInit) u64 {
-    # THROW_ABORT_IF(vec_empty(node->initializers));
+    THROW_ABORT_IF(vec_empty(node[].initializers))
     initializer: *struc CInitializer = node[].initializers[0]
     loop while initializer[].tag == AST_CCompoundInit_t {
         node = @initializer[].get._CCompoundInit
-        # THROW_ABORT_IF(vec_empty(node->initializers));
+        THROW_ABORT_IF(vec_empty(node[].initializers))
         initializer = node[].initializers[0]
     }
-    # THROW_ABORT_IF(initializer->tag != AST_CSingleInit_t);
+    THROW_ABORT_IF(initializer[].tag ~= AST_CSingleInit_t)
     return initializer[].get._CSingleInit.exp[].info_at
 }
 
@@ -1387,7 +1387,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error
         }
     }
     else {
-        # THROW_ABORT_IF(node->exp_right->tag != AST_CBinary_t);
+        THROW_ABORT_IF(node[].exp_right[].tag ~= AST_CBinary_t)
         exp_left: *struc CExp = node[].exp_right[].get._CBinary.exp_left
         if exp_left[].tag == AST_CCast_t {
             exp_left = exp_left[].get._CCast.exp
@@ -1842,7 +1842,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) err
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
-        # THROW_ABORT_IF(node->cases[i]->tag != AST_CConstant_t);
+        THROW_ABORT_IF(node[].cases[i][].tag ~= AST_CConstant_t)
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_int_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -1872,7 +1872,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) er
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
-        # THROW_ABORT_IF(node->cases[i]->tag != AST_CConstant_t);
+        THROW_ABORT_IF(node[].cases[i][].tag ~= AST_CConstant_t)
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_long_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -1902,7 +1902,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) er
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
-        # THROW_ABORT_IF(node->cases[i]->tag != AST_CConstant_t);
+        THROW_ABORT_IF(node[].cases[i][].tag ~= AST_CConstant_t)
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_uint_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -1932,7 +1932,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) e
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
-        # THROW_ABORT_IF(node->cases[i]->tag != AST_CConstant_t);
+        THROW_ABORT_IF(node[].cases[i][].tag ~= AST_CConstant_t)
         esac: *struc CConstant = @node[].cases[i][].get._CConstant
         values[i] = get_const_ulong_value(esac)
         loop j: u64 = 0 while j < i .. ++j {
@@ -2281,7 +2281,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
                 (param_type)[]._ref_count++
             }
             param_attrs = make_LocalAttr()
-            # THROW_ABORT_IF(map_find(ctx->frontend->symbol_table, node->params[i]) != map_end());
+            THROW_ABORT_IF(map_find(ctx[].frontend[].symbol_table, node[].params[i]) ~= map_end())
             symbol = make_Symbol(@param_type, @param_attrs)
             map_move_add(ctx[].frontend[].symbol_table, node[].params[i], symbol)
         }
@@ -2304,7 +2304,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     symbol: *struc Symbol = uptr_new()
     glob_fun_type: *struc Type = sptr_new()
     CATCH_ENTER
-    # THROW_ABORT_IF(node->fun_type->tag == AST_Void_t);
+    THROW_ABORT_IF(node[].fun_type[].tag == AST_Void_t)
     is_def: i32 = set_find(ctx[].fun_def_set, node[].name) ~= set_end()
     is_glob: i32 = node[].storage_class.tag ~= AST_CStatic_t
     map_it: i64 = map_find(ctx[].frontend[].symbol_table, node[].name)
@@ -2862,8 +2862,8 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     init_value: *struc InitialValue = sptr_new()
     local_var_type: *struc Type = sptr_new()
     CATCH_ENTER
-    # THROW_ABORT_IF(
-    #     node->var_type->tag == AST_Structure_t && !is_struct_complete(ctx, &node->var_type->get._Structure));
+    THROW_ABORT_IF(
+        node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure))
     if node[].init {
         TRY(check_initializer(ctx, node[].init, node[].var_type, @init_value))
     }
@@ -2877,7 +2877,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
         (local_var_type)[]._ref_count++
     }
     local_var_attrs = make_StaticAttr(false, @init_value)
-    # THROW_ABORT_IF(map_find(ctx->frontend->symbol_table, node->name) != map_end());
+    THROW_ABORT_IF(map_find(ctx[].frontend[].symbol_table, node[].name) ~= map_end())
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     FINALLY
@@ -2906,7 +2906,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
         (local_var_type)[]._ref_count++
     }
     local_var_attrs = make_LocalAttr()
-    # THROW_ABORT_IF(map_find(ctx->frontend->symbol_table, node->name) != map_end());
+    THROW_ABORT_IF(map_find(ctx[].frontend[].symbol_table, node[].name) ~= map_end())
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
     FINALLY
@@ -2963,7 +2963,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
                                                      str_fmt_name(node[].members[i][].member_name, @name_fmt)))
             }
         }
-        # THROW_ABORT_IF(node->members[i]->member_type->tag == AST_FunType_t);
+        THROW_ABORT_IF(node[].members[i][].member_type[].tag == AST_FunType_t)
         ctx[].errors[].info_at_buf = node[].members[i][].info_at
         TRY(reslv_struct_type(ctx, node[].members[i][].member_type))
         if not is_type_complete(ctx, node[].members[i][].member_type) {
@@ -3026,7 +3026,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
                 member_type = node[].members[i][].member_type
                 (member_type)[]._ref_count++
             }
-            # THROW_ABORT_IF(map_find(members, vec_back(member_names)) != map_end());
+            THROW_ABORT_IF(map_find(members, vec_back(member_names)) ~= map_end())
             struct_member = make_StructMember(offset, @member_type)
             map_move_add(members, vec_back(member_names), struct_member)
         }
@@ -3797,7 +3797,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr
 
 fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t {
     CATCH_ENTER
-    # THROW_ABORT_IF(node->tag != AST_CB_t);
+    THROW_ABORT_IF(node[].tag ~= AST_CB_t)
     TRY(reslv_block_items(ctx, node[].get._CB.block_items))
     FINALLY
     CATCH_EXIT

@@ -2087,8 +2087,8 @@ pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext
 
     CATCH_ENTER
     TRY(parse_program(@ctx, c_ast))
-    # THROW_ABORT_IF(ctx.pop_idx != vec_size(*tokens));
-    # THROW_ABORT_IF(!*c_ast);
+    THROW_ABORT_IF(ctx.pop_idx ~= vec_size(tokens[]))
+    THROW_ABORT_IF(not c_ast[])
     FINALLY
     vec_delete(tokens[])
     CATCH_EXIT

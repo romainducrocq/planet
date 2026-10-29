@@ -843,7 +843,7 @@ fn ret_struct_instr(ctx: *struc AsmGenContext, node: *struc TacReturn) none {
             offset: i64 = 0l
             loop while size > 0l {
                 src: *struc AsmOperand = gen_op(ctx, node[].val)
-                # THROW_ABORT_IF(src->tag != AST_AsmPseudoMem_t);
+                THROW_ABORT_IF(src[].tag ~= AST_AsmPseudoMem_t)
                 src[].get._AsmPseudoMem.offset = offset
                 dst: *struc AsmOperand = gen_memory(REG_Ax, offset)
                 asm_type_src: *struc AssemblyType = sptr_new()
@@ -2720,7 +2720,7 @@ fn const_idx_add_ptr_instr(ctx: *struc AsmGenContext, node: *struc TacAddPtr) no
         src: *struc AsmOperand = sptr_new()
         {
             constant: *struc CConst = node[].idx[].get._TacConstant.constant
-            # THROW_ABORT_IF(constant->tag != AST_CConstLong_t);
+            THROW_ABORT_IF(constant[].tag ~= AST_CConstLong_t)
             src = gen_memory(REG_Ax, constant[].get._CConstLong.value * node[].scale)
         }
         dst: *struc AsmOperand = gen_op(ctx, node[].dst)
@@ -3439,7 +3439,7 @@ pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndC
     }
     asm_ast: *struc AsmProgram = gen_program(@ctx, tac_ast[])
     free_TacProgram(tac_ast)
-    # THROW_ABORT_IF(!asm_ast);
+    THROW_ABORT_IF(not asm_ast)
     map_delete(ctx.dbl_const_table)
     map_delete(ctx.struct_8b_map)
     return asm_ast
