@@ -11,7 +11,8 @@ m4_define(`TUChar', `TODO')m4_dnl
 m4_define(`TUInt', `TODO')m4_dnl
 m4_define(`TULong', `TODO')m4_dnl
 m4_define(`TDouble', `TODO')m4_dnl
-m4_define(`AST_T', `TODO')m4_dnl
+# TODO
+m4_define(`AST_T', `i32')m4_dnl
 m4_define(`AST_Type_t', `0')m4_dnl
 m4_define(`AST_Char_t', `1')m4_dnl
 m4_define(`AST_SChar_t', `2')m4_dnl
