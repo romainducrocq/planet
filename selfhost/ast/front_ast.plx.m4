@@ -27,35 +27,35 @@ type struc CProgram;
 
 type struc CUnaryOp(tagged_def_impl(AST_T))
 pub fn make_CUnaryOp(tagged_def_impl(AST_T)) struc CUnaryOp;
-m4_define(`init_CUnaryOp', `tagged_def_init(AST, CUnaryOp, CUnaryOp)')m4_dnl # TODO
-m4_define(`init_CComplement', `tagged_def_init(AST, CUnaryOp, CComplement)')m4_dnl # TODO
-m4_define(`init_CNegate', `tagged_def_init(AST, CUnaryOp, CNegate)')m4_dnl # TODO
-m4_define(`init_CNot', `tagged_def_init(AST, CUnaryOp, CNot)')m4_dnl # TODO
-m4_define(`init_CPrefix', `tagged_def_init(AST, CUnaryOp, CPrefix)')m4_dnl # TODO
-m4_define(`init_CPostfix', `tagged_def_init(AST, CUnaryOp, CPostfix)')m4_dnl # TODO
+m4_define(`init_CUnaryOp', `tagged_def_init(AST, CUnaryOp, CUnaryOp)')m4_dnl
+m4_define(`init_CComplement', `tagged_def_init(AST, CUnaryOp, CComplement)')m4_dnl
+m4_define(`init_CNegate', `tagged_def_init(AST, CUnaryOp, CNegate)')m4_dnl
+m4_define(`init_CNot', `tagged_def_init(AST, CUnaryOp, CNot)')m4_dnl
+m4_define(`init_CPrefix', `tagged_def_init(AST, CUnaryOp, CPrefix)')m4_dnl
+m4_define(`init_CPostfix', `tagged_def_init(AST, CUnaryOp, CPostfix)')m4_dnl
 
 type struc CBinaryOp(tagged_def_impl(AST_T))
 pub fn make_CBinaryOp(tagged_def_impl(AST_T)) struc CBinaryOp;
-m4_define(`init_CBinaryOp', `tagged_def_init(AST, CBinaryOp, CBinaryOp)')m4_dnl # TODO
-m4_define(`init_CAdd', `tagged_def_init(AST, CBinaryOp, CAdd)')m4_dnl # TODO
-m4_define(`init_CSubtract', `tagged_def_init(AST, CBinaryOp, CSubtract)')m4_dnl # TODO
-m4_define(`init_CMultiply', `tagged_def_init(AST, CBinaryOp, CMultiply)')m4_dnl # TODO
-m4_define(`init_CDivide', `tagged_def_init(AST, CBinaryOp, CDivide)')m4_dnl # TODO
-m4_define(`init_CRemainder', `tagged_def_init(AST, CBinaryOp, CRemainder)')m4_dnl # TODO
-m4_define(`init_CBitAnd', `tagged_def_init(AST, CBinaryOp, CBitAnd)')m4_dnl # TODO
-m4_define(`init_CBitOr', `tagged_def_init(AST, CBinaryOp, CBitOr)')m4_dnl # TODO
-m4_define(`init_CBitXor', `tagged_def_init(AST, CBinaryOp, CBitXor)')m4_dnl # TODO
-m4_define(`init_CBitShiftLeft', `tagged_def_init(AST, CBinaryOp, CBitShiftLeft)')m4_dnl # TODO
-m4_define(`init_CBitShiftRight', `tagged_def_init(AST, CBinaryOp, CBitShiftRight)')m4_dnl # TODO
-m4_define(`init_CBitShrArithmetic', `tagged_def_init(AST, CBinaryOp, CBitShrArithmetic)')m4_dnl # TODO
-m4_define(`init_CAnd', `tagged_def_init(AST, CBinaryOp, CAnd)')m4_dnl # TODO
-m4_define(`init_COr', `tagged_def_init(AST, CBinaryOp, COr)')m4_dnl # TODO
-m4_define(`init_CEqual', `tagged_def_init(AST, CBinaryOp, CEqual)')m4_dnl # TODO
-m4_define(`init_CNotEqual', `tagged_def_init(AST, CBinaryOp, CNotEqual)')m4_dnl # TODO
-m4_define(`init_CLessThan', `tagged_def_init(AST, CBinaryOp, CLessThan)')m4_dnl # TODO
-m4_define(`init_CLessOrEqual', `tagged_def_init(AST, CBinaryOp, CLessOrEqual)')m4_dnl # TODO
-m4_define(`init_CGreaterThan', `tagged_def_init(AST, CBinaryOp, CGreaterThan)')m4_dnl # TODO
-m4_define(`init_CGreaterOrEqual', `tagged_def_init(AST, CBinaryOp, CGreaterOrEqual)')m4_dnl # TODO
+m4_define(`init_CBinaryOp', `tagged_def_init(AST, CBinaryOp, CBinaryOp)')m4_dnl
+m4_define(`init_CAdd', `tagged_def_init(AST, CBinaryOp, CAdd)')m4_dnl
+m4_define(`init_CSubtract', `tagged_def_init(AST, CBinaryOp, CSubtract)')m4_dnl
+m4_define(`init_CMultiply', `tagged_def_init(AST, CBinaryOp, CMultiply)')m4_dnl
+m4_define(`init_CDivide', `tagged_def_init(AST, CBinaryOp, CDivide)')m4_dnl
+m4_define(`init_CRemainder', `tagged_def_init(AST, CBinaryOp, CRemainder)')m4_dnl
+m4_define(`init_CBitAnd', `tagged_def_init(AST, CBinaryOp, CBitAnd)')m4_dnl
+m4_define(`init_CBitOr', `tagged_def_init(AST, CBinaryOp, CBitOr)')m4_dnl
+m4_define(`init_CBitXor', `tagged_def_init(AST, CBinaryOp, CBitXor)')m4_dnl
+m4_define(`init_CBitShiftLeft', `tagged_def_init(AST, CBinaryOp, CBitShiftLeft)')m4_dnl
+m4_define(`init_CBitShiftRight', `tagged_def_init(AST, CBinaryOp, CBitShiftRight)')m4_dnl
+m4_define(`init_CBitShrArithmetic', `tagged_def_init(AST, CBinaryOp, CBitShrArithmetic)')m4_dnl
+m4_define(`init_CAnd', `tagged_def_init(AST, CBinaryOp, CAnd)')m4_dnl
+m4_define(`init_COr', `tagged_def_init(AST, CBinaryOp, COr)')m4_dnl
+m4_define(`init_CEqual', `tagged_def_init(AST, CBinaryOp, CEqual)')m4_dnl
+m4_define(`init_CNotEqual', `tagged_def_init(AST, CBinaryOp, CNotEqual)')m4_dnl
+m4_define(`init_CLessThan', `tagged_def_init(AST, CBinaryOp, CLessThan)')m4_dnl
+m4_define(`init_CLessOrEqual', `tagged_def_init(AST, CBinaryOp, CLessOrEqual)')m4_dnl
+m4_define(`init_CGreaterThan', `tagged_def_init(AST, CBinaryOp, CGreaterThan)')m4_dnl
+m4_define(`init_CGreaterOrEqual', `tagged_def_init(AST, CBinaryOp, CGreaterOrEqual)')m4_dnl
 
 type struc CAbstractPointer(abstract_decltor: *struc CAbstractDeclarator)
 
@@ -234,9 +234,9 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none;
 
 type struc CStorageClass(tagged_def_impl(AST_T))
 pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass;
-m4_define(`init_CStorageClass', `tagged_def_init(AST, CStorageClass, CStorageClass)')m4_dnl # TODO
-m4_define(`init_CStatic', `tagged_def_init(AST, CStorageClass, CStatic)')m4_dnl # TODO
-m4_define(`init_CExtern', `tagged_def_init(AST, CStorageClass, CExtern)')m4_dnl # TODO
+m4_define(`init_CStorageClass', `tagged_def_init(AST, CStorageClass, CStorageClass)')m4_dnl
+m4_define(`init_CStatic', `tagged_def_init(AST, CStorageClass, CStatic)')m4_dnl
+m4_define(`init_CExtern', `tagged_def_init(AST, CStorageClass, CExtern)')m4_dnl
 
 type struc CSingleInit(exp: *struc CExp, _base: *struc CInitializer)
 
