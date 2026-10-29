@@ -793,7 +793,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
         dfa_forward_transfer_block(ctx, instr_idx, block_id)
     }
     else {
-        ; # THROW_ABORT_IF(instr_idx != ctx->dfa->incoming_idx);
+        THROW_ABORT_IF(instr_idx ~= ctx[].dfa[].incoming_idx)
     }
     return dfa_after_meet_block(ctx, block_id)
 }
@@ -836,7 +836,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         dfa_backward_transfer_block(ctx, instr_idx, block_id)
     }
     else {
-        ; # THROW_ABORT_IF(instr_idx != ctx->dfa->incoming_idx);
+        THROW_ABORT_IF(instr_idx ~= ctx[].dfa[].incoming_idx)
     }
     return dfa_after_meet_block(ctx, block_id)
 }
@@ -870,7 +870,7 @@ fn dfa_forward_iter_alg(ctx: Ctx) none {
                     ;
                 }
                 else {
-                    ; # THROW_ABORT_IF(succ_id != ctx->cfg->exit_id);
+                    THROW_ABORT_IF(succ_id ~= ctx[].cfg[].exit_id)
                 }
             }
         }
@@ -906,7 +906,7 @@ fn dfa_iter_alg(ctx: Ctx) none {
                     ;
                 }
                 else {
-                    ; # THROW_ABORT_IF(pred_id != ctx->cfg->entry_id);
+                    THROW_ABORT_IF(pred_id ~= ctx[].cfg[].entry_id)
                 }
             }
         }
@@ -966,7 +966,7 @@ fn dfa_add_aliased_value(ctx: Ctx, node: *struc TacValue) none {
 fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) i32;
 
 fn prop_add_data_idx(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64) i32 {
-    # THROW_ABORT_IF(node->dst->tag != AST_TacVariable_t);
+    THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     if is_same_value(node[].src, node[].dst) {
         cfg_rm_block_instr(ctx, instr_idx, block_id)
         return false

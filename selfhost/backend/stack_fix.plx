@@ -555,7 +555,7 @@ fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector
 
 fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = vec_size(callee_saved_regs) while i-- > 0 {
-        # THROW_ABORT_IF(callee_saved_regs[i]->tag != AST_AsmRegister_t);
+        THROW_ABORT_IF(callee_saved_regs[i][].tag ~= AST_AsmRegister_t)
         reg_kind: i32 = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
         reg: struc AsmReg = make_AsmReg(AST_AsmReg_t)
         match reg_kind {

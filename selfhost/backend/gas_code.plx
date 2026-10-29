@@ -735,7 +735,7 @@ fn call_instr(ctx: *struc GasCodeContext, node: *struc AsmCall) none {
     emit(ctx, "    "         "    "         "call ")
     emit_identifier(ctx, node[].name)
     backend_fun_symbol: *struc BackendSymbol = map_get(ctx[].backend[].symbol_table, node[].name)
-    # THROW_ABORT_IF(backend_fun_symbol->tag != AST_BackendFun_t);
+    THROW_ABORT_IF(backend_fun_symbol[].tag ~= AST_BackendFun_t)
     if not backend_fun_symbol[].get._BackendFun.is_def {
         emit(ctx, "@PLT")
     }

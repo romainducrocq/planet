@@ -797,12 +797,12 @@ fn alloc_prune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceReg
 
 fn alloc_unprune_infer_reg(ctx: *struc RegAllocContext, infer: *struc InferenceRegister, pruned_name: u64) none {
     if infer[].reg_kind == REG_Sp {
-        # THROW_ABORT_IF(find_identifier(ctx->p_infer_graph->unpruned_pseudo_names, pruned_name));
+        THROW_ABORT_IF(find_identifier(ctx[].p_infer_graph[].unpruned_pseudo_names, pruned_name))
         vec_push_back(ctx[].p_infer_graph[].unpruned_pseudo_names, pruned_name)
     }
     else {
         pruned_mask_bit: u64 = register_mask_bit(infer[].reg_kind)
-        # THROW_ABORT_IF(find_size_t(ctx->p_infer_graph->unpruned_hard_mask_bits, pruned_mask_bit));
+        THROW_ABORT_IF(find_size_t(ctx[].p_infer_graph[].unpruned_hard_mask_bits, pruned_mask_bit))
         vec_push_back(ctx[].p_infer_graph[].unpruned_hard_mask_bits, pruned_mask_bit)
     }
     if infer[].linked_hard_mask ~= 0ul {
@@ -860,7 +860,7 @@ fn alloc_prune_infer_graph(ctx: *struc RegAllocContext, pruned_name: *u64) *stru
             }
             infer = nil
         }
-        # THROW_ABORT_IF(!infer);
+        THROW_ABORT_IF(not infer)
         min_spill_metric: f64 = (cast<f64>(infer[].spill_cost)) / infer[].degree
         loop  while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
             spill_name: u64 = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
