@@ -90,12 +90,7 @@ fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -220,12 +215,7 @@ fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -298,12 +288,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -342,12 +327,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -384,12 +364,7 @@ fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubl
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -427,12 +402,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
             or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
         src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -470,12 +440,7 @@ fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntT
             or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
         src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -639,12 +604,7 @@ fn fold_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_id
     if node[].src[].tag == AST_TacConstant_t {
         src: *struc TacValue = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -1029,12 +989,7 @@ fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
     if node[].src1[].tag == AST_TacConstant_t and node[].src2[].tag == AST_TacConstant_t {
         src: *struc TacValue = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
@@ -1850,20 +1805,10 @@ fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, ins
     i: u64;
     if set_dfa_bak_instr(ctx, instr_idx, @i) {
         src: *struc TacValue = sptr_new()
-        if node[].src ~= src {
-            " #@MACRO@:sptr_copy(TacValue, node->src, src)"
-            free_TacValue(@src)
-            src = node[].src
-            (src)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].src, src)
         ;
         dst: *struc TacValue = sptr_new()
-        if node[].dst ~= dst {
-            " #@MACRO@:sptr_copy(TacValue, node->dst, dst)"
-            free_TacValue(@dst)
-            dst = node[].dst
-            (dst)[]._ref_count++
-        }
+        sptr_copy(TacValue, node[].dst, dst)
         ;
         free_TacInstruction(@ctx[].dfa_o1[].bak_instrs[i])
         ctx[].dfa_o1[].bak_instrs[i] = make_TacCopy(@src, @dst)
@@ -1887,12 +1832,7 @@ fn prop_ret_instr(ctx: *struc OptimTacContext, node: *struc TacReturn, incoming_
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].val, copy[].dst) {
-                        if copy[].src ~= node[].val {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->val)"
-                            free_TacValue(@node[].val)
-                            node[].val = copy[].src
-                            (node[].val)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].val)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -1920,12 +1860,7 @@ fn prop_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -1953,12 +1888,7 @@ fn prop_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -1986,12 +1916,7 @@ fn prop_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2019,12 +1944,7 @@ fn prop_dbl_to_int_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToIn
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2052,12 +1972,7 @@ fn prop_dbl_to_uint_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToU
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2085,12 +2000,7 @@ fn prop_int_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDoubl
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2118,12 +2028,7 @@ fn prop_uint_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDou
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2152,12 +2057,7 @@ fn prop_call_instr(ctx: *struc OptimTacContext, node: *struc TacFunCall, instr_i
                         copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, j)
                         THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                         if is_same_value(node[].args[i], copy[].dst) {
-                            if copy[].src ~= node[].args[i] {
-                                " #@MACRO@:sptr_copy(TacValue, copy->src, node->args[i])"
-                                free_TacValue(@node[].args[i])
-                                node[].args[i] = copy[].src
-                                (node[].args[i])[]._ref_count++
-                            }
+                            sptr_copy(TacValue, copy[].src, node[].args[i])
                             ;
                             ctx[].is_fixed_point = false
                             jump Lbreak
@@ -2188,12 +2088,7 @@ fn prop_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_id
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2223,12 +2118,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_src1 and is_same_value(node[].src1, copy[].dst) {
-                        if copy[].src ~= node[].src1 {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src1)"
-                            free_TacValue(@node[].src1)
-                            node[].src1 = copy[].src
-                            (node[].src1)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src1)
                         ;
                         ctx[].is_fixed_point = false
                         is_src1 = false
@@ -2237,12 +2127,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
                         }
                     }
                     if is_src2 and is_same_value(node[].src2, copy[].dst) {
-                        if copy[].src ~= node[].src2 {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src2)"
-                            free_TacValue(@node[].src2)
-                            node[].src2 = copy[].src
-                            (node[].src2)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src2)
                         ;
                         ctx[].is_fixed_point = false
                         is_src2 = false
@@ -2279,12 +2164,7 @@ fn prop_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx:
                 }
                 elif is_same_value(node[].src, copy[].dst) {
                     set_dfa_bak_copy_instr(ctx, node, instr_idx)
-                    if copy[].src ~= node[].src {
-                        " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                        free_TacValue(@node[].src)
-                        node[].src = copy[].src
-                        (node[].src)[]._ref_count++
-                    }
+                    sptr_copy(TacValue, copy[].src, node[].src)
                     ;
                     ctx[].is_fixed_point = false
                     return none
@@ -2311,12 +2191,7 @@ fn prop_load_instr(ctx: *struc OptimTacContext, node: *struc TacLoad, instr_idx:
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src_ptr, copy[].dst) {
-                        if copy[].src ~= node[].src_ptr {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src_ptr)"
-                            free_TacValue(@node[].src_ptr)
-                            node[].src_ptr = copy[].src
-                            (node[].src_ptr)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src_ptr)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2344,12 +2219,7 @@ fn prop_store_instr(ctx: *struc OptimTacContext, node: *struc TacStore, instr_id
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2379,12 +2249,7 @@ fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_src_ptr and is_same_value(node[].src_ptr, copy[].dst) {
-                        if copy[].src ~= node[].src_ptr {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src_ptr)"
-                            free_TacValue(@node[].src_ptr)
-                            node[].src_ptr = copy[].src
-                            (node[].src_ptr)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src_ptr)
                         ;
                         ctx[].is_fixed_point = false
                         is_src_ptr = false
@@ -2393,12 +2258,7 @@ fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr
                         }
                     }
                     if is_idx and is_same_value(node[].idx, copy[].dst) {
-                        if copy[].src ~= node[].idx {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->idx)"
-                            free_TacValue(@node[].idx)
-                            node[].idx = copy[].src
-                            (node[].idx)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].idx)
                         ;
                         ctx[].is_fixed_point = false
                         is_idx = false
@@ -2429,12 +2289,7 @@ fn prop_cp_to_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyToOf
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
-                        if copy[].src ~= node[].src {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->src)"
-                            free_TacValue(@node[].src)
-                            node[].src = copy[].src
-                            (node[].src)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].src)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2488,12 +2343,7 @@ fn prop_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
-                        if copy[].src ~= node[].condition {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->condition)"
-                            free_TacValue(@node[].condition)
-                            node[].condition = copy[].src
-                            (node[].condition)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].condition)
                         ;
                         ctx[].is_fixed_point = false
                         return none
@@ -2521,12 +2371,7 @@ fn prop_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZer
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
-                        if copy[].src ~= node[].condition {
-                            " #@MACRO@:sptr_copy(TacValue, copy->src, node->condition)"
-                            free_TacValue(@node[].condition)
-                            node[].condition = copy[].src
-                            (node[].condition)[]._ref_count++
-                        }
+                        sptr_copy(TacValue, copy[].src, node[].condition)
                         ;
                         ctx[].is_fixed_point = false
                         return none
