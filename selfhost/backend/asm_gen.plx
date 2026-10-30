@@ -1354,15 +1354,7 @@ fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, 
         push_instr(ctx, make_AsmPush(@dst_cp))
     }
     asm_type_src: *struc AssemblyType = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AssemblyType, *asm_type, asm_type_src)"
-        if asm_type[] ~= asm_type_src {
-            " #@MACRO@:uptr_move(AssemblyType, *asm_type, asm_type_src)"
-            free_AssemblyType(@asm_type_src)
-            asm_type_src = asm_type[]
-            asm_type[] = uptr_new()
-        }
-    }
+    sptr_move(AssemblyType, asm_type[], asm_type_src)
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
