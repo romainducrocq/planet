@@ -36,7 +36,12 @@ m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
 m4_define(`uptr_alloc', `TODO')m4_dnl
 m4_define(`uptr_free', `TODO')m4_dnl
-m4_define(`uptr_move', `TODO')m4_dnl
+# TODO
+m4_define(`uptr_move', `if ($2) ~= ($3) {
+    free_$1(@($3))
+    ($3) = ($2)
+    ($2) = uptr_new()
+}')m4_dnl
 # TODO
 m4_define(`shared_ptr_t', `unique_ptr_t($1)')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
@@ -44,7 +49,8 @@ m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
-m4_define(`sptr_move', `TODO')m4_dnl
+# TODO
+m4_define(`sptr_move', `uptr_move($1, $2, $3)')m4_dnl
 m4_define(`sptr_copy', `if ($2) ~= ($3) {
     free_$1(@($3))
     ($3) = ($2)

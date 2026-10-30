@@ -599,15 +599,7 @@ fn is_op_addr(node: *struc AsmOperand) i32 {
 
 fn mov_dbl_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_Xmm14)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -625,15 +617,7 @@ fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
         return none
     }
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, dst, node[].src)
@@ -643,15 +627,7 @@ fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
 
 fn mov_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -678,15 +654,7 @@ fn fix_mov_instr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
 
 fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type_src, asm_type)
@@ -698,15 +666,7 @@ fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
 fn mov_sx_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     src: *struc AsmOperand = gen_register(REG_R11)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type_dst, asm_type)
     sptr_copy(AsmOperand, src, node[].dst)
@@ -724,15 +684,7 @@ fn fix_mov_sx_instr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
 
 fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_Byte()
     sptr_copy(AsmOperand, dst, node[].src)
@@ -743,15 +695,7 @@ fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZer
 fn byte_zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
     src: *struc AsmOperand = gen_register(REG_R11)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type_dst, asm_type)
     sptr_copy(AsmOperand, src, node[].dst)
@@ -760,25 +704,9 @@ fn byte_zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovZero
 
 fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) *struc AsmMov {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_LongWord()
     instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
     free_AsmInstruction(instr_back)
@@ -789,15 +717,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
 fn zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     src: *struc AsmOperand = gen_register(REG_R11)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, src, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -823,15 +743,7 @@ fn fix_zero_extend_instr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExt
 fn lea_to_addr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
     src: *struc AsmOperand = gen_register(REG_R11)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, src, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -846,15 +758,7 @@ fn fix_lea_instr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
 fn cvttsd2si_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) none {
     src: *struc AsmOperand = gen_register(REG_R11)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, src, node[].dst)
@@ -869,15 +773,7 @@ fn fix_cvttsd2si_instr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) n
 
 fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -889,15 +785,7 @@ fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none
 fn cvtsi2sd_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
     src: *struc AsmOperand = gen_register(REG_Xmm15)
     dst: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, dst)"
-        if node[].dst ~= dst {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, dst)"
-            free_AsmOperand(@dst)
-            dst = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_BackendDouble()
     sptr_copy(AsmOperand, src, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -914,15 +802,7 @@ fn fix_cvtsi2sd_instr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) non
 
 fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, src)"
-        if node[].dst ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, src)"
-            free_AsmOperand(@src)
-            src = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_Xmm15)
     asm_type: *struc AssemblyType = make_BackendDouble()
     sptr_copy(AsmOperand, dst, node[].dst)
@@ -941,15 +821,7 @@ fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none 
 
 fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, dst, node[].src)
@@ -959,15 +831,7 @@ fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) non
 
 fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -978,15 +842,7 @@ fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary)
 
 fn binary_imul_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, src)"
-        if node[].dst ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, src)"
-            free_AsmOperand(@src)
-            src = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_R11)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -1009,15 +865,7 @@ fn binary_shx_from_not_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) 
         return none
     }
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_Cx)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -1082,15 +930,7 @@ fn fix_binary_instr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
 
 fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, src)"
-        if node[].dst ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, src)"
-            free_AsmOperand(@src)
-            src = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_Xmm15)
     asm_type: *struc AssemblyType = make_BackendDouble()
     sptr_copy(AsmOperand, dst, node[].dst)
@@ -1100,15 +940,7 @@ fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
 
 fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, dst, node[].src)
@@ -1118,15 +950,7 @@ fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
 
 fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -1137,15 +961,7 @@ fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none 
 
 fn cmp_to_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->dst, src)"
-        if node[].dst ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->dst, src)"
-            free_AsmOperand(@src)
-            src = node[].dst
-            node[].dst = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_R11)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -1175,15 +991,7 @@ fn fix_cmp_instr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
 
 fn idiv_from_imm(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -1200,15 +1008,7 @@ fn fix_idiv_instr(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
 
 fn div_from_imm(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
@@ -1225,15 +1025,7 @@ fn fix_div_instr(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
 
 fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none {
     src_reg: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src_reg)"
-        if node[].src ~= src_reg {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src_reg)"
-            free_AsmOperand(@src_reg)
-            src_reg = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src_reg)
 
     asm_type_src: *struc AssemblyType = make_QuadWord()
     {
@@ -1255,15 +1047,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
 
 fn push_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmPush) none {
     src: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AsmOperand, node->src, src)"
-        if node[].src ~= src {
-            " #@MACRO@:uptr_move(AsmOperand, node->src, src)"
-            free_AsmOperand(@src)
-            src = node[].src
-            node[].src = uptr_new()
-        }
-    }
+    sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, dst, node[].src)
