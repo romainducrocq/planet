@@ -1168,15 +1168,7 @@ fn fold_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy) none {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         if src {
-            loop .. while 0 {
-                " #@MACRO@:sptr_move(TacValue, src, node->src)"
-                if src ~= node[].src {
-                    " #@MACRO@:uptr_move(TacValue, src, node->src)"
-                    free_TacValue(@node[].src)
-                    node[].src = src
-                    src = uptr_new()
-                }
-            }
+            sptr_move(TacValue, src, node[].src)
             ctx[].is_fixed_point = false
         }
     }
