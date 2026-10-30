@@ -422,12 +422,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
         }
     }
     elif is_same_type(node_1[].exp_type, node_2[].exp_type) {
-        if node_1[].exp_type ~= joint_type {
-            " #@MACRO@:sptr_copy(Type, node_1->exp_type, joint_type)"
-            free_Type(@joint_type)
-            joint_type = node_1[].exp_type
-            (joint_type)[]._ref_count++
-        }
+        sptr_copy(Type, node_1[].exp_type, joint_type)
     }
     elif node_1[].exp_type[].tag == AST_Double_t or node_2[].exp_type[].tag == AST_Double_t {
         joint_type = make_Double()
@@ -437,37 +432,17 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
         type_size_2: i32 = get_scalar_size(node_2[].exp_type)
         if type_size_1 == type_size_2 {
             if is_type_signed(node_1[].exp_type) {
-                if node_2[].exp_type ~= joint_type {
-                    " #@MACRO@:sptr_copy(Type, node_2->exp_type, joint_type)"
-                    free_Type(@joint_type)
-                    joint_type = node_2[].exp_type
-                    (joint_type)[]._ref_count++
-                }
+                sptr_copy(Type, node_2[].exp_type, joint_type)
             }
             else {
-                if node_1[].exp_type ~= joint_type {
-                    " #@MACRO@:sptr_copy(Type, node_1->exp_type, joint_type)"
-                    free_Type(@joint_type)
-                    joint_type = node_1[].exp_type
-                    (joint_type)[]._ref_count++
-                }
+                sptr_copy(Type, node_1[].exp_type, joint_type)
             }
         }
         elif type_size_1 > type_size_2 {
-            if node_1[].exp_type ~= joint_type {
-                " #@MACRO@:sptr_copy(Type, node_1->exp_type, joint_type)"
-                free_Type(@joint_type)
-                joint_type = node_1[].exp_type
-                (joint_type)[]._ref_count++
-            }
+            sptr_copy(Type, node_1[].exp_type, joint_type)
         }
         else {
-            if node_2[].exp_type ~= joint_type {
-                " #@MACRO@:sptr_copy(Type, node_2->exp_type, joint_type)"
-                free_Type(@joint_type)
-                joint_type = node_2[].exp_type
-                (joint_type)[]._ref_count++
-            }
+            sptr_copy(Type, node_2[].exp_type, joint_type)
         }
     }
     return joint_type
@@ -478,36 +453,16 @@ fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: 
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if is_same_type(node_1[].exp_type, node_2[].exp_type) {
-        if node_1[].exp_type ~= joint_type[] {
-            " #@MACRO@:sptr_copy(Type, node_1->exp_type, *joint_type)"
-            free_Type(@joint_type[])
-            joint_type[] = node_1[].exp_type
-            (joint_type[])[]._ref_count++
-        }
+        sptr_copy(Type, node_1[].exp_type, joint_type[])
     }
     elif node_1[].tag == AST_CConstant_t and is_const_null_ptr(@node_1[].get._CConstant) {
-        if node_2[].exp_type ~= joint_type[] {
-            " #@MACRO@:sptr_copy(Type, node_2->exp_type, *joint_type)"
-            free_Type(@joint_type[])
-            joint_type[] = node_2[].exp_type
-            (joint_type[])[]._ref_count++
-        }
+        sptr_copy(Type, node_2[].exp_type, joint_type[])
     }
     elif (node_2[].tag == AST_CConstant_t and is_const_null_ptr(@node_2[].get._CConstant)) or (node_1[].exp_type[].tag == AST_Pointer_t and node_1[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and node_2[].exp_type[].tag == AST_Pointer_t) {
-        if node_1[].exp_type ~= joint_type[] {
-            " #@MACRO@:sptr_copy(Type, node_1->exp_type, *joint_type)"
-            free_Type(@joint_type[])
-            joint_type[] = node_1[].exp_type
-            (joint_type[])[]._ref_count++
-        }
+        sptr_copy(Type, node_1[].exp_type, joint_type[])
     }
     elif node_2[].exp_type[].tag == AST_Pointer_t and node_2[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and node_1[].exp_type[].tag == AST_Pointer_t {
-        if node_2[].exp_type ~= joint_type[] {
-            " #@MACRO@:sptr_copy(Type, node_2->exp_type, *joint_type)"
-            free_Type(@joint_type[])
-            joint_type[] = node_2[].exp_type
-            (joint_type[])[]._ref_count++
-        }
+        sptr_copy(Type, node_2[].exp_type, joint_type[])
     }
     else {
         THROW_AT_TOKEN(
@@ -807,12 +762,7 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) error_t {
         THROW_AT_TOKEN(
             node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_fun_used_as_var, str_fmt_name(node[].name, @name_fmt)))
     }
-    if var_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, var_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = var_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, var_type, node[]._base[].exp_type)
     FINALLY
     str_delete(name_fmt)
     CATCH_EXIT
@@ -830,12 +780,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
                                         str_fmt_type(node[].target_type, @type_fmt_2)))
     }
     TRY(is_valid_type(ctx, node[].target_type))
-    if node[].target_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, node->target_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = node[].target_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].target_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)
@@ -846,12 +791,7 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CE
     exp_type_cp: *struc Type = sptr_new()
     CATCH_ENTER
     info_at: u64 = (exp[])[].info_at
-    if exp_type[] ~= exp_type_cp {
-        " #@MACRO@:sptr_copy(Type, *exp_type, exp_type_cp)"
-        free_Type(@exp_type_cp)
-        exp_type_cp = exp_type[]
-        (exp_type_cp)[]._ref_count++
-    }
+    sptr_copy(Type, exp_type[], exp_type_cp)
     exp[] = make_CCast(exp, @exp_type_cp, info_at)
     TRY(check_cast_exp(ctx, @(exp[])[].get._CCast))
     FINALLY
@@ -911,12 +851,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
             break
         }
     }
-    if node[].exp[].exp_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, node->exp->exp_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = node[].exp[].exp_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].exp[].exp_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt)
     CATCH_EXIT
@@ -942,12 +877,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t
             break
         }
     }
-    if node[].exp[].exp_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, node->exp->exp_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = node[].exp[].exp_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].exp[].exp_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt)
     CATCH_EXIT
@@ -1002,12 +932,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error
         if not is_same_type(node[].exp_right[].exp_type, common_type) {
             TRY(cast_exp(ctx, @common_type, @node[].exp_right))
         }
-        if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = node[].exp_left[].exp_type
-            (node[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
         EARLY_EXIT
     }
     elif is_type_int(node[].exp_left[].exp_type) and node[].exp_right[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_right[].exp_type[].get._Pointer.ref_type) {
@@ -1015,12 +940,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error
         if not is_same_type(node[].exp_left[].exp_type, common_type) {
             TRY(cast_exp(ctx, @common_type, @node[].exp_left))
         }
-        if node[].exp_right[].exp_type ~= node[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->exp_right->exp_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = node[].exp_right[].exp_type
-            (node[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].exp_right[].exp_type, node[]._base[].exp_type)
         EARLY_EXIT
     }
     else {
@@ -1064,12 +984,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
             if not is_same_type(node[].exp_right[].exp_type, common_type) {
                 TRY(cast_exp(ctx, @common_type, @node[].exp_right))
             }
-            if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
-                " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
-                free_Type(@node[]._base[].exp_type)
-                node[]._base[].exp_type = node[].exp_left[].exp_type
-                (node[]._base[].exp_type)[]._ref_count++
-            }
+            sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
             EARLY_EXIT
         }
         elif is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) and not (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) {
@@ -1204,12 +1119,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     if not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) {
         TRY(cast_exp(ctx, @node[].exp_left[].exp_type, @node[].exp_right))
     }
-    if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = node[].exp_left[].exp_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
     if node[]._base[].exp_type[].tag == AST_Double_t {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[]._base[].exp_type, @type_fmt_1)))
@@ -1379,12 +1289,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error
         elif not is_same_type(node[].exp_right[].exp_type, node[].exp_left[].exp_type) {
             TRY(cast_assign(ctx, @node[].exp_left[].exp_type, @node[].exp_right))
         }
-        if node[].exp_left[].exp_type ~= node[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->exp_left->exp_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = node[].exp_left[].exp_type
-            (node[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
     }
     else {
         THROW_ABORT_IF(node[].exp_right[].tag ~= AST_CBinary_t)
@@ -1400,12 +1305,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error
         elif not is_same_type(node[].exp_right[].exp_type, exp_left[].exp_type) {
             TRY(cast_assign(ctx, @exp_left[].exp_type, @node[].exp_right))
         }
-        if exp_left[].exp_type ~= node[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, exp_left->exp_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = exp_left[].exp_type
-            (node[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, exp_left[].exp_type, node[]._base[].exp_type)
     }
     FINALLY
     CATCH_EXIT
@@ -1421,12 +1321,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
             GET_SEMANTIC_MSG(1, MSG_invalid_condition, str_fmt_type(node[].condition[].exp_type, @type_fmt_1)))
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Void_t and node[].exp_right[].exp_type[].tag == AST_Void_t {
-        if node[].exp_middle[].exp_type ~= node[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->exp_middle->exp_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = node[].exp_middle[].exp_type
-            (node[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].exp_middle[].exp_type, node[]._base[].exp_type)
         EARLY_EXIT
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Structure_t or node[].exp_right[].exp_type[].tag == AST_Structure_t {
@@ -1435,12 +1330,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
                 GET_SEMANTIC_MSG(2, MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
                     str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
         }
-        if node[].exp_middle[].exp_type ~= node[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->exp_middle->exp_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = node[].exp_middle[].exp_type
-            (node[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].exp_middle[].exp_type, node[]._base[].exp_type)
         EARLY_EXIT
     }
     if is_type_arithmetic(node[].exp_middle[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
@@ -1498,12 +1388,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) error
             TRY(cast_assign(ctx, @fun_type[].param_types[i], @node[].args[i]))
         }
     }
-    if fun_type[].ret_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, fun_type->ret_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = fun_type[].ret_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, fun_type[].ret_type, node[]._base[].exp_type)
     FINALLY
     str_delete(name_fmt)
     str_delete(strto_fmt_1)
@@ -1518,12 +1403,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) error
         THROW_AT_TOKEN(
             node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_deref_not_ptr, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
-    if node[].exp[].exp_type[].get._Pointer.ref_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, node->exp->exp_type->get._Pointer.ref_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = node[].exp[].exp_type[].get._Pointer.ref_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].exp[].exp_type[].get._Pointer.ref_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt)
     CATCH_EXIT
@@ -1535,12 +1415,7 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t {
     if not is_exp_lvalue(node[].exp) {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(0, MSG_addrof_rvalue))
     }
-    if node[].exp[].exp_type ~= ref_type {
-        " #@MACRO@:sptr_copy(Type, node->exp->exp_type, ref_type)"
-        free_Type(@ref_type)
-        ref_type = node[].exp[].exp_type
-        (ref_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].exp[].exp_type, ref_type)
     node[]._base[].exp_type = make_Pointer(@ref_type)
     FINALLY
     free_Type(@ref_type)
@@ -1558,24 +1433,14 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) err
         if not is_same_type(node[].subscript_exp[].exp_type, subscript_type) {
             TRY(cast_exp(ctx, @subscript_type, @node[].subscript_exp))
         }
-        if node[].primary_exp[].exp_type[].get._Pointer.ref_type ~= ref_type {
-            " #@MACRO@:sptr_copy(Type, node->primary_exp->exp_type->get._Pointer.ref_type, ref_type)"
-            free_Type(@ref_type)
-            ref_type = node[].primary_exp[].exp_type[].get._Pointer.ref_type
-            (ref_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].primary_exp[].exp_type[].get._Pointer.ref_type, ref_type)
     }
     elif is_type_int(node[].primary_exp[].exp_type) and node[].subscript_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].subscript_exp[].exp_type[].get._Pointer.ref_type) {
         subscript_type = make_Long()
         if not is_same_type(node[].primary_exp[].exp_type, subscript_type) {
             TRY(cast_exp(ctx, @subscript_type, @node[].primary_exp))
         }
-        if node[].subscript_exp[].exp_type[].get._Pointer.ref_type ~= ref_type {
-            " #@MACRO@:sptr_copy(Type, node->subscript_exp->exp_type->get._Pointer.ref_type, ref_type)"
-            free_Type(@ref_type)
-            ref_type = node[].subscript_exp[].exp_type[].get._Pointer.ref_type
-            (ref_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].subscript_exp[].exp_type[].get._Pointer.ref_type, ref_type)
     }
     else {
         THROW_AT_TOKEN(node[]._base[].info_at,
@@ -1650,12 +1515,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) error_t {
                                         str_fmt_name(node[].member, @name_fmt)))
     }
     member_type = pair_second(struct_typedef[].members[map_it])[].member_type
-    if member_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, member_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = member_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, member_type, node[]._base[].exp_type)
     FINALLY
     str_delete(name_fmt)
     str_delete(type_fmt)
@@ -1697,12 +1557,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
                                         str_fmt_name(node[].member, @name_fmt)))
     }
     member_type = pair_second(struct_typedef[].members[map_it])[].member_type
-    if member_type ~= node[]._base[].exp_type {
-        " #@MACRO@:sptr_copy(Type, member_type, node->_base->exp_type)"
-        free_Type(@node[]._base[].exp_type)
-        node[]._base[].exp_type = member_type
-        (node[]._base[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, member_type, node[]._base[].exp_type)
     FINALLY
     str_delete(name_fmt)
     str_delete(type_fmt)
@@ -1712,23 +1567,13 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
 fn check_arr_typed_exp(addrof: **struc CExp) none {
     {
         ref_type: *struc Type = sptr_new()
-        if (addrof[])[].exp_type[].get._Array.elem_type ~= ref_type {
-            " #@MACRO@:sptr_copy(Type, (*addrof)->exp_type->get._Array.elem_type, ref_type)"
-            free_Type(@ref_type)
-            ref_type = (addrof[])[].exp_type[].get._Array.elem_type
-            (ref_type)[]._ref_count++
-        }
+        sptr_copy(Type, (addrof[])[].exp_type[].get._Array.elem_type, ref_type)
         free_Type(@(addrof[])[].exp_type)
         (addrof[])[].exp_type = make_Pointer(@ref_type)
     }
     info_at: u64 = (addrof[])[].info_at
     addrof[] = make_CAddrOf(addrof, info_at)
-    if (addrof[])[].get._CAddrOf.exp[].exp_type ~= (addrof[])[].exp_type {
-        " #@MACRO@:sptr_copy(Type, (*addrof)->get._CAddrOf.exp->exp_type, (*addrof)->exp_type)"
-        free_Type(@(addrof[])[].exp_type)
-        (addrof[])[].exp_type = (addrof[])[].get._CAddrOf.exp[].exp_type
-        ((addrof[])[].exp_type)[]._ref_count++
-    }
+    sptr_copy(Type, (addrof[])[].get._CAddrOf.exp[].exp_type, (addrof[])[].exp_type)
 }
 
 fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t {
@@ -1853,12 +1698,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) err
         }
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstInt(values[i])
-        if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
-            free_Type(@esac[]._base[].exp_type)
-            esac[]._base[].exp_type = node[].lookup[].exp_type
-            (esac[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].lookup[].exp_type, esac[]._base[].exp_type)
     }
     FINALLY
     str_delete(strto_fmt)
@@ -1883,12 +1723,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) er
         }
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstLong(values[i])
-        if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
-            free_Type(@esac[]._base[].exp_type)
-            esac[]._base[].exp_type = node[].lookup[].exp_type
-            (esac[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].lookup[].exp_type, esac[]._base[].exp_type)
     }
     FINALLY
     str_delete(strto_fmt)
@@ -1913,12 +1748,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) er
         }
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstUInt(values[i])
-        if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
-            free_Type(@esac[]._base[].exp_type)
-            esac[]._base[].exp_type = node[].lookup[].exp_type
-            (esac[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].lookup[].exp_type, esac[]._base[].exp_type)
     }
     FINALLY
     str_delete(strto_fmt)
@@ -1943,12 +1773,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) e
         }
         free_CConst(@esac[].constant)
         esac[].constant = make_CConstULong(values[i])
-        if node[].lookup[].exp_type ~= esac[]._base[].exp_type {
-            " #@MACRO@:sptr_copy(Type, node->lookup->exp_type, esac->_base->exp_type)"
-            free_Type(@esac[]._base[].exp_type)
-            esac[]._base[].exp_type = node[].lookup[].exp_type
-            (esac[]._base[].exp_type)[]._ref_count++
-        }
+        sptr_copy(Type, node[].lookup[].exp_type, esac[]._base[].exp_type)
     }
     FINALLY
     str_delete(strto_fmt)
@@ -2028,29 +1853,14 @@ fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     if not is_same_type(node[].exp[].exp_type, init_type[]) {
         TRY(cast_assign(ctx, init_type, @node[].exp))
     }
-    if init_type[] ~= node[]._base[].init_type {
-        " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
-        free_Type(@node[]._base[].init_type)
-        node[]._base[].init_type = init_type[]
-        (node[]._base[].init_type)[]._ref_count++
-    }
+    sptr_copy(Type, init_type[], node[]._base[].init_type)
     FINALLY
     CATCH_EXIT
 }
 
 fn check_string_init(node: *struc CSingleInit, init_type: **struc Type) none {
-    if init_type[] ~= node[].exp[].exp_type {
-        " #@MACRO@:sptr_copy(Type, *init_type, node->exp->exp_type)"
-        free_Type(@node[].exp[].exp_type)
-        node[].exp[].exp_type = init_type[]
-        (node[].exp[].exp_type)[]._ref_count++
-    }
-    if init_type[] ~= node[]._base[].init_type {
-        " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
-        free_Type(@node[]._base[].init_type)
-        node[]._base[].init_type = init_type[]
-        (node[]._base[].init_type)[]._ref_count++
-    }
+    sptr_copy(Type, init_type[], node[].exp[].exp_type)
+    sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc CInitializer;
 
@@ -2182,12 +1992,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
         zero_init: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
         vec_move_back(node[].initializers, zero_init)
     }
-    if init_type[] ~= node[]._base[].init_type {
-        " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
-        free_Type(@node[]._base[].init_type)
-        node[]._base[].init_type = init_type[]
-        (node[]._base[].init_type)[]._ref_count++
-    }
+    sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 
 fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) none {
@@ -2197,12 +2002,7 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
         zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
         vec_move_back(node[].initializers, zero_init)
     }
-    if init_type[] ~= node[]._base[].init_type {
-        " #@MACRO@:sptr_copy(Type, *init_type, node->_base->init_type)"
-        free_Type(@node[]._base[].init_type)
-        node[]._base[].init_type = init_type[]
-        (node[]._base[].init_type)[]._ref_count++
-    }
+    sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 
 fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
@@ -2238,12 +2038,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
 
 fn check_arr_param_decl(fun_type: *struc FunType, i: u64) none {
     ref_type: *struc Type = sptr_new()
-    if fun_type[].param_types[i][].get._Array.elem_type ~= ref_type {
-        " #@MACRO@:sptr_copy(Type, fun_type->param_types[i]->get._Array.elem_type, ref_type)"
-        free_Type(@ref_type)
-        ref_type = fun_type[].param_types[i][].get._Array.elem_type
-        (ref_type)[]._ref_count++
-    }
+    sptr_copy(Type, fun_type[].param_types[i][].get._Array.elem_type, ref_type)
     free_Type(@fun_type[].param_types[i])
     fun_type[].param_types[i] = make_Pointer(@ref_type)
 }
@@ -2274,12 +2069,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
                     GET_SEMANTIC_MSG(3, MSG_incomplete_param, str_fmt_name(node[].name, @name_fmt_1),
                         str_fmt_name(node[].params[i], @name_fmt_2), str_fmt_type(fun_type[].param_types[i], @type_fmt)))
             }
-            if fun_type[].param_types[i] ~= param_type {
-                " #@MACRO@:sptr_copy(Type, fun_type->param_types[i], param_type)"
-                free_Type(@param_type)
-                param_type = fun_type[].param_types[i]
-                (param_type)[]._ref_count++
-            }
+            sptr_copy(Type, fun_type[].param_types[i], param_type)
             param_attrs = make_LocalAttr()
             THROW_ABORT_IF(map_find(ctx[].frontend[].symbol_table, node[].params[i]) ~= map_end())
             symbol = make_Symbol(@param_type, @param_attrs)
@@ -2333,12 +2123,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
         is_def = true
         ctx[].fun_def_name = node[].name
     }
-    if node[].fun_type ~= glob_fun_type {
-        " #@MACRO@:sptr_copy(Type, node->fun_type, glob_fun_type)"
-        free_Type(@glob_fun_type)
-        glob_fun_type = node[].fun_type
-        (glob_fun_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].fun_type, glob_fun_type)
     glob_fun_attrs = make_FunAttr(is_def, is_glob)
     symbol = make_Symbol(@glob_fun_type, @glob_fun_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
@@ -2543,12 +2328,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
                 static_init: *struc StaticInit = sptr_new()
                 {
                     literal: *struc CStringLiteral = sptr_new()
-                    if node[].literal ~= literal {
-                        " #@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
-                        free_CStringLiteral(@literal)
-                        literal = node[].literal
-                        (literal)[]._ref_count++
-                    }
+                    sptr_copy(CStringLiteral, node[].literal, literal)
                     static_init = make_StringInit(string_const, true, @literal)
                 }
 
@@ -2570,12 +2350,7 @@ fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
     {
         is_null_term: i32 = byte >= 0l
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
-        if node[].literal ~= literal {
-            " #@MACRO@:sptr_copy(CStringLiteral, node->literal, literal)"
-            free_CStringLiteral(@literal)
-            literal = node[].literal
-            (literal)[]._ref_count++
-        }
+        sptr_copy(CStringLiteral, node[].literal, literal)
         push_static_init(ctx, make_StringInit(string_const, is_null_term, @literal))
     }
     if byte > 0l {
@@ -2782,22 +2557,12 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
                     node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
             }
             else {
-                if var_attrs[].init ~= init_value {
-                    " #@MACRO@:sptr_copy(InitialValue, var_attrs->init, init_value)"
-                    free_InitialValue(@init_value)
-                    init_value = var_attrs[].init
-                    (init_value)[]._ref_count++
-                }
+                sptr_copy(InitialValue, var_attrs[].init, init_value)
             }
         }
         free_Symbol(@var_symbol)
     }
-    if node[].var_type ~= glob_var_type {
-        " #@MACRO@:sptr_copy(Type, node->var_type, glob_var_type)"
-        free_Type(@glob_var_type)
-        glob_var_type = node[].var_type
-        (glob_var_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].var_type, glob_var_type)
     glob_var_attrs = make_StaticAttr(is_glob, @init_value)
     symbol = make_Symbol(@glob_var_type, @glob_var_attrs)
     map_move_add(ctx[].frontend[].symbol_table, node[].name, symbol)
@@ -2835,12 +2600,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
         }
         EARLY_EXIT
     }
-    if node[].var_type ~= local_var_type {
-        " #@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
-        free_Type(@local_var_type)
-        local_var_type = node[].var_type
-        (local_var_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].var_type, local_var_type)
     init_value = make_NoInitializer()
     local_var_attrs = make_StaticAttr(true, @init_value)
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
@@ -2870,12 +2630,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     else {
         init_value = check_no_initializer(ctx, node[].var_type)
     }
-    if node[].var_type ~= local_var_type {
-        " #@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
-        free_Type(@local_var_type)
-        local_var_type = node[].var_type
-        (local_var_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].var_type, local_var_type)
     local_var_attrs = make_StaticAttr(false, @init_value)
     THROW_ABORT_IF(map_find(ctx[].frontend[].symbol_table, node[].name) ~= map_end())
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
@@ -2899,12 +2654,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
                                            str_fmt_type(node[].var_type, @type_fmt)))
     }
-    if node[].var_type ~= local_var_type {
-        " #@MACRO@:sptr_copy(Type, node->var_type, local_var_type)"
-        free_Type(@local_var_type)
-        local_var_type = node[].var_type
-        (local_var_type)[]._ref_count++
-    }
+    sptr_copy(Type, node[].var_type, local_var_type)
     local_var_attrs = make_LocalAttr()
     THROW_ABORT_IF(map_find(ctx[].frontend[].symbol_table, node[].name) ~= map_end())
     symbol = make_Symbol(@local_var_type, @local_var_attrs)
@@ -3020,12 +2770,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
                 offset = size
                 size += member_size
             }
-            if node[].members[i][].member_type ~= member_type {
-                " #@MACRO@:sptr_copy(Type, node->members[i]->member_type, member_type)"
-                free_Type(@member_type)
-                member_type = node[].members[i][].member_type
-                (member_type)[]._ref_count++
-            }
+            sptr_copy(Type, node[].members[i][].member_type, member_type)
             THROW_ABORT_IF(map_find(members, vec_back(member_names)) ~= map_end())
             struct_member = make_StructMember(offset, @member_type)
             map_move_add(members, vec_back(member_names), struct_member)
