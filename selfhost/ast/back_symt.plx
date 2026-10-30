@@ -117,15 +117,7 @@ pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc Assembly
     self[].get._BackendObj.is_static = is_static
     self[].get._BackendObj.is_const = is_const
     self[].get._BackendObj.asm_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
-        if asm_type[] ~= self[].get._BackendObj.asm_type {
-            " #@MACRO@:uptr_move(AssemblyType, *asm_type, self->get._BackendObj.asm_type)"
-            free_AssemblyType(@self[].get._BackendObj.asm_type)
-            self[].get._BackendObj.asm_type = asm_type[]
-            asm_type[] = uptr_new()
-        }
-    }
+    sptr_move(AssemblyType, asm_type[], self[].get._BackendObj.asm_type)
     return self
 }
 

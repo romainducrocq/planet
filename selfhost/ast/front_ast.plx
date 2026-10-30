@@ -175,15 +175,7 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
         decltor[] = uptr_new()
     }
     self[].param_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *param_type, self->param_type)"
-        if param_type[] ~= self[].param_type {
-            " #@MACRO@:uptr_move(Type, *param_type, self->param_type)"
-            free_Type(@self[].param_type)
-            self[].param_type = param_type[]
-            param_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, param_type[], self[].param_type)
     return self
 }
 
@@ -331,15 +323,7 @@ pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CConstant_t
     self[].get._CConstant.constant = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(CConst, *constant, self->get._CConstant.constant)"
-        if constant[] ~= self[].get._CConstant.constant {
-            " #@MACRO@:uptr_move(CConst, *constant, self->get._CConstant.constant)"
-            free_CConst(@self[].get._CConstant.constant)
-            self[].get._CConstant.constant = constant[]
-            constant[] = uptr_new()
-        }
-    }
+    sptr_move(CConst, constant[], self[].get._CConstant.constant)
     self[].get._CConstant._base = self
     return self
 }
@@ -348,15 +332,7 @@ pub fn make_CString(literal: **struc CStringLiteral, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CString_t
     self[].get._CString.literal = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(CStringLiteral, *literal, self->get._CString.literal)"
-        if literal[] ~= self[].get._CString.literal {
-            " #@MACRO@:uptr_move(CStringLiteral, *literal, self->get._CString.literal)"
-            free_CStringLiteral(@self[].get._CString.literal)
-            self[].get._CString.literal = literal[]
-            literal[] = uptr_new()
-        }
-    }
+    sptr_move(CStringLiteral, literal[], self[].get._CString.literal)
     self[].get._CString._base = self
     return self
 }
@@ -380,15 +356,7 @@ pub fn make_CCast(exp: **struc CExp, target_type: **struc Type, info_at: u64) *s
         exp[] = uptr_new()
     }
     self[].get._CCast.target_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *target_type, self->get._CCast.target_type)"
-        if target_type[] ~= self[].get._CCast.target_type {
-            " #@MACRO@:uptr_move(Type, *target_type, self->get._CCast.target_type)"
-            free_Type(@self[].get._CCast.target_type)
-            self[].get._CCast.target_type = target_type[]
-            target_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, target_type[], self[].get._CCast.target_type)
     self[].get._CCast._base = self
     return self
 }
@@ -557,15 +525,7 @@ pub fn make_CSizeOfT(target_type: **struc Type, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CSizeOfT_t
     self[].get._CSizeOfT.target_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *target_type, self->get._CSizeOfT.target_type)"
-        if target_type[] ~= self[].get._CSizeOfT.target_type {
-            " #@MACRO@:uptr_move(Type, *target_type, self->get._CSizeOfT.target_type)"
-            free_Type(@self[].get._CSizeOfT.target_type)
-            self[].get._CSizeOfT.target_type = target_type[]
-            target_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, target_type[], self[].get._CSizeOfT.target_type)
     self[].get._CSizeOfT._base = self
     return self
 }
@@ -1328,15 +1288,7 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info
     self[].tag = AST_CMemberDeclaration_t
     self[].member_name = member_name
     self[].member_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *member_type, self->member_type)"
-        if member_type[] ~= self[].member_type {
-            " #@MACRO@:uptr_move(Type, *member_type, self->member_type)"
-            free_Type(@self[].member_type)
-            self[].member_type = member_type[]
-            member_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, member_type[], self[].member_type)
     self[].info_at = info_at
     return self
 }
@@ -1427,15 +1379,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body
         body[] = uptr_new()
     }
     self[].fun_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *fun_type, self->fun_type)"
-        if fun_type[] ~= self[].fun_type {
-            " #@MACRO@:uptr_move(Type, *fun_type, self->fun_type)"
-            free_Type(@self[].fun_type)
-            self[].fun_type = fun_type[]
-            fun_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, fun_type[], self[].fun_type)
     self[].storage_class = storage_class[]
     self[].info_at = info_at
     return self
@@ -1484,15 +1428,7 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
         init[] = uptr_new()
     }
     self[].var_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *var_type, self->var_type)"
-        if var_type[] ~= self[].var_type {
-            " #@MACRO@:uptr_move(Type, *var_type, self->var_type)"
-            free_Type(@self[].var_type)
-            self[].var_type = var_type[]
-            var_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, var_type[], self[].var_type)
     self[].storage_class = storage_class[]
     self[].info_at = info_at
     return self
