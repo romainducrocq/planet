@@ -377,49 +377,17 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
     joint_type: *struc Type = sptr_new()
     if is_type_char(node_1[].exp_type) {
         exp_type: *struc Type = sptr_new()
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(Type, node_1->exp_type, exp_type)"
-            if node_1[].exp_type ~= exp_type {
-                " #@MACRO@:uptr_move(Type, node_1->exp_type, exp_type)"
-                free_Type(@exp_type)
-                exp_type = node_1[].exp_type
-                node_1[].exp_type = uptr_new()
-            }
-        }
+        sptr_move(Type, node_1[].exp_type, exp_type)
         node_1[].exp_type = make_Int()
         joint_type = get_joint_type(node_1, node_2)
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(Type, exp_type, node_1->exp_type)"
-            if exp_type ~= node_1[].exp_type {
-                " #@MACRO@:uptr_move(Type, exp_type, node_1->exp_type)"
-                free_Type(@node_1[].exp_type)
-                node_1[].exp_type = exp_type
-                exp_type = uptr_new()
-            }
-        }
+        sptr_move(Type, exp_type, node_1[].exp_type)
     }
     elif is_type_char(node_2[].exp_type) {
         exp_type: *struc Type = sptr_new()
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(Type, node_2->exp_type, exp_type)"
-            if node_2[].exp_type ~= exp_type {
-                " #@MACRO@:uptr_move(Type, node_2->exp_type, exp_type)"
-                free_Type(@exp_type)
-                exp_type = node_2[].exp_type
-                node_2[].exp_type = uptr_new()
-            }
-        }
+        sptr_move(Type, node_2[].exp_type, exp_type)
         node_2[].exp_type = make_Int()
         joint_type = get_joint_type(node_1, node_2)
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(Type, exp_type, node_2->exp_type)"
-            if exp_type ~= node_2[].exp_type {
-                " #@MACRO@:uptr_move(Type, exp_type, node_2->exp_type)"
-                free_Type(@node_2[].exp_type)
-                node_2[].exp_type = exp_type
-                exp_type = uptr_new()
-            }
-        }
+        sptr_move(Type, exp_type, node_2[].exp_type)
     }
     elif is_same_type(node_1[].exp_type, node_2[].exp_type) {
         sptr_copy(Type, node_1[].exp_type, joint_type)
@@ -954,15 +922,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
-        if common_type ~= node[]._base[].exp_type {
-            " #@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = common_type
-            common_type = uptr_new()
-        }
-    }
+    sptr_move(Type, common_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)
@@ -989,15 +949,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
         }
         elif is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) and not (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) {
             common_type = make_Long()
-            loop .. while 0 {
-                " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
-                if common_type ~= node[]._base[].exp_type {
-                    " #@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
-                    free_Type(@node[]._base[].exp_type)
-                    node[]._base[].exp_type = common_type
-                    common_type = uptr_new()
-                }
-            }
+            sptr_move(Type, common_type, node[]._base[].exp_type)
             EARLY_EXIT
         }
         else {
@@ -1018,15 +970,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
-        if common_type ~= node[]._base[].exp_type {
-            " #@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = common_type
-            common_type = uptr_new()
-        }
-    }
+    sptr_move(Type, common_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)
@@ -1051,15 +995,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
-        if common_type ~= node[]._base[].exp_type {
-            " #@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = common_type
-            common_type = uptr_new()
-        }
-    }
+    sptr_move(Type, common_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)
@@ -1084,15 +1020,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
-        if common_type ~= node[]._base[].exp_type {
-            " #@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = common_type
-            common_type = uptr_new()
-        }
-    }
+    sptr_move(Type, common_type, node[]._base[].exp_type)
     if node[]._base[].exp_type[].tag == AST_Double_t {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[]._base[].exp_type, @type_fmt_1)))
@@ -1350,15 +1278,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     if not is_same_type(node[].exp_right[].exp_type, common_type) {
         TRY(cast_exp(ctx, @common_type, @node[].exp_right))
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, common_type, node->_base->exp_type)"
-        if common_type ~= node[]._base[].exp_type {
-            " #@MACRO@:uptr_move(Type, common_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = common_type
-            common_type = uptr_new()
-        }
-    }
+    sptr_move(Type, common_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)
@@ -1447,15 +1367,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) err
             GET_SEMANTIC_MSG(2, MSG_invalid_subscript, str_fmt_type(node[].primary_exp[].exp_type, @type_fmt_1),
                 str_fmt_type(node[].subscript_exp[].exp_type, @type_fmt_2)))
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, ref_type, node->_base->exp_type)"
-        if ref_type ~= node[]._base[].exp_type {
-            " #@MACRO@:uptr_move(Type, ref_type, node->_base->exp_type)"
-            free_Type(@node[]._base[].exp_type)
-            node[]._base[].exp_type = ref_type
-            ref_type = uptr_new()
-        }
-    }
+    sptr_move(Type, ref_type, node[]._base[].exp_type)
     FINALLY
     str_delete(type_fmt_1)
     str_delete(type_fmt_2)

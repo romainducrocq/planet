@@ -388,15 +388,7 @@ fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary)
         sptr_copy(TacValue, dst, dst_cp)
         unop: struc TacUnaryOp = init_TacNegate()
         push_instr(ctx, make_TacUnary(@unop, @idx, @dst_cp))
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(TacValue, dst, idx)"
-            if dst ~= idx {
-                " #@MACRO@:uptr_move(TacValue, dst, idx)"
-                free_TacValue(@idx)
-                idx = dst
-                dst = uptr_new()
-            }
-        }
+        sptr_move(TacValue, dst, idx)
     }
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
@@ -415,15 +407,7 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
         sptr_copy(TacValue, dst, dst_cp)
         binop: struc TacBinaryOp = init_TacSubtract()
         push_instr(ctx, make_TacBinary(@binop, @src_1, @src_2, @dst_cp))
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(TacValue, dst, src_1)"
-            if dst ~= src_1 {
-                " #@MACRO@:uptr_move(TacValue, dst, src_1)"
-                free_TacValue(@src_1)
-                src_1 = dst
-                dst = uptr_new()
-            }
-        }
+        sptr_move(TacValue, dst, src_1)
     }
 
     src_2: *struc TacValue = sptr_new()
@@ -587,15 +571,7 @@ fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDerefer
     src_cp: *struc TacValue = sptr_new()
     sptr_copy(TacValue, src[], src_cp)
     dst: *struc TacValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, res->val, dst)"
-        if res[].val ~= dst {
-            " #@MACRO@:uptr_move(TacValue, res->val, dst)"
-            free_TacValue(@dst)
-            dst = res[].val
-            res[].val = uptr_new()
-        }
-    }
+    sptr_move(TacValue, res[].val, dst)
     push_instr(ctx, make_TacStore(@src_cp, @dst))
     free_TacExpResult(exp_res)
     exp_res[] = make_TacPlainOperand(src)
@@ -784,41 +760,17 @@ fn deref_res_instr(ctx: *struc TacReprContext, node: *struc CDereference) *struc
 
 fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, node: *struc CAddrOf) none {
     src: *struc TacValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, res->val, src)"
-        if res[].val ~= src {
-            " #@MACRO@:uptr_move(TacValue, res->val, src)"
-            free_TacValue(@src)
-            src = res[].val
-            res[].val = uptr_new()
-        }
-    }
+    sptr_move(TacValue, res[].val, src)
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     dst_cp: *struc TacValue = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacGetAddress(@src, @dst_cp))
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, dst, res->val)"
-        if dst ~= res[].val {
-            " #@MACRO@:uptr_move(TacValue, dst, res->val)"
-            free_TacValue(@res[].val)
-            res[].val = dst
-            dst = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst, res[].val)
 }
 
 fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: **struc TacExpResult) none {
     val: *struc TacValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, res->val, val)"
-        if res[].val ~= val {
-            " #@MACRO@:uptr_move(TacValue, res->val, val)"
-            free_TacValue(@val)
-            val = res[].val
-            res[].val = uptr_new()
-        }
-    }
+    sptr_move(TacValue, res[].val, val)
     free_TacExpResult(exp_res)
     exp_res[] = make_TacPlainOperand(@val)
 }
@@ -925,15 +877,7 @@ fn plain_op_dot_res_instr(res: *struc TacPlainOperand, member_offset: i64, exp_r
 fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, node: *struc CDot, member_offset: i64) none {
     if member_offset > 0l {
         src_ptr: *struc TacValue = sptr_new()
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(TacValue, res->val, src_ptr)"
-            if res[].val ~= src_ptr {
-                " #@MACRO@:uptr_move(TacValue, res->val, src_ptr)"
-                free_TacValue(@src_ptr)
-                src_ptr = res[].val
-                res[].val = uptr_new()
-            }
-        }
+        sptr_move(TacValue, res[].val, src_ptr)
 
         idx: *struc TacValue = sptr_new()
         {
@@ -945,15 +889,7 @@ fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferenc
         dst_cp: *struc TacValue = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacAddPtr(1l, @src_ptr, @idx, @dst_cp))
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(TacValue, dst, res->val)"
-            if dst ~= res[].val {
-                " #@MACRO@:uptr_move(TacValue, dst, res->val)"
-                free_TacValue(@res[].val)
-                res[].val = dst
-                dst = uptr_new()
-            }
-        }
+        sptr_move(TacValue, dst, res[].val)
     }
 }
 
@@ -1006,15 +942,7 @@ fn arrow_res_instr(ctx: *struc TacReprContext, node: *struc CArrow) *struc TacEx
         dst_cp: *struc TacValue = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacAddPtr(1l, @val, @idx, @dst_cp))
-        loop .. while 0 {
-            " #@MACRO@:sptr_move(TacValue, dst, val)"
-            if dst ~= val {
-                " #@MACRO@:uptr_move(TacValue, dst, val)"
-                free_TacValue(@val)
-                val = dst
-                dst = uptr_new()
-            }
-        }
+        sptr_move(TacValue, dst, val)
     }
     return make_TacDereferencedPointer(@val)
 }
@@ -1077,29 +1005,13 @@ fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacExpRe
 
 fn plain_op_exp_instr(res: *struc TacPlainOperand) *struc TacValue {
     dst: *struc TacValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, res->val, dst)"
-        if res[].val ~= dst {
-            " #@MACRO@:uptr_move(TacValue, res->val, dst)"
-            free_TacValue(@dst)
-            dst = res[].val
-            res[].val = uptr_new()
-        }
-    }
+    sptr_move(TacValue, res[].val, dst)
     return dst
 }
 
 fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, node: *struc CExp) *struc TacValue {
     src: *struc TacValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, res->val, src)"
-        if res[].val ~= src {
-            " #@MACRO@:uptr_move(TacValue, res->val, src)"
-            free_TacValue(@src)
-            src = res[].val
-            res[].val = uptr_new()
-        }
-    }
+    sptr_move(TacValue, res[].val, src)
     dst: *struc TacValue = plain_inner_value(ctx, node)
     dst_cp: *struc TacValue = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
