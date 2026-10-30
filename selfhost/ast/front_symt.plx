@@ -87,15 +87,7 @@ pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: **stru
     self[].get._FunType.param_types = vec_new()
     vec_move(param_types[], self[].get._FunType.param_types)
     self[].get._FunType.ret_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *ret_type, self->get._FunType.ret_type)"
-        if ret_type[] ~= self[].get._FunType.ret_type {
-            " #@MACRO@:uptr_move(Type, *ret_type, self->get._FunType.ret_type)"
-            free_Type(@self[].get._FunType.ret_type)
-            self[].get._FunType.ret_type = ret_type[]
-            ret_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, ret_type[], self[].get._FunType.ret_type)
     self[].get._FunType.param_reg_mask = (cast<u8>(1u)) << REGISTER_MASK_SIZE
     self[].get._FunType.ret_reg_mask = (cast<u8>(1u)) << REGISTER_MASK_SIZE
     return self
@@ -105,15 +97,7 @@ pub fn make_Pointer(ref_type: **struc Type) *struc Type {
     self: *struc Type = make_Type()
     self[].tag = AST_Pointer_t
     self[].get._Pointer.ref_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *ref_type, self->get._Pointer.ref_type)"
-        if ref_type[] ~= self[].get._Pointer.ref_type {
-            " #@MACRO@:uptr_move(Type, *ref_type, self->get._Pointer.ref_type)"
-            free_Type(@self[].get._Pointer.ref_type)
-            self[].get._Pointer.ref_type = ref_type[]
-            ref_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, ref_type[], self[].get._Pointer.ref_type)
     return self
 }
 
@@ -122,15 +106,7 @@ pub fn make_Array(size: i64, elem_type: **struc Type) *struc Type {
     self[].tag = AST_Array_t
     self[].get._Array.size = size
     self[].get._Array.elem_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *elem_type, self->get._Array.elem_type)"
-        if elem_type[] ~= self[].get._Array.elem_type {
-            " #@MACRO@:uptr_move(Type, *elem_type, self->get._Array.elem_type)"
-            free_Type(@self[].get._Array.elem_type)
-            self[].get._Array.elem_type = elem_type[]
-            elem_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, elem_type[], self[].get._Array.elem_type)
     return self
 }
 
@@ -290,15 +266,7 @@ pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: **struc CS
     self[].get._StringInit.string_const = string_const
     self[].get._StringInit.is_null_term = is_null_term
     self[].get._StringInit.literal = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(CStringLiteral, *literal, self->get._StringInit.literal)"
-        if literal[] ~= self[].get._StringInit.literal {
-            " #@MACRO@:uptr_move(CStringLiteral, *literal, self->get._StringInit.literal)"
-            free_CStringLiteral(@self[].get._StringInit.literal)
-            self[].get._StringInit.literal = literal[]
-            literal[] = uptr_new()
-        }
-    }
+    sptr_move(CStringLiteral, literal[], self[].get._StringInit.literal)
     return self
 }
 
@@ -473,15 +441,7 @@ pub fn make_StaticAttr(is_glob: i32, init: **struc InitialValue) *struc Identifi
     self[].tag = AST_StaticAttr_t
     self[].get._StaticAttr.is_glob = is_glob
     self[].get._StaticAttr.init = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(InitialValue, *init, self->get._StaticAttr.init)"
-        if init[] ~= self[].get._StaticAttr.init {
-            " #@MACRO@:uptr_move(InitialValue, *init, self->get._StaticAttr.init)"
-            free_InitialValue(@self[].get._StaticAttr.init)
-            self[].get._StaticAttr.init = init[]
-            init[] = uptr_new()
-        }
-    }
+    sptr_move(InitialValue, init[], self[].get._StaticAttr.init)
     return self
 }
 
@@ -489,15 +449,7 @@ pub fn make_ConstantAttr(static_init: **struc StaticInit) *struc IdentifierAttr 
     self: *struc IdentifierAttr = make_IdentifierAttr()
     self[].tag = AST_ConstantAttr_t
     self[].get._ConstantAttr.static_init = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(StaticInit, *static_init, self->get._ConstantAttr.static_init)"
-        if static_init[] ~= self[].get._ConstantAttr.static_init {
-            " #@MACRO@:uptr_move(StaticInit, *static_init, self->get._ConstantAttr.static_init)"
-            free_StaticInit(@self[].get._ConstantAttr.static_init)
-            self[].get._ConstantAttr.static_init = static_init[]
-            static_init[] = uptr_new()
-        }
-    }
+    sptr_move(StaticInit, static_init[], self[].get._ConstantAttr.static_init)
     return self
 }
 
@@ -552,15 +504,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
     }
     self[].tag = AST_Symbol_t
     self[].type_t = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *type_t, self->type_t)"
-        if type_t[] ~= self[].type_t {
-            " #@MACRO@:uptr_move(Type, *type_t, self->type_t)"
-            free_Type(@self[].type_t)
-            self[].type_t = type_t[]
-            type_t[] = uptr_new()
-        }
-    }
+    sptr_move(Type, type_t[], self[].type_t)
     self[].attrs = uptr_new()
     if attrs[] ~= self[].attrs {
         " #@MACRO@:uptr_move(IdentifierAttr, *attrs, self->attrs)"
@@ -606,15 +550,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
     self[].tag = AST_StructMember_t
     self[].offset = offset
     self[].member_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *member_type, self->member_type)"
-        if member_type[] ~= self[].member_type {
-            " #@MACRO@:uptr_move(Type, *member_type, self->member_type)"
-            free_Type(@self[].member_type)
-            self[].member_type = member_type[]
-            member_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, member_type[], self[].member_type)
     return self
 }
 
