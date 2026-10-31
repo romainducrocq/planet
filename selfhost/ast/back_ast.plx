@@ -118,7 +118,7 @@ pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode {
 }
 
 pub fn make_AsmOperand(none) *struc AsmOperand {
-    self: *struc AsmOperand = sptr_new()
+    self: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_alloc(AsmOperand, self)
     self[].tag = AST_AsmOperand_t
     return self
