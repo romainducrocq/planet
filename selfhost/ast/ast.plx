@@ -106,14 +106,7 @@ pub fn free_CConst(self: **struc CConst) none {
             THROW_ABORT
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral {
@@ -158,14 +151,7 @@ pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
         }
     }
     vec_delete(self[][].value)
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 m4_define(`Ctx', `TODO')m4_dnl
