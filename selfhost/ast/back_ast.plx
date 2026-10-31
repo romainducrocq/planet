@@ -119,18 +119,7 @@ pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode {
 
 pub fn make_AsmOperand(none) *struc AsmOperand {
     self: *struc AsmOperand = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(AsmOperand, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(AsmOperand, self)"
-            free_AsmOperand(@self)
-            self = cast<*struc AsmOperand>(malloc(sizeof<struc AsmOperand>))
-            if not self {
-                panic_sigabrt("alloc "                     "AsmOperand")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(AsmOperand, self)
     self[].tag = AST_AsmOperand_t
     return self
 }

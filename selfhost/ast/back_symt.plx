@@ -8,18 +8,7 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 pub fn make_AssemblyType(none) *struc AssemblyType {
     self: *struc AssemblyType = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(AssemblyType, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(AssemblyType, self)"
-            free_AssemblyType(@self)
-            self = cast<*struc AssemblyType>(malloc(sizeof<struc AssemblyType>))
-            if not self {
-                panic_sigabrt("alloc "                     "AssemblyType")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(AssemblyType, self)
     self[].tag = AST_AssemblyType_t
     return self
 }
