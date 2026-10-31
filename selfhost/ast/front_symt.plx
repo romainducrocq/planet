@@ -15,61 +15,61 @@ pub fn make_Type(none) *struc Type {
 }
 
 pub fn make_Char(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Char_t
     return self
 }
 
 pub fn make_SChar(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_SChar_t
     return self
 }
 
 pub fn make_UChar(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_UChar_t
     return self
 }
 
 pub fn make_Int(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Int_t
     return self
 }
 
 pub fn make_Long(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Long_t
     return self
 }
 
 pub fn make_UInt(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_UInt_t
     return self
 }
 
 pub fn make_ULong(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_ULong_t
     return self
 }
 
 pub fn make_Double(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Double_t
     return self
 }
 
 pub fn make_Void(none) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Void_t
     return self
 }
 
 pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_FunType_t
     self[].get._FunType.param_reg_mask = 0ul
     self[].get._FunType.ret_reg_mask = 0ul
@@ -83,7 +83,7 @@ pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *share
 }
 
 pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Pointer_t
     self[].get._Pointer.ref_type = sptr_new()
     sptr_move(Type, ref_type[], self[].get._Pointer.ref_type)
@@ -91,7 +91,7 @@ pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) *struc Type {
 }
 
 pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Array_t
     self[].get._Array.size = size
     self[].get._Array.elem_type = sptr_new()
@@ -100,7 +100,7 @@ pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) *struc Type {
 }
 
 pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type {
-    self: *struc Type = make_Type()
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Structure_t
     self[].get._Structure.tag_name = tag_name
     self[].get._Structure.is_union = is_union
@@ -165,63 +165,63 @@ pub fn make_StaticInit(none) *struc StaticInit {
 }
 
 pub fn make_IntInit(value: i32) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_IntInit_t
     self[].get._IntInit.value = value
     return self
 }
 
 pub fn make_LongInit(value: i64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_LongInit_t
     self[].get._LongInit.value = value
     return self
 }
 
 pub fn make_UIntInit(value: u32) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_UIntInit_t
     self[].get._UIntInit.value = value
     return self
 }
 
 pub fn make_ULongInit(value: u64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_ULongInit_t
     self[].get._ULongInit.value = value
     return self
 }
 
 pub fn make_CharInit(value: i8) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_CharInit_t
     self[].get._CharInit.value = value
     return self
 }
 
 pub fn make_UCharInit(value: u8) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_UCharInit_t
     self[].get._UCharInit.value = value
     return self
 }
 
 pub fn make_DoubleInit(dbl_const: u64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_DoubleInit_t
     self[].get._DoubleInit.dbl_const = dbl_const
     return self
 }
 
 pub fn make_ZeroInit(byte: i64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_ZeroInit_t
     self[].get._ZeroInit.byte = byte
     return self
 }
 
 pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_StringInit_t
     self[].get._StringInit.string_const = string_const
     self[].get._StringInit.is_null_term = is_null_term
@@ -231,7 +231,7 @@ pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_pt
 }
 
 pub fn make_PointerInit(name: u64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_PointerInit_t
     self[].get._PointerInit.name = name
     return self
@@ -283,13 +283,13 @@ pub fn make_InitialValue(none) *struc InitialValue {
 }
 
 pub fn make_Tentative(none) *struc InitialValue {
-    self: *struc InitialValue = make_InitialValue()
+    self: shared_ptr_t(InitialValue) = make_InitialValue()
     self[].tag = AST_Tentative_t
     return self
 }
 
 pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc InitialValue {
-    self: *struc InitialValue = make_InitialValue()
+    self: shared_ptr_t(InitialValue) = make_InitialValue()
     self[].tag = AST_Initial_t
     self[].get._Initial.static_inits = vec_new()
     vec_move(static_inits[], self[].get._Initial.static_inits)
@@ -297,7 +297,7 @@ pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc In
 }
 
 pub fn make_NoInitializer(none) *struc InitialValue {
-    self: *struc InitialValue = make_InitialValue()
+    self: shared_ptr_t(InitialValue) = make_InitialValue()
     self[].tag = AST_NoInitializer_t
     return self
 }
@@ -335,7 +335,7 @@ pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
 }
 
 pub fn make_FunAttr(is_def: i32, is_glob: i32) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_FunAttr_t
     self[].get._FunAttr.is_def = is_def
     self[].get._FunAttr.is_glob = is_glob
@@ -343,7 +343,7 @@ pub fn make_FunAttr(is_def: i32, is_glob: i32) *struc IdentifierAttr {
 }
 
 pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_StaticAttr_t
     self[].get._StaticAttr.is_glob = is_glob
     self[].get._StaticAttr.init = sptr_new()
@@ -352,7 +352,7 @@ pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) *struc I
 }
 
 pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_ConstantAttr_t
     self[].get._ConstantAttr.static_init = sptr_new()
     sptr_move(StaticInit, static_init[], self[].get._ConstantAttr.static_init)
@@ -360,7 +360,7 @@ pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) *struc Identifi
 }
 
 pub fn make_LocalAttr(none) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_LocalAttr_t
     return self
 }

@@ -14,31 +14,31 @@ pub fn make_AssemblyType(none) *struc AssemblyType {
 }
 
 pub fn make_Byte(none) *struc AssemblyType {
-    self: *struc AssemblyType = make_AssemblyType()
+    self: shared_ptr_t(AssemblyType) = make_AssemblyType()
     self[].tag = AST_Byte_t
     return self
 }
 
 pub fn make_LongWord(none) *struc AssemblyType {
-    self: *struc AssemblyType = make_AssemblyType()
+    self: shared_ptr_t(AssemblyType) = make_AssemblyType()
     self[].tag = AST_LongWord_t
     return self
 }
 
 pub fn make_QuadWord(none) *struc AssemblyType {
-    self: *struc AssemblyType = make_AssemblyType()
+    self: shared_ptr_t(AssemblyType) = make_AssemblyType()
     self[].tag = AST_QuadWord_t
     return self
 }
 
 pub fn make_BackendDouble(none) *struc AssemblyType {
-    self: *struc AssemblyType = make_AssemblyType()
+    self: shared_ptr_t(AssemblyType) = make_AssemblyType()
     self[].tag = AST_BackendDouble_t
     return self
 }
 
 pub fn make_ByteArray(size: i64, alignment: i32) *struc AssemblyType {
-    self: *struc AssemblyType = make_AssemblyType()
+    self: shared_ptr_t(AssemblyType) = make_AssemblyType()
     self[].tag = AST_ByteArray_t
     self[].get._ByteArray.size = size
     self[].get._ByteArray.alignment = alignment
@@ -76,7 +76,7 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol {
 }
 
 pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(AssemblyType)) *struc BackendSymbol {
-    self: *struc BackendSymbol = make_BackendSymbol()
+    self: unique_ptr_t(BackendSymbol) = make_BackendSymbol()
     self[].tag = AST_BackendObj_t
     self[].get._BackendObj.is_static = is_static
     self[].get._BackendObj.is_const = is_const
@@ -86,7 +86,7 @@ pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(As
 }
 
 pub fn make_BackendFun(is_def: i32) *struc BackendSymbol {
-    self: *struc BackendSymbol = make_BackendSymbol()
+    self: unique_ptr_t(BackendSymbol) = make_BackendSymbol()
     self[].tag = AST_BackendFun_t
     self[].get._BackendFun.is_def = is_def
     self[].get._BackendFun.callee_saved_regs = vec_new()

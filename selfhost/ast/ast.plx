@@ -12,49 +12,49 @@ pub fn make_CConst(none) *struc CConst {
 }
 
 pub fn make_CConstInt(value: i32) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstInt_t
     self[].get._CConstInt.value = value
     return self
 }
 
 pub fn make_CConstLong(value: i64) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstLong_t
     self[].get._CConstLong.value = value
     return self
 }
 
 pub fn make_CConstUInt(value: u32) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstUInt_t
     self[].get._CConstUInt.value = value
     return self
 }
 
 pub fn make_CConstULong(value: u64) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstULong_t
     self[].get._CConstULong.value = value
     return self
 }
 
 pub fn make_CConstDouble(value: f64) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstDouble_t
     self[].get._CConstDouble.value = value
     return self
 }
 
 pub fn make_CConstChar(value: i8) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstChar_t
     self[].get._CConstChar.value = value
     return self
 }
 
 pub fn make_CConstUChar(value: u8) *struc CConst {
-    self: *struc CConst = make_CConst()
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstUChar_t
     self[].get._CConstUChar.value = value
     return self
