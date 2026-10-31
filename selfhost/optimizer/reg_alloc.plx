@@ -42,11 +42,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
     }
     map_delete(self[][].pseudo_reg_map)
     ;
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
     ;
 }
 

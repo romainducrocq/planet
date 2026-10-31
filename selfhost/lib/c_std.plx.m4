@@ -31,6 +31,7 @@ m4_define(`unique_ptr_t', `*struc $1')m4_dnl
 # TODO
 m4_define(`unique_ptr_impl', `tagged_def_impl($1)')m4_dnl
 m4_define(`uptr_new', `nil')m4_dnl
+# TODO
 m4_define(`uptr_delete', `if not ($1) { return none }')m4_dnl
 # TODO
 m4_define(`uptr_alloc', `{
@@ -38,12 +39,10 @@ m4_define(`uptr_alloc', `{
     ($2) = cast<*struc $1>(malloc(sizeof<struc $1>))
     if not ($2) { THROW_ALLOC($1) }
 }')m4_dnl
-# TODO
 m4_define(`uptr_free', `if ($1) {
     free($1)
     ($1) = uptr_new()
 }')m4_dnl
-# TODO
 m4_define(`uptr_move', `if ($2) ~= ($3) {
     free_$1(@($3))
     ($3) = ($2)

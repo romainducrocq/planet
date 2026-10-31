@@ -398,11 +398,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc Symbol {
@@ -438,11 +434,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
     }
     free_Type(@(self[])[].type_t)
     free_IdentifierAttr(@(self[])[].attrs)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember {
@@ -476,11 +468,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
         }
     }
     free_Type(@(self[])[].member_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef {
@@ -521,11 +509,7 @@ pub fn free_StructTypedef(self: **struc StructTypedef) none {
         free_StructMember(@pair_second(self[][].members[i]))
     }
     map_delete(self[][].members)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 m4_define(`Ctx', `TODO')m4_dnl
