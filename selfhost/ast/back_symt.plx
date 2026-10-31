@@ -94,10 +94,7 @@ pub fn make_BackendFun(is_def: i32) *struc BackendSymbol {
 }
 
 pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_BackendSymbol_t {
             break

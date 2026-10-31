@@ -366,10 +366,7 @@ pub fn make_LocalAttr(none) *struc IdentifierAttr {
 }
 
 pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_IdentifierAttr_t {
             -> AST_FunAttr_t {
@@ -406,10 +403,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
 }
 
 pub fn free_Symbol(self: **struc Symbol) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_Symbol_t {
             break
@@ -434,10 +428,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
 }
 
 pub fn free_StructMember(self: **struc StructMember) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_StructMember_t {
             break
@@ -464,10 +455,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TId
 }
 
 pub fn free_StructTypedef(self: **struc StructTypedef) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_StructTypedef_t {
             break
