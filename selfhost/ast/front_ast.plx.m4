@@ -65,14 +65,16 @@ type struc CAbstractBase(_empty: char)
 
 type union _CAbstractDeclarator(_CAbstractPointer: struc CAbstractPointer, _CAbstractArray: struc CAbstractArray, _CAbstractBase: struc CAbstractBase)
 
-type struc CAbstractDeclarator(tag: i32, get: union _CAbstractDeclarator)
+type struc CAbstractDeclarator(unique_ptr_impl(AST_T)
+    get: union _CAbstractDeclarator)
 pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator;
 pub fn make_CAbstractPointer(abstract_decltor: **struc CAbstractDeclarator) *struc CAbstractDeclarator;
 pub fn make_CAbstractArray(size: i64, abstract_decltor: **struc CAbstractDeclarator) *struc CAbstractDeclarator;
 pub fn make_CAbstractBase(none) *struc CAbstractDeclarator;
 pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none;
 
-type struc CParam(tag: i32, decltor: *struc CDeclarator, param_type: *struc Type)
+type struc CParam(unique_ptr_impl(AST_T)
+    decltor: *struc CDeclarator, param_type: *struc Type)
 pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *struc CParam;
 pub fn free_CParam(self: **struc CParam) none;
 
@@ -86,7 +88,8 @@ type struc CFunDeclarator(param_list: vector_t(unique_ptr_t(CParam)), decltor: *
 
 type union _CDeclarator(_CIdent: struc CIdent, _CPointerDeclarator: struc CPointerDeclarator, _CArrayDeclarator: struc CArrayDeclarator, _CFunDeclarator: struc CFunDeclarator)
 
-type struc CDeclarator(tag: i32, get: union _CDeclarator)
+type struc CDeclarator(unique_ptr_impl(AST_T)
+    get: union _CDeclarator)
 pub fn make_CDeclarator(none) *struc CDeclarator;
 pub fn make_CIdent(name: u64) *struc CDeclarator;
 pub fn make_CPointerDeclarator(decltor: **struc CDeclarator) *struc CDeclarator;
@@ -128,7 +131,8 @@ type struc CArrow(member: u64, pointer: *struc CExp, _base: *struc CExp)
 
 type union _CExp(_CConstant: struc CConstant, _CString: struc CString, _CVar: struc CVar, _CCast: struc CCast, _CUnary: struc CUnary, _CBinary: struc CBinary, _CAssignment: struc CAssignment, _CConditional: struc CConditional, _CFunctionCall: struc CFunctionCall, _CDereference: struc CDereference, _CAddrOf: struc CAddrOf, _CSubscript: struc CSubscript, _CSizeOf: struc CSizeOf, _CSizeOfT: struc CSizeOfT, _CDot: struc CDot, _CArrow: struc CArrow)
 
-type struc CExp(tag: i32, exp_type: *struc Type, info_at: u64, get: union _CExp)
+type struc CExp(unique_ptr_impl(AST_T)
+    exp_type: *struc Type, info_at: u64, get: union _CExp)
 pub fn make_CExp(info_at: u64) *struc CExp;
 pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp;
 pub fn make_CString(literal: **struc CStringLiteral, info_at: u64) *struc CExp;
@@ -180,7 +184,8 @@ type struc CNull(_empty: char)
 
 type union _CStatement(_CReturn: struc CReturn, _CExpression: struc CExpression, _CIf: struc CIf, _CGoto: struc CGoto, _CLabel: struc CLabel, _CCompound: struc CCompound, _CWhile: struc CWhile, _CDoWhile: struc CDoWhile, _CFor: struc CFor, _CSwitch: struc CSwitch, _CCase: struc CCase, _CDefault: struc CDefault, _CBreak: struc CBreak, _CContinue: struc CContinue, _CNull: struc CNull)
 
-type struc CStatement(tag: i32, get: union _CStatement)
+type struc CStatement(unique_ptr_impl(AST_T)
+    get: union _CStatement)
 pub fn make_CStatement(none) *struc CStatement;
 pub fn make_CReturn(exp: **struc CExp, info_at: u64) *struc CStatement;
 pub fn make_CExpression(exp: **struc CExp) *struc CStatement;
@@ -205,7 +210,8 @@ type struc CInitExp(init: *struc CExp)
 
 type union _CForInit(_CInitDecl: struc CInitDecl, _CInitExp: struc CInitExp)
 
-type struc CForInit(tag: i32, get: union _CForInit)
+type struc CForInit(unique_ptr_impl(AST_T)
+    get: union _CForInit)
 pub fn make_CForInit(none) *struc CForInit;
 pub fn make_CInitDecl(init: **struc CVariableDeclaration) *struc CForInit;
 pub fn make_CInitExp(init: **struc CExp) *struc CForInit;
@@ -215,7 +221,8 @@ type struc CB(block_items: vector_t(unique_ptr_t(CBlockItem)))
 
 type union _CBlock(_CB: struc CB)
 
-type struc CBlock(tag: i32, get: union _CBlock)
+type struc CBlock(unique_ptr_impl(AST_T)
+    get: union _CBlock)
 pub fn make_CBlock(none) *struc CBlock;
 pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) *struc CBlock;
 pub fn free_CBlock(self: **struc CBlock) none;
@@ -226,7 +233,8 @@ type struc CD(declaration: *struc CDeclaration)
 
 type union _CBlockItem(_CS: struc CS, _CD: struc CD)
 
-type struc CBlockItem(tag: i32, get: union _CBlockItem)
+type struc CBlockItem(unique_ptr_impl(AST_T)
+    get: union _CBlockItem)
 pub fn make_CBlockItem(none) *struc CBlockItem;
 pub fn make_CS(statement: **struc CStatement) *struc CBlockItem;
 pub fn make_CD(declaration: **struc CDeclaration) *struc CBlockItem;
@@ -244,25 +252,30 @@ type struc CCompoundInit(initializers: vector_t(unique_ptr_t(CInitializer)), _ba
 
 type union _CInitializer(_CSingleInit: struc CSingleInit, _CCompoundInit: struc CCompoundInit)
 
-type struc CInitializer(tag: i32, init_type: *struc Type, get: union _CInitializer)
+type struc CInitializer(unique_ptr_impl(AST_T)
+    init_type: *struc Type, get: union _CInitializer)
 pub fn make_CInitializer(none) *struc CInitializer;
 pub fn make_CSingleInit(exp: **struc CExp) *struc CInitializer;
 pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) *struc CInitializer;
 pub fn free_CInitializer(self: **struc CInitializer) none;
 
-type struc CMemberDeclaration(tag: i32, member_name: u64, member_type: *struc Type, info_at: u64)
+type struc CMemberDeclaration(unique_ptr_impl(AST_T)
+    member_name: u64, member_type: *struc Type, info_at: u64)
 pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info_at: u64) *struc CMemberDeclaration;
 pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none;
 
-type struc CStructDeclaration(tag: i32, tag_name: u64, is_union: i32, members: vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64)
+type struc CStructDeclaration(unique_ptr_impl(AST_T)
+    tag_name: u64, is_union: i32, members: vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64)
 pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) *struc CStructDeclaration;
 pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none;
 
-type struc CFunctionDeclaration(tag: i32, name: u64, params: vector_t(TIdentifier), body: *struc CBlock, fun_type: *struc Type, storage_class: struc CStorageClass, info_at: u64)
+type struc CFunctionDeclaration(unique_ptr_impl(AST_T)
+    name: u64, params: vector_t(TIdentifier), body: *struc CBlock, fun_type: *struc Type, storage_class: struc CStorageClass, info_at: u64)
 pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: **struc CBlock, fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration;
 pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none;
 
-type struc CVariableDeclaration(tag: i32, name: u64, init: *struc CInitializer, var_type: *struc Type, storage_class: struc CStorageClass, info_at: u64)
+type struc CVariableDeclaration(unique_ptr_impl(AST_T)
+    name: u64, init: *struc CInitializer, var_type: *struc Type, storage_class: struc CStorageClass, info_at: u64)
 pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration;
 pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none;
 
@@ -274,14 +287,16 @@ type struc CStructDecl(struct_decl: *struc CStructDeclaration)
 
 type union _CDeclaration(_CFunDecl: struc CFunDecl, _CVarDecl: struc CVarDecl, _CStructDecl: struc CStructDecl)
 
-type struc CDeclaration(tag: i32, get: union _CDeclaration)
+type struc CDeclaration(unique_ptr_impl(AST_T)
+    get: union _CDeclaration)
 pub fn make_CDeclaration(none) *struc CDeclaration;
 pub fn make_CFunDecl(fun_decl: **struc CFunctionDeclaration) *struc CDeclaration;
 pub fn make_CVarDecl(var_decl: **struc CVariableDeclaration) *struc CDeclaration;
 pub fn make_CStructDecl(struct_decl: **struc CStructDeclaration) *struc CDeclaration;
 pub fn free_CDeclaration(self: **struc CDeclaration) none;
 
-type struc CProgram(tag: i32, declarations: vector_t(unique_ptr_t(CDeclaration)))
+type struc CProgram(unique_ptr_impl(AST_T)
+    declarations: vector_t(unique_ptr_t(CDeclaration)))
 pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) *struc CProgram;
 pub fn free_CProgram(self: **struc CProgram) none;
 
