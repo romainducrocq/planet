@@ -365,7 +365,7 @@ pub fn make_LocalAttr(none) *struc IdentifierAttr {
     return self
 }
 
-pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
+pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_IdentifierAttr_t {
@@ -391,7 +391,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
     uptr_free(self[])
 }
 
-pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc Symbol {
+pub fn make_Symbol(type_t: **struc Type, attrs: *unique_ptr_t(IdentifierAttr)) *struc Symbol {
     self: unique_ptr_t(Symbol) = uptr_new()
     uptr_alloc(Symbol, self)
     self[].tag = AST_Symbol_t
@@ -402,7 +402,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
     return self
 }
 
-pub fn free_Symbol(self: **struc Symbol) none {
+pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_Symbol_t {
@@ -427,7 +427,7 @@ pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMe
     return self
 }
 
-pub fn free_StructMember(self: **struc StructMember) none {
+pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_StructMember_t {
@@ -454,7 +454,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TId
     return self
 }
 
-pub fn free_StructTypedef(self: **struc StructTypedef) none {
+pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_StructTypedef_t {

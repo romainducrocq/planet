@@ -567,7 +567,7 @@ fn plain_op_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
     push_instr(ctx, make_TacCopy(src, @dst))
 }
 
-fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, src: **struc TacValue, exp_res: **struc TacExpResult) none {
+fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, src: **struc TacValue, exp_res: *unique_ptr_t(TacExpResult)) none {
     src_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, src[], src_cp)
     dst: shared_ptr_t(TacValue) = sptr_new()
@@ -577,7 +577,7 @@ fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDerefer
     exp_res[] = make_TacPlainOperand(src)
 }
 
-fn sub_obj_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, src: **struc TacValue, exp_res: **struc TacExpResult) none {
+fn sub_obj_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, src: **struc TacValue, exp_res: *unique_ptr_t(TacExpResult)) none {
     dst_name: u64 = res[].base_name
     offset: i64 = res[].offset
     src_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -768,14 +768,14 @@ fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOpe
     sptr_move(TacValue, dst, res[].val)
 }
 
-fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: **struc TacExpResult) none {
+fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: *unique_ptr_t(TacExpResult)) none {
     val: shared_ptr_t(TacValue) = sptr_new()
     sptr_move(TacValue, res[].val, val)
     free_TacExpResult(exp_res)
     exp_res[] = make_TacPlainOperand(@val)
 }
 
-fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node: *struc CAddrOf, exp_res: **struc TacExpResult) none {
+fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node: *struc CAddrOf, exp_res: *unique_ptr_t(TacExpResult)) none {
     dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
     {
         name: u64 = res[].base_name
@@ -866,7 +866,7 @@ fn sizeoft_res_instr(ctx: *struc TacReprContext, node: *struc CSizeOfT) *struc T
     return make_TacPlainOperand(@val)
 }
 
-fn plain_op_dot_res_instr(res: *struc TacPlainOperand, member_offset: i64, exp_res: **struc TacExpResult) none {
+fn plain_op_dot_res_instr(res: *struc TacPlainOperand, member_offset: i64, exp_res: *unique_ptr_t(TacExpResult)) none {
     THROW_ABORT_IF(res[].val[].tag ~= AST_TacVariable_t)
     base_name: u64 = res[].val[].get._TacVariable.name
     offset: i64 = member_offset
@@ -1686,7 +1686,7 @@ fn repr_program(ctx: *struc TacReprContext, node: *struc CProgram) *struc TacPro
     return make_TacProgram(@static_const_toplvls, @static_var_toplvls, @fun_toplvls)
 }
 
-pub fn represent_three_address_code(c_ast: **struc CProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram {
+pub fn represent_three_address_code(c_ast: *unique_ptr_t(CProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram {
     ctx: struc TacReprContext;
     {
         ctx.frontend = frontend
