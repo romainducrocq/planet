@@ -68,7 +68,7 @@ pub fn make_Void(none) *struc Type {
     return self
 }
 
-pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: **struc Type) *struc Type {
+pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) *struc Type {
     self: *struc Type = make_Type()
     self[].tag = AST_FunType_t
     self[].get._FunType.param_reg_mask = 0ul
@@ -82,7 +82,7 @@ pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: **stru
     return self
 }
 
-pub fn make_Pointer(ref_type: **struc Type) *struc Type {
+pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) *struc Type {
     self: *struc Type = make_Type()
     self[].tag = AST_Pointer_t
     self[].get._Pointer.ref_type = sptr_new()
@@ -90,7 +90,7 @@ pub fn make_Pointer(ref_type: **struc Type) *struc Type {
     return self
 }
 
-pub fn make_Array(size: i64, elem_type: **struc Type) *struc Type {
+pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) *struc Type {
     self: *struc Type = make_Type()
     self[].tag = AST_Array_t
     self[].get._Array.size = size
@@ -107,7 +107,7 @@ pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type {
     return self
 }
 
-pub fn free_Type(self: **struc Type) none {
+pub fn free_Type(self: *shared_ptr_t(Type)) none {
     sptr_delete(self[])
     match (self[])[].tag {
         -> AST_Type_t {
@@ -220,7 +220,7 @@ pub fn make_ZeroInit(byte: i64) *struc StaticInit {
     return self
 }
 
-pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: **struc CStringLiteral) *struc StaticInit {
+pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) *struc StaticInit {
     self: *struc StaticInit = make_StaticInit()
     self[].tag = AST_StringInit_t
     self[].get._StringInit.string_const = string_const
@@ -237,7 +237,7 @@ pub fn make_PointerInit(name: u64) *struc StaticInit {
     return self
 }
 
-pub fn free_StaticInit(self: **struc StaticInit) none {
+pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none {
     sptr_delete(self[])
     match (self[])[].tag {
         -> AST_StaticInit_t {
@@ -302,7 +302,7 @@ pub fn make_NoInitializer(none) *struc InitialValue {
     return self
 }
 
-pub fn free_InitialValue(self: **struc InitialValue) none {
+pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none {
     sptr_delete(self[])
     match (self[])[].tag {
         -> AST_InitialValue_t {
@@ -342,7 +342,7 @@ pub fn make_FunAttr(is_def: i32, is_glob: i32) *struc IdentifierAttr {
     return self
 }
 
-pub fn make_StaticAttr(is_glob: i32, init: **struc InitialValue) *struc IdentifierAttr {
+pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) *struc IdentifierAttr {
     self: *struc IdentifierAttr = make_IdentifierAttr()
     self[].tag = AST_StaticAttr_t
     self[].get._StaticAttr.is_glob = is_glob
@@ -351,7 +351,7 @@ pub fn make_StaticAttr(is_glob: i32, init: **struc InitialValue) *struc Identifi
     return self
 }
 
-pub fn make_ConstantAttr(static_init: **struc StaticInit) *struc IdentifierAttr {
+pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) *struc IdentifierAttr {
     self: *struc IdentifierAttr = make_IdentifierAttr()
     self[].tag = AST_ConstantAttr_t
     self[].get._ConstantAttr.static_init = sptr_new()
@@ -391,7 +391,7 @@ pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none {
     uptr_free(self[])
 }
 
-pub fn make_Symbol(type_t: **struc Type, attrs: *unique_ptr_t(IdentifierAttr)) *struc Symbol {
+pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) *struc Symbol {
     self: unique_ptr_t(Symbol) = uptr_new()
     uptr_alloc(Symbol, self)
     self[].tag = AST_Symbol_t
@@ -417,7 +417,7 @@ pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember {
+pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) *struc StructMember {
     self: unique_ptr_t(StructMember) = uptr_new()
     uptr_alloc(StructMember, self)
     self[].tag = AST_StructMember_t

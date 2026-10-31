@@ -15,26 +15,26 @@ type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pse
 
 m4_define(`Ctx', `TODO')m4_dnl
 
-fn pseudo_data(node: *struc AsmPseudo, pseudo_op: **struc AsmOperand) none {
+fn pseudo_data(node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     name: u64 = node[].name
     free_AsmOperand(pseudo_op)
     pseudo_op[] = make_AsmData(name, 0l)
 }
 
-fn pseudo_mem_data(node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) none {
+fn pseudo_mem_data(node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     name: u64 = node[].name
     offset: i64 = node[].offset
     free_AsmOperand(pseudo_op)
     pseudo_op[] = make_AsmData(name, offset)
 }
 
-fn pseudo_memory(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: **struc AsmOperand) none {
+fn pseudo_memory(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     value: i64 = -1l * map_get(ctx[].pseudo_stack_map, node[].name)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
-fn pseudo_mem_memory(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) none {
+fn pseudo_mem_memory(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     value: i64 = -1l * (map_get(ctx[].pseudo_stack_map, node[].name) - node[].offset)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
@@ -84,7 +84,7 @@ fn alloc_offset_pseudo_mem(ctx: *struc StackFixContext, asm_type: *struc Assembl
     }
 }
 
-fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: **struc AsmOperand) none {
+fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
         backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
@@ -99,7 +99,7 @@ fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op
     pseudo_memory(ctx, node, pseudo_op)
 }
 
-fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: **struc AsmOperand) none {
+fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
         backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {

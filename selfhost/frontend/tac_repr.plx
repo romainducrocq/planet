@@ -537,7 +537,7 @@ fn binary_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) *struc Tac
     }
 }
 
-fn plain_op_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, dst: **struc TacValue) none {
+fn plain_op_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, dst: *shared_ptr_t(TacValue)) none {
     src: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, res[].val, src)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -545,7 +545,7 @@ fn plain_op_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacPlainOp
     push_instr(ctx, make_TacCopy(@src, @dst_cp))
 }
 
-fn deref_ptr_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, dst: **struc TacValue) none {
+fn deref_ptr_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, dst: *shared_ptr_t(TacValue)) none {
     src: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, res[].val, src)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -553,7 +553,7 @@ fn deref_ptr_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacDerefe
     push_instr(ctx, make_TacLoad(@src, @dst_cp))
 }
 
-fn sub_obj_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, dst: **struc TacValue) none {
+fn sub_obj_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, dst: *shared_ptr_t(TacValue)) none {
     src_name: u64 = res[].base_name
     offset: i64 = res[].offset
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -561,13 +561,13 @@ fn sub_obj_postfix_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObjec
     push_instr(ctx, make_TacCopyFromOffset(src_name, offset, @dst_cp))
 }
 
-fn plain_op_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, src: **struc TacValue) none {
+fn plain_op_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, src: *shared_ptr_t(TacValue)) none {
     dst: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, res[].val, dst)
     push_instr(ctx, make_TacCopy(src, @dst))
 }
 
-fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, src: **struc TacValue, exp_res: *unique_ptr_t(TacExpResult)) none {
+fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, src: *shared_ptr_t(TacValue), exp_res: *unique_ptr_t(TacExpResult)) none {
     src_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, src[], src_cp)
     dst: shared_ptr_t(TacValue) = sptr_new()
@@ -577,7 +577,7 @@ fn deref_ptr_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacDerefer
     exp_res[] = make_TacPlainOperand(src)
 }
 
-fn sub_obj_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, src: **struc TacValue, exp_res: *unique_ptr_t(TacExpResult)) none {
+fn sub_obj_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, src: *shared_ptr_t(TacValue), exp_res: *unique_ptr_t(TacExpResult)) none {
     dst_name: u64 = res[].base_name
     offset: i64 = res[].offset
     src_cp: shared_ptr_t(TacValue) = sptr_new()
