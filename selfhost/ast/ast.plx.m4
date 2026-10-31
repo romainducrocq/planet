@@ -26,19 +26,19 @@ type union _CConst(_CConstInt: struc CConstInt, _CConstLong: struc CConstLong, _
 
 type struc CConst(shared_ptr_impl(AST_T)
     get: union _CConst)
-pub fn make_CConst(none) *struc CConst;
-pub fn make_CConstInt(value: i32) *struc CConst;
-pub fn make_CConstLong(value: i64) *struc CConst;
-pub fn make_CConstUInt(value: u32) *struc CConst;
-pub fn make_CConstULong(value: u64) *struc CConst;
-pub fn make_CConstDouble(value: f64) *struc CConst;
-pub fn make_CConstChar(value: i8) *struc CConst;
-pub fn make_CConstUChar(value: u8) *struc CConst;
+pub fn make_CConst(none) shared_ptr_t(CConst);
+pub fn make_CConstInt(value: i32) shared_ptr_t(CConst);
+pub fn make_CConstLong(value: i64) shared_ptr_t(CConst);
+pub fn make_CConstUInt(value: u32) shared_ptr_t(CConst);
+pub fn make_CConstULong(value: u64) shared_ptr_t(CConst);
+pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst);
+pub fn make_CConstChar(value: i8) shared_ptr_t(CConst);
+pub fn make_CConstUChar(value: u8) shared_ptr_t(CConst);
 pub fn free_CConst(self: *shared_ptr_t(CConst)) none;
 
 type struc CStringLiteral(shared_ptr_impl(AST_T)
     value: vector_t(i8))
-pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral;
+pub fn make_CStringLiteral(value: *vector_t(i8)) shared_ptr_t(CStringLiteral);
 pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none;
 
 PairKeyValue(``TIdentifier'', ``string_t'')

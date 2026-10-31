@@ -117,15 +117,15 @@ pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode {
     }
 }
 
-pub fn make_AsmOperand(none) *struc AsmOperand {
+pub fn make_AsmOperand(none) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_alloc(AsmOperand, self)
     self[].tag = AST_AsmOperand_t
     return self
 }
 
-pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmImm_t
     self[].get._AsmImm.value = value
     self[].get._AsmImm.is_byte = is_byte
@@ -134,46 +134,46 @@ pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) *struc A
     return self
 }
 
-pub fn make_AsmRegister(reg: *struc AsmReg) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmRegister(reg: *struc AsmReg) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmRegister_t
     self[].get._AsmRegister.reg = reg[]
     return self
 }
 
-pub fn make_AsmPseudo(name: u64) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmPseudo(name: u64) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmPseudo_t
     self[].get._AsmPseudo.name = name
     return self
 }
 
-pub fn make_AsmMemory(value: i64, reg: *struc AsmReg) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmMemory(value: i64, reg: *struc AsmReg) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmMemory_t
     self[].get._AsmMemory.value = value
     self[].get._AsmMemory.reg = reg[]
     return self
 }
 
-pub fn make_AsmData(name: u64, offset: i64) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmData(name: u64, offset: i64) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmData_t
     self[].get._AsmData.name = name
     self[].get._AsmData.offset = offset
     return self
 }
 
-pub fn make_AsmPseudoMem(name: u64, offset: i64) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmPseudoMem(name: u64, offset: i64) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmPseudoMem_t
     self[].get._AsmPseudoMem.name = name
     self[].get._AsmPseudoMem.offset = offset
     return self
 }
 
-pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc AsmReg) *struc AsmOperand {
-    self: *struc AsmOperand = make_AsmOperand()
+pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand) {
+    self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmIndexed_t
     self[].get._AsmIndexed.scale = scale
     self[].get._AsmIndexed.reg_base = reg_base[]
@@ -264,15 +264,15 @@ pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp {
     }
 }
 
-pub fn make_AsmInstruction(none) *struc AsmInstruction {
+pub fn make_AsmInstruction(none) unique_ptr_t(AsmInstruction) {
     self: unique_ptr_t(AsmInstruction) = uptr_new()
     uptr_alloc(AsmInstruction, self)
     self[].tag = AST_AsmInstruction_t
     return self
 }
 
-pub fn make_AsmMov(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmMov(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmMov_t
     self[].get._AsmMov.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmMov.asm_type)
@@ -283,8 +283,8 @@ pub fn make_AsmMov(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(Asm
     return self
 }
 
-pub fn make_AsmMovSx(asm_type_src: *shared_ptr_t(AssemblyType), asm_type_dst: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmMovSx(asm_type_src: *shared_ptr_t(AssemblyType), asm_type_dst: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmMovSx_t
     self[].get._AsmMovSx.asm_type_src = sptr_new()
     sptr_move(AssemblyType, asm_type_src[], self[].get._AsmMovSx.asm_type_src)
@@ -297,8 +297,8 @@ pub fn make_AsmMovSx(asm_type_src: *shared_ptr_t(AssemblyType), asm_type_dst: *s
     return self
 }
 
-pub fn make_AsmMovZeroExtend(asm_type_src: *shared_ptr_t(AssemblyType), asm_type_dst: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmMovZeroExtend(asm_type_src: *shared_ptr_t(AssemblyType), asm_type_dst: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmMovZeroExtend_t
     self[].get._AsmMovZeroExtend.asm_type_src = sptr_new()
     sptr_move(AssemblyType, asm_type_src[], self[].get._AsmMovZeroExtend.asm_type_src)
@@ -311,8 +311,8 @@ pub fn make_AsmMovZeroExtend(asm_type_src: *shared_ptr_t(AssemblyType), asm_type
     return self
 }
 
-pub fn make_AsmLea(src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmLea(src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmLea_t
     self[].get._AsmLea.src = sptr_new()
     sptr_move(AsmOperand, src[], self[].get._AsmLea.src)
@@ -321,8 +321,8 @@ pub fn make_AsmLea(src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand
     return self
 }
 
-pub fn make_AsmCvttsd2si(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmCvttsd2si(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmCvttsd2si_t
     self[].get._AsmCvttsd2si.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmCvttsd2si.asm_type)
@@ -333,8 +333,8 @@ pub fn make_AsmCvttsd2si(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr
     return self
 }
 
-pub fn make_AsmCvtsi2sd(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmCvtsi2sd(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmCvtsi2sd_t
     self[].get._AsmCvtsi2sd.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmCvtsi2sd.asm_type)
@@ -345,8 +345,8 @@ pub fn make_AsmCvtsi2sd(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_
     return self
 }
 
-pub fn make_AsmUnary(unop: *struc AsmUnaryOp, asm_type: *shared_ptr_t(AssemblyType), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmUnary(unop: *struc AsmUnaryOp, asm_type: *shared_ptr_t(AssemblyType), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmUnary_t
     self[].get._AsmUnary.unop = unop[]
     self[].get._AsmUnary.asm_type = sptr_new()
@@ -356,8 +356,8 @@ pub fn make_AsmUnary(unop: *struc AsmUnaryOp, asm_type: *shared_ptr_t(AssemblyTy
     return self
 }
 
-pub fn make_AsmBinary(binop: *struc AsmBinaryOp, asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmBinary(binop: *struc AsmBinaryOp, asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmBinary_t
     self[].get._AsmBinary.binop = binop[]
     self[].get._AsmBinary.asm_type = sptr_new()
@@ -369,8 +369,8 @@ pub fn make_AsmBinary(binop: *struc AsmBinaryOp, asm_type: *shared_ptr_t(Assembl
     return self
 }
 
-pub fn make_AsmCmp(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmCmp(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand), dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmCmp_t
     self[].get._AsmCmp.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmCmp.asm_type)
@@ -381,8 +381,8 @@ pub fn make_AsmCmp(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(Asm
     return self
 }
 
-pub fn make_AsmIdiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmIdiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmIdiv_t
     self[].get._AsmIdiv.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmIdiv.asm_type)
@@ -391,8 +391,8 @@ pub fn make_AsmIdiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(As
     return self
 }
 
-pub fn make_AsmDiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmDiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmDiv_t
     self[].get._AsmDiv.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmDiv.asm_type)
@@ -401,31 +401,31 @@ pub fn make_AsmDiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(Asm
     return self
 }
 
-pub fn make_AsmCdq(asm_type: *shared_ptr_t(AssemblyType)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmCdq(asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmCdq_t
     self[].get._AsmCdq.asm_type = sptr_new()
     sptr_move(AssemblyType, asm_type[], self[].get._AsmCdq.asm_type)
     return self
 }
 
-pub fn make_AsmJmp(target: u64) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmJmp(target: u64) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmJmp_t
     self[].get._AsmJmp.target = target
     return self
 }
 
-pub fn make_AsmJmpCC(target: u64, cond_code: *struc AsmCondCode) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmJmpCC(target: u64, cond_code: *struc AsmCondCode) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmJmpCC_t
     self[].get._AsmJmpCC.target = target
     self[].get._AsmJmpCC.cond_code = cond_code[]
     return self
 }
 
-pub fn make_AsmSetCC(cond_code: *struc AsmCondCode, dst: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmSetCC(cond_code: *struc AsmCondCode, dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmSetCC_t
     self[].get._AsmSetCC.cond_code = cond_code[]
     self[].get._AsmSetCC.dst = sptr_new()
@@ -433,37 +433,37 @@ pub fn make_AsmSetCC(cond_code: *struc AsmCondCode, dst: *shared_ptr_t(AsmOperan
     return self
 }
 
-pub fn make_AsmLabel(name: u64) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmLabel(name: u64) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmLabel_t
     self[].get._AsmLabel.name = name
     return self
 }
 
-pub fn make_AsmPush(src: *shared_ptr_t(AsmOperand)) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmPush(src: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmPush_t
     self[].get._AsmPush.src = sptr_new()
     sptr_move(AsmOperand, src[], self[].get._AsmPush.src)
     return self
 }
 
-pub fn make_AsmPop(reg: *struc AsmReg) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmPop(reg: *struc AsmReg) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmPop_t
     self[].get._AsmPop.reg = reg[]
     return self
 }
 
-pub fn make_AsmCall(name: u64) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmCall(name: u64) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmCall_t
     self[].get._AsmCall.name = name
     return self
 }
 
-pub fn make_AsmRet(none) *struc AsmInstruction {
-    self: *struc AsmInstruction = make_AsmInstruction()
+pub fn make_AsmRet(none) unique_ptr_t(AsmInstruction) {
+    self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmRet_t
     return self
 }
@@ -575,15 +575,15 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
     uptr_free(self[])
 }
 
-pub fn make_AsmTopLevel(none) *struc AsmTopLevel {
+pub fn make_AsmTopLevel(none) unique_ptr_t(AsmTopLevel) {
     self: unique_ptr_t(AsmTopLevel) = uptr_new()
     uptr_alloc(AsmTopLevel, self)
     self[].tag = AST_AsmTopLevel_t
     return self
 }
 
-pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: *vector_t(unique_ptr_t(AsmInstruction))) *struc AsmTopLevel {
-    self: *struc AsmTopLevel = make_AsmTopLevel()
+pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel) {
+    self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmFunction_t
     self[].get._AsmFunction.name = name
     self[].get._AsmFunction.is_glob = is_glob
@@ -593,8 +593,8 @@ pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instruction
     return self
 }
 
-pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc AsmTopLevel {
-    self: *struc AsmTopLevel = make_AsmTopLevel()
+pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel) {
+    self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmStaticVariable_t
     self[].get._AsmStaticVariable.name = name
     self[].get._AsmStaticVariable.alignment = alignment
@@ -604,8 +604,8 @@ pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_in
     return self
 }
 
-pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: *shared_ptr_t(StaticInit)) *struc AsmTopLevel {
-    self: *struc AsmTopLevel = make_AsmTopLevel()
+pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel) {
+    self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmStaticConstant_t
     self[].get._AsmStaticConstant.name = name
     self[].get._AsmStaticConstant.alignment = alignment
@@ -645,7 +645,7 @@ pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none {
     uptr_free(self[])
 }
 
-pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)), top_levels: *vector_t(unique_ptr_t(AsmTopLevel))) *struc AsmProgram {
+pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)), top_levels: *vector_t(unique_ptr_t(AsmTopLevel))) unique_ptr_t(AsmProgram) {
     self: unique_ptr_t(AsmProgram) = uptr_new()
     uptr_alloc(AsmProgram, self)
     self[].tag = AST_AsmProgram_t

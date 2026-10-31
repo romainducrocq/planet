@@ -70,23 +70,23 @@ pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp {
     }
 }
 
-pub fn make_TacValue(none) *struc TacValue {
+pub fn make_TacValue(none) shared_ptr_t(TacValue) {
     self: shared_ptr_t(TacValue) = sptr_new()
     sptr_alloc(TacValue, self)
     self[].tag = AST_TacValue_t
     return self
 }
 
-pub fn make_TacConstant(constant: *shared_ptr_t(CConst)) *struc TacValue {
-    self: *struc TacValue = make_TacValue()
+pub fn make_TacConstant(constant: *shared_ptr_t(CConst)) shared_ptr_t(TacValue) {
+    self: shared_ptr_t(TacValue) = make_TacValue()
     self[].tag = AST_TacConstant_t
     self[].get._TacConstant.constant = sptr_new()
     sptr_move(CConst, constant[], self[].get._TacConstant.constant)
     return self
 }
 
-pub fn make_TacVariable(name: u64) *struc TacValue {
-    self: *struc TacValue = make_TacValue()
+pub fn make_TacVariable(name: u64) shared_ptr_t(TacValue) {
+    self: shared_ptr_t(TacValue) = make_TacValue()
     self[].tag = AST_TacVariable_t
     self[].get._TacVariable.name = name
     return self
@@ -112,31 +112,31 @@ pub fn free_TacValue(self: *shared_ptr_t(TacValue)) none {
     sptr_free(self[])
 }
 
-pub fn make_TacExpResult(none) *struc TacExpResult {
+pub fn make_TacExpResult(none) unique_ptr_t(TacExpResult) {
     self: unique_ptr_t(TacExpResult) = uptr_new()
     uptr_alloc(TacExpResult, self)
     self[].tag = AST_TacExpResult_t
     return self
 }
 
-pub fn make_TacPlainOperand(val: *shared_ptr_t(TacValue)) *struc TacExpResult {
-    self: *struc TacExpResult = make_TacExpResult()
+pub fn make_TacPlainOperand(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacExpResult) {
+    self: unique_ptr_t(TacExpResult) = make_TacExpResult()
     self[].tag = AST_TacPlainOperand_t
     self[].get._TacPlainOperand.val = sptr_new()
     sptr_move(TacValue, val[], self[].get._TacPlainOperand.val)
     return self
 }
 
-pub fn make_TacDereferencedPointer(val: *shared_ptr_t(TacValue)) *struc TacExpResult {
-    self: *struc TacExpResult = make_TacExpResult()
+pub fn make_TacDereferencedPointer(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacExpResult) {
+    self: unique_ptr_t(TacExpResult) = make_TacExpResult()
     self[].tag = AST_TacDereferencedPointer_t
     self[].get._TacDereferencedPointer.val = sptr_new()
     sptr_move(TacValue, val[], self[].get._TacDereferencedPointer.val)
     return self
 }
 
-pub fn make_TacSubObject(base_name: u64, offset: i64) *struc TacExpResult {
-    self: *struc TacExpResult = make_TacExpResult()
+pub fn make_TacSubObject(base_name: u64, offset: i64) unique_ptr_t(TacExpResult) {
+    self: unique_ptr_t(TacExpResult) = make_TacExpResult()
     self[].tag = AST_TacSubObject_t
     self[].get._TacSubObject.base_name = base_name
     self[].get._TacSubObject.offset = offset
@@ -167,23 +167,23 @@ pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none {
     uptr_free(self[])
 }
 
-pub fn make_TacInstruction(none) *struc TacInstruction {
+pub fn make_TacInstruction(none) unique_ptr_t(TacInstruction) {
     self: unique_ptr_t(TacInstruction) = uptr_new()
     uptr_alloc(TacInstruction, self)
     self[].tag = AST_TacInstruction_t
     return self
 }
 
-pub fn make_TacReturn(val: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacReturn(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacReturn_t
     self[].get._TacReturn.val = sptr_new()
     sptr_move(TacValue, val[], self[].get._TacReturn.val)
     return self
 }
 
-pub fn make_TacSignExtend(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacSignExtend(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacSignExtend_t
     self[].get._TacSignExtend.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacSignExtend.src)
@@ -192,8 +192,8 @@ pub fn make_TacSignExtend(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacVa
     return self
 }
 
-pub fn make_TacTruncate(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacTruncate(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacTruncate_t
     self[].get._TacTruncate.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacTruncate.src)
@@ -202,8 +202,8 @@ pub fn make_TacTruncate(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValu
     return self
 }
 
-pub fn make_TacZeroExtend(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacZeroExtend(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacZeroExtend_t
     self[].get._TacZeroExtend.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacZeroExtend.src)
@@ -212,8 +212,8 @@ pub fn make_TacZeroExtend(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacVa
     return self
 }
 
-pub fn make_TacDoubleToInt(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacDoubleToInt(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacDoubleToInt_t
     self[].get._TacDoubleToInt.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacDoubleToInt.src)
@@ -222,8 +222,8 @@ pub fn make_TacDoubleToInt(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacV
     return self
 }
 
-pub fn make_TacDoubleToUInt(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacDoubleToUInt(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacDoubleToUInt_t
     self[].get._TacDoubleToUInt.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacDoubleToUInt.src)
@@ -232,8 +232,8 @@ pub fn make_TacDoubleToUInt(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(Tac
     return self
 }
 
-pub fn make_TacIntToDouble(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacIntToDouble(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacIntToDouble_t
     self[].get._TacIntToDouble.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacIntToDouble.src)
@@ -242,8 +242,8 @@ pub fn make_TacIntToDouble(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacV
     return self
 }
 
-pub fn make_TacUIntToDouble(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacUIntToDouble(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacUIntToDouble_t
     self[].get._TacUIntToDouble.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacUIntToDouble.src)
@@ -252,8 +252,8 @@ pub fn make_TacUIntToDouble(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(Tac
     return self
 }
 
-pub fn make_TacFunCall(name: u64, args: *vector_t(shared_ptr_t(TacValue)), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacFunCall(name: u64, args: *vector_t(shared_ptr_t(TacValue)), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacFunCall_t
     self[].get._TacFunCall.name = name
     self[].get._TacFunCall.args = vec_new()
@@ -263,8 +263,8 @@ pub fn make_TacFunCall(name: u64, args: *vector_t(shared_ptr_t(TacValue)), dst: 
     return self
 }
 
-pub fn make_TacUnary(unop: *struc TacUnaryOp, src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacUnary(unop: *struc TacUnaryOp, src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacUnary_t
     self[].get._TacUnary.unop = unop[]
     self[].get._TacUnary.src = sptr_new()
@@ -274,8 +274,8 @@ pub fn make_TacUnary(unop: *struc TacUnaryOp, src: *shared_ptr_t(TacValue), dst:
     return self
 }
 
-pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: *shared_ptr_t(TacValue), src2: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: *shared_ptr_t(TacValue), src2: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacBinary_t
     self[].get._TacBinary.binop = binop[]
     self[].get._TacBinary.src1 = sptr_new()
@@ -287,8 +287,8 @@ pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: *shared_ptr_t(TacValue), 
     return self
 }
 
-pub fn make_TacCopy(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacCopy(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacCopy_t
     self[].get._TacCopy.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacCopy.src)
@@ -297,8 +297,8 @@ pub fn make_TacCopy(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) 
     return self
 }
 
-pub fn make_TacGetAddress(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacGetAddress(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacGetAddress_t
     self[].get._TacGetAddress.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacGetAddress.src)
@@ -307,8 +307,8 @@ pub fn make_TacGetAddress(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacVa
     return self
 }
 
-pub fn make_TacLoad(src_ptr: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacLoad(src_ptr: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacLoad_t
     self[].get._TacLoad.src_ptr = sptr_new()
     sptr_move(TacValue, src_ptr[], self[].get._TacLoad.src_ptr)
@@ -317,8 +317,8 @@ pub fn make_TacLoad(src_ptr: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValu
     return self
 }
 
-pub fn make_TacStore(src: *shared_ptr_t(TacValue), dst_ptr: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacStore(src: *shared_ptr_t(TacValue), dst_ptr: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacStore_t
     self[].get._TacStore.src = sptr_new()
     sptr_move(TacValue, src[], self[].get._TacStore.src)
@@ -327,8 +327,8 @@ pub fn make_TacStore(src: *shared_ptr_t(TacValue), dst_ptr: *shared_ptr_t(TacVal
     return self
 }
 
-pub fn make_TacAddPtr(scale: i64, src_ptr: *shared_ptr_t(TacValue), idx: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacAddPtr(scale: i64, src_ptr: *shared_ptr_t(TacValue), idx: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacAddPtr_t
     self[].get._TacAddPtr.scale = scale
     self[].get._TacAddPtr.src_ptr = sptr_new()
@@ -340,8 +340,8 @@ pub fn make_TacAddPtr(scale: i64, src_ptr: *shared_ptr_t(TacValue), idx: *shared
     return self
 }
 
-pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacCopyToOffset_t
     self[].get._TacCopyToOffset.dst_name = dst_name
     self[].get._TacCopyToOffset.offset = offset
@@ -350,8 +350,8 @@ pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: *shared_ptr_t(TacVa
     return self
 }
 
-pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacCopyFromOffset_t
     self[].get._TacCopyFromOffset.src_name = src_name
     self[].get._TacCopyFromOffset.offset = offset
@@ -360,15 +360,15 @@ pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: *shared_ptr_t(Tac
     return self
 }
 
-pub fn make_TacJump(target: u64) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacJump(target: u64) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacJump_t
     self[].get._TacJump.target = target
     return self
 }
 
-pub fn make_TacJumpIfZero(target: u64, condition: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacJumpIfZero(target: u64, condition: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacJumpIfZero_t
     self[].get._TacJumpIfZero.target = target
     self[].get._TacJumpIfZero.condition = sptr_new()
@@ -376,8 +376,8 @@ pub fn make_TacJumpIfZero(target: u64, condition: *shared_ptr_t(TacValue)) *stru
     return self
 }
 
-pub fn make_TacJumpIfNotZero(target: u64, condition: *shared_ptr_t(TacValue)) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacJumpIfNotZero(target: u64, condition: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacJumpIfNotZero_t
     self[].get._TacJumpIfNotZero.target = target
     self[].get._TacJumpIfNotZero.condition = sptr_new()
@@ -385,8 +385,8 @@ pub fn make_TacJumpIfNotZero(target: u64, condition: *shared_ptr_t(TacValue)) *s
     return self
 }
 
-pub fn make_TacLabel(name: u64) *struc TacInstruction {
-    self: *struc TacInstruction = make_TacInstruction()
+pub fn make_TacLabel(name: u64) unique_ptr_t(TacInstruction) {
+    self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacLabel_t
     self[].get._TacLabel.name = name
     return self
@@ -511,15 +511,15 @@ pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none {
     uptr_free(self[])
 }
 
-pub fn make_TacTopLevel(none) *struc TacTopLevel {
+pub fn make_TacTopLevel(none) unique_ptr_t(TacTopLevel) {
     self: unique_ptr_t(TacTopLevel) = uptr_new()
     uptr_alloc(TacTopLevel, self)
     self[].tag = AST_TacTopLevel_t
     return self
 }
 
-pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) *struc TacTopLevel {
-    self: *struc TacTopLevel = make_TacTopLevel()
+pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) unique_ptr_t(TacTopLevel) {
+    self: unique_ptr_t(TacTopLevel) = make_TacTopLevel()
     self[].tag = AST_TacFunction_t
     self[].get._TacFunction.name = name
     self[].get._TacFunction.is_glob = is_glob
@@ -530,8 +530,8 @@ pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier),
     return self
 }
 
-pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc TacTopLevel {
-    self: *struc TacTopLevel = make_TacTopLevel()
+pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(TacTopLevel) {
+    self: unique_ptr_t(TacTopLevel) = make_TacTopLevel()
     self[].tag = AST_TacStaticVariable_t
     self[].get._TacStaticVariable.name = name
     self[].get._TacStaticVariable.is_glob = is_glob
@@ -542,8 +542,8 @@ pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: *shared
     return self
 }
 
-pub fn make_TacStaticConstant(name: u64, static_init_type: *shared_ptr_t(Type), static_init: *shared_ptr_t(StaticInit)) *struc TacTopLevel {
-    self: *struc TacTopLevel = make_TacTopLevel()
+pub fn make_TacStaticConstant(name: u64, static_init_type: *shared_ptr_t(Type), static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(TacTopLevel) {
+    self: unique_ptr_t(TacTopLevel) = make_TacTopLevel()
     self[].tag = AST_TacStaticConstant_t
     self[].get._TacStaticConstant.name = name
     self[].get._TacStaticConstant.static_init_type = sptr_new()
@@ -587,7 +587,7 @@ pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none {
     uptr_free(self[])
 }
 
-pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram {
+pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) unique_ptr_t(TacProgram) {
     self: unique_ptr_t(TacProgram) = uptr_new()
     uptr_alloc(TacProgram, self)
     self[].tag = AST_TacProgram_t
