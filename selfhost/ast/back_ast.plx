@@ -265,7 +265,7 @@ pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp {
 }
 
 pub fn make_AsmInstruction(none) *struc AsmInstruction {
-    self: *struc AsmInstruction = uptr_new()
+    self: unique_ptr_t(AsmInstruction) = uptr_new()
     uptr_alloc(AsmInstruction, self)
     self[].tag = AST_AsmInstruction_t
     return self
@@ -576,7 +576,7 @@ pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
 }
 
 pub fn make_AsmTopLevel(none) *struc AsmTopLevel {
-    self: *struc AsmTopLevel = uptr_new()
+    self: unique_ptr_t(AsmTopLevel) = uptr_new()
     uptr_alloc(AsmTopLevel, self)
     self[].tag = AST_AsmTopLevel_t
     return self
@@ -646,7 +646,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
 }
 
 pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)), top_levels: *vector_t(unique_ptr_t(AsmTopLevel))) *struc AsmProgram {
-    self: *struc AsmProgram = uptr_new()
+    self: unique_ptr_t(AsmProgram) = uptr_new()
     uptr_alloc(AsmProgram, self)
     self[].tag = AST_AsmProgram_t
     self[].static_const_toplvls = vec_new()
