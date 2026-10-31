@@ -56,11 +56,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     ;
     map_delete(self[][].identifier_id_map)
     ;
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
     ;
 }
 
@@ -98,11 +94,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     ;
     vec_delete(self[][].instrs_mask_sets)
     ;
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
     ;
 }
 
@@ -141,11 +133,7 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
     }
     vec_delete(self[][].bak_instrs)
     ;
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
     ;
 }
 
@@ -173,11 +161,7 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
     ;
     vec_delete(self[][].data_name_map)
     ;
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
     ;
 }
 

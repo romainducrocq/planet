@@ -174,11 +174,7 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_TacInstruction(none) *struc TacInstruction {
@@ -532,11 +528,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_TacTopLevel(none) *struc TacTopLevel {
@@ -622,11 +614,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram {
@@ -674,9 +662,5 @@ pub fn free_TacProgram(self: **struc TacProgram) none {
         free_TacTopLevel(@(self[])[].fun_toplvls[i])
     }
     vec_delete(self[][].fun_toplvls)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
