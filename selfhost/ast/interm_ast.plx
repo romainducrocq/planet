@@ -72,18 +72,7 @@ pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp {
 
 pub fn make_TacValue(none) *struc TacValue {
     self: *struc TacValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(TacValue, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(TacValue, self)"
-            free_TacValue(@self)
-            self = cast<*struc TacValue>(malloc(sizeof<struc TacValue>))
-            if not self {
-                panic_sigabrt("alloc "                     "TacValue")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(TacValue, self)
     self[].tag = AST_TacValue_t
     return self
 }

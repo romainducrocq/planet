@@ -34,7 +34,14 @@ m4_define(`unique_ptr_t', `*struc $1')m4_dnl
 m4_define(`unique_ptr_impl', `tagged_def_impl($1)')m4_dnl
 m4_define(`uptr_new', `nil')m4_dnl
 m4_define(`uptr_delete', `TODO')m4_dnl
-m4_define(`uptr_alloc', `TODO')m4_dnl
+# TODO
+m4_define(`uptr_alloc', `{
+    free_$1(@($2))
+    ($2) = cast<*struc $1>(malloc(sizeof<struc $1>))
+    if (not ($2)) {
+        THROW_ALLOC($1)
+    }
+}')m4_dnl
 # TODO
 m4_define(`uptr_free', `if ($1) {
     free($1)
@@ -51,7 +58,10 @@ m4_define(`shared_ptr_t', `unique_ptr_t($1)')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
 m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
-m4_define(`sptr_alloc', `TODO')m4_dnl
+m4_define(`sptr_alloc', `{
+    uptr_alloc($1, $2)
+    ($2)[]._ref_count = 1
+}')m4_dnl
 m4_define(`sptr_free', `uptr_free($1)')m4_dnl
 m4_define(`sptr_move', `uptr_move($1, $2, $3)')m4_dnl
 m4_define(`sptr_copy', `if ($2) ~= ($3) {
