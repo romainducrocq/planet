@@ -119,7 +119,8 @@ type struc LocalAttr(_empty: char)
 
 type union _IdentifierAttr(_FunAttr: struc FunAttr, _StaticAttr: struc StaticAttr, _ConstantAttr: struc ConstantAttr, _LocalAttr: struc LocalAttr)
 
-type struc IdentifierAttr(tag: i32, get: union _IdentifierAttr)
+type struc IdentifierAttr(unique_ptr_impl(AST_T)
+    get: union _IdentifierAttr)
 pub fn make_IdentifierAttr(none) *struc IdentifierAttr;
 pub fn make_FunAttr(is_def: i32, is_glob: i32) *struc IdentifierAttr;
 pub fn make_StaticAttr(is_glob: i32, init: **struc InitialValue) *struc IdentifierAttr;
@@ -127,18 +128,21 @@ pub fn make_ConstantAttr(static_init: **struc StaticInit) *struc IdentifierAttr;
 pub fn make_LocalAttr(none) *struc IdentifierAttr;
 pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none;
 
-type struc Symbol(tag: i32, type_t: *struc Type, attrs: *struc IdentifierAttr)
+type struc Symbol(unique_ptr_impl(AST_T)
+    type_t: *struc Type, attrs: *struc IdentifierAttr)
 pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc Symbol;
 pub fn free_Symbol(self: **struc Symbol) none;
 
-type struc StructMember(tag: i32, offset: i64, member_type: *struc Type)
+type struc StructMember(unique_ptr_impl(AST_T)
+    offset: i64, member_type: *struc Type)
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember;
 pub fn free_StructMember(self: **struc StructMember) none;
 m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``UPtrStructMember'')
 
-type struc StructTypedef(tag: i32, alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
+type struc StructTypedef(unique_ptr_impl(AST_T)
+    alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef;
 pub fn free_StructTypedef(self: **struc StructTypedef) none;
 

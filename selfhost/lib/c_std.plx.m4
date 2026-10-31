@@ -29,10 +29,8 @@ m4_define(`tagged_def_impl', `tag: $1')m4_dnl
 m4_define(`tagged_def_init', `make_$2(tagged_def_t($1, $3))')m4_dnl
 # TODO
 m4_define(`unique_ptr_t', `*struc $1')m4_dnl
-# TODO
-m4_define(`unique_ptr_impl', `tagged_def_impl($1)')m4_dnl
+m4_define(`unique_ptr_impl', `tagged_def_impl($1),')m4_dnl
 m4_define(`uptr_new', `nil')m4_dnl
-# TODO
 m4_define(`uptr_delete', `if not ($1) { return none }')m4_dnl
 m4_define(`uptr_alloc', `{
     free_$1(@($2))
