@@ -96,7 +96,6 @@
 #define shared_ptr_impl(T)    \
     unsigned long _ref_count; \
     unique_ptr_impl(T)
-// uptr_new()
 #define sptr_new() 00000
 #define sptr_delete(X)                             \
     do {                                           \
