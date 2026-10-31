@@ -176,14 +176,7 @@ pub fn free_Type(self: **struc Type) none {
             THROW_ABORT
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 pub fn make_StaticInit(none) *struc StaticInit {
@@ -323,14 +316,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
             THROW_ABORT
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 pub fn make_InitialValue(none) *struc InitialValue {
@@ -404,14 +390,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
             THROW_ABORT
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 pub fn make_IdentifierAttr(none) *struc IdentifierAttr {

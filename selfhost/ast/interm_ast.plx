@@ -131,14 +131,7 @@ pub fn free_TacValue(self: **struc TacValue) none {
             THROW_ABORT
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 pub fn make_TacExpResult(none) *struc TacExpResult {
