@@ -510,24 +510,9 @@ fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
     swap_instr: *struc AsmInstruction = uptr_new()
     instr_back_1: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
     instr_back_2: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
-    if instr_back_1[] ~= swap_instr {
-        " #@MACRO@:uptr_move(AsmInstruction, *instr_back_1, swap_instr)"
-        free_AsmInstruction(@swap_instr)
-        swap_instr = instr_back_1[]
-        instr_back_1[] = uptr_new()
-    }
-    if instr_back_2[] ~= instr_back_1[] {
-        " #@MACRO@:uptr_move(AsmInstruction, *instr_back_2, *instr_back_1)"
-        free_AsmInstruction(@instr_back_1[])
-        instr_back_1[] = instr_back_2[]
-        instr_back_2[] = uptr_new()
-    }
-    if swap_instr ~= instr_back_2[] {
-        " #@MACRO@:uptr_move(AsmInstruction, swap_instr, *instr_back_2)"
-        free_AsmInstruction(@instr_back_2[])
-        instr_back_2[] = swap_instr
-        swap_instr = uptr_new()
-    }
+    uptr_move(AsmInstruction, instr_back_1[], swap_instr)
+    uptr_move(AsmInstruction, instr_back_2[], instr_back_1[])
+    uptr_move(AsmInstruction, swap_instr, instr_back_2[])
 }
 
 fn fix_alloc_stack_bytes(ctx: *struc StackFixContext, callee_saved_size: i64) none {

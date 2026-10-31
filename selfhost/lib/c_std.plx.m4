@@ -31,7 +31,7 @@ m4_define(`unique_ptr_t', `*struc $1')m4_dnl
 # TODO
 m4_define(`unique_ptr_impl', `tagged_def_impl($1)')m4_dnl
 m4_define(`uptr_new', `nil')m4_dnl
-m4_define(`uptr_delete', `if not ($1) { return }')m4_dnl
+m4_define(`uptr_delete', `if not ($1) { return none }')m4_dnl
 # TODO
 m4_define(`uptr_alloc', `{
     free_$1(@($2))
@@ -58,7 +58,7 @@ m4_define(`sptr_delete', `uptr_delete($1)
 elif ($1)[]._ref_count > 1 {
     ($1)[]._ref_count--
     ($1) = sptr_new()
-    return
+    return none
 }')m4_dnl
 m4_define(`sptr_alloc', `{
     uptr_alloc($1, $2)
