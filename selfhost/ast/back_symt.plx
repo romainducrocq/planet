@@ -69,7 +69,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
 }
 
 pub fn make_BackendSymbol(none) *struc BackendSymbol {
-    self: *struc BackendSymbol = uptr_new()
+    self: unique_ptr_t(BackendSymbol) = uptr_new()
     uptr_alloc(BackendSymbol, self)
     self[].tag = AST_BackendSymbol_t
     return self

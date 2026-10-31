@@ -328,7 +328,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
 }
 
 pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = uptr_new()
+    self: unique_ptr_t(IdentifierAttr) = uptr_new()
     uptr_alloc(IdentifierAttr, self)
     self[].tag = AST_IdentifierAttr_t
     return self
@@ -392,7 +392,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
 }
 
 pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc Symbol {
-    self: *struc Symbol = uptr_new()
+    self: unique_ptr_t(Symbol) = uptr_new()
     uptr_alloc(Symbol, self)
     self[].tag = AST_Symbol_t
     self[].type_t = sptr_new()
@@ -418,7 +418,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
 }
 
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember {
-    self: *struc StructMember = uptr_new()
+    self: unique_ptr_t(StructMember) = uptr_new()
     uptr_alloc(StructMember, self)
     self[].tag = AST_StructMember_t
     self[].offset = offset
@@ -442,7 +442,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
 }
 
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef {
-    self: *struc StructTypedef = uptr_new()
+    self: unique_ptr_t(StructTypedef) = uptr_new()
     uptr_alloc(StructTypedef, self)
     self[].tag = AST_StructTypedef_t
     self[].alignment = alignment

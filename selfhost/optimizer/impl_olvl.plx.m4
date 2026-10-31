@@ -58,7 +58,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
 }
 
 fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
-    self: *struc ControlFlowGraph = uptr_new()
+    self: unique_ptr_t(ControlFlowGraph) = uptr_new()
     uptr_alloc(ControlFlowGraph, self)
     self[].entry_id = 0
     self[].exit_id = 0
@@ -86,7 +86,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
 }
 
 fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
-    self: *struc DataFlowAnalysis = uptr_new()
+    self: unique_ptr_t(DataFlowAnalysis) = uptr_new()
     uptr_alloc(DataFlowAnalysis, self)
     self[].set_size = 0
     self[].mask_size = 0
@@ -115,7 +115,7 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
 }
 
 fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
-    self: *struc DataFlowAnalysisO1 = uptr_new()
+    self: unique_ptr_t(DataFlowAnalysisO1) = uptr_new()
     uptr_alloc(DataFlowAnalysisO1, self)
     self[].addressed_idx = 0
     self[].data_idx_map = vec_new()
@@ -133,7 +133,7 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
 }
 
 fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
-    self: *struc DataFlowAnalysisO2 = uptr_new()
+    self: unique_ptr_t(DataFlowAnalysisO2) = uptr_new()
     uptr_alloc(DataFlowAnalysisO2, self)
     self[].data_name_map = vec_new()
     return self

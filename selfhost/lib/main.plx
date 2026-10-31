@@ -50,10 +50,10 @@ fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc
     frontend: struc FrontEndContext;
     backend: struc BackEndContext;
     tokens: vector_t(struc Token) = vec_new()
-    c_ast: *struc CProgram = uptr_new()
-    tac_ast: *struc TacProgram = uptr_new()
+    c_ast: unique_ptr_t(CProgram) = uptr_new()
+    tac_ast: unique_ptr_t(TacProgram) = uptr_new()
 
-    asm_ast: *struc AsmProgram = uptr_new()
+    asm_ast: unique_ptr_t(AsmProgram) = uptr_new()
     {
         if ctx[].debug_code > 0 and ctx[].debug_code <= 127 {
             ctx[].is_verbose = true

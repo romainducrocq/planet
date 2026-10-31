@@ -1364,7 +1364,7 @@ fn bytearr_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i6
         size: i64 = bytearr_type[].size
         byte_instrs: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
         loop while size > 0l {
-            byte_instr: *struc AsmInstruction = uptr_new()
+            byte_instr: unique_ptr_t(AsmInstruction) = uptr_new()
             {
                 src: *struc AsmOperand = make_AsmPseudoMem(name, offset)
                 dst: *struc AsmOperand = gen_memory(REG_Sp, to_offset)
