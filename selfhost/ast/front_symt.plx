@@ -108,18 +108,7 @@ pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type {
 }
 
 pub fn free_Type(self: **struc Type) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_Type_t {
             -> AST_Char_t {
@@ -249,18 +238,7 @@ pub fn make_PointerInit(name: u64) *struc StaticInit {
 }
 
 pub fn free_StaticInit(self: **struc StaticInit) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_StaticInit_t {
             -> AST_IntInit_t {
@@ -325,18 +303,7 @@ pub fn make_NoInitializer(none) *struc InitialValue {
 }
 
 pub fn free_InitialValue(self: **struc InitialValue) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_InitialValue_t {
             -> AST_Tentative_t {

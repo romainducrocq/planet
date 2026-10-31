@@ -61,18 +61,7 @@ pub fn make_CConstUChar(value: u8) *struc CConst {
 }
 
 pub fn free_CConst(self: **struc CConst) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_CConst_t {
             -> AST_CConstInt_t {
@@ -108,18 +97,7 @@ pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral {
 }
 
 pub fn free_CStringLiteral(self: **struc CStringLiteral) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_CStringLiteral_t {
             break
