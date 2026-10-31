@@ -93,18 +93,7 @@ pub fn make_TacVariable(name: u64) *struc TacValue {
 }
 
 pub fn free_TacValue(self: **struc TacValue) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_TacValue_t {
             break

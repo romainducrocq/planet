@@ -14,9 +14,7 @@ m4_define(`EARLY_EXIT', `jump _Lfinally')m4_dnl
 m4_define(`FINALLY', `label _Lfinally')m4_dnl
 m4_define(`TRY', `{
     _errval = ($1)
-    if _errval ~= 0 {
-        EARLY_EXIT
-    }
+    if _errval ~= 0 { EARLY_EXIT }
 }')m4_dnl
 m4_define(`THROW_PANIC', `PANIC_FUNC($@)')m4_dnl
 m4_define(`SET_ERROR_MSG', `snprintf(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $@)')m4_dnl
@@ -33,14 +31,12 @@ m4_define(`unique_ptr_t', `*struc $1')m4_dnl
 # TODO
 m4_define(`unique_ptr_impl', `tagged_def_impl($1)')m4_dnl
 m4_define(`uptr_new', `nil')m4_dnl
-m4_define(`uptr_delete', `TODO')m4_dnl
+m4_define(`uptr_delete', `if not ($1) { return }')m4_dnl
 # TODO
 m4_define(`uptr_alloc', `{
     free_$1(@($2))
     ($2) = cast<*struc $1>(malloc(sizeof<struc $1>))
-    if (not ($2)) {
-        THROW_ALLOC($1)
-    }
+    if not ($2) { THROW_ALLOC($1) }
 }')m4_dnl
 # TODO
 m4_define(`uptr_free', `if ($1) {
@@ -57,7 +53,13 @@ m4_define(`uptr_move', `if ($2) ~= ($3) {
 m4_define(`shared_ptr_t', `unique_ptr_t($1)')m4_dnl
 m4_define(`shared_ptr_impl', `TODO')m4_dnl
 m4_define(`sptr_new', `nil')m4_dnl
-m4_define(`sptr_delete', `TODO')m4_dnl
+# TODO
+m4_define(`sptr_delete', `uptr_delete($1)
+elif ($1)[]._ref_count > 1 {
+    ($1)[]._ref_count--
+    ($1) = sptr_new()
+    return
+}')m4_dnl
 m4_define(`sptr_alloc', `{
     uptr_alloc($1, $2)
     ($2)[]._ref_count = 1
