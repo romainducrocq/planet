@@ -35,10 +35,7 @@ type struc DataFlowAnalysisO2(data_name_map: vector_t(TIdentifier))
 ')m4_dnl
 
 fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     ;
     vec_delete(self[][].entry_succ_ids)
     ;
@@ -74,10 +71,7 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
 }
 
 fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     ;
     vec_delete(self[][].open_data_map)
     ;
@@ -107,10 +101,7 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     ;
     vec_delete(self[][].data_idx_map)
     ;
@@ -133,10 +124,7 @@ fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
 }
 ', __OPTIM_LEVEL__, `2', `
 fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     ;
     vec_delete(self[][].data_name_map)
     ;

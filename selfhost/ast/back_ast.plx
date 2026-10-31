@@ -469,10 +469,7 @@ pub fn make_AsmRet(none) *struc AsmInstruction {
 }
 
 pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmInstruction_t {
             break
@@ -618,10 +615,7 @@ pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: **struc St
 }
 
 pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmTopLevel_t {
             break
@@ -663,10 +657,7 @@ pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)
 }
 
 pub fn free_AsmProgram(self: **struc AsmProgram) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmProgram_t {
             break

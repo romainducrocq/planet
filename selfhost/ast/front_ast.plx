@@ -109,10 +109,7 @@ pub fn make_CAbstractBase(none) *struc CAbstractDeclarator {
 }
 
 pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CAbstractDeclarator_t {
             break
@@ -147,10 +144,7 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
 }
 
 pub fn free_CParam(self: **struc CParam) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CParam_t {
             break
@@ -206,10 +200,7 @@ pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor:
 }
 
 pub fn free_CDeclarator(self: **struc CDeclarator) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CDeclarator_t {
             break
@@ -411,10 +402,7 @@ pub fn make_CArrow(member: u64, pointer: **struc CExp, info_at: u64) *struc CExp
 }
 
 pub fn free_CExp(self: **struc CExp) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CExp_t {
             break
@@ -655,10 +643,7 @@ pub fn make_CNull(none) *struc CStatement {
 }
 
 pub fn free_CStatement(self: **struc CStatement) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CStatement_t {
             break
@@ -763,10 +748,7 @@ pub fn make_CInitExp(init: **struc CExp) *struc CForInit {
 }
 
 pub fn free_CForInit(self: **struc CForInit) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CForInit_t {
             break
@@ -802,10 +784,7 @@ pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) *struc CBlock {
 }
 
 pub fn free_CBlock(self: **struc CBlock) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CBlock_t {
             break
@@ -848,10 +827,7 @@ pub fn make_CD(declaration: **struc CDeclaration) *struc CBlockItem {
 }
 
 pub fn free_CBlockItem(self: **struc CBlockItem) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CBlockItem_t {
             break
@@ -914,10 +890,7 @@ pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) *
 }
 
 pub fn free_CInitializer(self: **struc CInitializer) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CInitializer_t {
             break
@@ -953,10 +926,7 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info
 }
 
 pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CMemberDeclaration_t {
             break
@@ -982,10 +952,7 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(
 }
 
 pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CStructDeclaration_t {
             break
@@ -1018,10 +985,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body
 }
 
 pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CFunctionDeclaration_t {
             break
@@ -1051,10 +1015,7 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
 }
 
 pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CVariableDeclaration_t {
             break
@@ -1100,10 +1061,7 @@ pub fn make_CStructDecl(struct_decl: **struc CStructDeclaration) *struc CDeclara
 }
 
 pub fn free_CDeclaration(self: **struc CDeclaration) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CDeclaration_t {
             break
@@ -1137,10 +1095,7 @@ pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) *struc
 }
 
 pub fn free_CProgram(self: **struc CProgram) none {
-    if not self[] {
-        " #@MACRO@:uptr_delete(*self)"
-        return none
-    }
+    uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CProgram_t {
             break
