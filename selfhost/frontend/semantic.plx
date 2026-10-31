@@ -416,7 +416,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
     return joint_type
 }
 
-fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: *struc CExp, joint_type: **struc Type) error_t {
+fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: *struc CExp, joint_type: *shared_ptr_t(Type)) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -755,7 +755,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
     CATCH_EXIT
 }
 
-fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: *unique_ptr_t(CExp)) error_t {
+fn cast_exp(ctx: *struc SemanticContext, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
     exp_type_cp: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = (exp[])[].info_at
@@ -767,7 +767,7 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: *unique_pt
     CATCH_EXIT
 }
 
-fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: *unique_ptr_t(CExp)) error_t {
+fn cast_assign(ctx: *struc SemanticContext, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -1760,7 +1760,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
     CATCH_EXIT
 }
 
-fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: **struc Type) error_t {
+fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     if not is_same_type(node[].exp[].exp_type, init_type[]) {
         TRY(cast_assign(ctx, init_type, @node[].exp))
@@ -1770,7 +1770,7 @@ fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     CATCH_EXIT
 }
 
-fn check_string_init(node: *struc CSingleInit, init_type: **struc Type) none {
+fn check_string_init(node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) none {
     sptr_copy(Type, init_type[], node[].exp[].exp_type)
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
@@ -1899,7 +1899,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     CATCH_EXIT
 }
 
-fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: **struc Type) none {
+fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) none {
     loop while vec_size(node[].initializers) < cast<u64>(arr_type[].size) {
         zero_init: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
         vec_move_back(node[].initializers, zero_init)
@@ -1907,7 +1907,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 
-fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) none {
+fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) none {
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     loop i: u64 = vec_size(node[].initializers) while i < map_size(struct_typedef[].members) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
@@ -2391,7 +2391,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     CATCH_EXIT
 }
 
-fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type, init_value: **struc InitialValue) error_t {
+fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type, init_value: *shared_ptr_t(InitialValue)) error_t {
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     CATCH_ENTER
     {
@@ -3460,9 +3460,9 @@ fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t {
     CATCH_EXIT
 }
 
-fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: **struc Type) error_t;
+fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: *shared_ptr_t(Type)) error_t;
 
-fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: **struc Type) error_t {
+fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     if node[].exp[].tag == AST_CString_t and (init_type[])[].tag == AST_Array_t {
         TRY(check_bound_string_init(ctx, @node[].exp[].get._CString, @init_type[][].get._Array))
@@ -3476,7 +3476,7 @@ fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     CATCH_EXIT
 }
 
-fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: **struc Type) error_t {
+fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(check_bound_arr_init(ctx, node, arr_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -3487,7 +3487,7 @@ fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
     CATCH_EXIT
 }
 
-fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: **struc Type) error_t {
+fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(check_bound_struct_init(ctx, node, struct_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -3499,7 +3499,7 @@ fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
     CATCH_EXIT
 }
 
-fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, init_type: **struc Type) error_t {
+fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, init_type: *shared_ptr_t(Type)) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     match (init_type[])[].tag {
@@ -3521,7 +3521,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
     CATCH_EXIT
 }
 
-fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: **struc Type) error_t {
+fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CSingleInit_t {
