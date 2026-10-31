@@ -48,7 +48,8 @@ type struc TacVariable(name: u64)
 
 type union _TacValue(_TacConstant: struc TacConstant, _TacVariable: struc TacVariable)
 
-type struc TacValue(_ref_count: u64, tag: i32, get: union _TacValue)
+type struc TacValue(shared_ptr_impl(AST_T)
+    get: union _TacValue)
 pub fn make_TacValue(none) *struc TacValue;
 pub fn make_TacConstant(constant: **struc CConst) *struc TacValue;
 pub fn make_TacVariable(name: u64) *struc TacValue;

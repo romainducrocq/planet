@@ -48,7 +48,6 @@ m4_define(`uptr_move', `if ($2) ~= ($3) {
 }')m4_dnl
 # TODO
 m4_define(`shared_ptr_t', `unique_ptr_t($1)')m4_dnl
-# TODO
 m4_define(`shared_ptr_impl', `_ref_count: u64, unique_ptr_impl($1)')m4_dnl
 m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `uptr_delete($1)
