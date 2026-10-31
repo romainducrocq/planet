@@ -44,7 +44,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
 }
 
 fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
-    self: *struc InferenceGraph = uptr_new()
+    self: unique_ptr_t(InferenceGraph) = uptr_new()
     uptr_alloc(InferenceGraph, self)
     self[].hard_reg_mask = 0ul
     self[].unpruned_hard_mask_bits = vec_new()

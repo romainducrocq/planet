@@ -176,7 +176,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) *struc Tac
                 constant_type = make_Array(size, @elem_type)
             }
 
-            constant_attrs: *struc IdentifierAttr = uptr_new()
+            constant_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
             {
                 static_init: *struc StaticInit = sptr_new()
                 {
@@ -589,8 +589,8 @@ fn sub_obj_assign_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject
 
 fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) *struc TacExpResult {
     src: *struc TacValue = sptr_new()
-    res: *struc TacExpResult = uptr_new()
-    res_postfix: *struc TacExpResult = uptr_new()
+    res: unique_ptr_t(TacExpResult) = uptr_new()
+    res_postfix: unique_ptr_t(TacExpResult) = uptr_new()
     if node[].exp_left {
         src = repr_exp_instr(ctx, node[].exp_right)
         res = repr_res_instr(ctx, node[].exp_left)

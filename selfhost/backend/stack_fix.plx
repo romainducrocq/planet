@@ -507,7 +507,7 @@ fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) non
 }
 
 fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
-    swap_instr: *struc AsmInstruction = uptr_new()
+    swap_instr: unique_ptr_t(AsmInstruction) = uptr_new()
     instr_back_1: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
     instr_back_2: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
     uptr_move(AsmInstruction, instr_back_1[], swap_instr)

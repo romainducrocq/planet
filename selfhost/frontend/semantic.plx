@@ -1777,7 +1777,7 @@ fn check_string_init(node: *struc CSingleInit, init_type: **struc Type) none {
 fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc CInitializer;
 
 fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
-    exp: *struc CExp = uptr_new()
+    exp: unique_ptr_t(CExp) = uptr_new()
     {
         constant: *struc CConst = sptr_new()
         match elem_type[].tag {
@@ -1959,8 +1959,8 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     name_fmt_1: string_t = str_new(nil)
     name_fmt_2: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
-    param_attrs: *struc IdentifierAttr = uptr_new()
-    symbol: *struc Symbol = uptr_new()
+    param_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
+    symbol: unique_ptr_t(Symbol) = uptr_new()
     param_type: *struc Type = sptr_new()
     CATCH_ENTER
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
@@ -2002,8 +2002,8 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     name_fmt: string_t = str_new(nil)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    glob_fun_attrs: *struc IdentifierAttr = uptr_new()
-    symbol: *struc Symbol = uptr_new()
+    glob_fun_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
+    symbol: unique_ptr_t(Symbol) = uptr_new()
     glob_fun_type: *struc Type = sptr_new()
     CATCH_ENTER
     THROW_ABORT_IF(node[].fun_type[].tag == AST_Void_t)
@@ -2235,7 +2235,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
                 constant_type = make_Array(size, @elem_type)
             }
 
-            constant_attrs: *struc IdentifierAttr = uptr_new()
+            constant_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
             {
                 static_init: *struc StaticInit = sptr_new()
                 {
@@ -2412,8 +2412,8 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     name_fmt: string_t = str_new(nil)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    glob_var_attrs: *struc IdentifierAttr = uptr_new()
-    symbol: *struc Symbol = uptr_new()
+    glob_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
+    symbol: unique_ptr_t(Symbol) = uptr_new()
     init_value: *struc InitialValue = sptr_new()
     glob_var_type: *struc Type = sptr_new()
     CATCH_ENTER
@@ -2493,8 +2493,8 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     name_fmt: string_t = str_new(nil)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    local_var_attrs: *struc IdentifierAttr = uptr_new()
-    symbol: *struc Symbol = uptr_new()
+    local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
+    symbol: unique_ptr_t(Symbol) = uptr_new()
     init_value: *struc InitialValue = sptr_new()
     local_var_type: *struc Type = sptr_new()
     CATCH_ENTER
@@ -2529,8 +2529,8 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
 }
 
 fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
-    local_var_attrs: *struc IdentifierAttr = uptr_new()
-    symbol: *struc Symbol = uptr_new()
+    local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
+    symbol: unique_ptr_t(Symbol) = uptr_new()
     init_value: *struc InitialValue = sptr_new()
     local_var_type: *struc Type = sptr_new()
     CATCH_ENTER
@@ -2558,8 +2558,8 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
 fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
-    local_var_attrs: *struc IdentifierAttr = uptr_new()
-    symbol: *struc Symbol = uptr_new()
+    local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
+    symbol: unique_ptr_t(Symbol) = uptr_new()
     local_var_type: *struc Type = sptr_new()
     CATCH_ENTER
     if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
@@ -2645,8 +2645,8 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
 
 fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) error_t {
     struct_fmt: string_t = str_new(nil)
-    struct_member: *struc StructMember = uptr_new()
-    struct_typedef: *struc StructTypedef = uptr_new()
+    struct_member: unique_ptr_t(StructMember) = uptr_new()
+    struct_typedef: unique_ptr_t(StructTypedef) = uptr_new()
     member_type: *struc Type = sptr_new()
     member_names: vector_t(TIdentifier) = vec_new()
     members: hashmap_t(``TIdentifier'', ``UPtrStructMember'') = map_new()
