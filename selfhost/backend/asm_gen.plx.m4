@@ -7,6 +7,6 @@ type struc TacProgram;
 type struc AsmProgram;
 type struc FrontEndContext;
 type struc IdentifierContext;
-pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram;
+pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram;
 
 ')m4_dnl

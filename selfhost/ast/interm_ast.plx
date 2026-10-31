@@ -143,7 +143,7 @@ pub fn make_TacSubObject(base_name: u64, offset: i64) *struc TacExpResult {
     return self
 }
 
-pub fn free_TacExpResult(self: **struc TacExpResult) none {
+pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_TacExpResult_t {
@@ -392,7 +392,7 @@ pub fn make_TacLabel(name: u64) *struc TacInstruction {
     return self
 }
 
-pub fn free_TacInstruction(self: **struc TacInstruction) none {
+pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_TacInstruction_t {
@@ -553,7 +553,7 @@ pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_
     return self
 }
 
-pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
+pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_TacTopLevel_t {
@@ -600,7 +600,7 @@ pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)
     return self
 }
 
-pub fn free_TacProgram(self: **struc TacProgram) none {
+pub fn free_TacProgram(self: *unique_ptr_t(TacProgram)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_TacProgram_t {

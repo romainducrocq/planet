@@ -755,7 +755,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
     CATCH_EXIT
 }
 
-fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CExp) error_t {
+fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: *unique_ptr_t(CExp)) error_t {
     exp_type_cp: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = (exp[])[].info_at
@@ -767,7 +767,7 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CE
     CATCH_EXIT
 }
 
-fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CExp) error_t {
+fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: *unique_ptr_t(CExp)) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -785,7 +785,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
     CATCH_EXIT
 }
 
-fn promote_char_to_int(ctx: *struc SemanticContext, exp: **struc CExp) error_t {
+fn promote_char_to_int(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t {
     promote_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     promote_type = make_Int()
@@ -1476,7 +1476,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
     CATCH_EXIT
 }
 
-fn check_arr_typed_exp(addrof: **struc CExp) none {
+fn check_arr_typed_exp(addrof: *unique_ptr_t(CExp)) none {
     {
         ref_type: shared_ptr_t(Type) = sptr_new()
         sptr_copy(Type, (addrof[])[].exp_type[].get._Array.elem_type, ref_type)
@@ -1499,7 +1499,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) error_
     CATCH_EXIT
 }
 
-fn check_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) error_t {
+fn check_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     match (exp[])[].exp_type[].tag {
         -> AST_Array_t {
@@ -2916,7 +2916,7 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t {
 }
 
 fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t;
-fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) error_t;
+fn reslv_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t;
 
 fn reslv_const_exp(node: *struc CConstant) none {
     check_const_exp(node)
@@ -3144,7 +3144,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t {
     CATCH_EXIT
 }
 
-fn reslv_typed_exp(ctx: *struc SemanticContext, exp: **struc CExp) error_t {
+fn reslv_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(reslv_exp(ctx, exp[]))
     TRY(check_typed_exp(ctx, exp))

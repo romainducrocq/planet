@@ -7,6 +7,6 @@ type struc CProgram;
 type struc TacProgram;
 type struc FrontEndContext;
 type struc IdentifierContext;
-pub fn represent_three_address_code(c_ast: **struc CProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram;
+pub fn represent_three_address_code(c_ast: *unique_ptr_t(CProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc TacProgram;
 
 ')m4_dnl

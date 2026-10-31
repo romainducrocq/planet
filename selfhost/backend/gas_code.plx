@@ -997,7 +997,7 @@ fn emit_program(ctx: *struc GasCodeContext, node: *struc AsmProgram) none {
     emit(ctx, "    "         "    "         ".section .note.GNU-stack,\"\",@progbits"         "\n")
 }
 
-pub fn emit_gas_code(asm_ast: **struc AsmProgram, backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none {
+pub fn emit_gas_code(asm_ast: *unique_ptr_t(AsmProgram), backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none {
     ctx: struc GasCodeContext;
     {
         ctx.backend = backend

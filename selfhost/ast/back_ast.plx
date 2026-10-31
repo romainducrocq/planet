@@ -468,7 +468,7 @@ pub fn make_AsmRet(none) *struc AsmInstruction {
     return self
 }
 
-pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
+pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmInstruction_t {
@@ -614,7 +614,7 @@ pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: **struc St
     return self
 }
 
-pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
+pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmTopLevel_t {
@@ -656,7 +656,7 @@ pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)
     return self
 }
 
-pub fn free_AsmProgram(self: **struc AsmProgram) none {
+pub fn free_AsmProgram(self: *unique_ptr_t(AsmProgram)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmProgram_t {

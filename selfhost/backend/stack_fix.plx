@@ -508,8 +508,8 @@ fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) non
 
 fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
     swap_instr: unique_ptr_t(AsmInstruction) = uptr_new()
-    instr_back_1: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
-    instr_back_2: **struc AsmInstruction = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
+    instr_back_1: *unique_ptr_t(AsmInstruction) = @vec_back(ctx[].p_fix_instrs[])
+    instr_back_2: *unique_ptr_t(AsmInstruction) = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
     uptr_move(AsmInstruction, instr_back_1[], swap_instr)
     uptr_move(AsmInstruction, instr_back_2[], instr_back_1[])
     uptr_move(AsmInstruction, swap_instr, instr_back_2[])
@@ -693,7 +693,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_LongWord()
-    instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
+    instr_back: *unique_ptr_t(AsmInstruction) = @vec_back(ctx[].p_fix_instrs[])
     free_AsmInstruction(instr_back)
     instr_back[] = make_AsmMov(@asm_type, @src, @dst)
     return @(instr_back[])[].get._AsmMov
@@ -1019,7 +1019,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
         dst: *struc AsmOperand = gen_register(REG_Sp)
         asm_type_src_cp: shared_ptr_t(AssemblyType) = sptr_new()
         sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)
-        instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
+        instr_back: *unique_ptr_t(AsmInstruction) = @vec_back(ctx[].p_fix_instrs[])
         free_AsmInstruction(instr_back)
         instr_back[] = make_AsmBinary(@binop, @asm_type_src_cp, @src, @dst)
     }

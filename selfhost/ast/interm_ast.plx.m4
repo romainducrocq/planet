@@ -69,7 +69,7 @@ pub fn make_TacExpResult(none) *struc TacExpResult;
 pub fn make_TacPlainOperand(val: **struc TacValue) *struc TacExpResult;
 pub fn make_TacDereferencedPointer(val: **struc TacValue) *struc TacExpResult;
 pub fn make_TacSubObject(base_name: u64, offset: i64) *struc TacExpResult;
-pub fn free_TacExpResult(self: **struc TacExpResult) none;
+pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none;
 
 type struc TacReturn(val: *struc TacValue)
 
@@ -142,7 +142,7 @@ pub fn make_TacJump(target: u64) *struc TacInstruction;
 pub fn make_TacJumpIfZero(target: u64, condition: **struc TacValue) *struc TacInstruction;
 pub fn make_TacJumpIfNotZero(target: u64, condition: **struc TacValue) *struc TacInstruction;
 pub fn make_TacLabel(name: u64) *struc TacInstruction;
-pub fn free_TacInstruction(self: **struc TacInstruction) none;
+pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none;
 
 type struc TacFunction(name: u64, is_glob: i32, params: vector_t(TIdentifier), body: vector_t(unique_ptr_t(TacInstruction)))
 
@@ -158,11 +158,11 @@ pub fn make_TacTopLevel(none) *struc TacTopLevel;
 pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) *struc TacTopLevel;
 pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc TacTopLevel;
 pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_init: **struc StaticInit) *struc TacTopLevel;
-pub fn free_TacTopLevel(self: **struc TacTopLevel) none;
+pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none;
 
 type struc TacProgram(unique_ptr_impl(AST_T)
     static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)))
 pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram;
-pub fn free_TacProgram(self: **struc TacProgram) none;
+pub fn free_TacProgram(self: *unique_ptr_t(TacProgram)) none;
 
 ')m4_dnl
