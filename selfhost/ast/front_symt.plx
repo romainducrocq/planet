@@ -419,12 +419,7 @@ pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc S
     self[].type_t = sptr_new()
     sptr_move(Type, type_t[], self[].type_t)
     self[].attrs = uptr_new()
-    if attrs[] ~= self[].attrs {
-        " #@MACRO@:uptr_move(IdentifierAttr, *attrs, self->attrs)"
-        free_IdentifierAttr(@self[].attrs)
-        self[].attrs = attrs[]
-        attrs[] = uptr_new()
-    }
+    uptr_move(IdentifierAttr, attrs[], self[].attrs)
     return self
 }
 
