@@ -2957,7 +2957,7 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
     return make_AsmProgram(@static_const_toplvls, @top_levels)
 }
 
-pub fn generate_assembly(tac_ast: **struc TacProgram, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram {
+pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram {
     ctx: struc AsmGenContext;
     {
         ctx.frontend = frontend

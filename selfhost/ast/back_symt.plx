@@ -93,7 +93,7 @@ pub fn make_BackendFun(is_def: i32) *struc BackendSymbol {
     return self
 }
 
-pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
+pub fn free_BackendSymbol(self: *unique_ptr_t(BackendSymbol)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_BackendSymbol_t {
