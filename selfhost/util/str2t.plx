@@ -68,13 +68,7 @@ pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) no
             }
         }
         else {
-            loop .. while 0 {
-                " #@MACRO@:vec_push_back(*string_literal, (int8_t)str_char)"
-                loop .. while 0 {
-                    (? (not (string_literal[]) or (cast<*struc stbds_array_header>((string_literal[])) - 1)[].length + (1) > (cast<*struc stbds_array_header>((string_literal[])) - 1)[].capacity) then (((string_literal[]) = stbds_arrgrowf((string_literal[]), sizeof((string_literal[])[]), (1), (0))) and 0) else 0)
-                    (string_literal[])[(cast<*struc stbds_array_header>((string_literal[])) - 1)[].length++] = (cast<i8>(str_char))
-                }
-            }
+            vec_push_back(string_literal[], cast<i8>(str_char))
         }
     }
 }
