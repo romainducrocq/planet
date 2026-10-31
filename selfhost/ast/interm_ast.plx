@@ -71,7 +71,7 @@ pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp {
 }
 
 pub fn make_TacValue(none) *struc TacValue {
-    self: *struc TacValue = sptr_new()
+    self: shared_ptr_t(TacValue) = sptr_new()
     sptr_alloc(TacValue, self)
     self[].tag = AST_TacValue_t
     return self

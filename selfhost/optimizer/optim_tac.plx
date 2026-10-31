@@ -68,7 +68,7 @@ fn fold_sign_extend_int_const(ctx: *struc OptimTacContext, node: *struc TacVaria
 }
 
 fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             fold_constant = fold_sign_extend_char_const(ctx, node, @constant[].get._CConstChar)
@@ -89,7 +89,7 @@ fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -185,7 +185,7 @@ fn fold_truncate_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariab
 }
 
 fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstInt_t {
             fold_constant = fold_truncate_int_const(ctx, node, @constant[].get._CConstInt)
@@ -214,7 +214,7 @@ fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -266,7 +266,7 @@ fn fold_zero_extend_uint_const(ctx: *struc OptimTacContext, node: *struc TacVari
 }
 
 fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstUChar_t {
             fold_constant = fold_zero_extend_uchar_const(ctx, node, @constant[].get._CConstUChar)
@@ -287,7 +287,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -296,7 +296,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
 
 fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
     THROW_ABORT_IF(constant[].tag ~= AST_CConstDouble_t)
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -326,7 +326,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -335,7 +335,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
 
 fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
     THROW_ABORT_IF(constant[].tag ~= AST_CConstDouble_t)
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_UChar_t {
             value: u8 = cast<u8>(constant[].get._CConstDouble.value)
@@ -363,7 +363,7 @@ fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubl
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: *struc TacValue = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -371,7 +371,7 @@ fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubl
 }
 
 fn fold_signed_to_dbl_const(constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             value: f64 = cast<f64>(constant[].get._CConstChar.value)
@@ -401,7 +401,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
             node[].dst[].tag ~= AST_TacVariable_t
             or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
         src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -409,7 +409,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
 }
 
 fn fold_unsigned_to_dbl_const(constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstUChar_t {
             value: f64 = cast<f64>(constant[].get._CConstUChar.value)
@@ -439,7 +439,7 @@ fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntT
             node[].dst[].tag ~= AST_TacVariable_t
             or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
         src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -563,7 +563,7 @@ fn fold_unary_ulong_const(node: *struc TacUnaryOp, constant: *struc CConstULong)
 }
 
 fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             fold_constant = fold_unary_char_const(node, @constant[].get._CConstChar)
@@ -603,7 +603,7 @@ fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) *struc Tac
 fn fold_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         src: *struc TacValue = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -956,7 +956,7 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
 
 fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, constant_2: *struc CConst) *struc TacValue {
     THROW_ABORT_IF(constant_1[].tag ~= constant_2[].tag)
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant_1[].tag {
         -> AST_CConstInt_t {
             fold_constant = fold_binary_int_const(node, @constant_1[].get._CConstInt, @constant_2[].get._CConstInt)
@@ -988,7 +988,7 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
 fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_idx: u64) none {
     if node[].src1[].tag == AST_TacConstant_t and node[].src2[].tag == AST_TacConstant_t {
         src: *struc TacValue = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -1121,7 +1121,7 @@ fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
 }
 
 fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) *struc TacValue {
-    fold_constant: *struc CConst = sptr_new()
+    fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
             fold_constant = fold_copy_char_const(ctx, node, @constant[].get._CConstChar)
@@ -1796,10 +1796,10 @@ fn get_dfa_bak_copy_instr(ctx: *struc OptimTacContext, i: u64) *struc TacCopy {
 fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx: u64) none {
     i: u64;
     if set_dfa_bak_instr(ctx, instr_idx, @i) {
-        src: *struc TacValue = sptr_new()
+        src: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].src, src)
         ;
-        dst: *struc TacValue = sptr_new()
+        dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
         free_TacInstruction(@ctx[].dfa_o1[].bak_instrs[i])

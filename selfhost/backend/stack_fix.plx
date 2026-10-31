@@ -490,7 +490,7 @@ pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction {
     binop: struc AsmBinaryOp = init_AsmSub()
     asm_type: *struc AssemblyType = make_QuadWord()
 
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         value: u64 = cast<u64>(byte)
         is_byte: i32 = byte <= 127l and byte >= -128l
@@ -527,7 +527,7 @@ fn fix_alloc_stack_bytes(ctx: *struc StackFixContext, callee_saved_size: i64) no
 
 fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = 0 while i < vec_size(callee_saved_regs) .. ++i {
-        src: *struc AsmOperand = sptr_new()
+        src: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, callee_saved_regs[i], src)
         push_fix_instr(ctx, make_AsmPush(@src))
     }
@@ -583,10 +583,10 @@ fn is_op_addr(node: *struc AsmOperand) i32 {
 }
 
 fn mov_dbl_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_Xmm14)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -601,7 +601,7 @@ fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
         }
         return none
     }
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
@@ -611,10 +611,10 @@ fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
 }
 
 fn mov_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -638,10 +638,10 @@ fn fix_mov_instr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
 }
 
 fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type_src, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -650,9 +650,9 @@ fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
 
 fn mov_sx_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     src: *struc AsmOperand = gen_register(REG_R11)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type_dst, asm_type)
     sptr_copy(AsmOperand, src, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -668,7 +668,7 @@ fn fix_mov_sx_instr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
 }
 
 fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_Byte()
@@ -679,18 +679,18 @@ fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZer
 
 fn byte_zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
     src: *struc AsmOperand = gen_register(REG_R11)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type_dst, asm_type)
     sptr_copy(AsmOperand, src, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
 fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) *struc AsmMov {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_LongWord()
     instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
@@ -701,7 +701,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
 
 fn zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     src: *struc AsmOperand = gen_register(REG_R11)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, src, node[].dst)
@@ -727,7 +727,7 @@ fn fix_zero_extend_instr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExt
 
 fn lea_to_addr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
     src: *struc AsmOperand = gen_register(REG_R11)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_QuadWord()
     sptr_copy(AsmOperand, src, node[].dst)
@@ -742,9 +742,9 @@ fn fix_lea_instr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
 
 fn cvttsd2si_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) none {
     src: *struc AsmOperand = gen_register(REG_R11)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, src, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -757,10 +757,10 @@ fn fix_cvttsd2si_instr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) n
 }
 
 fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -769,7 +769,7 @@ fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none
 
 fn cvtsi2sd_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
     src: *struc AsmOperand = gen_register(REG_Xmm15)
-    dst: *struc AsmOperand = sptr_new()
+    dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
     asm_type: *struc AssemblyType = make_BackendDouble()
     sptr_copy(AsmOperand, src, node[].dst)
@@ -786,17 +786,17 @@ fn fix_cvtsi2sd_instr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) non
 }
 
 fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_Xmm15)
     asm_type: *struc AssemblyType = make_BackendDouble()
     sptr_copy(AsmOperand, dst, node[].dst)
     {
-        src_cp: *struc AsmOperand = sptr_new()
+        src_cp: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, src, src_cp)
-        dst_cp: *struc AsmOperand = sptr_new()
+        dst_cp: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, dst, dst_cp)
-        asm_type_cp: *struc AssemblyType = sptr_new()
+        asm_type_cp: shared_ptr_t(AssemblyType) = sptr_new()
         sptr_copy(AssemblyType, asm_type, asm_type_cp)
         push_fix_instr(ctx, make_AsmMov(@asm_type_cp, @src_cp, @dst_cp))
     }
@@ -805,7 +805,7 @@ fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none 
 }
 
 fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
@@ -815,10 +815,10 @@ fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) non
 }
 
 fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -826,18 +826,18 @@ fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary)
 }
 
 fn binary_imul_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_R11)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].dst)
     {
-        src_cp: *struc AsmOperand = sptr_new()
+        src_cp: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, src, src_cp)
-        dst_cp: *struc AsmOperand = sptr_new()
+        dst_cp: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, dst, dst_cp)
-        asm_type_cp: *struc AssemblyType = sptr_new()
+        asm_type_cp: shared_ptr_t(AssemblyType) = sptr_new()
         sptr_copy(AssemblyType, asm_type, asm_type_cp)
         push_fix_instr(ctx, make_AsmMov(@asm_type_cp, @src_cp, @dst_cp))
     }
@@ -849,10 +849,10 @@ fn binary_shx_from_not_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) 
     if node[].src[].tag == AST_AsmRegister_t and register_mask_kind(@node[].src[].get._AsmRegister.reg) == REG_Cx {
         return none
     }
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_Cx)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -914,7 +914,7 @@ fn fix_binary_instr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
 }
 
 fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_Xmm15)
     asm_type: *struc AssemblyType = make_BackendDouble()
@@ -924,7 +924,7 @@ fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
 }
 
 fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()
@@ -934,10 +934,10 @@ fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
 }
 
 fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -945,10 +945,10 @@ fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none 
 }
 
 fn cmp_to_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: *struc AsmOperand = gen_register(REG_R11)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].dst)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -975,10 +975,10 @@ fn fix_cmp_instr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
 }
 
 fn idiv_from_imm(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -992,10 +992,10 @@ fn fix_idiv_instr(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
 }
 
 fn div_from_imm(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
-    asm_type: *struc AssemblyType = sptr_new()
+    asm_type: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_copy(AssemblyType, node[].asm_type, asm_type)
     sptr_copy(AsmOperand, dst, node[].src)
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
@@ -1009,7 +1009,7 @@ fn fix_div_instr(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
 }
 
 fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none {
-    src_reg: *struc AsmOperand = sptr_new()
+    src_reg: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src_reg)
 
     asm_type_src: *struc AssemblyType = make_QuadWord()
@@ -1017,7 +1017,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
         binop: struc AsmBinaryOp = init_AsmSub()
         src: *struc AsmOperand = make_AsmImm(8ul, true, false, false)
         dst: *struc AsmOperand = gen_register(REG_Sp)
-        asm_type_src_cp: *struc AssemblyType = sptr_new()
+        asm_type_src_cp: shared_ptr_t(AssemblyType) = sptr_new()
         sptr_copy(AssemblyType, asm_type_src, asm_type_src_cp)
         instr_back: **struc AsmInstruction = @vec_back(ctx[].p_fix_instrs[])
         free_AsmInstruction(instr_back)
@@ -1031,7 +1031,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
 }
 
 fn push_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmPush) none {
-    src: *struc AsmOperand = sptr_new()
+    src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: *struc AsmOperand = gen_register(REG_R10)
     asm_type: *struc AssemblyType = make_QuadWord()

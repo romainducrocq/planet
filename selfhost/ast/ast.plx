@@ -5,7 +5,7 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 m4_include(`../util/throw.plx.m4')m4_dnl
 
 pub fn make_CConst(none) *struc CConst {
-    self: *struc CConst = sptr_new()
+    self: shared_ptr_t(CConst) = sptr_new()
     sptr_alloc(CConst, self)
     self[].tag = AST_CConst_t
     return self
@@ -88,7 +88,7 @@ pub fn free_CConst(self: **struc CConst) none {
 }
 
 pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral {
-    self: *struc CStringLiteral = sptr_new()
+    self: shared_ptr_t(CStringLiteral) = sptr_new()
     sptr_alloc(CStringLiteral, self)
     self[].tag = AST_CStringLiteral_t
     self[].value = vec_new()

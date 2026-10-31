@@ -934,7 +934,7 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
         hard_reg: *struc AsmOperand = gen_register(reg_kind)
         if is_reg_callee_saved(reg_kind) and not register_mask_get(ctx[].callee_saved_reg_mask, reg_kind) {
             register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, true)
-            callee_saved_reg: *struc AsmOperand = sptr_new()
+            callee_saved_reg: shared_ptr_t(AsmOperand) = sptr_new()
             sptr_copy(AsmOperand, hard_reg, callee_saved_reg)
             ;
             vec_move_back(ctx[].p_backend_fun[].callee_saved_regs, callee_saved_reg)
