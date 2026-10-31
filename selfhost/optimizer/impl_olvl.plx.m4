@@ -198,12 +198,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
 
 fn set_instr(ctx: Ctx, instr: *struc AstInstruction, instr_idx: u64) none {
     if instr {
-        if instr ~= (ctx[].p_instrs[])[instr_idx] {
-            " #@MACRO@:uptr_move(AstInstruction, instr, (*ctx->p_instrs)[instr_idx])"
-            free_AstInstruction(@(ctx[].p_instrs[])[instr_idx])
-            (ctx[].p_instrs[])[instr_idx] = instr
-            instr = uptr_new()
-        }
+        uptr_move(AstInstruction, instr, (ctx[].p_instrs[])[instr_idx])
         ;
     }
     else {

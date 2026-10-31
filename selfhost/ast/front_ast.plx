@@ -96,12 +96,7 @@ pub fn make_CAbstractPointer(abstract_decltor: **struc CAbstractDeclarator) *str
     self: *struc CAbstractDeclarator = make_CAbstractDeclarator()
     self[].tag = AST_CAbstractPointer_t
     self[].get._CAbstractPointer.abstract_decltor = uptr_new()
-    if abstract_decltor[] ~= self[].get._CAbstractPointer.abstract_decltor {
-        " #@MACRO@:uptr_move(CAbstractDeclarator, *abstract_decltor, self->get._CAbstractPointer.abstract_decltor)"
-        free_CAbstractDeclarator(@self[].get._CAbstractPointer.abstract_decltor)
-        self[].get._CAbstractPointer.abstract_decltor = abstract_decltor[]
-        abstract_decltor[] = uptr_new()
-    }
+    uptr_move(CAbstractDeclarator, abstract_decltor[], self[].get._CAbstractPointer.abstract_decltor)
     return self
 }
 
@@ -110,12 +105,7 @@ pub fn make_CAbstractArray(size: i64, abstract_decltor: **struc CAbstractDeclara
     self[].tag = AST_CAbstractArray_t
     self[].get._CAbstractArray.size = size
     self[].get._CAbstractArray.abstract_decltor = uptr_new()
-    if abstract_decltor[] ~= self[].get._CAbstractArray.abstract_decltor {
-        " #@MACRO@:uptr_move(CAbstractDeclarator, *abstract_decltor, self->get._CAbstractArray.abstract_decltor)"
-        free_CAbstractDeclarator(@self[].get._CAbstractArray.abstract_decltor)
-        self[].get._CAbstractArray.abstract_decltor = abstract_decltor[]
-        abstract_decltor[] = uptr_new()
-    }
+    uptr_move(CAbstractDeclarator, abstract_decltor[], self[].get._CAbstractArray.abstract_decltor)
     return self
 }
 
@@ -168,12 +158,7 @@ pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *stru
     }
     self[].tag = AST_CParam_t
     self[].decltor = uptr_new()
-    if decltor[] ~= self[].decltor {
-        " #@MACRO@:uptr_move(CDeclarator, *decltor, self->decltor)"
-        free_CDeclarator(@self[].decltor)
-        self[].decltor = decltor[]
-        decltor[] = uptr_new()
-    }
+    uptr_move(CDeclarator, decltor[], self[].decltor)
     self[].param_type = sptr_new()
     sptr_move(Type, param_type[], self[].param_type)
     return self
@@ -226,12 +211,7 @@ pub fn make_CPointerDeclarator(decltor: **struc CDeclarator) *struc CDeclarator 
     self: *struc CDeclarator = make_CDeclarator()
     self[].tag = AST_CPointerDeclarator_t
     self[].get._CPointerDeclarator.decltor = uptr_new()
-    if decltor[] ~= self[].get._CPointerDeclarator.decltor {
-        " #@MACRO@:uptr_move(CDeclarator, *decltor, self->get._CPointerDeclarator.decltor)"
-        free_CDeclarator(@self[].get._CPointerDeclarator.decltor)
-        self[].get._CPointerDeclarator.decltor = decltor[]
-        decltor[] = uptr_new()
-    }
+    uptr_move(CDeclarator, decltor[], self[].get._CPointerDeclarator.decltor)
     return self
 }
 
@@ -240,12 +220,7 @@ pub fn make_CArrayDeclarator(size: i64, decltor: **struc CDeclarator) *struc CDe
     self[].tag = AST_CArrayDeclarator_t
     self[].get._CArrayDeclarator.size = size
     self[].get._CArrayDeclarator.decltor = uptr_new()
-    if decltor[] ~= self[].get._CArrayDeclarator.decltor {
-        " #@MACRO@:uptr_move(CDeclarator, *decltor, self->get._CArrayDeclarator.decltor)"
-        free_CDeclarator(@self[].get._CArrayDeclarator.decltor)
-        self[].get._CArrayDeclarator.decltor = decltor[]
-        decltor[] = uptr_new()
-    }
+    uptr_move(CDeclarator, decltor[], self[].get._CArrayDeclarator.decltor)
     return self
 }
 
@@ -255,12 +230,7 @@ pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor:
     self[].get._CFunDeclarator.param_list = vec_new()
     vec_move(param_list[], self[].get._CFunDeclarator.param_list)
     self[].get._CFunDeclarator.decltor = uptr_new()
-    if decltor[] ~= self[].get._CFunDeclarator.decltor {
-        " #@MACRO@:uptr_move(CDeclarator, *decltor, self->get._CFunDeclarator.decltor)"
-        free_CDeclarator(@self[].get._CFunDeclarator.decltor)
-        self[].get._CFunDeclarator.decltor = decltor[]
-        decltor[] = uptr_new()
-    }
+    uptr_move(CDeclarator, decltor[], self[].get._CFunDeclarator.decltor)
     return self
 }
 
@@ -349,12 +319,7 @@ pub fn make_CCast(exp: **struc CExp, target_type: **struc Type, info_at: u64) *s
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CCast_t
     self[].get._CCast.exp = uptr_new()
-    if exp[] ~= self[].get._CCast.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CCast.exp)"
-        free_CExp(@self[].get._CCast.exp)
-        self[].get._CCast.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CCast.exp)
     self[].get._CCast.target_type = sptr_new()
     sptr_move(Type, target_type[], self[].get._CCast.target_type)
     self[].get._CCast._base = self
@@ -366,12 +331,7 @@ pub fn make_CUnary(unop: *struc CUnaryOp, exp: **struc CExp, info_at: u64) *stru
     self[].tag = AST_CUnary_t
     self[].get._CUnary.unop = unop[]
     self[].get._CUnary.exp = uptr_new()
-    if exp[] ~= self[].get._CUnary.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CUnary.exp)"
-        free_CExp(@self[].get._CUnary.exp)
-        self[].get._CUnary.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CUnary.exp)
     self[].get._CUnary._base = self
     return self
 }
@@ -381,19 +341,9 @@ pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: **struc CExp, exp_right: 
     self[].tag = AST_CBinary_t
     self[].get._CBinary.binop = binop[]
     self[].get._CBinary.exp_left = uptr_new()
-    if exp_left[] ~= self[].get._CBinary.exp_left {
-        " #@MACRO@:uptr_move(CExp, *exp_left, self->get._CBinary.exp_left)"
-        free_CExp(@self[].get._CBinary.exp_left)
-        self[].get._CBinary.exp_left = exp_left[]
-        exp_left[] = uptr_new()
-    }
+    uptr_move(CExp, exp_left[], self[].get._CBinary.exp_left)
     self[].get._CBinary.exp_right = uptr_new()
-    if exp_right[] ~= self[].get._CBinary.exp_right {
-        " #@MACRO@:uptr_move(CExp, *exp_right, self->get._CBinary.exp_right)"
-        free_CExp(@self[].get._CBinary.exp_right)
-        self[].get._CBinary.exp_right = exp_right[]
-        exp_right[] = uptr_new()
-    }
+    uptr_move(CExp, exp_right[], self[].get._CBinary.exp_right)
     self[].get._CBinary._base = self
     return self
 }
@@ -403,19 +353,9 @@ pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: **struc CExp, exp_right
     self[].tag = AST_CAssignment_t
     self[].get._CAssignment.unop = unop[]
     self[].get._CAssignment.exp_left = uptr_new()
-    if exp_left[] ~= self[].get._CAssignment.exp_left {
-        " #@MACRO@:uptr_move(CExp, *exp_left, self->get._CAssignment.exp_left)"
-        free_CExp(@self[].get._CAssignment.exp_left)
-        self[].get._CAssignment.exp_left = exp_left[]
-        exp_left[] = uptr_new()
-    }
+    uptr_move(CExp, exp_left[], self[].get._CAssignment.exp_left)
     self[].get._CAssignment.exp_right = uptr_new()
-    if exp_right[] ~= self[].get._CAssignment.exp_right {
-        " #@MACRO@:uptr_move(CExp, *exp_right, self->get._CAssignment.exp_right)"
-        free_CExp(@self[].get._CAssignment.exp_right)
-        self[].get._CAssignment.exp_right = exp_right[]
-        exp_right[] = uptr_new()
-    }
+    uptr_move(CExp, exp_right[], self[].get._CAssignment.exp_right)
     self[].get._CAssignment._base = self
     return self
 }
@@ -424,26 +364,11 @@ pub fn make_CConditional(condition: **struc CExp, exp_middle: **struc CExp, exp_
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CConditional_t
     self[].get._CConditional.condition = uptr_new()
-    if condition[] ~= self[].get._CConditional.condition {
-        " #@MACRO@:uptr_move(CExp, *condition, self->get._CConditional.condition)"
-        free_CExp(@self[].get._CConditional.condition)
-        self[].get._CConditional.condition = condition[]
-        condition[] = uptr_new()
-    }
+    uptr_move(CExp, condition[], self[].get._CConditional.condition)
     self[].get._CConditional.exp_middle = uptr_new()
-    if exp_middle[] ~= self[].get._CConditional.exp_middle {
-        " #@MACRO@:uptr_move(CExp, *exp_middle, self->get._CConditional.exp_middle)"
-        free_CExp(@self[].get._CConditional.exp_middle)
-        self[].get._CConditional.exp_middle = exp_middle[]
-        exp_middle[] = uptr_new()
-    }
+    uptr_move(CExp, exp_middle[], self[].get._CConditional.exp_middle)
     self[].get._CConditional.exp_right = uptr_new()
-    if exp_right[] ~= self[].get._CConditional.exp_right {
-        " #@MACRO@:uptr_move(CExp, *exp_right, self->get._CConditional.exp_right)"
-        free_CExp(@self[].get._CConditional.exp_right)
-        self[].get._CConditional.exp_right = exp_right[]
-        exp_right[] = uptr_new()
-    }
+    uptr_move(CExp, exp_right[], self[].get._CConditional.exp_right)
     self[].get._CConditional._base = self
     return self
 }
@@ -462,12 +387,7 @@ pub fn make_CDereference(exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CDereference_t
     self[].get._CDereference.exp = uptr_new()
-    if exp[] ~= self[].get._CDereference.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CDereference.exp)"
-        free_CExp(@self[].get._CDereference.exp)
-        self[].get._CDereference.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CDereference.exp)
     self[].get._CDereference._base = self
     return self
 }
@@ -476,12 +396,7 @@ pub fn make_CAddrOf(exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CAddrOf_t
     self[].get._CAddrOf.exp = uptr_new()
-    if exp[] ~= self[].get._CAddrOf.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CAddrOf.exp)"
-        free_CExp(@self[].get._CAddrOf.exp)
-        self[].get._CAddrOf.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CAddrOf.exp)
     self[].get._CAddrOf._base = self
     return self
 }
@@ -490,19 +405,9 @@ pub fn make_CSubscript(primary_exp: **struc CExp, subscript_exp: **struc CExp, i
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CSubscript_t
     self[].get._CSubscript.primary_exp = uptr_new()
-    if primary_exp[] ~= self[].get._CSubscript.primary_exp {
-        " #@MACRO@:uptr_move(CExp, *primary_exp, self->get._CSubscript.primary_exp)"
-        free_CExp(@self[].get._CSubscript.primary_exp)
-        self[].get._CSubscript.primary_exp = primary_exp[]
-        primary_exp[] = uptr_new()
-    }
+    uptr_move(CExp, primary_exp[], self[].get._CSubscript.primary_exp)
     self[].get._CSubscript.subscript_exp = uptr_new()
-    if subscript_exp[] ~= self[].get._CSubscript.subscript_exp {
-        " #@MACRO@:uptr_move(CExp, *subscript_exp, self->get._CSubscript.subscript_exp)"
-        free_CExp(@self[].get._CSubscript.subscript_exp)
-        self[].get._CSubscript.subscript_exp = subscript_exp[]
-        subscript_exp[] = uptr_new()
-    }
+    uptr_move(CExp, subscript_exp[], self[].get._CSubscript.subscript_exp)
     self[].get._CSubscript._base = self
     return self
 }
@@ -511,12 +416,7 @@ pub fn make_CSizeOf(exp: **struc CExp, info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CSizeOf_t
     self[].get._CSizeOf.exp = uptr_new()
-    if exp[] ~= self[].get._CSizeOf.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CSizeOf.exp)"
-        free_CExp(@self[].get._CSizeOf.exp)
-        self[].get._CSizeOf.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CSizeOf.exp)
     self[].get._CSizeOf._base = self
     return self
 }
@@ -535,12 +435,7 @@ pub fn make_CDot(member: u64, structure: **struc CExp, info_at: u64) *struc CExp
     self[].tag = AST_CDot_t
     self[].get._CDot.member = member
     self[].get._CDot.structure = uptr_new()
-    if structure[] ~= self[].get._CDot.structure {
-        " #@MACRO@:uptr_move(CExp, *structure, self->get._CDot.structure)"
-        free_CExp(@self[].get._CDot.structure)
-        self[].get._CDot.structure = structure[]
-        structure[] = uptr_new()
-    }
+    uptr_move(CExp, structure[], self[].get._CDot.structure)
     self[].get._CDot._base = self
     return self
 }
@@ -550,12 +445,7 @@ pub fn make_CArrow(member: u64, pointer: **struc CExp, info_at: u64) *struc CExp
     self[].tag = AST_CArrow_t
     self[].get._CArrow.member = member
     self[].get._CArrow.pointer = uptr_new()
-    if pointer[] ~= self[].get._CArrow.pointer {
-        " #@MACRO@:uptr_move(CExp, *pointer, self->get._CArrow.pointer)"
-        free_CExp(@self[].get._CArrow.pointer)
-        self[].get._CArrow.pointer = pointer[]
-        pointer[] = uptr_new()
-    }
+    uptr_move(CExp, pointer[], self[].get._CArrow.pointer)
     self[].get._CArrow._base = self
     return self
 }
@@ -671,12 +561,7 @@ pub fn make_CReturn(exp: **struc CExp, info_at: u64) *struc CStatement {
     self: *struc CStatement = make_CStatement()
     self[].tag = AST_CReturn_t
     self[].get._CReturn.exp = uptr_new()
-    if exp[] ~= self[].get._CReturn.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CReturn.exp)"
-        free_CExp(@self[].get._CReturn.exp)
-        self[].get._CReturn.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CReturn.exp)
     self[].get._CReturn.info_at = info_at
     return self
 }
@@ -685,12 +570,7 @@ pub fn make_CExpression(exp: **struc CExp) *struc CStatement {
     self: *struc CStatement = make_CStatement()
     self[].tag = AST_CExpression_t
     self[].get._CExpression.exp = uptr_new()
-    if exp[] ~= self[].get._CExpression.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CExpression.exp)"
-        free_CExp(@self[].get._CExpression.exp)
-        self[].get._CExpression.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CExpression.exp)
     return self
 }
 
@@ -698,26 +578,11 @@ pub fn make_CIf(condition: **struc CExp, then_fi: **struc CStatement, else_fi: *
     self: *struc CStatement = make_CStatement()
     self[].tag = AST_CIf_t
     self[].get._CIf.condition = uptr_new()
-    if condition[] ~= self[].get._CIf.condition {
-        " #@MACRO@:uptr_move(CExp, *condition, self->get._CIf.condition)"
-        free_CExp(@self[].get._CIf.condition)
-        self[].get._CIf.condition = condition[]
-        condition[] = uptr_new()
-    }
+    uptr_move(CExp, condition[], self[].get._CIf.condition)
     self[].get._CIf.then_fi = uptr_new()
-    if then_fi[] ~= self[].get._CIf.then_fi {
-        " #@MACRO@:uptr_move(CStatement, *then_fi, self->get._CIf.then_fi)"
-        free_CStatement(@self[].get._CIf.then_fi)
-        self[].get._CIf.then_fi = then_fi[]
-        then_fi[] = uptr_new()
-    }
+    uptr_move(CStatement, then_fi[], self[].get._CIf.then_fi)
     self[].get._CIf.else_fi = uptr_new()
-    if else_fi[] ~= self[].get._CIf.else_fi {
-        " #@MACRO@:uptr_move(CStatement, *else_fi, self->get._CIf.else_fi)"
-        free_CStatement(@self[].get._CIf.else_fi)
-        self[].get._CIf.else_fi = else_fi[]
-        else_fi[] = uptr_new()
-    }
+    uptr_move(CStatement, else_fi[], self[].get._CIf.else_fi)
     return self
 }
 
@@ -734,12 +599,7 @@ pub fn make_CLabel(target: u64, jump_to: **struc CStatement, info_at: u64) *stru
     self[].tag = AST_CLabel_t
     self[].get._CLabel.target = target
     self[].get._CLabel.jump_to = uptr_new()
-    if jump_to[] ~= self[].get._CLabel.jump_to {
-        " #@MACRO@:uptr_move(CStatement, *jump_to, self->get._CLabel.jump_to)"
-        free_CStatement(@self[].get._CLabel.jump_to)
-        self[].get._CLabel.jump_to = jump_to[]
-        jump_to[] = uptr_new()
-    }
+    uptr_move(CStatement, jump_to[], self[].get._CLabel.jump_to)
     self[].get._CLabel.info_at = info_at
     return self
 }
@@ -748,12 +608,7 @@ pub fn make_CCompound(block: **struc CBlock) *struc CStatement {
     self: *struc CStatement = make_CStatement()
     self[].tag = AST_CCompound_t
     self[].get._CCompound.block = uptr_new()
-    if block[] ~= self[].get._CCompound.block {
-        " #@MACRO@:uptr_move(CBlock, *block, self->get._CCompound.block)"
-        free_CBlock(@self[].get._CCompound.block)
-        self[].get._CCompound.block = block[]
-        block[] = uptr_new()
-    }
+    uptr_move(CBlock, block[], self[].get._CCompound.block)
     return self
 }
 
@@ -762,19 +617,9 @@ pub fn make_CWhile(condition: **struc CExp, body: **struc CStatement) *struc CSt
     self[].tag = AST_CWhile_t
     self[].get._CWhile.target = 0
     self[].get._CWhile.condition = uptr_new()
-    if condition[] ~= self[].get._CWhile.condition {
-        " #@MACRO@:uptr_move(CExp, *condition, self->get._CWhile.condition)"
-        free_CExp(@self[].get._CWhile.condition)
-        self[].get._CWhile.condition = condition[]
-        condition[] = uptr_new()
-    }
+    uptr_move(CExp, condition[], self[].get._CWhile.condition)
     self[].get._CWhile.body = uptr_new()
-    if body[] ~= self[].get._CWhile.body {
-        " #@MACRO@:uptr_move(CStatement, *body, self->get._CWhile.body)"
-        free_CStatement(@self[].get._CWhile.body)
-        self[].get._CWhile.body = body[]
-        body[] = uptr_new()
-    }
+    uptr_move(CStatement, body[], self[].get._CWhile.body)
     return self
 }
 
@@ -783,19 +628,9 @@ pub fn make_CDoWhile(condition: **struc CExp, body: **struc CStatement) *struc C
     self[].tag = AST_CDoWhile_t
     self[].get._CDoWhile.target = 0
     self[].get._CDoWhile.condition = uptr_new()
-    if condition[] ~= self[].get._CDoWhile.condition {
-        " #@MACRO@:uptr_move(CExp, *condition, self->get._CDoWhile.condition)"
-        free_CExp(@self[].get._CDoWhile.condition)
-        self[].get._CDoWhile.condition = condition[]
-        condition[] = uptr_new()
-    }
+    uptr_move(CExp, condition[], self[].get._CDoWhile.condition)
     self[].get._CDoWhile.body = uptr_new()
-    if body[] ~= self[].get._CDoWhile.body {
-        " #@MACRO@:uptr_move(CStatement, *body, self->get._CDoWhile.body)"
-        free_CStatement(@self[].get._CDoWhile.body)
-        self[].get._CDoWhile.body = body[]
-        body[] = uptr_new()
-    }
+    uptr_move(CStatement, body[], self[].get._CDoWhile.body)
     return self
 }
 
@@ -804,33 +639,13 @@ pub fn make_CFor(init: **struc CForInit, condition: **struc CExp, post: **struc 
     self[].tag = AST_CFor_t
     self[].get._CFor.target = 0
     self[].get._CFor.init = uptr_new()
-    if init[] ~= self[].get._CFor.init {
-        " #@MACRO@:uptr_move(CForInit, *init, self->get._CFor.init)"
-        free_CForInit(@self[].get._CFor.init)
-        self[].get._CFor.init = init[]
-        init[] = uptr_new()
-    }
+    uptr_move(CForInit, init[], self[].get._CFor.init)
     self[].get._CFor.condition = uptr_new()
-    if condition[] ~= self[].get._CFor.condition {
-        " #@MACRO@:uptr_move(CExp, *condition, self->get._CFor.condition)"
-        free_CExp(@self[].get._CFor.condition)
-        self[].get._CFor.condition = condition[]
-        condition[] = uptr_new()
-    }
+    uptr_move(CExp, condition[], self[].get._CFor.condition)
     self[].get._CFor.post = uptr_new()
-    if post[] ~= self[].get._CFor.post {
-        " #@MACRO@:uptr_move(CExp, *post, self->get._CFor.post)"
-        free_CExp(@self[].get._CFor.post)
-        self[].get._CFor.post = post[]
-        post[] = uptr_new()
-    }
+    uptr_move(CExp, post[], self[].get._CFor.post)
     self[].get._CFor.body = uptr_new()
-    if body[] ~= self[].get._CFor.body {
-        " #@MACRO@:uptr_move(CStatement, *body, self->get._CFor.body)"
-        free_CStatement(@self[].get._CFor.body)
-        self[].get._CFor.body = body[]
-        body[] = uptr_new()
-    }
+    uptr_move(CStatement, body[], self[].get._CFor.body)
     return self
 }
 
@@ -840,19 +655,9 @@ pub fn make_CSwitch(lookup: **struc CExp, body: **struc CStatement) *struc CStat
     self[].get._CSwitch.target = 0
     self[].get._CSwitch.is_default = false
     self[].get._CSwitch.lookup = uptr_new()
-    if lookup[] ~= self[].get._CSwitch.lookup {
-        " #@MACRO@:uptr_move(CExp, *lookup, self->get._CSwitch.lookup)"
-        free_CExp(@self[].get._CSwitch.lookup)
-        self[].get._CSwitch.lookup = lookup[]
-        lookup[] = uptr_new()
-    }
+    uptr_move(CExp, lookup[], self[].get._CSwitch.lookup)
     self[].get._CSwitch.body = uptr_new()
-    if body[] ~= self[].get._CSwitch.body {
-        " #@MACRO@:uptr_move(CStatement, *body, self->get._CSwitch.body)"
-        free_CStatement(@self[].get._CSwitch.body)
-        self[].get._CSwitch.body = body[]
-        body[] = uptr_new()
-    }
+    uptr_move(CStatement, body[], self[].get._CSwitch.body)
     self[].get._CSwitch.cases = vec_new()
     return self
 }
@@ -862,19 +667,9 @@ pub fn make_CCase(value: **struc CExp, jump_to: **struc CStatement) *struc CStat
     self[].tag = AST_CCase_t
     self[].get._CCase.target = 0
     self[].get._CCase.value = uptr_new()
-    if value[] ~= self[].get._CCase.value {
-        " #@MACRO@:uptr_move(CExp, *value, self->get._CCase.value)"
-        free_CExp(@self[].get._CCase.value)
-        self[].get._CCase.value = value[]
-        value[] = uptr_new()
-    }
+    uptr_move(CExp, value[], self[].get._CCase.value)
     self[].get._CCase.jump_to = uptr_new()
-    if jump_to[] ~= self[].get._CCase.jump_to {
-        " #@MACRO@:uptr_move(CStatement, *jump_to, self->get._CCase.jump_to)"
-        free_CStatement(@self[].get._CCase.jump_to)
-        self[].get._CCase.jump_to = jump_to[]
-        jump_to[] = uptr_new()
-    }
+    uptr_move(CStatement, jump_to[], self[].get._CCase.jump_to)
     return self
 }
 
@@ -883,12 +678,7 @@ pub fn make_CDefault(jump_to: **struc CStatement, info_at: u64) *struc CStatemen
     self[].tag = AST_CDefault_t
     self[].get._CDefault.target = 0
     self[].get._CDefault.jump_to = uptr_new()
-    if jump_to[] ~= self[].get._CDefault.jump_to {
-        " #@MACRO@:uptr_move(CStatement, *jump_to, self->get._CDefault.jump_to)"
-        free_CStatement(@self[].get._CDefault.jump_to)
-        self[].get._CDefault.jump_to = jump_to[]
-        jump_to[] = uptr_new()
-    }
+    uptr_move(CStatement, jump_to[], self[].get._CDefault.jump_to)
     self[].get._CDefault.info_at = info_at
     return self
 }
@@ -1022,12 +812,7 @@ pub fn make_CInitDecl(init: **struc CVariableDeclaration) *struc CForInit {
     self: *struc CForInit = make_CForInit()
     self[].tag = AST_CInitDecl_t
     self[].get._CInitDecl.init = uptr_new()
-    if init[] ~= self[].get._CInitDecl.init {
-        " #@MACRO@:uptr_move(CVariableDeclaration, *init, self->get._CInitDecl.init)"
-        free_CVariableDeclaration(@self[].get._CInitDecl.init)
-        self[].get._CInitDecl.init = init[]
-        init[] = uptr_new()
-    }
+    uptr_move(CVariableDeclaration, init[], self[].get._CInitDecl.init)
     return self
 }
 
@@ -1035,12 +820,7 @@ pub fn make_CInitExp(init: **struc CExp) *struc CForInit {
     self: *struc CForInit = make_CForInit()
     self[].tag = AST_CInitExp_t
     self[].get._CInitExp.init = uptr_new()
-    if init[] ~= self[].get._CInitExp.init {
-        " #@MACRO@:uptr_move(CExp, *init, self->get._CInitExp.init)"
-        free_CExp(@self[].get._CInitExp.init)
-        self[].get._CInitExp.init = init[]
-        init[] = uptr_new()
-    }
+    uptr_move(CExp, init[], self[].get._CInitExp.init)
     return self
 }
 
@@ -1139,12 +919,7 @@ pub fn make_CS(statement: **struc CStatement) *struc CBlockItem {
     self: *struc CBlockItem = make_CBlockItem()
     self[].tag = AST_CS_t
     self[].get._CS.statement = uptr_new()
-    if statement[] ~= self[].get._CS.statement {
-        " #@MACRO@:uptr_move(CStatement, *statement, self->get._CS.statement)"
-        free_CStatement(@self[].get._CS.statement)
-        self[].get._CS.statement = statement[]
-        statement[] = uptr_new()
-    }
+    uptr_move(CStatement, statement[], self[].get._CS.statement)
     return self
 }
 
@@ -1152,12 +927,7 @@ pub fn make_CD(declaration: **struc CDeclaration) *struc CBlockItem {
     self: *struc CBlockItem = make_CBlockItem()
     self[].tag = AST_CD_t
     self[].get._CD.declaration = uptr_new()
-    if declaration[] ~= self[].get._CD.declaration {
-        " #@MACRO@:uptr_move(CDeclaration, *declaration, self->get._CD.declaration)"
-        free_CDeclaration(@self[].get._CD.declaration)
-        self[].get._CD.declaration = declaration[]
-        declaration[] = uptr_new()
-    }
+    uptr_move(CDeclaration, declaration[], self[].get._CD.declaration)
     return self
 }
 
@@ -1224,12 +994,7 @@ pub fn make_CSingleInit(exp: **struc CExp) *struc CInitializer {
     self: *struc CInitializer = make_CInitializer()
     self[].tag = AST_CSingleInit_t
     self[].get._CSingleInit.exp = uptr_new()
-    if exp[] ~= self[].get._CSingleInit.exp {
-        " #@MACRO@:uptr_move(CExp, *exp, self->get._CSingleInit.exp)"
-        free_CExp(@self[].get._CSingleInit.exp)
-        self[].get._CSingleInit.exp = exp[]
-        exp[] = uptr_new()
-    }
+    uptr_move(CExp, exp[], self[].get._CSingleInit.exp)
     self[].get._CSingleInit._base = self
     return self
 }
@@ -1372,12 +1137,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body
     self[].params = vec_new()
     vec_move(params[], self[].params)
     self[].body = uptr_new()
-    if body[] ~= self[].body {
-        " #@MACRO@:uptr_move(CBlock, *body, self->body)"
-        free_CBlock(@self[].body)
-        self[].body = body[]
-        body[] = uptr_new()
-    }
+    uptr_move(CBlock, body[], self[].body)
     self[].fun_type = sptr_new()
     sptr_move(Type, fun_type[], self[].fun_type)
     self[].storage_class = storage_class[]
@@ -1421,12 +1181,7 @@ pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type
     self[].tag = AST_CVariableDeclaration_t
     self[].name = name
     self[].init = uptr_new()
-    if init[] ~= self[].init {
-        " #@MACRO@:uptr_move(CInitializer, *init, self->init)"
-        free_CInitializer(@self[].init)
-        self[].init = init[]
-        init[] = uptr_new()
-    }
+    uptr_move(CInitializer, init[], self[].init)
     self[].var_type = sptr_new()
     sptr_move(Type, var_type[], self[].var_type)
     self[].storage_class = storage_class[]
@@ -1474,12 +1229,7 @@ pub fn make_CFunDecl(fun_decl: **struc CFunctionDeclaration) *struc CDeclaration
     self: *struc CDeclaration = make_CDeclaration()
     self[].tag = AST_CFunDecl_t
     self[].get._CFunDecl.fun_decl = uptr_new()
-    if fun_decl[] ~= self[].get._CFunDecl.fun_decl {
-        " #@MACRO@:uptr_move(CFunctionDeclaration, *fun_decl, self->get._CFunDecl.fun_decl)"
-        free_CFunctionDeclaration(@self[].get._CFunDecl.fun_decl)
-        self[].get._CFunDecl.fun_decl = fun_decl[]
-        fun_decl[] = uptr_new()
-    }
+    uptr_move(CFunctionDeclaration, fun_decl[], self[].get._CFunDecl.fun_decl)
     return self
 }
 
@@ -1487,12 +1237,7 @@ pub fn make_CVarDecl(var_decl: **struc CVariableDeclaration) *struc CDeclaration
     self: *struc CDeclaration = make_CDeclaration()
     self[].tag = AST_CVarDecl_t
     self[].get._CVarDecl.var_decl = uptr_new()
-    if var_decl[] ~= self[].get._CVarDecl.var_decl {
-        " #@MACRO@:uptr_move(CVariableDeclaration, *var_decl, self->get._CVarDecl.var_decl)"
-        free_CVariableDeclaration(@self[].get._CVarDecl.var_decl)
-        self[].get._CVarDecl.var_decl = var_decl[]
-        var_decl[] = uptr_new()
-    }
+    uptr_move(CVariableDeclaration, var_decl[], self[].get._CVarDecl.var_decl)
     return self
 }
 
@@ -1500,12 +1245,7 @@ pub fn make_CStructDecl(struct_decl: **struc CStructDeclaration) *struc CDeclara
     self: *struc CDeclaration = make_CDeclaration()
     self[].tag = AST_CStructDecl_t
     self[].get._CStructDecl.struct_decl = uptr_new()
-    if struct_decl[] ~= self[].get._CStructDecl.struct_decl {
-        " #@MACRO@:uptr_move(CStructDeclaration, *struct_decl, self->get._CStructDecl.struct_decl)"
-        free_CStructDeclaration(@self[].get._CStructDecl.struct_decl)
-        self[].get._CStructDecl.struct_decl = struct_decl[]
-        struct_decl[] = uptr_new()
-    }
+    uptr_move(CStructDeclaration, struct_decl[], self[].get._CStructDecl.struct_decl)
     return self
 }
 
