@@ -233,14 +233,7 @@ pub fn free_AsmOperand(self: **struc AsmOperand) none {
             THROW_ABORT
         }
     }
-    loop .. while 0 {
-        " #@MACRO@:sptr_free(*self)"
-        if self[] {
-            " #@MACRO@:uptr_free(*self)"
-            free(self[])
-            self[] = uptr_new()
-        }
-    }
+    sptr_free(self[])
 }
 
 pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp {
