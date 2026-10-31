@@ -16,6 +16,7 @@ type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoCont
 
 pub fn panic_sigabrt(msg: string) none;
 m4_define(`PANIC_FUNC', `panic_sigabrt($1)')m4_dnl
+# TODO __APPLE__
 m4_define(`THROW_ABORT', `THROW_PANIC("abort")')m4_dnl
 m4_define(`THROW_ALLOC', `THROW_PANIC("alloc $1")')m4_dnl
 m4_ifelse(1, `0', `
