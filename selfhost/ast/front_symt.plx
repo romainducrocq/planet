@@ -329,14 +329,7 @@ pub fn free_InitialValue(self: **struc InitialValue) none {
 
 pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
     self: *struc IdentifierAttr = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(IdentifierAttr, self)"
-        free_IdentifierAttr(@self)
-        self = cast<*struc IdentifierAttr>(malloc(sizeof<struc IdentifierAttr>))
-        if not self {
-            panic_sigabrt("alloc "                 "IdentifierAttr")
-        }
-    }
+    uptr_alloc(IdentifierAttr, self)
     self[].tag = AST_IdentifierAttr_t
     return self
 }
@@ -403,14 +396,7 @@ pub fn free_IdentifierAttr(self: **struc IdentifierAttr) none {
 
 pub fn make_Symbol(type_t: **struc Type, attrs: **struc IdentifierAttr) *struc Symbol {
     self: *struc Symbol = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(Symbol, self)"
-        free_Symbol(@self)
-        self = cast<*struc Symbol>(malloc(sizeof<struc Symbol>))
-        if not self {
-            panic_sigabrt("alloc "                 "Symbol")
-        }
-    }
+    uptr_alloc(Symbol, self)
     self[].tag = AST_Symbol_t
     self[].type_t = sptr_new()
     sptr_move(Type, type_t[], self[].type_t)
@@ -439,14 +425,7 @@ pub fn free_Symbol(self: **struc Symbol) none {
 
 pub fn make_StructMember(offset: i64, member_type: **struc Type) *struc StructMember {
     self: *struc StructMember = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(StructMember, self)"
-        free_StructMember(@self)
-        self = cast<*struc StructMember>(malloc(sizeof<struc StructMember>))
-        if not self {
-            panic_sigabrt("alloc "                 "StructMember")
-        }
-    }
+    uptr_alloc(StructMember, self)
     self[].tag = AST_StructMember_t
     self[].offset = offset
     self[].member_type = sptr_new()
@@ -473,14 +452,7 @@ pub fn free_StructMember(self: **struc StructMember) none {
 
 pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef {
     self: *struc StructTypedef = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(StructTypedef, self)"
-        free_StructTypedef(@self)
-        self = cast<*struc StructTypedef>(malloc(sizeof<struc StructTypedef>))
-        if not self {
-            panic_sigabrt("alloc "                 "StructTypedef")
-        }
-    }
+    uptr_alloc(StructTypedef, self)
     self[].tag = AST_StructTypedef_t
     self[].alignment = alignment
     self[].size = size

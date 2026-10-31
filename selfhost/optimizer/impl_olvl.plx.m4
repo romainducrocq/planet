@@ -62,14 +62,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
 
 fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
     self: *struc ControlFlowGraph = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(ControlFlowGraph, self)"
-        free_ControlFlowGraph(@self)
-        self = cast<*struc ControlFlowGraph>(malloc(sizeof<struc ControlFlowGraph>))
-        if not self {
-            panic_sigabrt("alloc "                 "ControlFlowGraph")
-        }
-    }
+    uptr_alloc(ControlFlowGraph, self)
     self[].entry_id = 0
     self[].exit_id = 0
     self[].entry_succ_ids = vec_new()
@@ -100,14 +93,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
 
 fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
     self: *struc DataFlowAnalysis = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(DataFlowAnalysis, self)"
-        free_DataFlowAnalysis(@self)
-        self = cast<*struc DataFlowAnalysis>(malloc(sizeof<struc DataFlowAnalysis>))
-        if not self {
-            panic_sigabrt("alloc "                 "DataFlowAnalysis")
-        }
-    }
+    uptr_alloc(DataFlowAnalysis, self)
     self[].set_size = 0
     self[].mask_size = 0
     self[].incoming_idx = 0
@@ -139,14 +125,7 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
 
 fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
     self: *struc DataFlowAnalysisO1 = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(DataFlowAnalysisO1, self)"
-        free_DataFlowAnalysisO1(@self)
-        self = cast<*struc DataFlowAnalysisO1>(malloc(sizeof<struc DataFlowAnalysisO1>))
-        if not self {
-            panic_sigabrt("alloc "                 "DataFlowAnalysisO1")
-        }
-    }
+    uptr_alloc(DataFlowAnalysisO1, self)
     self[].addressed_idx = 0
     self[].data_idx_map = vec_new()
     self[].bak_instrs = vec_new()
@@ -167,14 +146,7 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
 
 fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
     self: *struc DataFlowAnalysisO2 = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(DataFlowAnalysisO2, self)"
-        free_DataFlowAnalysisO2(@self)
-        self = cast<*struc DataFlowAnalysisO2>(malloc(sizeof<struc DataFlowAnalysisO2>))
-        if not self {
-            panic_sigabrt("alloc "                 "DataFlowAnalysisO2")
-        }
-    }
+    uptr_alloc(DataFlowAnalysisO2, self)
     self[].data_name_map = vec_new()
     return self
 }
