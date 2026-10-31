@@ -49,7 +49,6 @@ m4_define(`sptr_new', `nil')m4_dnl
 m4_define(`sptr_delete', `TODO')m4_dnl
 m4_define(`sptr_alloc', `TODO')m4_dnl
 m4_define(`sptr_free', `TODO')m4_dnl
-# TODO
 m4_define(`sptr_move', `uptr_move($1, $2, $3)')m4_dnl
 m4_define(`sptr_copy', `if ($2) ~= ($3) {
     free_$1(@($3))

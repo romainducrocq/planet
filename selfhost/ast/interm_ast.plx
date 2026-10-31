@@ -92,15 +92,7 @@ pub fn make_TacConstant(constant: **struc CConst) *struc TacValue {
     self: *struc TacValue = make_TacValue()
     self[].tag = AST_TacConstant_t
     self[].get._TacConstant.constant = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(CConst, *constant, self->get._TacConstant.constant)"
-        if constant[] ~= self[].get._TacConstant.constant {
-            " #@MACRO@:uptr_move(CConst, *constant, self->get._TacConstant.constant)"
-            free_CConst(@self[].get._TacConstant.constant)
-            self[].get._TacConstant.constant = constant[]
-            constant[] = uptr_new()
-        }
-    }
+    sptr_move(CConst, constant[], self[].get._TacConstant.constant)
     return self
 }
 
@@ -167,15 +159,7 @@ pub fn make_TacPlainOperand(val: **struc TacValue) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
     self[].tag = AST_TacPlainOperand_t
     self[].get._TacPlainOperand.val = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *val, self->get._TacPlainOperand.val)"
-        if val[] ~= self[].get._TacPlainOperand.val {
-            " #@MACRO@:uptr_move(TacValue, *val, self->get._TacPlainOperand.val)"
-            free_TacValue(@self[].get._TacPlainOperand.val)
-            self[].get._TacPlainOperand.val = val[]
-            val[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, val[], self[].get._TacPlainOperand.val)
     return self
 }
 
@@ -183,15 +167,7 @@ pub fn make_TacDereferencedPointer(val: **struc TacValue) *struc TacExpResult {
     self: *struc TacExpResult = make_TacExpResult()
     self[].tag = AST_TacDereferencedPointer_t
     self[].get._TacDereferencedPointer.val = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *val, self->get._TacDereferencedPointer.val)"
-        if val[] ~= self[].get._TacDereferencedPointer.val {
-            " #@MACRO@:uptr_move(TacValue, *val, self->get._TacDereferencedPointer.val)"
-            free_TacValue(@self[].get._TacDereferencedPointer.val)
-            self[].get._TacDereferencedPointer.val = val[]
-            val[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, val[], self[].get._TacDereferencedPointer.val)
     return self
 }
 
@@ -252,15 +228,7 @@ pub fn make_TacReturn(val: **struc TacValue) *struc TacInstruction {
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacReturn_t
     self[].get._TacReturn.val = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *val, self->get._TacReturn.val)"
-        if val[] ~= self[].get._TacReturn.val {
-            " #@MACRO@:uptr_move(TacValue, *val, self->get._TacReturn.val)"
-            free_TacValue(@self[].get._TacReturn.val)
-            self[].get._TacReturn.val = val[]
-            val[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, val[], self[].get._TacReturn.val)
     return self
 }
 
@@ -268,25 +236,9 @@ pub fn make_TacSignExtend(src: **struc TacValue, dst: **struc TacValue) *struc T
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacSignExtend_t
     self[].get._TacSignExtend.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacSignExtend.src)"
-        if src[] ~= self[].get._TacSignExtend.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacSignExtend.src)"
-            free_TacValue(@self[].get._TacSignExtend.src)
-            self[].get._TacSignExtend.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacSignExtend.src)
     self[].get._TacSignExtend.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacSignExtend.dst)"
-        if dst[] ~= self[].get._TacSignExtend.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacSignExtend.dst)"
-            free_TacValue(@self[].get._TacSignExtend.dst)
-            self[].get._TacSignExtend.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacSignExtend.dst)
     return self
 }
 
@@ -294,25 +246,9 @@ pub fn make_TacTruncate(src: **struc TacValue, dst: **struc TacValue) *struc Tac
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacTruncate_t
     self[].get._TacTruncate.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacTruncate.src)"
-        if src[] ~= self[].get._TacTruncate.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacTruncate.src)"
-            free_TacValue(@self[].get._TacTruncate.src)
-            self[].get._TacTruncate.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacTruncate.src)
     self[].get._TacTruncate.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacTruncate.dst)"
-        if dst[] ~= self[].get._TacTruncate.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacTruncate.dst)"
-            free_TacValue(@self[].get._TacTruncate.dst)
-            self[].get._TacTruncate.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacTruncate.dst)
     return self
 }
 
@@ -320,25 +256,9 @@ pub fn make_TacZeroExtend(src: **struc TacValue, dst: **struc TacValue) *struc T
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacZeroExtend_t
     self[].get._TacZeroExtend.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacZeroExtend.src)"
-        if src[] ~= self[].get._TacZeroExtend.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacZeroExtend.src)"
-            free_TacValue(@self[].get._TacZeroExtend.src)
-            self[].get._TacZeroExtend.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacZeroExtend.src)
     self[].get._TacZeroExtend.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacZeroExtend.dst)"
-        if dst[] ~= self[].get._TacZeroExtend.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacZeroExtend.dst)"
-            free_TacValue(@self[].get._TacZeroExtend.dst)
-            self[].get._TacZeroExtend.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacZeroExtend.dst)
     return self
 }
 
@@ -346,25 +266,9 @@ pub fn make_TacDoubleToInt(src: **struc TacValue, dst: **struc TacValue) *struc 
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacDoubleToInt_t
     self[].get._TacDoubleToInt.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacDoubleToInt.src)"
-        if src[] ~= self[].get._TacDoubleToInt.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacDoubleToInt.src)"
-            free_TacValue(@self[].get._TacDoubleToInt.src)
-            self[].get._TacDoubleToInt.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacDoubleToInt.src)
     self[].get._TacDoubleToInt.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacDoubleToInt.dst)"
-        if dst[] ~= self[].get._TacDoubleToInt.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacDoubleToInt.dst)"
-            free_TacValue(@self[].get._TacDoubleToInt.dst)
-            self[].get._TacDoubleToInt.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacDoubleToInt.dst)
     return self
 }
 
@@ -372,25 +276,9 @@ pub fn make_TacDoubleToUInt(src: **struc TacValue, dst: **struc TacValue) *struc
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacDoubleToUInt_t
     self[].get._TacDoubleToUInt.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacDoubleToUInt.src)"
-        if src[] ~= self[].get._TacDoubleToUInt.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacDoubleToUInt.src)"
-            free_TacValue(@self[].get._TacDoubleToUInt.src)
-            self[].get._TacDoubleToUInt.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacDoubleToUInt.src)
     self[].get._TacDoubleToUInt.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacDoubleToUInt.dst)"
-        if dst[] ~= self[].get._TacDoubleToUInt.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacDoubleToUInt.dst)"
-            free_TacValue(@self[].get._TacDoubleToUInt.dst)
-            self[].get._TacDoubleToUInt.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacDoubleToUInt.dst)
     return self
 }
 
@@ -398,25 +286,9 @@ pub fn make_TacIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc 
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacIntToDouble_t
     self[].get._TacIntToDouble.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacIntToDouble.src)"
-        if src[] ~= self[].get._TacIntToDouble.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacIntToDouble.src)"
-            free_TacValue(@self[].get._TacIntToDouble.src)
-            self[].get._TacIntToDouble.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacIntToDouble.src)
     self[].get._TacIntToDouble.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacIntToDouble.dst)"
-        if dst[] ~= self[].get._TacIntToDouble.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacIntToDouble.dst)"
-            free_TacValue(@self[].get._TacIntToDouble.dst)
-            self[].get._TacIntToDouble.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacIntToDouble.dst)
     return self
 }
 
@@ -424,25 +296,9 @@ pub fn make_TacUIntToDouble(src: **struc TacValue, dst: **struc TacValue) *struc
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacUIntToDouble_t
     self[].get._TacUIntToDouble.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacUIntToDouble.src)"
-        if src[] ~= self[].get._TacUIntToDouble.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacUIntToDouble.src)"
-            free_TacValue(@self[].get._TacUIntToDouble.src)
-            self[].get._TacUIntToDouble.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacUIntToDouble.src)
     self[].get._TacUIntToDouble.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacUIntToDouble.dst)"
-        if dst[] ~= self[].get._TacUIntToDouble.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacUIntToDouble.dst)"
-            free_TacValue(@self[].get._TacUIntToDouble.dst)
-            self[].get._TacUIntToDouble.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacUIntToDouble.dst)
     return self
 }
 
@@ -453,15 +309,7 @@ pub fn make_TacFunCall(name: u64, args: *vector_t(shared_ptr_t(TacValue)), dst: 
     self[].get._TacFunCall.args = vec_new()
     vec_move(args[], self[].get._TacFunCall.args)
     self[].get._TacFunCall.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacFunCall.dst)"
-        if dst[] ~= self[].get._TacFunCall.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacFunCall.dst)"
-            free_TacValue(@self[].get._TacFunCall.dst)
-            self[].get._TacFunCall.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacFunCall.dst)
     return self
 }
 
@@ -470,25 +318,9 @@ pub fn make_TacUnary(unop: *struc TacUnaryOp, src: **struc TacValue, dst: **stru
     self[].tag = AST_TacUnary_t
     self[].get._TacUnary.unop = unop[]
     self[].get._TacUnary.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacUnary.src)"
-        if src[] ~= self[].get._TacUnary.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacUnary.src)"
-            free_TacValue(@self[].get._TacUnary.src)
-            self[].get._TacUnary.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacUnary.src)
     self[].get._TacUnary.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacUnary.dst)"
-        if dst[] ~= self[].get._TacUnary.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacUnary.dst)"
-            free_TacValue(@self[].get._TacUnary.dst)
-            self[].get._TacUnary.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacUnary.dst)
     return self
 }
 
@@ -497,35 +329,11 @@ pub fn make_TacBinary(binop: *struc TacBinaryOp, src1: **struc TacValue, src2: *
     self[].tag = AST_TacBinary_t
     self[].get._TacBinary.binop = binop[]
     self[].get._TacBinary.src1 = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src1, self->get._TacBinary.src1)"
-        if src1[] ~= self[].get._TacBinary.src1 {
-            " #@MACRO@:uptr_move(TacValue, *src1, self->get._TacBinary.src1)"
-            free_TacValue(@self[].get._TacBinary.src1)
-            self[].get._TacBinary.src1 = src1[]
-            src1[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src1[], self[].get._TacBinary.src1)
     self[].get._TacBinary.src2 = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src2, self->get._TacBinary.src2)"
-        if src2[] ~= self[].get._TacBinary.src2 {
-            " #@MACRO@:uptr_move(TacValue, *src2, self->get._TacBinary.src2)"
-            free_TacValue(@self[].get._TacBinary.src2)
-            self[].get._TacBinary.src2 = src2[]
-            src2[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src2[], self[].get._TacBinary.src2)
     self[].get._TacBinary.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacBinary.dst)"
-        if dst[] ~= self[].get._TacBinary.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacBinary.dst)"
-            free_TacValue(@self[].get._TacBinary.dst)
-            self[].get._TacBinary.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacBinary.dst)
     return self
 }
 
@@ -533,25 +341,9 @@ pub fn make_TacCopy(src: **struc TacValue, dst: **struc TacValue) *struc TacInst
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacCopy_t
     self[].get._TacCopy.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacCopy.src)"
-        if src[] ~= self[].get._TacCopy.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacCopy.src)"
-            free_TacValue(@self[].get._TacCopy.src)
-            self[].get._TacCopy.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacCopy.src)
     self[].get._TacCopy.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacCopy.dst)"
-        if dst[] ~= self[].get._TacCopy.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacCopy.dst)"
-            free_TacValue(@self[].get._TacCopy.dst)
-            self[].get._TacCopy.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacCopy.dst)
     return self
 }
 
@@ -559,25 +351,9 @@ pub fn make_TacGetAddress(src: **struc TacValue, dst: **struc TacValue) *struc T
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacGetAddress_t
     self[].get._TacGetAddress.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacGetAddress.src)"
-        if src[] ~= self[].get._TacGetAddress.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacGetAddress.src)"
-            free_TacValue(@self[].get._TacGetAddress.src)
-            self[].get._TacGetAddress.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacGetAddress.src)
     self[].get._TacGetAddress.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacGetAddress.dst)"
-        if dst[] ~= self[].get._TacGetAddress.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacGetAddress.dst)"
-            free_TacValue(@self[].get._TacGetAddress.dst)
-            self[].get._TacGetAddress.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacGetAddress.dst)
     return self
 }
 
@@ -585,25 +361,9 @@ pub fn make_TacLoad(src_ptr: **struc TacValue, dst: **struc TacValue) *struc Tac
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacLoad_t
     self[].get._TacLoad.src_ptr = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src_ptr, self->get._TacLoad.src_ptr)"
-        if src_ptr[] ~= self[].get._TacLoad.src_ptr {
-            " #@MACRO@:uptr_move(TacValue, *src_ptr, self->get._TacLoad.src_ptr)"
-            free_TacValue(@self[].get._TacLoad.src_ptr)
-            self[].get._TacLoad.src_ptr = src_ptr[]
-            src_ptr[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src_ptr[], self[].get._TacLoad.src_ptr)
     self[].get._TacLoad.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacLoad.dst)"
-        if dst[] ~= self[].get._TacLoad.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacLoad.dst)"
-            free_TacValue(@self[].get._TacLoad.dst)
-            self[].get._TacLoad.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacLoad.dst)
     return self
 }
 
@@ -611,25 +371,9 @@ pub fn make_TacStore(src: **struc TacValue, dst_ptr: **struc TacValue) *struc Ta
     self: *struc TacInstruction = make_TacInstruction()
     self[].tag = AST_TacStore_t
     self[].get._TacStore.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacStore.src)"
-        if src[] ~= self[].get._TacStore.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacStore.src)"
-            free_TacValue(@self[].get._TacStore.src)
-            self[].get._TacStore.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacStore.src)
     self[].get._TacStore.dst_ptr = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst_ptr, self->get._TacStore.dst_ptr)"
-        if dst_ptr[] ~= self[].get._TacStore.dst_ptr {
-            " #@MACRO@:uptr_move(TacValue, *dst_ptr, self->get._TacStore.dst_ptr)"
-            free_TacValue(@self[].get._TacStore.dst_ptr)
-            self[].get._TacStore.dst_ptr = dst_ptr[]
-            dst_ptr[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst_ptr[], self[].get._TacStore.dst_ptr)
     return self
 }
 
@@ -638,35 +382,11 @@ pub fn make_TacAddPtr(scale: i64, src_ptr: **struc TacValue, idx: **struc TacVal
     self[].tag = AST_TacAddPtr_t
     self[].get._TacAddPtr.scale = scale
     self[].get._TacAddPtr.src_ptr = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src_ptr, self->get._TacAddPtr.src_ptr)"
-        if src_ptr[] ~= self[].get._TacAddPtr.src_ptr {
-            " #@MACRO@:uptr_move(TacValue, *src_ptr, self->get._TacAddPtr.src_ptr)"
-            free_TacValue(@self[].get._TacAddPtr.src_ptr)
-            self[].get._TacAddPtr.src_ptr = src_ptr[]
-            src_ptr[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src_ptr[], self[].get._TacAddPtr.src_ptr)
     self[].get._TacAddPtr.idx = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *idx, self->get._TacAddPtr.idx)"
-        if idx[] ~= self[].get._TacAddPtr.idx {
-            " #@MACRO@:uptr_move(TacValue, *idx, self->get._TacAddPtr.idx)"
-            free_TacValue(@self[].get._TacAddPtr.idx)
-            self[].get._TacAddPtr.idx = idx[]
-            idx[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, idx[], self[].get._TacAddPtr.idx)
     self[].get._TacAddPtr.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacAddPtr.dst)"
-        if dst[] ~= self[].get._TacAddPtr.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacAddPtr.dst)"
-            free_TacValue(@self[].get._TacAddPtr.dst)
-            self[].get._TacAddPtr.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacAddPtr.dst)
     return self
 }
 
@@ -676,15 +396,7 @@ pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: **struc TacValue) *
     self[].get._TacCopyToOffset.dst_name = dst_name
     self[].get._TacCopyToOffset.offset = offset
     self[].get._TacCopyToOffset.src = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *src, self->get._TacCopyToOffset.src)"
-        if src[] ~= self[].get._TacCopyToOffset.src {
-            " #@MACRO@:uptr_move(TacValue, *src, self->get._TacCopyToOffset.src)"
-            free_TacValue(@self[].get._TacCopyToOffset.src)
-            self[].get._TacCopyToOffset.src = src[]
-            src[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, src[], self[].get._TacCopyToOffset.src)
     return self
 }
 
@@ -694,15 +406,7 @@ pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: **struc TacValue)
     self[].get._TacCopyFromOffset.src_name = src_name
     self[].get._TacCopyFromOffset.offset = offset
     self[].get._TacCopyFromOffset.dst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *dst, self->get._TacCopyFromOffset.dst)"
-        if dst[] ~= self[].get._TacCopyFromOffset.dst {
-            " #@MACRO@:uptr_move(TacValue, *dst, self->get._TacCopyFromOffset.dst)"
-            free_TacValue(@self[].get._TacCopyFromOffset.dst)
-            self[].get._TacCopyFromOffset.dst = dst[]
-            dst[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, dst[], self[].get._TacCopyFromOffset.dst)
     return self
 }
 
@@ -718,15 +422,7 @@ pub fn make_TacJumpIfZero(target: u64, condition: **struc TacValue) *struc TacIn
     self[].tag = AST_TacJumpIfZero_t
     self[].get._TacJumpIfZero.target = target
     self[].get._TacJumpIfZero.condition = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *condition, self->get._TacJumpIfZero.condition)"
-        if condition[] ~= self[].get._TacJumpIfZero.condition {
-            " #@MACRO@:uptr_move(TacValue, *condition, self->get._TacJumpIfZero.condition)"
-            free_TacValue(@self[].get._TacJumpIfZero.condition)
-            self[].get._TacJumpIfZero.condition = condition[]
-            condition[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, condition[], self[].get._TacJumpIfZero.condition)
     return self
 }
 
@@ -735,15 +431,7 @@ pub fn make_TacJumpIfNotZero(target: u64, condition: **struc TacValue) *struc Ta
     self[].tag = AST_TacJumpIfNotZero_t
     self[].get._TacJumpIfNotZero.target = target
     self[].get._TacJumpIfNotZero.condition = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(TacValue, *condition, self->get._TacJumpIfNotZero.condition)"
-        if condition[] ~= self[].get._TacJumpIfNotZero.condition {
-            " #@MACRO@:uptr_move(TacValue, *condition, self->get._TacJumpIfNotZero.condition)"
-            free_TacValue(@self[].get._TacJumpIfNotZero.condition)
-            self[].get._TacJumpIfNotZero.condition = condition[]
-            condition[] = uptr_new()
-        }
-    }
+    sptr_move(TacValue, condition[], self[].get._TacJumpIfNotZero.condition)
     return self
 }
 
@@ -912,15 +600,7 @@ pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc
     self[].get._TacStaticVariable.name = name
     self[].get._TacStaticVariable.is_glob = is_glob
     self[].get._TacStaticVariable.static_init_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *static_init_type, self->get._TacStaticVariable.static_init_type)"
-        if static_init_type[] ~= self[].get._TacStaticVariable.static_init_type {
-            " #@MACRO@:uptr_move(Type, *static_init_type, self->get._TacStaticVariable.static_init_type)"
-            free_Type(@self[].get._TacStaticVariable.static_init_type)
-            self[].get._TacStaticVariable.static_init_type = static_init_type[]
-            static_init_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, static_init_type[], self[].get._TacStaticVariable.static_init_type)
     self[].get._TacStaticVariable.static_inits = vec_new()
     vec_move(static_inits[], self[].get._TacStaticVariable.static_inits)
     return self
@@ -931,25 +611,9 @@ pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_
     self[].tag = AST_TacStaticConstant_t
     self[].get._TacStaticConstant.name = name
     self[].get._TacStaticConstant.static_init_type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(Type, *static_init_type, self->get._TacStaticConstant.static_init_type)"
-        if static_init_type[] ~= self[].get._TacStaticConstant.static_init_type {
-            " #@MACRO@:uptr_move(Type, *static_init_type, self->get._TacStaticConstant.static_init_type)"
-            free_Type(@self[].get._TacStaticConstant.static_init_type)
-            self[].get._TacStaticConstant.static_init_type = static_init_type[]
-            static_init_type[] = uptr_new()
-        }
-    }
+    sptr_move(Type, static_init_type[], self[].get._TacStaticConstant.static_init_type)
     self[].get._TacStaticConstant.static_init = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_move(StaticInit, *static_init, self->get._TacStaticConstant.static_init)"
-        if static_init[] ~= self[].get._TacStaticConstant.static_init {
-            " #@MACRO@:uptr_move(StaticInit, *static_init, self->get._TacStaticConstant.static_init)"
-            free_StaticInit(@self[].get._TacStaticConstant.static_init)
-            self[].get._TacStaticConstant.static_init = static_init[]
-            static_init[] = uptr_new()
-        }
-    }
+    sptr_move(StaticInit, static_init[], self[].get._TacStaticConstant.static_init)
     return self
 }
 
