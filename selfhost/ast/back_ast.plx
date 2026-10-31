@@ -182,18 +182,7 @@ pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc As
 }
 
 pub fn free_AsmOperand(self: **struc AsmOperand) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_AsmOperand_t {
             -> AST_AsmImm_t {

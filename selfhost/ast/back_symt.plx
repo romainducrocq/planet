@@ -46,18 +46,7 @@ pub fn make_ByteArray(size: i64, alignment: i32) *struc AssemblyType {
 }
 
 pub fn free_AssemblyType(self: **struc AssemblyType) none {
-    loop .. while 0 {
-        " #@MACRO@:sptr_delete(*self)"
-        if not self[] {
-            " #@MACRO@:uptr_delete(*self)"
-            return none
-        }
-        elif (self[])[]._ref_count > 1 {
-            (self[])[]._ref_count--
-            self[] = sptr_new()
-            return none
-        }
-    }
+    sptr_delete(self[])
     match (self[])[].tag {
         -> AST_AssemblyType_t {
             -> AST_Byte_t {
