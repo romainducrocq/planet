@@ -14,12 +14,12 @@ m4_define(`mask_t', `u64')m4_dnl
 m4_define(`AstInstruction', `TacInstruction')m4_dnl
 m4_define(`Ctx', `*struc OptimTacContext')m4_dnl
 m4_define(`free_AstInstruction', `free_TacInstruction($1)')m4_dnl
-m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
+m4_define(`uptr_move_AstInstruction', `uptr_move(TacInstruction, $1, $2)')m4_dnl
 ', __OPTIM_LEVEL__, `2', `
 m4_define(`AstInstruction', `AsmInstruction')m4_dnl
 m4_define(`Ctx', `*struc RegAllocContext')m4_dnl
 m4_define(`free_AstInstruction', `free_AsmInstruction($1)')m4_dnl
-m4_define(`uptr_move_AstInstruction', `TODO')m4_dnl
+m4_define(`uptr_move_AstInstruction', `uptr_move(AsmInstruction, $1, $2)')m4_dnl
 ')m4_dnl
 
 type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: vector_t(u64), succ_ids: vector_t(u64))
@@ -142,7 +142,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
 
 fn set_instr(ctx: Ctx, instr: *struc AstInstruction, instr_idx: u64) none {
     if instr {
-        uptr_move(AstInstruction, instr, (ctx[].p_instrs[])[instr_idx])
+        uptr_move_AstInstruction(instr, (ctx[].p_instrs[])[instr_idx])
         ;
     }
     else {
