@@ -400,7 +400,7 @@ fn parse_type_specifier(ctx: *struc ParserContext, type_specifier: **struc Type)
 }
 
 fn parse_arr_specifier(ctx: *struc ParserContext, type_specifier: **struc Type) error_t {
-    constant: *struc CConst = sptr_new()
+    constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
     size: i64 = 0
     TRY(pop_next(ctx))
@@ -572,7 +572,7 @@ fn parse_arg_list(ctx: *struc ParserContext, args: *vector_t(unique_ptr_t(CExp))
 }
 
 fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
-    constant: *struc CConst = sptr_new()
+    constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(parse_const(ctx, @constant))
@@ -583,7 +583,7 @@ fn parse_const_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
 }
 
 fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
-    constant: *struc CConst = sptr_new()
+    constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(parse_unsigned_const(ctx, @constant))
@@ -594,7 +594,7 @@ fn parse_unsigned_const_factor(ctx: *struc ParserContext, exp: **struc CExp) err
 }
 
 fn parse_string_literal_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
-    literal: *struc CStringLiteral = sptr_new()
+    literal: shared_ptr_t(CStringLiteral) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(pop_next(ctx))
@@ -639,7 +639,7 @@ fn parse_call_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
 
 fn parse_cast_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
     cast_exp: unique_ptr_t(CExp) = uptr_new()
-    target_type: *struc Type = sptr_new()
+    target_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(pop_next(ctx))
@@ -734,7 +734,7 @@ fn parse_dot_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
 fn parse_postfix_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
     exp_right: unique_ptr_t(CExp) = uptr_new()
     exp_right_1: unique_ptr_t(CExp) = uptr_new()
-    constant: *struc CConst = sptr_new()
+    constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
     exp_null: unique_ptr_t(CExp) = uptr_new()
     info_at: u64 = ctx[].peek_tok[].info_at
@@ -770,7 +770,7 @@ fn parse_incr_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
     exp_right: unique_ptr_t(CExp) = uptr_new()
     exp_left_1: unique_ptr_t(CExp) = uptr_new()
     exp_right_1: unique_ptr_t(CExp) = uptr_new()
-    constant: *struc CConst = sptr_new()
+    constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     unop: struc CUnaryOp = init_CPrefix()
@@ -803,7 +803,7 @@ fn parse_addrof_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
 }
 
 fn parse_sizeoft_factor(ctx: *struc ParserContext, exp: **struc CExp) error_t {
-    target_type: *struc Type = sptr_new()
+    target_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].next_tok[].info_at
     TRY(parse_type_name(ctx, @target_type))
@@ -1470,7 +1470,7 @@ fn parse_match_statement(ctx: *struc ParserContext, statement: **struc CStatemen
 fn parse_with_statement(ctx: *struc ParserContext, statement: **struc CStatement) error_t {
     value: unique_ptr_t(CExp) = uptr_new()
     jump_to: unique_ptr_t(CStatement) = uptr_new()
-    constant: *struc CConst = sptr_new()
+    constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(pop_next(ctx))
@@ -1806,7 +1806,7 @@ fn parse_item_decltor(ctx: *struc ParserContext, name: *u64, derived_type: **str
 }
 
 fn parse_decltor_list(ctx: *struc ParserContext, params: *vector_t(TIdentifier), param_types: *vector_t(shared_ptr_t(Type))) error_t {
-    param_type: *struc Type = sptr_new()
+    param_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     param: u64;
     TRY(parse_item_decltor(ctx, @param, @param_type))
@@ -1852,7 +1852,7 @@ fn parse_fun_decltor(ctx: *struc ParserContext, fun_type: **struc Type, params: 
 
 fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, fun_decl: **struc CFunctionDeclaration) error_t {
     body: unique_ptr_t(CBlock) = uptr_new()
-    fun_type: *struc Type = sptr_new()
+    fun_type: shared_ptr_t(Type) = sptr_new()
     params: vector_t(TIdentifier) = vec_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
@@ -1873,7 +1873,7 @@ fn parse_fun_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
 
 fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, var_decl: **struc CVariableDeclaration) error_t {
     initializer: unique_ptr_t(CInitializer) = uptr_new()
-    var_type: *struc Type = sptr_new()
+    var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
     name: u64;
@@ -1899,7 +1899,7 @@ fn parse_var_declaration(ctx: *struc ParserContext, storage_class: *struc CStora
 }
 
 fn parse_member_declaration(ctx: *struc ParserContext, member_decl: **struc CMemberDeclaration) error_t {
-    member_type: *struc Type = sptr_new()
+    member_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64;
     member_name: u64;

@@ -8,7 +8,7 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 m4_include(`../backend/regs.plx.m4')m4_dnl
 
 pub fn make_Type(none) *struc Type {
-    self: *struc Type = sptr_new()
+    self: shared_ptr_t(Type) = sptr_new()
     sptr_alloc(Type, self)
     self[].tag = AST_Type_t
     return self
@@ -158,7 +158,7 @@ pub fn free_Type(self: **struc Type) none {
 }
 
 pub fn make_StaticInit(none) *struc StaticInit {
-    self: *struc StaticInit = sptr_new()
+    self: shared_ptr_t(StaticInit) = sptr_new()
     sptr_alloc(StaticInit, self)
     self[].tag = AST_StaticInit_t
     return self
@@ -276,7 +276,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
 }
 
 pub fn make_InitialValue(none) *struc InitialValue {
-    self: *struc InitialValue = sptr_new()
+    self: shared_ptr_t(InitialValue) = sptr_new()
     sptr_alloc(InitialValue, self)
     self[].tag = AST_InitialValue_t
     return self

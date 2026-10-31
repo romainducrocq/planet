@@ -374,16 +374,16 @@ fn get_type_alignment(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
 }
 
 fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
-    joint_type: *struc Type = sptr_new()
+    joint_type: shared_ptr_t(Type) = sptr_new()
     if is_type_char(node_1[].exp_type) {
-        exp_type: *struc Type = sptr_new()
+        exp_type: shared_ptr_t(Type) = sptr_new()
         sptr_move(Type, node_1[].exp_type, exp_type)
         node_1[].exp_type = make_Int()
         joint_type = get_joint_type(node_1, node_2)
         sptr_move(Type, exp_type, node_1[].exp_type)
     }
     elif is_type_char(node_2[].exp_type) {
-        exp_type: *struc Type = sptr_new()
+        exp_type: shared_ptr_t(Type) = sptr_new()
         sptr_move(Type, node_2[].exp_type, exp_type)
         node_2[].exp_type = make_Int()
         joint_type = get_joint_type(node_1, node_2)
@@ -756,7 +756,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
 }
 
 fn cast_exp(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc CExp) error_t {
-    exp_type_cp: *struc Type = sptr_new()
+    exp_type_cp: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = (exp[])[].info_at
     sptr_copy(Type, exp_type[], exp_type_cp)
@@ -786,7 +786,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: **struc Type, exp: **struc
 }
 
 fn promote_char_to_int(ctx: *struc SemanticContext, exp: **struc CExp) error_t {
-    promote_type: *struc Type = sptr_new()
+    promote_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     promote_type = make_Int()
     TRY(cast_exp(ctx, @promote_type, exp))
@@ -890,7 +890,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
 fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
@@ -933,7 +933,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error
 fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
@@ -981,7 +981,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
@@ -1006,7 +1006,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
@@ -1087,7 +1087,7 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) e
 fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if node[].exp_left[].exp_type[].tag == AST_Pointer_t or node[].exp_right[].exp_type[].tag == AST_Pointer_t {
         TRY(get_joint_ptr_type(ctx, node[].exp_left, node[].exp_right, @common_type))
@@ -1117,7 +1117,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
 fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
@@ -1242,7 +1242,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error
 fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    common_type: *struc Type = sptr_new()
+    common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_scalar(node[].condition[].exp_type) {
         THROW_AT_TOKEN(node[]._base[].info_at,
@@ -1330,7 +1330,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) error
 }
 
 fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t {
-    ref_type: *struc Type = sptr_new()
+    ref_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_exp_lvalue(node[].exp) {
         THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(0, MSG_addrof_rvalue))
@@ -1345,8 +1345,8 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t {
 fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
-    ref_type: *struc Type = sptr_new()
-    subscript_type: *struc Type = sptr_new()
+    ref_type: shared_ptr_t(Type) = sptr_new()
+    subscript_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if node[].primary_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].primary_exp[].exp_type[].get._Pointer.ref_type) and is_type_int(node[].subscript_exp[].exp_type) {
         subscript_type = make_Long()
@@ -1478,7 +1478,7 @@ fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
 
 fn check_arr_typed_exp(addrof: **struc CExp) none {
     {
-        ref_type: *struc Type = sptr_new()
+        ref_type: shared_ptr_t(Type) = sptr_new()
         sptr_copy(Type, (addrof[])[].exp_type[].get._Array.elem_type, ref_type)
         free_Type(@(addrof[])[].exp_type)
         (addrof[])[].exp_type = make_Pointer(@ref_type)
@@ -1779,7 +1779,7 @@ fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc C
 fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
     exp: unique_ptr_t(CExp) = uptr_new()
     {
-        constant: *struc CConst = sptr_new()
+        constant: shared_ptr_t(CConst) = sptr_new()
         match elem_type[].tag {
             -> AST_Char_t {
                 -> AST_SChar_t {
@@ -1949,7 +1949,7 @@ fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclara
 }
 
 fn check_arr_param_decl(fun_type: *struc FunType, i: u64) none {
-    ref_type: *struc Type = sptr_new()
+    ref_type: shared_ptr_t(Type) = sptr_new()
     sptr_copy(Type, fun_type[].param_types[i][].get._Array.elem_type, ref_type)
     free_Type(@fun_type[].param_types[i])
     fun_type[].param_types[i] = make_Pointer(@ref_type)
@@ -1961,7 +1961,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     type_fmt: string_t = str_new(nil)
     param_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
-    param_type: *struc Type = sptr_new()
+    param_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     fun_type: *struc FunType = @node[].fun_type[].get._FunType
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
@@ -2004,7 +2004,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     type_fmt_2: string_t = str_new(nil)
     glob_fun_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
-    glob_fun_type: *struc Type = sptr_new()
+    glob_fun_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     THROW_ABORT_IF(node[].fun_type[].tag == AST_Void_t)
     is_def: i32 = set_find(ctx[].fun_def_set, node[].name) ~= set_end()
@@ -2228,7 +2228,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
             map_add(ctx[].frontend[].string_const_table, string_const, string_const_label)
 
-            constant_type: *struc Type = sptr_new()
+            constant_type: shared_ptr_t(Type) = sptr_new()
             {
                 size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
                 elem_type: *struc Type = make_Char()
@@ -2237,9 +2237,9 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
 
             constant_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
             {
-                static_init: *struc StaticInit = sptr_new()
+                static_init: shared_ptr_t(StaticInit) = sptr_new()
                 {
-                    literal: *struc CStringLiteral = sptr_new()
+                    literal: shared_ptr_t(CStringLiteral) = sptr_new()
                     sptr_copy(CStringLiteral, node[].literal, literal)
                     static_init = make_StringInit(string_const, true, @literal)
                 }
@@ -2254,7 +2254,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
 }
 
 fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CString, static_arr_type: *struc Array) error_t {
-    literal: *struc CStringLiteral = sptr_new()
+    literal: shared_ptr_t(CStringLiteral) = sptr_new()
     CATCH_ENTER
     byte: i64;
     TRY(check_bound_string_init(ctx, node, static_arr_type))
@@ -2414,8 +2414,8 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     type_fmt_2: string_t = str_new(nil)
     glob_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
-    init_value: *struc InitialValue = sptr_new()
-    glob_var_type: *struc Type = sptr_new()
+    init_value: shared_ptr_t(InitialValue) = sptr_new()
+    glob_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     is_glob: i32;
     map_it: i64;
@@ -2495,8 +2495,8 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     type_fmt_2: string_t = str_new(nil)
     local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
-    init_value: *struc InitialValue = sptr_new()
-    local_var_type: *struc Type = sptr_new()
+    init_value: shared_ptr_t(InitialValue) = sptr_new()
+    local_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     map_it: i64;
     if node[].init {
@@ -2531,8 +2531,8 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
 fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
     local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
-    init_value: *struc InitialValue = sptr_new()
-    local_var_type: *struc Type = sptr_new()
+    init_value: shared_ptr_t(InitialValue) = sptr_new()
+    local_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     THROW_ABORT_IF(
         node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure))
@@ -2560,7 +2560,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     type_fmt: string_t = str_new(nil)
     local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
-    local_var_type: *struc Type = sptr_new()
+    local_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
@@ -2647,7 +2647,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     struct_fmt: string_t = str_new(nil)
     struct_member: unique_ptr_t(StructMember) = uptr_new()
     struct_typedef: unique_ptr_t(StructTypedef) = uptr_new()
-    member_type: *struc Type = sptr_new()
+    member_type: shared_ptr_t(Type) = sptr_new()
     member_names: vector_t(TIdentifier) = vec_new()
     members: hashmap_t(``TIdentifier'', ``UPtrStructMember'') = map_new()
     CATCH_ENTER
