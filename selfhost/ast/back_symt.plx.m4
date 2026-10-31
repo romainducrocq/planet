@@ -21,7 +21,8 @@ type struc ByteArray(size: i64, alignment: i32)
 
 type union _AssemblyType(_Byte: struc Byte, _LongWord: struc LongWord, _QuadWord: struc QuadWord, _BackendDouble: struc BackendDouble, _ByteArray: struc ByteArray)
 
-type struc AssemblyType(_ref_count: u64, tag: i32, get: union _AssemblyType)
+type struc AssemblyType(shared_ptr_impl(AST_T)
+    get: union _AssemblyType)
 pub fn make_AssemblyType(none) *struc AssemblyType;
 pub fn make_Byte(none) *struc AssemblyType;
 pub fn make_LongWord(none) *struc AssemblyType;

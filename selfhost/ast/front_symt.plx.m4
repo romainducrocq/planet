@@ -41,7 +41,8 @@ type struc Structure(tag_name: u64, is_union: i32)
 
 type union _Type(_Char: struc Char, _SChar: struc SChar, _UChar: struc UChar, _Int: struc Int, _Long: struc Long, _UInt: struc UInt, _ULong: struc ULong, _Double: struc Double, _Void: struc Void, _FunType: struc FunType, _Pointer: struc Pointer, _Array: struc Array, _Structure: struc Structure)
 
-type struc Type(_ref_count: u64, tag: i32, get: union _Type)
+type struc Type(shared_ptr_impl(AST_T)
+    get: union _Type)
 pub fn make_Type(none) *struc Type;
 pub fn make_Char(none) *struc Type;
 pub fn make_SChar(none) *struc Type;
@@ -80,7 +81,8 @@ type struc PointerInit(name: u64)
 
 type union _StaticInit(_IntInit: struc IntInit, _LongInit: struc LongInit, _UIntInit: struc UIntInit, _ULongInit: struc ULongInit, _CharInit: struc CharInit, _UCharInit: struc UCharInit, _DoubleInit: struc DoubleInit, _ZeroInit: struc ZeroInit, _StringInit: struc StringInit, _PointerInit: struc PointerInit)
 
-type struc StaticInit(_ref_count: u64, tag: i32, get: union _StaticInit)
+type struc StaticInit(shared_ptr_impl(AST_T)
+    get: union _StaticInit)
 pub fn make_StaticInit(none) *struc StaticInit;
 pub fn make_IntInit(value: i32) *struc StaticInit;
 pub fn make_LongInit(value: i64) *struc StaticInit;
@@ -102,7 +104,8 @@ type struc NoInitializer(_empty: char)
 
 type union _InitialValue(_Tentative: struc Tentative, _Initial: struc Initial, _NoInitializer: struc NoInitializer)
 
-type struc InitialValue(_ref_count: u64, tag: i32, get: union _InitialValue)
+type struc InitialValue(shared_ptr_impl(AST_T)
+    get: union _InitialValue)
 pub fn make_InitialValue(none) *struc InitialValue;
 pub fn make_Tentative(none) *struc InitialValue;
 pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc InitialValue;

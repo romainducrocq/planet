@@ -83,7 +83,8 @@ type struc AsmIndexed(scale: i64, reg_base: struc AsmReg, reg_index: struc AsmRe
 
 type union _AsmOperand(_AsmImm: struc AsmImm, _AsmRegister: struc AsmRegister, _AsmPseudo: struc AsmPseudo, _AsmMemory: struc AsmMemory, _AsmData: struc AsmData, _AsmPseudoMem: struc AsmPseudoMem, _AsmIndexed: struc AsmIndexed)
 
-type struc AsmOperand(_ref_count: u64, tag: i32, get: union _AsmOperand)
+type struc AsmOperand(shared_ptr_impl(AST_T)
+    get: union _AsmOperand)
 pub fn make_AsmOperand(none) *struc AsmOperand;
 pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) *struc AsmOperand;
 pub fn make_AsmRegister(reg: *struc AsmReg) *struc AsmOperand;
