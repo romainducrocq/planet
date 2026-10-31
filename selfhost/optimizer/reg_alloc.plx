@@ -48,14 +48,7 @@ fn free_InferenceGraph(self: **struc InferenceGraph) none {
 
 fn make_InferenceGraph(is_sse: i32) *struc InferenceGraph {
     self: *struc InferenceGraph = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(InferenceGraph, self)"
-        free_InferenceGraph(@self)
-        self = cast<*struc InferenceGraph>(malloc(sizeof<struc InferenceGraph>))
-        if not self {
-            panic_sigabrt("alloc "                 "InferenceGraph")
-        }
-    }
+    uptr_alloc(InferenceGraph, self)
     self[].hard_reg_mask = 0ul
     self[].unpruned_hard_mask_bits = vec_new()
     self[].unpruned_pseudo_names = vec_new()

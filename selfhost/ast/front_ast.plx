@@ -80,14 +80,7 @@ pub fn make_CBinaryOp(tagged_def_impl(AST_T)) struc CBinaryOp {
 
 pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator {
     self: *struc CAbstractDeclarator = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CAbstractDeclarator, self)"
-        free_CAbstractDeclarator(@self)
-        self = cast<*struc CAbstractDeclarator>(malloc(sizeof<struc CAbstractDeclarator>))
-        if not self {
-            panic_sigabrt("alloc "                 "CAbstractDeclarator")
-        }
-    }
+    uptr_alloc(CAbstractDeclarator, self)
     self[].tag = AST_CAbstractDeclarator_t
     return self
 }
@@ -144,14 +137,7 @@ pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
 
 pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *struc CParam {
     self: *struc CParam = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CParam, self)"
-        free_CParam(@self)
-        self = cast<*struc CParam>(malloc(sizeof<struc CParam>))
-        if not self {
-            panic_sigabrt("alloc "                 "CParam")
-        }
-    }
+    uptr_alloc(CParam, self)
     self[].tag = AST_CParam_t
     self[].decltor = uptr_new()
     uptr_move(CDeclarator, decltor[], self[].decltor)
@@ -180,14 +166,7 @@ pub fn free_CParam(self: **struc CParam) none {
 
 pub fn make_CDeclarator(none) *struc CDeclarator {
     self: *struc CDeclarator = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CDeclarator, self)"
-        free_CDeclarator(@self)
-        self = cast<*struc CDeclarator>(malloc(sizeof<struc CDeclarator>))
-        if not self {
-            panic_sigabrt("alloc "                 "CDeclarator")
-        }
-    }
+    uptr_alloc(CDeclarator, self)
     self[].tag = AST_CDeclarator_t
     return self
 }
@@ -263,14 +242,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
 
 pub fn make_CExp(info_at: u64) *struc CExp {
     self: *struc CExp = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CExp, self)"
-        free_CExp(@self)
-        self = cast<*struc CExp>(malloc(sizeof<struc CExp>))
-        if not self {
-            panic_sigabrt("alloc "                 "CExp")
-        }
-    }
+    uptr_alloc(CExp, self)
     self[].tag = AST_CExp_t
     self[].exp_type = sptr_new()
     self[].info_at = info_at
@@ -529,14 +501,7 @@ pub fn free_CExp(self: **struc CExp) none {
 
 pub fn make_CStatement(none) *struc CStatement {
     self: *struc CStatement = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CStatement, self)"
-        free_CStatement(@self)
-        self = cast<*struc CStatement>(malloc(sizeof<struc CStatement>))
-        if not self {
-            panic_sigabrt("alloc "                 "CStatement")
-        }
-    }
+    uptr_alloc(CStatement, self)
     self[].tag = AST_CStatement_t
     return self
 }
@@ -776,14 +741,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
 
 pub fn make_CForInit(none) *struc CForInit {
     self: *struc CForInit = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CForInit, self)"
-        free_CForInit(@self)
-        self = cast<*struc CForInit>(malloc(sizeof<struc CForInit>))
-        if not self {
-            panic_sigabrt("alloc "                 "CForInit")
-        }
-    }
+    uptr_alloc(CForInit, self)
     self[].tag = AST_CForInit_t
     return self
 }
@@ -830,14 +788,7 @@ pub fn free_CForInit(self: **struc CForInit) none {
 
 pub fn make_CBlock(none) *struc CBlock {
     self: *struc CBlock = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CBlock, self)"
-        free_CBlock(@self)
-        self = cast<*struc CBlock>(malloc(sizeof<struc CBlock>))
-        if not self {
-            panic_sigabrt("alloc "                 "CBlock")
-        }
-    }
+    uptr_alloc(CBlock, self)
     self[].tag = AST_CBlock_t
     return self
 }
@@ -875,14 +826,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
 
 pub fn make_CBlockItem(none) *struc CBlockItem {
     self: *struc CBlockItem = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CBlockItem, self)"
-        free_CBlockItem(@self)
-        self = cast<*struc CBlockItem>(malloc(sizeof<struc CBlockItem>))
-        if not self {
-            panic_sigabrt("alloc "                 "CBlockItem")
-        }
-    }
+    uptr_alloc(CBlockItem, self)
     self[].tag = AST_CBlockItem_t
     return self
 }
@@ -945,14 +889,7 @@ pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass {
 
 pub fn make_CInitializer(none) *struc CInitializer {
     self: *struc CInitializer = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CInitializer, self)"
-        free_CInitializer(@self)
-        self = cast<*struc CInitializer>(malloc(sizeof<struc CInitializer>))
-        if not self {
-            panic_sigabrt("alloc "                 "CInitializer")
-        }
-    }
+    uptr_alloc(CInitializer, self)
     self[].tag = AST_CInitializer_t
     self[].init_type = sptr_new()
     return self
@@ -1006,14 +943,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
 
 pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info_at: u64) *struc CMemberDeclaration {
     self: *struc CMemberDeclaration = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CMemberDeclaration, self)"
-        free_CMemberDeclaration(@self)
-        self = cast<*struc CMemberDeclaration>(malloc(sizeof<struc CMemberDeclaration>))
-        if not self {
-            panic_sigabrt("alloc "                 "CMemberDeclaration")
-        }
-    }
+    uptr_alloc(CMemberDeclaration, self)
     self[].tag = AST_CMemberDeclaration_t
     self[].member_name = member_name
     self[].member_type = sptr_new()
@@ -1041,14 +971,7 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
 
 pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) *struc CStructDeclaration {
     self: *struc CStructDeclaration = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CStructDeclaration, self)"
-        free_CStructDeclaration(@self)
-        self = cast<*struc CStructDeclaration>(malloc(sizeof<struc CStructDeclaration>))
-        if not self {
-            panic_sigabrt("alloc "                 "CStructDeclaration")
-        }
-    }
+    uptr_alloc(CStructDeclaration, self)
     self[].tag = AST_CStructDeclaration_t
     self[].tag_name = tag_name
     self[].is_union = is_union
@@ -1080,14 +1003,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
 
 pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: **struc CBlock, fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
     self: *struc CFunctionDeclaration = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CFunctionDeclaration, self)"
-        free_CFunctionDeclaration(@self)
-        self = cast<*struc CFunctionDeclaration>(malloc(sizeof<struc CFunctionDeclaration>))
-        if not self {
-            panic_sigabrt("alloc "                 "CFunctionDeclaration")
-        }
-    }
+    uptr_alloc(CFunctionDeclaration, self)
     self[].tag = AST_CFunctionDeclaration_t
     self[].name = name
     self[].params = vec_new()
@@ -1122,14 +1038,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
 
 pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration {
     self: *struc CVariableDeclaration = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CVariableDeclaration, self)"
-        free_CVariableDeclaration(@self)
-        self = cast<*struc CVariableDeclaration>(malloc(sizeof<struc CVariableDeclaration>))
-        if not self {
-            panic_sigabrt("alloc "                 "CVariableDeclaration")
-        }
-    }
+    uptr_alloc(CVariableDeclaration, self)
     self[].tag = AST_CVariableDeclaration_t
     self[].name = name
     self[].init = uptr_new()
@@ -1161,14 +1070,7 @@ pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
 
 pub fn make_CDeclaration(none) *struc CDeclaration {
     self: *struc CDeclaration = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CDeclaration, self)"
-        free_CDeclaration(@self)
-        self = cast<*struc CDeclaration>(malloc(sizeof<struc CDeclaration>))
-        if not self {
-            panic_sigabrt("alloc "                 "CDeclaration")
-        }
-    }
+    uptr_alloc(CDeclaration, self)
     self[].tag = AST_CDeclaration_t
     return self
 }
@@ -1227,14 +1129,7 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
 
 pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) *struc CProgram {
     self: *struc CProgram = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(CProgram, self)"
-        free_CProgram(@self)
-        self = cast<*struc CProgram>(malloc(sizeof<struc CProgram>))
-        if not self {
-            panic_sigabrt("alloc "                 "CProgram")
-        }
-    }
+    uptr_alloc(CProgram, self)
     self[].tag = AST_CProgram_t
     self[].declarations = vec_new()
     vec_move(declarations[], self[].declarations)

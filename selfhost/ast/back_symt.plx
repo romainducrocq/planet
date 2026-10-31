@@ -70,14 +70,7 @@ pub fn free_AssemblyType(self: **struc AssemblyType) none {
 
 pub fn make_BackendSymbol(none) *struc BackendSymbol {
     self: *struc BackendSymbol = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(BackendSymbol, self)"
-        free_BackendSymbol(@self)
-        self = cast<*struc BackendSymbol>(malloc(sizeof<struc BackendSymbol>))
-        if not self {
-            panic_sigabrt("alloc "                 "BackendSymbol")
-        }
-    }
+    uptr_alloc(BackendSymbol, self)
     self[].tag = AST_BackendSymbol_t
     return self
 }

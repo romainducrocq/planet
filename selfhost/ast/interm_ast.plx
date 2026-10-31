@@ -114,14 +114,7 @@ pub fn free_TacValue(self: **struc TacValue) none {
 
 pub fn make_TacExpResult(none) *struc TacExpResult {
     self: *struc TacExpResult = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(TacExpResult, self)"
-        free_TacExpResult(@self)
-        self = cast<*struc TacExpResult>(malloc(sizeof<struc TacExpResult>))
-        if not self {
-            panic_sigabrt("alloc "                 "TacExpResult")
-        }
-    }
+    uptr_alloc(TacExpResult, self)
     self[].tag = AST_TacExpResult_t
     return self
 }
@@ -179,14 +172,7 @@ pub fn free_TacExpResult(self: **struc TacExpResult) none {
 
 pub fn make_TacInstruction(none) *struc TacInstruction {
     self: *struc TacInstruction = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(TacInstruction, self)"
-        free_TacInstruction(@self)
-        self = cast<*struc TacInstruction>(malloc(sizeof<struc TacInstruction>))
-        if not self {
-            panic_sigabrt("alloc "                 "TacInstruction")
-        }
-    }
+    uptr_alloc(TacInstruction, self)
     self[].tag = AST_TacInstruction_t
     return self
 }
@@ -533,14 +519,7 @@ pub fn free_TacInstruction(self: **struc TacInstruction) none {
 
 pub fn make_TacTopLevel(none) *struc TacTopLevel {
     self: *struc TacTopLevel = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(TacTopLevel, self)"
-        free_TacTopLevel(@self)
-        self = cast<*struc TacTopLevel>(malloc(sizeof<struc TacTopLevel>))
-        if not self {
-            panic_sigabrt("alloc "                 "TacTopLevel")
-        }
-    }
+    uptr_alloc(TacTopLevel, self)
     self[].tag = AST_TacTopLevel_t
     return self
 }
@@ -619,14 +598,7 @@ pub fn free_TacTopLevel(self: **struc TacTopLevel) none {
 
 pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram {
     self: *struc TacProgram = uptr_new()
-    loop .. while 0 {
-        " #@MACRO@:uptr_alloc(TacProgram, self)"
-        free_TacProgram(@self)
-        self = cast<*struc TacProgram>(malloc(sizeof<struc TacProgram>))
-        if not self {
-            panic_sigabrt("alloc "                 "TacProgram")
-        }
-    }
+    uptr_alloc(TacProgram, self)
     self[].tag = AST_TacProgram_t
     self[].static_const_toplvls = vec_new()
     vec_move(static_const_toplvls[], self[].static_const_toplvls)
