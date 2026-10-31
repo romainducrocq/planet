@@ -24,7 +24,8 @@ type struc CConstUChar(value: u8)
 
 type union _CConst(_CConstInt: struc CConstInt, _CConstLong: struc CConstLong, _CConstUInt: struc CConstUInt, _CConstULong: struc CConstULong, _CConstDouble: struc CConstDouble, _CConstChar: struc CConstChar, _CConstUChar: struc CConstUChar)
 
-type struc CConst(_ref_count: u64, tag: i32, get: union _CConst)
+type struc CConst(shared_ptr_impl(AST_T)
+    get: union _CConst)
 pub fn make_CConst(none) *struc CConst;
 pub fn make_CConstInt(value: i32) *struc CConst;
 pub fn make_CConstLong(value: i64) *struc CConst;
@@ -35,7 +36,8 @@ pub fn make_CConstChar(value: i8) *struc CConst;
 pub fn make_CConstUChar(value: u8) *struc CConst;
 pub fn free_CConst(self: **struc CConst) none;
 
-type struc CStringLiteral(_ref_count: u64, tag: i32, value: vector_t(i8))
+type struc CStringLiteral(shared_ptr_impl(AST_T)
+    value: vector_t(i8))
 pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral;
 pub fn free_CStringLiteral(self: **struc CStringLiteral) none;
 
