@@ -9,18 +9,7 @@ m4_include(`../backend/regs.plx.m4')m4_dnl
 
 pub fn make_Type(none) *struc Type {
     self: *struc Type = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(Type, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(Type, self)"
-            free_Type(@self)
-            self = cast<*struc Type>(malloc(sizeof<struc Type>))
-            if not self {
-                panic_sigabrt("alloc "                     "Type")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(Type, self)
     self[].tag = AST_Type_t
     return self
 }
@@ -181,18 +170,7 @@ pub fn free_Type(self: **struc Type) none {
 
 pub fn make_StaticInit(none) *struc StaticInit {
     self: *struc StaticInit = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(StaticInit, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(StaticInit, self)"
-            free_StaticInit(@self)
-            self = cast<*struc StaticInit>(malloc(sizeof<struc StaticInit>))
-            if not self {
-                panic_sigabrt("alloc "                     "StaticInit")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(StaticInit, self)
     self[].tag = AST_StaticInit_t
     return self
 }
@@ -321,18 +299,7 @@ pub fn free_StaticInit(self: **struc StaticInit) none {
 
 pub fn make_InitialValue(none) *struc InitialValue {
     self: *struc InitialValue = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(InitialValue, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(InitialValue, self)"
-            free_InitialValue(@self)
-            self = cast<*struc InitialValue>(malloc(sizeof<struc InitialValue>))
-            if not self {
-                panic_sigabrt("alloc "                     "InitialValue")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(InitialValue, self)
     self[].tag = AST_InitialValue_t
     return self
 }

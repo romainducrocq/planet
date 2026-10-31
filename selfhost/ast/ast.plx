@@ -6,18 +6,7 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 pub fn make_CConst(none) *struc CConst {
     self: *struc CConst = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(CConst, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(CConst, self)"
-            free_CConst(@self)
-            self = cast<*struc CConst>(malloc(sizeof<struc CConst>))
-            if not self {
-                panic_sigabrt("alloc "                     "CConst")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(CConst, self)
     self[].tag = AST_CConst_t
     return self
 }
@@ -111,18 +100,7 @@ pub fn free_CConst(self: **struc CConst) none {
 
 pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral {
     self: *struc CStringLiteral = sptr_new()
-    loop .. while 0 {
-        " #@MACRO@:sptr_alloc(CStringLiteral, self)"
-        loop .. while 0 {
-            " #@MACRO@:uptr_alloc(CStringLiteral, self)"
-            free_CStringLiteral(@self)
-            self = cast<*struc CStringLiteral>(malloc(sizeof<struc CStringLiteral>))
-            if not self {
-                panic_sigabrt("alloc "                     "CStringLiteral")
-            }
-        }
-        (self)[]._ref_count = 1
-    }
+    sptr_alloc(CStringLiteral, self)
     self[].tag = AST_CStringLiteral_t
     self[].value = vec_new()
     vec_move(value[], self[].value)
