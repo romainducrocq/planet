@@ -582,11 +582,7 @@ pub fn free_AsmInstruction(self: **struc AsmInstruction) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_AsmTopLevel(none) *struc AsmTopLevel {
@@ -666,11 +662,7 @@ pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)), top_levels: *vector_t(unique_ptr_t(AsmTopLevel))) *struc AsmProgram {
@@ -712,9 +704,5 @@ pub fn free_AsmProgram(self: **struc AsmProgram) none {
         free_AsmTopLevel(@(self[])[].top_levels[i])
     }
     vec_delete(self[][].top_levels)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }

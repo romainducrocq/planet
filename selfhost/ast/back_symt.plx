@@ -124,9 +124,5 @@ pub fn free_BackendSymbol(self: **struc BackendSymbol) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }

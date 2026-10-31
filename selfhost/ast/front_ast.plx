@@ -139,11 +139,7 @@ pub fn free_CAbstractDeclarator(self: **struc CAbstractDeclarator) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CParam(decltor: **struc CDeclarator, param_type: **struc Type) *struc CParam {
@@ -179,11 +175,7 @@ pub fn free_CParam(self: **struc CParam) none {
     }
     free_CDeclarator(@(self[])[].decltor)
     free_Type(@(self[])[].param_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CDeclarator(none) *struc CDeclarator {
@@ -266,11 +258,7 @@ pub fn free_CDeclarator(self: **struc CDeclarator) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CExp(info_at: u64) *struc CExp {
@@ -536,11 +524,7 @@ pub fn free_CExp(self: **struc CExp) none {
         }
     }
     free_Type(@(self[])[].exp_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CStatement(none) *struc CStatement {
@@ -787,11 +771,7 @@ pub fn free_CStatement(self: **struc CStatement) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CForInit(none) *struc CForInit {
@@ -845,11 +825,7 @@ pub fn free_CForInit(self: **struc CForInit) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CBlock(none) *struc CBlock {
@@ -894,11 +870,7 @@ pub fn free_CBlock(self: **struc CBlock) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CBlockItem(none) *struc CBlockItem {
@@ -952,11 +924,7 @@ pub fn free_CBlockItem(self: **struc CBlockItem) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass {
@@ -1033,11 +1001,7 @@ pub fn free_CInitializer(self: **struc CInitializer) none {
         }
     }
     free_Type(@(self[])[].init_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info_at: u64) *struc CMemberDeclaration {
@@ -1072,11 +1036,7 @@ pub fn free_CMemberDeclaration(self: **struc CMemberDeclaration) none {
         }
     }
     free_Type(@(self[])[].member_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) *struc CStructDeclaration {
@@ -1115,11 +1075,7 @@ pub fn free_CStructDeclaration(self: **struc CStructDeclaration) none {
         free_CMemberDeclaration(@(self[])[].members[i])
     }
     vec_delete(self[][].members)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: **struc CBlock, fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
@@ -1161,11 +1117,7 @@ pub fn free_CFunctionDeclaration(self: **struc CFunctionDeclaration) none {
     vec_delete(self[][].params)
     free_CBlock(@(self[])[].body)
     free_Type(@(self[])[].fun_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CVariableDeclaration(name: u64, init: **struc CInitializer, var_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration {
@@ -1204,11 +1156,7 @@ pub fn free_CVariableDeclaration(self: **struc CVariableDeclaration) none {
     }
     free_CInitializer(@(self[])[].init)
     free_Type(@(self[])[].var_type)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CDeclaration(none) *struc CDeclaration {
@@ -1274,11 +1222,7 @@ pub fn free_CDeclaration(self: **struc CDeclaration) none {
             THROW_ABORT
         }
     }
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
 
 pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) *struc CProgram {
@@ -1314,9 +1258,5 @@ pub fn free_CProgram(self: **struc CProgram) none {
         free_CDeclaration(@(self[])[].declarations[i])
     }
     vec_delete(self[][].declarations)
-    if self[] {
-        " #@MACRO@:uptr_free(*self)"
-        free(self[])
-        self[] = uptr_new()
-    }
+    uptr_free(self[])
 }
