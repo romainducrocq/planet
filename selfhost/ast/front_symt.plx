@@ -7,69 +7,69 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 m4_include(`../backend/regs.plx.m4')m4_dnl
 
-pub fn make_Type(none) *struc Type {
+pub fn make_Type(none) shared_ptr_t(Type) {
     self: shared_ptr_t(Type) = sptr_new()
     sptr_alloc(Type, self)
     self[].tag = AST_Type_t
     return self
 }
 
-pub fn make_Char(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Char(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Char_t
     return self
 }
 
-pub fn make_SChar(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_SChar(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_SChar_t
     return self
 }
 
-pub fn make_UChar(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_UChar(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_UChar_t
     return self
 }
 
-pub fn make_Int(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Int(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Int_t
     return self
 }
 
-pub fn make_Long(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Long(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Long_t
     return self
 }
 
-pub fn make_UInt(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_UInt(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_UInt_t
     return self
 }
 
-pub fn make_ULong(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_ULong(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_ULong_t
     return self
 }
 
-pub fn make_Double(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Double(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Double_t
     return self
 }
 
-pub fn make_Void(none) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Void(none) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Void_t
     return self
 }
 
-pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_FunType_t
     self[].get._FunType.param_reg_mask = 0ul
     self[].get._FunType.ret_reg_mask = 0ul
@@ -82,16 +82,16 @@ pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *share
     return self
 }
 
-pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Pointer_t
     self[].get._Pointer.ref_type = sptr_new()
     sptr_move(Type, ref_type[], self[].get._Pointer.ref_type)
     return self
 }
 
-pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Array_t
     self[].get._Array.size = size
     self[].get._Array.elem_type = sptr_new()
@@ -99,8 +99,8 @@ pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) *struc Type {
     return self
 }
 
-pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type {
-    self: *struc Type = make_Type()
+pub fn make_Structure(tag_name: u64, is_union: i32) shared_ptr_t(Type) {
+    self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Structure_t
     self[].get._Structure.tag_name = tag_name
     self[].get._Structure.is_union = is_union
@@ -157,71 +157,71 @@ pub fn free_Type(self: *shared_ptr_t(Type)) none {
     sptr_free(self[])
 }
 
-pub fn make_StaticInit(none) *struc StaticInit {
+pub fn make_StaticInit(none) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = sptr_new()
     sptr_alloc(StaticInit, self)
     self[].tag = AST_StaticInit_t
     return self
 }
 
-pub fn make_IntInit(value: i32) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_IntInit(value: i32) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_IntInit_t
     self[].get._IntInit.value = value
     return self
 }
 
-pub fn make_LongInit(value: i64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_LongInit(value: i64) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_LongInit_t
     self[].get._LongInit.value = value
     return self
 }
 
-pub fn make_UIntInit(value: u32) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_UIntInit(value: u32) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_UIntInit_t
     self[].get._UIntInit.value = value
     return self
 }
 
-pub fn make_ULongInit(value: u64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_ULongInit_t
     self[].get._ULongInit.value = value
     return self
 }
 
-pub fn make_CharInit(value: i8) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_CharInit(value: i8) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_CharInit_t
     self[].get._CharInit.value = value
     return self
 }
 
-pub fn make_UCharInit(value: u8) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_UCharInit(value: u8) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_UCharInit_t
     self[].get._UCharInit.value = value
     return self
 }
 
-pub fn make_DoubleInit(dbl_const: u64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_DoubleInit_t
     self[].get._DoubleInit.dbl_const = dbl_const
     return self
 }
 
-pub fn make_ZeroInit(byte: i64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_ZeroInit(byte: i64) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_ZeroInit_t
     self[].get._ZeroInit.byte = byte
     return self
 }
 
-pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_StringInit_t
     self[].get._StringInit.string_const = string_const
     self[].get._StringInit.is_null_term = is_null_term
@@ -230,8 +230,8 @@ pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_pt
     return self
 }
 
-pub fn make_PointerInit(name: u64) *struc StaticInit {
-    self: *struc StaticInit = make_StaticInit()
+pub fn make_PointerInit(name: u64) shared_ptr_t(StaticInit) {
+    self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_PointerInit_t
     self[].get._PointerInit.name = name
     return self
@@ -275,29 +275,29 @@ pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none {
     sptr_free(self[])
 }
 
-pub fn make_InitialValue(none) *struc InitialValue {
+pub fn make_InitialValue(none) shared_ptr_t(InitialValue) {
     self: shared_ptr_t(InitialValue) = sptr_new()
     sptr_alloc(InitialValue, self)
     self[].tag = AST_InitialValue_t
     return self
 }
 
-pub fn make_Tentative(none) *struc InitialValue {
-    self: *struc InitialValue = make_InitialValue()
+pub fn make_Tentative(none) shared_ptr_t(InitialValue) {
+    self: shared_ptr_t(InitialValue) = make_InitialValue()
     self[].tag = AST_Tentative_t
     return self
 }
 
-pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc InitialValue {
-    self: *struc InitialValue = make_InitialValue()
+pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) shared_ptr_t(InitialValue) {
+    self: shared_ptr_t(InitialValue) = make_InitialValue()
     self[].tag = AST_Initial_t
     self[].get._Initial.static_inits = vec_new()
     vec_move(static_inits[], self[].get._Initial.static_inits)
     return self
 }
 
-pub fn make_NoInitializer(none) *struc InitialValue {
-    self: *struc InitialValue = make_InitialValue()
+pub fn make_NoInitializer(none) shared_ptr_t(InitialValue) {
+    self: shared_ptr_t(InitialValue) = make_InitialValue()
     self[].tag = AST_NoInitializer_t
     return self
 }
@@ -327,23 +327,23 @@ pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none {
     sptr_free(self[])
 }
 
-pub fn make_IdentifierAttr(none) *struc IdentifierAttr {
+pub fn make_IdentifierAttr(none) unique_ptr_t(IdentifierAttr) {
     self: unique_ptr_t(IdentifierAttr) = uptr_new()
     uptr_alloc(IdentifierAttr, self)
     self[].tag = AST_IdentifierAttr_t
     return self
 }
 
-pub fn make_FunAttr(is_def: i32, is_glob: i32) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+pub fn make_FunAttr(is_def: i32, is_glob: i32) unique_ptr_t(IdentifierAttr) {
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_FunAttr_t
     self[].get._FunAttr.is_def = is_def
     self[].get._FunAttr.is_glob = is_glob
     return self
 }
 
-pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) unique_ptr_t(IdentifierAttr) {
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_StaticAttr_t
     self[].get._StaticAttr.is_glob = is_glob
     self[].get._StaticAttr.init = sptr_new()
@@ -351,16 +351,16 @@ pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) *struc I
     return self
 }
 
-pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(IdentifierAttr) {
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_ConstantAttr_t
     self[].get._ConstantAttr.static_init = sptr_new()
     sptr_move(StaticInit, static_init[], self[].get._ConstantAttr.static_init)
     return self
 }
 
-pub fn make_LocalAttr(none) *struc IdentifierAttr {
-    self: *struc IdentifierAttr = make_IdentifierAttr()
+pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr) {
+    self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_LocalAttr_t
     return self
 }
@@ -391,7 +391,7 @@ pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none {
     uptr_free(self[])
 }
 
-pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) *struc Symbol {
+pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) unique_ptr_t(Symbol) {
     self: unique_ptr_t(Symbol) = uptr_new()
     uptr_alloc(Symbol, self)
     self[].tag = AST_Symbol_t
@@ -417,7 +417,7 @@ pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) *struc StructMember {
+pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) unique_ptr_t(StructMember) {
     self: unique_ptr_t(StructMember) = uptr_new()
     uptr_alloc(StructMember, self)
     self[].tag = AST_StructMember_t
@@ -441,7 +441,7 @@ pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef {
+pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef) {
     self: unique_ptr_t(StructTypedef) = uptr_new()
     uptr_alloc(StructTypedef, self)
     self[].tag = AST_StructTypedef_t

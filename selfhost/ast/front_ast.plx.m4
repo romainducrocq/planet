@@ -67,15 +67,15 @@ type union _CAbstractDeclarator(_CAbstractPointer: struc CAbstractPointer, _CAbs
 
 type struc CAbstractDeclarator(unique_ptr_impl(AST_T)
     get: union _CAbstractDeclarator)
-pub fn make_CAbstractDeclarator(none) *struc CAbstractDeclarator;
-pub fn make_CAbstractPointer(abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) *struc CAbstractDeclarator;
-pub fn make_CAbstractArray(size: i64, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) *struc CAbstractDeclarator;
-pub fn make_CAbstractBase(none) *struc CAbstractDeclarator;
+pub fn make_CAbstractDeclarator(none) unique_ptr_t(CAbstractDeclarator);
+pub fn make_CAbstractPointer(abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator);
+pub fn make_CAbstractArray(size: i64, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator);
+pub fn make_CAbstractBase(none) unique_ptr_t(CAbstractDeclarator);
 pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none;
 
 type struc CParam(unique_ptr_impl(AST_T)
     decltor: *struc CDeclarator, param_type: *struc Type)
-pub fn make_CParam(decltor: *unique_ptr_t(CDeclarator), param_type: *shared_ptr_t(Type)) *struc CParam;
+pub fn make_CParam(decltor: *unique_ptr_t(CDeclarator), param_type: *shared_ptr_t(Type)) unique_ptr_t(CParam);
 pub fn free_CParam(self: *unique_ptr_t(CParam)) none;
 
 type struc CIdent(name: u64)
@@ -90,11 +90,11 @@ type union _CDeclarator(_CIdent: struc CIdent, _CPointerDeclarator: struc CPoint
 
 type struc CDeclarator(unique_ptr_impl(AST_T)
     get: union _CDeclarator)
-pub fn make_CDeclarator(none) *struc CDeclarator;
-pub fn make_CIdent(name: u64) *struc CDeclarator;
-pub fn make_CPointerDeclarator(decltor: *unique_ptr_t(CDeclarator)) *struc CDeclarator;
-pub fn make_CArrayDeclarator(size: i64, decltor: *unique_ptr_t(CDeclarator)) *struc CDeclarator;
-pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor: *unique_ptr_t(CDeclarator)) *struc CDeclarator;
+pub fn make_CDeclarator(none) unique_ptr_t(CDeclarator);
+pub fn make_CIdent(name: u64) unique_ptr_t(CDeclarator);
+pub fn make_CPointerDeclarator(decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
+pub fn make_CArrayDeclarator(size: i64, decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
+pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
 pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none;
 
 type struc CConstant(constant: *struc CConst, _base: *struc CExp)
@@ -133,23 +133,23 @@ type union _CExp(_CConstant: struc CConstant, _CString: struc CString, _CVar: st
 
 type struc CExp(unique_ptr_impl(AST_T)
     exp_type: *struc Type, info_at: u64, get: union _CExp)
-pub fn make_CExp(info_at: u64) *struc CExp;
-pub fn make_CConstant(constant: *shared_ptr_t(CConst), info_at: u64) *struc CExp;
-pub fn make_CString(literal: *shared_ptr_t(CStringLiteral), info_at: u64) *struc CExp;
-pub fn make_CVar(name: u64, info_at: u64) *struc CExp;
-pub fn make_CCast(exp: *unique_ptr_t(CExp), target_type: *shared_ptr_t(Type), info_at: u64) *struc CExp;
-pub fn make_CUnary(unop: *struc CUnaryOp, exp: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CConditional(condition: *unique_ptr_t(CExp), exp_middle: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CFunctionCall(name: u64, args: *vector_t(unique_ptr_t(CExp)), info_at: u64) *struc CExp;
-pub fn make_CDereference(exp: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CAddrOf(exp: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CSubscript(primary_exp: *unique_ptr_t(CExp), subscript_exp: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CSizeOf(exp: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CSizeOfT(target_type: *shared_ptr_t(Type), info_at: u64) *struc CExp;
-pub fn make_CDot(member: u64, structure: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
-pub fn make_CArrow(member: u64, pointer: *unique_ptr_t(CExp), info_at: u64) *struc CExp;
+pub fn make_CExp(info_at: u64) unique_ptr_t(CExp);
+pub fn make_CConstant(constant: *shared_ptr_t(CConst), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CString(literal: *shared_ptr_t(CStringLiteral), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CVar(name: u64, info_at: u64) unique_ptr_t(CExp);
+pub fn make_CCast(exp: *unique_ptr_t(CExp), target_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CUnary(unop: *struc CUnaryOp, exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CConditional(condition: *unique_ptr_t(CExp), exp_middle: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CFunctionCall(name: u64, args: *vector_t(unique_ptr_t(CExp)), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CDereference(exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CAddrOf(exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CSubscript(primary_exp: *unique_ptr_t(CExp), subscript_exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CSizeOf(exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CSizeOfT(target_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CDot(member: u64, structure: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
+pub fn make_CArrow(member: u64, pointer: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
 pub fn free_CExp(self: *unique_ptr_t(CExp)) none;
 
 type struc CReturn(exp: *struc CExp, info_at: u64)
@@ -186,22 +186,22 @@ type union _CStatement(_CReturn: struc CReturn, _CExpression: struc CExpression,
 
 type struc CStatement(unique_ptr_impl(AST_T)
     get: union _CStatement)
-pub fn make_CStatement(none) *struc CStatement;
-pub fn make_CReturn(exp: *unique_ptr_t(CExp), info_at: u64) *struc CStatement;
-pub fn make_CExpression(exp: *unique_ptr_t(CExp)) *struc CStatement;
-pub fn make_CIf(condition: *unique_ptr_t(CExp), then_fi: *unique_ptr_t(CStatement), else_fi: *unique_ptr_t(CStatement)) *struc CStatement;
-pub fn make_CGoto(target: u64, info_at: u64) *struc CStatement;
-pub fn make_CLabel(target: u64, jump_to: *unique_ptr_t(CStatement), info_at: u64) *struc CStatement;
-pub fn make_CCompound(block: *unique_ptr_t(CBlock)) *struc CStatement;
-pub fn make_CWhile(condition: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) *struc CStatement;
-pub fn make_CDoWhile(condition: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) *struc CStatement;
-pub fn make_CFor(init: *unique_ptr_t(CForInit), condition: *unique_ptr_t(CExp), post: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) *struc CStatement;
-pub fn make_CSwitch(lookup: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) *struc CStatement;
-pub fn make_CCase(value: *unique_ptr_t(CExp), jump_to: *unique_ptr_t(CStatement)) *struc CStatement;
-pub fn make_CDefault(jump_to: *unique_ptr_t(CStatement), info_at: u64) *struc CStatement;
-pub fn make_CBreak(info_at: u64) *struc CStatement;
-pub fn make_CContinue(info_at: u64) *struc CStatement;
-pub fn make_CNull(none) *struc CStatement;
+pub fn make_CStatement(none) unique_ptr_t(CStatement);
+pub fn make_CReturn(exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CStatement);
+pub fn make_CExpression(exp: *unique_ptr_t(CExp)) unique_ptr_t(CStatement);
+pub fn make_CIf(condition: *unique_ptr_t(CExp), then_fi: *unique_ptr_t(CStatement), else_fi: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement);
+pub fn make_CGoto(target: u64, info_at: u64) unique_ptr_t(CStatement);
+pub fn make_CLabel(target: u64, jump_to: *unique_ptr_t(CStatement), info_at: u64) unique_ptr_t(CStatement);
+pub fn make_CCompound(block: *unique_ptr_t(CBlock)) unique_ptr_t(CStatement);
+pub fn make_CWhile(condition: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement);
+pub fn make_CDoWhile(condition: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement);
+pub fn make_CFor(init: *unique_ptr_t(CForInit), condition: *unique_ptr_t(CExp), post: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement);
+pub fn make_CSwitch(lookup: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement);
+pub fn make_CCase(value: *unique_ptr_t(CExp), jump_to: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement);
+pub fn make_CDefault(jump_to: *unique_ptr_t(CStatement), info_at: u64) unique_ptr_t(CStatement);
+pub fn make_CBreak(info_at: u64) unique_ptr_t(CStatement);
+pub fn make_CContinue(info_at: u64) unique_ptr_t(CStatement);
+pub fn make_CNull(none) unique_ptr_t(CStatement);
 pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none;
 
 type struc CInitDecl(init: *struc CVariableDeclaration)
@@ -212,9 +212,9 @@ type union _CForInit(_CInitDecl: struc CInitDecl, _CInitExp: struc CInitExp)
 
 type struc CForInit(unique_ptr_impl(AST_T)
     get: union _CForInit)
-pub fn make_CForInit(none) *struc CForInit;
-pub fn make_CInitDecl(init: *unique_ptr_t(CVariableDeclaration)) *struc CForInit;
-pub fn make_CInitExp(init: *unique_ptr_t(CExp)) *struc CForInit;
+pub fn make_CForInit(none) unique_ptr_t(CForInit);
+pub fn make_CInitDecl(init: *unique_ptr_t(CVariableDeclaration)) unique_ptr_t(CForInit);
+pub fn make_CInitExp(init: *unique_ptr_t(CExp)) unique_ptr_t(CForInit);
 pub fn free_CForInit(self: *unique_ptr_t(CForInit)) none;
 
 type struc CB(block_items: vector_t(unique_ptr_t(CBlockItem)))
@@ -223,8 +223,8 @@ type union _CBlock(_CB: struc CB)
 
 type struc CBlock(unique_ptr_impl(AST_T)
     get: union _CBlock)
-pub fn make_CBlock(none) *struc CBlock;
-pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) *struc CBlock;
+pub fn make_CBlock(none) unique_ptr_t(CBlock);
+pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) unique_ptr_t(CBlock);
 pub fn free_CBlock(self: *unique_ptr_t(CBlock)) none;
 
 type struc CS(statement: *struc CStatement)
@@ -235,9 +235,9 @@ type union _CBlockItem(_CS: struc CS, _CD: struc CD)
 
 type struc CBlockItem(unique_ptr_impl(AST_T)
     get: union _CBlockItem)
-pub fn make_CBlockItem(none) *struc CBlockItem;
-pub fn make_CS(statement: *unique_ptr_t(CStatement)) *struc CBlockItem;
-pub fn make_CD(declaration: *unique_ptr_t(CDeclaration)) *struc CBlockItem;
+pub fn make_CBlockItem(none) unique_ptr_t(CBlockItem);
+pub fn make_CS(statement: *unique_ptr_t(CStatement)) unique_ptr_t(CBlockItem);
+pub fn make_CD(declaration: *unique_ptr_t(CDeclaration)) unique_ptr_t(CBlockItem);
 pub fn free_CBlockItem(self: *unique_ptr_t(CBlockItem)) none;
 
 type struc CStorageClass(tagged_def_impl(AST_T))
@@ -254,29 +254,29 @@ type union _CInitializer(_CSingleInit: struc CSingleInit, _CCompoundInit: struc 
 
 type struc CInitializer(unique_ptr_impl(AST_T)
     init_type: *struc Type, get: union _CInitializer)
-pub fn make_CInitializer(none) *struc CInitializer;
-pub fn make_CSingleInit(exp: *unique_ptr_t(CExp)) *struc CInitializer;
-pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) *struc CInitializer;
+pub fn make_CInitializer(none) unique_ptr_t(CInitializer);
+pub fn make_CSingleInit(exp: *unique_ptr_t(CExp)) unique_ptr_t(CInitializer);
+pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) unique_ptr_t(CInitializer);
 pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none;
 
 type struc CMemberDeclaration(unique_ptr_impl(AST_T)
     member_name: u64, member_type: *struc Type, info_at: u64)
-pub fn make_CMemberDeclaration(member_name: u64, member_type: *shared_ptr_t(Type), info_at: u64) *struc CMemberDeclaration;
+pub fn make_CMemberDeclaration(member_name: u64, member_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CMemberDeclaration);
 pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none;
 
 type struc CStructDeclaration(unique_ptr_impl(AST_T)
     tag_name: u64, is_union: i32, members: vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64)
-pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) *struc CStructDeclaration;
+pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration);
 pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none;
 
 type struc CFunctionDeclaration(unique_ptr_impl(AST_T)
     name: u64, params: vector_t(TIdentifier), body: *struc CBlock, fun_type: *struc Type, storage_class: struc CStorageClass, info_at: u64)
-pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration;
+pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CFunctionDeclaration);
 pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none;
 
 type struc CVariableDeclaration(unique_ptr_impl(AST_T)
     name: u64, init: *struc CInitializer, var_type: *struc Type, storage_class: struc CStorageClass, info_at: u64)
-pub fn make_CVariableDeclaration(name: u64, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration;
+pub fn make_CVariableDeclaration(name: u64, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CVariableDeclaration);
 pub fn free_CVariableDeclaration(self: *unique_ptr_t(CVariableDeclaration)) none;
 
 type struc CFunDecl(fun_decl: *struc CFunctionDeclaration)
@@ -289,15 +289,15 @@ type union _CDeclaration(_CFunDecl: struc CFunDecl, _CVarDecl: struc CVarDecl, _
 
 type struc CDeclaration(unique_ptr_impl(AST_T)
     get: union _CDeclaration)
-pub fn make_CDeclaration(none) *struc CDeclaration;
-pub fn make_CFunDecl(fun_decl: *unique_ptr_t(CFunctionDeclaration)) *struc CDeclaration;
-pub fn make_CVarDecl(var_decl: *unique_ptr_t(CVariableDeclaration)) *struc CDeclaration;
-pub fn make_CStructDecl(struct_decl: *unique_ptr_t(CStructDeclaration)) *struc CDeclaration;
+pub fn make_CDeclaration(none) unique_ptr_t(CDeclaration);
+pub fn make_CFunDecl(fun_decl: *unique_ptr_t(CFunctionDeclaration)) unique_ptr_t(CDeclaration);
+pub fn make_CVarDecl(var_decl: *unique_ptr_t(CVariableDeclaration)) unique_ptr_t(CDeclaration);
+pub fn make_CStructDecl(struct_decl: *unique_ptr_t(CStructDeclaration)) unique_ptr_t(CDeclaration);
 pub fn free_CDeclaration(self: *unique_ptr_t(CDeclaration)) none;
 
 type struc CProgram(unique_ptr_impl(AST_T)
     declarations: vector_t(unique_ptr_t(CDeclaration)))
-pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) *struc CProgram;
+pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) unique_ptr_t(CProgram);
 pub fn free_CProgram(self: *unique_ptr_t(CProgram)) none;
 
 ')m4_dnl

@@ -23,12 +23,12 @@ type union _AssemblyType(_Byte: struc Byte, _LongWord: struc LongWord, _QuadWord
 
 type struc AssemblyType(shared_ptr_impl(AST_T)
     get: union _AssemblyType)
-pub fn make_AssemblyType(none) *struc AssemblyType;
-pub fn make_Byte(none) *struc AssemblyType;
-pub fn make_LongWord(none) *struc AssemblyType;
-pub fn make_QuadWord(none) *struc AssemblyType;
-pub fn make_BackendDouble(none) *struc AssemblyType;
-pub fn make_ByteArray(size: i64, alignment: i32) *struc AssemblyType;
+pub fn make_AssemblyType(none) shared_ptr_t(AssemblyType);
+pub fn make_Byte(none) shared_ptr_t(AssemblyType);
+pub fn make_LongWord(none) shared_ptr_t(AssemblyType);
+pub fn make_QuadWord(none) shared_ptr_t(AssemblyType);
+pub fn make_BackendDouble(none) shared_ptr_t(AssemblyType);
+pub fn make_ByteArray(size: i64, alignment: i32) shared_ptr_t(AssemblyType);
 pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none;
 
 type struc BackendObj(is_static: i32, is_const: i32, asm_type: *struc AssemblyType)
@@ -39,9 +39,9 @@ type union _BackendSymbol(_BackendObj: struc BackendObj, _BackendFun: struc Back
 
 type struc BackendSymbol(unique_ptr_impl(AST_T)
     get: union _BackendSymbol)
-pub fn make_BackendSymbol(none) *struc BackendSymbol;
-pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(AssemblyType)) *struc BackendSymbol;
-pub fn make_BackendFun(is_def: i32) *struc BackendSymbol;
+pub fn make_BackendSymbol(none) unique_ptr_t(BackendSymbol);
+pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol);
+pub fn make_BackendFun(is_def: i32) unique_ptr_t(BackendSymbol);
 pub fn free_BackendSymbol(self: *unique_ptr_t(BackendSymbol)) none;
 m4_define(`UPtrBackendSymbol', `unique_ptr_t(BackendSymbol)')m4_dnl
 

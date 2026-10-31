@@ -4,57 +4,57 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
-pub fn make_CConst(none) *struc CConst {
+pub fn make_CConst(none) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = sptr_new()
     sptr_alloc(CConst, self)
     self[].tag = AST_CConst_t
     return self
 }
 
-pub fn make_CConstInt(value: i32) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstInt(value: i32) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstInt_t
     self[].get._CConstInt.value = value
     return self
 }
 
-pub fn make_CConstLong(value: i64) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstLong(value: i64) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstLong_t
     self[].get._CConstLong.value = value
     return self
 }
 
-pub fn make_CConstUInt(value: u32) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstUInt(value: u32) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstUInt_t
     self[].get._CConstUInt.value = value
     return self
 }
 
-pub fn make_CConstULong(value: u64) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstULong(value: u64) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstULong_t
     self[].get._CConstULong.value = value
     return self
 }
 
-pub fn make_CConstDouble(value: f64) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstDouble_t
     self[].get._CConstDouble.value = value
     return self
 }
 
-pub fn make_CConstChar(value: i8) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstChar(value: i8) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstChar_t
     self[].get._CConstChar.value = value
     return self
 }
 
-pub fn make_CConstUChar(value: u8) *struc CConst {
-    self: *struc CConst = make_CConst()
+pub fn make_CConstUChar(value: u8) shared_ptr_t(CConst) {
+    self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstUChar_t
     self[].get._CConstUChar.value = value
     return self
@@ -87,7 +87,7 @@ pub fn free_CConst(self: *shared_ptr_t(CConst)) none {
     sptr_free(self[])
 }
 
-pub fn make_CStringLiteral(value: *vector_t(i8)) *struc CStringLiteral {
+pub fn make_CStringLiteral(value: *vector_t(i8)) shared_ptr_t(CStringLiteral) {
     self: shared_ptr_t(CStringLiteral) = sptr_new()
     sptr_alloc(CStringLiteral, self)
     self[].tag = AST_CStringLiteral_t

@@ -43,20 +43,20 @@ type union _Type(_Char: struc Char, _SChar: struc SChar, _UChar: struc UChar, _I
 
 type struc Type(shared_ptr_impl(AST_T)
     get: union _Type)
-pub fn make_Type(none) *struc Type;
-pub fn make_Char(none) *struc Type;
-pub fn make_SChar(none) *struc Type;
-pub fn make_UChar(none) *struc Type;
-pub fn make_Int(none) *struc Type;
-pub fn make_Long(none) *struc Type;
-pub fn make_UInt(none) *struc Type;
-pub fn make_ULong(none) *struc Type;
-pub fn make_Double(none) *struc Type;
-pub fn make_Void(none) *struc Type;
-pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) *struc Type;
-pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) *struc Type;
-pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) *struc Type;
-pub fn make_Structure(tag_name: u64, is_union: i32) *struc Type;
+pub fn make_Type(none) shared_ptr_t(Type);
+pub fn make_Char(none) shared_ptr_t(Type);
+pub fn make_SChar(none) shared_ptr_t(Type);
+pub fn make_UChar(none) shared_ptr_t(Type);
+pub fn make_Int(none) shared_ptr_t(Type);
+pub fn make_Long(none) shared_ptr_t(Type);
+pub fn make_UInt(none) shared_ptr_t(Type);
+pub fn make_ULong(none) shared_ptr_t(Type);
+pub fn make_Double(none) shared_ptr_t(Type);
+pub fn make_Void(none) shared_ptr_t(Type);
+pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
+pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
+pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
+pub fn make_Structure(tag_name: u64, is_union: i32) shared_ptr_t(Type);
 pub fn free_Type(self: *shared_ptr_t(Type)) none;
 
 type struc IntInit(value: i32)
@@ -83,17 +83,17 @@ type union _StaticInit(_IntInit: struc IntInit, _LongInit: struc LongInit, _UInt
 
 type struc StaticInit(shared_ptr_impl(AST_T)
     get: union _StaticInit)
-pub fn make_StaticInit(none) *struc StaticInit;
-pub fn make_IntInit(value: i32) *struc StaticInit;
-pub fn make_LongInit(value: i64) *struc StaticInit;
-pub fn make_UIntInit(value: u32) *struc StaticInit;
-pub fn make_ULongInit(value: u64) *struc StaticInit;
-pub fn make_CharInit(value: i8) *struc StaticInit;
-pub fn make_UCharInit(value: u8) *struc StaticInit;
-pub fn make_DoubleInit(dbl_const: u64) *struc StaticInit;
-pub fn make_ZeroInit(byte: i64) *struc StaticInit;
-pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) *struc StaticInit;
-pub fn make_PointerInit(name: u64) *struc StaticInit;
+pub fn make_StaticInit(none) shared_ptr_t(StaticInit);
+pub fn make_IntInit(value: i32) shared_ptr_t(StaticInit);
+pub fn make_LongInit(value: i64) shared_ptr_t(StaticInit);
+pub fn make_UIntInit(value: u32) shared_ptr_t(StaticInit);
+pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit);
+pub fn make_CharInit(value: i8) shared_ptr_t(StaticInit);
+pub fn make_UCharInit(value: u8) shared_ptr_t(StaticInit);
+pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit);
+pub fn make_ZeroInit(byte: i64) shared_ptr_t(StaticInit);
+pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit);
+pub fn make_PointerInit(name: u64) shared_ptr_t(StaticInit);
 pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none;
 
 type struc Tentative(_empty: char)
@@ -106,10 +106,10 @@ type union _InitialValue(_Tentative: struc Tentative, _Initial: struc Initial, _
 
 type struc InitialValue(shared_ptr_impl(AST_T)
     get: union _InitialValue)
-pub fn make_InitialValue(none) *struc InitialValue;
-pub fn make_Tentative(none) *struc InitialValue;
-pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc InitialValue;
-pub fn make_NoInitializer(none) *struc InitialValue;
+pub fn make_InitialValue(none) shared_ptr_t(InitialValue);
+pub fn make_Tentative(none) shared_ptr_t(InitialValue);
+pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) shared_ptr_t(InitialValue);
+pub fn make_NoInitializer(none) shared_ptr_t(InitialValue);
 pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none;
 
 type struc FunAttr(is_def: i32, is_glob: i32)
@@ -124,21 +124,21 @@ type union _IdentifierAttr(_FunAttr: struc FunAttr, _StaticAttr: struc StaticAtt
 
 type struc IdentifierAttr(unique_ptr_impl(AST_T)
     get: union _IdentifierAttr)
-pub fn make_IdentifierAttr(none) *struc IdentifierAttr;
-pub fn make_FunAttr(is_def: i32, is_glob: i32) *struc IdentifierAttr;
-pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) *struc IdentifierAttr;
-pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) *struc IdentifierAttr;
-pub fn make_LocalAttr(none) *struc IdentifierAttr;
+pub fn make_IdentifierAttr(none) unique_ptr_t(IdentifierAttr);
+pub fn make_FunAttr(is_def: i32, is_glob: i32) unique_ptr_t(IdentifierAttr);
+pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) unique_ptr_t(IdentifierAttr);
+pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(IdentifierAttr);
+pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr);
 pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none;
 
 type struc Symbol(unique_ptr_impl(AST_T)
     type_t: *struc Type, attrs: *struc IdentifierAttr)
-pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) *struc Symbol;
+pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) unique_ptr_t(Symbol);
 pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none;
 
 type struc StructMember(unique_ptr_impl(AST_T)
     offset: i64, member_type: *struc Type)
-pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) *struc StructMember;
+pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) unique_ptr_t(StructMember);
 pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none;
 m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
 
@@ -146,7 +146,7 @@ PairKeyValue(``TIdentifier'', ``UPtrStructMember'')
 
 type struc StructTypedef(unique_ptr_impl(AST_T)
     alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) *struc StructTypedef;
+pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef);
 pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none;
 
 PairKeyValue(``TIdentifier'', u64)
