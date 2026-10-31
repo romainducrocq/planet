@@ -1339,7 +1339,7 @@ fn quad_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64) 
     push_instr(ctx, make_AsmPush(@src))
 }
 
-fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, asm_type: **struc AssemblyType) none {
+fn long_stack_arg_call_instr(ctx: *struc AsmGenContext, name: u64, offset: i64, asm_type: *shared_ptr_t(AssemblyType)) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         src_name: u64 = name

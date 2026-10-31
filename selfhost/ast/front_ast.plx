@@ -132,7 +132,7 @@ pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none {
     uptr_free(self[])
 }
 
-pub fn make_CParam(decltor: *unique_ptr_t(CDeclarator), param_type: **struc Type) *struc CParam {
+pub fn make_CParam(decltor: *unique_ptr_t(CDeclarator), param_type: *shared_ptr_t(Type)) *struc CParam {
     self: unique_ptr_t(CParam) = uptr_new()
     uptr_alloc(CParam, self)
     self[].tag = AST_CParam_t
@@ -240,7 +240,7 @@ pub fn make_CExp(info_at: u64) *struc CExp {
     return self
 }
 
-pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp {
+pub fn make_CConstant(constant: *shared_ptr_t(CConst), info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CConstant_t
     self[].get._CConstant.constant = sptr_new()
@@ -249,7 +249,7 @@ pub fn make_CConstant(constant: **struc CConst, info_at: u64) *struc CExp {
     return self
 }
 
-pub fn make_CString(literal: **struc CStringLiteral, info_at: u64) *struc CExp {
+pub fn make_CString(literal: *shared_ptr_t(CStringLiteral), info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CString_t
     self[].get._CString.literal = sptr_new()
@@ -266,7 +266,7 @@ pub fn make_CVar(name: u64, info_at: u64) *struc CExp {
     return self
 }
 
-pub fn make_CCast(exp: *unique_ptr_t(CExp), target_type: **struc Type, info_at: u64) *struc CExp {
+pub fn make_CCast(exp: *unique_ptr_t(CExp), target_type: *shared_ptr_t(Type), info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CCast_t
     self[].get._CCast.exp = uptr_new()
@@ -372,7 +372,7 @@ pub fn make_CSizeOf(exp: *unique_ptr_t(CExp), info_at: u64) *struc CExp {
     return self
 }
 
-pub fn make_CSizeOfT(target_type: **struc Type, info_at: u64) *struc CExp {
+pub fn make_CSizeOfT(target_type: *shared_ptr_t(Type), info_at: u64) *struc CExp {
     self: *struc CExp = make_CExp(info_at)
     self[].tag = AST_CSizeOfT_t
     self[].get._CSizeOfT.target_type = sptr_new()
@@ -914,7 +914,7 @@ pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none {
     uptr_free(self[])
 }
 
-pub fn make_CMemberDeclaration(member_name: u64, member_type: **struc Type, info_at: u64) *struc CMemberDeclaration {
+pub fn make_CMemberDeclaration(member_name: u64, member_type: *shared_ptr_t(Type), info_at: u64) *struc CMemberDeclaration {
     self: unique_ptr_t(CMemberDeclaration) = uptr_new()
     uptr_alloc(CMemberDeclaration, self)
     self[].tag = AST_CMemberDeclaration_t
@@ -968,7 +968,7 @@ pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none {
     uptr_free(self[])
 }
 
-pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
+pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) *struc CFunctionDeclaration {
     self: unique_ptr_t(CFunctionDeclaration) = uptr_new()
     uptr_alloc(CFunctionDeclaration, self)
     self[].tag = AST_CFunctionDeclaration_t
@@ -1000,7 +1000,7 @@ pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none
     uptr_free(self[])
 }
 
-pub fn make_CVariableDeclaration(name: u64, init: *unique_ptr_t(CInitializer), var_type: **struc Type, storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration {
+pub fn make_CVariableDeclaration(name: u64, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) *struc CVariableDeclaration {
     self: unique_ptr_t(CVariableDeclaration) = uptr_new()
     uptr_alloc(CVariableDeclaration, self)
     self[].tag = AST_CVariableDeclaration_t

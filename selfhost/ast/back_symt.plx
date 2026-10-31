@@ -45,7 +45,7 @@ pub fn make_ByteArray(size: i64, alignment: i32) *struc AssemblyType {
     return self
 }
 
-pub fn free_AssemblyType(self: **struc AssemblyType) none {
+pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none {
     sptr_delete(self[])
     match (self[])[].tag {
         -> AST_AssemblyType_t {
@@ -75,7 +75,7 @@ pub fn make_BackendSymbol(none) *struc BackendSymbol {
     return self
 }
 
-pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: **struc AssemblyType) *struc BackendSymbol {
+pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(AssemblyType)) *struc BackendSymbol {
     self: *struc BackendSymbol = make_BackendSymbol()
     self[].tag = AST_BackendObj_t
     self[].get._BackendObj.is_static = is_static
