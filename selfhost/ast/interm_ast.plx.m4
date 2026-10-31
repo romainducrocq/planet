@@ -62,7 +62,8 @@ type struc TacSubObject(base_name: u64, offset: i64)
 
 type union _TacExpResult(_TacPlainOperand: struc TacPlainOperand, _TacDereferencedPointer: struc TacDereferencedPointer, _TacSubObject: struc TacSubObject)
 
-type struc TacExpResult(tag: i32, get: union _TacExpResult)
+type struc TacExpResult(unique_ptr_impl(AST_T)
+    get: union _TacExpResult)
 pub fn make_TacExpResult(none) *struc TacExpResult;
 pub fn make_TacPlainOperand(val: **struc TacValue) *struc TacExpResult;
 pub fn make_TacDereferencedPointer(val: **struc TacValue) *struc TacExpResult;
@@ -115,7 +116,8 @@ type struc TacLabel(name: u64)
 
 type union _TacInstruction(_TacReturn: struc TacReturn, _TacSignExtend: struc TacSignExtend, _TacTruncate: struc TacTruncate, _TacZeroExtend: struc TacZeroExtend, _TacDoubleToInt: struc TacDoubleToInt, _TacDoubleToUInt: struc TacDoubleToUInt, _TacIntToDouble: struc TacIntToDouble, _TacUIntToDouble: struc TacUIntToDouble, _TacFunCall: struc TacFunCall, _TacUnary: struc TacUnary, _TacBinary: struc TacBinary, _TacCopy: struc TacCopy, _TacGetAddress: struc TacGetAddress, _TacLoad: struc TacLoad, _TacStore: struc TacStore, _TacAddPtr: struc TacAddPtr, _TacCopyToOffset: struc TacCopyToOffset, _TacCopyFromOffset: struc TacCopyFromOffset, _TacJump: struc TacJump, _TacJumpIfZero: struc TacJumpIfZero, _TacJumpIfNotZero: struc TacJumpIfNotZero, _TacLabel: struc TacLabel)
 
-type struc TacInstruction(tag: i32, get: union _TacInstruction)
+type struc TacInstruction(unique_ptr_impl(AST_T)
+    get: union _TacInstruction)
 pub fn make_TacInstruction(none) *struc TacInstruction;
 pub fn make_TacReturn(val: **struc TacValue) *struc TacInstruction;
 pub fn make_TacSignExtend(src: **struc TacValue, dst: **struc TacValue) *struc TacInstruction;
@@ -149,14 +151,16 @@ type struc TacStaticConstant(name: u64, static_init_type: *struc Type, static_in
 
 type union _TacTopLevel(_TacFunction: struc TacFunction, _TacStaticVariable: struc TacStaticVariable, _TacStaticConstant: struc TacStaticConstant)
 
-type struc TacTopLevel(tag: i32, get: union _TacTopLevel)
+type struc TacTopLevel(unique_ptr_impl(AST_T)
+    get: union _TacTopLevel)
 pub fn make_TacTopLevel(none) *struc TacTopLevel;
 pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) *struc TacTopLevel;
 pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: **struc Type, static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc TacTopLevel;
 pub fn make_TacStaticConstant(name: u64, static_init_type: **struc Type, static_init: **struc StaticInit) *struc TacTopLevel;
 pub fn free_TacTopLevel(self: **struc TacTopLevel) none;
 
-type struc TacProgram(tag: i32, static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)))
+type struc TacProgram(unique_ptr_impl(AST_T)
+    static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)))
 pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: *vector_t(unique_ptr_t(TacTopLevel))) *struc TacProgram;
 pub fn free_TacProgram(self: **struc TacProgram) none;
 

@@ -157,7 +157,8 @@ type struc AsmRet(_empty: char)
 
 type union _AsmInstruction(_AsmMov: struc AsmMov, _AsmMovSx: struc AsmMovSx, _AsmMovZeroExtend: struc AsmMovZeroExtend, _AsmLea: struc AsmLea, _AsmCvttsd2si: struc AsmCvttsd2si, _AsmCvtsi2sd: struc AsmCvtsi2sd, _AsmUnary: struc AsmUnary, _AsmBinary: struc AsmBinary, _AsmCmp: struc AsmCmp, _AsmIdiv: struc AsmIdiv, _AsmDiv: struc AsmDiv, _AsmCdq: struc AsmCdq, _AsmJmp: struc AsmJmp, _AsmJmpCC: struc AsmJmpCC, _AsmSetCC: struc AsmSetCC, _AsmLabel: struc AsmLabel, _AsmPush: struc AsmPush, _AsmPop: struc AsmPop, _AsmCall: struc AsmCall, _AsmRet: struc AsmRet)
 
-type struc AsmInstruction(tag: i32, get: union _AsmInstruction)
+type struc AsmInstruction(unique_ptr_impl(AST_T)
+    get: union _AsmInstruction)
 pub fn make_AsmInstruction(none) *struc AsmInstruction;
 pub fn make_AsmMov(asm_type: **struc AssemblyType, src: **struc AsmOperand, dst: **struc AsmOperand) *struc AsmInstruction;
 pub fn make_AsmMovSx(asm_type_src: **struc AssemblyType, asm_type_dst: **struc AssemblyType, src: **struc AsmOperand, dst: **struc AsmOperand) *struc AsmInstruction;
@@ -189,14 +190,16 @@ type struc AsmStaticConstant(name: u64, alignment: i32, static_init: *struc Stat
 
 type union _AsmTopLevel(_AsmFunction: struc AsmFunction, _AsmStaticVariable: struc AsmStaticVariable, _AsmStaticConstant: struc AsmStaticConstant)
 
-type struc AsmTopLevel(tag: i32, get: union _AsmTopLevel)
+type struc AsmTopLevel(unique_ptr_impl(AST_T)
+    get: union _AsmTopLevel)
 pub fn make_AsmTopLevel(none) *struc AsmTopLevel;
 pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: *vector_t(unique_ptr_t(AsmInstruction))) *struc AsmTopLevel;
 pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: *vector_t(shared_ptr_t(StaticInit))) *struc AsmTopLevel;
 pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: **struc StaticInit) *struc AsmTopLevel;
 pub fn free_AsmTopLevel(self: **struc AsmTopLevel) none;
 
-type struc AsmProgram(tag: i32, static_const_toplvls: vector_t(unique_ptr_t(AsmTopLevel)), top_levels: vector_t(unique_ptr_t(AsmTopLevel)))
+type struc AsmProgram(unique_ptr_impl(AST_T)
+    static_const_toplvls: vector_t(unique_ptr_t(AsmTopLevel)), top_levels: vector_t(unique_ptr_t(AsmTopLevel)))
 pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)), top_levels: *vector_t(unique_ptr_t(AsmTopLevel))) *struc AsmProgram;
 pub fn free_AsmProgram(self: **struc AsmProgram) none;
 
