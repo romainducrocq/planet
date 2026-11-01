@@ -34,7 +34,7 @@ type struc DataFlowAnalysisO1(data_idx_map: vector_t(u64), bak_instrs: vector_t(
 type struc DataFlowAnalysisO2(data_name_map: vector_t(TIdentifier))
 ')m4_dnl
 
-fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
+fn free_ControlFlowGraph(self: *unique_ptr_t(ControlFlowGraph)) none {
     uptr_delete(self[])
     ;
     vec_delete(self[][].entry_succ_ids)
@@ -57,7 +57,7 @@ fn free_ControlFlowGraph(self: **struc ControlFlowGraph) none {
     ;
 }
 
-fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
+fn make_ControlFlowGraph(none) unique_ptr_t(ControlFlowGraph) {
     self: unique_ptr_t(ControlFlowGraph) = uptr_new()
     uptr_alloc(ControlFlowGraph, self)
     self[].entry_id = 0
@@ -70,7 +70,7 @@ fn make_ControlFlowGraph(none) *struc ControlFlowGraph {
     return self
 }
 
-fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
+fn free_DataFlowAnalysis(self: *unique_ptr_t(DataFlowAnalysis)) none {
     uptr_delete(self[])
     ;
     vec_delete(self[][].open_data_map)
@@ -85,7 +85,7 @@ fn free_DataFlowAnalysis(self: **struc DataFlowAnalysis) none {
     ;
 }
 
-fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
+fn make_DataFlowAnalysis(none) unique_ptr_t(DataFlowAnalysis) {
     self: unique_ptr_t(DataFlowAnalysis) = uptr_new()
     uptr_alloc(DataFlowAnalysis, self)
     self[].set_size = 0
@@ -100,7 +100,7 @@ fn make_DataFlowAnalysis(none) *struc DataFlowAnalysis {
 }
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
+fn free_DataFlowAnalysisO1(self: *unique_ptr_t(DataFlowAnalysisO1)) none {
     uptr_delete(self[])
     ;
     vec_delete(self[][].data_idx_map)
@@ -114,7 +114,7 @@ fn free_DataFlowAnalysisO1(self: **struc DataFlowAnalysisO1) none {
     ;
 }
 
-fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
+fn make_DataFlowAnalysisO1(none) unique_ptr_t(DataFlowAnalysisO1) {
     self: unique_ptr_t(DataFlowAnalysisO1) = uptr_new()
     uptr_alloc(DataFlowAnalysisO1, self)
     self[].addressed_idx = 0
@@ -123,7 +123,7 @@ fn make_DataFlowAnalysisO1(none) *struc DataFlowAnalysisO1 {
     return self
 }
 ', __OPTIM_LEVEL__, `2', `
-fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
+fn free_DataFlowAnalysisO2(self: *unique_ptr_t(DataFlowAnalysisO2)) none {
     uptr_delete(self[])
     ;
     vec_delete(self[][].data_name_map)
@@ -132,7 +132,7 @@ fn free_DataFlowAnalysisO2(self: **struc DataFlowAnalysisO2) none {
     ;
 }
 
-fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
+fn make_DataFlowAnalysisO2(none) unique_ptr_t(DataFlowAnalysisO2) {
     self: unique_ptr_t(DataFlowAnalysisO2) = uptr_new()
     uptr_alloc(DataFlowAnalysisO2, self)
     self[].data_name_map = vec_new()
@@ -140,7 +140,7 @@ fn make_DataFlowAnalysisO2(none) *struc DataFlowAnalysisO2 {
 }
 ')m4_dnl
 
-fn set_instr(ctx: Ctx, instr: *struc AstInstruction, instr_idx: u64) none {
+fn set_instr(ctx: Ctx, instr: unique_ptr_t(AstInstruction), instr_idx: u64) none {
     if instr {
         uptr_move_AstInstruction(instr, (ctx[].p_instrs[])[instr_idx])
         ;
