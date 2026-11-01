@@ -9,9 +9,9 @@ m4_include(`../backend/regs.plx.m4')m4_dnl
 
 type struc AsmReg;
 type struc AsmOperand;
-pub fn gen_register(reg_kind: i32) *struc AsmOperand;
-pub fn gen_memory(reg_kind: i32, value: i64) *struc AsmOperand;
-pub fn gen_indexed(reg_kind_base: i32, reg_kind_idx: i32, scale: i64) *struc AsmOperand;
+pub fn gen_register(reg_kind: i32) shared_ptr_t(AsmOperand);
+pub fn gen_memory(reg_kind: i32, value: i64) shared_ptr_t(AsmOperand);
+pub fn gen_indexed(reg_kind_base: i32, reg_kind_idx: i32, scale: i64) shared_ptr_t(AsmOperand);
 pub fn register_mask_kind(node: *struc AsmReg) i32;
 pub fn register_mask_bit(reg_kind: i32) u64;
 pub fn register_mask_get(reg_mask: u64, reg_kind: i32) i32;

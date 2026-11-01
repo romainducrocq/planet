@@ -923,7 +923,7 @@ fn alloc_color_reg_map(ctx: *struc RegAllocContext) none {
     }
 }
 
-fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) *struc AsmOperand {
+fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) shared_ptr_t(AsmOperand) {
     if is_aliased_name(ctx, name) {
         return sptr_new()
     }
@@ -1471,7 +1471,7 @@ fn coal_infer_regs(ctx: *struc RegAllocContext, node: *struc AsmMov) i32 {
     }
 }
 
-fn coal_op_reg(ctx: *struc RegAllocContext, name: u64, coalesced_idx: u64) *struc AsmOperand {
+fn coal_op_reg(ctx: *struc RegAllocContext, name: u64, coalesced_idx: u64) shared_ptr_t(AsmOperand) {
     if coalesced_idx < ctx[].dfa[].set_size and coalesced_idx ~= map_get(ctx[].cfg[].identifier_id_map, name) {
         if coalesced_idx < REGISTER_MASK_SIZE {
             reg_kind: i32 = ctx[].hard_regs[coalesced_idx].reg_kind

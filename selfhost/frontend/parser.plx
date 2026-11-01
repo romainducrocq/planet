@@ -86,17 +86,17 @@ fn parse_string_literal(ctx: *struc ParserContext, literal: *shared_ptr_t(CStrin
     CATCH_EXIT
 }
 
-fn parse_int_const(intmax: i64) *struc CConst {
+fn parse_int_const(intmax: i64) shared_ptr_t(CConst) {
     value: i32 = cast<i32>(intmax)
     return make_CConstInt(value)
 }
 
-fn parse_char_const(ctx: *struc ParserContext) *struc CConst {
+fn parse_char_const(ctx: *struc ParserContext) shared_ptr_t(CConst) {
     value: i32 = string_to_char_ascii(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok))
     return make_CConstInt(value)
 }
 
-fn parse_long_const(intmax: i64) *struc CConst {
+fn parse_long_const(intmax: i64) shared_ptr_t(CConst) {
     value: i64 = cast<i64>(intmax)
     return make_CConstLong(value)
 }
@@ -110,12 +110,12 @@ fn parse_dbl_const(ctx: *struc ParserContext, constant: *shared_ptr_t(CConst)) e
     CATCH_EXIT
 }
 
-fn parse_uint_const(uintmax: u64) *struc CConst {
+fn parse_uint_const(uintmax: u64) shared_ptr_t(CConst) {
     value: u32 = cast<u32>(uintmax)
     return make_CConstUInt(value)
 }
 
-fn parse_ulong_const(uintmax: u64) *struc CConst {
+fn parse_ulong_const(uintmax: u64) shared_ptr_t(CConst) {
     value: u64 = cast<u64>(uintmax)
     return make_CConstULong(value)
 }

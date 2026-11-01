@@ -36,20 +36,20 @@ type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc I
 
 m4_define(`Ctx', `TODO')m4_dnl
 
-fn char_imm_op(node: *struc CConstChar) *struc AsmOperand {
+fn char_imm_op(node: *struc CConstChar) shared_ptr_t(AsmOperand) {
     value: u64 = cast<u64>(node[].value)
     is_neg: i32 = node[].value < 0
     return make_AsmImm(value, true, false, is_neg)
 }
 
-fn int_imm_op(node: *struc CConstInt) *struc AsmOperand {
+fn int_imm_op(node: *struc CConstInt) shared_ptr_t(AsmOperand) {
     value: u64 = cast<u64>(node[].value)
     is_byte: i32 = node[].value <= 127 and node[].value >= -128
     is_neg: i32 = node[].value < 0
     return make_AsmImm(value, is_byte, false, is_neg)
 }
 
-fn long_imm_op(node: *struc CConstLong) *struc AsmOperand {
+fn long_imm_op(node: *struc CConstLong) shared_ptr_t(AsmOperand) {
     value: u64 = cast<u64>(node[].value)
     is_byte: i32 = node[].value <= 127l and node[].value >= -128l
     is_quad: i32 = node[].value > 2147483647l or node[].value < -2147483648l
@@ -57,19 +57,19 @@ fn long_imm_op(node: *struc CConstLong) *struc AsmOperand {
     return make_AsmImm(value, is_byte, is_quad, is_neg)
 }
 
-fn uchar_imm(node: *struc CConstUChar) *struc AsmOperand {
+fn uchar_imm(node: *struc CConstUChar) shared_ptr_t(AsmOperand) {
     value: u64 = cast<u64>(node[].value)
     return make_AsmImm(value, true, false, false)
 }
 
-fn uint_imm_op(node: *struc CConstUInt) *struc AsmOperand {
+fn uint_imm_op(node: *struc CConstUInt) shared_ptr_t(AsmOperand) {
     value: u64 = cast<u64>(node[].value)
     is_byte: i32 = node[].value <= 255u
     is_quad: i32 = node[].value > 2147483647u
     return make_AsmImm(value, is_byte, is_quad, false)
 }
 
-fn ulong_imm_op(node: *struc CConstULong) *struc AsmOperand {
+fn ulong_imm_op(node: *struc CConstULong) shared_ptr_t(AsmOperand) {
     value: u64 = node[].value
     is_byte: i32 = node[].value <= 255ul
     is_quad: i32 = node[].value > 2147483647ul
@@ -117,7 +117,7 @@ fn make_binary_identifier(ctx: *struc AsmGenContext, binary: u64) u64 {
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
-fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc AsmOperand {
+fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) shared_ptr_t(AsmOperand) {
     dbl_const_label: u64;
     {
         dbl_const: u64 = make_binary_identifier(ctx, binary)
@@ -134,13 +134,13 @@ fn dbl_static_const_op(ctx: *struc AsmGenContext, binary: u64, byte: i32) *struc
     return make_AsmData(dbl_const_label, 0l)
 }
 
-fn dbl_const_op(ctx: *struc AsmGenContext, node: *struc CConstDouble) *struc AsmOperand {
+fn dbl_const_op(ctx: *struc AsmGenContext, node: *struc CConstDouble) shared_ptr_t(AsmOperand) {
     binary: u64 = dbl_to_binary(node[].value)
     byte: i32 = ? binary == 9223372036854775808ul then 16 else 8
     return dbl_static_const_op(ctx, binary, byte)
 }
 
-fn const_op(ctx: *struc AsmGenContext, node: *struc TacConstant) *struc AsmOperand {
+fn const_op(ctx: *struc AsmGenContext, node: *struc TacConstant) shared_ptr_t(AsmOperand) {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
             return char_imm_op(@node[].constant[].get._CConstChar)
@@ -169,17 +169,17 @@ fn const_op(ctx: *struc AsmGenContext, node: *struc TacConstant) *struc AsmOpera
     }
 }
 
-fn pseudo_op(node: *struc TacVariable) *struc AsmOperand {
+fn pseudo_op(node: *struc TacVariable) shared_ptr_t(AsmOperand) {
     name: u64 = node[].name
     return make_AsmPseudo(name)
 }
 
-fn pseudo_mem_op(node: *struc TacVariable) *struc AsmOperand {
+fn pseudo_mem_op(node: *struc TacVariable) shared_ptr_t(AsmOperand) {
     name: u64 = node[].name
     return make_AsmPseudoMem(name, 0l)
 }
 
-fn var_op(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc AsmOperand {
+fn var_op(ctx: *struc AsmGenContext, node: *struc TacVariable) shared_ptr_t(AsmOperand) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Array_t {
             -> AST_Structure_t {
@@ -192,7 +192,7 @@ fn var_op(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc AsmOperand
     }
 }
 
-fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AsmOperand {
+fn gen_op(ctx: *struc AsmGenContext, node: *struc TacValue) shared_ptr_t(AsmOperand) {
     match node[].tag {
         -> AST_TacConstant_t {
             return const_op(ctx, @node[].get._TacConstant)
@@ -480,7 +480,7 @@ fn is_value_struct(ctx: *struc AsmGenContext, node: *struc TacValue) i32 {
     }
 }
 
-fn const_asm_type(node: *struc TacConstant) *struc AssemblyType {
+fn const_asm_type(node: *struc TacConstant) shared_ptr_t(AssemblyType) {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
             -> AST_CConstUChar_t {
@@ -506,11 +506,11 @@ fn const_asm_type(node: *struc TacConstant) *struc AssemblyType {
     }
 }
 
-fn var_asm_type(ctx: *struc AsmGenContext, node: *struc TacVariable) *struc AssemblyType {
+fn var_asm_type(ctx: *struc AsmGenContext, node: *struc TacVariable) shared_ptr_t(AssemblyType) {
     return cvt_backend_asm_type(ctx[].frontend, node[].name)
 }
 
-fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) *struc AssemblyType {
+fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) shared_ptr_t(AssemblyType) {
     match node[].tag {
         -> AST_TacConstant_t {
             return const_asm_type(@node[].get._TacConstant)
@@ -524,7 +524,7 @@ fn gen_asm_type(ctx: *struc AsmGenContext, node: *struc TacValue) *struc Assembl
     }
 }
 
-fn asm_type_8b(ctx: *struc AsmGenContext, struct_type: *struc Structure, offset: i64) *struc AssemblyType {
+fn asm_type_8b(ctx: *struc AsmGenContext, struct_type: *struc Structure, offset: i64) shared_ptr_t(AssemblyType) {
     size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size - offset
     if size >= 8l {
         return make_QuadWord()
