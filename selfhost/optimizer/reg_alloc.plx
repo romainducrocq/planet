@@ -931,7 +931,7 @@ fn alloc_hard_reg(ctx: *struc RegAllocContext, name: u64) shared_ptr_t(AsmOperan
     color: i32 = map_get(ctx[].p_infer_graph[].pseudo_reg_map, name).color
     if color ~= REG_Sp {
         reg_kind: i32 = ctx[].reg_color_map[register_mask_bit(color)]
-        hard_reg: *struc AsmOperand = gen_register(reg_kind)
+        hard_reg: shared_ptr_t(AsmOperand) = gen_register(reg_kind)
         if is_reg_callee_saved(reg_kind) and not register_mask_get(ctx[].callee_saved_reg_mask, reg_kind) {
             register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, true)
             callee_saved_reg: shared_ptr_t(AsmOperand) = sptr_new()
@@ -985,13 +985,13 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
     }
     else {
         if node[].src[].tag == AST_AsmPseudo_t {
-            hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+            hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
             if hard_reg {
                 sptr_move(AsmOperand, hard_reg, node[].src)
             }
         }
         if node[].dst[].tag == AST_AsmPseudo_t {
-            hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+            hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
             if hard_reg {
                 sptr_move(AsmOperand, hard_reg, node[].dst)
             }
@@ -1001,13 +1001,13 @@ fn alloc_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: 
 
 fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1016,13 +1016,13 @@ fn alloc_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
 
 fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroExtend) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1031,13 +1031,13 @@ fn alloc_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroE
 
 fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1046,13 +1046,13 @@ fn alloc_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
 
 fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1061,13 +1061,13 @@ fn alloc_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si)
 
 fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1076,7 +1076,7 @@ fn alloc_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) n
 
 fn alloc_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1085,13 +1085,13 @@ fn alloc_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
 
 fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1100,13 +1100,13 @@ fn alloc_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none 
 
 fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1115,7 +1115,7 @@ fn alloc_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
 
 fn alloc_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
@@ -1124,7 +1124,7 @@ fn alloc_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
 
 fn alloc_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
@@ -1133,7 +1133,7 @@ fn alloc_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
 
 fn alloc_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
     if node[].dst[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].dst[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].dst)
         }
@@ -1142,7 +1142,7 @@ fn alloc_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
 
 fn alloc_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
     if node[].src[].tag == AST_AsmPseudo_t {
-        hard_reg: *struc AsmOperand = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
+        hard_reg: shared_ptr_t(AsmOperand) = alloc_hard_reg(ctx, node[].src[].get._AsmPseudo.name)
         if hard_reg {
             sptr_move(AsmOperand, hard_reg, node[].src)
         }
@@ -1497,13 +1497,13 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
     }
     else {
         if node[].src[].tag == AST_AsmPseudo_t {
-            op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+            op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
             if op_reg {
                 sptr_move(AsmOperand, op_reg, node[].src)
             }
         }
         if node[].dst[].tag == AST_AsmPseudo_t {
-            op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+            op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
             if op_reg {
                 sptr_move(AsmOperand, op_reg, node[].dst)
             }
@@ -1514,14 +1514,14 @@ fn coal_mov_instr(ctx: *struc RegAllocContext, node: *struc AsmMov, instr_idx: u
 fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1531,14 +1531,14 @@ fn coal_mov_sx_instr(ctx: *struc RegAllocContext, node: *struc AsmMovSx) none {
 fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroExtend) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1548,14 +1548,14 @@ fn coal_zero_extend_instr(ctx: *struc RegAllocContext, node: *struc AsmMovZeroEx
 fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1565,14 +1565,14 @@ fn coal_lea_instr(ctx: *struc RegAllocContext, node: *struc AsmLea) none {
 fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1582,14 +1582,14 @@ fn coal_cvttsd2si_instr(ctx: *struc RegAllocContext, node: *struc AsmCvttsd2si) 
 fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1599,7 +1599,7 @@ fn coal_cvtsi2sd_instr(ctx: *struc RegAllocContext, node: *struc AsmCvtsi2sd) no
 fn coal_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1609,14 +1609,14 @@ fn coal_unary_instr(ctx: *struc RegAllocContext, node: *struc AsmUnary) none {
 fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1626,14 +1626,14 @@ fn coal_binary_instr(ctx: *struc RegAllocContext, node: *struc AsmBinary) none {
 fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
     }
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1643,7 +1643,7 @@ fn coal_cmp_instr(ctx: *struc RegAllocContext, node: *struc AsmCmp) none {
 fn coal_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
@@ -1653,7 +1653,7 @@ fn coal_idiv_instr(ctx: *struc RegAllocContext, node: *struc AsmIdiv) none {
 fn coal_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }
@@ -1663,7 +1663,7 @@ fn coal_div_instr(ctx: *struc RegAllocContext, node: *struc AsmDiv) none {
 fn coal_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
     if node[].dst[].tag == AST_AsmPseudo_t {
         dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].dst[].get._AsmPseudo.name, dst_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].dst)
         }
@@ -1673,7 +1673,7 @@ fn coal_set_cc_instr(ctx: *struc RegAllocContext, node: *struc AsmSetCC) none {
 fn coal_push_instr(ctx: *struc RegAllocContext, node: *struc AsmPush) none {
     if node[].src[].tag == AST_AsmPseudo_t {
         src_idx: u64 = get_coalesced_idx(ctx, node[].src)
-        op_reg: *struc AsmOperand = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
+        op_reg: shared_ptr_t(AsmOperand) = coal_op_reg(ctx, node[].src[].get._AsmPseudo.name, src_idx)
         if op_reg {
             sptr_move(AsmOperand, op_reg, node[].src)
         }

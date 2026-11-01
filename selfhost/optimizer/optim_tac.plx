@@ -88,7 +88,7 @@ fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
 fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: *struc TacValue = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -213,7 +213,7 @@ fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
 fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: *struc TacValue = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -286,7 +286,7 @@ fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
 fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: *struc TacValue = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -325,7 +325,7 @@ fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
 fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: *struc TacValue = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -362,7 +362,7 @@ fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVaria
 fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToUInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: *struc TacValue = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -400,7 +400,7 @@ fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDo
         THROW_ABORT_IF(
             node[].dst[].tag ~= AST_TacVariable_t
             or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
-        src: *struc TacValue = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -438,7 +438,7 @@ fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntT
         THROW_ABORT_IF(
             node[].dst[].tag ~= AST_TacVariable_t
             or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
-        src: *struc TacValue = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -602,7 +602,7 @@ fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) shared_ptr
 
 fn fold_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        src: *struc TacValue = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -987,7 +987,7 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
 
 fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_idx: u64) none {
     if node[].src1[].tag == AST_TacConstant_t and node[].src2[].tag == AST_TacConstant_t {
-        src: *struc TacValue = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         ;
@@ -1166,7 +1166,7 @@ fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, consta
 fn fold_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: *struc TacValue = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         if src {
             sptr_move(TacValue, src, node[].src)
             ctx[].is_fixed_point = false
