@@ -1609,7 +1609,7 @@ fn parse_statement(ctx: *struc ParserContext, statement: *unique_ptr_t(CStatemen
 
 fn parse_declaration(ctx: *struc ParserContext, storage_class: *struc CStorageClass, declaration: *unique_ptr_t(CDeclaration)) error_t;
 
-fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) error_t {
+fn parse_s_block_item(ctx: *struc ParserContext, block_item: *unique_ptr_t(CBlockItem)) error_t {
     statement: unique_ptr_t(CStatement) = uptr_new()
     CATCH_ENTER
     TRY(parse_statement(ctx, @statement))
@@ -1619,7 +1619,7 @@ fn parse_s_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
     CATCH_EXIT
 }
 
-fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) error_t {
+fn parse_d_block_item(ctx: *struc ParserContext, block_item: *unique_ptr_t(CBlockItem)) error_t {
     declaration: unique_ptr_t(CDeclaration) = uptr_new()
     CATCH_ENTER
     storage_class: struc CStorageClass = init_CStorageClass()
@@ -1630,7 +1630,7 @@ fn parse_d_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem)
     CATCH_EXIT
 }
 
-fn parse_block_item(ctx: *struc ParserContext, block_item: **struc CBlockItem) error_t {
+fn parse_block_item(ctx: *struc ParserContext, block_item: *unique_ptr_t(CBlockItem)) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {

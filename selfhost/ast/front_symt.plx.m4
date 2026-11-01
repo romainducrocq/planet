@@ -31,11 +31,11 @@ type struc Double(_empty: char)
 
 type struc Void(_empty: char)
 
-type struc FunType(param_reg_mask: u64, ret_reg_mask: u64, param_types: vector_t(shared_ptr_t(Type)), ret_type: *struc Type)
+type struc FunType(param_reg_mask: u64, ret_reg_mask: u64, param_types: vector_t(shared_ptr_t(Type)), ret_type: shared_ptr_t(Type))
 
-type struc Pointer(ref_type: *struc Type)
+type struc Pointer(ref_type: shared_ptr_t(Type))
 
-type struc Array(size: i64, elem_type: *struc Type)
+type struc Array(size: i64, elem_type: shared_ptr_t(Type))
 
 type struc Structure(tag_name: u64, is_union: i32)
 
@@ -75,7 +75,7 @@ type struc DoubleInit(dbl_const: u64)
 
 type struc ZeroInit(byte: i64)
 
-type struc StringInit(string_const: u64, is_null_term: i32, literal: *struc CStringLiteral)
+type struc StringInit(string_const: u64, is_null_term: i32, literal: shared_ptr_t(CStringLiteral))
 
 type struc PointerInit(name: u64)
 
@@ -114,9 +114,9 @@ pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none;
 
 type struc FunAttr(is_def: i32, is_glob: i32)
 
-type struc StaticAttr(is_glob: i32, init: *struc InitialValue)
+type struc StaticAttr(is_glob: i32, init: shared_ptr_t(InitialValue))
 
-type struc ConstantAttr(static_init: *struc StaticInit)
+type struc ConstantAttr(static_init: shared_ptr_t(StaticInit))
 
 type struc LocalAttr(_empty: char)
 
@@ -132,12 +132,12 @@ pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr);
 pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none;
 
 type struc Symbol(unique_ptr_impl(AST_T)
-    type_t: *struc Type, attrs: *struc IdentifierAttr)
+    type_t: shared_ptr_t(Type), attrs: unique_ptr_t(IdentifierAttr))
 pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) unique_ptr_t(Symbol);
 pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none;
 
 type struc StructMember(unique_ptr_impl(AST_T)
-    offset: i64, member_type: *struc Type)
+    offset: i64, member_type: shared_ptr_t(Type))
 pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) unique_ptr_t(StructMember);
 pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none;
 m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
