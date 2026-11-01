@@ -141,7 +141,7 @@ pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc Assem
     }
 }
 
-fn cvt_backend_symbol(ctx: *struc SymtCvtContext, node: *struc BackendSymbol) none {
+fn cvt_backend_symbol(ctx: *struc SymtCvtContext, node: unique_ptr_t(BackendSymbol)) none {
     map_move_add(ctx[].backend[].symbol_table, ctx[].symbol, node)
 }
 

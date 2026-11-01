@@ -702,7 +702,7 @@ fn ret_2_reg_mask(fun_type: *struc FunType, reg_size: i32, sse_size: i32) none {
     }
 }
 
-fn push_instr(ctx: *struc AsmGenContext, instr: *struc AsmInstruction) none {
+fn push_instr(ctx: *struc AsmGenContext, instr: unique_ptr_t(AsmInstruction)) none {
     vec_move_back(ctx[].p_instrs[], instr)
 }
 
@@ -2852,7 +2852,7 @@ fn fun_param_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction, fun_typ
     fun_param_reg_mask(ctx, fun_type, reg_size, sse_size)
 }
 
-fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc AsmTopLevel {
+fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
     is_ret_memory: i32 = false
@@ -2883,7 +2883,7 @@ fn gen_fun_toplvl(ctx: *struc AsmGenContext, node: *struc TacFunction) *struc As
     return make_AsmFunction(name, is_glob, is_ret_memory, @body)
 }
 
-fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariable) *struc AsmTopLevel {
+fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariable) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
@@ -2897,7 +2897,7 @@ fn gen_static_var_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticVariab
     return make_AsmStaticVariable(name, alignment, is_glob, @static_inits)
 }
 
-fn push_static_const_toplvl(ctx: *struc AsmGenContext, static_const_toplvls: *struc AsmTopLevel) none {
+fn push_static_const_toplvl(ctx: *struc AsmGenContext, static_const_toplvls: unique_ptr_t(AsmTopLevel)) none {
     vec_move_back(ctx[].p_static_consts[], static_const_toplvls)
 }
 
@@ -2908,7 +2908,7 @@ fn dbl_static_const_toplvl(ctx: *struc AsmGenContext, identifier: u64, dbl_const
     push_static_const_toplvl(ctx, make_AsmStaticConstant(name, alignment, @static_init))
 }
 
-fn gen_static_const_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticConstant) *struc AsmTopLevel {
+fn gen_static_const_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticConstant) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
     alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_init: shared_ptr_t(StaticInit) = sptr_new()
@@ -2916,7 +2916,7 @@ fn gen_static_const_toplvl(ctx: *struc AsmGenContext, node: *struc TacStaticCons
     return make_AsmStaticConstant(name, alignment, @static_init)
 }
 
-fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTopLevel {
+fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) unique_ptr_t(AsmTopLevel) {
     match node[].tag {
         -> AST_TacFunction_t {
             return gen_fun_toplvl(ctx, @node[].get._TacFunction)
@@ -2933,11 +2933,11 @@ fn gen_toplvl(ctx: *struc AsmGenContext, node: *struc TacTopLevel) *struc AsmTop
     }
 }
 
-fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmProgram {
+fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) unique_ptr_t(AsmProgram) {
     static_const_toplvls: vector_t(unique_ptr_t(AsmTopLevel)) = vec_new()
     vec_reserve(static_const_toplvls, vec_size(node[].static_const_toplvls))
     loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
-        static_const_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_const_toplvls[i])
+        static_const_toplvl: unique_ptr_t(AsmTopLevel) = gen_toplvl(ctx, node[].static_const_toplvls[i])
         vec_move_back(static_const_toplvls, static_const_toplvl)
     }
     top_levels: vector_t(unique_ptr_t(AsmTopLevel)) = vec_new()
@@ -2945,11 +2945,11 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
     {
         ctx[].p_static_consts = @static_const_toplvls
         loop i: u64 = 0 while i < vec_size(node[].static_var_toplvls) .. ++i {
-            static_var_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].static_var_toplvls[i])
+            static_var_toplvl: unique_ptr_t(AsmTopLevel) = gen_toplvl(ctx, node[].static_var_toplvls[i])
             vec_move_back(top_levels, static_var_toplvl)
         }
         loop i: u64 = 0 while i < vec_size(node[].fun_toplvls) .. ++i {
-            fun_toplvl: *struc AsmTopLevel = gen_toplvl(ctx, node[].fun_toplvls[i])
+            fun_toplvl: unique_ptr_t(AsmTopLevel) = gen_toplvl(ctx, node[].fun_toplvls[i])
             vec_move_back(top_levels, fun_toplvl)
         }
         ctx[].p_static_consts = nil
@@ -2957,7 +2957,7 @@ fn gen_program(ctx: *struc AsmGenContext, node: *struc TacProgram) *struc AsmPro
     return make_AsmProgram(@static_const_toplvls, @top_levels)
 }
 
-pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) *struc AsmProgram {
+pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(AsmProgram) {
     ctx: struc AsmGenContext;
     {
         ctx.frontend = frontend
@@ -2979,7 +2979,7 @@ pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc Fr
         ctx.dbl_const_table = map_new()
         ctx.struct_8b_map = map_new()
     }
-    asm_ast: *struc AsmProgram = gen_program(@ctx, tac_ast[])
+    asm_ast: unique_ptr_t(AsmProgram) = gen_program(@ctx, tac_ast[])
     free_TacProgram(tac_ast)
     THROW_ABORT_IF(not asm_ast)
     map_delete(ctx.dbl_const_table)

@@ -8,7 +8,7 @@ m4_include(`../ast/ast_t.plx.m4')m4_dnl
 type struc AsmInstruction;
 type struc AsmProgram;
 type struc BackEndContext;
-pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction;
+pub fn alloc_stack_bytes(byte: i64) unique_ptr_t(AsmInstruction);
 pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none;
 
 ')m4_dnl

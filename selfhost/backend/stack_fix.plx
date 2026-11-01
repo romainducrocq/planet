@@ -486,7 +486,7 @@ fn repl_pseudo_regs(ctx: *struc StackFixContext, node: *struc AsmInstruction) no
     }
 }
 
-pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction {
+pub fn alloc_stack_bytes(byte: i64) unique_ptr_t(AsmInstruction) {
     binop: struc AsmBinaryOp = init_AsmSub()
     asm_type: *struc AssemblyType = make_QuadWord()
 
@@ -502,7 +502,7 @@ pub fn alloc_stack_bytes(byte: i64) *struc AsmInstruction {
     return make_AsmBinary(@binop, @asm_type, @src, @dst)
 }
 
-fn push_fix_instr(ctx: *struc StackFixContext, instr: *struc AsmInstruction) none {
+fn push_fix_instr(ctx: *struc StackFixContext, instr: unique_ptr_t(AsmInstruction)) none {
     vec_move_back(ctx[].p_fix_instrs[], instr)
 }
 
