@@ -31,7 +31,7 @@ pub fn make_BackendDouble(none) shared_ptr_t(AssemblyType);
 pub fn make_ByteArray(size: i64, alignment: i32) shared_ptr_t(AssemblyType);
 pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none;
 
-type struc BackendObj(is_static: i32, is_const: i32, asm_type: *struc AssemblyType)
+type struc BackendObj(is_static: i32, is_const: i32, asm_type: shared_ptr_t(AssemblyType))
 
 type struc BackendFun(is_def: i32, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand)))
 

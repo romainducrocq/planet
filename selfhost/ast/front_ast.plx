@@ -826,7 +826,7 @@ pub fn make_CD(declaration: *unique_ptr_t(CDeclaration)) unique_ptr_t(CBlockItem
     return self
 }
 
-pub fn free_CBlockItem(self: **struc CBlockItem) none {
+pub fn free_CBlockItem(self: *unique_ptr_t(CBlockItem)) none {
     uptr_delete(self[])
     match (self[])[].tag {
         -> AST_CBlockItem_t {

@@ -116,39 +116,39 @@ m4_define(`init_AsmNot', `tagged_def_init(AST, AsmUnaryOp, AsmNot)')m4_dnl
 m4_define(`init_AsmNeg', `tagged_def_init(AST, AsmUnaryOp, AsmNeg)')m4_dnl
 m4_define(`init_AsmShr', `tagged_def_init(AST, AsmUnaryOp, AsmShr)')m4_dnl
 
-type struc AsmMov(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmMov(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmMovSx(asm_type_src: *struc AssemblyType, asm_type_dst: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmMovSx(asm_type_src: shared_ptr_t(AssemblyType), asm_type_dst: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmMovZeroExtend(asm_type_src: *struc AssemblyType, asm_type_dst: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmMovZeroExtend(asm_type_src: shared_ptr_t(AssemblyType), asm_type_dst: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmLea(src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmLea(src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmCvttsd2si(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmCvttsd2si(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmCvtsi2sd(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmCvtsi2sd(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmUnary(unop: struc AsmUnaryOp, asm_type: *struc AssemblyType, dst: *struc AsmOperand)
+type struc AsmUnary(unop: struc AsmUnaryOp, asm_type: shared_ptr_t(AssemblyType), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmBinary(binop: struc AsmBinaryOp, asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmBinary(binop: struc AsmBinaryOp, asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmCmp(asm_type: *struc AssemblyType, src: *struc AsmOperand, dst: *struc AsmOperand)
+type struc AsmCmp(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
-type struc AsmIdiv(asm_type: *struc AssemblyType, src: *struc AsmOperand)
+type struc AsmIdiv(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand))
 
-type struc AsmDiv(asm_type: *struc AssemblyType, src: *struc AsmOperand)
+type struc AsmDiv(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand))
 
-type struc AsmCdq(asm_type: *struc AssemblyType)
+type struc AsmCdq(asm_type: shared_ptr_t(AssemblyType))
 
 type struc AsmJmp(target: u64)
 
 type struc AsmJmpCC(target: u64, cond_code: struc AsmCondCode)
 
-type struc AsmSetCC(cond_code: struc AsmCondCode, dst: *struc AsmOperand)
+type struc AsmSetCC(cond_code: struc AsmCondCode, dst: shared_ptr_t(AsmOperand))
 
 type struc AsmLabel(name: u64)
 
-type struc AsmPush(src: *struc AsmOperand)
+type struc AsmPush(src: shared_ptr_t(AsmOperand))
 
 type struc AsmPop(reg: struc AsmReg)
 
@@ -187,7 +187,7 @@ type struc AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions
 
 type struc AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: vector_t(shared_ptr_t(StaticInit)))
 
-type struc AsmStaticConstant(name: u64, alignment: i32, static_init: *struc StaticInit)
+type struc AsmStaticConstant(name: u64, alignment: i32, static_init: shared_ptr_t(StaticInit))
 
 type union _AsmTopLevel(_AsmFunction: struc AsmFunction, _AsmStaticVariable: struc AsmStaticVariable, _AsmStaticConstant: struc AsmStaticConstant)
 
