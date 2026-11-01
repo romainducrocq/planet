@@ -1774,9 +1774,9 @@ fn check_string_init(node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) n
     sptr_copy(Type, init_type[], node[].exp[].exp_type)
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
-fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc CInitializer;
+fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) unique_ptr_t(CInitializer);
 
-fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
+fn check_single_zero_init(elem_type: *struc Type) unique_ptr_t(CInitializer) {
     exp: unique_ptr_t(CExp) = uptr_new()
     {
         constant: shared_ptr_t(CConst) = sptr_new()
@@ -1823,30 +1823,30 @@ fn check_single_zero_init(elem_type: *struc Type) *struc CInitializer {
     return make_CSingleInit(@exp)
 }
 
-fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) *struc CInitializer {
+fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) unique_ptr_t(CInitializer) {
     zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     arr_type_size: u64 = cast<u64>(arr_type[].size)
     vec_reserve(zero_inits, arr_type_size)
     loop i: u64 = 0 while i < arr_type_size .. ++i {
-        initializer: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
+        initializer: unique_ptr_t(CInitializer) = check_zero_init(ctx, arr_type[].elem_type)
         vec_move_back(zero_inits, initializer)
     }
     return make_CCompoundInit(@zero_inits)
 }
 
-fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) *struc CInitializer {
+fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) unique_ptr_t(CInitializer) {
     zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     vec_reserve(zero_inits, vec_size(struct_typedef[].member_names))
     loop i: u64 = 0 while i < vec_size(struct_typedef[].member_names) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
-        initializer: *struc CInitializer = check_zero_init(ctx, member[].member_type)
+        initializer: unique_ptr_t(CInitializer) = check_zero_init(ctx, member[].member_type)
         vec_move_back(zero_inits, initializer)
     }
     return make_CCompoundInit(@zero_inits)
 }
 
-fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) *struc CInitializer {
+fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) unique_ptr_t(CInitializer) {
     match init_type[].tag {
         -> AST_Array_t {
             return check_arr_zero_init(ctx, @init_type[].get._Array)
@@ -1901,7 +1901,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
 
 fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) none {
     loop while vec_size(node[].initializers) < cast<u64>(arr_type[].size) {
-        zero_init: *struc CInitializer = check_zero_init(ctx, arr_type[].elem_type)
+        zero_init: unique_ptr_t(CInitializer) = check_zero_init(ctx, arr_type[].elem_type)
         vec_move_back(node[].initializers, zero_init)
     }
     sptr_copy(Type, init_type[], node[]._base[].init_type)
@@ -1911,7 +1911,7 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     loop i: u64 = vec_size(node[].initializers) while i < map_size(struct_typedef[].members) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
-        zero_init: *struc CInitializer = check_zero_init(ctx, member[].member_type)
+        zero_init: unique_ptr_t(CInitializer) = check_zero_init(ctx, member[].member_type)
         vec_move_back(node[].initializers, zero_init)
     }
     sptr_copy(Type, init_type[], node[]._base[].init_type)
@@ -2246,7 +2246,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
 
                 constant_attrs = make_ConstantAttr(@static_init)
             }
-            symbol: *struc Symbol = make_Symbol(@constant_type, @constant_attrs)
+            symbol: unique_ptr_t(Symbol) = make_Symbol(@constant_type, @constant_attrs)
             map_move_add(ctx[].frontend[].symbol_table, string_const_label, symbol)
         }
     }
