@@ -373,7 +373,7 @@ fn get_type_alignment(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     }
 }
 
-fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) *struc Type {
+fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) shared_ptr_t(Type) {
     joint_type: shared_ptr_t(Type) = sptr_new()
     if is_type_char(node_1[].exp_type) {
         exp_type: shared_ptr_t(Type) = sptr_new()
@@ -2069,7 +2069,7 @@ fn check_static_no_init(ctx: *struc SemanticContext, static_init_type: *struc Ty
     push_zero_static_init(ctx, byte)
 }
 
-fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Type) *struc InitialValue {
+fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Type) shared_ptr_t(InitialValue) {
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     {
         ctx[].p_static_inits = @static_inits

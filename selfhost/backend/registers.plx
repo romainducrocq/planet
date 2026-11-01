@@ -110,17 +110,17 @@ fn gen_reg(reg_kind: i32) struc AsmReg {
     }
 }
 
-pub fn gen_register(reg_kind: i32) *struc AsmOperand {
+pub fn gen_register(reg_kind: i32) shared_ptr_t(AsmOperand) {
     reg: struc AsmReg = gen_reg(reg_kind)
     return make_AsmRegister(@reg)
 }
 
-pub fn gen_memory(reg_kind: i32, value: i64) *struc AsmOperand {
+pub fn gen_memory(reg_kind: i32, value: i64) shared_ptr_t(AsmOperand) {
     reg: struc AsmReg = gen_reg(reg_kind)
     return make_AsmMemory(value, @reg)
 }
 
-pub fn gen_indexed(reg_kind_base: i32, reg_kind_idx: i32, scale: i64) *struc AsmOperand {
+pub fn gen_indexed(reg_kind_base: i32, reg_kind_idx: i32, scale: i64) shared_ptr_t(AsmOperand) {
     reg_base: struc AsmReg = gen_reg(reg_kind_base)
     reg_index: struc AsmReg = gen_reg(reg_kind_idx)
     return make_AsmIndexed(scale, @reg_base, @reg_index)

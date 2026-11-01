@@ -82,13 +82,13 @@ pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) i32 
     }
 }
 
-fn arr_asm_type(ctx: *struc FrontEndContext, arr_type: *struc Array) *struc AssemblyType {
+fn arr_asm_type(ctx: *struc FrontEndContext, arr_type: *struc Array) shared_ptr_t(AssemblyType) {
     size: i64;
     alignment: i32 = get_arr_alignment(ctx, arr_type, @size)
     return make_ByteArray(size, alignment)
 }
 
-fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) *struc AssemblyType {
+fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) shared_ptr_t(AssemblyType) {
     size: i64;
     alignment: i32;
     map_it: i64 = map_find(ctx[].struct_typedef_table, struct_type[].tag_name)
@@ -104,7 +104,7 @@ fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) *
     return make_ByteArray(size, alignment)
 }
 
-pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) *struc AssemblyType {
+pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) shared_ptr_t(AssemblyType) {
     symbol_type: *struc Type = map_get(ctx[].symbol_table, name)[].type_t
     match symbol_type[].tag {
         -> AST_Char_t {

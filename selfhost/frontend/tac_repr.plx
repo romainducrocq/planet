@@ -91,18 +91,18 @@ fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
     }
 }
 
-fn const_value(node: *struc CConstant) *struc TacValue {
+fn const_value(node: *struc CConstant) shared_ptr_t(TacValue) {
     constant: shared_ptr_t(CConst) = sptr_new()
     sptr_copy(CConst, node[].constant, constant)
     return make_TacConstant(@constant)
 }
 
-fn var_value(node: *struc CVar) *struc TacValue {
+fn var_value(node: *struc CVar) shared_ptr_t(TacValue) {
     name: u64 = node[].name
     return make_TacVariable(name)
 }
 
-fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *struc TacValue {
+fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) shared_ptr_t(TacValue) {
     inner_name: u64 = repr_var_identifier(ctx[].identifiers, node)
     if map_find(ctx[].frontend[].symbol_table, inner_name) == map_end() {
         inner_type: shared_ptr_t(Type) = sptr_new()
@@ -119,15 +119,15 @@ fn exp_inner_value(ctx: *struc TacReprContext, node: *struc CExp, is_ptr: i32) *
     return make_TacVariable(inner_name)
 }
 
-fn plain_inner_value(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue {
+fn plain_inner_value(ctx: *struc TacReprContext, node: *struc CExp) shared_ptr_t(TacValue) {
     return exp_inner_value(ctx, node, false)
 }
 
-fn ptr_inner_value(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue {
+fn ptr_inner_value(ctx: *struc TacReprContext, node: *struc CExp) shared_ptr_t(TacValue) {
     return exp_inner_value(ctx, node, true)
 }
 
-fn repr_value(node: *struc CExp) *struc TacValue {
+fn repr_value(node: *struc CExp) shared_ptr_t(TacValue) {
     match node[].tag {
         -> AST_CConstant_t {
             return const_value(@node[].get._CConstant)
@@ -145,7 +145,7 @@ fn push_instr(ctx: *struc TacReprContext, instr: unique_ptr_t(TacInstruction)) n
     vec_move_back(ctx[].p_instrs[], instr)
 }
 fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) unique_ptr_t(TacExpResult);
-fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue;
+fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) shared_ptr_t(TacValue);
 
 fn const_res_instr(node: *struc CConstant) unique_ptr_t(TacExpResult) {
     val: *struc TacValue = repr_value(node[]._base)
@@ -1003,13 +1003,13 @@ fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) unique_ptr_t(Ta
     }
 }
 
-fn plain_op_exp_instr(res: *struc TacPlainOperand) *struc TacValue {
+fn plain_op_exp_instr(res: *struc TacPlainOperand) shared_ptr_t(TacValue) {
     dst: shared_ptr_t(TacValue) = sptr_new()
     sptr_move(TacValue, res[].val, dst)
     return dst
 }
 
-fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, node: *struc CExp) *struc TacValue {
+fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, node: *struc CExp) shared_ptr_t(TacValue) {
     src: shared_ptr_t(TacValue) = sptr_new()
     sptr_move(TacValue, res[].val, src)
     dst: *struc TacValue = plain_inner_value(ctx, node)
@@ -1019,7 +1019,7 @@ fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPo
     return dst
 }
 
-fn sub_obj_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node: *struc CExp) *struc TacValue {
+fn sub_obj_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node: *struc CExp) shared_ptr_t(TacValue) {
     src_name: u64 = res[].base_name
     offset: i64 = res[].offset
     dst: *struc TacValue = plain_inner_value(ctx, node)
@@ -1029,7 +1029,7 @@ fn sub_obj_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node:
     return dst
 }
 
-fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) *struc TacValue {
+fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) shared_ptr_t(TacValue) {
     val: shared_ptr_t(TacValue) = sptr_new()
     res: unique_ptr_t(TacExpResult) = repr_res_instr(ctx, node)
     match res[].tag {
