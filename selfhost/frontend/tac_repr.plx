@@ -148,7 +148,7 @@ fn repr_res_instr(ctx: *struc TacReprContext, node: *struc CExp) unique_ptr_t(Ta
 fn repr_exp_instr(ctx: *struc TacReprContext, node: *struc CExp) shared_ptr_t(TacValue);
 
 fn const_res_instr(node: *struc CConstant) unique_ptr_t(TacExpResult) {
-    val: *struc TacValue = repr_value(node[]._base)
+    val: shared_ptr_t(TacValue) = repr_value(node[]._base)
     return make_TacPlainOperand(@val)
 }
 
@@ -172,7 +172,7 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) unique_ptr
             constant_type: shared_ptr_t(Type) = sptr_new()
             {
                 size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
-                elem_type: *struc Type = make_Char()
+                elem_type: shared_ptr_t(Type) = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
 
@@ -191,12 +191,12 @@ fn string_res_instr(ctx: *struc TacReprContext, node: *struc CString) unique_ptr
             map_move_add(ctx[].frontend[].symbol_table, string_const_label, symbol)
         }
     }
-    val: *struc TacValue = make_TacVariable(string_const_label)
+    val: shared_ptr_t(TacValue) = make_TacVariable(string_const_label)
     return make_TacPlainOperand(@val)
 }
 
 fn var_res_instr(node: *struc CVar) unique_ptr_t(TacExpResult) {
-    val: *struc TacValue = repr_value(node[]._base)
+    val: shared_ptr_t(TacValue) = repr_value(node[]._base)
     return make_TacPlainOperand(@val)
 }
 
@@ -278,11 +278,11 @@ fn get_type_scale(ctx: *struc TacReprContext, type_t: *struc Type) i64 {
 }
 
 fn cast_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCast) unique_ptr_t(TacExpResult) {
-    src: *struc TacValue = repr_exp_instr(ctx, node[].exp)
+    src: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
     if node[].target_type[].tag == node[].exp[].exp_type[].tag {
         return make_TacPlainOperand(@src)
     }
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     if node[].exp[].exp_type[].tag == AST_Double_t {
@@ -321,7 +321,7 @@ fn cast_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCast) uniqu
 }
 
 fn cast_void_res_instr(ctx: *struc TacReprContext, node: *struc CCast) unique_ptr_t(TacExpResult) {
-    dst: *struc TacValue = repr_exp_instr(ctx, node[].exp)
+    dst: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
     free_TacValue(@dst)
     return make_TacPlainOperand(@dst)
 }
@@ -336,8 +336,8 @@ fn cast_res_instr(ctx: *struc TacReprContext, node: *struc CCast) unique_ptr_t(T
 }
 
 fn unary_res_instr(ctx: *struc TacReprContext, node: *struc CUnary) unique_ptr_t(TacExpResult) {
-    src: *struc TacValue = repr_exp_instr(ctx, node[].exp)
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    src: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     unop: struc TacUnaryOp = repr_unop(@node[].unop)
@@ -360,7 +360,7 @@ fn binary_add_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) un
         src_ptr = repr_exp_instr(ctx, node[].exp_right)
         idx = repr_exp_instr(ctx, node[].exp_left)
     }
-    dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacAddPtr(scale, @src_ptr, @idx, @dst_cp))
@@ -378,19 +378,19 @@ fn binary_add_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique
 
 fn binary_sub_to_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique_ptr_t(TacExpResult) {
     scale: i64 = get_type_scale(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type)
-    src_ptr: *struc TacValue = repr_exp_instr(ctx, node[].exp_left)
+    src_ptr: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
 
     idx: shared_ptr_t(TacValue) = sptr_new()
     {
         idx = repr_exp_instr(ctx, node[].exp_right)
-        dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+        dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         unop: struc TacUnaryOp = init_TacNegate()
         push_instr(ctx, make_TacUnary(@unop, @idx, @dst_cp))
         sptr_move(TacValue, dst, idx)
     }
-    dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacAddPtr(scale, @src_ptr, @idx, @dst_cp))
@@ -401,8 +401,8 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
     src_1: shared_ptr_t(TacValue) = sptr_new()
     {
         src_1 = repr_exp_instr(ctx, node[].exp_left)
-        src_2: *struc TacValue = repr_exp_instr(ctx, node[].exp_right)
-        dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+        src_2: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
+        dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         binop: struc TacBinaryOp = init_TacSubtract()
@@ -413,10 +413,10 @@ fn binary_subtract_ptr_res_instr(ctx: *struc TacReprContext, node: *struc CBinar
     src_2: shared_ptr_t(TacValue) = sptr_new()
     {
         value: i64 = get_type_scale(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type)
-        constant: *struc CConst = make_CConstLong(value)
+        constant: shared_ptr_t(CConst) = make_CConstLong(value)
         src_2 = make_TacConstant(@constant)
     }
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     binop: struc TacBinaryOp = init_TacDivide()
@@ -442,19 +442,19 @@ fn binary_and_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique
     target_false: u64 = repr_label_identifier(ctx[].identifiers, LBL_Land_false)
     target_true: u64 = repr_label_identifier(ctx[].identifiers, LBL_Land_true)
 
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     {
-        condition_left: *struc TacValue = repr_exp_instr(ctx, node[].exp_left)
+        condition_left: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
         push_instr(ctx, make_TacJumpIfZero(target_false, @condition_left))
     }
 
     {
-        condition_right: *struc TacValue = repr_exp_instr(ctx, node[].exp_right)
+        condition_right: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
         push_instr(ctx, make_TacJumpIfZero(target_false, @condition_right))
     }
     {
-        constant: *struc CConst = make_CConstInt(1)
-        src_true: *struc TacValue = make_TacConstant(@constant)
+        constant: shared_ptr_t(CConst) = make_CConstInt(1)
+        src_true: shared_ptr_t(TacValue) = make_TacConstant(@constant)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacCopy(@src_true, @dst_cp))
@@ -462,8 +462,8 @@ fn binary_and_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique
     push_instr(ctx, make_TacJump(target_true))
     push_instr(ctx, make_TacLabel(target_false))
     {
-        constant: *struc CConst = make_CConstInt(0)
-        src_false: *struc TacValue = make_TacConstant(@constant)
+        constant: shared_ptr_t(CConst) = make_CConstInt(0)
+        src_false: shared_ptr_t(TacValue) = make_TacConstant(@constant)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacCopy(@src_false, @dst_cp))
@@ -476,19 +476,19 @@ fn binary_or_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique_
     target_true: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lor_true)
     target_false: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lor_false)
 
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     {
-        condition_left: *struc TacValue = repr_exp_instr(ctx, node[].exp_left)
+        condition_left: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
         push_instr(ctx, make_TacJumpIfNotZero(target_true, @condition_left))
     }
 
     {
-        condition_right: *struc TacValue = repr_exp_instr(ctx, node[].exp_right)
+        condition_right: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
         push_instr(ctx, make_TacJumpIfNotZero(target_true, @condition_right))
     }
     {
-        constant: *struc CConst = make_CConstInt(0)
-        src_false: *struc TacValue = make_TacConstant(@constant)
+        constant: shared_ptr_t(CConst) = make_CConstInt(0)
+        src_false: shared_ptr_t(TacValue) = make_TacConstant(@constant)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacCopy(@src_false, @dst_cp))
@@ -496,8 +496,8 @@ fn binary_or_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique_
     push_instr(ctx, make_TacJump(target_false))
     push_instr(ctx, make_TacLabel(target_true))
     {
-        constant: *struc CConst = make_CConstInt(1)
-        src_true: *struc TacValue = make_TacConstant(@constant)
+        constant: shared_ptr_t(CConst) = make_CConstInt(1)
+        src_true: shared_ptr_t(TacValue) = make_TacConstant(@constant)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacCopy(@src_true, @dst_cp))
@@ -507,9 +507,9 @@ fn binary_or_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique_
 }
 
 fn binary_any_res_instr(ctx: *struc TacReprContext, node: *struc CBinary) unique_ptr_t(TacExpResult) {
-    src1: *struc TacValue = repr_exp_instr(ctx, node[].exp_left)
-    src2: *struc TacValue = repr_exp_instr(ctx, node[].exp_right)
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    src1: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
+    src2: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     binop: struc TacBinaryOp = repr_binop(@node[].binop)
@@ -630,7 +630,7 @@ fn assign_res_instr(ctx: *struc TacReprContext, node: *struc CAssignment) unique
             ctx[].identifiers[].var_count = var_count_2
             ctx[].identifiers[].struct_count = struct_count_2
             if node[].unop.tag == AST_CPostfix_t {
-                dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+                dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
                 match res[].tag {
                     -> AST_TacPlainOperand_t {
                         plain_op_postfix_exp_instr(ctx, @res[].get._TacPlainOperand, @dst)
@@ -682,14 +682,14 @@ fn conditional_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCond
     target_else: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lternary_else)
     target_false: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lternary_false)
 
-    dst: *struc TacValue = plain_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_else, @condition))
     }
 
     {
-        src_middle: *struc TacValue = repr_exp_instr(ctx, node[].exp_middle)
+        src_middle: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_middle)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacCopy(@src_middle, @dst_cp))
@@ -697,7 +697,7 @@ fn conditional_complete_res_instr(ctx: *struc TacReprContext, node: *struc CCond
     push_instr(ctx, make_TacJump(target_false))
     push_instr(ctx, make_TacLabel(target_else))
     {
-        src_right: *struc TacValue = repr_exp_instr(ctx, node[].exp_right)
+        src_right: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacCopy(@src_right, @dst_cp))
@@ -712,7 +712,7 @@ fn conditional_void_res_instr(ctx: *struc TacReprContext, node: *struc CConditio
 
     dst: shared_ptr_t(TacValue) = sptr_new()
     {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_else, @condition))
     }
 
@@ -740,7 +740,7 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) unique
     args: vector_t(shared_ptr_t(TacValue)) = vec_new()
     vec_reserve(args, vec_size(node[].args))
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
-        arg: *struc TacValue = repr_exp_instr(ctx, node[].args[i])
+        arg: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].args[i])
         vec_move_back(args, arg)
     }
     dst: shared_ptr_t(TacValue) = sptr_new()
@@ -754,14 +754,14 @@ fn call_res_instr(ctx: *struc TacReprContext, node: *struc CFunctionCall) unique
 }
 
 fn deref_res_instr(ctx: *struc TacReprContext, node: *struc CDereference) unique_ptr_t(TacExpResult) {
-    val: *struc TacValue = repr_exp_instr(ctx, node[].exp)
+    val: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
     return make_TacDereferencedPointer(@val)
 }
 
 fn plain_op_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacPlainOperand, node: *struc CAddrOf) none {
     src: shared_ptr_t(TacValue) = sptr_new()
     sptr_move(TacValue, res[].val, src)
-    dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacGetAddress(@src, @dst_cp))
@@ -776,10 +776,10 @@ fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: *uniq
 }
 
 fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node: *struc CAddrOf, exp_res: *unique_ptr_t(TacExpResult)) none {
-    dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
     {
         name: u64 = res[].base_name
-        src: *struc TacValue = make_TacVariable(name)
+        src: shared_ptr_t(TacValue) = make_TacVariable(name)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacGetAddress(@src, @dst_cp))
@@ -792,7 +792,7 @@ fn sub_obj_addrof_res_instr(ctx: *struc TacReprContext, res: *struc TacSubObject
         idx: shared_ptr_t(TacValue) = sptr_new()
         {
             offset: i64 = res[].offset
-            constant: *struc CConst = make_CConstLong(offset)
+            constant: shared_ptr_t(CConst) = make_CConstLong(offset)
             idx = make_TacConstant(@constant)
         }
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -839,7 +839,7 @@ fn subscript_res_instr(ctx: *struc TacReprContext, node: *struc CSubscript) uniq
         src_ptr = repr_exp_instr(ctx, node[].subscript_exp)
         idx = repr_exp_instr(ctx, node[].primary_exp)
     }
-    dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+    dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacAddPtr(scale, @src_ptr, @idx, @dst_cp))
@@ -852,7 +852,7 @@ fn sizeof_res_instr(ctx: *struc TacReprContext, node: *struc CSizeOf) unique_ptr
         value: u64 = cast<u64>(get_type_scale(ctx, node[].exp[].exp_type))
         constant = make_CConstULong(value)
     }
-    val: *struc TacValue = make_TacConstant(@constant)
+    val: shared_ptr_t(TacValue) = make_TacConstant(@constant)
     return make_TacPlainOperand(@val)
 }
 
@@ -862,7 +862,7 @@ fn sizeoft_res_instr(ctx: *struc TacReprContext, node: *struc CSizeOfT) unique_p
         value: u64 = cast<u64>(get_type_scale(ctx, node[].target_type))
         constant = make_CConstULong(value)
     }
-    val: *struc TacValue = make_TacConstant(@constant)
+    val: shared_ptr_t(TacValue) = make_TacConstant(@constant)
     return make_TacPlainOperand(@val)
 }
 
@@ -882,10 +882,10 @@ fn deref_ptr_dot_res_instr(ctx: *struc TacReprContext, res: *struc TacDereferenc
         idx: shared_ptr_t(TacValue) = sptr_new()
         {
             offset: i64 = member_offset
-            constant: *struc CConst = make_CConstLong(offset)
+            constant: shared_ptr_t(CConst) = make_CConstLong(offset)
             idx = make_TacConstant(@constant)
         }
-        dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+        dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacAddPtr(1l, @src_ptr, @idx, @dst_cp))
@@ -930,15 +930,15 @@ fn arrow_res_instr(ctx: *struc TacReprContext, node: *struc CArrow) unique_ptr_t
     struct_type: *struc Structure = @ptr_type[].ref_type[].get._Structure
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     member_offset: i64 = map_get(struct_typedef[].members, node[].member)[].offset
-    val: *struc TacValue = repr_exp_instr(ctx, node[].pointer)
+    val: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].pointer)
     if member_offset > 0l {
         idx: shared_ptr_t(TacValue) = sptr_new()
         {
             offset: i64 = member_offset
-            constant: *struc CConst = make_CConstLong(offset)
+            constant: shared_ptr_t(CConst) = make_CConstLong(offset)
             idx = make_TacConstant(@constant)
         }
-        dst: *struc TacValue = ptr_inner_value(ctx, node[]._base)
+        dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacAddPtr(1l, @val, @idx, @dst_cp))
@@ -1012,7 +1012,7 @@ fn plain_op_exp_instr(res: *struc TacPlainOperand) shared_ptr_t(TacValue) {
 fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPointer, node: *struc CExp) shared_ptr_t(TacValue) {
     src: shared_ptr_t(TacValue) = sptr_new()
     sptr_move(TacValue, res[].val, src)
-    dst: *struc TacValue = plain_inner_value(ctx, node)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacLoad(@src, @dst_cp))
@@ -1022,7 +1022,7 @@ fn deref_ptr_exp_instr(ctx: *struc TacReprContext, res: *struc TacDereferencedPo
 fn sub_obj_exp_instr(ctx: *struc TacReprContext, res: *struc TacSubObject, node: *struc CExp) shared_ptr_t(TacValue) {
     src_name: u64 = res[].base_name
     offset: i64 = res[].offset
-    dst: *struc TacValue = plain_inner_value(ctx, node)
+    dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
     push_instr(ctx, make_TacCopyFromOffset(src_name, offset, @dst_cp))
@@ -1073,7 +1073,7 @@ fn exp_statement_instr(ctx: *struc TacReprContext, node: *struc CExpression) non
 fn if_only_statement_instr(ctx: *struc TacReprContext, node: *struc CIf) none {
     target_false: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lif_false)
     {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_false, @condition))
     }
     statement_instr(ctx, node[].then_fi)
@@ -1084,7 +1084,7 @@ fn if_else_statement_instr(ctx: *struc TacReprContext, node: *struc CIf) none {
     target_else: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lif_else)
     target_false: u64 = repr_label_identifier(ctx[].identifiers, LBL_Lif_false)
     {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_else, @condition))
     }
     statement_instr(ctx, node[].then_fi)
@@ -1123,7 +1123,7 @@ fn while_statement_instr(ctx: *struc TacReprContext, node: *struc CWhile) none {
     target_continue: u64 = repr_loop_identifier(ctx[].identifiers, LBL_Lcontinue, node[].target)
     push_instr(ctx, make_TacLabel(target_continue))
     {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_break, @condition))
     }
     statement_instr(ctx, node[].body)
@@ -1139,7 +1139,7 @@ fn do_while_statement_instr(ctx: *struc TacReprContext, node: *struc CDoWhile) n
     statement_instr(ctx, node[].body)
     push_instr(ctx, make_TacLabel(target_continue))
     {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfNotZero(target_do_while_start, @condition))
     }
     push_instr(ctx, make_TacLabel(target_break))
@@ -1181,7 +1181,7 @@ fn for_statement_instr(ctx: *struc TacReprContext, node: *struc CFor) none {
     for_init_statement_instr(ctx, node[].init)
     push_instr(ctx, make_TacLabel(target_for_start))
     if node[].condition {
-        condition: *struc TacValue = repr_exp_instr(ctx, node[].condition)
+        condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_break, @condition))
     }
     statement_instr(ctx, node[].body)
@@ -1197,7 +1197,7 @@ fn for_statement_instr(ctx: *struc TacReprContext, node: *struc CFor) none {
 fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none {
     target_break: u64 = repr_loop_identifier(ctx[].identifiers, LBL_Lbreak, node[].target)
     {
-        lookup: *struc TacValue = repr_exp_instr(ctx, node[].lookup)
+        lookup: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].lookup)
         loop i: u64 = 0 while i < vec_size(node[].cases) .. ++i {
             target_case: u64 = repr_case_identifier(ctx[].identifiers, node[].target, true, i)
 
@@ -1205,7 +1205,7 @@ fn switch_statement_instr(ctx: *struc TacReprContext, node: *struc CSwitch) none
             {
                 lookup_cp: shared_ptr_t(TacValue) = sptr_new()
                 sptr_copy(TacValue, lookup, lookup_cp)
-                esac: *struc TacValue = repr_exp_instr(ctx, node[].cases[i])
+                esac: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].cases[i])
                 case_match = plain_inner_value(ctx, node[].cases[i])
                 case_match_cp: shared_ptr_t(TacValue) = sptr_new()
                 sptr_copy(TacValue, case_match, case_match_cp)
@@ -1390,7 +1390,7 @@ fn single_init_instr(ctx: *struc TacReprContext, node: *struc CSingleInit, init_
         string_single_init_instr(ctx, @node[].exp[].get._CString, @init_type[].get._Array, symbol, 0l)
     }
     else {
-        src: *struc TacValue = repr_exp_instr(ctx, node[].exp)
+        src: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
 
         dst: shared_ptr_t(TacValue) = sptr_new()
         {
@@ -1411,7 +1411,7 @@ fn scalar_compound_init_instr(ctx: *struc TacReprContext, node: *struc CSingleIn
     else {
         dst_name: u64 = symbol
         offset: i64 = size
-        src: *struc TacValue = repr_exp_instr(ctx, node[].exp)
+        src: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
         push_instr(ctx, make_TacCopyToOffset(dst_name, offset, @src))
     }
 }
@@ -1546,8 +1546,8 @@ fn repr_fun_toplvl(ctx: *struc TacReprContext, node: *struc CFunctionDeclaration
         ctx[].p_instrs = @body
         repr_block(ctx, node[].body)
         {
-            constant: *struc CConst = make_CConstInt(0)
-            val: *struc TacValue = make_TacConstant(@constant)
+            constant: shared_ptr_t(CConst) = make_CConstInt(0)
+            val: shared_ptr_t(TacValue) = make_TacConstant(@constant)
             push_instr(ctx, make_TacReturn(@val))
         }
         ctx[].p_instrs = nil
@@ -1587,7 +1587,7 @@ fn tentative_static_toplvl(ctx: *struc TacReprContext, static_init_type: *struc 
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     {
         byte: i64 = get_type_scale(ctx, static_init_type)
-        static_init: *struc StaticInit = make_ZeroInit(byte)
+        static_init: shared_ptr_t(StaticInit) = make_ZeroInit(byte)
         vec_move_back(static_inits, static_init)
     }
 

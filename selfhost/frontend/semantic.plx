@@ -718,7 +718,7 @@ fn check_const_exp(node: *struc CConstant) none {
 
 fn check_string_exp(node: *struc CString) none {
     size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
-    elem_type: *struc Type = make_Char()
+    elem_type: shared_ptr_t(Type) = make_Char()
     node[]._base[].exp_type = make_Array(size, @elem_type)
 }
 
@@ -2049,7 +2049,7 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     CATCH_EXIT
 }
 
-fn push_static_init(ctx: *struc SemanticContext, static_init: *struc StaticInit) none {
+fn push_static_init(ctx: *struc SemanticContext, static_init: shared_ptr_t(StaticInit)) none {
     vec_move_back(ctx[].p_static_inits[], static_init)
 }
 
@@ -2231,7 +2231,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
             constant_type: shared_ptr_t(Type) = sptr_new()
             {
                 size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
-                elem_type: *struc Type = make_Char()
+                elem_type: shared_ptr_t(Type) = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
 
