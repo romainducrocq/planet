@@ -146,12 +146,12 @@ fn cvt_backend_symbol(ctx: *struc SymtCvtContext, node: unique_ptr_t(BackendSymb
 }
 
 fn dbl_static_const(ctx: *struc SymtCvtContext) none {
-    asm_type: *struc AssemblyType = make_BackendDouble()
+    asm_type: shared_ptr_t(AssemblyType) = make_BackendDouble()
     cvt_backend_symbol(ctx, make_BackendObj(true, true, @asm_type))
 }
 
 fn string_static_const(ctx: *struc SymtCvtContext, arr_type: *struc Array) none {
-    asm_type: *struc AssemblyType = arr_asm_type(ctx[].frontend, arr_type)
+    asm_type: shared_ptr_t(AssemblyType) = arr_asm_type(ctx[].frontend, arr_type)
     cvt_backend_symbol(ctx, make_BackendObj(true, true, @asm_type))
 }
 
@@ -195,7 +195,7 @@ fn cvt_fun_type(ctx: *struc SymtCvtContext, node: *struc FunAttr, fun_type: *str
 
 fn cvt_obj_type(ctx: *struc SymtCvtContext, node: *struc IdentifierAttr) none {
     if node[].tag ~= AST_ConstantAttr_t {
-        asm_type: *struc AssemblyType = cvt_backend_asm_type(ctx[].frontend, ctx[].symbol)
+        asm_type: shared_ptr_t(AssemblyType) = cvt_backend_asm_type(ctx[].frontend, ctx[].symbol)
         is_static: i32 = node[].tag == AST_StaticAttr_t
         cvt_backend_symbol(ctx, make_BackendObj(is_static, false, @asm_type))
     }
