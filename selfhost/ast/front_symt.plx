@@ -77,8 +77,8 @@ pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *share
     vec_move(param_types[], self[].get._FunType.param_types)
     self[].get._FunType.ret_type = sptr_new()
     sptr_move(Type, ret_type[], self[].get._FunType.ret_type)
-    self[].get._FunType.param_reg_mask = (cast<u8>(1u)) << REGISTER_MASK_SIZE
-    self[].get._FunType.ret_reg_mask = (cast<u8>(1u)) << REGISTER_MASK_SIZE
+    self[].get._FunType.param_reg_mask = NULL_REGISTER_MASK
+    self[].get._FunType.ret_reg_mask = NULL_REGISTER_MASK
     return self
 }
 

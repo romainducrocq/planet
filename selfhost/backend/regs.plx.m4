@@ -38,6 +38,6 @@ m4_define(`REG_Xmm14', `30')m4_dnl
 m4_define(`REG_Xmm15', `31')m4_dnl
 m4_define(`REGISTER_MASK_SIZE', `26')m4_dnl
 m4_define(`REGISTER_MASK_FALSE', `TODO')m4_dnl
-m4_define(`NULL_REGISTER_MASK', `TODO')m4_dnl
+m4_define(`NULL_REGISTER_MASK', `cast<u8>(1u) << REGISTER_MASK_SIZE')m4_dnl
 
 ')m4_dnl
