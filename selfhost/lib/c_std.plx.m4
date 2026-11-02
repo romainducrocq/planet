@@ -102,6 +102,7 @@ m4_define(`str_resize', `{
 m4_define(`str_substr', `sdsrange($1, $2, $3)')m4_dnl
 m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
 
+m4_define(`size_t', `TODO')m4_dnl
 m4_define(`vector_t', `*$1')m4_dnl
 m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `if ($1) {
