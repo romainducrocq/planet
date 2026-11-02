@@ -1,7 +1,7 @@
 m4_ifdef(`_FRONTEND_TOKENS_M4', `', `
 m4_define(`_FRONTEND_TOKENS_M4', `')m4_dnl
 
-m4_define(`TOKEN_KIND', `TODO')m4_dnl
+m4_define(`TOKEN_KIND', `i32')m4_dnl
 m4_define(`TOK_skip', `0')m4_dnl
 m4_define(`TOK_line_break', `1')m4_dnl
 m4_define(`TOK_open_paren', `2')m4_dnl

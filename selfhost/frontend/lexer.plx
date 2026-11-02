@@ -239,12 +239,12 @@ fn match_word(ctx: Ctx) i32 {
     }
 }
 
-fn match_error(ctx: Ctx) i32 {
+fn match_error(ctx: Ctx) TOKEN_KIND {
     ctx[].match_size++
     return TOK_error
 }
 
-fn match_include(ctx: Ctx, tok_kind: i32) i32 {
+fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
     loop while match_space(ctx) {
         ;
     }
@@ -280,7 +280,7 @@ fn match_include(ctx: Ctx, tok_kind: i32) i32 {
     return match_error(ctx)
 }
 
-fn match_char_const(ctx: Ctx, is_str: i32) i32 {
+fn match_char_const(ctx: Ctx, is_str: i32) TOKEN_KIND {
     match get_char(ctx) {
         -> '\'' {
             if not is_str {
@@ -342,15 +342,15 @@ fn match_char_const(ctx: Ctx, is_str: i32) i32 {
     }
 }
 
-fn match_string_literal(ctx: Ctx) i32 {
-    tok_kind: i32;
+fn match_string_literal(ctx: Ctx) TOKEN_KIND {
+    tok_kind: TOKEN_KIND;
     loop .. while tok_kind == TOK_char_const {
         tok_kind = match_char_const(ctx, true)
     }
     return tok_kind
 }
 
-fn match_const_end(ctx: Ctx, tok_kind: i32) i32 {
+fn match_const_end(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
     match get_char(ctx) {
         -> '0' {
             -> '1' {
@@ -487,7 +487,7 @@ fn match_const_end(ctx: Ctx, tok_kind: i32) i32 {
     }
 }
 
-fn match_dbl_exponent(ctx: Ctx) i32 {
+fn match_dbl_exponent(ctx: Ctx) TOKEN_KIND {
     match get_char(ctx) {
         -> '+' {
             -> '-' {
@@ -508,7 +508,7 @@ fn match_dbl_exponent(ctx: Ctx) i32 {
     return match_const_end(ctx, TOK_dbl_const)
 }
 
-fn match_dbl_fraction(ctx: Ctx) i32 {
+fn match_dbl_fraction(ctx: Ctx) TOKEN_KIND {
     loop while match_digit(ctx) {
         ;
     }
@@ -520,7 +520,7 @@ fn match_dbl_fraction(ctx: Ctx) i32 {
     }
 }
 
-fn match_const(ctx: Ctx) i32 {
+fn match_const(ctx: Ctx) TOKEN_KIND {
     loop while match_digit(ctx) {
         ;
     }
@@ -552,7 +552,7 @@ fn match_const(ctx: Ctx) i32 {
     }
 }
 
-fn match_identifier(ctx: Ctx) i32 {
+fn match_identifier(ctx: Ctx) TOKEN_KIND {
     match ctx[].line[ctx[].match_at] {
         -> 'a' {
             if match_char(ctx, 'n') {
@@ -804,7 +804,7 @@ fn match_identifier(ctx: Ctx) i32 {
     return TOK_identifier
 }
 
-fn match_token(ctx: Ctx) i32 {
+fn match_token(ctx: Ctx) TOKEN_KIND {
     ctx[].match_size = 1
     match ctx[].line[ctx[].match_at] {
         -> '(' {
@@ -1179,7 +1179,7 @@ fn tokenize_file(ctx: Ctx) error_t {
         ctx[].total_linenum++
         is_empty: i32 = true
         loop ctx[].match_at = 0 while ctx[].match_at < ctx[].line_size .. ctx[].match_at += ctx[].match_size {
-            match_kind: i32 = match_token(ctx)
+            match_kind: TOKEN_KIND = match_token(ctx)
             match_tok: u64 = 0
             match match_kind {
                 -> TOK_skip {
