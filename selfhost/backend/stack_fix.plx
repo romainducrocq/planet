@@ -536,7 +536,7 @@ fn push_callee_saved_regs(ctx: Ctx, callee_saved_regs: vector_t(shared_ptr_t(Asm
 fn pop_callee_saved_regs(ctx: Ctx, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = vec_size(callee_saved_regs) while i-- > 0 {
         THROW_ABORT_IF(callee_saved_regs[i][].tag ~= AST_AsmRegister_t)
-        reg_kind: i32 = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
+        reg_kind: REGISTER_KIND = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
         reg: struc AsmReg = init_AsmReg()
         match reg_kind {
             -> REG_Bx {
@@ -1042,7 +1042,7 @@ fn push_from_quad_imm(ctx: Ctx, node: *struc AsmPush) none {
 
 fn fix_push_instr(ctx: Ctx, node: *struc AsmPush) none {
     if node[].src[].tag == AST_AsmRegister_t {
-        reg_kind: i32 = register_mask_kind(@node[].src[].get._AsmRegister.reg)
+        reg_kind: REGISTER_KIND = register_mask_kind(@node[].src[].get._AsmRegister.reg)
         if reg_kind ~= REG_Sp and register_mask_bit(reg_kind) > 11 {
             push_dbl_from_xmm_reg(ctx, node)
         }

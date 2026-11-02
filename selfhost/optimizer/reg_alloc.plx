@@ -16,7 +16,7 @@ type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO2;
 
-type struc InferenceRegister(color: i32, reg_kind: i32, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: vector_t(TIdentifier))
+type struc InferenceRegister(color: REGISTER_KIND, reg_kind: REGISTER_KIND, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: vector_t(TIdentifier))
 
 m4_define(`StInferenceRegister', `struc InferenceRegister')m4_dnl
 
@@ -24,7 +24,7 @@ PairKeyValue(``TIdentifier'', ``StInferenceRegister'')
 
 type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: u64, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: hashmap_t(``TIdentifier'', ``StInferenceRegister''))
 
-type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: u64, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]i32, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), is_with_coal: i32)
+type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: u64, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), is_with_coal: i32)
 
 fn free_InferenceGraph(self: *unique_ptr_t(InferenceGraph)) none {
     uptr_delete(self[])
@@ -118,7 +118,7 @@ fn find_identifier(xs: vector_t(TIdentifier), x: u64) i32 {
     return false
 }
 
-fn infer_transfer_used_reg(ctx: Ctx, reg_kind: i32, next_instr_idx: u64) none {
+fn infer_transfer_used_reg(ctx: Ctx, reg_kind: REGISTER_KIND, next_instr_idx: u64) none {
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), true)
 }
 
@@ -132,7 +132,7 @@ fn infer_transfer_used_name(ctx: Ctx, name: u64, next_instr_idx: u64) none {
 fn infer_transfer_used_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: u64) none {
     match node[].tag {
         -> AST_AsmRegister_t {
-            reg_kind: i32 = register_mask_kind(@node[].get._AsmRegister.reg)
+            reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmRegister.reg)
             if reg_kind ~= REG_Sp {
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
@@ -143,7 +143,7 @@ fn infer_transfer_used_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: u64
         }
         break
         -> AST_AsmMemory_t {
-            reg_kind: i32 = register_mask_kind(@node[].get._AsmMemory.reg)
+            reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmMemory.reg)
             if reg_kind ~= REG_Sp {
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
@@ -152,12 +152,12 @@ fn infer_transfer_used_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: u64
         -> AST_AsmIndexed_t {
             p_node: *struc AsmIndexed = @node[].get._AsmIndexed
             {
-                reg_kind: i32 = register_mask_kind(@p_node[].reg_base)
+                reg_kind: REGISTER_KIND = register_mask_kind(@p_node[].reg_base)
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
 
             {
-                reg_kind: i32 = register_mask_kind(@p_node[].reg_index)
+                reg_kind: REGISTER_KIND = register_mask_kind(@p_node[].reg_index)
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
             break
@@ -173,7 +173,7 @@ fn infer_transfer_used_call(ctx: Ctx, node: *struc AsmCall, next_instr_idx: u64)
     ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (0)] |= fun_type[].param_reg_mask
 }
 
-fn infer_transfer_updated_reg(ctx: Ctx, reg_kind: i32, next_instr_idx: u64) none {
+fn infer_transfer_updated_reg(ctx: Ctx, reg_kind: REGISTER_KIND, next_instr_idx: u64) none {
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), false)
 }
 
@@ -187,7 +187,7 @@ fn infer_transfer_updated_name(ctx: Ctx, name: u64, next_instr_idx: u64) none {
 fn infer_transfer_updated_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: u64) none {
     match node[].tag {
         -> AST_AsmRegister_t {
-            reg_kind: i32 = register_mask_kind(@node[].get._AsmRegister.reg)
+            reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmRegister.reg)
             if reg_kind ~= REG_Sp {
                 infer_transfer_updated_reg(ctx, reg_kind, next_instr_idx)
             }
@@ -198,7 +198,7 @@ fn infer_transfer_updated_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: 
         }
         break
         -> AST_AsmMemory_t {
-            reg_kind: i32 = register_mask_kind(@node[].get._AsmMemory.reg)
+            reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmMemory.reg)
             if reg_kind ~= REG_Sp {
                 infer_transfer_used_reg(ctx, reg_kind, next_instr_idx)
             }
@@ -347,7 +347,7 @@ fn infer_add_pseudo_edges(ctx: Ctx, name_1: u64, name_2: u64) none {
     }
 }
 
-fn infer_add_reg_edge(ctx: Ctx, reg_kind: i32, name: u64) none {
+fn infer_add_reg_edge(ctx: Ctx, reg_kind: REGISTER_KIND, name: u64) none {
     {
         infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, name)
         if not register_mask_get(infer[].linked_hard_mask, reg_kind) {
@@ -398,7 +398,7 @@ fn infer_init_used_op_edges(ctx: Ctx, node: *struc AsmOperand) none {
     }
 }
 
-fn infer_init_updated_regs_edges(ctx: Ctx, reg_kinds: *i32, instr_idx: u64, reg_kinds_size: u64, is_dbl: i32) none {
+fn infer_init_updated_regs_edges(ctx: Ctx, reg_kinds: *REGISTER_KIND, instr_idx: u64, reg_kinds_size: u64, is_dbl: i32) none {
     mov_mask_bit: u64 = ctx[].dfa[].set_size
     is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t
     if is_mov {
@@ -467,7 +467,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
         mov: *struc AsmMov = @(ctx[].p_instrs[])[instr_idx][].get._AsmMov
         match mov[].src[].tag {
             -> AST_AsmRegister_t {
-                src_reg_kind: i32 = register_mask_kind(@mov[].src[].get._AsmRegister.reg)
+                src_reg_kind: REGISTER_KIND = register_mask_kind(@mov[].src[].get._AsmRegister.reg)
                 if src_reg_kind == REG_Sp {
                     is_mov = false
                 }
@@ -492,7 +492,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
                 break
             }
             -> AST_AsmMemory_t {
-                src_reg_kind: i32 = register_mask_kind(@mov[].src[].get._AsmMemory.reg)
+                src_reg_kind: REGISTER_KIND = register_mask_kind(@mov[].src[].get._AsmMemory.reg)
                 if src_reg_kind == REG_Sp {
                     is_mov = false
                 }
@@ -518,7 +518,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
         mask_set_size: u64 = i + ctx[].p_infer_graph[].k
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) and not (is_mov and i == mov_mask_bit) {
-                reg_kind: i32 = ctx[].hard_regs[i].reg_kind
+                reg_kind: REGISTER_KIND = ctx[].hard_regs[i].reg_kind
                 infer_add_reg_edge(ctx, reg_kind, name)
             }
         }
@@ -557,7 +557,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
 fn infer_init_updated_op_edges(ctx: Ctx, node: *struc AsmOperand, instr_idx: u64) none {
     match node[].tag {
         -> AST_AsmRegister_t {
-            reg_kinds: [1]i32 = $(register_mask_kind(@node[].get._AsmRegister.reg))
+            reg_kinds: [1]REGISTER_KIND = $(register_mask_kind(@node[].get._AsmRegister.reg))
             if reg_kinds[0] ~= REG_Sp {
                 is_dbl: i32 = register_mask_bit(reg_kinds[0]) > 11
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, is_dbl)
@@ -608,7 +608,7 @@ fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
         -> AST_AsmBinary_t {
             p_node: *struc AsmBinary = @node[].get._AsmBinary
             if is_bitshift_cl(p_node) {
-                reg_kinds: [1]i32 = $(REG_Cx)
+                reg_kinds: [1]REGISTER_KIND = $(REG_Cx)
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, false)
             }
             infer_init_updated_op_edges(ctx, p_node[].dst, instr_idx)
@@ -622,19 +622,19 @@ fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
             break
         }
         -> AST_AsmIdiv_t {
-            reg_kinds: [2]i32 = $(REG_Ax, REG_Dx)
+            reg_kinds: [2]REGISTER_KIND = $(REG_Ax, REG_Dx)
             infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 2, false)
             infer_init_used_op_edges(ctx, node[].get._AsmIdiv.src)
             break
         }
         -> AST_AsmDiv_t {
-            reg_kinds: [1]i32 = $(REG_Ax)
+            reg_kinds: [1]REGISTER_KIND = $(REG_Ax)
             infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, false)
             infer_init_used_op_edges(ctx, node[].get._AsmDiv.src)
             break
         }
         -> AST_AsmCdq_t {
-            reg_kinds: [1]i32 = $(REG_Dx)
+            reg_kinds: [1]REGISTER_KIND = $(REG_Dx)
             infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 1, false)
             break
         }
@@ -648,11 +648,11 @@ fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
         break
         -> AST_AsmCall_t {
             {
-                reg_kinds: [7]i32 = $(REG_Ax, REG_Cx, REG_Dx, REG_Di, REG_Si, REG_R8, REG_R9)
+                reg_kinds: [7]REGISTER_KIND = $(REG_Ax, REG_Cx, REG_Dx, REG_Di, REG_Si, REG_R8, REG_R9)
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 7, false)
             }
             {
-                reg_kinds: [14]i32 = $(REG_Xmm0, REG_Xmm1, REG_Xmm2, REG_Xmm3, REG_Xmm4, REG_Xmm5, REG_Xmm6, REG_Xmm7, REG_Xmm8, REG_Xmm9, REG_Xmm10, REG_Xmm11, REG_Xmm12, REG_Xmm13)
+                reg_kinds: [14]REGISTER_KIND = $(REG_Xmm0, REG_Xmm1, REG_Xmm2, REG_Xmm3, REG_Xmm4, REG_Xmm5, REG_Xmm6, REG_Xmm7, REG_Xmm8, REG_Xmm9, REG_Xmm10, REG_Xmm11, REG_Xmm12, REG_Xmm13)
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 14, true)
             }
             break
@@ -742,7 +742,7 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
     return true
 }
 
-fn is_reg_callee_saved(reg_kind: i32) i32 {
+fn is_reg_callee_saved(reg_kind: REGISTER_KIND) i32 {
     match reg_kind {
         -> REG_Bx {
             -> REG_R12 {
@@ -887,7 +887,7 @@ fn alloc_unprune_infer_graph(ctx: Ctx, infer: *struc InferenceRegister, pruned_n
     if color_reg_mask ~= 0ul {
         if is_reg_callee_saved(infer[].reg_kind) {
             loop i: u64 = ctx[].p_infer_graph[].k while i-- > 0 {
-                color: i32 = ctx[].hard_regs[i + ctx[].p_infer_graph[].offset].reg_kind
+                color: REGISTER_KIND = ctx[].hard_regs[i + ctx[].p_infer_graph[].offset].reg_kind
                 if register_mask_get(color_reg_mask, color) {
                     infer[].color = color
                     break
@@ -896,7 +896,7 @@ fn alloc_unprune_infer_graph(ctx: Ctx, infer: *struc InferenceRegister, pruned_n
         }
         else {
             loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
-                color: i32 = ctx[].hard_regs[i + ctx[].p_infer_graph[].offset].reg_kind
+                color: REGISTER_KIND = ctx[].hard_regs[i + ctx[].p_infer_graph[].offset].reg_kind
                 if register_mask_get(color_reg_mask, color) {
                     infer[].color = color
                     break
@@ -928,9 +928,9 @@ fn alloc_hard_reg(ctx: Ctx, name: u64) shared_ptr_t(AsmOperand) {
         return sptr_new()
     }
     set_p_infer_graph(ctx, map_get(ctx[].frontend[].symbol_table, name)[].type_t[].tag == AST_Double_t)
-    color: i32 = map_get(ctx[].p_infer_graph[].pseudo_reg_map, name).color
+    color: REGISTER_KIND = map_get(ctx[].p_infer_graph[].pseudo_reg_map, name).color
     if color ~= REG_Sp {
-        reg_kind: i32 = ctx[].reg_color_map[register_mask_bit(color)]
+        reg_kind: REGISTER_KIND = ctx[].reg_color_map[register_mask_bit(color)]
         hard_reg: shared_ptr_t(AsmOperand) = gen_register(reg_kind)
         if is_reg_callee_saved(reg_kind) and not register_mask_get(ctx[].callee_saved_reg_mask, reg_kind) {
             register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, true)
@@ -946,7 +946,7 @@ fn alloc_hard_reg(ctx: Ctx, name: u64) shared_ptr_t(AsmOperand) {
     }
 }
 
-fn get_op_reg_kind(ctx: Ctx, node: *struc AsmOperand) i32 {
+fn get_op_reg_kind(ctx: Ctx, node: *struc AsmOperand) REGISTER_KIND {
     match node[].tag {
         -> AST_AsmRegister_t {
             return register_mask_kind(@node[].get._AsmRegister.reg)
@@ -957,7 +957,7 @@ fn get_op_reg_kind(ctx: Ctx, node: *struc AsmOperand) i32 {
                 return REG_Sp
             }
             set_p_infer_graph(ctx, map_get(ctx[].frontend[].symbol_table, name)[].type_t[].tag == AST_Double_t)
-            color: i32 = map_get(ctx[].p_infer_graph[].pseudo_reg_map, name).color
+            color: REGISTER_KIND = map_get(ctx[].p_infer_graph[].pseudo_reg_map, name).color
             if color == REG_Sp {
                 return REG_Sp
             }
@@ -978,8 +978,8 @@ fn get_op_reg_kind(ctx: Ctx, node: *struc AsmOperand) i32 {
 }
 
 fn alloc_mov_instr(ctx: Ctx, node: *struc AsmMov, instr_idx: u64) none {
-    src_reg_kind: i32 = get_op_reg_kind(ctx, node[].src)
-    dst_reg_kind: i32 = get_op_reg_kind(ctx, node[].dst)
+    src_reg_kind: REGISTER_KIND = get_op_reg_kind(ctx, node[].src)
+    dst_reg_kind: REGISTER_KIND = get_op_reg_kind(ctx, node[].dst)
     if src_reg_kind ~= REG_Sp and src_reg_kind == dst_reg_kind {
         set_instr(ctx, uptr_new(), instr_idx)
     }
@@ -1266,7 +1266,7 @@ fn get_coalesced_idx(ctx: Ctx, node: *struc AsmOperand) u64 {
     coalesced_idx: u64 = ctx[].dfa[].set_size
     match node[].tag {
         -> AST_AsmRegister_t {
-            reg_kind: i32 = register_mask_kind(@node[].get._AsmRegister.reg)
+            reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmRegister.reg)
             if reg_kind ~= REG_Sp {
                 coalesced_idx = register_mask_bit(reg_kind)
             }
@@ -1382,7 +1382,7 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
     return degree < ctx[].p_infer_graph[].k
 }
 
-fn coal_george_test(ctx: Ctx, reg_kind: i32, infer: *struc InferenceRegister) i32 {
+fn coal_george_test(ctx: Ctx, reg_kind: REGISTER_KIND, infer: *struc InferenceRegister) i32 {
     loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
         linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, infer[].linked_pseudo_names[i])
         if not register_mask_get(linked_infer[].linked_hard_mask, reg_kind) and linked_infer[].degree >= ctx[].p_infer_graph[].k {
@@ -1427,7 +1427,7 @@ fn coal_pseudo_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, merge_idx: u
     infer_rm_unpruned_pseudo_name(ctx, merge_name)
 }
 
-fn coal_hard_infer_reg(ctx: Ctx, reg_kind: i32, infer: *struc InferenceRegister, merge_idx: u64) none {
+fn coal_hard_infer_reg(ctx: Ctx, reg_kind: REGISTER_KIND, infer: *struc InferenceRegister, merge_idx: u64) none {
     merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - REGISTER_MASK_SIZE]
     if infer[].linked_hard_mask ~= 0ul {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
@@ -1474,7 +1474,7 @@ fn coal_infer_regs(ctx: Ctx, node: *struc AsmMov) i32 {
 fn coal_op_reg(ctx: Ctx, name: u64, coalesced_idx: u64) shared_ptr_t(AsmOperand) {
     if coalesced_idx < ctx[].dfa[].set_size and coalesced_idx ~= map_get(ctx[].cfg[].identifier_id_map, name) {
         if coalesced_idx < REGISTER_MASK_SIZE {
-            reg_kind: i32 = ctx[].hard_regs[coalesced_idx].reg_kind
+            reg_kind: REGISTER_KIND = ctx[].hard_regs[coalesced_idx].reg_kind
             return gen_register(reg_kind)
         }
         else {

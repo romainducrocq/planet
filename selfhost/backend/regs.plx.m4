@@ -3,7 +3,7 @@ m4_define(`_BACKEND_REGS_M4', `')m4_dnl
 
 m4_include(`../lib/c_std.plx.m4')m4_dnl
 
-m4_define(`REGISTER_KIND', `TODO')m4_dnl
+m4_define(`REGISTER_KIND', `i32')m4_dnl
 m4_define(`REG_Ax', `0')m4_dnl
 m4_define(`REG_Bx', `1')m4_dnl
 m4_define(`REG_Cx', `2')m4_dnl

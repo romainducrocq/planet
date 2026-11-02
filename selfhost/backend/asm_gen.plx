@@ -32,7 +32,7 @@ m4_define(`StStruct8Bytes', `struc Struct8Bytes')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStruct8Bytes'')
 
-type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]i32, sse_arg_regs: [8]i32, dbl_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_8b_map: hashmap_t(``TIdentifier'', ``StStruct8Bytes''), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
+type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]REGISTER_KIND, sse_arg_regs: [8]REGISTER_KIND, dbl_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_8b_map: hashmap_t(``TIdentifier'', ``StStruct8Bytes''), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
 
 m4_define(`Ctx', `*struc AsmGenContext')m4_dnl
 
@@ -722,7 +722,7 @@ fn ret_dbl_instr(ctx: Ctx, node: *struc TacReturn) none {
     ret_1_reg_mask(ctx[].p_fun_type, false)
 }
 
-fn ret_8b_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: i32) none {
+fn ret_8b_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     src_name: u64 = name
     dst: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
     asm_type_src: shared_ptr_t(AssemblyType) = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
@@ -1280,7 +1280,7 @@ fn dealloc_stack_instr(ctx: Ctx, byte: i64) none {
     push_instr(ctx, make_AsmBinary(@binop, @asm_type, @src, @dst))
 }
 
-fn reg_arg_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: i32) none {
+fn reg_arg_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: REGISTER_KIND) none {
     src: shared_ptr_t(AsmOperand) = gen_op(ctx, node)
     dst: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
     asm_type_src: shared_ptr_t(AssemblyType) = gen_asm_type(ctx, node)
@@ -1324,7 +1324,7 @@ fn stack_arg_call_instr(ctx: Ctx, node: *struc TacValue) none {
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
-fn reg_8b_arg_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: i32) none {
+fn reg_8b_arg_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     ret_8b_instr(ctx, name, offset, struct_type, arg_reg)
 }
 
@@ -1511,14 +1511,14 @@ fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, i
     return stack_padding
 }
 
-fn ret_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: i32) none {
+fn ret_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: REGISTER_KIND) none {
     src: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
     dst: shared_ptr_t(AsmOperand) = gen_op(ctx, node)
     asm_type_dst: shared_ptr_t(AssemblyType) = gen_asm_type(ctx, node)
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn ret_8b_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: i32) none {
+fn ret_8b_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     dst_name: u64 = name
     src: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
     asm_type_dst: shared_ptr_t(AssemblyType) = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
@@ -2715,7 +2715,7 @@ fn gen_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(TacInstruction))) n
     }
 }
 
-fn reg_fun_param_instr(ctx: Ctx, name: u64, arg_reg: i32) none {
+fn reg_fun_param_instr(ctx: Ctx, name: u64, arg_reg: REGISTER_KIND) none {
     src: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
 
     dst: shared_ptr_t(AsmOperand) = sptr_new()
@@ -2739,7 +2739,7 @@ fn stack_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: i64) none {
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn reg_8b_fun_param_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: i32) none {
+fn reg_8b_fun_param_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     ret_8b_call_instr(ctx, name, offset, struct_type, arg_reg)
 }
 
