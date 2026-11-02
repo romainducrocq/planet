@@ -12,7 +12,7 @@ m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
 type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, symbol: u64)
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc SymtCvtContext')m4_dnl
 
 fn get_scalar_alignment(type_t: *struc Type) i32 {
     match type_t[].tag {
@@ -141,21 +141,21 @@ pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) shared_ptr_t
     }
 }
 
-fn cvt_backend_symbol(ctx: *struc SymtCvtContext, node: unique_ptr_t(BackendSymbol)) none {
+fn cvt_backend_symbol(ctx: Ctx, node: unique_ptr_t(BackendSymbol)) none {
     map_move_add(ctx[].backend[].symbol_table, ctx[].symbol, node)
 }
 
-fn dbl_static_const(ctx: *struc SymtCvtContext) none {
+fn dbl_static_const(ctx: Ctx) none {
     asm_type: shared_ptr_t(AssemblyType) = make_BackendDouble()
     cvt_backend_symbol(ctx, make_BackendObj(true, true, @asm_type))
 }
 
-fn string_static_const(ctx: *struc SymtCvtContext, arr_type: *struc Array) none {
+fn string_static_const(ctx: Ctx, arr_type: *struc Array) none {
     asm_type: shared_ptr_t(AssemblyType) = arr_asm_type(ctx[].frontend, arr_type)
     cvt_backend_symbol(ctx, make_BackendObj(true, true, @asm_type))
 }
 
-fn cvt_static_const_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmStaticConstant) none {
+fn cvt_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
     ctx[].symbol = node[].name
     match node[].static_init[].tag {
         -> AST_DoubleInit_t {
@@ -172,7 +172,7 @@ fn cvt_static_const_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmStaticCon
     }
 }
 
-fn cvt_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmTopLevel) none {
+fn cvt_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     if node[].tag == AST_AsmStaticConstant_t {
         cvt_static_const_toplvl(ctx, @node[].get._AsmStaticConstant)
     }
@@ -181,7 +181,7 @@ fn cvt_toplvl(ctx: *struc SymtCvtContext, node: *struc AsmTopLevel) none {
     }
 }
 
-fn cvt_fun_type(ctx: *struc SymtCvtContext, node: *struc FunAttr, fun_type: *struc FunType) none {
+fn cvt_fun_type(ctx: Ctx, node: *struc FunAttr, fun_type: *struc FunType) none {
     if fun_type[].param_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
         THROW_ABORT_IF(node[].is_def)
         fun_type[].param_reg_mask = 0ul
@@ -193,7 +193,7 @@ fn cvt_fun_type(ctx: *struc SymtCvtContext, node: *struc FunAttr, fun_type: *str
     cvt_backend_symbol(ctx, make_BackendFun(is_def))
 }
 
-fn cvt_obj_type(ctx: *struc SymtCvtContext, node: *struc IdentifierAttr) none {
+fn cvt_obj_type(ctx: Ctx, node: *struc IdentifierAttr) none {
     if node[].tag ~= AST_ConstantAttr_t {
         asm_type: shared_ptr_t(AssemblyType) = cvt_backend_asm_type(ctx[].frontend, ctx[].symbol)
         is_static: i32 = node[].tag == AST_StaticAttr_t
@@ -201,7 +201,7 @@ fn cvt_obj_type(ctx: *struc SymtCvtContext, node: *struc IdentifierAttr) none {
     }
 }
 
-fn cvt_program(ctx: *struc SymtCvtContext, node: *struc AsmProgram) none {
+fn cvt_program(ctx: Ctx, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < map_size(ctx[].frontend[].symbol_table) .. ++i {
         symbol: *pair_t(``TIdentifier'', ``UPtrSymbol'') = @ctx[].frontend[].symbol_table[i]
         ctx[].symbol = pair_first(symbol[])

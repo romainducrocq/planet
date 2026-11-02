@@ -17,7 +17,7 @@ PairKeyValue(``TIdentifier'', ``StStructure'')
 
 type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc SemanticContext')m4_dnl
 fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32;
 
 fn is_same_ptr(ptr_type_1: *struc Pointer, ptr_type_2: *struc Pointer) i32 {
@@ -176,11 +176,11 @@ fn is_type_scalar(type_t: *struc Type) i32 {
     }
 }
 
-fn is_struct_complete(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 {
+fn is_struct_complete(ctx: Ctx, struct_type: *struc Structure) i32 {
     return map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) ~= map_end()
 }
 
-fn is_type_complete(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
+fn is_type_complete(ctx: Ctx, type_t: *struc Type) i32 {
     match type_t[].tag {
         -> AST_Void_t {
             return false
@@ -194,16 +194,16 @@ fn is_type_complete(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
     }
 }
 
-fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t;
+fn is_valid_type(ctx: Ctx, type_t: *struc Type) error_t;
 
-fn is_valid_ptr(ctx: *struc SemanticContext, ptr_type: *struc Pointer) error_t {
+fn is_valid_ptr(ctx: Ctx, ptr_type: *struc Pointer) error_t {
     CATCH_ENTER
     TRY(is_valid_type(ctx, ptr_type[].ref_type))
     FINALLY
     CATCH_EXIT
 }
 
-fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) error_t {
+fn is_valid_arr(ctx: Ctx, arr_type: *struc Array) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -219,7 +219,7 @@ fn is_valid_arr(ctx: *struc SemanticContext, arr_type: *struc Array) error_t {
     CATCH_EXIT
 }
 
-fn is_valid_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t {
+fn is_valid_type(ctx: Ctx, type_t: *struc Type) error_t {
     CATCH_ENTER
     match type_t[].tag {
         -> AST_Pointer_t {
@@ -318,9 +318,9 @@ fn get_scalar_size(type_t: *struc Type) i32 {
     }
 }
 
-fn get_type_scale(ctx: *struc SemanticContext, type_t: *struc Type) i64;
+fn get_type_scale(ctx: Ctx, type_t: *struc Type) i64;
 
-fn get_arr_scale(ctx: *struc SemanticContext, arr_type: *struc Array) i64 {
+fn get_arr_scale(ctx: Ctx, arr_type: *struc Array) i64 {
     size: i64 = arr_type[].size
     loop while arr_type[].elem_type[].tag == AST_Array_t {
         arr_type = @arr_type[].elem_type[].get._Array
@@ -329,12 +329,12 @@ fn get_arr_scale(ctx: *struc SemanticContext, arr_type: *struc Array) i64 {
     return get_type_scale(ctx, arr_type[].elem_type) * size
 }
 
-fn get_struct_scale(ctx: *struc SemanticContext, struct_type: *struc Structure) i64 {
+fn get_struct_scale(ctx: Ctx, struct_type: *struc Structure) i64 {
     THROW_ABORT_IF(map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) == map_end())
     return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
 }
 
-fn get_type_scale(ctx: *struc SemanticContext, type_t: *struc Type) i64 {
+fn get_type_scale(ctx: Ctx, type_t: *struc Type) i64 {
     match type_t[].tag {
         -> AST_Array_t {
             return get_arr_scale(ctx, @type_t[].get._Array)
@@ -348,18 +348,18 @@ fn get_type_scale(ctx: *struc SemanticContext, type_t: *struc Type) i64 {
     }
 }
 
-fn get_type_alignment(ctx: *struc SemanticContext, type_t: *struc Type) i32;
+fn get_type_alignment(ctx: Ctx, type_t: *struc Type) i32;
 
-fn get_arr_alignment(ctx: *struc SemanticContext, arr_type: *struc Array) i32 {
+fn get_arr_alignment(ctx: Ctx, arr_type: *struc Array) i32 {
     return get_type_alignment(ctx, arr_type[].elem_type)
 }
 
-fn get_struct_alignment(ctx: *struc SemanticContext, struct_type: *struc Structure) i32 {
+fn get_struct_alignment(ctx: Ctx, struct_type: *struc Structure) i32 {
     THROW_ABORT_IF(map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) == map_end())
     return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].alignment
 }
 
-fn get_type_alignment(ctx: *struc SemanticContext, type_t: *struc Type) i32 {
+fn get_type_alignment(ctx: Ctx, type_t: *struc Type) i32 {
     match type_t[].tag {
         -> AST_Array_t {
             return get_arr_alignment(ctx, @type_t[].get._Array)
@@ -416,7 +416,7 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) shared_ptr_t(Type) {
     return joint_type
 }
 
-fn get_joint_ptr_type(ctx: *struc SemanticContext, node_1: *struc CExp, node_2: *struc CExp, joint_type: *shared_ptr_t(Type)) error_t {
+fn get_joint_ptr_type(ctx: Ctx, node_1: *struc CExp, node_2: *struc CExp, joint_type: *shared_ptr_t(Type)) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -678,7 +678,7 @@ fn get_compound_info_at(node: *struc CCompoundInit) u64 {
     return initializer[].get._CSingleInit.exp[].info_at
 }
 
-fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t;
+fn reslv_struct_type(ctx: Ctx, type_t: *struc Type) error_t;
 
 fn check_const_exp(node: *struc CConstant) none {
     match node[].constant[].tag {
@@ -722,7 +722,7 @@ fn check_string_exp(node: *struc CString) none {
     node[]._base[].exp_type = make_Array(size, @elem_type)
 }
 
-fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) error_t {
+fn check_var_exp(ctx: Ctx, node: *struc CVar) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     var_type: *struc Type = map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t
@@ -736,7 +736,7 @@ fn check_var_exp(ctx: *struc SemanticContext, node: *struc CVar) error_t {
     CATCH_EXIT
 }
 
-fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
+fn check_cast_exp(ctx: Ctx, node: *struc CCast) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -755,7 +755,7 @@ fn check_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
     CATCH_EXIT
 }
 
-fn cast_exp(ctx: *struc SemanticContext, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
+fn cast_exp(ctx: Ctx, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
     exp_type_cp: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = (exp[])[].info_at
@@ -767,7 +767,7 @@ fn cast_exp(ctx: *struc SemanticContext, exp_type: *shared_ptr_t(Type), exp: *un
     CATCH_EXIT
 }
 
-fn cast_assign(ctx: *struc SemanticContext, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
+fn cast_assign(ctx: Ctx, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -785,7 +785,7 @@ fn cast_assign(ctx: *struc SemanticContext, exp_type: *shared_ptr_t(Type), exp: 
     CATCH_EXIT
 }
 
-fn promote_char_to_int(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t {
+fn promote_char_to_int(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     promote_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     promote_type = make_Int()
@@ -795,7 +795,7 @@ fn promote_char_to_int(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) er
     CATCH_EXIT
 }
 
-fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
+fn check_unary_complement_exp(ctx: Ctx, node: *struc CUnary) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp[].exp_type) {
@@ -825,7 +825,7 @@ fn check_unary_complement_exp(ctx: *struc SemanticContext, node: *struc CUnary) 
     CATCH_EXIT
 }
 
-fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
+fn check_unary_neg_exp(ctx: Ctx, node: *struc CUnary) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp[].exp_type) {
@@ -851,7 +851,7 @@ fn check_unary_neg_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t
     CATCH_EXIT
 }
 
-fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
+fn check_unary_not_exp(ctx: Ctx, node: *struc CUnary) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_scalar(node[].exp[].exp_type) {
@@ -864,7 +864,7 @@ fn check_unary_not_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t
     CATCH_EXIT
 }
 
-fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
+fn check_unary_exp(ctx: Ctx, node: *struc CUnary) error_t {
     CATCH_ENTER
     match node[].unop.tag {
         -> AST_CComplement_t {
@@ -887,7 +887,7 @@ fn check_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
     CATCH_EXIT
 }
 
-fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_add_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -930,7 +930,7 @@ fn check_binary_add_exp(ctx: *struc SemanticContext, node: *struc CBinary) error
     CATCH_EXIT
 }
 
-fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_subtract_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -978,7 +978,7 @@ fn check_binary_subtract_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     CATCH_EXIT
 }
 
-fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_multiply_divide_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -1003,7 +1003,7 @@ fn check_multiply_divide_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     CATCH_EXIT
 }
 
-fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_remainder_bitwise_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -1032,7 +1032,7 @@ fn check_remainder_bitwise_exp(ctx: *struc SemanticContext, node: *struc CBinary
     CATCH_EXIT
 }
 
-fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_bitshift_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -1058,7 +1058,7 @@ fn check_binary_bitshift_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     CATCH_EXIT
 }
 
-fn check_bitshift_right_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_bitshift_right_exp(ctx: Ctx, node: *struc CBinary) error_t {
     CATCH_ENTER
     TRY(check_binary_bitshift_exp(ctx, node))
     if is_type_signed(node[].exp_left[].exp_type) {
@@ -1068,7 +1068,7 @@ fn check_bitshift_right_exp(ctx: *struc SemanticContext, node: *struc CBinary) e
     CATCH_EXIT
 }
 
-fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_logical_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -1084,7 +1084,7 @@ fn check_binary_logical_exp(ctx: *struc SemanticContext, node: *struc CBinary) e
     CATCH_EXIT
 }
 
-fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_equality_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -1114,7 +1114,7 @@ fn check_binary_equality_exp(ctx: *struc SemanticContext, node: *struc CBinary) 
     CATCH_EXIT
 }
 
-fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_relational_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -1139,7 +1139,7 @@ fn check_binary_relational_exp(ctx: *struc SemanticContext, node: *struc CBinary
     CATCH_EXIT
 }
 
-fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn check_binary_exp(ctx: Ctx, node: *struc CBinary) error_t {
     CATCH_ENTER
     match node[].binop.tag {
         -> AST_CAdd_t {
@@ -1204,7 +1204,7 @@ fn check_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     CATCH_EXIT
 }
 
-fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error_t {
+fn check_assign_exp(ctx: Ctx, node: *struc CAssignment) error_t {
     CATCH_ENTER
     if node[].exp_left {
         if node[].exp_left[].exp_type[].tag == AST_Void_t {
@@ -1239,7 +1239,7 @@ fn check_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error
     CATCH_EXIT
 }
 
-fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) error_t {
+fn check_conditional_exp(ctx: Ctx, node: *struc CConditional) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
@@ -1286,7 +1286,7 @@ fn check_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     CATCH_EXIT
 }
 
-fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) error_t {
+fn check_call_exp(ctx: Ctx, node: *struc CFunctionCall) error_t {
     name_fmt: string_t = str_new(nil)
     strto_fmt_1: string_t = str_new(nil)
     strto_fmt_2: string_t = str_new(nil)
@@ -1316,7 +1316,7 @@ fn check_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) error
     CATCH_EXIT
 }
 
-fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) error_t {
+fn check_deref_exp(ctx: Ctx, node: *struc CDereference) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].exp[].exp_type[].tag ~= AST_Pointer_t {
@@ -1329,7 +1329,7 @@ fn check_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) error
     CATCH_EXIT
 }
 
-fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t {
+fn check_addrof_exp(ctx: Ctx, node: *struc CAddrOf) error_t {
     ref_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_exp_lvalue(node[].exp) {
@@ -1342,7 +1342,7 @@ fn check_addrof_exp(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t {
     CATCH_EXIT
 }
 
-fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) error_t {
+fn check_subscript_exp(ctx: Ctx, node: *struc CSubscript) error_t {
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     ref_type: shared_ptr_t(Type) = sptr_new()
@@ -1376,7 +1376,7 @@ fn check_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) err
     CATCH_EXIT
 }
 
-fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) error_t {
+fn check_sizeof_exp(ctx: Ctx, node: *struc CSizeOf) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_complete(ctx, node[].exp[].exp_type) {
@@ -1389,7 +1389,7 @@ fn check_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) error_t {
     CATCH_EXIT
 }
 
-fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) error_t {
+fn check_sizeoft_exp(ctx: Ctx, node: *struc CSizeOfT) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     ctx[].errors[].info_at_buf = node[]._base[].info_at
@@ -1405,7 +1405,7 @@ fn check_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) error_t
     CATCH_EXIT
 }
 
-fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) error_t {
+fn check_dot_exp(ctx: Ctx, node: *struc CDot) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -1434,7 +1434,7 @@ fn check_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) error_t {
     CATCH_EXIT
 }
 
-fn check_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
+fn check_arrow_exp(ctx: Ctx, node: *struc CArrow) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -1488,7 +1488,7 @@ fn check_arr_typed_exp(addrof: *unique_ptr_t(CExp)) none {
     sptr_copy(Type, (addrof[])[].get._CAddrOf.exp[].exp_type, (addrof[])[].exp_type)
 }
 
-fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t {
+fn check_struct_typed_exp(ctx: Ctx, node: *struc CExp) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_struct_complete(ctx, @node[].exp_type[].get._Structure) {
@@ -1499,7 +1499,7 @@ fn check_struct_typed_exp(ctx: *struc SemanticContext, node: *struc CExp) error_
     CATCH_EXIT
 }
 
-fn check_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t {
+fn check_typed_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     match (exp[])[].exp_type[].tag {
         -> AST_Array_t {
@@ -1518,7 +1518,7 @@ fn check_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_
     CATCH_EXIT
 }
 
-fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) error_t {
+fn check_ret_statement(ctx: Ctx, node: *struc CReturn) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -1545,7 +1545,7 @@ fn check_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) error_
     CATCH_EXIT
 }
 
-fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) error_t {
+fn check_if_statement(ctx: Ctx, node: *struc CIf) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
@@ -1557,7 +1557,7 @@ fn check_if_statement(ctx: *struc SemanticContext, node: *struc CIf) error_t {
     CATCH_EXIT
 }
 
-fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) error_t {
+fn check_while_statement(ctx: Ctx, node: *struc CWhile) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
@@ -1569,7 +1569,7 @@ fn check_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) error
     CATCH_EXIT
 }
 
-fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) error_t {
+fn check_do_while_statement(ctx: Ctx, node: *struc CDoWhile) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
@@ -1581,7 +1581,7 @@ fn check_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     CATCH_EXIT
 }
 
-fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) error_t {
+fn check_for_statement(ctx: Ctx, node: *struc CFor) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
@@ -1593,7 +1593,7 @@ fn check_for_statement(ctx: *struc SemanticContext, node: *struc CFor) error_t {
     CATCH_EXIT
 }
 
-fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) error_t {
+fn check_switch_int_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
     values: vector_t(i32) = vec_new()
     CATCH_ENTER
@@ -1618,7 +1618,7 @@ fn check_switch_int_cases(ctx: *struc SemanticContext, node: *struc CSwitch) err
     CATCH_EXIT
 }
 
-fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) error_t {
+fn check_switch_long_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
     values: vector_t(i64) = vec_new()
     CATCH_ENTER
@@ -1643,7 +1643,7 @@ fn check_switch_long_cases(ctx: *struc SemanticContext, node: *struc CSwitch) er
     CATCH_EXIT
 }
 
-fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) error_t {
+fn check_switch_uint_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
     values: vector_t(u32) = vec_new()
     CATCH_ENTER
@@ -1668,7 +1668,7 @@ fn check_switch_uint_cases(ctx: *struc SemanticContext, node: *struc CSwitch) er
     CATCH_EXIT
 }
 
-fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) error_t {
+fn check_switch_ulong_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
     values: vector_t(u64) = vec_new()
     CATCH_ENTER
@@ -1693,7 +1693,7 @@ fn check_switch_ulong_cases(ctx: *struc SemanticContext, node: *struc CSwitch) e
     CATCH_EXIT
 }
 
-fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) error_t {
+fn check_switch_statement(ctx: Ctx, node: *struc CSwitch) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_int(node[].lookup[].exp_type) {
@@ -1739,7 +1739,7 @@ fn check_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) err
     CATCH_EXIT
 }
 
-fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, arr_type: *struc Array) error_t {
+fn check_bound_string_init(ctx: Ctx, node: *struc CString, arr_type: *struc Array) error_t {
     type_fmt: string_t = str_new(nil)
     strto_fmt_1: string_t = str_new(nil)
     strto_fmt_2: string_t = str_new(nil)
@@ -1760,7 +1760,7 @@ fn check_bound_string_init(ctx: *struc SemanticContext, node: *struc CString, ar
     CATCH_EXIT
 }
 
-fn check_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
+fn check_single_init(ctx: Ctx, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     if not is_same_type(node[].exp[].exp_type, init_type[]) {
         TRY(cast_assign(ctx, init_type, @node[].exp))
@@ -1774,7 +1774,7 @@ fn check_string_init(node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) n
     sptr_copy(Type, init_type[], node[].exp[].exp_type)
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
-fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) unique_ptr_t(CInitializer);
+fn check_zero_init(ctx: Ctx, init_type: *struc Type) unique_ptr_t(CInitializer);
 
 fn check_single_zero_init(elem_type: *struc Type) unique_ptr_t(CInitializer) {
     exp: unique_ptr_t(CExp) = uptr_new()
@@ -1823,7 +1823,7 @@ fn check_single_zero_init(elem_type: *struc Type) unique_ptr_t(CInitializer) {
     return make_CSingleInit(@exp)
 }
 
-fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) unique_ptr_t(CInitializer) {
+fn check_arr_zero_init(ctx: Ctx, arr_type: *struc Array) unique_ptr_t(CInitializer) {
     zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     arr_type_size: u64 = cast<u64>(arr_type[].size)
     vec_reserve(zero_inits, arr_type_size)
@@ -1834,7 +1834,7 @@ fn check_arr_zero_init(ctx: *struc SemanticContext, arr_type: *struc Array) uniq
     return make_CCompoundInit(@zero_inits)
 }
 
-fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Structure) unique_ptr_t(CInitializer) {
+fn check_struct_zero_init(ctx: Ctx, struct_type: *struc Structure) unique_ptr_t(CInitializer) {
     zero_inits: vector_t(unique_ptr_t(CInitializer)) = vec_new()
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     vec_reserve(zero_inits, vec_size(struct_typedef[].member_names))
@@ -1846,7 +1846,7 @@ fn check_struct_zero_init(ctx: *struc SemanticContext, struct_type: *struc Struc
     return make_CCompoundInit(@zero_inits)
 }
 
-fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) unique_ptr_t(CInitializer) {
+fn check_zero_init(ctx: Ctx, init_type: *struc Type) unique_ptr_t(CInitializer) {
     match init_type[].tag {
         -> AST_Array_t {
             return check_arr_zero_init(ctx, @init_type[].get._Array)
@@ -1860,7 +1860,7 @@ fn check_zero_init(ctx: *struc SemanticContext, init_type: *struc Type) unique_p
     }
 }
 
-fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array) error_t {
+fn check_bound_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array) error_t {
     type_fmt: string_t = str_new(nil)
     strto_fmt_1: string_t = str_new(nil)
     strto_fmt_2: string_t = str_new(nil)
@@ -1878,7 +1878,7 @@ fn check_bound_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit,
     CATCH_EXIT
 }
 
-fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure) error_t {
+fn check_bound_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure) error_t {
     type_fmt: string_t = str_new(nil)
     strto_fmt_1: string_t = str_new(nil)
     strto_fmt_2: string_t = str_new(nil)
@@ -1899,7 +1899,7 @@ fn check_bound_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundIn
     CATCH_EXIT
 }
 
-fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) none {
+fn check_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) none {
     loop while vec_size(node[].initializers) < cast<u64>(arr_type[].size) {
         zero_init: unique_ptr_t(CInitializer) = check_zero_init(ctx, arr_type[].elem_type)
         vec_move_back(node[].initializers, zero_init)
@@ -1907,7 +1907,7 @@ fn check_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 
-fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) none {
+fn check_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) none {
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     loop i: u64 = vec_size(node[].initializers) while i < map_size(struct_typedef[].members) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
@@ -1917,7 +1917,7 @@ fn check_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 
-fn check_ret_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
+fn check_ret_fun_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -1955,7 +1955,7 @@ fn check_arr_param_decl(fun_type: *struc FunType, i: u64) none {
     fun_type[].param_types[i] = make_Pointer(@ref_type)
 }
 
-fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
+fn check_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt_1: string_t = str_new(nil)
     name_fmt_2: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
@@ -1998,7 +1998,7 @@ fn check_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     CATCH_EXIT
 }
 
-fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
+fn check_fun_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
@@ -2049,11 +2049,11 @@ fn check_fun_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration
     CATCH_EXIT
 }
 
-fn push_static_init(ctx: *struc SemanticContext, static_init: shared_ptr_t(StaticInit)) none {
+fn push_static_init(ctx: Ctx, static_init: shared_ptr_t(StaticInit)) none {
     vec_move_back(ctx[].p_static_inits[], static_init)
 }
 
-fn push_zero_static_init(ctx: *struc SemanticContext, byte: i64) none {
+fn push_zero_static_init(ctx: Ctx, byte: i64) none {
     if not vec_empty(ctx[].p_static_inits[]) and vec_back(ctx[].p_static_inits[])[].tag == AST_ZeroInit_t {
         vec_back(ctx[].p_static_inits[])[].get._ZeroInit.byte += byte
     }
@@ -2062,14 +2062,14 @@ fn push_zero_static_init(ctx: *struc SemanticContext, byte: i64) none {
     }
 }
 
-fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type) error_t;
+fn check_static_init(ctx: Ctx, node: *struc CInitializer, static_init_type: *struc Type) error_t;
 
-fn check_static_no_init(ctx: *struc SemanticContext, static_init_type: *struc Type, size: i64) none {
+fn check_static_no_init(ctx: Ctx, static_init_type: *struc Type, size: i64) none {
     byte: i64 = ? static_init_type == nil then size else get_type_scale(ctx, static_init_type) * size
     push_zero_static_init(ctx, byte)
 }
 
-fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Type) shared_ptr_t(InitialValue) {
+fn check_no_initializer(ctx: Ctx, static_init_type: *struc Type) shared_ptr_t(InitialValue) {
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     {
         ctx[].p_static_inits = @static_inits
@@ -2080,12 +2080,12 @@ fn check_no_initializer(ctx: *struc SemanticContext, static_init_type: *struc Ty
     return make_Initial(@static_inits)
 }
 
-fn make_binary_identifier(ctx: *struc SemanticContext, binary: u64) u64 {
+fn make_binary_identifier(ctx: Ctx, binary: u64) u64 {
     strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
-fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, static_init_type: *struc Type) error_t {
+fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *struc Type) error_t {
     type_fmt: string_t = str_new(nil)
     strto_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -2199,7 +2199,7 @@ fn check_static_const_init(ctx: *struc SemanticContext, node: *struc CConstant, 
     CATCH_EXIT
 }
 
-fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, static_ptr_type: *struc Pointer) error_t {
+fn check_literal_string_init(ctx: Ctx, node: *struc CString, static_ptr_type: *struc Pointer) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if static_ptr_type[].ref_type[].tag ~= AST_Char_t {
@@ -2211,12 +2211,12 @@ fn check_literal_string_init(ctx: *struc SemanticContext, node: *struc CString, 
     CATCH_EXIT
 }
 
-fn make_literal_identifier(ctx: *struc SemanticContext, node: *struc CStringLiteral) u64 {
+fn make_literal_identifier(ctx: Ctx, node: *struc CStringLiteral) u64 {
     value: string_t = string_literal_to_const(node[].value)
     return make_string_identifier(ctx[].identifiers, @value)
 }
 
-fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CString) none {
+fn check_static_ptr_string_init(ctx: Ctx, node: *struc CString) none {
     string_const_label: u64;
     {
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
@@ -2253,7 +2253,7 @@ fn check_static_ptr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
     push_static_init(ctx, make_PointerInit(string_const_label))
 }
 
-fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CString, static_arr_type: *struc Array) error_t {
+fn check_static_arr_string_init(ctx: Ctx, node: *struc CString, static_arr_type: *struc Array) error_t {
     literal: shared_ptr_t(CStringLiteral) = sptr_new()
     CATCH_ENTER
     byte: i64;
@@ -2273,7 +2273,7 @@ fn check_static_arr_string_init(ctx: *struc SemanticContext, node: *struc CStrin
     CATCH_EXIT
 }
 
-fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, static_init_type: *struc Type) error_t {
+fn check_static_string_init(ctx: Ctx, node: *struc CString, static_init_type: *struc Type) error_t {
     CATCH_ENTER
     match static_init_type[].tag {
         -> AST_Pointer_t {
@@ -2293,7 +2293,7 @@ fn check_static_string_init(ctx: *struc SemanticContext, node: *struc CString, s
     CATCH_EXIT
 }
 
-fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleInit, static_init_type: *struc Type) error_t {
+fn check_single_static_init(ctx: Ctx, node: *struc CSingleInit, static_init_type: *struc Type) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     match node[].exp[].tag {
@@ -2315,7 +2315,7 @@ fn check_single_static_init(ctx: *struc SemanticContext, node: *struc CSingleIni
     CATCH_EXIT
 }
 
-fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array) error_t {
+fn check_static_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array) error_t {
     CATCH_ENTER
     TRY(check_bound_arr_init(ctx, node, arr_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -2328,7 +2328,7 @@ fn check_static_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit
     CATCH_EXIT
 }
 
-fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure) error_t {
+fn check_static_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure) error_t {
     CATCH_ENTER
     size: i64;
     TRY(check_bound_struct_init(ctx, node, struct_type))
@@ -2350,7 +2350,7 @@ fn check_static_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundI
     CATCH_EXIT
 }
 
-fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, static_init_type: *struc Type) error_t {
+fn check_static_compound_init(ctx: Ctx, node: *struc CCompoundInit, static_init_type: *struc Type) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     match static_init_type[].tag {
@@ -2372,7 +2372,7 @@ fn check_static_compound_init(ctx: *struc SemanticContext, node: *struc CCompoun
     CATCH_EXIT
 }
 
-fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type) error_t {
+fn check_static_init(ctx: Ctx, node: *struc CInitializer, static_init_type: *struc Type) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CSingleInit_t {
@@ -2391,7 +2391,7 @@ fn check_static_init(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     CATCH_EXIT
 }
 
-fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, static_init_type: *struc Type, init_value: *shared_ptr_t(InitialValue)) error_t {
+fn check_initializer(ctx: Ctx, node: *struc CInitializer, static_init_type: *struc Type, init_value: *shared_ptr_t(InitialValue)) error_t {
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     CATCH_ENTER
     {
@@ -2408,7 +2408,7 @@ fn check_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, sta
     CATCH_EXIT
 }
 
-fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
@@ -2489,7 +2489,7 @@ fn check_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     CATCH_EXIT
 }
 
-fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn check_extern_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
@@ -2528,7 +2528,7 @@ fn check_extern_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     CATCH_EXIT
 }
 
-fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn check_static_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
     symbol: unique_ptr_t(Symbol) = uptr_new()
     init_value: shared_ptr_t(InitialValue) = sptr_new()
@@ -2555,7 +2555,7 @@ fn check_static_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariab
     CATCH_EXIT
 }
 
-fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn check_auto_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
     local_var_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
@@ -2580,7 +2580,7 @@ fn check_auto_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariable
     CATCH_EXIT
 }
 
-fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn check_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     ctx[].errors[].info_at_buf = node[].info_at
@@ -2611,7 +2611,7 @@ fn check_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     CATCH_EXIT
 }
 
-fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) error_t {
+fn check_struct_members_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     struct_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
@@ -2643,7 +2643,7 @@ fn check_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDe
     CATCH_EXIT
 }
 
-fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) error_t {
+fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     struct_fmt: string_t = str_new(nil)
     struct_member: unique_ptr_t(StructMember) = uptr_new()
     struct_typedef: unique_ptr_t(StructTypedef) = uptr_new()
@@ -2712,7 +2712,7 @@ fn check_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaratio
     CATCH_EXIT
 }
 
-fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) error_t {
+fn annotate_goto_label(ctx: Ctx, node: *struc CLabel) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if set_find(ctx[].label_set, node[].target) ~= set_end() {
@@ -2725,31 +2725,31 @@ fn annotate_goto_label(ctx: *struc SemanticContext, node: *struc CLabel) error_t
     CATCH_EXIT
 }
 
-fn annotate_while_loop(ctx: *struc SemanticContext, node: *struc CWhile) none {
+fn annotate_while_loop(ctx: Ctx, node: *struc CWhile) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lwhile)
     vec_push_back(ctx[].break_loop_labels, node[].target)
     vec_push_back(ctx[].continue_loop_labels, node[].target)
 }
 
-fn annotate_do_while_loop(ctx: *struc SemanticContext, node: *struc CDoWhile) none {
+fn annotate_do_while_loop(ctx: Ctx, node: *struc CDoWhile) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Ldo_while)
     vec_push_back(ctx[].break_loop_labels, node[].target)
     vec_push_back(ctx[].continue_loop_labels, node[].target)
 }
 
-fn annotate_for_loop(ctx: *struc SemanticContext, node: *struc CFor) none {
+fn annotate_for_loop(ctx: Ctx, node: *struc CFor) none {
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lfor)
     vec_push_back(ctx[].break_loop_labels, node[].target)
     vec_push_back(ctx[].continue_loop_labels, node[].target)
 }
 
-fn annotate_switch_lookup(ctx: *struc SemanticContext, node: *struc CSwitch) none {
+fn annotate_switch_lookup(ctx: Ctx, node: *struc CSwitch) none {
     node[].is_default = false
     node[].target = repr_label_identifier(ctx[].identifiers, LBL_Lswitch)
     vec_push_back(ctx[].break_loop_labels, node[].target)
 }
 
-fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) error_t {
+fn annotate_case_jump(ctx: Ctx, node: *struc CCase) error_t {
     CATCH_ENTER
     if not ctx[].p_switch_statement {
         THROW_AT_TOKEN(node[].value[].info_at, GET_SEMANTIC_MSG(0, MSG_case_out_of_switch))
@@ -2759,7 +2759,7 @@ fn annotate_case_jump(ctx: *struc SemanticContext, node: *struc CCase) error_t {
     CATCH_EXIT
 }
 
-fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) error_t {
+fn annotate_default_jump(ctx: Ctx, node: *struc CDefault) error_t {
     CATCH_ENTER
     if not ctx[].p_switch_statement {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_default_out_of_switch))
@@ -2773,7 +2773,7 @@ fn annotate_default_jump(ctx: *struc SemanticContext, node: *struc CDefault) err
     CATCH_EXIT
 }
 
-fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) error_t {
+fn annotate_break_jump(ctx: Ctx, node: *struc CBreak) error_t {
     CATCH_ENTER
     if vec_empty(ctx[].break_loop_labels) {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_break_out_of_loop))
@@ -2783,7 +2783,7 @@ fn annotate_break_jump(ctx: *struc SemanticContext, node: *struc CBreak) error_t
     CATCH_EXIT
 }
 
-fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) error_t {
+fn annotate_continue_jump(ctx: Ctx, node: *struc CContinue) error_t {
     CATCH_ENTER
     if vec_empty(ctx[].continue_loop_labels) {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_continue_out_of_loop))
@@ -2793,25 +2793,25 @@ fn annotate_continue_jump(ctx: *struc SemanticContext, node: *struc CContinue) e
     CATCH_EXIT
 }
 
-fn deannotate_loop(ctx: *struc SemanticContext) none {
+fn deannotate_loop(ctx: Ctx) none {
     vec_pop_back(ctx[].break_loop_labels)
     vec_pop_back(ctx[].continue_loop_labels)
 }
 
-fn deannotate_lookup(ctx: *struc SemanticContext) none {
+fn deannotate_lookup(ctx: Ctx) none {
     vec_pop_back(ctx[].break_loop_labels)
 }
 
-fn is_file_scope(ctx: *struc SemanticContext) i32 {
+fn is_file_scope(ctx: Ctx) i32 {
     return vec_size(ctx[].scoped_identifier_maps) == 1
 }
 
-fn enter_scope(ctx: *struc SemanticContext) none {
+fn enter_scope(ctx: Ctx) none {
     vec_push_back(ctx[].scoped_identifier_maps, map_new())
     vec_push_back(ctx[].scoped_struct_maps, map_new())
 }
 
-fn exit_scope(ctx: *struc SemanticContext) none {
+fn exit_scope(ctx: Ctx) none {
     loop i: u64 = 0 while i < map_size(vec_back(ctx[].scoped_identifier_maps)) .. ++i {
         identifier: u64 = pair_first(vec_back(ctx[].scoped_identifier_maps)[i])
         map_it: i64 = map_find(ctx[].extern_scope_map, identifier)
@@ -2825,7 +2825,7 @@ fn exit_scope(ctx: *struc SemanticContext) none {
     vec_pop_back(ctx[].scoped_struct_maps)
 }
 
-fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
+fn reslv_label(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt_1: string_t = str_new(nil)
     name_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -2842,21 +2842,21 @@ fn reslv_label(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) e
     CATCH_EXIT
 }
 
-fn reslv_ptr_struct(ctx: *struc SemanticContext, ptr_type: *struc Pointer) error_t {
+fn reslv_ptr_struct(ctx: Ctx, ptr_type: *struc Pointer) error_t {
     CATCH_ENTER
     TRY(reslv_struct_type(ctx, ptr_type[].ref_type))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_arr_struct(ctx: *struc SemanticContext, arr_type: *struc Array) error_t {
+fn reslv_arr_struct(ctx: Ctx, arr_type: *struc Array) error_t {
     CATCH_ENTER
     TRY(reslv_struct_type(ctx, arr_type[].elem_type))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) error_t {
+fn reslv_struct(ctx: Ctx, struct_type: *struc Structure) error_t {
     struct_fmt: string_t = str_new(nil)
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -2889,7 +2889,7 @@ fn reslv_struct(ctx: *struc SemanticContext, struct_type: *struc Structure) erro
     CATCH_EXIT
 }
 
-fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t {
+fn reslv_struct_type(ctx: Ctx, type_t: *struc Type) error_t {
     CATCH_ENTER
     match type_t[].tag {
         -> AST_Pointer_t {
@@ -2915,8 +2915,8 @@ fn reslv_struct_type(ctx: *struc SemanticContext, type_t: *struc Type) error_t {
     CATCH_EXIT
 }
 
-fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t;
-fn reslv_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t;
+fn reslv_exp(ctx: Ctx, node: *struc CExp) error_t;
+fn reslv_typed_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t;
 
 fn reslv_const_exp(node: *struc CConstant) none {
     check_const_exp(node)
@@ -2926,7 +2926,7 @@ fn reslv_string_exp(node: *struc CString) none {
     check_string_exp(node)
 }
 
-fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) error_t {
+fn reslv_var_exp(ctx: Ctx, node: *struc CVar) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
@@ -2945,7 +2945,7 @@ fn reslv_var_exp(ctx: *struc SemanticContext, node: *struc CVar) error_t {
     CATCH_EXIT
 }
 
-fn reslv_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
+fn reslv_cast_exp(ctx: Ctx, node: *struc CCast) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].exp))
     TRY(check_cast_exp(ctx, node))
@@ -2953,7 +2953,7 @@ fn reslv_cast_exp(ctx: *struc SemanticContext, node: *struc CCast) error_t {
     CATCH_EXIT
 }
 
-fn reslv_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
+fn reslv_unary_exp(ctx: Ctx, node: *struc CUnary) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].exp))
     TRY(check_unary_exp(ctx, node))
@@ -2961,7 +2961,7 @@ fn reslv_unary_exp(ctx: *struc SemanticContext, node: *struc CUnary) error_t {
     CATCH_EXIT
 }
 
-fn reslv_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
+fn reslv_binary_exp(ctx: Ctx, node: *struc CBinary) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].exp_left))
     TRY(reslv_typed_exp(ctx, @node[].exp_right))
@@ -2970,7 +2970,7 @@ fn reslv_binary_exp(ctx: *struc SemanticContext, node: *struc CBinary) error_t {
     CATCH_EXIT
 }
 
-fn reslv_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error_t {
+fn reslv_assign_exp(ctx: Ctx, node: *struc CAssignment) error_t {
     CATCH_ENTER
     if node[].exp_left {
         TRY(reslv_typed_exp(ctx, @node[].exp_left))
@@ -2981,7 +2981,7 @@ fn reslv_assign_exp(ctx: *struc SemanticContext, node: *struc CAssignment) error
     CATCH_EXIT
 }
 
-fn reslv_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional) error_t {
+fn reslv_conditional_exp(ctx: Ctx, node: *struc CConditional) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].condition))
     TRY(reslv_typed_exp(ctx, @node[].exp_middle))
@@ -2991,7 +2991,7 @@ fn reslv_conditional_exp(ctx: *struc SemanticContext, node: *struc CConditional)
     CATCH_EXIT
 }
 
-fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) error_t {
+fn reslv_call_exp(ctx: Ctx, node: *struc CFunctionCall) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     loop i: u64 = vec_size(ctx[].scoped_identifier_maps) while i-- > 0 {
@@ -3013,7 +3013,7 @@ fn reslv_call_exp(ctx: *struc SemanticContext, node: *struc CFunctionCall) error
     CATCH_EXIT
 }
 
-fn reslv_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) error_t {
+fn reslv_deref_exp(ctx: Ctx, node: *struc CDereference) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].exp))
     TRY(check_deref_exp(ctx, node))
@@ -3021,7 +3021,7 @@ fn reslv_deref_exp(ctx: *struc SemanticContext, node: *struc CDereference) error
     CATCH_EXIT
 }
 
-fn reslv_addrof_expr(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t {
+fn reslv_addrof_expr(ctx: Ctx, node: *struc CAddrOf) error_t {
     CATCH_ENTER
     TRY(reslv_exp(ctx, node[].exp))
     TRY(check_addrof_exp(ctx, node))
@@ -3029,7 +3029,7 @@ fn reslv_addrof_expr(ctx: *struc SemanticContext, node: *struc CAddrOf) error_t 
     CATCH_EXIT
 }
 
-fn reslv_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) error_t {
+fn reslv_subscript_exp(ctx: Ctx, node: *struc CSubscript) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].primary_exp))
     TRY(reslv_typed_exp(ctx, @node[].subscript_exp))
@@ -3038,7 +3038,7 @@ fn reslv_subscript_exp(ctx: *struc SemanticContext, node: *struc CSubscript) err
     CATCH_EXIT
 }
 
-fn reslv_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) error_t {
+fn reslv_sizeof_exp(ctx: Ctx, node: *struc CSizeOf) error_t {
     CATCH_ENTER
     TRY(reslv_exp(ctx, node[].exp))
     TRY(check_sizeof_exp(ctx, node))
@@ -3046,14 +3046,14 @@ fn reslv_sizeof_exp(ctx: *struc SemanticContext, node: *struc CSizeOf) error_t {
     CATCH_EXIT
 }
 
-fn reslv_sizeoft_exp(ctx: *struc SemanticContext, node: *struc CSizeOfT) error_t {
+fn reslv_sizeoft_exp(ctx: Ctx, node: *struc CSizeOfT) error_t {
     CATCH_ENTER
     TRY(check_sizeoft_exp(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) error_t {
+fn reslv_dot_exp(ctx: Ctx, node: *struc CDot) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].structure))
     TRY(check_dot_exp(ctx, node))
@@ -3061,7 +3061,7 @@ fn reslv_dot_exp(ctx: *struc SemanticContext, node: *struc CDot) error_t {
     CATCH_EXIT
 }
 
-fn reslv_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
+fn reslv_arrow_exp(ctx: Ctx, node: *struc CArrow) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].pointer))
     TRY(check_arrow_exp(ctx, node))
@@ -3069,7 +3069,7 @@ fn reslv_arrow_exp(ctx: *struc SemanticContext, node: *struc CArrow) error_t {
     CATCH_EXIT
 }
 
-fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t {
+fn reslv_exp(ctx: Ctx, node: *struc CExp) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CConstant_t {
@@ -3144,7 +3144,7 @@ fn reslv_exp(ctx: *struc SemanticContext, node: *struc CExp) error_t {
     CATCH_EXIT
 }
 
-fn reslv_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_t {
+fn reslv_typed_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(reslv_exp(ctx, exp[]))
     TRY(check_typed_exp(ctx, exp))
@@ -3152,11 +3152,11 @@ fn reslv_typed_exp(ctx: *struc SemanticContext, exp: *unique_ptr_t(CExp)) error_
     CATCH_EXIT
 }
 
-fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t;
-fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t;
-fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) error_t;
+fn reslv_block(ctx: Ctx, node: *struc CBlock) error_t;
+fn reslv_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t;
+fn reslv_statement(ctx: Ctx, node: *struc CStatement) error_t;
 
-fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) error_t {
+fn reslv_for_init_decl(ctx: Ctx, node: *struc CInitDecl) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if node[].init[].storage_class.tag ~= AST_CStorageClass_t {
@@ -3170,7 +3170,7 @@ fn reslv_for_init_decl(ctx: *struc SemanticContext, node: *struc CInitDecl) erro
     CATCH_EXIT
 }
 
-fn reslv_for_init_exp(ctx: *struc SemanticContext, node: *struc CInitExp) error_t {
+fn reslv_for_init_exp(ctx: Ctx, node: *struc CInitExp) error_t {
     CATCH_ENTER
     if node[].init {
         TRY(reslv_typed_exp(ctx, @node[].init))
@@ -3179,7 +3179,7 @@ fn reslv_for_init_exp(ctx: *struc SemanticContext, node: *struc CInitExp) error_
     CATCH_EXIT
 }
 
-fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) error_t {
+fn reslv_for_init(ctx: Ctx, node: *struc CForInit) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CInitDecl_t {
@@ -3198,7 +3198,7 @@ fn reslv_for_init(ctx: *struc SemanticContext, node: *struc CForInit) error_t {
     CATCH_EXIT
 }
 
-fn reslv_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) error_t {
+fn reslv_ret_statement(ctx: Ctx, node: *struc CReturn) error_t {
     CATCH_ENTER
     if node[].exp {
         TRY(reslv_typed_exp(ctx, @node[].exp))
@@ -3208,14 +3208,14 @@ fn reslv_ret_statement(ctx: *struc SemanticContext, node: *struc CReturn) error_
     CATCH_EXIT
 }
 
-fn reslv_exp_statement(ctx: *struc SemanticContext, node: *struc CExpression) error_t {
+fn reslv_exp_statement(ctx: Ctx, node: *struc CExpression) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].exp))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) error_t {
+fn reslv_if_statement(ctx: Ctx, node: *struc CIf) error_t {
     CATCH_ENTER
     TRY(reslv_typed_exp(ctx, @node[].condition))
     TRY(reslv_statement(ctx, node[].then_fi))
@@ -3227,7 +3227,7 @@ fn reslv_if_statement(ctx: *struc SemanticContext, node: *struc CIf) error_t {
     CATCH_EXIT
 }
 
-fn reslv_goto_statement(ctx: *struc SemanticContext, node: *struc CGoto) none {
+fn reslv_goto_statement(ctx: Ctx, node: *struc CGoto) none {
     map_it: i64 = map_find(ctx[].goto_map, node[].target)
     if map_it ~= map_end() {
         node[].target = pair_second(ctx[].goto_map[map_it])
@@ -3241,7 +3241,7 @@ fn reslv_goto_statement(ctx: *struc SemanticContext, node: *struc CGoto) none {
     }
 }
 
-fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) error_t {
+fn reslv_label_statement(ctx: Ctx, node: *struc CLabel) error_t {
     CATCH_ENTER
     map_it: i64;
     TRY(annotate_goto_label(ctx, node))
@@ -3259,7 +3259,7 @@ fn reslv_label_statement(ctx: *struc SemanticContext, node: *struc CLabel) error
     CATCH_EXIT
 }
 
-fn reslv_compound_statement(ctx: *struc SemanticContext, node: *struc CCompound) error_t {
+fn reslv_compound_statement(ctx: Ctx, node: *struc CCompound) error_t {
     CATCH_ENTER
     enter_scope(ctx)
     TRY(reslv_block(ctx, node[].block))
@@ -3268,7 +3268,7 @@ fn reslv_compound_statement(ctx: *struc SemanticContext, node: *struc CCompound)
     CATCH_EXIT
 }
 
-fn reslv_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) error_t {
+fn reslv_while_statement(ctx: Ctx, node: *struc CWhile) error_t {
     CATCH_ENTER
     annotate_while_loop(ctx, node)
     TRY(reslv_typed_exp(ctx, @node[].condition))
@@ -3279,7 +3279,7 @@ fn reslv_while_statement(ctx: *struc SemanticContext, node: *struc CWhile) error
     CATCH_EXIT
 }
 
-fn reslv_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) error_t {
+fn reslv_do_while_statement(ctx: Ctx, node: *struc CDoWhile) error_t {
     CATCH_ENTER
     annotate_do_while_loop(ctx, node)
     TRY(reslv_statement(ctx, node[].body))
@@ -3290,7 +3290,7 @@ fn reslv_do_while_statement(ctx: *struc SemanticContext, node: *struc CDoWhile) 
     CATCH_EXIT
 }
 
-fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) error_t {
+fn reslv_for_statement(ctx: Ctx, node: *struc CFor) error_t {
     CATCH_ENTER
     annotate_for_loop(ctx, node)
     enter_scope(ctx)
@@ -3309,7 +3309,7 @@ fn reslv_for_statement(ctx: *struc SemanticContext, node: *struc CFor) error_t {
     CATCH_EXIT
 }
 
-fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) error_t {
+fn reslv_switch_statement(ctx: Ctx, node: *struc CSwitch) error_t {
     CATCH_ENTER
     annotate_switch_lookup(ctx, node)
     enter_scope(ctx)
@@ -3327,7 +3327,7 @@ fn reslv_switch_statement(ctx: *struc SemanticContext, node: *struc CSwitch) err
     CATCH_EXIT
 }
 
-fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) error_t {
+fn reslv_case_statement(ctx: Ctx, node: *struc CCase) error_t {
     CATCH_ENTER
     TRY(annotate_case_jump(ctx, node))
     TRY(reslv_typed_exp(ctx, @node[].value))
@@ -3337,7 +3337,7 @@ fn reslv_case_statement(ctx: *struc SemanticContext, node: *struc CCase) error_t
     CATCH_EXIT
 }
 
-fn reslv_default_statement(ctx: *struc SemanticContext, node: *struc CDefault) error_t {
+fn reslv_default_statement(ctx: Ctx, node: *struc CDefault) error_t {
     CATCH_ENTER
     TRY(annotate_default_jump(ctx, node))
     TRY(reslv_statement(ctx, node[].jump_to))
@@ -3345,21 +3345,21 @@ fn reslv_default_statement(ctx: *struc SemanticContext, node: *struc CDefault) e
     CATCH_EXIT
 }
 
-fn reslv_break_statement(ctx: *struc SemanticContext, node: *struc CBreak) error_t {
+fn reslv_break_statement(ctx: Ctx, node: *struc CBreak) error_t {
     CATCH_ENTER
     TRY(annotate_break_jump(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_continue_statement(ctx: *struc SemanticContext, node: *struc CContinue) error_t {
+fn reslv_continue_statement(ctx: Ctx, node: *struc CContinue) error_t {
     CATCH_ENTER
     TRY(annotate_continue_jump(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) error_t {
+fn reslv_statement(ctx: Ctx, node: *struc CStatement) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CReturn_t {
@@ -3429,9 +3429,9 @@ fn reslv_statement(ctx: *struc SemanticContext, node: *struc CStatement) error_t
     CATCH_EXIT
 }
 
-fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) error_t;
+fn reslv_declaration(ctx: Ctx, node: *struc CDeclaration) error_t;
 
-fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr_t(CBlockItem))) error_t {
+fn reslv_block_items(ctx: Ctx, node_list: vector_t(unique_ptr_t(CBlockItem))) error_t {
     CATCH_ENTER
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {
@@ -3452,7 +3452,7 @@ fn reslv_block_items(ctx: *struc SemanticContext, node_list: vector_t(unique_ptr
     CATCH_EXIT
 }
 
-fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t {
+fn reslv_block(ctx: Ctx, node: *struc CBlock) error_t {
     CATCH_ENTER
     THROW_ABORT_IF(node[].tag ~= AST_CB_t)
     TRY(reslv_block_items(ctx, node[].get._CB.block_items))
@@ -3460,9 +3460,9 @@ fn reslv_block(ctx: *struc SemanticContext, node: *struc CBlock) error_t {
     CATCH_EXIT
 }
 
-fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: *shared_ptr_t(Type)) error_t;
+fn reslv_initializer(ctx: Ctx, node: *struc CInitializer, init_type: *shared_ptr_t(Type)) error_t;
 
-fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_single_init(ctx: Ctx, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     if node[].exp[].tag == AST_CString_t and (init_type[])[].tag == AST_Array_t {
         TRY(check_bound_string_init(ctx, @node[].exp[].get._CString, @init_type[][].get._Array))
@@ -3476,7 +3476,7 @@ fn reslv_single_init(ctx: *struc SemanticContext, node: *struc CSingleInit, init
     CATCH_EXIT
 }
 
-fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(check_bound_arr_init(ctx, node, arr_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -3487,7 +3487,7 @@ fn reslv_arr_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, arr_t
     CATCH_EXIT
 }
 
-fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(check_bound_struct_init(ctx, node, struct_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -3499,7 +3499,7 @@ fn reslv_struct_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, st
     CATCH_EXIT
 }
 
-fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_compound_init(ctx: Ctx, node: *struc CCompoundInit, init_type: *shared_ptr_t(Type)) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     match (init_type[])[].tag {
@@ -3521,7 +3521,7 @@ fn reslv_compound_init(ctx: *struc SemanticContext, node: *struc CCompoundInit, 
     CATCH_EXIT
 }
 
-fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_initializer(ctx: Ctx, node: *struc CInitializer, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CSingleInit_t {
@@ -3540,7 +3540,7 @@ fn reslv_initializer(ctx: *struc SemanticContext, node: *struc CInitializer, ini
     CATCH_EXIT
 }
 
-fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
+fn reslv_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
@@ -3558,7 +3558,7 @@ fn reslv_fun_params_decl(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     CATCH_EXIT
 }
 
-fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDeclaration) error_t {
+fn reslv_fun_declaration(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_file_scope(ctx) {
@@ -3593,7 +3593,7 @@ fn reslv_fun_declaration(ctx: *struc SemanticContext, node: *struc CFunctionDecl
     CATCH_EXIT
 }
 
-fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn reslv_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     CATCH_ENTER
     if map_find(ctx[].extern_scope_map, node[].name) == map_end() {
         map_add(ctx[].extern_scope_map, node[].name, vec_size(ctx[].scoped_identifier_maps))
@@ -3609,7 +3609,7 @@ fn reslv_file_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclar
     CATCH_EXIT
 }
 
-fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDeclaration) error_t {
+fn reslv_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() and not (map_find(ctx[].extern_scope_map, node[].name) ~= map_end() and node[].storage_class.tag == AST_CExtern_t) {
@@ -3634,14 +3634,14 @@ fn reslv_block_var_decl(ctx: *struc SemanticContext, node: *struc CVariableDecla
     CATCH_EXIT
 }
 
-fn reslv_struct_members_decl(ctx: *struc SemanticContext, node: *struc CStructDeclaration) error_t {
+fn reslv_struct_members_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     CATCH_ENTER
     TRY(check_struct_members_decl(ctx, node))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDeclaration) error_t {
+fn reslv_struct_declaration(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     struct_fmt_1: string_t = str_new(nil)
     struct_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
@@ -3684,7 +3684,7 @@ fn reslv_struct_declaration(ctx: *struc SemanticContext, node: *struc CStructDec
     CATCH_EXIT
 }
 
-fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) error_t {
+fn reslv_fun_decl(ctx: Ctx, node: *struc CFunDecl) error_t {
     CATCH_ENTER
     if is_file_scope(ctx) {
         map_clear(ctx[].goto_map)
@@ -3701,7 +3701,7 @@ fn reslv_fun_decl(ctx: *struc SemanticContext, node: *struc CFunDecl) error_t {
     CATCH_EXIT
 }
 
-fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) error_t {
+fn reslv_var_decl(ctx: Ctx, node: *struc CVarDecl) error_t {
     CATCH_ENTER
     if is_file_scope(ctx) {
         TRY(reslv_file_var_decl(ctx, node[].var_decl))
@@ -3713,14 +3713,14 @@ fn reslv_var_decl(ctx: *struc SemanticContext, node: *struc CVarDecl) error_t {
     CATCH_EXIT
 }
 
-fn reslv_struct_decl(ctx: *struc SemanticContext, node: *struc CStructDecl) error_t {
+fn reslv_struct_decl(ctx: Ctx, node: *struc CStructDecl) error_t {
     CATCH_ENTER
     TRY(reslv_struct_declaration(ctx, node[].struct_decl))
     FINALLY
     CATCH_EXIT
 }
 
-fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) error_t {
+fn reslv_declaration(ctx: Ctx, node: *struc CDeclaration) error_t {
     CATCH_ENTER
     match node[].tag {
         -> AST_CFunDecl_t {
@@ -3743,7 +3743,7 @@ fn reslv_declaration(ctx: *struc SemanticContext, node: *struc CDeclaration) err
     CATCH_EXIT
 }
 
-fn resolve_program(ctx: *struc SemanticContext, node: *struc CProgram) error_t {
+fn resolve_program(ctx: Ctx, node: *struc CProgram) error_t {
     CATCH_ENTER
     enter_scope(ctx)
     loop i: u64 = 0 while i < vec_size(node[].declarations) .. ++i {

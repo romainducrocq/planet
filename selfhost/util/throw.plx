@@ -3,7 +3,7 @@ m4_include(`throw.plx.m4')m4_dnl
 
 m4_include(`../lib/c_std.plx.m4')m4_dnl
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc ErrorsContext')m4_dnl
 m4_define(`ESC', `27')m4_dnl
 m4_define(`ESC_RESET_SIZE', `4')m4_dnl
 m4_define(`ESC_BOLD_SIZE', `4')m4_dnl
@@ -30,7 +30,7 @@ pub fn panic_sigabrt(msg: string) none {
     abort()
 }
 
-pub fn raise_init_error(ctx: *struc ErrorsContext) none {
+pub fn raise_init_error(ctx: Ctx) none {
     if ctx[].is_stdout {
         printf("%s", "\n")
         fflush(nil)
@@ -49,7 +49,7 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none {
     str_delete(stderr_buf)
 }
 
-pub fn raise_base_error(ctx: *struc ErrorsContext) none {
+pub fn raise_base_error(ctx: Ctx) none {
     free_fileio(ctx[].fileio)
     filename: string = get_filename(ctx[].fileio)
     if not filename {
@@ -78,7 +78,7 @@ pub fn raise_base_error(ctx: *struc ErrorsContext) none {
     str_delete(stderr_buf)
 }
 
-fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
+fn get_token_linenum(ctx: Ctx, total_linenum: u64) u64 {
     loop i: u64 = 0 while i < vec_size(ctx[].fopen_lines) - 1 .. ++i {
         if total_linenum < ctx[].fopen_lines[i + 1].total_linenum {
             set_filename(ctx[].fileio, ctx[].fopen_lines[i].filename)
@@ -89,7 +89,7 @@ fn get_token_linenum(ctx: *struc ErrorsContext, total_linenum: u64) u64 {
     return total_linenum - vec_back(ctx[].fopen_lines).total_linenum + vec_back(ctx[].fopen_lines).linenum
 }
 
-pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none {
+pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
     THROW_ABORT_IF(info_at >= vec_size(ctx[].errors[].token_infos))
     token_info: *struc TokenInfo = @ctx[].errors[].token_infos[info_at]
     tok_linenum: u64 = get_token_linenum(ctx, token_info[].total_linenum)

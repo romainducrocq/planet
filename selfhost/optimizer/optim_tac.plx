@@ -23,7 +23,7 @@ m4_include(`impl_olvl.plx.m4')m4_dnl
 m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 ')m4_dnl
 
-fn fold_sign_extend_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
+fn fold_sign_extend_char_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             value: i32 = cast<i32>(constant[].value)
@@ -49,7 +49,7 @@ fn fold_sign_extend_char_const(ctx: *struc OptimTacContext, node: *struc TacVari
     }
 }
 
-fn fold_sign_extend_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
+fn fold_sign_extend_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
@@ -67,7 +67,7 @@ fn fold_sign_extend_int_const(ctx: *struc OptimTacContext, node: *struc TacVaria
     }
 }
 
-fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_sign_extend_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
@@ -85,7 +85,7 @@ fn fold_sign_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExtend, instr_idx: u64) none {
+fn fold_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: shared_ptr_t(TacValue) = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
@@ -96,7 +96,7 @@ fn fold_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
     }
 }
 
-fn fold_truncate_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
+fn fold_truncate_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -114,51 +114,7 @@ fn fold_truncate_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable
     }
 }
 
-fn fold_truncate_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstLong) shared_ptr_t(CConst) {
-    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
-                return make_CConstChar(value)
-            }
-        }
-        -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].value)
-            return make_CConstInt(value)
-        }
-        -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
-            return make_CConstUChar(value)
-        }
-        -> AST_UInt_t {
-            value: u32 = cast<u32>(constant[].value)
-            return make_CConstUInt(value)
-        }
-        otherwise {
-            THROW_ABORT
-        }
-    }
-}
-
-fn fold_truncate_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
-    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
-                return make_CConstChar(value)
-            }
-        }
-        -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
-            return make_CConstUChar(value)
-        }
-        otherwise {
-            THROW_ABORT
-        }
-    }
-}
-
-fn fold_truncate_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstULong) shared_ptr_t(CConst) {
+fn fold_truncate_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstLong) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -184,7 +140,51 @@ fn fold_truncate_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariab
     }
 }
 
-fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_truncate_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
+        -> AST_Char_t {
+            -> AST_SChar_t {
+                value: i8 = cast<i8>(constant[].value)
+                return make_CConstChar(value)
+            }
+        }
+        -> AST_UChar_t {
+            value: u8 = cast<u8>(constant[].value)
+            return make_CConstUChar(value)
+        }
+        otherwise {
+            THROW_ABORT
+        }
+    }
+}
+
+fn fold_truncate_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstULong) shared_ptr_t(CConst) {
+    match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
+        -> AST_Char_t {
+            -> AST_SChar_t {
+                value: i8 = cast<i8>(constant[].value)
+                return make_CConstChar(value)
+            }
+        }
+        -> AST_Int_t {
+            value: i32 = cast<i32>(constant[].value)
+            return make_CConstInt(value)
+        }
+        -> AST_UChar_t {
+            value: u8 = cast<u8>(constant[].value)
+            return make_CConstUChar(value)
+        }
+        -> AST_UInt_t {
+            value: u32 = cast<u32>(constant[].value)
+            return make_CConstUInt(value)
+        }
+        otherwise {
+            THROW_ABORT
+        }
+    }
+}
+
+fn fold_truncate_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstInt_t {
@@ -210,7 +210,7 @@ fn fold_truncate_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, instr_idx: u64) none {
+fn fold_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: shared_ptr_t(TacValue) = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
@@ -221,7 +221,7 @@ fn fold_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
     }
 }
 
-fn fold_zero_extend_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUChar) shared_ptr_t(CConst) {
+fn fold_zero_extend_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             value: i32 = cast<i32>(constant[].value)
@@ -247,7 +247,7 @@ fn fold_zero_extend_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVar
     }
 }
 
-fn fold_zero_extend_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
+fn fold_zero_extend_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
@@ -265,7 +265,7 @@ fn fold_zero_extend_uint_const(ctx: *struc OptimTacContext, node: *struc TacVari
     }
 }
 
-fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_zero_extend_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstUChar_t {
@@ -283,7 +283,7 @@ fn fold_zero_extend_const(ctx: *struc OptimTacContext, node: *struc TacVariable,
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExtend, instr_idx: u64) none {
+fn fold_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: shared_ptr_t(TacValue) = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
@@ -294,7 +294,7 @@ fn fold_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
     }
 }
 
-fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_dbl_to_signed_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
     THROW_ABORT_IF(constant[].tag ~= AST_CConstDouble_t)
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
@@ -322,7 +322,7 @@ fn fold_dbl_to_signed_const(ctx: *struc OptimTacContext, node: *struc TacVariabl
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToInt, instr_idx: u64) none {
+fn fold_dbl_to_signed_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: shared_ptr_t(TacValue) = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
@@ -333,7 +333,7 @@ fn fold_dbl_to_signed_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleT
     }
 }
 
-fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_dbl_to_unsigned_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
     THROW_ABORT_IF(constant[].tag ~= AST_CConstDouble_t)
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
@@ -359,7 +359,7 @@ fn fold_dbl_to_unsigned_const(ctx: *struc OptimTacContext, node: *struc TacVaria
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_dbl_to_unsigned_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToUInt, instr_idx: u64) none {
+fn fold_dbl_to_unsigned_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: shared_ptr_t(TacValue) = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
@@ -395,7 +395,7 @@ fn fold_signed_to_dbl_const(constant: *struc CConst) shared_ptr_t(TacValue) {
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_signed_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDouble, instr_idx: u64) none {
+fn fold_signed_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(
             node[].dst[].tag ~= AST_TacVariable_t
@@ -433,7 +433,7 @@ fn fold_unsigned_to_dbl_const(constant: *struc CConst) shared_ptr_t(TacValue) {
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_unsigned_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDouble, instr_idx: u64) none {
+fn fold_unsigned_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(
             node[].dst[].tag ~= AST_TacVariable_t
@@ -600,7 +600,7 @@ fn fold_unary_const(node: *struc TacUnaryOp, constant: *struc CConst) shared_ptr
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_idx: u64) none {
+fn fold_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         src: shared_ptr_t(TacValue) = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
@@ -985,7 +985,7 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
     return make_TacConstant(@fold_constant)
 }
 
-fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_idx: u64) none {
+fn fold_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
     if node[].src1[].tag == AST_TacConstant_t and node[].src2[].tag == AST_TacConstant_t {
         src: shared_ptr_t(TacValue) = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
@@ -995,7 +995,7 @@ fn fold_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
     }
 }
 
-fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
+fn fold_copy_char_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -1012,7 +1012,7 @@ fn fold_copy_char_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
     }
 }
 
-fn fold_copy_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
+fn fold_copy_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             return sptr_new()
@@ -1027,7 +1027,7 @@ fn fold_copy_int_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
     }
 }
 
-fn fold_copy_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstLong) shared_ptr_t(CConst) {
+fn fold_copy_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstLong) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             -> AST_Pointer_t {
@@ -1048,7 +1048,7 @@ fn fold_copy_long_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
     }
 }
 
-fn fold_copy_dbl_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstDouble) shared_ptr_t(CConst) {
+fn fold_copy_dbl_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstDouble) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             value: i64 = cast<i64>(constant[].value)
@@ -1067,7 +1067,7 @@ fn fold_copy_dbl_const(ctx: *struc OptimTacContext, node: *struc TacVariable, co
     }
 }
 
-fn fold_copy_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUChar) shared_ptr_t(CConst) {
+fn fold_copy_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -1084,7 +1084,7 @@ fn fold_copy_uchar_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
     }
 }
 
-fn fold_copy_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
+fn fold_copy_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             value: i32 = cast<i32>(constant[].value)
@@ -1099,7 +1099,7 @@ fn fold_copy_uint_const(ctx: *struc OptimTacContext, node: *struc TacVariable, c
     }
 }
 
-fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConstULong) shared_ptr_t(CConst) {
+fn fold_copy_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstULong) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Long_t {
             value: i64 = cast<i64>(constant[].value)
@@ -1120,7 +1120,7 @@ fn fold_copy_ulong_const(ctx: *struc OptimTacContext, node: *struc TacVariable, 
     }
 }
 
-fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_copy_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) shared_ptr_t(TacValue) {
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
@@ -1163,7 +1163,7 @@ fn fold_copy_const(ctx: *struc OptimTacContext, node: *struc TacVariable, consta
     }
 }
 
-fn fold_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy) none {
+fn fold_copy_instr(ctx: Ctx, node: *struc TacCopy) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
         src: shared_ptr_t(TacValue) = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
@@ -1203,7 +1203,7 @@ fn is_const_zero(constant: *struc CConst) i32 {
     }
 }
 
-fn fold_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, instr_idx: u64) none {
+fn fold_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, instr_idx: u64) none {
     if node[].condition[].tag == AST_TacConstant_t {
         if is_const_zero(node[].condition[].get._TacConstant.constant) {
             target: u64 = node[].target
@@ -1215,7 +1215,7 @@ fn fold_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
     }
 }
 
-fn fold_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZero, instr_idx: u64) none {
+fn fold_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, instr_idx: u64) none {
     if node[].condition[].tag == AST_TacConstant_t {
         if is_const_zero(node[].condition[].get._TacConstant.constant) {
             set_instr(ctx, uptr_new(), instr_idx)
@@ -1227,7 +1227,7 @@ fn fold_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZer
     }
 }
 
-fn fold_instr(ctx: *struc OptimTacContext, instr_idx: u64) none {
+fn fold_instr(ctx: Ctx, instr_idx: u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
         -> AST_TacSignExtend_t {
@@ -1284,7 +1284,7 @@ fn fold_instr(ctx: *struc OptimTacContext, instr_idx: u64) none {
     }
 }
 
-fn fold_constants(ctx: *struc OptimTacContext) none {
+fn fold_constants(ctx: Ctx) none {
     loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
         if (ctx[].p_instrs[])[instr_idx] {
             fold_instr(ctx, instr_idx)
@@ -1292,22 +1292,22 @@ fn fold_constants(ctx: *struc OptimTacContext) none {
     }
 }
 
-fn unreach_reachable_block(ctx: *struc OptimTacContext, block_id: u64) none;
+fn unreach_reachable_block(ctx: Ctx, block_id: u64) none;
 
-fn unreach_succ_reachable_blocks(ctx: *struc OptimTacContext, block_id: u64) none {
+fn unreach_succ_reachable_blocks(ctx: Ctx, block_id: u64) none {
     loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i { # TODO GET_CFG_BLOCK(block_id).succ_ids
         unreach_reachable_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[i])
     }
 }
 
-fn unreach_reachable_block(ctx: *struc OptimTacContext, block_id: u64) none {
+fn unreach_reachable_block(ctx: Ctx, block_id: u64) none {
     if block_id < ctx[].cfg[].exit_id and not ctx[].cfg[].reaching_code[block_id] {
         ctx[].cfg[].reaching_code[block_id] = true
         unreach_succ_reachable_blocks(ctx, block_id)
     }
 }
 
-fn unreach_empty_block(ctx: *struc OptimTacContext, block_id: u64) none {
+fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
     loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
         if (ctx[].p_instrs[])[instr_idx] {
             set_instr(ctx, uptr_new(), instr_idx)
@@ -1321,7 +1321,7 @@ fn unreach_empty_block(ctx: *struc OptimTacContext, block_id: u64) none {
     ;
 }
 
-fn unreach_jump_instr(ctx: *struc OptimTacContext, block_id: u64) none {
+fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_back_idx]
     match node[].tag {
         -> AST_TacJump_t {
@@ -1338,24 +1338,24 @@ fn unreach_jump_instr(ctx: *struc OptimTacContext, block_id: u64) none {
     }
 }
 
-fn unreach_jump_block(ctx: *struc OptimTacContext, block_id: u64, next_block_id: u64) none {
+fn unreach_jump_block(ctx: Ctx, block_id: u64, next_block_id: u64) none {
     if vec_size(ctx[].cfg[].blocks[block_id].succ_ids) == 1 and ctx[].cfg[].blocks[block_id].succ_ids[0] == next_block_id { # TODO GET_CFG_BLOCK(block_id).succ_ids
         unreach_jump_instr(ctx, block_id)
     }
 }
 
-fn unreach_label_instr(ctx: *struc OptimTacContext, block_id: u64) none {
+fn unreach_label_instr(ctx: Ctx, block_id: u64) none {
     THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_front_idx][].tag ~= AST_TacLabel_t) # TODO GET_INSTR(GET_CFG_BLOCK(block_id).instrs_front_idx
     cfg_rm_block_instr(ctx, ctx[].cfg[].blocks[block_id].instrs_front_idx, block_id)
 }
 
-fn unreach_label_block(ctx: *struc OptimTacContext, block_id: u64, prev_block_id: u64) none {
+fn unreach_label_block(ctx: Ctx, block_id: u64, prev_block_id: u64) none {
     if vec_size(ctx[].cfg[].blocks[block_id].pred_ids) == 1 and ctx[].cfg[].blocks[block_id].pred_ids[0] == prev_block_id { # TODO GET_CFG_BLOCK(block_id).pred_ids
         unreach_label_instr(ctx, block_id)
     }
 }
 
-fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
+fn eliminate_unreachable_code(ctx: Ctx) none {
     if vec_empty(ctx[].cfg[].blocks) {
         return none
     }
@@ -1405,7 +1405,7 @@ fn eliminate_unreachable_code(ctx: *struc OptimTacContext) none {
     }
 }
 
-fn is_aliased_value(ctx: *struc OptimTacContext, node: *struc TacValue) i32 {
+fn is_aliased_value(ctx: Ctx, node: *struc TacValue) i32 {
     return node[].tag == AST_TacVariable_t and is_aliased_name(ctx, node[].get._TacVariable.name)
 }
 
@@ -1424,7 +1424,7 @@ fn is_const_signed(node: *struc TacConstant) i32 {
     }
 }
 
-fn is_var_signed(ctx: *struc OptimTacContext, node: *struc TacVariable) i32 {
+fn is_var_signed(ctx: Ctx, node: *struc TacVariable) i32 {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -1441,7 +1441,7 @@ fn is_var_signed(ctx: *struc OptimTacContext, node: *struc TacVariable) i32 {
     }
 }
 
-fn is_value_signed(ctx: *struc OptimTacContext, node: *struc TacValue) i32 {
+fn is_value_signed(ctx: Ctx, node: *struc TacValue) i32 {
     match node[].tag {
         -> AST_TacConstant_t {
             return is_const_signed(@node[].get._TacConstant)
@@ -1559,11 +1559,11 @@ fn is_same_name(node: *struc TacValue, name: u64) i32 {
     }
 }
 
-fn is_copy_same_signedness(ctx: *struc OptimTacContext, node: *struc TacCopy) i32 {
+fn is_copy_same_signedness(ctx: Ctx, node: *struc TacCopy) i32 {
     return is_value_signed(ctx, node[].src) == is_value_signed(ctx, node[].dst)
 }
 
-fn is_copy_null_ptr(ctx: *struc OptimTacContext, node: *struc TacCopy) i32 {
+fn is_copy_null_ptr(ctx: Ctx, node: *struc TacCopy) i32 {
     if node[].src[].tag == AST_TacConstant_t and node[].dst[].tag == AST_TacVariable_t and map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag == AST_Pointer_t {
         return is_const_null_ptr(@node[].src[].get._TacConstant)
     }
@@ -1572,7 +1572,7 @@ fn is_copy_null_ptr(ctx: *struc OptimTacContext, node: *struc TacCopy) i32 {
     }
 }
 
-fn prop_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, next_instr_idx: u64) none {
+fn prop_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64) none {
     THROW_ABORT_IF(node[].tag ~= AST_TacVariable_t)
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1600,7 +1600,7 @@ fn prop_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, n
     }
 }
 
-fn prop_transfer_call(ctx: *struc OptimTacContext, node: *struc TacFunCall, next_instr_idx: u64) none {
+fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) none {
     THROW_ABORT_IF(node[].dst and node[].dst[].tag ~= AST_TacVariable_t)
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1628,7 +1628,7 @@ fn prop_transfer_call(ctx: *struc OptimTacContext, node: *struc TacFunCall, next
     }
 }
 
-fn prop_transfer_copy(ctx: *struc OptimTacContext, node: *struc TacCopy, next_instr_idx: u64) i32 {
+fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) i32 {
     THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     loop i: u64 = 0 while i < ctx[].dfa[].set_size .. ++i {
         THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].tag ~= AST_TacCopy_t) # TODO GET_DFA_INSTR(i)->tag
@@ -1656,7 +1656,7 @@ fn prop_transfer_copy(ctx: *struc OptimTacContext, node: *struc TacCopy, next_in
     return true
 }
 
-fn prop_transfer_store(ctx: *struc OptimTacContext, next_instr_idx: u64) none {
+fn prop_transfer_store(ctx: Ctx, next_instr_idx: u64) none {
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
         if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1683,7 +1683,7 @@ fn prop_transfer_store(ctx: *struc OptimTacContext, next_instr_idx: u64) none {
     }
 }
 
-fn prop_transfer_cp_to_offset(ctx: *struc OptimTacContext, node: *struc TacCopyToOffset, next_instr_idx: u64) none {
+fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr_idx: u64) none {
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
         if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -1710,7 +1710,7 @@ fn prop_transfer_cp_to_offset(ctx: *struc OptimTacContext, node: *struc TacCopyT
     }
 }
 
-fn prop_transfer_reach_copies(ctx: *struc OptimTacContext, instr_idx: u64, next_instr_idx: u64) i32 {
+fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) i32 {
     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
         -> AST_TacSignExtend_t {
@@ -1787,13 +1787,13 @@ fn prop_transfer_reach_copies(ctx: *struc OptimTacContext, instr_idx: u64, next_
     return true
 }
 
-fn get_dfa_bak_copy_instr(ctx: *struc OptimTacContext, i: u64) *struc TacCopy {
+fn get_dfa_bak_copy_instr(ctx: Ctx, i: u64) *struc TacCopy {
     node: *struc TacInstruction = get_dfa_bak_instr(ctx, i)
     THROW_ABORT_IF(node[].tag ~= AST_TacCopy_t)
     return @node[].get._TacCopy
 }
 
-fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx: u64) none {
+fn set_dfa_bak_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64) none {
     i: u64;
     if set_dfa_bak_instr(ctx, instr_idx, @i) {
         src: shared_ptr_t(TacValue) = sptr_new()
@@ -1807,7 +1807,7 @@ fn set_dfa_bak_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, ins
     }
 }
 
-fn prop_ret_instr(ctx: *struc OptimTacContext, node: *struc TacReturn, incoming_idx: u64, exit_block: i32) none {
+fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_block: i32) none {
     if node[].val and node[].val[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1835,7 +1835,7 @@ fn prop_ret_instr(ctx: *struc OptimTacContext, node: *struc TacReturn, incoming_
     }
 }
 
-fn prop_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExtend, instr_idx: u64) none {
+fn prop_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1863,7 +1863,7 @@ fn prop_sign_extend_instr(ctx: *struc OptimTacContext, node: *struc TacSignExten
     }
 }
 
-fn prop_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, instr_idx: u64) none {
+fn prop_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1891,7 +1891,7 @@ fn prop_truncate_instr(ctx: *struc OptimTacContext, node: *struc TacTruncate, in
     }
 }
 
-fn prop_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExtend, instr_idx: u64) none {
+fn prop_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1919,7 +1919,7 @@ fn prop_zero_extend_instr(ctx: *struc OptimTacContext, node: *struc TacZeroExten
     }
 }
 
-fn prop_dbl_to_int_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToInt, instr_idx: u64) none {
+fn prop_dbl_to_int_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1947,7 +1947,7 @@ fn prop_dbl_to_int_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToIn
     }
 }
 
-fn prop_dbl_to_uint_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToUInt, instr_idx: u64) none {
+fn prop_dbl_to_uint_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -1975,7 +1975,7 @@ fn prop_dbl_to_uint_instr(ctx: *struc OptimTacContext, node: *struc TacDoubleToU
     }
 }
 
-fn prop_int_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDouble, instr_idx: u64) none {
+fn prop_int_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2003,7 +2003,7 @@ fn prop_int_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacIntToDoubl
     }
 }
 
-fn prop_uint_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDouble, instr_idx: u64) none {
+fn prop_uint_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2031,7 +2031,7 @@ fn prop_uint_to_dbl_instr(ctx: *struc OptimTacContext, node: *struc TacUIntToDou
     }
 }
 
-fn prop_call_instr(ctx: *struc OptimTacContext, node: *struc TacFunCall, instr_idx: u64) none {
+fn prop_call_instr(ctx: Ctx, node: *struc TacFunCall, instr_idx: u64) none {
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         if node[].args[i][].tag == AST_TacVariable_t {
             j: u64 = 0
@@ -2063,7 +2063,7 @@ fn prop_call_instr(ctx: *struc OptimTacContext, node: *struc TacFunCall, instr_i
     }
 }
 
-fn prop_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_idx: u64) none {
+fn prop_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2091,7 +2091,7 @@ fn prop_unary_instr(ctx: *struc OptimTacContext, node: *struc TacUnary, instr_id
     }
 }
 
-fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_idx: u64) none {
+fn prop_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
     is_src1: i32 = node[].src1[].tag == AST_TacVariable_t
     is_src2: i32 = node[].src2[].tag == AST_TacVariable_t
     if is_src1 or is_src2 {
@@ -2133,7 +2133,7 @@ fn prop_binary_instr(ctx: *struc OptimTacContext, node: *struc TacBinary, instr_
     }
 }
 
-fn prop_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx: u64, block_id: u64) none {
+fn prop_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64) none {
     THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2166,7 +2166,7 @@ fn prop_copy_instr(ctx: *struc OptimTacContext, node: *struc TacCopy, instr_idx:
     }
 }
 
-fn prop_load_instr(ctx: *struc OptimTacContext, node: *struc TacLoad, instr_idx: u64) none {
+fn prop_load_instr(ctx: Ctx, node: *struc TacLoad, instr_idx: u64) none {
     if node[].src_ptr[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2194,7 +2194,7 @@ fn prop_load_instr(ctx: *struc OptimTacContext, node: *struc TacLoad, instr_idx:
     }
 }
 
-fn prop_store_instr(ctx: *struc OptimTacContext, node: *struc TacStore, instr_idx: u64) none {
+fn prop_store_instr(ctx: Ctx, node: *struc TacStore, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2222,7 +2222,7 @@ fn prop_store_instr(ctx: *struc OptimTacContext, node: *struc TacStore, instr_id
     }
 }
 
-fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr_idx: u64) none {
+fn prop_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr, instr_idx: u64) none {
     is_src_ptr: i32 = node[].src_ptr[].tag == AST_TacVariable_t
     is_idx: i32 = node[].idx[].tag == AST_TacVariable_t
     if is_src_ptr or is_idx {
@@ -2264,7 +2264,7 @@ fn prop_add_ptr_instr(ctx: *struc OptimTacContext, node: *struc TacAddPtr, instr
     }
 }
 
-fn prop_cp_to_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyToOffset, instr_idx: u64) none {
+fn prop_cp_to_offset_instr(ctx: Ctx, node: *struc TacCopyToOffset, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2292,7 +2292,7 @@ fn prop_cp_to_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyToOf
     }
 }
 
-fn prop_cp_from_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyFromOffset, instr_idx: u64) none {
+fn prop_cp_from_offset_instr(ctx: Ctx, node: *struc TacCopyFromOffset, instr_idx: u64) none {
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
         if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == 0ul {
@@ -2318,7 +2318,7 @@ fn prop_cp_from_offset_instr(ctx: *struc OptimTacContext, node: *struc TacCopyFr
     }
 }
 
-fn prop_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, incoming_idx: u64, exit_block: u64) none {
+fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, exit_block: u64) none {
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2346,7 +2346,7 @@ fn prop_jmp_eq_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfZero, 
     }
 }
 
-fn prop_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZero, incoming_idx: u64, exit_block: u64) none {
+fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u64, exit_block: u64) none {
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2374,7 +2374,7 @@ fn prop_jmp_ne_0_instr(ctx: *struc OptimTacContext, node: *struc TacJumpIfNotZer
     }
 }
 
-fn prop_instr(ctx: *struc OptimTacContext, instr_idx: u64, copy_instr_idx: u64, block_id: u64) none {
+fn prop_instr(ctx: Ctx, instr_idx: u64, copy_instr_idx: u64, block_id: u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
         -> AST_TacReturn_t {
@@ -2459,7 +2459,7 @@ fn prop_instr(ctx: *struc OptimTacContext, instr_idx: u64, copy_instr_idx: u64, 
     }
 }
 
-fn propagate_copies(ctx: *struc OptimTacContext) none {
+fn propagate_copies(ctx: Ctx) none {
     if not init_data_flow_analysis(ctx, false, true) {
         return none
     }
@@ -2530,37 +2530,37 @@ fn propagate_copies(ctx: *struc OptimTacContext) none {
     }
 }
 
-fn elim_transfer_addressed(ctx: *struc OptimTacContext, next_instr_idx: u64) none {
+fn elim_transfer_addressed(ctx: Ctx, next_instr_idx: u64) none {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] |= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)]
     }
 }
 
-fn elim_transfer_aliased(ctx: *struc OptimTacContext, next_instr_idx: u64) none {
+fn elim_transfer_aliased(ctx: Ctx, next_instr_idx: u64) none {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] |= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (i)]
         ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] |= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)]
     }
 }
 
-fn elim_transfer_src_name(ctx: *struc OptimTacContext, name: u64, next_instr_idx: u64) none {
+fn elim_transfer_src_name(ctx: Ctx, name: u64, next_instr_idx: u64) none {
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, true)
 }
 
-fn elim_transfer_src_value(ctx: *struc OptimTacContext, node: *struc TacValue, next_instr_idx: u64) none {
+fn elim_transfer_src_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64) none {
     if node[].tag == AST_TacVariable_t {
         elim_transfer_src_name(ctx, node[].get._TacVariable.name, next_instr_idx)
     }
 }
 
-fn elim_transfer_dst_value(ctx: *struc OptimTacContext, node: *struc TacValue, next_instr_idx: u64) none {
+fn elim_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64) none {
     THROW_ABORT_IF(node[].tag ~= AST_TacVariable_t)
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, node[].get._TacVariable.name)
     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
 }
 
-fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_instr_idx: u64) none {
+fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
         -> AST_TacReturn_t {
@@ -2690,19 +2690,19 @@ fn elim_transfer_live_values(ctx: *struc OptimTacContext, instr_idx: u64, next_i
     }
 }
 
-fn elim_dst_name_instr(ctx: *struc OptimTacContext, name: u64, instr_idx: u64) none {
+fn elim_dst_name_instr(ctx: Ctx, name: u64, instr_idx: u64) none {
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
     if not mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
         set_instr(ctx, uptr_new(), instr_idx)
     }
 }
 
-fn elim_dst_value_instr(ctx: *struc OptimTacContext, node: *struc TacValue, instr_idx: u64) none {
+fn elim_dst_value_instr(ctx: Ctx, node: *struc TacValue, instr_idx: u64) none {
     THROW_ABORT_IF(node[].tag ~= AST_TacVariable_t)
     elim_dst_name_instr(ctx, node[].get._TacVariable.name, instr_idx)
 }
 
-fn elim_instr(ctx: *struc OptimTacContext, instr_idx: u64) none {
+fn elim_instr(ctx: Ctx, instr_idx: u64) none {
     node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
     match node[].tag {
         -> AST_TacSignExtend_t {
@@ -2771,7 +2771,7 @@ fn elim_instr(ctx: *struc OptimTacContext, instr_idx: u64) none {
     }
 }
 
-fn eliminate_dead_stores(ctx: *struc OptimTacContext, is_addressed_set: i32) none {
+fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: i32) none {
     if not init_data_flow_analysis(ctx, true, is_addressed_set) {
         return none
     }
@@ -2793,7 +2793,7 @@ m4_define(`UNREACHABLE_CODE_ELIMINATION', `2')m4_dnl
 m4_define(`DEAD_STORE_ELIMINATION', `3')m4_dnl
 m4_define(`CONTROL_FLOW_GRAPH', `4')m4_dnl
 
-fn optim_fun_toplvl(ctx: *struc OptimTacContext, node: *struc TacFunction) none {
+fn optim_fun_toplvl(ctx: Ctx, node: *struc TacFunction) none {
     ctx[].p_instrs = @node[].body
     loop .. while not ctx[].is_fixed_point {
         ctx[].is_fixed_point = true
@@ -2816,7 +2816,7 @@ fn optim_fun_toplvl(ctx: *struc OptimTacContext, node: *struc TacFunction) none 
     ctx[].p_instrs = nil
 }
 
-fn optim_toplvl(ctx: *struc OptimTacContext, node: *struc TacTopLevel) none {
+fn optim_toplvl(ctx: Ctx, node: *struc TacTopLevel) none {
     if node[].tag == AST_TacFunction_t {
         optim_fun_toplvl(ctx, @node[].get._TacFunction)
     }
@@ -2825,7 +2825,7 @@ fn optim_toplvl(ctx: *struc OptimTacContext, node: *struc TacTopLevel) none {
     }
 }
 
-fn optim_program(ctx: *struc OptimTacContext, node: *struc TacProgram) none {
+fn optim_program(ctx: Ctx, node: *struc TacProgram) none {
     loop i: u64 = 0 while i < vec_size(node[].fun_toplvls) .. ++i {
         optim_toplvl(ctx, node[].fun_toplvls[i])
     }

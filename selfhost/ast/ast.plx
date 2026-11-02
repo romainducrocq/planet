@@ -110,9 +110,9 @@ pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none {
     sptr_free(self[])
 }
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc IdentifierContext')m4_dnl
 
-pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string_t) u64 {
+pub fn make_string_identifier(ctx: Ctx, value: *string_t) u64 {
     identifier: u64 = str_hash(value[])
     if map_find(ctx[].hash_table, identifier) == map_end() {
         map_move_add(ctx[].hash_table, identifier, value[])
@@ -123,7 +123,7 @@ pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string_t) u
     return identifier
 }
 
-pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
+pub fn make_label_identifier(ctx: Ctx, name: *string_t) u64 {
     str_append(name[], UID_SEPARATOR)
     {
         strto_uid: string_t = str_to_string(ctx[].label_count)
@@ -134,7 +134,7 @@ pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string_t) u64
     return make_string_identifier(ctx, name)
 }
 
-pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
+pub fn make_var_identifier(ctx: Ctx, name: *string_t) u64 {
     str_append(name[], UID_SEPARATOR)
     {
         strto_uid: string_t = str_to_string(ctx[].var_count)
@@ -145,7 +145,7 @@ pub fn make_var_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
     return make_string_identifier(ctx, name)
 }
 
-pub fn make_struct_identifier(ctx: *struc IdentifierContext, name: *string_t) u64 {
+pub fn make_struct_identifier(ctx: Ctx, name: *string_t) u64 {
     str_append(name[], UID_SEPARATOR)
     {
         strto_uid: string_t = str_to_string(ctx[].struct_count)

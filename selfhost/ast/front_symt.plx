@@ -472,14 +472,14 @@ pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none {
     uptr_free(self[])
 }
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc FrontEndContext')m4_dnl
 
-pub fn get_struct_typedef_member(ctx: *struc FrontEndContext, tag_name: u64, member_name: u64) *struc StructMember {
+pub fn get_struct_typedef_member(ctx: Ctx, tag_name: u64, member_name: u64) *struc StructMember {
     struct_typedef: *struc StructTypedef = map_get(ctx[].struct_typedef_table, tag_name)
     return map_get(struct_typedef[].members, struct_typedef[].member_names[member_name])
 }
 
-pub fn get_struct_typedef_back(ctx: *struc FrontEndContext, tag_name: u64) *struc StructMember {
+pub fn get_struct_typedef_back(ctx: Ctx, tag_name: u64) *struc StructMember {
     struct_typedef: *struc StructTypedef = map_get(ctx[].struct_typedef_table, tag_name)
     return map_get(struct_typedef[].members, vec_back(struct_typedef[].member_names))
 }

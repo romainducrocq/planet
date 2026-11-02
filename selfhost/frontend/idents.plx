@@ -7,30 +7,30 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc IdentifierContext')m4_dnl
 
-pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: u64) u64 {
+pub fn rslv_label_identifier(ctx: Ctx, target: u64) u64 {
     name: string_t = str_new(nil)
     value: string_t = map_get(ctx[].hash_table, target)
     str_copy(value, name)
     return make_label_identifier(ctx, @name)
 }
 
-pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64 {
+pub fn rslv_var_identifier(ctx: Ctx, variable: u64) u64 {
     name: string_t = str_new(nil)
     value: string_t = map_get(ctx[].hash_table, variable)
     str_copy(value, name)
     return make_var_identifier(ctx, @name)
 }
 
-pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: u64) u64 {
+pub fn rslv_struct_tag(ctx: Ctx, structure: u64) u64 {
     name: string_t = str_new(nil)
     value: string_t = map_get(ctx[].hash_table, structure)
     str_copy(value, name)
     return make_struct_identifier(ctx, @name)
 }
 
-pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: i32) u64 {
+pub fn repr_label_identifier(ctx: Ctx, label_kind: i32) u64 {
     name: string_t = str_new(nil)
     match label_kind {
         -> LBL_Land_false {
@@ -100,7 +100,7 @@ pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: i32) u64
     return make_label_identifier(ctx, @name)
 }
 
-pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, target: u64) u64 {
+pub fn repr_loop_identifier(ctx: Ctx, label_kind: i32, target: u64) u64 {
     name: string_t = str_new(nil)
     match label_kind {
         -> LBL_Lbreak {
@@ -127,7 +127,7 @@ pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: i32, targ
     return make_string_identifier(ctx, @name)
 }
 
-pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label: i32, i: u64) u64 {
+pub fn repr_case_identifier(ctx: Ctx, target: u64, is_label: i32, i: u64) u64 {
     name: string_t = ? is_label then str_new("case_") else str_new("")
     {
         strto_i: string_t = str_to_string(i)
@@ -138,7 +138,7 @@ pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label
     return make_string_identifier(ctx, @name)
 }
 
-pub fn repr_var_identifier(ctx: *struc IdentifierContext, node: *struc CExp) u64 {
+pub fn repr_var_identifier(ctx: Ctx, node: *struc CExp) u64 {
     name: string_t = str_new(nil)
     match node[].tag {
         -> AST_CConstant_t {
