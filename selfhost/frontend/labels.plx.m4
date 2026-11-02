@@ -1,7 +1,7 @@
 m4_ifdef(`_FRONTEND_LABELS_M4', `', `
 m4_define(`_FRONTEND_LABELS_M4', `')m4_dnl
 
-m4_define(`LABEL_KIND', `TODO')m4_dnl
+m4_define(`LABEL_KIND', `i32')m4_dnl
 m4_define(`LBL_Land_false', `0')m4_dnl
 m4_define(`LBL_Land_true', `1')m4_dnl
 m4_define(`LBL_Lbreak', `2')m4_dnl

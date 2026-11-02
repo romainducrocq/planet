@@ -30,7 +30,7 @@ pub fn rslv_struct_tag(ctx: Ctx, structure: u64) u64 {
     return make_struct_identifier(ctx, @name)
 }
 
-pub fn repr_label_identifier(ctx: Ctx, label_kind: i32) u64 {
+pub fn repr_label_identifier(ctx: Ctx, label_kind: LABEL_KIND) u64 {
     name: string_t = str_new(nil)
     match label_kind {
         -> LBL_Land_false {
@@ -100,7 +100,7 @@ pub fn repr_label_identifier(ctx: Ctx, label_kind: i32) u64 {
     return make_label_identifier(ctx, @name)
 }
 
-pub fn repr_loop_identifier(ctx: Ctx, label_kind: i32, target: u64) u64 {
+pub fn repr_loop_identifier(ctx: Ctx, label_kind: LABEL_KIND, target: u64) u64 {
     name: string_t = str_new(nil)
     match label_kind {
         -> LBL_Lbreak {
