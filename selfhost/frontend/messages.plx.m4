@@ -1,13 +1,13 @@
 m4_ifdef(`_FRONTEND_MESSAGES_M4', `', `
 m4_define(`_FRONTEND_MESSAGES_M4', `')m4_dnl
 
-m4_define(`MESSAGE_FATAL', `TODO')m4_dnl
+m4_define(`MESSAGE_FATAL', `i32')m4_dnl
 m4_define(`MSG_unhandled_fatal_error', `0')m4_dnl
 m4_define(`MSG_unsupported_os', `1')m4_dnl
 m4_define(`MSG_unsupported_arch', `2')m4_dnl
 m4_define(`MSG_unsupported_compiler', `3')m4_dnl
 m4_define(`MSG_unsupported_cc_ver', `4')m4_dnl
-m4_define(`MESSAGE_ARG', `TODO')m4_dnl
+m4_define(`MESSAGE_ARG', `i32')m4_dnl
 m4_define(`MSG_unhandled_arg_error', `100')m4_dnl
 m4_define(`MSG_print_help', `101')m4_dnl
 m4_define(`MSG_no_debug_arg', `102')m4_dnl
@@ -19,14 +19,14 @@ m4_define(`MSG_invalid_optim_2_arg', `107')m4_dnl
 m4_define(`MSG_no_input_files_arg', `108')m4_dnl
 m4_define(`MSG_no_stdlib_dir_arg', `109')m4_dnl
 m4_define(`MSG_no_include_dir_arg', `110')m4_dnl
-m4_define(`MESSAGE_UTIL', `TODO')m4_dnl
+m4_define(`MESSAGE_UTIL', `i32')m4_dnl
 m4_define(`MSG_unhandled_util_error', `200')m4_dnl
 m4_define(`MSG_failed_fread', `201')m4_dnl
 m4_define(`MSG_failed_fwrite', `202')m4_dnl
 m4_define(`MSG_failed_strtoi', `203')m4_dnl
 m4_define(`MSG_failed_strtou', `204')m4_dnl
 m4_define(`MSG_failed_strtod', `205')m4_dnl
-m4_define(`MESSAGE_LEXER', `TODO')m4_dnl
+m4_define(`MESSAGE_LEXER', `i32')m4_dnl
 m4_define(`MSG_unhandled_lexer_error', `300')m4_dnl
 m4_define(`MSG_invalid_tok', `301')m4_dnl
 m4_define(`MSG_import_in_line', `302')m4_dnl
@@ -35,7 +35,7 @@ m4_define(`MSG_failed_import', `304')m4_dnl
 m4_define(`MSG_failed_use', `305')m4_dnl
 m4_define(`MSG_preproc_macro', `306')m4_dnl
 m4_define(`MSG_unmatched_close', `307')m4_dnl
-m4_define(`MESSAGE_PARSER', `TODO')m4_dnl
+m4_define(`MESSAGE_PARSER', `i32')m4_dnl
 m4_define(`MSG_unhandled_parser_error', `400')m4_dnl
 m4_define(`MSG_unexpected_next_tok', `401')m4_dnl
 m4_define(`MSG_reached_eof', `402')m4_dnl
@@ -64,7 +64,7 @@ m4_define(`MSG_list_decl_not_auto', `424')m4_dnl
 m4_define(`MSG_type_decl_not_auto', `425')m4_dnl
 m4_define(`MSG_pub_in_block', `426')m4_dnl
 m4_define(`MSG_data_at_toplvl', `427')m4_dnl
-m4_define(`MESSAGE_SEMANTIC', `TODO')m4_dnl
+m4_define(`MESSAGE_SEMANTIC', `i32')m4_dnl
 m4_define(`MSG_unhandled_semantic_error', `500')m4_dnl
 m4_define(`MSG_incomplete_arr', `501')m4_dnl
 m4_define(`MSG_joint_ptr_mismatch', `502')m4_dnl

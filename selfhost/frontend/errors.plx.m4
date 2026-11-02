@@ -42,12 +42,12 @@ m4_define(`str_fmt_ptr', `str_get_fmt(ptr, $1, $2)')m4_dnl
 m4_define(`str_fmt_arr', `str_get_fmt(arr, $1, $2)')m4_dnl
 m4_define(`str_fmt_struct', `str_get_fmt(struct, $1, $2)')m4_dnl
 m4_define(`str_fmt_type', `str_get_fmt(type, $1, $2)')m4_dnl
-pub fn get_fatal_msg(msg: i32) string;
-pub fn get_arg_msg(msg: i32) string;
-pub fn get_util_msg(msg: i32) string;
-pub fn get_lexer_msg(msg: i32) string;
-pub fn get_parser_msg(msg: i32) string;
-pub fn get_semantic_msg(msg: i32) string;
+pub fn get_fatal_msg(msg: MESSAGE_FATAL) string;
+pub fn get_arg_msg(msg: MESSAGE_ARG) string;
+pub fn get_util_msg(msg: MESSAGE_UTIL) string;
+pub fn get_lexer_msg(msg: MESSAGE_LEXER) string;
+pub fn get_parser_msg(msg: MESSAGE_PARSER) string;
+pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC) string;
 m4_define(`GET_MESSAGE', `get_$1_msg($2), "$2"')m4_dnl
 m4_define(`GET_MESSAGE_0', `GET_MESSAGE($1, $2), "", "", ""')m4_dnl
 m4_define(`GET_MESSAGE_1', `GET_MESSAGE($1, $2), "", "", $3')m4_dnl
