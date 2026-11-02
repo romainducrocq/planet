@@ -14,19 +14,19 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
-m4_define(`ASM_LABEL_KIND', `TODO')m4_dnl
+m4_define(`ASM_LABEL_KIND', `i32')m4_dnl
 m4_define(`LBL_Lcomisd_nan', `0')m4_dnl
 m4_define(`LBL_Ldouble', `1')m4_dnl
 m4_define(`LBL_Lsd2si_after', `2')m4_dnl
 m4_define(`LBL_Lsd2si_out_of_range', `3')m4_dnl
 m4_define(`LBL_Lsi2sd_after', `4')m4_dnl
 m4_define(`LBL_Lsi2sd_out_of_range', `5')m4_dnl
-m4_define(`STRUCT8B_CLASS', `TODO')m4_dnl
+m4_define(`STRUCT8B_CLASS', `i32')m4_dnl
 m4_define(`CLS_integer', `0')m4_dnl
 m4_define(`CLS_sse', `1')m4_dnl
 m4_define(`CLS_memory', `2')m4_dnl
 
-type struc Struct8Bytes(size: u64, clss: [2]i32)
+type struc Struct8Bytes(size: u64, clss: [2]STRUCT8B_CLASS)
 
 m4_define(`StStruct8Bytes', `struc Struct8Bytes')m4_dnl
 
@@ -76,7 +76,7 @@ fn ulong_imm_op(node: *struc CConstULong) shared_ptr_t(AsmOperand) {
     return make_AsmImm(value, is_byte, is_quad, false)
 }
 
-fn repr_asm_label(ctx: Ctx, asm_label_kind: i32) u64 {
+fn repr_asm_label(ctx: Ctx, asm_label_kind: ASM_LABEL_KIND) u64 {
     name: string_t = str_new(nil)
     match asm_label_kind {
         -> LBL_Lcomisd_nan {
