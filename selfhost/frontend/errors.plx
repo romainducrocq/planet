@@ -678,7 +678,7 @@ m4_define(`PAD_ERR_2', `TODO')m4_dnl
 m4_define(`PAD_ERR_3', `TODO')m4_dnl
 m4_define(`RET_ERR', `TODO')m4_dnl
 
-pub fn get_fatal_msg(msg: i32) string {
+pub fn get_fatal_msg(msg: MESSAGE_FATAL) string {
     match msg {
         -> MSG_unsupported_os {
             return "(no. %s) "             "%s%s"             "‘%s’"             " operating system is not supported, requires "             "‘"             "GNU/Linux"             "’"             " (x86_64) or "             "‘"             "MacOS"             "’"
@@ -698,7 +698,7 @@ pub fn get_fatal_msg(msg: i32) string {
     }
 }
 
-pub fn get_arg_msg(msg: i32) string {
+pub fn get_arg_msg(msg: MESSAGE_ARG) string {
     match msg {
         -> MSG_print_help {
             return "(no. %s) "             "%s%s"             "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"             "    [--help]:         print help and exit\n"             "    Debug:            print debug info (0..1|251..255)\n"             "    OptimL1:          optimization level 1 mask (0..15)\n"             "    OptimL2:          optimization level 2 enum (0..2)\n"             "    FILE:             source file to compile\n"             "    StdlibDir:        standard lib include path\n"             "    SourceDir:        source file include path\n"             "    [IncludeDir...]:  add a list of paths to include path\n"             "see "             "‘"             "driver.sh"             "’"
@@ -736,7 +736,7 @@ pub fn get_arg_msg(msg: i32) string {
     }
 }
 
-pub fn get_util_msg(msg: i32) string {
+pub fn get_util_msg(msg: MESSAGE_UTIL) string {
     match msg {
         -> MSG_failed_fread {
             return "(no. %s) "             "%s%s"             "cannot read input file "             "‘%s’"
@@ -759,7 +759,7 @@ pub fn get_util_msg(msg: i32) string {
     }
 }
 
-pub fn get_lexer_msg(msg: i32) string {
+pub fn get_lexer_msg(msg: MESSAGE_LEXER) string {
     match msg {
         -> MSG_invalid_tok {
             return "(no. %s) "             "%s%s"             "found invalid token "             "‘%s’"
@@ -788,7 +788,7 @@ pub fn get_lexer_msg(msg: i32) string {
     }
 }
 
-pub fn get_parser_msg(msg: i32) string {
+pub fn get_parser_msg(msg: MESSAGE_PARSER) string {
     match msg {
         -> MSG_unexpected_next_tok {
             return "(no. %s) "             "%s"             "found token "             "‘%s’"             ", but expected "             "‘%s’"             " next"
@@ -877,7 +877,7 @@ pub fn get_parser_msg(msg: i32) string {
     }
 }
 
-pub fn get_semantic_msg(msg: i32) string {
+pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC) string {
     match msg {
         -> MSG_incomplete_arr {
             return "(no. %s) "             "%s"             "array type "             "‘%s’"             " of incomplete type "             "‘%s’"             ", requires a complete type"
