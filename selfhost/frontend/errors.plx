@@ -9,7 +9,7 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-pub fn get_tok_kind_fmt(tok_kind: i32) string {
+pub fn get_tok_kind_fmt(tok_kind: TOKEN_KIND) string {
     match tok_kind {
         -> TOK_line_break {
             return "line break"

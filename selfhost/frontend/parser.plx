@@ -16,7 +16,7 @@ type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc Ident
 
 m4_define(`Ctx', `*struc ParserContext')m4_dnl
 
-fn expect_next(ctx: Ctx, next_tok: *struc Token, expect_tok: i32) error_t {
+fn expect_next(ctx: Ctx, next_tok: *struc Token, expect_tok: TOKEN_KIND) error_t {
     CATCH_ENTER
     if next_tok[].tok_kind ~= expect_tok {
         THROW_AT_TOKEN(next_tok[].info_at,
@@ -1056,7 +1056,7 @@ fn parse_ternary_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_EXIT
 }
 
-fn get_tok_precedence(tok_kind: i32) i32 {
+fn get_tok_precedence(tok_kind: TOKEN_KIND) i32 {
     match tok_kind {
         -> TOK_binop_multiply {
             -> TOK_binop_divide {
