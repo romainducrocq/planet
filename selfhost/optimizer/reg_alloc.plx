@@ -46,7 +46,7 @@ fn free_InferenceGraph(self: *unique_ptr_t(InferenceGraph)) none {
 fn make_InferenceGraph(is_sse: i32) unique_ptr_t(InferenceGraph) {
     self: unique_ptr_t(InferenceGraph) = uptr_new()
     uptr_alloc(InferenceGraph, self)
-    self[].hard_reg_mask = 0ul
+    self[].hard_reg_mask = REGISTER_MASK_FALSE
     self[].unpruned_hard_mask_bits = vec_new()
     self[].unpruned_pseudo_names = vec_new()
     self[].pseudo_reg_map = map_new()
@@ -671,7 +671,7 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
     if map_empty(ctx[].cfg[].identifier_id_map) {
         return false
     }
-    ctx[].callee_saved_reg_mask = 0ul
+    ctx[].callee_saved_reg_mask = REGISTER_MASK_FALSE
     vec_clear(ctx[].infer_graph[].unpruned_pseudo_names)
     ;
     loop i: u64 = 0 while i < map_size(ctx[].infer_graph[].pseudo_reg_map) .. ++i {
@@ -688,7 +688,7 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
     map_clear(ctx[].sse_infer_graph[].pseudo_reg_map)
     loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
         name: u64 = pair_first(ctx[].cfg[].identifier_id_map[i])
-        infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, 0ul, vec_new())
+        infer: struc InferenceRegister = $(REG_Sp, REG_Sp, 0, 0, REGISTER_MASK_FALSE, vec_new())
         if map_get(ctx[].frontend[].symbol_table, name)[].type_t[].tag == AST_Double_t {
             vec_push_back(ctx[].sse_infer_graph[].unpruned_pseudo_names, name)
             map_add(ctx[].sse_infer_graph[].pseudo_reg_map, name, infer)
@@ -768,7 +768,7 @@ fn alloc_prune_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, pruned_idx: 
     else {
         vec_remove_swap(ctx[].p_infer_graph[].unpruned_hard_mask_bits, pruned_idx)
     }
-    if infer[].linked_hard_mask ~= 0ul {
+    if infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(infer[].linked_hard_mask, linked_infer[].reg_kind) {
@@ -791,7 +791,7 @@ fn alloc_unprune_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, pruned_nam
         THROW_ABORT_IF(find_size_t(ctx[].p_infer_graph[].unpruned_hard_mask_bits, pruned_mask_bit))
         vec_push_back(ctx[].p_infer_graph[].unpruned_hard_mask_bits, pruned_mask_bit)
     }
-    if infer[].linked_hard_mask ~= 0ul {
+    if infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(infer[].linked_hard_mask, linked_infer[].reg_kind) {
@@ -868,7 +868,7 @@ fn alloc_prune_infer_graph(ctx: Ctx, pruned_name: *u64) *struc InferenceRegister
 
 fn alloc_unprune_infer_graph(ctx: Ctx, infer: *struc InferenceRegister, pruned_name: u64) none {
     color_reg_mask: u64 = ctx[].p_infer_graph[].hard_reg_mask
-    if infer[].linked_hard_mask ~= 0ul {
+    if infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(infer[].linked_hard_mask, linked_infer[].reg_kind) {
@@ -884,7 +884,7 @@ fn alloc_unprune_infer_graph(ctx: Ctx, infer: *struc InferenceRegister, pruned_n
             register_mask_set(@color_reg_mask, linked_infer[].color, false)
         }
     }
-    if color_reg_mask ~= 0ul {
+    if color_reg_mask ~= REGISTER_MASK_FALSE {
         if is_reg_callee_saved(infer[].reg_kind) {
             loop i: u64 = ctx[].p_infer_graph[].k while i-- > 0 {
                 color: REGISTER_KIND = ctx[].hard_regs[i + ctx[].p_infer_graph[].offset].reg_kind
@@ -1332,7 +1332,7 @@ fn get_coalescable_infer_regs(ctx: Ctx, src_infer: **struc InferenceRegister, ds
 
 fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *struc InferenceRegister) i32 {
     degree: u64 = 0
-    if src_infer[].linked_hard_mask ~= 0ul or dst_infer[].linked_hard_mask ~= 0ul {
+    if src_infer[].linked_hard_mask ~= REGISTER_MASK_FALSE or dst_infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(src_infer[].linked_hard_mask, linked_infer[].reg_kind) {
@@ -1410,7 +1410,7 @@ fn coal_conservative_tests(ctx: Ctx, src_infer: *struc InferenceRegister, dst_in
 fn coal_pseudo_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, merge_idx: u64, keep_idx: u64) none {
     merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - REGISTER_MASK_SIZE]
     keep_name: u64 = ctx[].dfa_o2[].data_name_map[keep_idx - REGISTER_MASK_SIZE]
-    if infer[].linked_hard_mask ~= 0ul {
+    if infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(infer[].linked_hard_mask, linked_infer[].reg_kind) {
@@ -1429,7 +1429,7 @@ fn coal_pseudo_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, merge_idx: u
 
 fn coal_hard_infer_reg(ctx: Ctx, reg_kind: REGISTER_KIND, infer: *struc InferenceRegister, merge_idx: u64) none {
     merge_name: u64 = ctx[].dfa_o2[].data_name_map[merge_idx - REGISTER_MASK_SIZE]
-    if infer[].linked_hard_mask ~= 0ul {
+    if infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
             if register_mask_get(infer[].linked_hard_mask, linked_infer[].reg_kind) {
