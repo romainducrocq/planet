@@ -24,10 +24,74 @@ fn get_char(ctx: Ctx) char {
     }
 }
 
-m4_define(`LEX_SPACE', `TODO')m4_dnl
-m4_define(`LEX_DIGIT', `TODO')m4_dnl
-m4_define(`LEX_LETTER', `TODO')m4_dnl
-m4_define(`LEX_WORD', `TODO')m4_dnl
+m4_include(`defchar.plx.m4')m4_dnl
+m4_define(`LEX_SPACE', `M4_CHAR(` ');
+    -> M4_CHAR(\t)')m4_dnl
+m4_define(`LEX_DIGIT', `M4_CHAR(0);
+    -> M4_CHAR(1);
+    -> M4_CHAR(2);
+    -> M4_CHAR(3);
+    -> M4_CHAR(4);
+    -> M4_CHAR(5);
+    -> M4_CHAR(6);
+    -> M4_CHAR(7);
+    -> M4_CHAR(8);
+    -> M4_CHAR(9)')m4_dnl
+m4_define(`LEX_LETTER', `M4_CHAR(_);
+    -> M4_CHAR(a);
+    -> M4_CHAR(b);
+    -> M4_CHAR(c);
+    -> M4_CHAR(d);
+    -> M4_CHAR(e);
+    -> M4_CHAR(f);
+    -> M4_CHAR(g);
+    -> M4_CHAR(h);
+    -> M4_CHAR(i);
+    -> M4_CHAR(j);
+    -> M4_CHAR(k);
+    -> M4_CHAR(l);
+    -> M4_CHAR(m);
+    -> M4_CHAR(n);
+    -> M4_CHAR(o);
+    -> M4_CHAR(p);
+    -> M4_CHAR(q);
+    -> M4_CHAR(r);
+    -> M4_CHAR(s);
+    -> M4_CHAR(t);
+    -> M4_CHAR(u);
+    -> M4_CHAR(v);
+    -> M4_CHAR(w);
+    -> M4_CHAR(x);
+    -> M4_CHAR(y);
+    -> M4_CHAR(z);
+    -> M4_CHAR(A);
+    -> M4_CHAR(B);
+    -> M4_CHAR(C);
+    -> M4_CHAR(D);
+    -> M4_CHAR(E);
+    -> M4_CHAR(F);
+    -> M4_CHAR(G);
+    -> M4_CHAR(H);
+    -> M4_CHAR(I);
+    -> M4_CHAR(J);
+    -> M4_CHAR(K);
+    -> M4_CHAR(L);
+    -> M4_CHAR(M);
+    -> M4_CHAR(N);
+    -> M4_CHAR(O);
+    -> M4_CHAR(P);
+    -> M4_CHAR(Q);
+    -> M4_CHAR(R);
+    -> M4_CHAR(S);
+    -> M4_CHAR(T);
+    -> M4_CHAR(U);
+    -> M4_CHAR(V);
+    -> M4_CHAR(W);
+    -> M4_CHAR(X);
+    -> M4_CHAR(Y);
+    -> M4_CHAR(Z)')m4_dnl
+m4_define(`LEX_WORD', `LEX_DIGIT;
+    -> LEX_LETTER')m4_dnl
 
 fn match_char(ctx: Ctx, c: char) i32 {
     if c == get_char(ctx) {
@@ -61,11 +125,9 @@ fn match_invert(ctx: Ctx, c: char) i32 {
 
 fn match_space(ctx: Ctx) i32 {
     match get_char(ctx) {
-        -> ' ' {
-            -> '\t' {
-                ctx[].match_size++
-                return true
-            }
+        -> LEX_SPACE {
+            ctx[].match_size++
+            return true
         }
         otherwise {
             return false
@@ -75,27 +137,9 @@ fn match_space(ctx: Ctx) i32 {
 
 fn match_digit(ctx: Ctx) i32 {
     match get_char(ctx) {
-        -> '0' {
-            -> '1' {
-                -> '2' {
-                    -> '3' {
-                        -> '4' {
-                            -> '5' {
-                                -> '6' {
-                                    -> '7' {
-                                        -> '8' {
-                                            -> '9' {
-                                                ctx[].match_size++
-                                                return true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> LEX_DIGIT {
+            ctx[].match_size++
+            return true
         }
         otherwise {
             return false
@@ -105,133 +149,9 @@ fn match_digit(ctx: Ctx) i32 {
 
 fn match_word(ctx: Ctx) i32 {
     match get_char(ctx) {
-        -> '0' {
-            -> '1' {
-                -> '2' {
-                    -> '3' {
-                        -> '4' {
-                            -> '5' {
-                                -> '6' {
-                                    -> '7' {
-                                        -> '8' {
-                                            -> '9' {
-                                                -> '_' {
-                                                    -> 'a' {
-                                                        -> 'b' {
-                                                            -> 'c' {
-                                                                -> 'd' {
-                                                                    -> 'e' {
-                                                                        -> 'f' {
-                                                                            -> 'g' {
-                                                                                -> 'h' {
-                                                                                    -> 'i' {
-                                                                                        -> 'j' {
-                                                                                            -> 'k' {
-                                                                                                -> 'l' {
-                                                                                                    -> 'm' {
-                                                                                                        -> 'n' {
-                                                                                                            -> 'o' {
-                                                                                                                -> 'p' {
-                                                                                                                    -> 'q' {
-                                                                                                                        -> 'r' {
-                                                                                                                            -> 's' {
-                                                                                                                                -> 't' {
-                                                                                                                                    -> 'u' {
-                                                                                                                                        -> 'v' {
-                                                                                                                                            -> 'w' {
-                                                                                                                                                -> 'x' {
-                                                                                                                                                    -> 'y' {
-                                                                                                                                                        -> 'z' {
-                                                                                                                                                            -> 'A' {
-                                                                                                                                                                -> 'B' {
-                                                                                                                                                                    -> 'C' {
-                                                                                                                                                                        -> 'D' {
-                                                                                                                                                                            -> 'E' {
-                                                                                                                                                                                -> 'F' {
-                                                                                                                                                                                    -> 'G' {
-                                                                                                                                                                                        -> 'H' {
-                                                                                                                                                                                            -> 'I' {
-                                                                                                                                                                                                -> 'J' {
-                                                                                                                                                                                                    -> 'K' {
-                                                                                                                                                                                                        -> 'L' {
-                                                                                                                                                                                                            -> 'M' {
-                                                                                                                                                                                                                -> 'N' {
-                                                                                                                                                                                                                    -> 'O' {
-                                                                                                                                                                                                                        -> 'P' {
-                                                                                                                                                                                                                            -> 'Q' {
-                                                                                                                                                                                                                                -> 'R' {
-                                                                                                                                                                                                                                    -> 'S' {
-                                                                                                                                                                                                                                        -> 'T' {
-                                                                                                                                                                                                                                            -> 'U' {
-                                                                                                                                                                                                                                                -> 'V' {
-                                                                                                                                                                                                                                                    -> 'W' {
-                                                                                                                                                                                                                                                        -> 'X' {
-                                                                                                                                                                                                                                                            -> 'Y' {
-                                                                                                                                                                                                                                                                -> 'Z' {
-                                                                                                                                                                                                                                                                    ctx[].match_size++
-                                                                                                                                                                                                                                                                    return true
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> LEX_WORD {
+            ctx[].match_size++
+            return true
         }
         otherwise {
             return false
@@ -352,134 +272,9 @@ fn match_string_literal(ctx: Ctx) TOKEN_KIND {
 
 fn match_const_end(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
     match get_char(ctx) {
-        -> '0' {
-            -> '1' {
-                -> '2' {
-                    -> '3' {
-                        -> '4' {
-                            -> '5' {
-                                -> '6' {
-                                    -> '7' {
-                                        -> '8' {
-                                            -> '9' {
-                                                -> '_' {
-                                                    -> 'a' {
-                                                        -> 'b' {
-                                                            -> 'c' {
-                                                                -> 'd' {
-                                                                    -> 'e' {
-                                                                        -> 'f' {
-                                                                            -> 'g' {
-                                                                                -> 'h' {
-                                                                                    -> 'i' {
-                                                                                        -> 'j' {
-                                                                                            -> 'k' {
-                                                                                                -> 'l' {
-                                                                                                    -> 'm' {
-                                                                                                        -> 'n' {
-                                                                                                            -> 'o' {
-                                                                                                                -> 'p' {
-                                                                                                                    -> 'q' {
-                                                                                                                        -> 'r' {
-                                                                                                                            -> 's' {
-                                                                                                                                -> 't' {
-                                                                                                                                    -> 'u' {
-                                                                                                                                        -> 'v' {
-                                                                                                                                            -> 'w' {
-                                                                                                                                                -> 'x' {
-                                                                                                                                                    -> 'y' {
-                                                                                                                                                        -> 'z' {
-                                                                                                                                                            -> 'A' {
-                                                                                                                                                                -> 'B' {
-                                                                                                                                                                    -> 'C' {
-                                                                                                                                                                        -> 'D' {
-                                                                                                                                                                            -> 'E' {
-                                                                                                                                                                                -> 'F' {
-                                                                                                                                                                                    -> 'G' {
-                                                                                                                                                                                        -> 'H' {
-                                                                                                                                                                                            -> 'I' {
-                                                                                                                                                                                                -> 'J' {
-                                                                                                                                                                                                    -> 'K' {
-                                                                                                                                                                                                        -> 'L' {
-                                                                                                                                                                                                            -> 'M' {
-                                                                                                                                                                                                                -> 'N' {
-                                                                                                                                                                                                                    -> 'O' {
-                                                                                                                                                                                                                        -> 'P' {
-                                                                                                                                                                                                                            -> 'Q' {
-                                                                                                                                                                                                                                -> 'R' {
-                                                                                                                                                                                                                                    -> 'S' {
-                                                                                                                                                                                                                                        -> 'T' {
-                                                                                                                                                                                                                                            -> 'U' {
-                                                                                                                                                                                                                                                -> 'V' {
-                                                                                                                                                                                                                                                    -> 'W' {
-                                                                                                                                                                                                                                                        -> 'X' {
-                                                                                                                                                                                                                                                            -> 'Y' {
-                                                                                                                                                                                                                                                                -> 'Z' {
-                                                                                                                                                                                                                                                                    -> '.' {
-                                                                                                                                                                                                                                                                        return match_error(ctx)
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> LEX_WORD;
+        -> '.' {
+            return match_error(ctx)
         }
         otherwise {
             return tok_kind
@@ -969,26 +764,8 @@ fn match_token(ctx: Ctx) TOKEN_KIND {
         }
         -> '.' {
             match get_char(ctx) {
-                -> '0' {
-                    -> '1' {
-                        -> '2' {
-                            -> '3' {
-                                -> '4' {
-                                    -> '5' {
-                                        -> '6' {
-                                            -> '7' {
-                                                -> '8' {
-                                                    -> '9' {
-                                                        return match_dbl_fraction(ctx)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                -> LEX_DIGIT {
+                    return match_dbl_fraction(ctx)
                 }
                 -> '.' {
                     ctx[].match_size++
@@ -1005,133 +782,11 @@ fn match_token(ctx: Ctx) TOKEN_KIND {
         -> '"' {
             return match_string_literal(ctx)
         }
-        -> '0' {
-            -> '1' {
-                -> '2' {
-                    -> '3' {
-                        -> '4' {
-                            -> '5' {
-                                -> '6' {
-                                    -> '7' {
-                                        -> '8' {
-                                            -> '9' {
-                                                return match_const(ctx)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> LEX_DIGIT {
+            return match_const(ctx)
         }
-        -> '_' {
-            -> 'a' {
-                -> 'b' {
-                    -> 'c' {
-                        -> 'd' {
-                            -> 'e' {
-                                -> 'f' {
-                                    -> 'g' {
-                                        -> 'h' {
-                                            -> 'i' {
-                                                -> 'j' {
-                                                    -> 'k' {
-                                                        -> 'l' {
-                                                            -> 'm' {
-                                                                -> 'n' {
-                                                                    -> 'o' {
-                                                                        -> 'p' {
-                                                                            -> 'q' {
-                                                                                -> 'r' {
-                                                                                    -> 's' {
-                                                                                        -> 't' {
-                                                                                            -> 'u' {
-                                                                                                -> 'v' {
-                                                                                                    -> 'w' {
-                                                                                                        -> 'x' {
-                                                                                                            -> 'y' {
-                                                                                                                -> 'z' {
-                                                                                                                    -> 'A' {
-                                                                                                                        -> 'B' {
-                                                                                                                            -> 'C' {
-                                                                                                                                -> 'D' {
-                                                                                                                                    -> 'E' {
-                                                                                                                                        -> 'F' {
-                                                                                                                                            -> 'G' {
-                                                                                                                                                -> 'H' {
-                                                                                                                                                    -> 'I' {
-                                                                                                                                                        -> 'J' {
-                                                                                                                                                            -> 'K' {
-                                                                                                                                                                -> 'L' {
-                                                                                                                                                                    -> 'M' {
-                                                                                                                                                                        -> 'N' {
-                                                                                                                                                                            -> 'O' {
-                                                                                                                                                                                -> 'P' {
-                                                                                                                                                                                    -> 'Q' {
-                                                                                                                                                                                        -> 'R' {
-                                                                                                                                                                                            -> 'S' {
-                                                                                                                                                                                                -> 'T' {
-                                                                                                                                                                                                    -> 'U' {
-                                                                                                                                                                                                        -> 'V' {
-                                                                                                                                                                                                            -> 'W' {
-                                                                                                                                                                                                                -> 'X' {
-                                                                                                                                                                                                                    -> 'Y' {
-                                                                                                                                                                                                                        -> 'Z' {
-                                                                                                                                                                                                                            return match_identifier(ctx)
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> LEX_LETTER {
+            return match_identifier(ctx)
         }
         -> '#' {
             -> '\n' {
@@ -1140,13 +795,10 @@ fn match_token(ctx: Ctx) TOKEN_KIND {
                 }
             }
         }
-        -> ' ' {
-            -> '\t' {
-                -> '\f' {
-                    -> '\v' {
-                        return TOK_skip
-                    }
-                }
+        -> LEX_SPACE;
+            -> '\f' {
+                -> '\v' {
+                    return TOK_skip
             }
         }
         otherwise {
