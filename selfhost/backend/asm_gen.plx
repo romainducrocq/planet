@@ -670,7 +670,7 @@ fn struct_8b_class(ctx: Ctx, struct_type: *struc Structure) none {
 }
 
 fn fun_param_reg_mask(ctx: Ctx, fun_type: *struc FunType, reg_size: u64, sse_size: u64) none {
-    if fun_type[].param_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
+    if fun_type[].param_reg_mask == NULL_REGISTER_MASK {
         fun_type[].param_reg_mask = 0ul
         loop i: u64 = 0 while i < reg_size .. ++i {
             register_mask_set(@fun_type[].param_reg_mask, ctx[].arg_regs[i], true)
@@ -682,14 +682,14 @@ fn fun_param_reg_mask(ctx: Ctx, fun_type: *struc FunType, reg_size: u64, sse_siz
 }
 
 fn ret_1_reg_mask(fun_type: *struc FunType, reg_size: i32) none {
-    if fun_type[].ret_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
+    if fun_type[].ret_reg_mask == NULL_REGISTER_MASK {
         fun_type[].ret_reg_mask = 0ul
         register_mask_set(@fun_type[].ret_reg_mask, ? reg_size then REG_Ax else REG_Xmm0, true)
     }
 }
 
 fn ret_2_reg_mask(fun_type: *struc FunType, reg_size: i32, sse_size: i32) none {
-    if fun_type[].ret_reg_mask == (cast<u8>(1u)) << REGISTER_MASK_SIZE {
+    if fun_type[].ret_reg_mask == NULL_REGISTER_MASK {
         fun_type[].ret_reg_mask = 0ul
         if reg_size {
             register_mask_set(@fun_type[].ret_reg_mask, REG_Ax, true)
