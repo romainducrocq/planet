@@ -11,62 +11,62 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
 type struc GasCodeContext(backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext)
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc GasCodeContext')m4_dnl
 m4_define(`LF', `TODO')m4_dnl
 m4_define(`TAB', `TODO')m4_dnl
 m4_define(`LBL', `TODO')m4_dnl
 m4_define(`LBL', `TODO')m4_dnl
 
-fn emit(ctx: *struc GasCodeContext, code: string) none {
+fn emit(ctx: Ctx, code: string) none {
     write_buffer(ctx[].fileio, code)
 }
 
-fn emit_identifier(ctx: *struc GasCodeContext, identifier: u64) none {
+fn emit_identifier(ctx: Ctx, identifier: u64) none {
     value: string = map_get(ctx[].identifiers[].hash_table, identifier)
     emit(ctx, value)
 }
 
-fn emit_string(ctx: *struc GasCodeContext, string_const: u64) none {
+fn emit_string(ctx: Ctx, string_const: u64) none {
     value: string = map_get(ctx[].identifiers[].hash_table, string_const)
     emit(ctx, value)
 }
 
-fn emit_char(ctx: *struc GasCodeContext, value: i8) none {
+fn emit_char(ctx: Ctx, value: i8) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
-fn emit_int(ctx: *struc GasCodeContext, value: i32) none {
+fn emit_int(ctx: Ctx, value: i32) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
-fn emit_long(ctx: *struc GasCodeContext, value: i64) none {
+fn emit_long(ctx: Ctx, value: i64) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
-fn emit_dbl(ctx: *struc GasCodeContext, dbl_const: u64) none {
+fn emit_dbl(ctx: Ctx, dbl_const: u64) none {
     value: string = map_get(ctx[].identifiers[].hash_table, dbl_const)
     emit(ctx, value)
 }
 
-fn emit_uchar(ctx: *struc GasCodeContext, value: u8) none {
+fn emit_uchar(ctx: Ctx, value: u8) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
-fn emit_uint(ctx: *struc GasCodeContext, value: u32) none {
+fn emit_uint(ctx: Ctx, value: u32) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
-fn emit_ulong(ctx: *struc GasCodeContext, value: u64) none {
+fn emit_ulong(ctx: Ctx, value: u64) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
@@ -367,7 +367,7 @@ fn get_type_suffix(node: *struc AssemblyType, is_packed: i32) string {
     }
 }
 
-fn imm_op(ctx: *struc GasCodeContext, node: *struc AsmImm) none {
+fn imm_op(ctx: Ctx, node: *struc AsmImm) none {
     emit(ctx, "$")
     if node[].is_neg {
         emit_long(ctx, cast<i64>(node[].value))
@@ -377,7 +377,7 @@ fn imm_op(ctx: *struc GasCodeContext, node: *struc AsmImm) none {
     }
 }
 
-fn reg_op(ctx: *struc GasCodeContext, node: *struc AsmRegister, byte: i32) none {
+fn reg_op(ctx: Ctx, node: *struc AsmRegister, byte: i32) none {
     match byte {
         -> 1 {
             emit(ctx, get_reg_1b(@node[].reg))
@@ -397,7 +397,7 @@ fn reg_op(ctx: *struc GasCodeContext, node: *struc AsmRegister, byte: i32) none 
     }
 }
 
-fn memory_op(ctx: *struc GasCodeContext, node: *struc AsmMemory) none {
+fn memory_op(ctx: Ctx, node: *struc AsmMemory) none {
     if node[].value ~= 0l {
         emit_long(ctx, node[].value)
     }
@@ -406,7 +406,7 @@ fn memory_op(ctx: *struc GasCodeContext, node: *struc AsmMemory) none {
     emit(ctx, ")")
 }
 
-fn data_op(ctx: *struc GasCodeContext, node: *struc AsmData) none {
+fn data_op(ctx: Ctx, node: *struc AsmData) none {
     map_it: i64 = map_find(ctx[].backend[].symbol_table, node[].name)
     if map_it ~= map_end() {
         backend_obj_symbol: *struc BackendSymbol = pair_second(ctx[].backend[].symbol_table[map_it])
@@ -422,7 +422,7 @@ fn data_op(ctx: *struc GasCodeContext, node: *struc AsmData) none {
     emit(ctx, "(%rip)")
 }
 
-fn indexed_op(ctx: *struc GasCodeContext, node: *struc AsmIndexed) none {
+fn indexed_op(ctx: Ctx, node: *struc AsmIndexed) none {
     emit(ctx, "(")
     emit(ctx, get_reg_8b(@node[].reg_base))
     emit(ctx, ", ")
@@ -432,7 +432,7 @@ fn indexed_op(ctx: *struc GasCodeContext, node: *struc AsmIndexed) none {
     emit(ctx, ")")
 }
 
-fn emit_op(ctx: *struc GasCodeContext, node: *struc AsmOperand, byte: i32) none {
+fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: i32) none {
     match node[].tag {
         -> AST_AsmImm_t {
             imm_op(ctx, @node[].get._AsmImm)
@@ -515,7 +515,7 @@ fn get_binop(node: *struc AsmBinaryOp, is_dbl: i32) string {
     }
 }
 
-fn mov_instr(ctx: *struc GasCodeContext, node: *struc AsmMov) none {
+fn mov_instr(ctx: Ctx, node: *struc AsmMov) none {
     emit(ctx, "    "         "    "         "mov")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -528,7 +528,7 @@ fn mov_instr(ctx: *struc GasCodeContext, node: *struc AsmMov) none {
     emit(ctx, "\n")
 }
 
-fn mov_sx_instr(ctx: *struc GasCodeContext, node: *struc AsmMovSx) none {
+fn mov_sx_instr(ctx: Ctx, node: *struc AsmMovSx) none {
     emit(ctx, "    "         "    "         "movs")
     emit(ctx, get_type_suffix(node[].asm_type_src, false))
     emit(ctx, get_type_suffix(node[].asm_type_dst, false))
@@ -545,7 +545,7 @@ fn mov_sx_instr(ctx: *struc GasCodeContext, node: *struc AsmMovSx) none {
     emit(ctx, "\n")
 }
 
-fn zero_extend_instr(ctx: *struc GasCodeContext, node: *struc AsmMovZeroExtend) none {
+fn zero_extend_instr(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     emit(ctx, "    "         "    "         "movzb")
     emit(ctx, get_type_suffix(node[].asm_type_dst, false))
     emit(ctx, " ")
@@ -558,7 +558,7 @@ fn zero_extend_instr(ctx: *struc GasCodeContext, node: *struc AsmMovZeroExtend) 
     emit(ctx, "\n")
 }
 
-fn lea_instr(ctx: *struc GasCodeContext, node: *struc AsmLea) none {
+fn lea_instr(ctx: Ctx, node: *struc AsmLea) none {
     emit(ctx, "    "         "    "         "leaq ")
     emit_op(ctx, node[].src, 8)
     emit(ctx, ", ")
@@ -566,7 +566,7 @@ fn lea_instr(ctx: *struc GasCodeContext, node: *struc AsmLea) none {
     emit(ctx, "\n")
 }
 
-fn cvttsd2si_instr(ctx: *struc GasCodeContext, node: *struc AsmCvttsd2si) none {
+fn cvttsd2si_instr(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     emit(ctx, "    "         "    "         "cvttsd2si")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -579,7 +579,7 @@ fn cvttsd2si_instr(ctx: *struc GasCodeContext, node: *struc AsmCvttsd2si) none {
     emit(ctx, "\n")
 }
 
-fn cvtsi2sd_instr(ctx: *struc GasCodeContext, node: *struc AsmCvtsi2sd) none {
+fn cvtsi2sd_instr(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     emit(ctx, "    "         "    "         "cvtsi2sd")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -592,7 +592,7 @@ fn cvtsi2sd_instr(ctx: *struc GasCodeContext, node: *struc AsmCvtsi2sd) none {
     emit(ctx, "\n")
 }
 
-fn unary_instr(ctx: *struc GasCodeContext, node: *struc AsmUnary) none {
+fn unary_instr(ctx: Ctx, node: *struc AsmUnary) none {
     emit(ctx, "    "         "    ")
     emit(ctx, get_unop(@node[].unop))
     emit(ctx, get_type_suffix(node[].asm_type, false))
@@ -604,7 +604,7 @@ fn unary_instr(ctx: *struc GasCodeContext, node: *struc AsmUnary) none {
     emit(ctx, "\n")
 }
 
-fn binary_instr(ctx: *struc GasCodeContext, node: *struc AsmBinary) none {
+fn binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
     emit(ctx, "    "         "    ")
     {
         is_dbl: i32 = node[].asm_type[].tag == AST_BackendDouble_t
@@ -635,7 +635,7 @@ fn binary_instr(ctx: *struc GasCodeContext, node: *struc AsmBinary) none {
     emit(ctx, "\n")
 }
 
-fn cmp_instr(ctx: *struc GasCodeContext, node: *struc AsmCmp) none {
+fn cmp_instr(ctx: Ctx, node: *struc AsmCmp) none {
     if node[].asm_type[].tag == AST_BackendDouble_t {
         emit(ctx, "    "             "    "             "comi")
     }
@@ -653,7 +653,7 @@ fn cmp_instr(ctx: *struc GasCodeContext, node: *struc AsmCmp) none {
     emit(ctx, "\n")
 }
 
-fn idiv_instr(ctx: *struc GasCodeContext, node: *struc AsmIdiv) none {
+fn idiv_instr(ctx: Ctx, node: *struc AsmIdiv) none {
     emit(ctx, "    "         "    "         "idiv")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -664,7 +664,7 @@ fn idiv_instr(ctx: *struc GasCodeContext, node: *struc AsmIdiv) none {
     emit(ctx, "\n")
 }
 
-fn div_instr(ctx: *struc GasCodeContext, node: *struc AsmDiv) none {
+fn div_instr(ctx: Ctx, node: *struc AsmDiv) none {
     emit(ctx, "    "         "    "         "div")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -675,7 +675,7 @@ fn div_instr(ctx: *struc GasCodeContext, node: *struc AsmDiv) none {
     emit(ctx, "\n")
 }
 
-fn cdq_instr(ctx: *struc GasCodeContext, node: *struc AsmCdq) none {
+fn cdq_instr(ctx: Ctx, node: *struc AsmCdq) none {
     match node[].asm_type[].tag {
         -> AST_LongWord_t {
             emit(ctx, "    "                 "    "                 "cdq"                 "\n")
@@ -691,13 +691,13 @@ fn cdq_instr(ctx: *struc GasCodeContext, node: *struc AsmCdq) none {
     }
 }
 
-fn jmp_instr(ctx: *struc GasCodeContext, node: *struc AsmJmp) none {
+fn jmp_instr(ctx: Ctx, node: *struc AsmJmp) none {
     emit(ctx, "    "         "    "         "jmp "         ".L")
     emit_identifier(ctx, node[].target)
     emit(ctx, "\n")
 }
 
-fn jmp_cc_instr(ctx: *struc GasCodeContext, node: *struc AsmJmpCC) none {
+fn jmp_cc_instr(ctx: Ctx, node: *struc AsmJmpCC) none {
     emit(ctx, "    "         "    "         "j")
     emit(ctx, get_cond_code(@node[].cond_code))
     emit(ctx, " "         ".L")
@@ -705,7 +705,7 @@ fn jmp_cc_instr(ctx: *struc GasCodeContext, node: *struc AsmJmpCC) none {
     emit(ctx, "\n")
 }
 
-fn set_cc_instr(ctx: *struc GasCodeContext, node: *struc AsmSetCC) none {
+fn set_cc_instr(ctx: Ctx, node: *struc AsmSetCC) none {
     emit(ctx, "    "         "    "         "set")
     emit(ctx, get_cond_code(@node[].cond_code))
     emit(ctx, " ")
@@ -713,25 +713,25 @@ fn set_cc_instr(ctx: *struc GasCodeContext, node: *struc AsmSetCC) none {
     emit(ctx, "\n")
 }
 
-fn label_instr(ctx: *struc GasCodeContext, node: *struc AsmLabel) none {
+fn label_instr(ctx: Ctx, node: *struc AsmLabel) none {
     emit(ctx, "    "         ".L")
     emit_identifier(ctx, node[].name)
     emit(ctx, ":"         "\n")
 }
 
-fn push_instr(ctx: *struc GasCodeContext, node: *struc AsmPush) none {
+fn push_instr(ctx: Ctx, node: *struc AsmPush) none {
     emit(ctx, "    "         "    "         "pushq ")
     emit_op(ctx, node[].src, 8)
     emit(ctx, "\n")
 }
 
-fn pop_instr(ctx: *struc GasCodeContext, node: *struc AsmPop) none {
+fn pop_instr(ctx: Ctx, node: *struc AsmPop) none {
     emit(ctx, "    "         "    "         "popq ")
     emit(ctx, get_reg_8b(@node[].reg))
     emit(ctx, "\n")
 }
 
-fn call_instr(ctx: *struc GasCodeContext, node: *struc AsmCall) none {
+fn call_instr(ctx: Ctx, node: *struc AsmCall) none {
     emit(ctx, "    "         "    "         "call ")
     emit_identifier(ctx, node[].name)
     backend_fun_symbol: *struc BackendSymbol = map_get(ctx[].backend[].symbol_table, node[].name)
@@ -742,11 +742,11 @@ fn call_instr(ctx: *struc GasCodeContext, node: *struc AsmCall) none {
     emit(ctx, "\n")
 }
 
-fn ret_instr(ctx: *struc GasCodeContext) none {
+fn ret_instr(ctx: Ctx) none {
     emit(ctx, "    "         "movq %rbp, %rsp"         "\n"         "    "         "popq %rbp"         "\n"         "    "         "ret"         "\n")
 }
 
-fn emit_instr(ctx: *struc GasCodeContext, node: *struc AsmInstruction) none {
+fn emit_instr(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
             mov_instr(ctx, @node[].get._AsmMov)
@@ -834,13 +834,13 @@ fn emit_instr(ctx: *struc GasCodeContext, node: *struc AsmInstruction) none {
     }
 }
 
-fn emit_instr_list(ctx: *struc GasCodeContext, node_list: vector_t(unique_ptr_t(AsmInstruction))) none {
+fn emit_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(AsmInstruction))) none {
     loop i: u64 = ? node_list[0] then 0 else 1 while i < vec_size(node_list) .. ++i {
         emit_instr(ctx, node_list[i])
     }
 }
 
-fn glob_directive_toplvl(ctx: *struc GasCodeContext, name: u64, is_glob: i32) none {
+fn glob_directive_toplvl(ctx: Ctx, name: u64, is_glob: i32) none {
     if is_glob {
         emit(ctx, "    "             ".globl ")
         emit_identifier(ctx, name)
@@ -848,7 +848,7 @@ fn glob_directive_toplvl(ctx: *struc GasCodeContext, name: u64, is_glob: i32) no
     }
 }
 
-fn emit_fun_toplvl(ctx: *struc GasCodeContext, node: *struc AsmFunction) none {
+fn emit_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     glob_directive_toplvl(ctx, node[].name, node[].is_glob)
     emit(ctx, "    "         ".text"         "\n")
     emit_identifier(ctx, node[].name)
@@ -856,7 +856,7 @@ fn emit_fun_toplvl(ctx: *struc GasCodeContext, node: *struc AsmFunction) none {
     emit_instr_list(ctx, node[].instructions)
 }
 
-fn static_section_toplvl(ctx: *struc GasCodeContext, node_list: vector_t(shared_ptr_t(StaticInit))) none {
+fn static_section_toplvl(ctx: Ctx, node_list: vector_t(shared_ptr_t(StaticInit))) none {
     if vec_size(node_list) == 1 and node_list[0][].tag == AST_ZeroInit_t {
         emit(ctx, "    "             ".bss"             "\n")
     }
@@ -865,7 +865,7 @@ fn static_section_toplvl(ctx: *struc GasCodeContext, node_list: vector_t(shared_
     }
 }
 
-fn align_directive_toplvl(ctx: *struc GasCodeContext, alignment: i32) none {
+fn align_directive_toplvl(ctx: Ctx, alignment: i32) none {
     if alignment > 1 {
         emit(ctx, "    "             ".balign ")
         emit_int(ctx, alignment)
@@ -873,7 +873,7 @@ fn align_directive_toplvl(ctx: *struc GasCodeContext, alignment: i32) none {
     }
 }
 
-fn static_init_toplvl(ctx: *struc GasCodeContext, node: *struc StaticInit) none {
+fn static_init_toplvl(ctx: Ctx, node: *struc StaticInit) none {
     match node[].tag {
         -> AST_CharInit_t {
             emit(ctx, "    "                 "    "                 ".byte ")
@@ -946,7 +946,7 @@ fn static_init_toplvl(ctx: *struc GasCodeContext, node: *struc StaticInit) none 
     }
 }
 
-fn emit_static_var_toplvl(ctx: *struc GasCodeContext, node: *struc AsmStaticVariable) none {
+fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
     glob_directive_toplvl(ctx, node[].name, node[].is_glob)
     static_section_toplvl(ctx, node[].static_inits)
     align_directive_toplvl(ctx, node[].alignment)
@@ -957,7 +957,7 @@ fn emit_static_var_toplvl(ctx: *struc GasCodeContext, node: *struc AsmStaticVari
     }
 }
 
-fn emit_static_const_toplvl(ctx: *struc GasCodeContext, node: *struc AsmStaticConstant) none {
+fn emit_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
     emit(ctx, "    "         ".section .rodata"         "\n")
     align_directive_toplvl(ctx, node[].alignment)
     emit(ctx, ".L")
@@ -966,7 +966,7 @@ fn emit_static_const_toplvl(ctx: *struc GasCodeContext, node: *struc AsmStaticCo
     static_init_toplvl(ctx, node[].static_init)
 }
 
-fn emit_toplvl(ctx: *struc GasCodeContext, node: *struc AsmTopLevel) none {
+fn emit_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     emit(ctx, "\n")
     match node[].tag {
         -> AST_AsmFunction_t {
@@ -987,7 +987,7 @@ fn emit_toplvl(ctx: *struc GasCodeContext, node: *struc AsmTopLevel) none {
     }
 }
 
-fn emit_program(ctx: *struc GasCodeContext, node: *struc AsmProgram) none {
+fn emit_program(ctx: Ctx, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         emit_toplvl(ctx, node[].static_const_toplvls[i])
     }

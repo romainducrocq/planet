@@ -12,9 +12,9 @@ ElementKey(``hash_t'')
 
 type struc LexerContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, line: string, line_size: u64, match_at: u64, match_size: u64, includename_set: hashset_t(``hash_t''), p_includedirs: *vector_t(string), p_stdlibdirs: *vector_t(string), p_toks: *vector_t(struc Token), paren_depth: u64, total_linenum: u64)
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc LexerContext')m4_dnl
 
-fn get_char(ctx: *struc LexerContext) char {
+fn get_char(ctx: Ctx) char {
     i: u64 = ctx[].match_at + ctx[].match_size
     if i < ctx[].line_size {
         return ctx[].line[i]
@@ -29,7 +29,7 @@ m4_define(`LEX_DIGIT', `TODO')m4_dnl
 m4_define(`LEX_LETTER', `TODO')m4_dnl
 m4_define(`LEX_WORD', `TODO')m4_dnl
 
-fn match_char(ctx: *struc LexerContext, c: char) i32 {
+fn match_char(ctx: Ctx, c: char) i32 {
     if c == get_char(ctx) {
         ctx[].match_size++
         return true
@@ -39,7 +39,7 @@ fn match_char(ctx: *struc LexerContext, c: char) i32 {
     }
 }
 
-fn match_chars(ctx: *struc LexerContext, cs: string, n: u64) i32 {
+fn match_chars(ctx: Ctx, cs: string, n: u64) i32 {
     loop i: u64 = 0 while i < n .. ++i {
         if not match_char(ctx, cs[i]) {
             return false
@@ -48,7 +48,7 @@ fn match_chars(ctx: *struc LexerContext, cs: string, n: u64) i32 {
     return true
 }
 
-fn match_invert(ctx: *struc LexerContext, c: char) i32 {
+fn match_invert(ctx: Ctx, c: char) i32 {
     inv: char = get_char(ctx)
     if inv ~= 0 and c ~= inv {
         ctx[].match_size++
@@ -59,7 +59,7 @@ fn match_invert(ctx: *struc LexerContext, c: char) i32 {
     }
 }
 
-fn match_space(ctx: *struc LexerContext) i32 {
+fn match_space(ctx: Ctx) i32 {
     match get_char(ctx) {
         -> ' ' {
             -> '\t' {
@@ -73,7 +73,7 @@ fn match_space(ctx: *struc LexerContext) i32 {
     }
 }
 
-fn match_digit(ctx: *struc LexerContext) i32 {
+fn match_digit(ctx: Ctx) i32 {
     match get_char(ctx) {
         -> '0' {
             -> '1' {
@@ -103,7 +103,7 @@ fn match_digit(ctx: *struc LexerContext) i32 {
     }
 }
 
-fn match_word(ctx: *struc LexerContext) i32 {
+fn match_word(ctx: Ctx) i32 {
     match get_char(ctx) {
         -> '0' {
             -> '1' {
@@ -239,12 +239,12 @@ fn match_word(ctx: *struc LexerContext) i32 {
     }
 }
 
-fn match_error(ctx: *struc LexerContext) i32 {
+fn match_error(ctx: Ctx) i32 {
     ctx[].match_size++
     return TOK_error
 }
 
-fn match_include(ctx: *struc LexerContext, tok_kind: i32) i32 {
+fn match_include(ctx: Ctx, tok_kind: i32) i32 {
     loop while match_space(ctx) {
         ;
     }
@@ -280,7 +280,7 @@ fn match_include(ctx: *struc LexerContext, tok_kind: i32) i32 {
     return match_error(ctx)
 }
 
-fn match_char_const(ctx: *struc LexerContext, is_str: i32) i32 {
+fn match_char_const(ctx: Ctx, is_str: i32) i32 {
     match get_char(ctx) {
         -> '\'' {
             if not is_str {
@@ -342,7 +342,7 @@ fn match_char_const(ctx: *struc LexerContext, is_str: i32) i32 {
     }
 }
 
-fn match_string_literal(ctx: *struc LexerContext) i32 {
+fn match_string_literal(ctx: Ctx) i32 {
     tok_kind: i32;
     loop .. while tok_kind == TOK_char_const {
         tok_kind = match_char_const(ctx, true)
@@ -350,7 +350,7 @@ fn match_string_literal(ctx: *struc LexerContext) i32 {
     return tok_kind
 }
 
-fn match_const_end(ctx: *struc LexerContext, tok_kind: i32) i32 {
+fn match_const_end(ctx: Ctx, tok_kind: i32) i32 {
     match get_char(ctx) {
         -> '0' {
             -> '1' {
@@ -487,7 +487,7 @@ fn match_const_end(ctx: *struc LexerContext, tok_kind: i32) i32 {
     }
 }
 
-fn match_dbl_exponent(ctx: *struc LexerContext) i32 {
+fn match_dbl_exponent(ctx: Ctx) i32 {
     match get_char(ctx) {
         -> '+' {
             -> '-' {
@@ -508,7 +508,7 @@ fn match_dbl_exponent(ctx: *struc LexerContext) i32 {
     return match_const_end(ctx, TOK_dbl_const)
 }
 
-fn match_dbl_fraction(ctx: *struc LexerContext) i32 {
+fn match_dbl_fraction(ctx: Ctx) i32 {
     loop while match_digit(ctx) {
         ;
     }
@@ -520,7 +520,7 @@ fn match_dbl_fraction(ctx: *struc LexerContext) i32 {
     }
 }
 
-fn match_const(ctx: *struc LexerContext) i32 {
+fn match_const(ctx: Ctx) i32 {
     loop while match_digit(ctx) {
         ;
     }
@@ -552,7 +552,7 @@ fn match_const(ctx: *struc LexerContext) i32 {
     }
 }
 
-fn match_identifier(ctx: *struc LexerContext) i32 {
+fn match_identifier(ctx: Ctx) i32 {
     match ctx[].line[ctx[].match_at] {
         -> 'a' {
             if match_char(ctx, 'n') {
@@ -804,7 +804,7 @@ fn match_identifier(ctx: *struc LexerContext) i32 {
     return TOK_identifier
 }
 
-fn match_token(ctx: *struc LexerContext) i32 {
+fn match_token(ctx: Ctx) i32 {
     ctx[].match_size = 1
     match ctx[].line[ctx[].match_at] {
         -> '(' {
@@ -1155,7 +1155,7 @@ fn match_token(ctx: *struc LexerContext) i32 {
     }
 }
 
-fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string_t {
+fn get_match(ctx: Ctx, match_at: u64, match_size: u64) string_t {
     smatch: string_t = str_new("")
     str_resize(smatch, match_size)
     loop i: u64 = 0 while i < match_size .. ++i {
@@ -1164,15 +1164,15 @@ fn get_match(ctx: *struc LexerContext, match_at: u64, match_size: u64) string_t 
     return smatch
 }
 
-fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) error_t;
+fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error_t;
 
-fn push_token_info(ctx: *struc LexerContext) u64 {
+fn push_token_info(ctx: Ctx) u64 {
     token_info: struc TokenInfo = $(cast<i32>(ctx[].match_at), cast<i32>(ctx[].match_size), ctx[].total_linenum)
     vec_push_back(ctx[].errors[].token_infos, token_info)
     return vec_size(ctx[].errors[].token_infos) - 1
 }
 
-fn tokenize_file(ctx: *struc LexerContext) error_t {
+fn tokenize_file(ctx: Ctx) error_t {
     smatch: string_t = str_new(nil)
     CATCH_ENTER
     loop linenum: u64 = 1 while read_line(ctx[].fileio, @ctx[].line, @ctx[].line_size) .. ++linenum {
@@ -1284,7 +1284,7 @@ fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
     return false
 }
 
-fn tokenize_include(ctx: *struc LexerContext, match_tok: u64, linenum: u64, is_empty: i32) error_t {
+fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error_t {
     filename: string_t = str_new(nil)
     fopen_name: string_t = str_new(nil)
     CATCH_ENTER

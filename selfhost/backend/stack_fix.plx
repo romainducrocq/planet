@@ -13,7 +13,7 @@ PairKeyValue(``TIdentifier'', i64)
 
 type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: hashmap_t(``TIdentifier'', i64), p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc StackFixContext')m4_dnl
 
 fn pseudo_data(node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     name: u64 = node[].name
@@ -28,31 +28,31 @@ fn pseudo_mem_data(node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperan
     pseudo_op[] = make_AsmData(name, offset)
 }
 
-fn pseudo_memory(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
+fn pseudo_memory(ctx: Ctx, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     value: i64 = -1l * map_get(ctx[].pseudo_stack_map, node[].name)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
-fn pseudo_mem_memory(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
+fn pseudo_mem_memory(ctx: Ctx, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     value: i64 = -1l * (map_get(ctx[].pseudo_stack_map, node[].name) - node[].offset)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
-fn align_offset_stack_bytes(ctx: *struc StackFixContext, alignment: i32) none {
+fn align_offset_stack_bytes(ctx: Ctx, alignment: i32) none {
     offset: i64 = ctx[].stack_bytes % alignment
     if offset ~= 0l {
         ctx[].stack_bytes += alignment - offset
     }
 }
 
-fn align_offset_pseudo(ctx: *struc StackFixContext, size: i64, alignment: i32) none {
+fn align_offset_pseudo(ctx: Ctx, size: i64, alignment: i32) none {
     ctx[].stack_bytes += size
     align_offset_stack_bytes(ctx, alignment)
 }
 
-fn alloc_offset_pseudo(ctx: *struc StackFixContext, asm_type: *struc AssemblyType) none {
+fn alloc_offset_pseudo(ctx: Ctx, asm_type: *struc AssemblyType) none {
     match asm_type[].tag {
         -> AST_Byte_t {
             align_offset_pseudo(ctx, 1l, 1)
@@ -74,7 +74,7 @@ fn alloc_offset_pseudo(ctx: *struc StackFixContext, asm_type: *struc AssemblyTyp
     }
 }
 
-fn alloc_offset_pseudo_mem(ctx: *struc StackFixContext, asm_type: *struc AssemblyType) none {
+fn alloc_offset_pseudo_mem(ctx: Ctx, asm_type: *struc AssemblyType) none {
     if asm_type[].tag == AST_ByteArray_t {
         bytearray_type: *struc ByteArray = @asm_type[].get._ByteArray
         align_offset_pseudo(ctx, bytearray_type[].size, bytearray_type[].alignment)
@@ -84,7 +84,7 @@ fn alloc_offset_pseudo_mem(ctx: *struc StackFixContext, asm_type: *struc Assembl
     }
 }
 
-fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
+fn repl_pseudo_op(ctx: Ctx, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
         backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
@@ -99,7 +99,7 @@ fn repl_pseudo_op(ctx: *struc StackFixContext, node: *struc AsmPseudo, pseudo_op
     pseudo_memory(ctx, node, pseudo_op)
 }
 
-fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
+fn repl_pseudo_mem_op(ctx: Ctx, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
         backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
@@ -114,7 +114,7 @@ fn repl_pseudo_mem_op(ctx: *struc StackFixContext, node: *struc AsmPseudoMem, ps
     pseudo_mem_memory(ctx, node, pseudo_op)
 }
 
-fn repl_mov_pseudo(ctx: *struc StackFixContext, node: *struc AsmMov) none {
+fn repl_mov_pseudo(ctx: Ctx, node: *struc AsmMov) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -143,7 +143,7 @@ fn repl_mov_pseudo(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     }
 }
 
-fn repl_mov_sx_pseudo(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
+fn repl_mov_sx_pseudo(ctx: Ctx, node: *struc AsmMovSx) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -172,7 +172,7 @@ fn repl_mov_sx_pseudo(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     }
 }
 
-fn repl_zero_extend_pseudo(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
+fn repl_zero_extend_pseudo(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -201,7 +201,7 @@ fn repl_zero_extend_pseudo(ctx: *struc StackFixContext, node: *struc AsmMovZeroE
     }
 }
 
-fn repl_lea_pseudo(ctx: *struc StackFixContext, node: *struc AsmLea) none {
+fn repl_lea_pseudo(ctx: Ctx, node: *struc AsmLea) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -230,7 +230,7 @@ fn repl_lea_pseudo(ctx: *struc StackFixContext, node: *struc AsmLea) none {
     }
 }
 
-fn repl_cvttsd2si_pseudo(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) none {
+fn repl_cvttsd2si_pseudo(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -259,7 +259,7 @@ fn repl_cvttsd2si_pseudo(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si)
     }
 }
 
-fn repl_cvtsi2sd_pseudo(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
+fn repl_cvtsi2sd_pseudo(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -288,7 +288,7 @@ fn repl_cvtsi2sd_pseudo(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) n
     }
 }
 
-fn repl_unary(ctx: *struc StackFixContext, node: *struc AsmUnary) none {
+fn repl_unary(ctx: Ctx, node: *struc AsmUnary) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
@@ -304,36 +304,7 @@ fn repl_unary(ctx: *struc StackFixContext, node: *struc AsmUnary) none {
     }
 }
 
-fn repl_binary_pseudo(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
-    match node[].src[].tag {
-        -> AST_AsmPseudo_t {
-            repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
-        }
-        break
-        -> AST_AsmPseudoMem_t {
-            repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
-        }
-        break
-        otherwise {
-            break
-        }
-    }
-    match node[].dst[].tag {
-        -> AST_AsmPseudo_t {
-            repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
-        }
-        break
-        -> AST_AsmPseudoMem_t {
-            repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
-        }
-        break
-        otherwise {
-            break
-        }
-    }
-}
-
-fn repl_cmp_pseudo(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
+fn repl_binary_pseudo(ctx: Ctx, node: *struc AsmBinary) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -362,7 +333,7 @@ fn repl_cmp_pseudo(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     }
 }
 
-fn repl_idiv_pseudo(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
+fn repl_cmp_pseudo(ctx: Ctx, node: *struc AsmCmp) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -376,25 +347,6 @@ fn repl_idiv_pseudo(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
             break
         }
     }
-}
-
-fn repl_div_pseudo(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
-    match node[].src[].tag {
-        -> AST_AsmPseudo_t {
-            repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
-        }
-        break
-        -> AST_AsmPseudoMem_t {
-            repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
-        }
-        break
-        otherwise {
-            break
-        }
-    }
-}
-
-fn repl_set_cc_pseudo(ctx: *struc StackFixContext, node: *struc AsmSetCC) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
@@ -410,7 +362,7 @@ fn repl_set_cc_pseudo(ctx: *struc StackFixContext, node: *struc AsmSetCC) none {
     }
 }
 
-fn repl_push_pseudo(ctx: *struc StackFixContext, node: *struc AsmPush) none {
+fn repl_idiv_pseudo(ctx: Ctx, node: *struc AsmIdiv) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
@@ -426,7 +378,55 @@ fn repl_push_pseudo(ctx: *struc StackFixContext, node: *struc AsmPush) none {
     }
 }
 
-fn repl_pseudo_regs(ctx: *struc StackFixContext, node: *struc AsmInstruction) none {
+fn repl_div_pseudo(ctx: Ctx, node: *struc AsmDiv) none {
+    match node[].src[].tag {
+        -> AST_AsmPseudo_t {
+            repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+        }
+        break
+        -> AST_AsmPseudoMem_t {
+            repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+        }
+        break
+        otherwise {
+            break
+        }
+    }
+}
+
+fn repl_set_cc_pseudo(ctx: Ctx, node: *struc AsmSetCC) none {
+    match node[].dst[].tag {
+        -> AST_AsmPseudo_t {
+            repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+        }
+        break
+        -> AST_AsmPseudoMem_t {
+            repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+        }
+        break
+        otherwise {
+            break
+        }
+    }
+}
+
+fn repl_push_pseudo(ctx: Ctx, node: *struc AsmPush) none {
+    match node[].src[].tag {
+        -> AST_AsmPseudo_t {
+            repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+        }
+        break
+        -> AST_AsmPseudoMem_t {
+            repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+        }
+        break
+        otherwise {
+            break
+        }
+    }
+}
+
+fn repl_pseudo_regs(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
             repl_mov_pseudo(ctx, @node[].get._AsmMov)
@@ -502,11 +502,11 @@ pub fn alloc_stack_bytes(byte: i64) unique_ptr_t(AsmInstruction) {
     return make_AsmBinary(@binop, @asm_type, @src, @dst)
 }
 
-fn push_fix_instr(ctx: *struc StackFixContext, instr: unique_ptr_t(AsmInstruction)) none {
+fn push_fix_instr(ctx: Ctx, instr: unique_ptr_t(AsmInstruction)) none {
     vec_move_back(ctx[].p_fix_instrs[], instr)
 }
 
-fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
+fn swap_fix_instr_back(ctx: Ctx) none {
     swap_instr: unique_ptr_t(AsmInstruction) = uptr_new()
     instr_back_1: *unique_ptr_t(AsmInstruction) = @vec_back(ctx[].p_fix_instrs[])
     instr_back_2: *unique_ptr_t(AsmInstruction) = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
@@ -515,7 +515,7 @@ fn swap_fix_instr_back(ctx: *struc StackFixContext) none {
     uptr_move(AsmInstruction, swap_instr, instr_back_2[])
 }
 
-fn fix_alloc_stack_bytes(ctx: *struc StackFixContext, callee_saved_size: i64) none {
+fn fix_alloc_stack_bytes(ctx: Ctx, callee_saved_size: i64) none {
     callee_saved_bytes: i64 = callee_saved_size * 8l
     ctx[].stack_bytes += callee_saved_bytes
     if ctx[].stack_bytes > 0l {
@@ -525,7 +525,7 @@ fn fix_alloc_stack_bytes(ctx: *struc StackFixContext, callee_saved_size: i64) no
     }
 }
 
-fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
+fn push_callee_saved_regs(ctx: Ctx, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = 0 while i < vec_size(callee_saved_regs) .. ++i {
         src: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, callee_saved_regs[i], src)
@@ -533,7 +533,7 @@ fn push_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector
     }
 }
 
-fn pop_callee_saved_regs(ctx: *struc StackFixContext, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
+fn pop_callee_saved_regs(ctx: Ctx, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand))) none {
     loop i: u64 = vec_size(callee_saved_regs) while i-- > 0 {
         THROW_ABORT_IF(callee_saved_regs[i][].tag ~= AST_AsmRegister_t)
         reg_kind: i32 = register_mask_kind(@callee_saved_regs[i][].get._AsmRegister.reg)
@@ -582,7 +582,7 @@ fn is_op_addr(node: *struc AsmOperand) i32 {
     }
 }
 
-fn mov_dbl_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
+fn mov_dbl_from_addr_to_addr(ctx: Ctx, node: *struc AsmMov) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_Xmm14)
@@ -593,7 +593,7 @@ fn mov_dbl_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) n
     swap_fix_instr_back(ctx)
 }
 
-fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
+fn mov_from_quad_imm(ctx: Ctx, node: *struc AsmMov) none {
     if node[].dst[].tag == AST_AsmRegister_t {
         if node[].asm_type[].tag ~= AST_QuadWord_t {
             free_AssemblyType(@node[].asm_type)
@@ -610,7 +610,7 @@ fn mov_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     swap_fix_instr_back(ctx)
 }
 
-fn mov_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
+fn mov_from_addr_to_addr(ctx: Ctx, node: *struc AsmMov) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -621,7 +621,7 @@ fn mov_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none 
     swap_fix_instr_back(ctx)
 }
 
-fn fix_mov_instr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
+fn fix_mov_instr(ctx: Ctx, node: *struc AsmMov) none {
     if node[].asm_type[].tag == AST_BackendDouble_t {
         if is_op_addr(node[].src) and is_op_addr(node[].dst) {
             mov_dbl_from_addr_to_addr(ctx, node)
@@ -637,7 +637,7 @@ fn fix_mov_instr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     }
 }
 
-fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
+fn mov_sx_from_imm(ctx: Ctx, node: *struc AsmMovSx) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -648,7 +648,7 @@ fn mov_sx_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     swap_fix_instr_back(ctx)
 }
 
-fn mov_sx_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
+fn mov_sx_to_addr(ctx: Ctx, node: *struc AsmMovSx) none {
     src: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
@@ -658,7 +658,7 @@ fn mov_sx_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
-fn fix_mov_sx_instr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
+fn fix_mov_sx_instr(ctx: Ctx, node: *struc AsmMovSx) none {
     if node[].src[].tag == AST_AsmImm_t {
         mov_sx_from_imm(ctx, node)
     }
@@ -667,7 +667,7 @@ fn fix_mov_sx_instr(ctx: *struc StackFixContext, node: *struc AsmMovSx) none {
     }
 }
 
-fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
+fn byte_zero_extend_from_imm(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -677,7 +677,7 @@ fn byte_zero_extend_from_imm(ctx: *struc StackFixContext, node: *struc AsmMovZer
     swap_fix_instr_back(ctx)
 }
 
-fn byte_zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
+fn byte_zero_extend_to_addr(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     src: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
@@ -687,7 +687,7 @@ fn byte_zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMovZero
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
-fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) *struc AsmMov {
+fn zero_extend_as_mov(ctx: Ctx, node: *struc AsmMovZeroExtend) *struc AsmMov {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
@@ -699,7 +699,7 @@ fn zero_extend_as_mov(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend
     return @(instr_back[])[].get._AsmMov
 }
 
-fn zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
+fn zero_extend_to_addr(ctx: Ctx, node: *struc AsmMov) none {
     src: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
@@ -708,7 +708,7 @@ fn zero_extend_to_addr(ctx: *struc StackFixContext, node: *struc AsmMov) none {
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
-fn fix_zero_extend_instr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExtend) none {
+fn fix_zero_extend_instr(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     if node[].asm_type_src[].tag == AST_Byte_t {
         if node[].src[].tag == AST_AsmImm_t {
             byte_zero_extend_from_imm(ctx, node)
@@ -725,7 +725,7 @@ fn fix_zero_extend_instr(ctx: *struc StackFixContext, node: *struc AsmMovZeroExt
     }
 }
 
-fn lea_to_addr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
+fn lea_to_addr(ctx: Ctx, node: *struc AsmLea) none {
     src: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
@@ -734,13 +734,13 @@ fn lea_to_addr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
-fn fix_lea_instr(ctx: *struc StackFixContext, node: *struc AsmLea) none {
+fn fix_lea_instr(ctx: Ctx, node: *struc AsmLea) none {
     if is_op_addr(node[].dst) {
         lea_to_addr(ctx, node)
     }
 }
 
-fn cvttsd2si_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) none {
+fn cvttsd2si_to_addr(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     src: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
@@ -750,13 +750,13 @@ fn cvttsd2si_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) non
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
-fn fix_cvttsd2si_instr(ctx: *struc StackFixContext, node: *struc AsmCvttsd2si) none {
+fn fix_cvttsd2si_instr(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     if is_op_addr(node[].dst) {
         cvttsd2si_to_addr(ctx, node)
     }
 }
 
-fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
+fn cvtsi2sd_from_imm(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -767,7 +767,7 @@ fn cvtsi2sd_from_imm(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none
     swap_fix_instr_back(ctx)
 }
 
-fn cvtsi2sd_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
+fn cvtsi2sd_to_addr(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     src: shared_ptr_t(AsmOperand) = gen_register(REG_Xmm15)
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, dst)
@@ -776,7 +776,7 @@ fn cvtsi2sd_to_addr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none 
     push_fix_instr(ctx, make_AsmMov(@asm_type, @src, @dst))
 }
 
-fn fix_cvtsi2sd_instr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) none {
+fn fix_cvtsi2sd_instr(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     if node[].src[].tag == AST_AsmImm_t {
         cvtsi2sd_from_imm(ctx, node)
     }
@@ -785,7 +785,7 @@ fn fix_cvtsi2sd_instr(ctx: *struc StackFixContext, node: *struc AsmCvtsi2sd) non
     }
 }
 
-fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
+fn binary_dbl_to_addr(ctx: Ctx, node: *struc AsmBinary) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_Xmm15)
@@ -804,7 +804,7 @@ fn binary_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none 
     push_fix_instr(ctx, make_AsmMov(@asm_type, @dst, @src))
 }
 
-fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
+fn binary_from_quad_imm(ctx: Ctx, node: *struc AsmBinary) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -814,7 +814,7 @@ fn binary_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) non
     swap_fix_instr_back(ctx)
 }
 
-fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
+fn binary_from_addr_to_addr(ctx: Ctx, node: *struc AsmBinary) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -825,7 +825,7 @@ fn binary_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary)
     swap_fix_instr_back(ctx)
 }
 
-fn binary_imul_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
+fn binary_imul_to_addr(ctx: Ctx, node: *struc AsmBinary) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
@@ -845,7 +845,7 @@ fn binary_imul_to_addr(ctx: *struc StackFixContext, node: *struc AsmBinary) none
     push_fix_instr(ctx, make_AsmMov(@asm_type, @dst, @src))
 }
 
-fn binary_shx_from_not_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
+fn binary_shx_from_not_imm(ctx: Ctx, node: *struc AsmBinary) none {
     if node[].src[].tag == AST_AsmRegister_t and register_mask_kind(@node[].src[].get._AsmRegister.reg) == REG_Cx {
         return none
     }
@@ -859,7 +859,7 @@ fn binary_shx_from_not_imm(ctx: *struc StackFixContext, node: *struc AsmBinary) 
     swap_fix_instr_back(ctx)
 }
 
-fn fix_binary_instr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
+fn fix_binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
     if node[].asm_type[].tag == AST_BackendDouble_t {
         if is_op_addr(node[].dst) {
             binary_dbl_to_addr(ctx, node)
@@ -913,7 +913,7 @@ fn fix_binary_instr(ctx: *struc StackFixContext, node: *struc AsmBinary) none {
     }
 }
 
-fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
+fn cmp_dbl_to_addr(ctx: Ctx, node: *struc AsmCmp) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_Xmm15)
@@ -923,7 +923,7 @@ fn cmp_dbl_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     swap_fix_instr_back(ctx)
 }
 
-fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
+fn cmp_from_quad_imm(ctx: Ctx, node: *struc AsmCmp) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -933,7 +933,7 @@ fn cmp_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     swap_fix_instr_back(ctx)
 }
 
-fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
+fn cmp_from_addr_to_addr(ctx: Ctx, node: *struc AsmCmp) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -944,7 +944,7 @@ fn cmp_from_addr_to_addr(ctx: *struc StackFixContext, node: *struc AsmCmp) none 
     swap_fix_instr_back(ctx)
 }
 
-fn cmp_to_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
+fn cmp_to_imm(ctx: Ctx, node: *struc AsmCmp) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].dst, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R11)
@@ -955,7 +955,7 @@ fn cmp_to_imm(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     swap_fix_instr_back(ctx)
 }
 
-fn fix_cmp_instr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
+fn fix_cmp_instr(ctx: Ctx, node: *struc AsmCmp) none {
     if node[].asm_type[].tag == AST_BackendDouble_t {
         if is_op_addr(node[].dst) {
             cmp_dbl_to_addr(ctx, node)
@@ -974,7 +974,7 @@ fn fix_cmp_instr(ctx: *struc StackFixContext, node: *struc AsmCmp) none {
     }
 }
 
-fn idiv_from_imm(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
+fn idiv_from_imm(ctx: Ctx, node: *struc AsmIdiv) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -985,13 +985,13 @@ fn idiv_from_imm(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
     swap_fix_instr_back(ctx)
 }
 
-fn fix_idiv_instr(ctx: *struc StackFixContext, node: *struc AsmIdiv) none {
+fn fix_idiv_instr(ctx: Ctx, node: *struc AsmIdiv) none {
     if node[].src[].tag == AST_AsmImm_t {
         idiv_from_imm(ctx, node)
     }
 }
 
-fn div_from_imm(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
+fn div_from_imm(ctx: Ctx, node: *struc AsmDiv) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -1002,13 +1002,13 @@ fn div_from_imm(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
     swap_fix_instr_back(ctx)
 }
 
-fn fix_div_instr(ctx: *struc StackFixContext, node: *struc AsmDiv) none {
+fn fix_div_instr(ctx: Ctx, node: *struc AsmDiv) none {
     if node[].src[].tag == AST_AsmImm_t {
         div_from_imm(ctx, node)
     }
 }
 
-fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none {
+fn push_dbl_from_xmm_reg(ctx: Ctx, node: *struc AsmPush) none {
     src_reg: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src_reg)
 
@@ -1030,7 +1030,7 @@ fn push_dbl_from_xmm_reg(ctx: *struc StackFixContext, node: *struc AsmPush) none
     }
 }
 
-fn push_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmPush) none {
+fn push_from_quad_imm(ctx: Ctx, node: *struc AsmPush) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src)
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_R10)
@@ -1040,7 +1040,7 @@ fn push_from_quad_imm(ctx: *struc StackFixContext, node: *struc AsmPush) none {
     swap_fix_instr_back(ctx)
 }
 
-fn fix_push_instr(ctx: *struc StackFixContext, node: *struc AsmPush) none {
+fn fix_push_instr(ctx: Ctx, node: *struc AsmPush) none {
     if node[].src[].tag == AST_AsmRegister_t {
         reg_kind: i32 = register_mask_kind(@node[].src[].get._AsmRegister.reg)
         if reg_kind ~= REG_Sp and register_mask_bit(reg_kind) > 11 {
@@ -1052,7 +1052,7 @@ fn fix_push_instr(ctx: *struc StackFixContext, node: *struc AsmPush) none {
     }
 }
 
-fn fix_instr(ctx: *struc StackFixContext, node: *struc AsmInstruction) none {
+fn fix_instr(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
             fix_mov_instr(ctx, @node[].get._AsmMov)
@@ -1104,7 +1104,7 @@ fn fix_instr(ctx: *struc StackFixContext, node: *struc AsmInstruction) none {
     }
 }
 
-fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
+fn fix_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     instructions: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     vec_move(node[].instructions, instructions)
     backend_fun: *struc BackendFun = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendFun
@@ -1139,7 +1139,7 @@ fn fix_fun_toplvl(ctx: *struc StackFixContext, node: *struc AsmFunction) none {
     vec_delete(instructions)
 }
 
-fn fix_toplvl(ctx: *struc StackFixContext, node: *struc AsmTopLevel) none {
+fn fix_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     match node[].tag {
         -> AST_AsmFunction_t {
             fix_fun_toplvl(ctx, @node[].get._AsmFunction)
@@ -1154,7 +1154,7 @@ fn fix_toplvl(ctx: *struc StackFixContext, node: *struc AsmTopLevel) none {
     }
 }
 
-fn fix_program(ctx: *struc StackFixContext, node: *struc AsmProgram) none {
+fn fix_program(ctx: Ctx, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < vec_size(node[].top_levels) .. ++i {
         fix_toplvl(ctx, node[].top_levels[i])
     }

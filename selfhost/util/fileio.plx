@@ -5,7 +5,7 @@ m4_include(`../lib/c_std.plx.m4')m4_dnl
 
 m4_include(`../frontend/errors.plx.m4')m4_dnl
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc FileIoContext')m4_dnl
 m4_define(`WRITE_BUF_SIZE', `4096')m4_dnl
 
 pub fn find_file(filename: string) i32 {
@@ -19,7 +19,7 @@ pub fn find_file(filename: string) i32 {
     }
 }
 
-pub fn get_filename(ctx: *struc FileIoContext) string {
+pub fn get_filename(ctx: Ctx) string {
     if not vec_empty(ctx[].file_reads) {
         return vec_back(ctx[].file_reads).filename
     }
@@ -28,11 +28,11 @@ pub fn get_filename(ctx: *struc FileIoContext) string {
     }
 }
 
-pub fn set_filename(ctx: *struc FileIoContext, filename: string_t) none {
+pub fn set_filename(ctx: Ctx, filename: string_t) none {
     str_copy(filename, ctx[].filename)
 }
 
-pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) error_t {
+pub fn open_fread(ctx: Ctx, filename: string_t) error_t {
     CATCH_ENTER
     loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         if ctx[].file_reads[i].fd {
@@ -59,7 +59,7 @@ pub fn open_fread(ctx: *struc FileIoContext, filename: string_t) error_t {
     CATCH_EXIT
 }
 
-pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) error_t {
+pub fn open_fwrite(ctx: Ctx, filename: string_t) error_t {
     CATCH_ENTER
     THROW_ABORT_IF(not vec_empty(ctx[].file_reads))
     ctx[].fd_write = nil
@@ -73,7 +73,7 @@ pub fn open_fwrite(ctx: *struc FileIoContext, filename: string_t) error_t {
     CATCH_EXIT
 }
 
-pub fn read_line(ctx: *struc FileIoContext, line: *string, line_size: *u64) i32 {
+pub fn read_line(ctx: Ctx, line: *string, line_size: *u64) i32 {
     line_ssize: i64 = getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len, vec_back(ctx[].file_reads).fd)
     if line_ssize == -1 {
         line = nil
@@ -90,11 +90,11 @@ pub fn read_line(ctx: *struc FileIoContext, line: *string, line_size: *u64) i32 
     }
 }
 
-fn write_chunk(ctx: *struc FileIoContext, buf: string, buf_size: u64) none {
+fn write_chunk(ctx: Ctx, buf: string, buf_size: u64) none {
     fwrite(buf, sizeof<char>, buf_size, ctx[].fd_write)
 }
 
-pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
+pub fn write_buffer(ctx: Ctx, buf: string) none {
     str_append(ctx[].write_buf, buf)
     loop while str_size(ctx[].write_buf) >= WRITE_BUF_SIZE {
         write_chunk(ctx, ctx[].write_buf, WRITE_BUF_SIZE)
@@ -102,7 +102,7 @@ pub fn write_buffer(ctx: *struc FileIoContext, buf: string) none {
     }
 }
 
-pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) error_t {
+pub fn close_fread(ctx: Ctx, linenum: u64) error_t {
     CATCH_ENTER
     fclose(vec_back(ctx[].file_reads).fd)
     vec_back(ctx[].file_reads).fd = nil
@@ -124,14 +124,14 @@ pub fn close_fread(ctx: *struc FileIoContext, linenum: u64) error_t {
     CATCH_EXIT
 }
 
-pub fn close_fwrite(ctx: *struc FileIoContext) none {
+pub fn close_fwrite(ctx: Ctx) none {
     write_chunk(ctx, ctx[].write_buf, str_size(ctx[].write_buf))
     str_clear(ctx[].write_buf)
     fclose(ctx[].fd_write)
     ctx[].fd_write = nil
 }
 
-pub fn free_fileio(ctx: *struc FileIoContext) none {
+pub fn free_fileio(ctx: Ctx) none {
     loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         file_read: *struc FileRead = @ctx[].file_reads[i]
         if file_read[].buf ~= nil {

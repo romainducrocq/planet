@@ -26,15 +26,15 @@ m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
 
 type struc MainContext(errors: *struc ErrorsContext, is_verbose: i32, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t, includedirs: vector_t(string), stdlibdirs: vector_t(string))
 
-m4_define(`Ctx', `TODO')m4_dnl
+m4_define(`Ctx', `*struc MainContext')m4_dnl
 
-fn verbose(ctx: *struc MainContext, msg: string) none {
+fn verbose(ctx: Ctx, msg: string) none {
     if ctx[].is_verbose {
         printf("%s", msg)
     }
 }
 
-fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
+fn set_filename_ext(ctx: Ctx, ext: string) none {
     loop i: u64 = str_size(ctx[].filename) while i-- > 0 {
         if ctx[].filename[i] == '.' {
             str_substr(ctx[].filename, 0, i)
@@ -45,7 +45,7 @@ fn set_filename_ext(ctx: *struc MainContext, ext: string) none {
     THROW_ABORT
 }
 
-fn compile(ctx: *struc MainContext, errors: *struc ErrorsContext, fileio: *struc FileIoContext) error_t {
+fn compile(ctx: Ctx, errors: *struc ErrorsContext, fileio: *struc FileIoContext) error_t {
     identifiers: struc IdentifierContext;
     frontend: struc FrontEndContext;
     backend: struc BackEndContext;
@@ -149,7 +149,7 @@ fn arg_parse_uint8(arg: string, value: *u8) i32 {
     return end_ptr == arg
 }
 
-fn arg_parse(ctx: *struc MainContext, argc: i32, argv: *string) error_t {
+fn arg_parse(ctx: Ctx, argc: i32, argv: *string) error_t {
     CATCH_ENTER
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
