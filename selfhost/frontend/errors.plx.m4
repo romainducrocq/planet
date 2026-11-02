@@ -59,9 +59,5 @@ m4_define(`GET_UTIL_MSG', `GET_MESSAGE_$1(util, m4_shift($@))')m4_dnl
 m4_define(`GET_LEXER_MSG', `GET_MESSAGE_$1(lexer, m4_shift($@))')m4_dnl
 m4_define(`GET_PARSER_MSG', `GET_MESSAGE_$1(parser, m4_shift($@))')m4_dnl
 m4_define(`GET_SEMANTIC_MSG', `GET_MESSAGE_$1(semantic, m4_shift($@))')m4_dnl
-m4_define(`STRINGIFY', `TODO')m4_dnl
-m4_define(`GET_VERSION', `TODO')m4_dnl
-m4_define(`GCC_VERSION', `TODO')m4_dnl
-m4_define(`CLANG_VERSION', `TODO')m4_dnl
 
 ')m4_dnl
