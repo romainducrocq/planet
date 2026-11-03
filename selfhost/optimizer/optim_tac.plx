@@ -1585,7 +1585,7 @@ fn prop_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64)
             mask_set_size = ctx[].dfa[].set_size
         }
         loop  while i < mask_set_size .. ++i {
-            if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+            if GET_DFA_INSTR_SET_AT(next_instr_idx, i) {
                 THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
                 copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
@@ -1613,7 +1613,7 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
             mask_set_size = ctx[].dfa[].set_size
         }
         loop  while i < mask_set_size .. ++i {
-            if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+            if GET_DFA_INSTR_SET_AT(next_instr_idx, i) {
                 THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
                 copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
@@ -1642,7 +1642,7 @@ fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) i32 {
                 SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
             }
         }
-        elif mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+        elif GET_DFA_INSTR_SET_AT(next_instr_idx, i) {
             if is_same_value(node[].dst, copy[].src) {
                 if is_same_value(node[].src, copy[].dst) {
                     return false
@@ -1668,7 +1668,7 @@ fn prop_transfer_store(ctx: Ctx, next_instr_idx: u64) none {
             mask_set_size = ctx[].dfa[].set_size
         }
         loop  while i < mask_set_size .. ++i {
-            if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+            if GET_DFA_INSTR_SET_AT(next_instr_idx, i) {
                 THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
                 copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
@@ -1695,7 +1695,7 @@ fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr
             mask_set_size = ctx[].dfa[].set_size
         }
         loop  while i < mask_set_size .. ++i {
-            if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+            if GET_DFA_INSTR_SET_AT(next_instr_idx, i) {
                 THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
                 copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
@@ -1820,7 +1820,7 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].val, copy[].dst) {
@@ -1848,7 +1848,7 @@ fn prop_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -1876,7 +1876,7 @@ fn prop_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -1904,7 +1904,7 @@ fn prop_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -1932,7 +1932,7 @@ fn prop_dbl_to_int_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u64) 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -1960,7 +1960,7 @@ fn prop_dbl_to_uint_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx: u64
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -1988,7 +1988,7 @@ fn prop_int_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u64) 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -2016,7 +2016,7 @@ fn prop_uint_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx: u64
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -2045,7 +2045,7 @@ fn prop_call_instr(ctx: Ctx, node: *struc TacFunCall, instr_idx: u64) none {
                     mask_set_size = ctx[].dfa[].set_size
                 }
                 loop  while j < mask_set_size .. ++j {
-                    if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j) {
+                    if GET_DFA_INSTR_SET_AT(instr_idx, j) {
                         copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, j)
                         THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                         if is_same_value(node[].args[i], copy[].dst) {
@@ -2076,7 +2076,7 @@ fn prop_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -2106,7 +2106,7 @@ fn prop_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_src1 and is_same_value(node[].src1, copy[].dst) {
@@ -2146,7 +2146,7 @@ fn prop_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64
             mask_set_size = ctx[].dfa[].set_size
         }
         loop  while i < mask_set_size .. ++i {
-            if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+            if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                 copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if ctx[].dfa_o1[].data_idx_map[i] == instr_idx or (is_same_value(node[].src, copy[].dst) and is_same_value(node[].dst, copy[].src)) {
@@ -2179,7 +2179,7 @@ fn prop_load_instr(ctx: Ctx, node: *struc TacLoad, instr_idx: u64) none {
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src_ptr, copy[].dst) {
@@ -2207,7 +2207,7 @@ fn prop_store_instr(ctx: Ctx, node: *struc TacStore, instr_idx: u64) none {
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -2237,7 +2237,7 @@ fn prop_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr, instr_idx: u64) none {
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_src_ptr and is_same_value(node[].src_ptr, copy[].dst) {
@@ -2277,7 +2277,7 @@ fn prop_cp_to_offset_instr(ctx: Ctx, node: *struc TacCopyToOffset, instr_idx: u6
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+                if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
@@ -2304,7 +2304,7 @@ fn prop_cp_from_offset_instr(ctx: Ctx, node: *struc TacCopyFromOffset, instr_idx
             mask_set_size = ctx[].dfa[].set_size
         }
         loop  while i < mask_set_size .. ++i {
-            if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+            if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                 copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_same_name(copy[].dst, node[].src_name) {
@@ -2331,7 +2331,7 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
@@ -2359,7 +2359,7 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
@@ -2692,7 +2692,7 @@ fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none
 
 fn elim_dst_name_instr(ctx: Ctx, name: u64, instr_idx: u64) none {
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
-    if not mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
+    if not GET_DFA_INSTR_SET_AT(instr_idx, i) {
         set_instr(ctx, uptr_new(), instr_idx)
     }
 }
