@@ -8,10 +8,13 @@ KERNEL_NAME="$(uname -s)"
 PACKAGE_DIR="$(readlink -f ../wheelcc/bin)"
 PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
 LD="gcc"
+OS_MACRO="__linux__"
 if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
     LD="clang -arch x86_64"
+    OS_MACRO="__APPLE__"
 elif [[ "${KERNEL_NAME}" == "FreeBSD"* ]]; then
     LD="clang"
+    OS_MACRO="__FreeBSD__"
 fi
 # TODO rm
 CC_FLAGS="-Wall -Wextra -Wpedantic -D__GCC_BOOTSTRAP__"
@@ -114,7 +117,7 @@ function build_selfhost () {
         # if [ ${?} -ne 0 ]; then return 1; fi
 
         if [ ${BUILD_PLX} -eq 0 ]; then
-            planet -O2 -E -c ${FILE}
+            planet -O2 -E -D${OS_MACRO} -c ${FILE}
             if [ ${?} -ne 0 ]; then return 1; fi
             mv ${FILE%.*}.o ${OBJECT}
             if [ ${?} -ne 0 ]; then return 1; fi
