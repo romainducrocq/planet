@@ -6,7 +6,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `', __OPTIM_LEVEL__, `2', `', `
 ')m4_dnl
 m4_ifdef(`__OPTIM_LEVEL__', `
 
-m4_define(`GET_INSTR', `TODO')m4_dnl
+# TODO
+m4_define(`GET_INSTR', `ctx[].p_instrs[][($1)]')m4_dnl
 m4_define(`GET_CFG_BLOCK', `TODO')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -484,7 +485,7 @@ m4_define(`GET_DFA_INSTR_SET_AT', `TODO')m4_dnl
 m4_define(`SET_DFA_INSTR_SET_AT', `TODO')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-m4_define(`GET_DFA_INSTR', `TODO')m4_dnl
+m4_define(`GET_DFA_INSTR', `GET_INSTR(ctx[].dfa_o1[].data_idx_map[($1)])')m4_dnl
 ')m4_dnl
 
 fn is_transfer_instr(ctx: Ctx, instr_idx: u64
@@ -594,8 +595,8 @@ fn get_dfa_bak_instr(ctx: Ctx, i: u64) *struc TacInstruction {
             THROW_ABORT
         }
     }
-    elif (ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]] {
-        return (ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]]
+    elif GET_DFA_INSTR(i) {
+        return GET_DFA_INSTR(i)
     }
     else {
         THROW_ABORT
