@@ -471,18 +471,21 @@ m4_define(`MASK_FALSE', `TODO')m4_dnl
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 m4_define(`MASK_TRUE', `TODO')m4_dnl
 ')m4_dnl
-m4_define(`MASK_OFFSET', `TODO')m4_dnl
+# TODO
+m4_define(`MASK_OFFSET', `? ($1) > 63 then ($1) / 64 else 0')m4_dnl
 
 m4_define(`GET_DFA_BLOCK_SET_IDX', `TODO')m4_dnl
-m4_define(`GET_DFA_INSTR_SET_IDX', `TODO')m4_dnl
+# TODO
+m4_define(`GET_DFA_INSTR_SET_IDX', `ctx[].dfa[].instr_idx_map[($1)] * ctx[].dfa[].mask_size + ($2)')m4_dnl
 
 m4_define(`GET_DFA_BLOCK_SET_MASK', `TODO')m4_dnl
-m4_define(`GET_DFA_INSTR_SET_MASK', `TODO')m4_dnl
+# TODO
+m4_define(`GET_DFA_INSTR_SET_MASK', `ctx[].dfa[].instrs_mask_sets[GET_DFA_INSTR_SET_IDX($1, $2)]')m4_dnl
 
 m4_define(`GET_DFA_BLOCK_SET_AT', `TODO')m4_dnl
 m4_define(`GET_DFA_INSTR_SET_AT', `TODO')m4_dnl
 
-m4_define(`SET_DFA_INSTR_SET_AT', `TODO')m4_dnl
+m4_define(`SET_DFA_INSTR_SET_AT', `mask_set(@GET_DFA_INSTR_SET_MASK($1, MASK_OFFSET($2)), $2, $3)')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 m4_define(`GET_DFA_INSTR', `GET_INSTR(ctx[].dfa_o1[].data_idx_map[($1)])')m4_dnl
@@ -1369,12 +1372,10 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             name_id: *pair_t(``TIdentifier'', u64) = @ctx[].cfg[].identifier_id_map[i]
 m4_ifelse(__OPTIM_LEVEL__, `1', `
             if map_get(ctx[].frontend[].symbol_table, pair_first(name_id[]))[].attrs[].tag == AST_StaticAttr_t {
-                # TODO SET_DFA_INSTR_SET_AT(ctx->dfa->static_idx, pair_second(*name_id), true);
-                mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
+                SET_DFA_INSTR_SET_AT(ctx[].dfa[].static_idx, pair_second(name_id[]), true)
             }
             if set_find(ctx[].frontend[].addressed_set, pair_first(name_id[])) ~= set_end() {
-                # TODO SET_DFA_INSTR_SET_AT(ctx->dfa_o1->addressed_idx, pair_second(*name_id), true);
-                mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (? (name_id[]).value > 63 then (name_id[]).value / 64 else 0)], (name_id[]).value, true)
+                SET_DFA_INSTR_SET_AT(ctx[].dfa_o1[].addressed_idx, pair_second(name_id[]), true)
             }
 ', __OPTIM_LEVEL__, `2', `
         ctx[].dfa_o2[].data_name_map[pair_second(name_id[]) - REGISTER_MASK_SIZE] = pair_first(name_id[])
