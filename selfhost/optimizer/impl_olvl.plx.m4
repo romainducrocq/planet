@@ -6,9 +6,9 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `', __OPTIM_LEVEL__, `2', `', `
 ')m4_dnl
 m4_ifdef(`__OPTIM_LEVEL__', `
 
-# TODO
 m4_define(`GET_INSTR', `ctx[].p_instrs[][($1)]')m4_dnl
-m4_define(`GET_CFG_BLOCK', `TODO')m4_dnl
+# TODO
+m4_define(`GET_CFG_BLOCK', `ctx[].cfg[].blocks[($1)]')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 m4_define(`mask_t', `u64')m4_dnl
@@ -143,11 +143,11 @@ fn make_DataFlowAnalysisO2(none) unique_ptr_t(DataFlowAnalysisO2) {
 
 fn set_instr(ctx: Ctx, instr: unique_ptr_t(AstInstruction), instr_idx: u64) none {
     if instr {
-        uptr_move_AstInstruction(instr, (ctx[].p_instrs[])[instr_idx])
+        uptr_move_AstInstruction(instr, GET_INSTR(instr_idx))
         ;
     }
     else {
-        free_AstInstruction(@(ctx[].p_instrs[])[instr_idx])
+        free_AstInstruction(@GET_INSTR(instr_idx))
     }
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     ctx[].is_fixed_point = false
@@ -264,7 +264,7 @@ fn cfg_rm_empty_block(ctx: Ctx, block_id: u64, is_reachable: i32) none {
 }
 
 fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
-    if (ctx[].p_instrs[])[instr_idx] {
+    if GET_INSTR(instr_idx) {
         set_instr(ctx, uptr_new(), instr_idx)
         ctx[].cfg[].blocks[block_id].size--
         if ctx[].cfg[].blocks[block_id].size == 0 {
@@ -272,7 +272,7 @@ fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
         }
         elif instr_idx == ctx[].cfg[].blocks[block_id].instrs_front_idx {
             loop  while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
+                if GET_INSTR(instr_idx) {
                     ctx[].cfg[].blocks[block_id].instrs_front_idx = instr_idx
                     break
                 }
@@ -281,7 +281,7 @@ fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
         elif instr_idx == ctx[].cfg[].blocks[block_id].instrs_back_idx {
             instr_idx++
             loop  while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
+                if GET_INSTR(instr_idx) {
                     ctx[].cfg[].blocks[block_id].instrs_back_idx = instr_idx
                     break
                 }
@@ -301,7 +301,7 @@ fn cfg_init_label_block(ctx: Ctx, node: *struc AsmLabel) none {
 ')m4_dnl
 
 fn cfg_init_block(ctx: Ctx, instr_idx: u64, instrs_back_idx: *u64) none {
-    node: *struc AstInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc AstInstruction = GET_INSTR(instr_idx)
     match node[].tag {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacLabel_t {
@@ -368,7 +368,7 @@ fn cfg_init_jmp_cc_edges(ctx: Ctx, node: *struc AsmJmpCC, block_id: u64) none {
 ')m4_dnl
 
 fn cfg_init_edges(ctx: Ctx, block_id: u64) none {
-    node: *struc AstInstruction = (ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_back_idx]
+    node: *struc AstInstruction = GET_INSTR(GET_CFG_BLOCK(block_id).instrs_back_idx)
     match node[].tag {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacReturn_t {
@@ -421,7 +421,7 @@ fn init_control_flow_graph(ctx: Ctx) none {
     {
         instrs_back_idx: u64 = vec_size(ctx[].p_instrs[])
         loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
-            if (ctx[].p_instrs[])[instr_idx] {
+            if GET_INSTR(instr_idx) {
                 if instrs_back_idx == vec_size(ctx[].p_instrs[]) {
                     block: struc ControlFlowBlock = $(0, instr_idx, 0, vec_new(), vec_new())
                     vec_push_back(ctx[].cfg[].blocks, block)
@@ -493,7 +493,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     , is_store_elim: i32
 ')m4_dnl
 ) i32 {
-    match (ctx[].p_instrs[])[instr_idx][].tag {
+    match GET_INSTR(instr_idx)[].tag {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacSignExtend_t {
             -> AST_TacTruncate_t {
@@ -625,7 +625,7 @@ fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none;
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
     loop next_instr_idx: u64 = instr_idx + 1 while next_instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++next_instr_idx {
-        if (ctx[].p_instrs[])[next_instr_idx] and is_transfer_instr(ctx, next_instr_idx, false) {
+        if GET_INSTR(next_instr_idx) and is_transfer_instr(ctx, next_instr_idx, false) {
             loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
                 GET_DFA_INSTR_SET_MASK(next_instr_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i)
             }
@@ -652,7 +652,7 @@ fn dfa_forward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
 fn dfa_backward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
     if instr_idx > 0 {
         loop next_instr_idx: u64 = instr_idx while next_instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
-            if (ctx[].p_instrs[])[next_instr_idx] and is_transfer_instr(ctx, next_instr_idx
+            if GET_INSTR(next_instr_idx) and is_transfer_instr(ctx, next_instr_idx
 m4_ifelse(__OPTIM_LEVEL__, `1', `
                 , true
 ')m4_dnl
@@ -703,7 +703,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
     instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx
     loop  while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-        if (ctx[].p_instrs[])[instr_idx] and is_transfer_instr(ctx, instr_idx, false) {
+        if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx, false) {
             jump Lelse
         }
     }
@@ -742,7 +742,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
 fn dfa_backward_meet_block(ctx: Ctx, block_id: u64) i32 {
     instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_back_idx + 1
     loop while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
-        if (ctx[].p_instrs[])[instr_idx] and is_transfer_instr(ctx, instr_idx
+        if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx
 m4_ifelse(__OPTIM_LEVEL__, `1', `
             , true
 ')m4_dnl
@@ -994,8 +994,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
-                    node: *struc AstInstruction = (ctx[].p_instrs[])[instr_idx]
+                if GET_INSTR(instr_idx) {
+                    node: *struc AstInstruction = GET_INSTR(instr_idx)
                     match node[].tag {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
                         -> AST_TacReturn_t {

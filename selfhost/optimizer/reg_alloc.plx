@@ -214,7 +214,7 @@ fn infer_transfer_updated_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: 
 }
 
 fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none {
-    node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc AsmInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_AsmMov_t {
             p_node: *struc AsmMov = @node[].get._AsmMov
@@ -400,9 +400,9 @@ fn infer_init_used_op_edges(ctx: Ctx, node: *struc AsmOperand) none {
 
 fn infer_init_updated_regs_edges(ctx: Ctx, reg_kinds: *REGISTER_KIND, instr_idx: u64, reg_kinds_size: u64, is_dbl: i32) none {
     mov_mask_bit: u64 = ctx[].dfa[].set_size
-    is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t
+    is_mov: i32 = GET_INSTR(instr_idx)[].tag == AST_AsmMov_t
     if is_mov {
-        mov: *struc AsmMov = @(ctx[].p_instrs[])[instr_idx][].get._AsmMov
+        mov: *struc AsmMov = @GET_INSTR(instr_idx)[].get._AsmMov
         if mov[].src[].tag == AST_AsmPseudo_t {
             src_name: u64 = mov[].src[].get._AsmPseudo.name
             if is_aliased_name(ctx, src_name) {
@@ -462,9 +462,9 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
     }
     is_dbl: i32 = map_get(ctx[].frontend[].symbol_table, name)[].type_t[].tag == AST_Double_t
     mov_mask_bit: u64 = ctx[].dfa[].set_size
-    is_mov: i32 = (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t
+    is_mov: i32 = GET_INSTR(instr_idx)[].tag == AST_AsmMov_t
     if is_mov {
-        mov: *struc AsmMov = @(ctx[].p_instrs[])[instr_idx][].get._AsmMov
+        mov: *struc AsmMov = @GET_INSTR(instr_idx)[].get._AsmMov
         match mov[].src[].tag {
             -> AST_AsmRegister_t {
                 src_reg_kind: REGISTER_KIND = register_mask_kind(@mov[].src[].get._AsmRegister.reg)
@@ -575,7 +575,7 @@ fn infer_init_updated_op_edges(ctx: Ctx, node: *struc AsmOperand, instr_idx: u64
 }
 
 fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
-    node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc AsmInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_AsmMov_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMov.dst, instr_idx)
@@ -733,7 +733,7 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
+                if GET_INSTR(instr_idx) {
                     infer_init_edges(ctx, instr_idx)
                 }
             }
@@ -1150,7 +1150,7 @@ fn alloc_push_instr(ctx: Ctx, node: *struc AsmPush) none {
 }
 
 fn alloc_instr(ctx: Ctx, instr_idx: u64) none {
-    node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc AsmInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_AsmMov_t {
             alloc_mov_instr(ctx, @node[].get._AsmMov, instr_idx)
@@ -1227,7 +1227,7 @@ fn reallocate_registers(ctx: Ctx) none {
         alloc_color_reg_map(ctx)
     }
     loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
-        if (ctx[].p_instrs[])[instr_idx] {
+        if GET_INSTR(instr_idx) {
             alloc_instr(ctx, instr_idx)
         }
     }
@@ -1681,7 +1681,7 @@ fn coal_push_instr(ctx: Ctx, node: *struc AsmPush) none {
 }
 
 fn coal_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
-    node: *struc AsmInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc AsmInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_AsmMov_t {
             coal_mov_instr(ctx, @node[].get._AsmMov, instr_idx, block_id)
@@ -1759,7 +1759,7 @@ fn coalesce_registers(ctx: Ctx) i32 {
     {
         is_fixed_point: i32 = true
         loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
-            if (ctx[].p_instrs[])[instr_idx] and (ctx[].p_instrs[])[instr_idx][].tag == AST_AsmMov_t and coal_infer_regs(ctx, @(ctx[].p_instrs[])[instr_idx][].get._AsmMov) {
+            if GET_INSTR(instr_idx) and GET_INSTR(instr_idx)[].tag == AST_AsmMov_t and coal_infer_regs(ctx, @GET_INSTR(instr_idx)[].get._AsmMov) {
                 is_fixed_point = false
             }
         }
@@ -1770,7 +1770,7 @@ fn coalesce_registers(ctx: Ctx) i32 {
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
+                if GET_INSTR(instr_idx) {
                     coal_instr(ctx, instr_idx, block_id)
                 }
             }
