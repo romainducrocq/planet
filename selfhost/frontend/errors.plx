@@ -679,22 +679,11 @@ m4_define(`PAD_ERR_3', `TODO')m4_dnl
 m4_define(`RET_ERR', `TODO')m4_dnl
 
 pub fn get_fatal_msg(msg: MESSAGE_FATAL) string {
-    match msg {
-        -> MSG_unsupported_os {
-            return "(no. %s) "             "%s%s"             "‘%s’"             " operating system is not supported, requires "             "‘"             "GNU/Linux"             "’"             " (x86_64) or "             "‘"             "MacOS"             "’"
-        }
-        -> MSG_unsupported_arch {
-            return "(no. %s) "             "%s%s"             "‘%s’"             " architecture is not supported, requires "             "‘"             "x86_64"             "’"
-        }
-        -> MSG_unsupported_compiler {
-            return "(no. %s) "             "%s%s"             "‘%s’"             " compiler is not supported, requires "             "‘"             "gcc"             "’"             " >= 8.1.0"
-        }
-        -> MSG_unsupported_cc_ver {
-            return "(no. %s) "             ""             "‘"             "gcc"             "’"             " %s.%s.%s is not supported, requires "             "‘"             "gcc"             "’"             " >= 8.1.0"
-        }
-        otherwise {
-            THROW_ABORT
-        }
+    if msg == MSG_unsupported_os {
+        return "(no. %s) "             "%s%s"             "‘%s’"             " operating system is not supported, requires "             "‘"             "GNU/Linux"             "’"             " (x86_64) or "             "‘"             "MacOS"             "’"
+    }
+    else {
+        THROW_ABORT
     }
 }
 

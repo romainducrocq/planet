@@ -4,9 +4,6 @@ m4_define(`_FRONTEND_MESSAGES_M4', `')m4_dnl
 m4_define(`MESSAGE_FATAL', `i32')m4_dnl
 m4_define(`MSG_unhandled_fatal_error', `0')m4_dnl
 m4_define(`MSG_unsupported_os', `1')m4_dnl
-m4_define(`MSG_unsupported_arch', `2')m4_dnl
-m4_define(`MSG_unsupported_compiler', `3')m4_dnl
-m4_define(`MSG_unsupported_cc_ver', `4')m4_dnl
 m4_define(`MESSAGE_ARG', `i32')m4_dnl
 m4_define(`MSG_unhandled_arg_error', `100')m4_dnl
 m4_define(`MSG_print_help', `101')m4_dnl

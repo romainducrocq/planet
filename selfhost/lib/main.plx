@@ -71,6 +71,15 @@ fn compile(ctx: Ctx, errors: *struc ErrorsContext, fileio: *struc FileIoContext)
     }
 
     CATCH_ENTER
+
+m4_ifdef(`__APPLE__', `', `
+m4_ifdef(`__FreeBSD__', `', `
+m4_ifdef(`__linux__', `', `
+    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_os, "unknown"));
+')m4_dnl
+')m4_dnl
+')m4_dnl
+
     verbose(ctx, "-- Lexing ... ")
     TRY(lex_c_code(ctx[].filename, @ctx[].includedirs, @ctx[].stdlibdirs, errors, fileio, @identifiers, @tokens))
     verbose(ctx, "OK\n")
