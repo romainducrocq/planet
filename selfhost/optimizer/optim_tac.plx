@@ -1586,8 +1586,8 @@ fn prop_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64)
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].tag ~= AST_TacCopy_t) # TODO GET_DFA_INSTR(i)->tag
-                copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
+                THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
+                copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_same_value(node, copy[].src) or is_same_value(node, copy[].dst) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
@@ -1614,8 +1614,8 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].tag ~= AST_TacCopy_t) # TODO GET_DFA_INSTR(i)->tag
-                copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
+                THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
+                copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) or (node[].dst and (is_same_value(node[].dst, copy[].src) or is_same_value(node[].dst, copy[].dst))) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
@@ -1631,8 +1631,8 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
 fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) i32 {
     THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     loop i: u64 = 0 while i < ctx[].dfa[].set_size .. ++i {
-        THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].tag ~= AST_TacCopy_t) # TODO GET_DFA_INSTR(i)->tag
-        copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
+        THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
+        copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
         THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
         if is_same_value(node[].dst, copy[].dst) {
             if (is_copy_same_signedness(ctx, copy) or is_copy_null_ptr(ctx, copy)) and is_same_value(node[].src, copy[].src) {
@@ -1669,8 +1669,8 @@ fn prop_transfer_store(ctx: Ctx, next_instr_idx: u64) none {
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].tag ~= AST_TacCopy_t) # TODO GET_DFA_INSTR(i)->tag
-                copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
+                THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
+                copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
@@ -1696,8 +1696,8 @@ fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr
         }
         loop  while i < mask_set_size .. ++i {
             if mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i) {
-                THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].tag ~= AST_TacCopy_t) # TODO GET_DFA_INSTR(i)->tag
-                copy: *struc TacCopy = @(ctx[].p_instrs[])[ctx[].dfa_o1[].data_idx_map[i]][].get._TacCopy
+                THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
+                copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_same_name(copy[].src, node[].dst_name) or is_same_name(copy[].dst, node[].dst_name) {
                     mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
