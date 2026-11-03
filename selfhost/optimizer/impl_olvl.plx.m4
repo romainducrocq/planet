@@ -477,11 +477,9 @@ m4_define(`GET_DFA_BLOCK_SET_IDX', `($1) * ctx[].dfa[].mask_size + ($2)')m4_dnl
 m4_define(`GET_DFA_INSTR_SET_IDX', `ctx[].dfa[].instr_idx_map[($1)] * ctx[].dfa[].mask_size + ($2)')m4_dnl
 
 m4_define(`GET_DFA_BLOCK_SET_MASK', `ctx[].dfa[].blocks_mask_sets[GET_DFA_BLOCK_SET_IDX($1, $2)]')m4_dnl
-# TODO
 m4_define(`GET_DFA_INSTR_SET_MASK', `ctx[].dfa[].instrs_mask_sets[GET_DFA_INSTR_SET_IDX($1, $2)]')m4_dnl
 
 m4_define(`GET_DFA_BLOCK_SET_AT', `mask_get(GET_DFA_BLOCK_SET_MASK($1, MASK_OFFSET($2)), $2)')m4_dnl
-# TODO
 m4_define(`GET_DFA_INSTR_SET_AT', `mask_get(GET_DFA_INSTR_SET_MASK($1, MASK_OFFSET($2)), $2)')m4_dnl
 
 m4_define(`SET_DFA_INSTR_SET_AT', `mask_set(@GET_DFA_INSTR_SET_MASK($1, MASK_OFFSET($2)), $2, $3)')m4_dnl
