@@ -119,13 +119,13 @@ fn find_identifier(xs: vector_t(TIdentifier), x: u64) i32 {
 }
 
 fn infer_transfer_used_reg(ctx: Ctx, reg_kind: REGISTER_KIND, next_instr_idx: u64) none {
-    mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), true)
+    SET_DFA_INSTR_SET_AT(next_instr_idx, register_mask_bit(reg_kind), true)
 }
 
 fn infer_transfer_used_name(ctx: Ctx, name: u64, next_instr_idx: u64) none {
     if not is_aliased_name(ctx, name) {
         i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
-        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, true)
+        SET_DFA_INSTR_SET_AT(next_instr_idx, i, true)
     }
 }
 
@@ -174,13 +174,13 @@ fn infer_transfer_used_call(ctx: Ctx, node: *struc AsmCall, next_instr_idx: u64)
 }
 
 fn infer_transfer_updated_reg(ctx: Ctx, reg_kind: REGISTER_KIND, next_instr_idx: u64) none {
-    mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? register_mask_bit(reg_kind) > 63 then register_mask_bit(reg_kind) / 64 else 0)], register_mask_bit(reg_kind), false)
+    SET_DFA_INSTR_SET_AT(next_instr_idx, register_mask_bit(reg_kind), false)
 }
 
 fn infer_transfer_updated_name(ctx: Ctx, name: u64, next_instr_idx: u64) none {
     if not is_aliased_name(ctx, name) {
         i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
-        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i, false)
+        SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
     }
 }
 
@@ -1355,7 +1355,7 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
     }
     loop i: u64 = 0 while i < vec_size(dst_infer[].linked_pseudo_names) .. ++i {
         j: u64 = map_get(ctx[].cfg[].identifier_id_map, dst_infer[].linked_pseudo_names[i])
-        mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, true)
+        SET_DFA_INSTR_SET_AT(ctx[].dfa[].incoming_idx, j, true)
     }
     loop i: u64 = 0 while i < vec_size(src_infer[].linked_pseudo_names) .. ++i {
         j: u64 = map_get(ctx[].cfg[].identifier_id_map, src_infer[].linked_pseudo_names[i])
@@ -1364,7 +1364,7 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
             if linked_infer[].degree > ctx[].p_infer_graph[].k {
                 degree++
             }
-            mask_set(@ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (? j > 63 then j / 64 else 0)], j, false)
+            SET_DFA_INSTR_SET_AT(ctx[].dfa[].incoming_idx, j, false)
         }
         elif linked_infer[].degree >= ctx[].p_infer_graph[].k {
             degree++
