@@ -1295,8 +1295,8 @@ fn fold_constants(ctx: Ctx) none {
 fn unreach_reachable_block(ctx: Ctx, block_id: u64) none;
 
 fn unreach_succ_reachable_blocks(ctx: Ctx, block_id: u64) none {
-    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i {
-        unreach_reachable_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[i])
+    loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++i {
+        unreach_reachable_block(ctx, GET_CFG_BLOCK(block_id).succ_ids[i])
     }
 }
 
@@ -1308,16 +1308,16 @@ fn unreach_reachable_block(ctx: Ctx, block_id: u64) none {
 }
 
 fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
-    loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+    loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
         if GET_INSTR(instr_idx) {
             set_instr(ctx, uptr_new(), instr_idx)
         }
     }
-    ctx[].cfg[].blocks[block_id].size = 0
+    GET_CFG_BLOCK(block_id).size = 0
     cfg_rm_empty_block(ctx, block_id, false)
-    vec_clear(ctx[].cfg[].blocks[block_id].succ_ids)
+    vec_clear(GET_CFG_BLOCK(block_id).succ_ids)
     ;
-    vec_clear(ctx[].cfg[].blocks[block_id].pred_ids)
+    vec_clear(GET_CFG_BLOCK(block_id).pred_ids)
     ;
 }
 
@@ -1327,7 +1327,7 @@ fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
         -> AST_TacJump_t {
             -> AST_TacJumpIfZero_t {
                 -> AST_TacJumpIfNotZero_t {
-                    cfg_rm_block_instr(ctx, ctx[].cfg[].blocks[block_id].instrs_back_idx, block_id)
+                    cfg_rm_block_instr(ctx, GET_CFG_BLOCK(block_id).instrs_back_idx, block_id)
                 }
             }
         }
@@ -1339,18 +1339,18 @@ fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
 }
 
 fn unreach_jump_block(ctx: Ctx, block_id: u64, next_block_id: u64) none {
-    if vec_size(ctx[].cfg[].blocks[block_id].succ_ids) == 1 and ctx[].cfg[].blocks[block_id].succ_ids[0] == next_block_id {
+    if vec_size(GET_CFG_BLOCK(block_id).succ_ids) == 1 and GET_CFG_BLOCK(block_id).succ_ids[0] == next_block_id {
         unreach_jump_instr(ctx, block_id)
     }
 }
 
 fn unreach_label_instr(ctx: Ctx, block_id: u64) none {
     THROW_ABORT_IF(GET_INSTR(GET_CFG_BLOCK(block_id).instrs_front_idx)[].tag ~= AST_TacLabel_t)
-    cfg_rm_block_instr(ctx, ctx[].cfg[].blocks[block_id].instrs_front_idx, block_id)
+    cfg_rm_block_instr(ctx, GET_CFG_BLOCK(block_id).instrs_front_idx, block_id)
 }
 
 fn unreach_label_block(ctx: Ctx, block_id: u64, prev_block_id: u64) none {
-    if vec_size(ctx[].cfg[].blocks[block_id].pred_ids) == 1 and ctx[].cfg[].blocks[block_id].pred_ids[0] == prev_block_id {
+    if vec_size(GET_CFG_BLOCK(block_id).pred_ids) == 1 and GET_CFG_BLOCK(block_id).pred_ids[0] == prev_block_id {
         unreach_label_instr(ctx, block_id)
     }
 }
@@ -2465,10 +2465,10 @@ fn propagate_copies(ctx: Ctx) none {
     }
     dfa_forward_iter_alg(ctx)
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
-        if ctx[].cfg[].blocks[block_id].size > 0 {
+        if GET_CFG_BLOCK(block_id).size > 0 {
             incoming_idx: u64 = block_id
             exit_block: u64 = 1
-            loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_back_idx + 1 while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_back_idx + 1 while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
                 if GET_INSTR(instr_idx) {
                     match GET_INSTR(instr_idx)[].tag {
                         -> AST_TacReturn_t {
@@ -2777,8 +2777,8 @@ fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: i32) none {
     }
     dfa_iter_alg(ctx)
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
-        if ctx[].cfg[].blocks[block_id].size > 0 {
-            loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+        if GET_CFG_BLOCK(block_id).size > 0 {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     elim_instr(ctx, instr_idx)
                 }
