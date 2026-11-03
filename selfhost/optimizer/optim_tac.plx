@@ -1811,7 +1811,7 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
     if node[].val and node[].val[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
+            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
                 i += 64
                 continue
             }
@@ -1820,7 +1820,7 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if ((exit_block and mask_get(ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].val, copy[].dst) {
@@ -2322,7 +2322,7 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
+            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
                 i += 64
                 continue
             }
@@ -2331,7 +2331,7 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if ((exit_block and mask_get(ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
@@ -2350,7 +2350,7 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
+            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
                 i += 64
                 continue
             }
@@ -2359,7 +2359,7 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop  while i < mask_set_size .. ++i {
-                if ((exit_block and mask_get(ctx[].dfa[].blocks_mask_sets[(incoming_idx) * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and mask_get(ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (? i > 63 then i / 64 else 0)], i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {

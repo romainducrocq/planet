@@ -471,19 +471,18 @@ m4_define(`MASK_FALSE', `0ul')m4_dnl
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 m4_define(`MASK_TRUE', `18446744073709551615ul')m4_dnl
 ')m4_dnl
-# TODO
 m4_define(`MASK_OFFSET', `? ($1) > 63 then ($1) / 64 else 0')m4_dnl
 
-m4_define(`GET_DFA_BLOCK_SET_IDX', `TODO')m4_dnl
-# TODO
+m4_define(`GET_DFA_BLOCK_SET_IDX', `($1) * ctx[].dfa[].mask_size + ($2)')m4_dnl
 m4_define(`GET_DFA_INSTR_SET_IDX', `ctx[].dfa[].instr_idx_map[($1)] * ctx[].dfa[].mask_size + ($2)')m4_dnl
 
-m4_define(`GET_DFA_BLOCK_SET_MASK', `TODO')m4_dnl
+m4_define(`GET_DFA_BLOCK_SET_MASK', `ctx[].dfa[].blocks_mask_sets[GET_DFA_BLOCK_SET_IDX($1, $2)]')m4_dnl
 # TODO
 m4_define(`GET_DFA_INSTR_SET_MASK', `ctx[].dfa[].instrs_mask_sets[GET_DFA_INSTR_SET_IDX($1, $2)]')m4_dnl
 
-m4_define(`GET_DFA_BLOCK_SET_AT', `TODO')m4_dnl
-m4_define(`GET_DFA_INSTR_SET_AT', `TODO')m4_dnl
+m4_define(`GET_DFA_BLOCK_SET_AT', `mask_get(GET_DFA_BLOCK_SET_MASK($1, MASK_OFFSET($2)), $2)')m4_dnl
+# TODO
+m4_define(`GET_DFA_INSTR_SET_AT', `mask_get(GET_DFA_INSTR_SET_MASK($1, MASK_OFFSET($2)), $2)')m4_dnl
 
 m4_define(`SET_DFA_INSTR_SET_AT', `mask_set(@GET_DFA_INSTR_SET_MASK($1, MASK_OFFSET($2)), $2, $3)')m4_dnl
 
@@ -690,13 +689,13 @@ fn dfa_after_meet_block(ctx: Ctx, block_id: u64) i32 {
     {
         i: u64 = 0
         loop  while i < ctx[].dfa[].mask_size .. ++i {
-            if ctx[].dfa[].blocks_mask_sets[(block_id) * ctx[].dfa[].mask_size + (i)] ~= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)] {
+            if GET_DFA_BLOCK_SET_MASK(block_id, i) ~= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)] {
                 is_fixed_point = false
                 break
             }
         }
         loop  while i < ctx[].dfa[].mask_size .. ++i {
-            ctx[].dfa[].blocks_mask_sets[(block_id) * ctx[].dfa[].mask_size + (i)] = ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)]
+            GET_DFA_BLOCK_SET_MASK(block_id, i) = ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] * ctx[].dfa[].mask_size + (i)]
         }
     }
     return is_fixed_point
@@ -719,7 +718,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
         pred_id: u64 = ctx[].cfg[].blocks[block_id].pred_ids[i]
         if pred_id < ctx[].cfg[].exit_id {
             loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-                ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] &= ctx[].dfa[].blocks_mask_sets[(pred_id) * ctx[].dfa[].mask_size + (j)]
+                ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] &= GET_DFA_BLOCK_SET_MASK(pred_id, j)
             }
         }
         elif pred_id == ctx[].cfg[].entry_id {
@@ -762,7 +761,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         succ_id: u64 = ctx[].cfg[].blocks[block_id].succ_ids[i]
         if succ_id < ctx[].cfg[].exit_id {
             loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-                ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] |= ctx[].dfa[].blocks_mask_sets[(succ_id) * ctx[].dfa[].mask_size + (j)]
+                ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] |= GET_DFA_BLOCK_SET_MASK(succ_id, j)
             }
         }
         elif succ_id == ctx[].cfg[].exit_id {
