@@ -467,9 +467,9 @@ fn mask_set(mask: *u64, bit: u64, value: i32) none {
     }
 }
 
-m4_define(`MASK_FALSE', `TODO')m4_dnl
+m4_define(`MASK_FALSE', `0ul')m4_dnl
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-m4_define(`MASK_TRUE', `TODO')m4_dnl
+m4_define(`MASK_TRUE', `18446744073709551615ul')m4_dnl
 ')m4_dnl
 # TODO
 m4_define(`MASK_OFFSET', `? ($1) > 63 then ($1) / 64 else 0')m4_dnl
@@ -713,7 +713,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
     instr_idx = ctx[].dfa[].incoming_idx
     label Lelse
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (i)] = 18446744073709551615ul
+        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (i)] = MASK_TRUE
     }
     loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].pred_ids) .. ++i { # TODO GET_CFG_BLOCK(block_id).pred_ids
         pred_id: u64 = ctx[].cfg[].blocks[block_id].pred_ids[i]
@@ -724,7 +724,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
         }
         elif pred_id == ctx[].cfg[].entry_id {
             loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-                ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] = 0ul
+                ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] = MASK_FALSE
             }
             break
         }
@@ -756,7 +756,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     instr_idx = ctx[].dfa[].incoming_idx
     label Lelse
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (i)] = 0ul
+        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (i)] = MASK_FALSE
     }
     loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i { # TDOD GET_CFG_BLOCK(block_id).succ_ids
         succ_id: u64 = ctx[].cfg[].blocks[block_id].succ_ids[i]
@@ -1295,7 +1295,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     if vec_size(ctx[].dfa[].instrs_mask_sets) < instrs_mask_sets_size {
         vec_resize(ctx[].dfa[].instrs_mask_sets, instrs_mask_sets_size)
 m4_ifelse(__OPTIM_LEVEL__, `2', `
-        memset(ctx[].dfa[].instrs_mask_sets, 0ul, sizeof<u64> * instrs_mask_sets_size)
+        memset(ctx[].dfa[].instrs_mask_sets, MASK_FALSE, sizeof<u64> * instrs_mask_sets_size)
 ')m4_dnl
     }
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -1310,7 +1310,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         loop while i-- > 0 {
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
-        mask_true_back: u64 = 18446744073709551615ul
+        mask_true_back: u64 = MASK_TRUE
         i = ctx[].dfa[].set_size - (ctx[].dfa[].mask_size - 1) * 64
         if i > 0 {
             loop  while i < 64 .. ++i {
@@ -1328,7 +1328,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             i = 0
             loop .. while i < blocks_mask_sets_size {
                 loop j: u64 = ctx[].dfa[].mask_size - 1 while j-- > 0 {
-                    ctx[].dfa[].blocks_mask_sets[i] = 18446744073709551615ul
+                    ctx[].dfa[].blocks_mask_sets[i] = MASK_TRUE
                     i++
                 }
                 ctx[].dfa[].blocks_mask_sets[i] = mask_true_back
@@ -1354,8 +1354,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (0)] = 0ul
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (0)] = 0ul
+        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (0)] = MASK_FALSE
+        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (0)] = MASK_FALSE
 ', __OPTIM_LEVEL__, `2', `
     {
         fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, fun_name)[].type_t[].get._FunType
@@ -1363,9 +1363,9 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
 ')m4_dnl
         loop i = 1 while i < ctx[].dfa[].mask_size .. ++i {
-            ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (i)] = 0ul
+            ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (i)] = MASK_FALSE
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-            ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)] = 0ul
+            ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)] = MASK_FALSE
 ')m4_dnl
         }
         loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
@@ -1381,7 +1381,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa_o2[].data_name_map[pair_second(name_id[]) - REGISTER_MASK_SIZE] = pair_first(name_id[])
 ')m4_dnl
         }
-        memset(ctx[].dfa[].blocks_mask_sets, 0ul, sizeof<u64> * blocks_mask_sets_size)
+        memset(ctx[].dfa[].blocks_mask_sets, MASK_FALSE, sizeof<u64> * blocks_mask_sets_size)
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
 ')m4_dnl
