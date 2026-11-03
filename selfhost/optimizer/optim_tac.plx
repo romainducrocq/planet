@@ -1228,7 +1228,7 @@ fn fold_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, instr_idx: u64) 
 }
 
 fn fold_instr(ctx: Ctx, instr_idx: u64) none {
-    node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc TacInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_TacSignExtend_t {
             fold_sign_extend_instr(ctx, @node[].get._TacSignExtend, instr_idx)
@@ -1286,7 +1286,7 @@ fn fold_instr(ctx: Ctx, instr_idx: u64) none {
 
 fn fold_constants(ctx: Ctx) none {
     loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
-        if (ctx[].p_instrs[])[instr_idx] {
+        if GET_INSTR(instr_idx) {
             fold_instr(ctx, instr_idx)
         }
     }
@@ -1309,7 +1309,7 @@ fn unreach_reachable_block(ctx: Ctx, block_id: u64) none {
 
 fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
     loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-        if (ctx[].p_instrs[])[instr_idx] {
+        if GET_INSTR(instr_idx) {
             set_instr(ctx, uptr_new(), instr_idx)
         }
     }
@@ -1322,7 +1322,7 @@ fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
 }
 
 fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
-    node: *struc TacInstruction = (ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_back_idx]
+    node: *struc TacInstruction = GET_INSTR(GET_CFG_BLOCK(block_id).instrs_back_idx)
     match node[].tag {
         -> AST_TacJump_t {
             -> AST_TacJumpIfZero_t {
@@ -1345,7 +1345,7 @@ fn unreach_jump_block(ctx: Ctx, block_id: u64, next_block_id: u64) none {
 }
 
 fn unreach_label_instr(ctx: Ctx, block_id: u64) none {
-    THROW_ABORT_IF((ctx[].p_instrs[])[ctx[].cfg[].blocks[block_id].instrs_front_idx][].tag ~= AST_TacLabel_t) # TODO GET_INSTR(GET_CFG_BLOCK(block_id).instrs_front_idx
+    THROW_ABORT_IF(GET_INSTR(GET_CFG_BLOCK(block_id).instrs_front_idx)[].tag ~= AST_TacLabel_t)
     cfg_rm_block_instr(ctx, ctx[].cfg[].blocks[block_id].instrs_front_idx, block_id)
 }
 
@@ -1711,7 +1711,7 @@ fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr
 }
 
 fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) i32 {
-    node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc TacInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_TacSignExtend_t {
             prop_transfer_dst_value(ctx, node[].get._TacSignExtend.dst, next_instr_idx)
@@ -2375,7 +2375,7 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
 }
 
 fn prop_instr(ctx: Ctx, instr_idx: u64, copy_instr_idx: u64, block_id: u64) none {
-    node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc TacInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_TacReturn_t {
             prop_ret_instr(ctx, @node[].get._TacReturn, copy_instr_idx, block_id > 0)
@@ -2469,8 +2469,8 @@ fn propagate_copies(ctx: Ctx) none {
             incoming_idx: u64 = block_id
             exit_block: u64 = 1
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_back_idx + 1 while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
-                    match (ctx[].p_instrs[])[instr_idx][].tag {
+                if GET_INSTR(instr_idx) {
+                    match GET_INSTR(instr_idx)[].tag {
                         -> AST_TacReturn_t {
                             -> AST_TacJumpIfZero_t {
                                 -> AST_TacJumpIfNotZero_t {
@@ -2561,7 +2561,7 @@ fn elim_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64)
 }
 
 fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none {
-    node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc TacInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_TacReturn_t {
             p_node: *struc TacReturn = @node[].get._TacReturn
@@ -2703,7 +2703,7 @@ fn elim_dst_value_instr(ctx: Ctx, node: *struc TacValue, instr_idx: u64) none {
 }
 
 fn elim_instr(ctx: Ctx, instr_idx: u64) none {
-    node: *struc TacInstruction = (ctx[].p_instrs[])[instr_idx]
+    node: *struc TacInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_TacSignExtend_t {
             elim_dst_value_instr(ctx, node[].get._TacSignExtend.dst, instr_idx)
@@ -2779,7 +2779,7 @@ fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: i32) none {
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if ctx[].cfg[].blocks[block_id].size > 0 {
             loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
-                if (ctx[].p_instrs[])[instr_idx] {
+                if GET_INSTR(instr_idx) {
                     elim_instr(ctx, instr_idx)
                 }
             }
