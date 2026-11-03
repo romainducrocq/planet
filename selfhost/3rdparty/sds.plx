@@ -213,8 +213,7 @@ pub fn sdsclear(s: string) none {
     s[0] = 0
 }
 
-m4_define(`SDS_MAX_PREALLOC', `TODO')m4_dnl
-
+m4_define(`SDS_MAX_PREALLOC', `(1024 * 1024)')m4_dnl
 pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
     sh: *any;
     newsh: *any;
@@ -230,11 +229,11 @@ pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
     len = sdslen(s)
     sh = cast<string>(s) - sdsHdrSize(oldstype)
     newlen = (len + addlen)
-    if newlen < (1024 * 1024) {
+    if newlen < SDS_MAX_PREALLOC {
         newlen *= 2
     }
     else {
-        newlen += (1024 * 1024)
+        newlen += SDS_MAX_PREALLOC
     }
     stype = sdsReqType(newlen)
     if stype == SDS_TYPE_5 {
