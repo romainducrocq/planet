@@ -16,25 +16,25 @@ m4_define(`SDS_TYPE_32', `3')m4_dnl
 m4_define(`SDS_TYPE_64', `4')m4_dnl
 m4_define(`SDS_TYPE_MASK', `7')m4_dnl
 m4_define(`SDS_TYPE_BITS', `3')m4_dnl
-m4_define(`SDS_HDR_VAR', `TODO')m4_dnl
-m4_define(`SDS_HDR', `TODO')m4_dnl
-m4_define(`SDS_TYPE_5_LEN', `TODO')m4_dnl
+m4_define(`SDS_HDR_VAR', `sh: *struc sdshdr$1 = cast<*any>(($2) - sizeof<struc sdshdr$1>)')m4_dnl
+m4_define(`SDS_HDR', `cast<*struc sdshdr$1>(($2) - sizeof<struc sdshdr$1>)')m4_dnl
+m4_define(`SDS_TYPE_5_LEN', `(($1) >> SDS_TYPE_BITS)')m4_dnl
 pub SDS_NOINIT: string = "SDS_NOINIT"
 
 pub fn sdslen(s: string) u64 {
     flags: u8 = s[-1]
     match flags & SDS_TYPE_MASK {
         -> SDS_TYPE_5 {
-            return ((flags) >> SDS_TYPE_BITS)
+            return SDS_TYPE_5_LEN(flags)
         }
         -> SDS_TYPE_8 {
-            return (cast<*struc sdshdr8>(((s) - (sizeof<struc sdshdr8>))))[].len
+            return SDS_HDR(8, s)[].len
         }
         -> SDS_TYPE_32 {
-            return (cast<*struc sdshdr32>(((s) - (sizeof<struc sdshdr32>))))[].len
+            return SDS_HDR(32, s)[].len
         }
         -> SDS_TYPE_64 {
-            return (cast<*struc sdshdr64>(((s) - (sizeof<struc sdshdr64>))))[].len
+            return SDS_HDR(64, s)[].len
         }
     }
     return 0
@@ -47,15 +47,15 @@ fn sdsavail(s: string) u64 {
             return 0
         }
         -> SDS_TYPE_8 {
-            sh: *struc sdshdr8 = cast<*any>(((s) - (sizeof<struc sdshdr8>)))
+            SDS_HDR_VAR(8, s)
             return sh[].alloc - sh[].len
         }
         -> SDS_TYPE_32 {
-            sh: *struc sdshdr32 = cast<*any>(((s) - (sizeof<struc sdshdr32>)))
+            SDS_HDR_VAR(32, s)
             return sh[].alloc - sh[].len
         }
         -> SDS_TYPE_64 {
-            sh: *struc sdshdr64 = cast<*any>(((s) - (sizeof<struc sdshdr64>)))
+            SDS_HDR_VAR(64, s)
             return sh[].alloc - sh[].len
         }
     }
@@ -71,15 +71,15 @@ fn sdssetlen(s: string, newlen: u64) none {
         }
         break
         -> SDS_TYPE_8 {
-            (cast<*struc sdshdr8>(((s) - (sizeof<struc sdshdr8>))))[].len = newlen
+            SDS_HDR(8, s)[].len = newlen
         }
         break
         -> SDS_TYPE_32 {
-            (cast<*struc sdshdr32>(((s) - (sizeof<struc sdshdr32>))))[].len = newlen
+            SDS_HDR(32, s)[].len = newlen
         }
         break
         -> SDS_TYPE_64 {
-            (cast<*struc sdshdr64>(((s) - (sizeof<struc sdshdr64>))))[].len = newlen
+            SDS_HDR(64, s)[].len = newlen
         }
         break
     }
@@ -92,15 +92,15 @@ fn sdssetalloc(s: string, newlen: u64) none {
             break
         }
         -> SDS_TYPE_8 {
-            (cast<*struc sdshdr8>(((s) - (sizeof<struc sdshdr8>))))[].alloc = newlen
+            SDS_HDR(8, s)[].alloc = newlen
         }
         break
         -> SDS_TYPE_32 {
-            (cast<*struc sdshdr32>(((s) - (sizeof<struc sdshdr32>))))[].alloc = newlen
+            SDS_HDR(32, s)[].alloc = newlen
         }
         break
         -> SDS_TYPE_64 {
-            (cast<*struc sdshdr64>(((s) - (sizeof<struc sdshdr64>))))[].alloc = newlen
+            SDS_HDR(64, s)[].alloc = newlen
         }
         break
     }
@@ -164,21 +164,21 @@ fn sdsnewlen(init: *any, initlen: u64) string {
             break
         }
         -> SDS_TYPE_8 {
-            sh: *struc sdshdr8 = cast<*any>(((s) - (sizeof<struc sdshdr8>)))
+            SDS_HDR_VAR(8, s)
             sh[].len = initlen
             sh[].alloc = initlen
             fp[] = stype
             break
         }
         -> SDS_TYPE_32 {
-            sh: *struc sdshdr32 = cast<*any>(((s) - (sizeof<struc sdshdr32>)))
+            SDS_HDR_VAR(32, s)
             sh[].len = initlen
             sh[].alloc = initlen
             fp[] = stype
             break
         }
         -> SDS_TYPE_64 {
-            sh: *struc sdshdr64 = cast<*any>(((s) - (sizeof<struc sdshdr64>)))
+            SDS_HDR_VAR(64, s)
             sh[].len = initlen
             sh[].alloc = initlen
             fp[] = stype
