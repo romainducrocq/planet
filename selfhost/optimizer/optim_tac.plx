@@ -1295,7 +1295,7 @@ fn fold_constants(ctx: Ctx) none {
 fn unreach_reachable_block(ctx: Ctx, block_id: u64) none;
 
 fn unreach_succ_reachable_blocks(ctx: Ctx, block_id: u64) none {
-    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i { # TODO GET_CFG_BLOCK(block_id).succ_ids
+    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i {
         unreach_reachable_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[i])
     }
 }
@@ -1315,9 +1315,9 @@ fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
     }
     ctx[].cfg[].blocks[block_id].size = 0
     cfg_rm_empty_block(ctx, block_id, false)
-    vec_clear(ctx[].cfg[].blocks[block_id].succ_ids) # TODO GET_CFG_BLOCK(block_id).succ_ids
+    vec_clear(ctx[].cfg[].blocks[block_id].succ_ids)
     ;
-    vec_clear(ctx[].cfg[].blocks[block_id].pred_ids) # TODO GET_CFG_BLOCK(block_id).pred_ids
+    vec_clear(ctx[].cfg[].blocks[block_id].pred_ids)
     ;
 }
 
@@ -1339,7 +1339,7 @@ fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
 }
 
 fn unreach_jump_block(ctx: Ctx, block_id: u64, next_block_id: u64) none {
-    if vec_size(ctx[].cfg[].blocks[block_id].succ_ids) == 1 and ctx[].cfg[].blocks[block_id].succ_ids[0] == next_block_id { # TODO GET_CFG_BLOCK(block_id).succ_ids
+    if vec_size(ctx[].cfg[].blocks[block_id].succ_ids) == 1 and ctx[].cfg[].blocks[block_id].succ_ids[0] == next_block_id {
         unreach_jump_instr(ctx, block_id)
     }
 }
@@ -1350,7 +1350,7 @@ fn unreach_label_instr(ctx: Ctx, block_id: u64) none {
 }
 
 fn unreach_label_block(ctx: Ctx, block_id: u64, prev_block_id: u64) none {
-    if vec_size(ctx[].cfg[].blocks[block_id].pred_ids) == 1 and ctx[].cfg[].blocks[block_id].pred_ids[0] == prev_block_id { # TODO GET_CFG_BLOCK(block_id).pred_ids
+    if vec_size(ctx[].cfg[].blocks[block_id].pred_ids) == 1 and ctx[].cfg[].blocks[block_id].pred_ids[0] == prev_block_id {
         unreach_label_instr(ctx, block_id)
     }
 }
