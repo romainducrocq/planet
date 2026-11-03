@@ -7,7 +7,6 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `', __OPTIM_LEVEL__, `2', `', `
 m4_ifdef(`__OPTIM_LEVEL__', `
 
 m4_define(`GET_INSTR', `ctx[].p_instrs[][($1)]')m4_dnl
-# TODO
 m4_define(`GET_CFG_BLOCK', `ctx[].cfg[].blocks[($1)]')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -174,10 +173,10 @@ fn cfg_add_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64
 
 fn cfg_add_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64) none {
     if succ_id < ctx[].cfg[].exit_id {
-        cfg_add_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].blocks[succ_id].pred_ids, succ_id, block_id)
+        cfg_add_edge(@GET_CFG_BLOCK(block_id).succ_ids, @GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id)
     }
     elif succ_id == ctx[].cfg[].exit_id {
-        cfg_add_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id)
+        cfg_add_edge(@GET_CFG_BLOCK(block_id).succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id)
     }
     else {
         THROW_ABORT
@@ -186,10 +185,10 @@ fn cfg_add_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64) none {
 
 fn cfg_add_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
     if pred_id < ctx[].cfg[].exit_id {
-        cfg_add_edge(@ctx[].cfg[].blocks[pred_id].succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id)
+        cfg_add_edge(@GET_CFG_BLOCK(pred_id).succ_ids, @GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id)
     }
     elif pred_id == ctx[].cfg[].entry_id {
-        cfg_add_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id)
+        cfg_add_edge(@ctx[].cfg[].entry_succ_ids, @GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id)
     }
     else {
         THROW_ABORT
@@ -215,10 +214,10 @@ fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64,
 
 fn cfg_rm_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64, is_reachable: i32) none {
     if succ_id < ctx[].cfg[].exit_id {
-        cfg_rm_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].blocks[succ_id].pred_ids, succ_id, block_id, is_reachable)
+        cfg_rm_edge(@GET_CFG_BLOCK(block_id).succ_ids, @GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id, is_reachable)
     }
     elif succ_id == ctx[].cfg[].exit_id {
-        cfg_rm_edge(@ctx[].cfg[].blocks[block_id].succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id, is_reachable)
+        cfg_rm_edge(@GET_CFG_BLOCK(block_id).succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id, is_reachable)
     }
     else {
         THROW_ABORT
@@ -227,10 +226,10 @@ fn cfg_rm_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64, is_reachable: i32) no
 
 fn cfg_rm_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
     if pred_id < ctx[].cfg[].exit_id {
-        cfg_rm_edge(@ctx[].cfg[].blocks[pred_id].succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, true)
+        cfg_rm_edge(@GET_CFG_BLOCK(pred_id).succ_ids, @GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id, true)
     }
     elif pred_id == ctx[].cfg[].entry_id {
-        cfg_rm_edge(@ctx[].cfg[].entry_succ_ids, @ctx[].cfg[].blocks[block_id].pred_ids, block_id, pred_id, true)
+        cfg_rm_edge(@ctx[].cfg[].entry_succ_ids, @GET_CFG_BLOCK(block_id).pred_ids, block_id, pred_id, true)
     }
     else {
         THROW_ABORT
@@ -238,11 +237,11 @@ fn cfg_rm_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
 }
 
 fn cfg_rm_empty_block(ctx: Ctx, block_id: u64, is_reachable: i32) none {
-    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i {
-        succ_id: u64 = ctx[].cfg[].blocks[block_id].succ_ids[i]
+    loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++i {
+        succ_id: u64 = GET_CFG_BLOCK(block_id).succ_ids[i]
         if is_reachable {
-            loop j: u64 = 0 while j < vec_size(ctx[].cfg[].blocks[block_id].pred_ids) .. ++j {
-                pred_id: u64 = ctx[].cfg[].blocks[block_id].pred_ids[j]
+            loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++j {
+                pred_id: u64 = GET_CFG_BLOCK(block_id).pred_ids[j]
                 if pred_id == ctx[].cfg[].entry_id {
                     cfg_add_pred_edge(ctx, succ_id, pred_id)
                 }
@@ -254,35 +253,35 @@ fn cfg_rm_empty_block(ctx: Ctx, block_id: u64, is_reachable: i32) none {
         cfg_rm_succ_edge(ctx, block_id, succ_id, is_reachable)
     }
     if is_reachable {
-        loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].pred_ids) .. ++i {
-            pred_id: u64 = ctx[].cfg[].blocks[block_id].pred_ids[i]
+        loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++i {
+            pred_id: u64 = GET_CFG_BLOCK(block_id).pred_ids[i]
             cfg_rm_pred_edge(ctx, block_id, pred_id)
         }
     }
-    ctx[].cfg[].blocks[block_id].instrs_front_idx = ctx[].cfg[].exit_id
-    ctx[].cfg[].blocks[block_id].instrs_back_idx = ctx[].cfg[].exit_id
+    GET_CFG_BLOCK(block_id).instrs_front_idx = ctx[].cfg[].exit_id
+    GET_CFG_BLOCK(block_id).instrs_back_idx = ctx[].cfg[].exit_id
 }
 
 fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
     if GET_INSTR(instr_idx) {
         set_instr(ctx, uptr_new(), instr_idx)
-        ctx[].cfg[].blocks[block_id].size--
-        if ctx[].cfg[].blocks[block_id].size == 0 {
+        GET_CFG_BLOCK(block_id).size--
+        if GET_CFG_BLOCK(block_id).size == 0 {
             cfg_rm_empty_block(ctx, block_id, true)
         }
-        elif instr_idx == ctx[].cfg[].blocks[block_id].instrs_front_idx {
-            loop  while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+        elif instr_idx == GET_CFG_BLOCK(block_id).instrs_front_idx {
+            loop  while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
-                    ctx[].cfg[].blocks[block_id].instrs_front_idx = instr_idx
+                    GET_CFG_BLOCK(block_id).instrs_front_idx = instr_idx
                     break
                 }
             }
         }
-        elif instr_idx == ctx[].cfg[].blocks[block_id].instrs_back_idx {
+        elif instr_idx == GET_CFG_BLOCK(block_id).instrs_back_idx {
             instr_idx++
-            loop  while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
+            loop  while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
                 if GET_INSTR(instr_idx) {
-                    ctx[].cfg[].blocks[block_id].instrs_back_idx = instr_idx
+                    GET_CFG_BLOCK(block_id).instrs_back_idx = instr_idx
                     break
                 }
             }
@@ -410,9 +409,9 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 
 fn init_control_flow_graph(ctx: Ctx) none {
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
-        vec_delete(ctx[].cfg[].blocks[block_id].pred_ids)
+        vec_delete(GET_CFG_BLOCK(block_id).pred_ids)
         ;
-        vec_delete(ctx[].cfg[].blocks[block_id].succ_ids)
+        vec_delete(GET_CFG_BLOCK(block_id).succ_ids)
         ;
     }
     vec_clear(ctx[].cfg[].blocks)
@@ -624,7 +623,7 @@ fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none;
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
-    loop next_instr_idx: u64 = instr_idx + 1 while next_instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++next_instr_idx {
+    loop next_instr_idx: u64 = instr_idx + 1 while next_instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++next_instr_idx {
         if GET_INSTR(next_instr_idx) and is_transfer_instr(ctx, next_instr_idx, false) {
             loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
                 GET_DFA_INSTR_SET_MASK(next_instr_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i)
@@ -651,7 +650,7 @@ fn dfa_forward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
 
 fn dfa_backward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
     if instr_idx > 0 {
-        loop next_instr_idx: u64 = instr_idx while next_instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
+        loop next_instr_idx: u64 = instr_idx while next_instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
             if GET_INSTR(next_instr_idx) and is_transfer_instr(ctx, next_instr_idx
 m4_ifelse(__OPTIM_LEVEL__, `1', `
                 , true
@@ -701,8 +700,8 @@ fn dfa_after_meet_block(ctx: Ctx, block_id: u64) i32 {
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
-    instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx
-    loop  while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+    instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx
+    loop  while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
         if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx, false) {
             jump Lelse
         }
@@ -712,8 +711,8 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         GET_DFA_INSTR_SET_MASK(instr_idx, i) = MASK_TRUE
     }
-    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].pred_ids) .. ++i {
-        pred_id: u64 = ctx[].cfg[].blocks[block_id].pred_ids[i]
+    loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++i {
+        pred_id: u64 = GET_CFG_BLOCK(block_id).pred_ids[i]
         if pred_id < ctx[].cfg[].exit_id {
             loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
                 GET_DFA_INSTR_SET_MASK(instr_idx, j) &= GET_DFA_BLOCK_SET_MASK(pred_id, j)
@@ -740,8 +739,8 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
 ')m4_dnl
 
 fn dfa_backward_meet_block(ctx: Ctx, block_id: u64) i32 {
-    instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_back_idx + 1
-    loop while instr_idx-- > ctx[].cfg[].blocks[block_id].instrs_front_idx {
+    instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_back_idx + 1
+    loop while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
         if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx
 m4_ifelse(__OPTIM_LEVEL__, `1', `
             , true
@@ -755,8 +754,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         GET_DFA_INSTR_SET_MASK(instr_idx, i) = MASK_FALSE
     }
-    loop i: u64 = 0 while i < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++i {
-        succ_id: u64 = ctx[].cfg[].blocks[block_id].succ_ids[i]
+    loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++i {
+        succ_id: u64 = GET_CFG_BLOCK(block_id).succ_ids[i]
         if succ_id < ctx[].cfg[].exit_id {
             loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
                 GET_DFA_INSTR_SET_MASK(instr_idx, j) |= GET_DFA_BLOCK_SET_MASK(succ_id, j)
@@ -791,8 +790,8 @@ fn dfa_forward_iter_alg(ctx: Ctx) none {
         }
         is_fixed_point: i32 = dfa_forward_meet_block(ctx, block_id)
         if not is_fixed_point {
-            loop j: u64 = 0 while j < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++j {
-                succ_id: u64 = ctx[].cfg[].blocks[block_id].succ_ids[j]
+            loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++j {
+                succ_id: u64 = GET_CFG_BLOCK(block_id).succ_ids[j]
                 if succ_id < ctx[].cfg[].exit_id {
                     loop k: u64 = i + 1 while k < open_data_map_size .. ++k {
                         if succ_id == ctx[].dfa[].open_data_map[k] {
@@ -827,8 +826,8 @@ fn dfa_iter_alg(ctx: Ctx) none {
         }
         is_fixed_point: i32 = dfa_backward_meet_block(ctx, block_id)
         if not is_fixed_point {
-            loop j: u64 = 0 while j < vec_size(ctx[].cfg[].blocks[block_id].pred_ids) .. ++j {
-                pred_id: u64 = ctx[].cfg[].blocks[block_id].pred_ids[j]
+            loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++j {
+                pred_id: u64 = GET_CFG_BLOCK(block_id).pred_ids[j]
                 if pred_id < ctx[].cfg[].exit_id {
                     loop k: u64 = i + 1 while k < open_data_map_size .. ++k {
                         if pred_id == ctx[].dfa[].open_data_map[k] {
@@ -860,15 +859,15 @@ fn dfa_backward_open_block(ctx: Ctx, block_id: u64, i: *u64) none;
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_succ_open_block(ctx: Ctx, block_id: u64, i: *u64) none {
-    loop j: u64 = 0 while j < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++j {
-        dfa_forward_open_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[j], i)
+    loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++j {
+        dfa_forward_open_block(ctx, GET_CFG_BLOCK(block_id).succ_ids[j], i)
     }
 }
 ')m4_dnl
 
 fn dfa_backward_succ_open_block(ctx: Ctx, block_id: u64, i: *u64) none {
-    loop j: u64 = 0 while j < vec_size(ctx[].cfg[].blocks[block_id].succ_ids) .. ++j {
-        dfa_backward_open_block(ctx, ctx[].cfg[].blocks[block_id].succ_ids[j], i)
+    loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++j {
+        dfa_backward_open_block(ctx, GET_CFG_BLOCK(block_id).succ_ids[j], i)
     }
 }
 
@@ -992,8 +991,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
 ')m4_dnl
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
-        if ctx[].cfg[].blocks[block_id].size > 0 {
-            loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+        if GET_CFG_BLOCK(block_id).size > 0 {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     node: *struc AstInstruction = GET_INSTR(instr_idx)
                     match node[].tag {

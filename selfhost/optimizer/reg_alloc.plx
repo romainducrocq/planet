@@ -731,8 +731,8 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
         }
     }
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
-        if ctx[].cfg[].blocks[block_id].size > 0 {
-            loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+        if GET_CFG_BLOCK(block_id).size > 0 {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     infer_init_edges(ctx, instr_idx)
                 }
@@ -1768,8 +1768,8 @@ fn coalesce_registers(ctx: Ctx) i32 {
         }
     }
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
-        if ctx[].cfg[].blocks[block_id].size > 0 {
-            loop instr_idx: u64 = ctx[].cfg[].blocks[block_id].instrs_front_idx while instr_idx <= ctx[].cfg[].blocks[block_id].instrs_back_idx .. ++instr_idx {
+        if GET_CFG_BLOCK(block_id).size > 0 {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     coal_instr(ctx, instr_idx, block_id)
                 }
