@@ -1576,7 +1576,7 @@ fn prop_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64)
     THROW_ABORT_IF(node[].tag ~= AST_TacVariable_t)
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-        if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+        if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
             i += 64
             continue
         }
@@ -1591,7 +1591,7 @@ fn prop_transfer_dst_value(ctx: Ctx, node: *struc TacValue, next_instr_idx: u64)
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_same_value(node, copy[].src) or is_same_value(node, copy[].dst) {
                     SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
-                    if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+                    if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
                         i = mask_set_size
                     }
                 }
@@ -1604,7 +1604,7 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
     THROW_ABORT_IF(node[].dst and node[].dst[].tag ~= AST_TacVariable_t)
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-        if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+        if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
             i += 64
             continue
         }
@@ -1619,7 +1619,7 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) or (node[].dst and (is_same_value(node[].dst, copy[].src) or is_same_value(node[].dst, copy[].dst))) {
                     SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
-                    if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+                    if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
                         i = mask_set_size
                     }
                 }
@@ -1659,7 +1659,7 @@ fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) i32 {
 fn prop_transfer_store(ctx: Ctx, next_instr_idx: u64) none {
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-        if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+        if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
             i += 64
             continue
         }
@@ -1674,7 +1674,7 @@ fn prop_transfer_store(ctx: Ctx, next_instr_idx: u64) none {
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) {
                     SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
-                    if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+                    if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
                         i = mask_set_size
                     }
                 }
@@ -1686,7 +1686,7 @@ fn prop_transfer_store(ctx: Ctx, next_instr_idx: u64) none {
 fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr_idx: u64) none {
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-        if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+        if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
             i += 64
             continue
         }
@@ -1701,7 +1701,7 @@ fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                 if is_same_name(copy[].src, node[].dst_name) or is_same_name(copy[].dst, node[].dst_name) {
                     SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
-                    if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+                    if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
                         i = mask_set_size
                     }
                 }
@@ -1811,7 +1811,7 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
     if node[].val and node[].val[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
+            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE) {
                 i += 64
                 continue
             }
@@ -1839,7 +1839,7 @@ fn prop_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) 
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -1867,7 +1867,7 @@ fn prop_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none 
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -1895,7 +1895,7 @@ fn prop_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) 
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -1923,7 +1923,7 @@ fn prop_dbl_to_int_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u64) 
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -1951,7 +1951,7 @@ fn prop_dbl_to_uint_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx: u64
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -1979,7 +1979,7 @@ fn prop_int_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u64) 
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2007,7 +2007,7 @@ fn prop_uint_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx: u64
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2036,7 +2036,7 @@ fn prop_call_instr(ctx: Ctx, node: *struc TacFunCall, instr_idx: u64) none {
         if node[].args[i][].tag == AST_TacVariable_t {
             j: u64 = 0
             loop k: u64 = 0 while k < ctx[].dfa[].mask_size .. ++k {
-                if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (k)] == MASK_FALSE {
+                if GET_DFA_INSTR_SET_MASK(instr_idx, k) == MASK_FALSE {
                     j += 64
                     continue
                 }
@@ -2067,7 +2067,7 @@ fn prop_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2097,7 +2097,7 @@ fn prop_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
     if is_src1 or is_src2 {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2137,7 +2137,7 @@ fn prop_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64
     THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-        if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+        if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
             i += 64
             continue
         }
@@ -2170,7 +2170,7 @@ fn prop_load_instr(ctx: Ctx, node: *struc TacLoad, instr_idx: u64) none {
     if node[].src_ptr[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2198,7 +2198,7 @@ fn prop_store_instr(ctx: Ctx, node: *struc TacStore, instr_idx: u64) none {
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2228,7 +2228,7 @@ fn prop_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr, instr_idx: u64) none {
     if is_src_ptr or is_idx {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2268,7 +2268,7 @@ fn prop_cp_to_offset_instr(ctx: Ctx, node: *struc TacCopyToOffset, instr_idx: u6
     if node[].src[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+            if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
                 i += 64
                 continue
             }
@@ -2295,7 +2295,7 @@ fn prop_cp_to_offset_instr(ctx: Ctx, node: *struc TacCopyToOffset, instr_idx: u6
 fn prop_cp_from_offset_instr(ctx: Ctx, node: *struc TacCopyFromOffset, instr_idx: u64) none {
     i: u64 = 0
     loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-        if ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[instr_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE {
+        if GET_DFA_INSTR_SET_MASK(instr_idx, j) == MASK_FALSE {
             i += 64
             continue
         }
@@ -2322,7 +2322,7 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
+            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE) {
                 i += 64
                 continue
             }
@@ -2350,7 +2350,7 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[incoming_idx] * ctx[].dfa[].mask_size + (j)] == MASK_FALSE) {
+            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE) {
                 i += 64
                 continue
             }
@@ -2532,14 +2532,14 @@ fn propagate_copies(ctx: Ctx) none {
 
 fn elim_transfer_addressed(ctx: Ctx, next_instr_idx: u64) none {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] |= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)]
+        GET_DFA_INSTR_SET_MASK(next_instr_idx, i) |= GET_DFA_INSTR_SET_MASK(ctx[].dfa_o1[].addressed_idx, i)
     }
 }
 
 fn elim_transfer_aliased(ctx: Ctx, next_instr_idx: u64) none {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] |= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa[].static_idx] * ctx[].dfa[].mask_size + (i)]
-        ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[next_instr_idx] * ctx[].dfa[].mask_size + (i)] |= ctx[].dfa[].instrs_mask_sets[ctx[].dfa[].instr_idx_map[ctx[].dfa_o1[].addressed_idx] * ctx[].dfa[].mask_size + (i)]
+        GET_DFA_INSTR_SET_MASK(next_instr_idx, i) |= GET_DFA_INSTR_SET_MASK(ctx[].dfa[].static_idx, i)
+        GET_DFA_INSTR_SET_MASK(next_instr_idx, i) |= GET_DFA_INSTR_SET_MASK(ctx[].dfa_o1[].addressed_idx, i)
     }
 }
 
