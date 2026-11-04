@@ -528,7 +528,7 @@ pub fn get_name_fmt(ctx: *struc IdentifierContext, name: u64, name_fmt: *string_
     value: string_t = map_get(ctx[].hash_table, name)
     str_copy(value, name_fmt[])
     loop i: u64 = str_size(name_fmt[]) while i-- > 0 {
-        if (name_fmt[])[i] == "."[0] {
+        if (name_fmt[])[i] == UID_SEPARATOR[0] {
             str_substr(name_fmt[], 0, i - 1)
             break
         }
