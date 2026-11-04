@@ -670,7 +670,16 @@ pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt
     }
 }
 
-m4_define(`EM_CSTR', `TODO')m4_dnl
+#define EM_CSTR(X) "‘" X "’"
+#define EM_VARG "‘%s’"
+#define PAD_ERR_0 "%s%s%s"
+#define PAD_ERR_1 "%s%s"
+#define PAD_ERR_2 "%s"
+#define PAD_ERR_3 ""
+#define RET_ERR(N) return "(no. %s) " PAD_ERR_##N
+
+
+m4_define(`EM_CSTR', `"‘" $1 "’"')m4_dnl
 m4_define(`EM_VARG', `TODO')m4_dnl
 m4_define(`PAD_ERR_0', `TODO')m4_dnl
 m4_define(`PAD_ERR_1', `TODO')m4_dnl
@@ -680,7 +689,7 @@ m4_define(`RET_ERR', `TODO')m4_dnl
 
 pub fn get_fatal_msg(msg: MESSAGE_FATAL) string {
     if msg == MSG_unsupported_os {
-        return "(no. %s) "             "%s%s"             "‘%s’"             " operating system is not supported, requires "             "‘"             "GNU/Linux"             "’"             " (x86_64) or "             "‘"             "MacOS"             "’"
+        return "(no. %s) " "%s%s" "‘%s’" " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or " EM_CSTR("MacOS")
     }
     else {
         THROW_ABORT
@@ -690,34 +699,34 @@ pub fn get_fatal_msg(msg: MESSAGE_FATAL) string {
 pub fn get_arg_msg(msg: MESSAGE_ARG) string {
     match msg {
         -> MSG_print_help {
-            return "(no. %s) "             "%s%s"             "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"             "    [--help]:         print help and exit\n"             "    Debug:            print debug info (0..1|251..255)\n"             "    OptimL1:          optimization level 1 mask (0..15)\n"             "    OptimL2:          optimization level 2 enum (0..2)\n"             "    FILE:             source file to compile\n"             "    StdlibDir:        standard lib include path\n"             "    SourceDir:        source file include path\n"             "    [IncludeDir...]:  add a list of paths to include path\n"             "see "             "‘"             "driver.sh"             "’"
+            return "(no. %s) " "%s%s" "Usage: %s [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n" "    [--help]:         print help and exit\n" "    Debug:            print debug info (0..1|251..255)\n" "    OptimL1:          optimization level 1 mask (0..15)\n" "    OptimL2:          optimization level 2 enum (0..2)\n" "    FILE:             source file to compile\n" "    StdlibDir:        standard lib include path\n" "    SourceDir:        source file include path\n" "    [IncludeDir...]:  add a list of paths to include path\n" "see " EM_CSTR("driver.sh")
         }
         -> MSG_no_debug_arg {
-            return "(no. %s) "             "%s%s%s"             "no debug code passed in first argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s%s" "no debug code passed in first argument, see " EM_CSTR("--help")
         }
         -> MSG_invalid_debug_arg {
-            return "(no. %s) "             "%s%s"             "invalid debug code "             "‘%s’"             " passed in first argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s" "invalid debug code " "‘%s’" " passed in first argument, see " EM_CSTR("--help")
         }
         -> MSG_no_optim_1_arg {
-            return "(no. %s) "             "%s%s%s"             "no level 1 optimization mask passed in second argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s%s" "no level 1 optimization mask passed in second argument, see " EM_CSTR("--help")
         }
         -> MSG_invalid_optim_1_arg {
-            return "(no. %s) "             "%s%s"             "invalid level 1 optimization mask "             "‘%s’"             " passed in second argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s" "invalid level 1 optimization mask " "‘%s’" " passed in second argument, see " EM_CSTR("--help")
         }
         -> MSG_no_optim_2_arg {
-            return "(no. %s) "             "%s%s%s"             "no level 2 optimization code passed in third argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s%s" "no level 2 optimization code passed in third argument, see " EM_CSTR("--help")
         }
         -> MSG_invalid_optim_2_arg {
-            return "(no. %s) "             "%s%s"             "invalid level 2 optimization code "             "‘%s’"             " passed in third argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s" "invalid level 2 optimization code " "‘%s’" " passed in third argument, see " EM_CSTR("--help")
         }
         -> MSG_no_input_files_arg {
-            return "(no. %s) "             "%s%s%s"             "no input file passed in fourth argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s%s" "no input file passed in fourth argument, see " EM_CSTR("--help")
         }
         -> MSG_no_stdlib_dir_arg {
-            return "(no. %s) "             "%s%s%s"             "no standard lib directory passed in fifth argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s%s" "no standard lib directory passed in fifth argument, see " EM_CSTR("--help")
         }
         -> MSG_no_include_dir_arg {
-            return "(no. %s) "             "%s%s%s"             "no include directories passed in sixth argument, see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s%s" "no include directories passed in sixth argument, see " EM_CSTR("--help")
         }
         otherwise {
             THROW_ABORT
@@ -728,19 +737,19 @@ pub fn get_arg_msg(msg: MESSAGE_ARG) string {
 pub fn get_util_msg(msg: MESSAGE_UTIL) string {
     match msg {
         -> MSG_failed_fread {
-            return "(no. %s) "             "%s%s"             "cannot read input file "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot read input file " "‘%s’"
         }
         -> MSG_failed_fwrite {
-            return "(no. %s) "             "%s%s"             "cannot write output file "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot write output file " "‘%s’"
         }
         -> MSG_failed_strtoi {
-            return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to an integer value"
+            return "(no. %s) " "%s%s" "cannot interpret string " "‘%s’" " to an integer value"
         }
         -> MSG_failed_strtou {
-            return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to an unsigned integer value"
+            return "(no. %s) " "%s%s" "cannot interpret string " "‘%s’" " to an unsigned integer value"
         }
         -> MSG_failed_strtod {
-            return "(no. %s) "             "%s%s"             "cannot interpret string "             "‘%s’"             " to a floating point value"
+            return "(no. %s) " "%s%s" "cannot interpret string " "‘%s’" " to a floating point value"
         }
         otherwise {
             THROW_ABORT
@@ -751,25 +760,25 @@ pub fn get_util_msg(msg: MESSAGE_UTIL) string {
 pub fn get_lexer_msg(msg: MESSAGE_LEXER) string {
     match msg {
         -> MSG_invalid_tok {
-            return "(no. %s) "             "%s%s"             "found invalid token "             "‘%s’"
+            return "(no. %s) " "%s%s" "found invalid token " "‘%s’"
         }
         -> MSG_failed_import {
-            return "(no. %s) "             "%s%s"             "cannot find "             "‘%s’"             " header file in "             "‘"             "import"             "’"             " directive search"
+            return "(no. %s) " "%s%s" "cannot find " "‘%s’" " header file in " EM_CSTR("import") " directive search"
         }
         -> MSG_failed_use {
-            return "(no. %s) "             "%s%s"             "cannot find "             "‘%s’"             " header file in "             "‘"             "use"             "’"             " directive search"
+            return "(no. %s) " "%s%s" "cannot find " "‘%s’" " header file in " EM_CSTR("use") " directive search"
         }
         -> MSG_import_in_line {
-            return "(no. %s) "             "%s%s"             "cannot search "             "‘%s’"             " in a line, "             "‘"             "import"             "’"             " requires its own line"
+            return "(no. %s) " "%s%s" "cannot search " "‘%s’" " in a line, " EM_CSTR("import") " requires its own line"
         }
         -> MSG_use_in_line {
-            return "(no. %s) "             "%s%s"             "cannot search "             "‘%s’"             " in a line, "             "‘"             "use"             "’"             " requires its own line"
+            return "(no. %s) " "%s%s" "cannot search " "‘%s’" " in a line, " EM_CSTR("use") " requires its own line"
         }
         -> MSG_preproc_macro {
-            return "(no. %s) "             "%s%s"             "found m4 macro "             "‘%s’"             ", preprocess with "             "‘"             "-E"             "’"             " or see "             "‘"             "--help"             "’"
+            return "(no. %s) " "%s%s" "found m4 macro " "‘%s’" ", preprocess with " EM_CSTR("-E") " or see " EM_CSTR("--help")
         }
         -> MSG_unmatched_close {
-            return "(no. %s) "             "%s%s"             "found unmatched bracket "             "‘%s’"
+            return "(no. %s) " "%s%s" "found unmatched bracket " "‘%s’"
         }
         otherwise {
             THROW_ABORT
@@ -780,85 +789,85 @@ pub fn get_lexer_msg(msg: MESSAGE_LEXER) string {
 pub fn get_parser_msg(msg: MESSAGE_PARSER) string {
     match msg {
         -> MSG_unexpected_next_tok {
-            return "(no. %s) "             "%s"             "found token "             "‘%s’"             ", but expected "             "‘%s’"             " next"
+            return "(no. %s) " "%s" "found token " "‘%s’" ", but expected " "‘%s’" " next"
         }
         -> MSG_reached_eof {
-            return "(no. %s) "             "%s%s%s"             "reached end of file, but expected declaration or statement next"
+            return "(no. %s) " "%s%s%s" "reached end of file, but expected declaration or statement next"
         }
         -> MSG_overflow_long_const {
-            return "(no. %s) "             "%s%s"             "cannot represent "             "‘%s’"             " as a 64 bits signed integer constant, very large number"
+            return "(no. %s) " "%s%s" "cannot represent " "‘%s’" " as a 64 bits signed integer constant, very large number"
         }
         -> MSG_overflow_ulong_const {
-            return "(no. %s) "             "%s%s"             "cannot represent "             "‘%s’"             " as a 64 bits unsigned integer constant, very large number"
+            return "(no. %s) " "%s%s" "cannot represent " "‘%s’" " as a 64 bits unsigned integer constant, very large number"
         }
         -> MSG_expect_unop {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected unary operator "             "‘"             "~"             "’"             ", "             "‘"             "-"             "’"             " or "             "‘"             "not"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected unary operator " EM_CSTR("~") ", " EM_CSTR("-") " or " EM_CSTR("not") " next"
         }
         -> MSG_expect_binop {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected binary operator "             "‘"             "="             "’"             ", "             "‘"             "+"             "’"             ", "             "‘"             "+="             "’"             ", "             "‘"             "-"             "’"             ", "             "‘"             "-="             "’"             ", "             "‘"             "*"             "’"             ", "             "‘"             "*="             "’"             ", "             "‘"             "/"             "’"             ", "             "‘"             "/="             "’"             ", "             "‘"             "%"             "’"             ", "             "‘"             "%="             "’"             ", "             "‘"             "&"             "’"             ", "             "‘"             "&="             "’"             ", "             "‘"             "|"             "’"             ", "             "‘"             "|="             "’"             ", "             "‘"             "^"             "’"             ", "             "‘"             "^="             "’"             ", "             "‘"             "<<"             "’"             ", "             "‘"             "<<="             "’"             ", "             "‘"             ">>"             "’"             ", "             "‘"             ">>="             "’"             ", "             "‘"             "and"             "’"             ", "             "‘"             "or"             "’"             ", "             "‘"             "=="             "’"             ", "             "‘"             "~="             "’"             ", "             "‘"             "<"             "’"             ", "             "‘"             "<="             "’"             ", "             "‘"             ">"             "’"             " or "             "‘"             ">="             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected binary operator " EM_CSTR("=") ", " EM_CSTR("+") ", " EM_CSTR("+=") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", " EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", " EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", " EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("and") ", " EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " EM_CSTR(">") " or " EM_CSTR(">=") " next"
         }
         -> MSG_expect_data_specifier {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected datatype specifier "             "‘"             "struc"             "’"             " or "             "‘"             "union"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected datatype specifier " EM_CSTR("struc") " or " EM_CSTR("union") " next"
         }
         -> MSG_expect_specifier {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected type specifier "             "‘"             "char"             "’"             ", "             "‘"             "string"             "’"             ", "             "‘"             "bool"             "’"             ", "             "‘"             "i32"             "’"             ", "             "‘"             "i64"             "’"             ", "             "‘"             "i8"             "’"             ", "             "‘"             "f64"             "’"             ", "             "‘"             "u32"             "’"             ", "             "‘"             "u64"             "’"             ", "             "‘"             "u8"             "’"             ", "             "‘"             "struc"             "’"             ", "             "‘"             "union"             "’"             ", "             "‘"             "*"             "’"             ", "             "‘"             "*any"             "’"             " or "             "‘"             "["             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected type specifier " EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next"
         }
         -> MSG_expect_maybe_type {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected maybe type specifier "             "‘"             "none"             "’"             ", "             "‘"             "char"             "’"             ", "             "‘"             "string"             "’"             ", "             "‘"             "bool"             "’"             ", "             "‘"             "i32"             "’"             ", "             "‘"             "i64"             "’"             ", "             "‘"             "i8"             "’"             ", "             "‘"             "f64"             "’"             ", "             "‘"             "u32"             "’"             ", "             "‘"             "u64"             "’"             ", "             "‘"             "u8"             "’"             ", "             "‘"             "struc"             "’"             ", "             "‘"             "union"             "’"             ", "             "‘"             "*"             "’"             ", "             "‘"             "*any"             "’"             " or "             "‘"             "["             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected maybe type specifier " EM_CSTR("none") ", " EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next"
         }
         -> MSG_expect_open_sizeof {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected sizeof "             "‘"             "<"             "’"             " or "             "‘"             "("             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR(`"("') " next"
         }
         -> MSG_expect_expression {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected expression "             "‘"             "?"             "’"             ", "             "‘"             "~"             "’"             ", "             "‘"             "-"             "’"             ", "             "‘"             "not"             "’"             ", "             "‘"             "++"             "’"             ", "             "‘"             "--"             "’"             ", "             "‘"             "@"             "’"             ", "             "‘"             "sizeof"             "’"             ", "             "‘"             "cast"             "’"             ", "             "‘"             "identifier"             "’"             ", "             "‘"             "identifier("             "’"             ", "             "‘"             "("             "’"             ", "             "‘"             "const string"             "’"             ", "             "‘"             "const char"             "’"             ", "             "‘"             "const i32"             "’"             ", "             "‘"             "const i64"             "’"             ", "             "‘"             "const u32"             "’"             ", "             "‘"             "const u64"             "’"             ", "             "‘"             "const f64"             "’"             ", "             "‘"             "true"             "’"             ", "             "‘"             "false"             "’"             " or "             "‘"             "nil"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected expression " EM_CSTR("?") ", " EM_CSTR("~") ", " EM_CSTR("-") ", " EM_CSTR("not") ", " EM_CSTR("++") ", " EM_CSTR("--") ", " EM_CSTR("@") ", " EM_CSTR("sizeof") ", " EM_CSTR("cast") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier" `"("') ", " EM_CSTR(`"("') ", " EM_CSTR("const string") ", " EM_CSTR("const char") ", " EM_CSTR("const i32") ", " EM_CSTR("const i64") ", " EM_CSTR("const u32") ", " EM_CSTR("const u64") ", " EM_CSTR("const f64") ", " EM_CSTR("true") ", " EM_CSTR("false") " or " EM_CSTR("nil") " next"
         }
         -> MSG_expect_assign {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected assignment "             "‘"             "="             "’"             " or "             "‘"             ";"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";") " next"
         }
         -> MSG_expect_datatype {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected member list "             "‘"             "("             "’"             " or "             "‘"             ";"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected member list " EM_CSTR(`"("') " or " EM_CSTR(";") " next"
         }
         -> MSG_expect_block {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected block "             "‘"             "{"             "’"             " or "             "‘"             ";"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected block " EM_CSTR("{") " or " EM_CSTR(";") " next"
         }
         -> MSG_expect_declaration {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected declaration "             "‘"             "identifier"             "’"             ", "             "‘"             "fn"             "’"             " or "             "‘"             "type"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected declaration " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next"
         }
         -> MSG_expect_storage_class {
-            return "(no. %s) "             "%s%s"             "found token "             "‘%s’"             ", but expected storage class "             "‘"             "pub"             "’"             ", "             "‘"             "data"             "’"             ", "             "‘"             "extrn"             "’"             ", "             "‘"             "identifier"             "’"             ", "             "‘"             "fn"             "’"             " or "             "‘"             "type"             "’"             " next"
+            return "(no. %s) " "%s%s" "found token " "‘%s’" ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next"
         }
         -> MSG_incomplete_any {
-            return "(no. %s) "             "%s%s%s"             "incomplete type "             "‘"             "any"             "’"             " requires a pointer, or use "             "‘"             "none"             "’"             " instead"
+            return "(no. %s) " "%s%s%s" "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead"
         }
         -> MSG_arr_size_not_int_const {
-            return "(no. %s) "             "%s%s"             "illegal array size "             "‘%s’"             ", requires a constant integer"
+            return "(no. %s) " "%s%s" "illegal array size " "‘%s’" ", requires a constant integer"
         }
         -> MSG_case_value_not_int_const {
-            return "(no. %s) "             "%s%s"             "illegal "             "‘"             "->"             "’"             " value "             "‘%s’"             ", requires a constant integer"
+            return "(no. %s) " "%s%s" "illegal " EM_CSTR("->") " value " "‘%s’" ", requires a constant integer"
         }
         -> MSG_empty_block {
-            return "(no. %s) "             "%s%s%s"             "empty block requires at least one item, or use "             "‘"             ";"             "’"             " instead"
+            return "(no. %s) " "%s%s%s" "empty block requires at least one item, or use " EM_CSTR(";") " instead"
         }
         -> MSG_empty_compound_init {
-            return "(no. %s) "             "%s%s%s"             "empty compound initializer requires at least one initializer"
+            return "(no. %s) " "%s%s%s" "empty compound initializer requires at least one initializer"
         }
         -> MSG_infinite_loop {
-            return "(no. %s) "             "%s%s%s"             "cannot exit "             "‘"             "loop"             "’"             ", infinite loop requires at least one statement"
+            return "(no. %s) " "%s%s%s" "cannot exit " EM_CSTR("loop") ", infinite loop requires at least one statement"
         }
         -> MSG_loop_decl_not_auto {
-            return "(no. %s) "             "%s%s"             "illegal storage "             "‘%s’"             ", cannot use storage class in "             "‘"             "loop"             "’"             " initialization"
+            return "(no. %s) " "%s%s" "illegal storage " "‘%s’" ", cannot use storage class in " EM_CSTR("loop") " initialization"
         }
         -> MSG_list_decl_not_auto {
-            return "(no. %s) "             "%s%s"             "illegal storage "             "‘%s’"             ", cannot use storage class in list declaration"
+            return "(no. %s) " "%s%s" "illegal storage " "‘%s’" ", cannot use storage class in list declaration"
         }
         -> MSG_type_decl_not_auto {
-            return "(no. %s) "             "%s%s"             "illegal storage "             "‘%s’"             ", cannot use storage class in type declaration"
+            return "(no. %s) " "%s%s" "illegal storage " "‘%s’" ", cannot use storage class in type declaration"
         }
         -> MSG_pub_in_block {
-            return "(no. %s) "             "%s%s%s"             "illegal storage class, cannot use "             "‘"             "pub"             "’"             " declaration in block"
+            return "(no. %s) " "%s%s%s" "illegal storage class, cannot use " EM_CSTR("pub") " declaration in block"
         }
         -> MSG_data_at_toplvl {
-            return "(no. %s) "             "%s%s%s"             "illegal storage class, cannot use "             "‘"             "data"             "’"             " declaration at top level"
+            return "(no. %s) " "%s%s%s" "illegal storage class, cannot use " EM_CSTR("data") " declaration at top level"
         }
         otherwise {
             THROW_ABORT
@@ -869,217 +878,217 @@ pub fn get_parser_msg(msg: MESSAGE_PARSER) string {
 pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC) string {
     match msg {
         -> MSG_incomplete_arr {
-            return "(no. %s) "             "%s"             "array type "             "‘%s’"             " of incomplete type "             "‘%s’"             ", requires a complete type"
+            return "(no. %s) " "%s" "array type " "‘%s’" " of incomplete type " "‘%s’" ", requires a complete type"
         }
         -> MSG_joint_ptr_mismatch {
-            return "(no. %s) "             "%s"             "pointer type mismatch "             "‘%s’"             " and "             "‘%s’"             " in operator"
+            return "(no. %s) " "%s" "pointer type mismatch " "‘%s’" " and " "‘%s’" " in operator"
         }
         -> MSG_fun_used_as_var {
-            return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " used as a variable"
+            return "(no. %s) " "%s%s" "function " "‘%s’" " used as a variable"
         }
         -> MSG_illegal_cast {
-            return "(no. %s) "             "%s"             "illegal cast, cannot convert expression from type "             "‘%s’"             " to "             "‘%s’"
+            return "(no. %s) " "%s" "illegal cast, cannot convert expression from type " "‘%s’" " to " "‘%s’"
         }
         -> MSG_invalid_unary_op {
-            return "(no. %s) "             "%s"             "cannot apply unary operator "             "‘%s’"             " on operand type "             "‘%s’"
+            return "(no. %s) " "%s" "cannot apply unary operator " "‘%s’" " on operand type " "‘%s’"
         }
         -> MSG_invalid_binary_op {
-            return "(no. %s) "             "%s"             "cannot apply binary operator "             "‘%s’"             " on operand type "             "‘%s’"
+            return "(no. %s) " "%s" "cannot apply binary operator " "‘%s’" " on operand type " "‘%s’"
         }
         -> MSG_invalid_binary_ops {
-            return "(no. %s) "             ""             "cannot apply binary operator "             "‘%s’"             " on operand types "             "‘%s’"             " and "             "‘%s’"
+            return "(no. %s) " "" "cannot apply binary operator " "‘%s’" " on operand types " "‘%s’" " and " "‘%s’"
         }
         -> MSG_assign_to_void {
-            return "(no. %s) "             "%s%s%s"             "cannot assign "             "‘"             "="             "’"             " to left operand type "             "‘"             "none"             "’"
+            return "(no. %s) " "%s%s%s" "cannot assign " EM_CSTR("=") " to left operand type " EM_CSTR("none")
         }
         -> MSG_assign_to_rvalue {
-            return "(no. %s) "             "%s%s"             "assignment "             "‘%s’"             " requires lvalue left operand, but got rvalue"
+            return "(no. %s) " "%s%s" "assignment " "‘%s’" " requires lvalue left operand, but got rvalue"
         }
         -> MSG_invalid_condition {
-            return "(no. %s) "             "%s%s"             "cannot apply conditional "             "‘"             "then"             "’"             " on condition operand type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot apply conditional " EM_CSTR("then") " on condition operand type " "‘%s’"
         }
         -> MSG_invalid_ternary_op {
-            return "(no. %s) "             "%s"             "cannot apply ternary operator "             "‘"             "else"             "’"             " on operand types "             "‘%s’"             " and "             "‘%s’"
+            return "(no. %s) " "%s" "cannot apply ternary operator " EM_CSTR("else") " on operand types " "‘%s’" " and " "‘%s’"
         }
         -> MSG_var_used_as_fun {
-            return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " used as a function"
+            return "(no. %s) " "%s%s" "variable " "‘%s’" " used as a function"
         }
         -> MSG_call_with_wrong_argc {
-            return "(no. %s) "             ""             "function "             "‘%s’"             " called with "             "‘%s’"             " arguments instead of "             "‘%s’"
+            return "(no. %s) " "" "function " "‘%s’" " called with " "‘%s’" " arguments instead of " "‘%s’"
         }
         -> MSG_deref_not_ptr {
-            return "(no. %s) "             "%s%s"             "cannot apply dereference operator "             "‘"             "[]"             "’"             " on non-pointer type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot apply dereference operator " EM_CSTR("[]") " on non-pointer type " "‘%s’"
         }
         -> MSG_addrof_rvalue {
-            return "(no. %s) "             "%s%s%s"             "addresssing "             "‘"             "@"             "’"             " requires lvalue operand, but got rvalue"
+            return "(no. %s) " "%s%s%s" "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue"
         }
         -> MSG_invalid_subscript {
-            return "(no. %s) "             "%s"             "cannot subscript array with operand types "             "‘%s’"             " and "             "‘%s’"             ", requires a complete pointer and an integer types"
+            return "(no. %s) " "%s" "cannot subscript array with operand types " "‘%s’" " and " "‘%s’" ", requires a complete pointer and an integer types"
         }
         -> MSG_sizeof_incomplete {
-            return "(no. %s) "             "%s%s"             "cannot get size with "             "‘"             "sizeof"             "’"             " operator on incomplete type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " "‘%s’"
         }
         -> MSG_dot_not_struct {
-            return "(no. %s) "             "%s"             "cannot access datatype member "             "‘%s’"             " with dot operator "             "‘"             "."             "’"             " on non-datatype "             "‘%s’"
+            return "(no. %s) " "%s" "cannot access datatype member " "‘%s’" " with dot operator " EM_CSTR(".") " on non-datatype " "‘%s’"
         }
         -> MSG_member_not_in_struct {
-            return "(no. %s) "             "%s"             "datatype "             "‘%s’"             " has no member named "             "‘%s’"
+            return "(no. %s) " "%s" "datatype " "‘%s’" " has no member named " "‘%s’"
         }
         -> MSG_arrow_not_struct_ptr {
-            return "(no. %s) "             "%s"             "cannot access datatype member "             "‘%s’"             " with dereferenced dot operator "             "‘"             "[]."             "’"             " on non-pointer-to-datatype "             "‘%s’"
+            return "(no. %s) " "%s" "cannot access datatype member " "‘%s’" " with dereferenced dot operator " EM_CSTR("[].") " on non-pointer-to-datatype " "‘%s’"
         }
         -> MSG_arrow_incomplete {
-            return "(no. %s) "             "%s"             "cannot access datatype member "             "‘%s’"             " with dereferenced dot operator "             "‘"             "[]."             "’"             " on incomplete datatype "             "‘%s’"
+            return "(no. %s) " "%s" "cannot access datatype member " "‘%s’" " with dereferenced dot operator " EM_CSTR("[].") " on incomplete datatype " "‘%s’"
         }
         -> MSG_exp_incomplete {
-            return "(no. %s) "             "%s%s"             "incomplete datatype "             "‘%s’"             " in expression"
+            return "(no. %s) " "%s%s" "incomplete datatype " "‘%s’" " in expression"
         }
         -> MSG_ret_value_in_void_fun {
-            return "(no. %s) "             "%s%s"             "found "             "‘"             "return"             "’"             " value in function "             "‘%s’"             " returning type "             "‘"             "none"             "’"
+            return "(no. %s) " "%s%s" "found " EM_CSTR("return") " value in function " "‘%s’" " returning type " EM_CSTR("none")
         }
         -> MSG_no_ret_value_in_fun {
-            return "(no. %s) "             "%s"             "found "             "‘"             "return"             "’"             " with no value in function "             "‘%s’"             " returning type "             "‘%s’"
+            return "(no. %s) " "%s" "found " EM_CSTR("return") " with no value in function " "‘%s’" " returning type " "‘%s’"
         }
         -> MSG_invalid_if {
-            return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "if"             "’"             " statement with condition expression type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot use " EM_CSTR("if") " statement with condition expression type " "‘%s’"
         }
         -> MSG_invalid_while {
-            return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "loop while"             "’"             " statement with condition expression type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot use " EM_CSTR("loop while") " statement with condition expression type " "‘%s’"
         }
         -> MSG_invalid_do_while {
-            return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "loop .. while"             "’"             " statement with post-condition expression type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " "‘%s’"
         }
         -> MSG_invalid_for {
-            return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "loop"             "’"             " statement with "             "‘"             "while"             "’"             " condition expression type "             "‘%s’"
+            return "(no. %s) " "%s%s" "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") " condition expression type " "‘%s’"
         }
         -> MSG_invalid_switch {
-            return "(no. %s) "             "%s%s"             "cannot use "             "‘"             "match"             "’"             " statement with match expression type "             "‘%s’"             ", requires an integer type"
+            return "(no. %s) " "%s%s" "cannot use " EM_CSTR("match") " statement with match expression type " "‘%s’" ", requires an integer type"
         }
         -> MSG_duplicate_case_value {
-            return "(no. %s) "             "%s%s"             "found duplicate "             "‘"             "->"             "’"             " value "             "‘%s’"             " in "             "‘"             "match"             "’"             " statement"
+            return "(no. %s) " "%s%s" "found duplicate " EM_CSTR("->") " value " "‘%s’" " in " EM_CSTR("match") " statement"
         }
         -> MSG_string_init_not_char_arr {
-            return "(no. %s) "             "%s%s"             "non-character array type "             "‘%s’"             " initialized from string constant"
+            return "(no. %s) " "%s%s" "non-character array type " "‘%s’" " initialized from string constant"
         }
         -> MSG_string_init_overflow {
-            return "(no. %s) "             "%s"             "size "             "‘%s’"             " string constant initialized with "             "‘%s’"             " characters"
+            return "(no. %s) " "%s" "size " "‘%s’" " string constant initialized with " "‘%s’" " characters"
         }
         -> MSG_arr_init_overflow {
-            return "(no. %s) "             ""             "size "             "‘%s’"             " array type "             "‘%s’"             " initialized with "             "‘%s’"             " initializers"
+            return "(no. %s) " "" "size " "‘%s’" " array type " "‘%s’" " initialized with " "‘%s’" " initializers"
         }
         -> MSG_struct_init_overflow {
-            return "(no. %s) "             ""             "datatype "             "‘%s’"             " initialized with "             "‘%s’"             " members instead of "             "‘%s’"
+            return "(no. %s) " "" "datatype " "‘%s’" " initialized with " "‘%s’" " members instead of " "‘%s’"
         }
         -> MSG_ret_arr {
-            return "(no. %s) "             "%s"             "function "             "‘%s’"             " returns array type "             "‘%s’"             ", instead of pointer type"
+            return "(no. %s) " "%s" "function " "‘%s’" " returns array type " "‘%s’" ", instead of pointer type"
         }
         -> MSG_ret_incomplete {
-            return "(no. %s) "             "%s"             "function "             "‘%s’"             " returns incomplete datatype "             "‘%s’"
+            return "(no. %s) " "%s" "function " "‘%s’" " returns incomplete datatype " "‘%s’"
         }
         -> MSG_void_param {
-            return "(no. %s) "             "%s"             "function "             "‘%s’"             " declared with parameter "             "‘%s’"             " with type "             "‘"             "none"             "’"
+            return "(no. %s) " "%s" "function " "‘%s’" " declared with parameter " "‘%s’" " with type " EM_CSTR("none")
         }
         -> MSG_incomplete_param {
-            return "(no. %s) "             ""             "function "             "‘%s’"             " defined with parameter "             "‘%s’"             " with incomplete datatype "             "‘%s’"
+            return "(no. %s) " "" "function " "‘%s’" " defined with parameter " "‘%s’" " with incomplete datatype " "‘%s’"
         }
         -> MSG_redecl_fun_conflict {
-            return "(no. %s) "             ""             "function "             "‘%s’"             " redeclared with function type "             "‘%s’"             ", but previous declaration has function type "             "‘%s’"
+            return "(no. %s) " "" "function " "‘%s’" " redeclared with function type " "‘%s’" ", but previous declaration has function type " "‘%s’"
         }
         -> MSG_redef_fun {
-            return "(no. %s) "             "%s"             "function "             "‘%s’"             " already defined with function type "             "‘%s’"
+            return "(no. %s) " "%s" "function " "‘%s’" " already defined with function type " "‘%s’"
         }
         -> MSG_redecl_static_conflict {
-            return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " with "             "‘"             "data"             "’"             " storage class already declared non-static"
+            return "(no. %s) " "%s%s" "function " "‘%s’" " with " EM_CSTR("data") " storage class already declared non-static"
         }
         -> MSG_static_ptr_init_not_int {
-            return "(no. %s) "             "%s"             "cannot statically initialize pointer type "             "‘%s’"             " from constant "             "‘%s’"             ", requires a constant integer"
+            return "(no. %s) " "%s" "cannot statically initialize pointer type " "‘%s’" " from constant " "‘%s’" ", requires a constant integer"
         }
         -> MSG_static_ptr_init_not_null {
-            return "(no. %s) "             "%s"             "cannot statically initialize pointer type "             "‘%s’"             " from non-zero value "             "‘%s’"
+            return "(no. %s) " "%s" "cannot statically initialize pointer type " "‘%s’" " from non-zero value " "‘%s’"
         }
         -> MSG_agg_init_with_single {
-            return "(no. %s) "             "%s%s"             "aggregate type "             "‘%s’"             " statically initialized with single initializer"
+            return "(no. %s) " "%s%s" "aggregate type " "‘%s’" " statically initialized with single initializer"
         }
         -> MSG_static_ptr_init_string {
-            return "(no. %s) "             "%s%s"             "non-character pointer type "             "‘%s’"             " statically initialized from string constant"
+            return "(no. %s) " "%s%s" "non-character pointer type " "‘%s’" " statically initialized from string constant"
         }
         -> MSG_static_init_not_const {
-            return "(no. %s) "             "%s%s"             "cannot statically initialize variable from non-constant type "             "‘%s’"             ", requires a constant"
+            return "(no. %s) " "%s%s" "cannot statically initialize variable from non-constant type " "‘%s’" ", requires a constant"
         }
         -> MSG_scalar_init_with_compound {
-            return "(no. %s) "             "%s%s"             "cannot initialize scalar type "             "‘%s’"             " with compound initializer"
+            return "(no. %s) " "%s%s" "cannot initialize scalar type " "‘%s’" " with compound initializer"
         }
         -> MSG_void_var_decl {
-            return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " declared with type "             "‘"             "none"             "’"
+            return "(no. %s) " "%s%s" "variable " "‘%s’" " declared with type " EM_CSTR("none")
         }
         -> MSG_incomplete_var_decl {
-            return "(no. %s) "             "%s"             "variable "             "‘%s’"             " declared with incomplete datatype "             "‘%s’"
+            return "(no. %s) " "%s" "variable " "‘%s’" " declared with incomplete datatype " "‘%s’"
         }
         -> MSG_redecl_var_conflict {
-            return "(no. %s) "             ""             "variable "             "‘%s’"             " redeclared with conflicting type "             "‘%s’"             ", but previously declared with type "             "‘%s’"
+            return "(no. %s) " "" "variable " "‘%s’" " redeclared with conflicting type " "‘%s’" ", but previously declared with type " "‘%s’"
         }
         -> MSG_redecl_var_storage {
-            return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " redeclared with conflicting storage class"
+            return "(no. %s) " "%s%s" "variable " "‘%s’" " redeclared with conflicting storage class"
         }
         -> MSG_redef_extern_var {
-            return "(no. %s) "             "%s%s"             "illegal initializer, can only declare variable "             "‘%s’"             " with "             "‘"             "extrn"             "’"             " storage class"
+            return "(no. %s) " "%s%s" "illegal initializer, can only declare variable " "‘%s’" " with " EM_CSTR("extrn") " storage class"
         }
         -> MSG_duplicate_member_decl {
-            return "(no. %s) "             "%s"             "datatype "             "‘%s’"             " declared with duplicate member name "             "‘%s’"
+            return "(no. %s) " "%s" "datatype " "‘%s’" " declared with duplicate member name " "‘%s’"
         }
         -> MSG_incomplete_member_decl {
-            return "(no. %s) "             ""             "datatype "             "‘%s’"             " declared with member "             "‘%s’"             " with incomplete type "             "‘%s’"
+            return "(no. %s) " "" "datatype " "‘%s’" " declared with member " "‘%s’" " with incomplete type " "‘%s’"
         }
         -> MSG_redecl_struct_in_scope {
-            return "(no. %s) "             "%s%s"             "datatype "             "‘%s’"             " already declared in this scope"
+            return "(no. %s) " "%s%s" "datatype " "‘%s’" " already declared in this scope"
         }
         -> MSG_case_out_of_switch {
-            return "(no. %s) "             "%s%s%s"             "found "             "‘"             "->"             "’"             " statement outside of "             "‘"             "match"             "’"
+            return "(no. %s) " "%s%s%s" "found " EM_CSTR("->") " statement outside of " EM_CSTR("match")
         }
         -> MSG_default_out_of_switch {
-            return "(no. %s) "             "%s%s%s"             "found "             "‘"             "otherwise"             "’"             " statement outside of "             "‘"             "match"             "’"
+            return "(no. %s) " "%s%s%s" "found " EM_CSTR("otherwise") " statement outside of " EM_CSTR("match")
         }
         -> MSG_multiple_default {
-            return "(no. %s) "             "%s%s%s"             "found more than one "             "‘"             "otherwise"             "’"             " statement in "             "‘"             "match"             "’"
+            return "(no. %s) " "%s%s%s" "found more than one " EM_CSTR("otherwise") " statement in " EM_CSTR("match")
         }
         -> MSG_break_out_of_loop {
-            return "(no. %s) "             "%s%s%s"             "found "             "‘"             "break"             "’"             " statement outside of "             "‘"             "loop"             "’"             " or "             "‘"             "match"             "’"
+            return "(no. %s) " "%s%s%s" "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop") " or " EM_CSTR("match")
         }
         -> MSG_continue_out_of_loop {
-            return "(no. %s) "             "%s%s%s"             "found "             "‘"             "continue"             "’"             " statement outside of "             "‘"             "loop"             "’"
+            return "(no. %s) " "%s%s%s" "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop")
         }
         -> MSG_undef_goto_target {
-            return "(no. %s) "             "%s"             "found "             "‘"             "jump"             "’"             " statement, but "             "‘"             "label"             "’"             " with target "             "‘%s’"             " not defined in function "             "‘%s’"
+            return "(no. %s) " "%s" "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " "‘%s’" " not defined in function " "‘%s’"
         }
         -> MSG_redecl_struct_conflict {
-            return "(no. %s) "             "%s"             "‘%s’"             " conflicts with datatype "             "‘%s’"             " previously declared or defined in this scope"
+            return "(no. %s) " "%s" "‘%s’" " conflicts with datatype " "‘%s’" " previously declared or defined in this scope"
         }
         -> MSG_undef_struct_in_scope {
-            return "(no. %s) "             "%s%s"             "datatype "             "‘%s’"             " not defined in this scope"
+            return "(no. %s) " "%s%s" "datatype " "‘%s’" " not defined in this scope"
         }
         -> MSG_undecl_var_in_scope {
-            return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " not declared in this scope"
+            return "(no. %s) " "%s%s" "variable " "‘%s’" " not declared in this scope"
         }
         -> MSG_undecl_fun_in_scope {
-            return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " not declared in this scope"
+            return "(no. %s) " "%s%s" "function " "‘%s’" " not declared in this scope"
         }
         -> MSG_for_init_decl_not_auto {
-            return "(no. %s) "             "%s"             "variable "             "‘%s’"             " declared with "             "‘%s’"             " storage class in "             "‘"             "loop"             "’"             " initialization"
+            return "(no. %s) " "%s" "variable " "‘%s’" " declared with " "‘%s’" " storage class in " EM_CSTR("loop") " initialization"
         }
         -> MSG_redef_label_in_scope {
-            return "(no. %s) "             "%s%s"             "‘"             "label"             "’"             " with target "             "‘%s’"             " already defined in this scope"
+            return "(no. %s) " "%s%s" EM_CSTR("label") " with target " "‘%s’" " already defined in this scope"
         }
         -> MSG_redecl_var_in_scope {
-            return "(no. %s) "             "%s%s"             "variable "             "‘%s’"             " already declared in this scope"
+            return "(no. %s) " "%s%s" "variable " "‘%s’" " already declared in this scope"
         }
         -> MSG_def_nested_fun {
-            return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " defined inside another function, but nested function definition are not permitted"
+            return "(no. %s) " "%s%s" "function " "‘%s’" " defined inside another function, but nested function definition are not permitted"
         }
         -> MSG_decl_nested_static_fun {
-            return "(no. %s) "             "%s%s"             "cannot declare nested function "             "‘%s’"             " in another function with "             "‘"             "data"             "’"             " storage class"
+            return "(no. %s) " "%s%s" "cannot declare nested function " "‘%s’" " in another function with " EM_CSTR("data") " storage class"
         }
         -> MSG_redecl_fun_in_scope {
-            return "(no. %s) "             "%s%s"             "function "             "‘%s’"             " already declared in this scope"
+            return "(no. %s) " "%s%s" "function " "‘%s’" " already declared in this scope"
         }
         otherwise {
             THROW_ABORT
