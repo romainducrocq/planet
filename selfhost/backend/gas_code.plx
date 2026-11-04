@@ -968,18 +968,17 @@ fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
 
 fn emit_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
 m4_ifdef(`__APPLE__', `
-    # TODO
     match node[].static_init[].tag {
         -> AST_DoubleInit_t {
             match node[].alignment {
                 -> 8 {
-                    # emit(ctx, TAB ".literal8" LF)
-                    # emit(ctx, TAB ".balign 8" LF)
+                    emit(ctx, TAB ".literal8" LF)
+                    emit(ctx, TAB ".balign 8" LF)
                     break
                 }
                 -> 16 {
-                    # emit(ctx, TAB ".literal16" LF)
-                    # emit(ctx, TAB ".balign 16" LF)
+                    emit(ctx, TAB ".literal16" LF)
+                    emit(ctx, TAB ".balign 16" LF)
                     break
                 }
                 otherwise {
@@ -989,7 +988,7 @@ m4_ifdef(`__APPLE__', `
             break
         }
         -> AST_StringInit_t {
-            # emit(ctx, TAB ".cstring" LF)
+            emit(ctx, TAB ".cstring" LF)
             break
         }
         otherwise {
@@ -1006,7 +1005,7 @@ m4_ifdef(`__APPLE__', `
     static_init_toplvl(ctx, node[].static_init)
 m4_ifdef(`__APPLE__', `
     if (node[].static_init[].tag == AST_DoubleInit_t and node[].alignment == 16) {
-        ; # emit(ctx, TAB TAB ".quad 0" LF) # TODO
+        emit(ctx, TAB TAB ".quad 0" LF)
     }
 ')m4_dnl
 }
