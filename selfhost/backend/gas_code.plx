@@ -12,16 +12,13 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 type struc GasCodeContext(backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext)
 
 m4_define(`Ctx', `*struc GasCodeContext')m4_dnl
-m4_define(`LF', `TODO')m4_dnl
-m4_define(`TAB', `TODO')m4_dnl
+m4_define(`LF', `"\n"')m4_dnl
+m4_define(`TAB', `"    "')m4_dnl
 
 m4_ifdef(`__APPLE__', `
-#ifdef __APPLE__
-# m4_define(`LBL', `TODO')m4_dnl
+m4_define(`LBL', `"L"')m4_dnl
 ', `
-#else
-m4_define(`LBL', `TODO')m4_dnl
-#endif
+m4_define(`LBL', `".L"')m4_dnl
 ')m4_dnl
 
 fn emit(ctx: Ctx, code: string) none {
@@ -421,7 +418,7 @@ fn data_op(ctx: Ctx, node: *struc AsmData) none {
     if map_it ~= map_end() {
         backend_obj_symbol: *struc BackendSymbol = pair_second(ctx[].backend[].symbol_table[map_it])
         if backend_obj_symbol[].tag == AST_BackendObj_t and backend_obj_symbol[].get._BackendObj.is_const {
-            emit(ctx, ".L")
+            emit(ctx, LBL)
         }
     }
     emit_identifier(ctx, node[].name)
@@ -526,7 +523,7 @@ fn get_binop(node: *struc AsmBinaryOp, is_dbl: i32) string {
 }
 
 fn mov_instr(ctx: Ctx, node: *struc AsmMov) none {
-    emit(ctx, "    "         "    "         "mov")
+    emit(ctx, TAB TAB "mov")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
@@ -535,11 +532,11 @@ fn mov_instr(ctx: Ctx, node: *struc AsmMov) none {
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn mov_sx_instr(ctx: Ctx, node: *struc AsmMovSx) none {
-    emit(ctx, "    "         "    "         "movs")
+    emit(ctx, TAB TAB "movs")
     emit(ctx, get_type_suffix(node[].asm_type_src, false))
     emit(ctx, get_type_suffix(node[].asm_type_dst, false))
     emit(ctx, " ")
@@ -552,11 +549,11 @@ fn mov_sx_instr(ctx: Ctx, node: *struc AsmMovSx) none {
         byte: i32 = type_align_bytes(node[].asm_type_dst)
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn zero_extend_instr(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
-    emit(ctx, "    "         "    "         "movzb")
+    emit(ctx, TAB TAB "movzb")
     emit(ctx, get_type_suffix(node[].asm_type_dst, false))
     emit(ctx, " ")
     emit_op(ctx, node[].src, 1)
@@ -565,19 +562,19 @@ fn zero_extend_instr(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
         byte: i32 = type_align_bytes(node[].asm_type_dst)
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn lea_instr(ctx: Ctx, node: *struc AsmLea) none {
-    emit(ctx, "    "         "    "         "leaq ")
+    emit(ctx, TAB TAB "leaq ")
     emit_op(ctx, node[].src, 8)
     emit(ctx, ", ")
     emit_op(ctx, node[].dst, 8)
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn cvttsd2si_instr(ctx: Ctx, node: *struc AsmCvttsd2si) none {
-    emit(ctx, "    "         "    "         "cvttsd2si")
+    emit(ctx, TAB TAB "cvttsd2si")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
@@ -586,11 +583,11 @@ fn cvttsd2si_instr(ctx: Ctx, node: *struc AsmCvttsd2si) none {
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn cvtsi2sd_instr(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
-    emit(ctx, "    "         "    "         "cvtsi2sd")
+    emit(ctx, TAB TAB "cvtsi2sd")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
@@ -599,11 +596,11 @@ fn cvtsi2sd_instr(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn unary_instr(ctx: Ctx, node: *struc AsmUnary) none {
-    emit(ctx, "    "         "    ")
+    emit(ctx, TAB TAB)
     emit(ctx, get_unop(@node[].unop))
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -611,11 +608,11 @@ fn unary_instr(ctx: Ctx, node: *struc AsmUnary) none {
         byte: i32 = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
-    emit(ctx, "    "         "    ")
+    emit(ctx, TAB TAB)
     {
         is_dbl: i32 = node[].asm_type[].tag == AST_BackendDouble_t
         emit(ctx, get_binop(@node[].binop, is_dbl))
@@ -642,15 +639,15 @@ fn binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn cmp_instr(ctx: Ctx, node: *struc AsmCmp) none {
     if node[].asm_type[].tag == AST_BackendDouble_t {
-        emit(ctx, "    "             "    "             "comi")
+        emit(ctx, TAB TAB "comi")
     }
     else {
-        emit(ctx, "    "             "    "             "cmp")
+        emit(ctx, TAB TAB "cmp")
     }
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
@@ -660,39 +657,39 @@ fn cmp_instr(ctx: Ctx, node: *struc AsmCmp) none {
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn idiv_instr(ctx: Ctx, node: *struc AsmIdiv) none {
-    emit(ctx, "    "         "    "         "idiv")
+    emit(ctx, TAB TAB "idiv")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
         byte: i32 = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn div_instr(ctx: Ctx, node: *struc AsmDiv) none {
-    emit(ctx, "    "         "    "         "div")
+    emit(ctx, TAB TAB "div")
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
         byte: i32 = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
     }
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn cdq_instr(ctx: Ctx, node: *struc AsmCdq) none {
     match node[].asm_type[].tag {
         -> AST_LongWord_t {
-            emit(ctx, "    "                 "    "                 "cdq"                 "\n")
+            emit(ctx, TAB TAB "cdq" LF)
         }
         break
         -> AST_QuadWord_t {
-            emit(ctx, "    "                 "    "                 "cqo"                 "\n")
+            emit(ctx, TAB TAB "cqo" LF)
         }
         break
         otherwise {
@@ -702,47 +699,47 @@ fn cdq_instr(ctx: Ctx, node: *struc AsmCdq) none {
 }
 
 fn jmp_instr(ctx: Ctx, node: *struc AsmJmp) none {
-    emit(ctx, "    "         "    "         "jmp "         ".L")
+    emit(ctx, TAB TAB "jmp " LBL)
     emit_identifier(ctx, node[].target)
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn jmp_cc_instr(ctx: Ctx, node: *struc AsmJmpCC) none {
-    emit(ctx, "    "         "    "         "j")
+    emit(ctx, TAB TAB "j")
     emit(ctx, get_cond_code(@node[].cond_code))
-    emit(ctx, " "         ".L")
+    emit(ctx, " " LBL)
     emit_identifier(ctx, node[].target)
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn set_cc_instr(ctx: Ctx, node: *struc AsmSetCC) none {
-    emit(ctx, "    "         "    "         "set")
+    emit(ctx, TAB TAB "set")
     emit(ctx, get_cond_code(@node[].cond_code))
     emit(ctx, " ")
     emit_op(ctx, node[].dst, 1)
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn label_instr(ctx: Ctx, node: *struc AsmLabel) none {
-    emit(ctx, "    "         ".L")
+    emit(ctx, TAB LBL)
     emit_identifier(ctx, node[].name)
-    emit(ctx, ":"         "\n")
+    emit(ctx, ":" LF)
 }
 
 fn push_instr(ctx: Ctx, node: *struc AsmPush) none {
-    emit(ctx, "    "         "    "         "pushq ")
+    emit(ctx, TAB TAB "pushq ")
     emit_op(ctx, node[].src, 8)
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn pop_instr(ctx: Ctx, node: *struc AsmPop) none {
-    emit(ctx, "    "         "    "         "popq ")
+    emit(ctx, TAB TAB "popq ")
     emit(ctx, get_reg_8b(@node[].reg))
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn call_instr(ctx: Ctx, node: *struc AsmCall) none {
-    emit(ctx, "    "         "    "         "call ")
+    emit(ctx, TAB TAB "call ")
     emit_identifier(ctx, node[].name)
 m4_ifdef(`__APPLE__', `', `
     backend_fun_symbol: *struc BackendSymbol = map_get(ctx[].backend[].symbol_table, node[].name)
@@ -751,11 +748,11 @@ m4_ifdef(`__APPLE__', `', `
         emit(ctx, "@PLT")
     }
 ')m4_dnl
-    emit(ctx, "\n")
+    emit(ctx, LF)
 }
 
 fn ret_instr(ctx: Ctx) none {
-    emit(ctx, "    "         "movq %rbp, %rsp"         "\n"         "    "         "popq %rbp"         "\n"         "    "         "ret"         "\n")
+    emit(ctx, TAB "movq %rbp, %rsp" LF TAB "popq %rbp" LF TAB "ret" LF)
 }
 
 fn emit_instr(ctx: Ctx, node: *struc AsmInstruction) none {
@@ -854,89 +851,89 @@ fn emit_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(AsmInstruction))) 
 
 fn glob_directive_toplvl(ctx: Ctx, name: u64, is_glob: i32) none {
     if is_glob {
-        emit(ctx, "    "             ".globl ")
+        emit(ctx, TAB ".globl ")
         emit_identifier(ctx, name)
-        emit(ctx, "\n")
+        emit(ctx, LF)
     }
 }
 
 fn emit_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     glob_directive_toplvl(ctx, node[].name, node[].is_glob)
-    emit(ctx, "    "         ".text"         "\n")
+    emit(ctx, TAB ".text" LF)
     emit_identifier(ctx, node[].name)
-    emit(ctx, ":"         "\n"         "    "         "pushq %rbp"         "\n"         "    "         "movq %rsp, %rbp"         "\n")
+    emit(ctx, ":" LF TAB "pushq %rbp" LF TAB "movq %rsp, %rbp" LF)
     emit_instr_list(ctx, node[].instructions)
 }
 
 fn static_section_toplvl(ctx: Ctx, node_list: vector_t(shared_ptr_t(StaticInit))) none {
     if vec_size(node_list) == 1 and node_list[0][].tag == AST_ZeroInit_t {
-        emit(ctx, "    "             ".bss"             "\n")
+        emit(ctx, TAB ".bss" LF)
     }
     else {
-        emit(ctx, "    "             ".data"             "\n")
+        emit(ctx, TAB ".data" LF)
     }
 }
 
 fn align_directive_toplvl(ctx: Ctx, alignment: i32) none {
     if alignment > 1 {
-        emit(ctx, "    "             ".balign ")
+        emit(ctx, TAB ".balign ")
         emit_int(ctx, alignment)
-        emit(ctx, "\n")
+        emit(ctx, LF)
     }
 }
 
 fn static_init_toplvl(ctx: Ctx, node: *struc StaticInit) none {
     match node[].tag {
         -> AST_CharInit_t {
-            emit(ctx, "    "                 "    "                 ".byte ")
+            emit(ctx, TAB TAB ".byte ")
         }
         emit_char(ctx, node[].get._CharInit.value)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_IntInit_t {
-            emit(ctx, "    "                 "    "                 ".long ")
+            emit(ctx, TAB TAB ".long ")
         }
         emit_int(ctx, node[].get._IntInit.value)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_LongInit_t {
-            emit(ctx, "    "                 "    "                 ".quad ")
+            emit(ctx, TAB TAB ".quad ")
         }
         emit_long(ctx, node[].get._LongInit.value)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_DoubleInit_t {
-            emit(ctx, "    "                 "    "                 ".quad ")
+            emit(ctx, TAB TAB ".quad ")
         }
         emit_dbl(ctx, node[].get._DoubleInit.dbl_const)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_UCharInit_t {
-            emit(ctx, "    "                 "    "                 ".byte ")
+            emit(ctx, TAB TAB ".byte ")
         }
         emit_uchar(ctx, node[].get._UCharInit.value)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_UIntInit_t {
-            emit(ctx, "    "                 "    "                 ".long ")
+            emit(ctx, TAB TAB ".long ")
         }
         emit_uint(ctx, node[].get._UIntInit.value)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_ULongInit_t {
-            emit(ctx, "    "                 "    "                 ".quad ")
+            emit(ctx, TAB TAB ".quad ")
         }
         emit_ulong(ctx, node[].get._ULongInit.value)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_ZeroInit_t {
-            emit(ctx, "    "                 "    "                 ".zero ")
+            emit(ctx, TAB TAB ".zero ")
         }
         emit_long(ctx, node[].get._ZeroInit.byte)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         -> AST_StringInit_t {
-            emit(ctx, "    "                 "    "                 ".asci")
+            emit(ctx, TAB TAB ".asci")
         }
         {
             string_init: *struc StringInit = @node[].get._StringInit
@@ -944,13 +941,13 @@ fn static_init_toplvl(ctx: Ctx, node: *struc StaticInit) none {
             emit(ctx, " \"")
             emit_string(ctx, string_init[].string_const)
         }
-        emit(ctx, "\""             "\n")
+        emit(ctx, "\"" LF)
         break
         -> AST_PointerInit_t {
-            emit(ctx, "    "                 "    "                 ".quad "                 ".L")
+            emit(ctx, TAB TAB ".quad " LBL)
         }
         emit_identifier(ctx, node[].get._PointerInit.name)
-        emit(ctx, "\n")
+        emit(ctx, LF)
         break
         otherwise {
             THROW_ABORT
@@ -963,7 +960,7 @@ fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
     static_section_toplvl(ctx, node[].static_inits)
     align_directive_toplvl(ctx, node[].alignment)
     emit_identifier(ctx, node[].name)
-    emit(ctx, ":"         "\n")
+    emit(ctx, ":" LF)
     loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
         static_init_toplvl(ctx, node[].static_inits[i])
     }
@@ -1000,12 +997,12 @@ m4_ifdef(`__APPLE__', `
         }
     }
 ', `
-    emit(ctx, "    "         ".section .rodata"         "\n")
+    emit(ctx, TAB ".section .rodata" LF)
     align_directive_toplvl(ctx, node[].alignment)
 ')m4_dnl
-    emit(ctx, ".L")
+    emit(ctx, LBL)
     emit_identifier(ctx, node[].name)
-    emit(ctx, ":"         "\n")
+    emit(ctx, ":" LF)
     static_init_toplvl(ctx, node[].static_init)
 m4_ifdef(`__APPLE__', `
     if (node[].static_init[].tag == AST_DoubleInit_t and node[].alignment == 16) {
@@ -1015,7 +1012,7 @@ m4_ifdef(`__APPLE__', `
 }
 
 fn emit_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
-    emit(ctx, "\n")
+    emit(ctx, LF)
     match node[].tag {
         -> AST_AsmFunction_t {
             emit_fun_toplvl(ctx, @node[].get._AsmFunction)
@@ -1043,7 +1040,7 @@ fn emit_program(ctx: Ctx, node: *struc AsmProgram) none {
         emit_toplvl(ctx, node[].top_levels[i])
     }
 m4_ifdef(`__APPLE__', `', `
-    emit(ctx, "    "         "    "         ".section .note.GNU-stack,\"\",@progbits"         "\n")
+    emit(ctx, TAB TAB ".section .note.GNU-stack,\"\",@progbits" LF)
 ')m4_dnl
 }
 
