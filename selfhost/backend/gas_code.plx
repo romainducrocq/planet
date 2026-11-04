@@ -30,7 +30,7 @@ fn emit(ctx: Ctx, code: string) none {
 
 fn emit_identifier(ctx: Ctx, identifier: u64) none {
 m4_ifdef(`__APPLE__', `
-    emit(ctx, "_");
+    emit(ctx, "_")
 ')m4_dnl
     value: string = map_get(ctx[].identifiers[].hash_table, identifier)
     emit(ctx, value)
