@@ -14,20 +14,26 @@ type struc GasCodeContext(backend: *struc BackEndContext, fileio: *struc FileIoC
 m4_define(`Ctx', `*struc GasCodeContext')m4_dnl
 m4_define(`LF', `TODO')m4_dnl
 m4_define(`TAB', `TODO')m4_dnl
+
+m4_ifdef(`__APPLE__', `
 #ifdef __APPLE__
 # m4_define(`LBL', `TODO')m4_dnl
+', `
 #else
 m4_define(`LBL', `TODO')m4_dnl
 #endif
+')m4_dnl
 
 fn emit(ctx: Ctx, code: string) none {
     write_buffer(ctx[].fileio, code)
 }
 
 fn emit_identifier(ctx: Ctx, identifier: u64) none {
+m4_ifdef(`__APPLE__', `
 #ifdef __APPLE__
     # emit(ctx, "_");
 #endif
+')m4_dnl
     value: string = map_get(ctx[].identifiers[].hash_table, identifier)
     emit(ctx, value)
 }
@@ -740,6 +746,7 @@ fn pop_instr(ctx: Ctx, node: *struc AsmPop) none {
 fn call_instr(ctx: Ctx, node: *struc AsmCall) none {
     emit(ctx, "    "         "    "         "call ")
     emit_identifier(ctx, node[].name)
+m4_ifdef(`__APPLE__', `', `
 #ifndef __APPLE__
     backend_fun_symbol: *struc BackendSymbol = map_get(ctx[].backend[].symbol_table, node[].name)
     THROW_ABORT_IF(backend_fun_symbol[].tag ~= AST_BackendFun_t)
@@ -747,6 +754,7 @@ fn call_instr(ctx: Ctx, node: *struc AsmCall) none {
         emit(ctx, "@PLT")
     }
 #endif
+')m4_dnl
     emit(ctx, "\n")
 }
 
@@ -966,6 +974,7 @@ fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
 }
 
 fn emit_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
+m4_ifdef(`__APPLE__', `
 #ifdef __APPLE__
     # switch (node->static_init->tag) {
     #     case AST_DoubleInit_t:
@@ -988,19 +997,23 @@ fn emit_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
     #     default:
     #         THROW_ABORT;
     # }
+', `
 #else
     emit(ctx, "    "         ".section .rodata"         "\n")
     align_directive_toplvl(ctx, node[].alignment)
 #endif
+')m4_dnl
     emit(ctx, ".L")
     emit_identifier(ctx, node[].name)
     emit(ctx, ":"         "\n")
     static_init_toplvl(ctx, node[].static_init)
+m4_ifdef(`__APPLE__', `
 #ifdef __APPLE__
     # if (node->static_init->tag == AST_DoubleInit_t && node->alignment == 16) {
     #     emit(ctx, TAB TAB ".quad 0" LF);
     # }
 #endif
+')m4_dnl
 }
 
 fn emit_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
@@ -1031,9 +1044,11 @@ fn emit_program(ctx: Ctx, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < vec_size(node[].top_levels) .. ++i {
         emit_toplvl(ctx, node[].top_levels[i])
     }
+m4_ifdef(`__APPLE__', `', `
 #ifndef __APPLE__
     emit(ctx, "    "         "    "         ".section .note.GNU-stack,\"\",@progbits"         "\n")
 #endif
+')m4_dnl
 }
 
 pub fn emit_gas_code(asm_ast: *unique_ptr_t(AsmProgram), backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none {
