@@ -33,7 +33,7 @@ m4_define(`_LIB_SDS_M4', `')m4_dnl
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-m4_define(`sds', `string')m4_dnl
+m4_define(`sds', `string')m4_dnl # TODO
 
 pub fn sdslen(s: sds) u64;
 pub fn sdsnew(init: string) sds;
