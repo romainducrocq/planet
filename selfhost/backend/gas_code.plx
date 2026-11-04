@@ -30,9 +30,7 @@ fn emit(ctx: Ctx, code: string) none {
 
 fn emit_identifier(ctx: Ctx, identifier: u64) none {
 m4_ifdef(`__APPLE__', `
-#ifdef __APPLE__
-    # emit(ctx, "_");
-#endif
+    emit(ctx, "_");
 ')m4_dnl
     value: string = map_get(ctx[].identifiers[].hash_table, identifier)
     emit(ctx, value)
@@ -747,13 +745,11 @@ fn call_instr(ctx: Ctx, node: *struc AsmCall) none {
     emit(ctx, "    "         "    "         "call ")
     emit_identifier(ctx, node[].name)
 m4_ifdef(`__APPLE__', `', `
-#ifndef __APPLE__
     backend_fun_symbol: *struc BackendSymbol = map_get(ctx[].backend[].symbol_table, node[].name)
     THROW_ABORT_IF(backend_fun_symbol[].tag ~= AST_BackendFun_t)
     if not backend_fun_symbol[].get._BackendFun.is_def {
         emit(ctx, "@PLT")
     }
-#endif
 ')m4_dnl
     emit(ctx, "\n")
 }
@@ -975,44 +971,46 @@ fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
 
 fn emit_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
 m4_ifdef(`__APPLE__', `
-#ifdef __APPLE__
-    # switch (node->static_init->tag) {
-    #     case AST_DoubleInit_t:
-    #         switch (node->alignment) {
-    #             case 8:
-    #                 emit(ctx, TAB ".literal8" LF);
-    #                 emit(ctx, TAB ".balign 8" LF);
-    #                 break;
-    #             case 16:
-    #                 emit(ctx, TAB ".literal16" LF);
-    #                 emit(ctx, TAB ".balign 16" LF);
-    #                 break;
-    #             default:
-    #                 THROW_ABORT;
-    #         }
-    #         break;
-    #     case AST_StringInit_t:
-    #         emit(ctx, TAB ".cstring" LF);
-    #         break;
-    #     default:
-    #         THROW_ABORT;
-    # }
+    # TODO
+    match node[].static_init[].tag {
+        -> AST_DoubleInit_t {
+            match node[].alignment {
+                -> 8 {
+                    # emit(ctx, TAB ".literal8" LF)
+                    # emit(ctx, TAB ".balign 8" LF)
+                    break
+                }
+                -> 16 {
+                    # emit(ctx, TAB ".literal16" LF)
+                    # emit(ctx, TAB ".balign 16" LF)
+                    break
+                }
+                otherwise {
+                    THROW_ABORT
+                }
+            }
+            break
+        }
+        -> AST_StringInit_t {
+            # emit(ctx, TAB ".cstring" LF)
+            break
+        }
+        otherwise {
+            THROW_ABORT
+        }
+    }
 ', `
-#else
     emit(ctx, "    "         ".section .rodata"         "\n")
     align_directive_toplvl(ctx, node[].alignment)
-#endif
 ')m4_dnl
     emit(ctx, ".L")
     emit_identifier(ctx, node[].name)
     emit(ctx, ":"         "\n")
     static_init_toplvl(ctx, node[].static_init)
 m4_ifdef(`__APPLE__', `
-#ifdef __APPLE__
-    # if (node->static_init->tag == AST_DoubleInit_t && node->alignment == 16) {
-    #     emit(ctx, TAB TAB ".quad 0" LF);
-    # }
-#endif
+    if (node[].static_init[].tag == AST_DoubleInit_t and node[].alignment == 16) {
+        ; # emit(ctx, TAB TAB ".quad 0" LF) # TODO
+    }
 ')m4_dnl
 }
 
@@ -1045,9 +1043,7 @@ fn emit_program(ctx: Ctx, node: *struc AsmProgram) none {
         emit_toplvl(ctx, node[].top_levels[i])
     }
 m4_ifdef(`__APPLE__', `', `
-#ifndef __APPLE__
     emit(ctx, "    "         "    "         ".section .note.GNU-stack,\"\",@progbits"         "\n")
-#endif
 ')m4_dnl
 }
 
