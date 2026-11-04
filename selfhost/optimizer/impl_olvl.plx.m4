@@ -10,7 +10,7 @@ m4_define(`GET_INSTR', `ctx[].p_instrs[][($1)]')m4_dnl
 m4_define(`GET_CFG_BLOCK', `ctx[].cfg[].blocks[($1)]')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-m4_define(`mask_t', `u64')m4_dnl
+m4_define(`mask_t', `u64')m4_dnl # TODO
 m4_define(`AstInstruction', `TacInstruction')m4_dnl
 m4_define(`Ctx', `*struc OptimTacContext')m4_dnl
 m4_define(`free_AstInstruction', `free_TacInstruction($1)')m4_dnl
