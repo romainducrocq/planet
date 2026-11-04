@@ -10,7 +10,7 @@ m4_define(`GET_INSTR', `ctx[].p_instrs[][($1)]')m4_dnl
 m4_define(`GET_CFG_BLOCK', `ctx[].cfg[].blocks[($1)]')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-m4_define(`mask_t', `u64')m4_dnl # TODO
+m4_define(`mask_t', `u64')m4_dnl
 m4_define(`AstInstruction', `TacInstruction')m4_dnl
 m4_define(`Ctx', `*struc OptimTacContext')m4_dnl
 m4_define(`free_AstInstruction', `free_TacInstruction($1)')m4_dnl
@@ -1291,7 +1291,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     if vec_size(ctx[].dfa[].instrs_mask_sets) < instrs_mask_sets_size {
         vec_resize(ctx[].dfa[].instrs_mask_sets, instrs_mask_sets_size)
 m4_ifelse(__OPTIM_LEVEL__, `2', `
-        memset(ctx[].dfa[].instrs_mask_sets, MASK_FALSE, sizeof<u64> * instrs_mask_sets_size)
+        memset(ctx[].dfa[].instrs_mask_sets, MASK_FALSE, sizeof<mask_t> * instrs_mask_sets_size)
 ')m4_dnl
     }
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -1306,7 +1306,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         loop while i-- > 0 {
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
-        mask_true_back: u64 = MASK_TRUE
+        mask_true_back: mask_t = MASK_TRUE
         i = ctx[].dfa[].set_size - (ctx[].dfa[].mask_size - 1) * 64
         if i > 0 {
             loop  while i < 64 .. ++i {
@@ -1377,7 +1377,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa_o2[].data_name_map[pair_second(name_id[]) - REGISTER_MASK_SIZE] = pair_first(name_id[])
 ')m4_dnl
         }
-        memset(ctx[].dfa[].blocks_mask_sets, MASK_FALSE, sizeof<u64> * blocks_mask_sets_size)
+        memset(ctx[].dfa[].blocks_mask_sets, MASK_FALSE, sizeof<mask_t> * blocks_mask_sets_size)
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
 ')m4_dnl

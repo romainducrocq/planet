@@ -16,15 +16,15 @@ type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO2;
 
-type struc InferenceRegister(color: REGISTER_KIND, reg_kind: REGISTER_KIND, degree: u64, spill_cost: u64, linked_hard_mask: u64, linked_pseudo_names: vector_t(TIdentifier))
+type struc InferenceRegister(color: REGISTER_KIND, reg_kind: REGISTER_KIND, degree: u64, spill_cost: u64, linked_hard_mask: mask_t, linked_pseudo_names: vector_t(TIdentifier))
 
 m4_define(`StInferenceRegister', `struc InferenceRegister')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StInferenceRegister'')
 
-type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: u64, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: hashmap_t(``TIdentifier'', ``StInferenceRegister''))
+type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: mask_t, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: hashmap_t(``TIdentifier'', ``StInferenceRegister''))
 
-type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: u64, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), is_with_coal: i32)
+type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: mask_t, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), is_with_coal: i32)
 
 fn free_InferenceGraph(self: *unique_ptr_t(InferenceGraph)) none {
     uptr_delete(self[])
@@ -702,7 +702,7 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
         if vec_size(ctx[].infer_graph[].unpruned_hard_mask_bits) < 12 {
             vec_resize(ctx[].infer_graph[].unpruned_hard_mask_bits, 12)
         }
-        hard_reg_mask: u64 = ctx[].infer_graph[].hard_reg_mask
+        hard_reg_mask: mask_t = ctx[].infer_graph[].hard_reg_mask
         loop i: u64 = 0 while i < 12 .. ++i {
             ctx[].reg_color_map[i] = REG_Sp
             ctx[].hard_regs[i].color = REG_Sp
@@ -718,7 +718,7 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
         if vec_size(ctx[].sse_infer_graph[].unpruned_hard_mask_bits) < 14 {
             vec_resize(ctx[].sse_infer_graph[].unpruned_hard_mask_bits, 14)
         }
-        hard_reg_mask: u64 = ctx[].sse_infer_graph[].hard_reg_mask
+        hard_reg_mask: mask_t = ctx[].sse_infer_graph[].hard_reg_mask
         loop i: u64 = 12 while i < 26 .. ++i {
             ctx[].reg_color_map[i] = REG_Sp
             ctx[].hard_regs[i].color = REG_Sp
@@ -867,7 +867,7 @@ fn alloc_prune_infer_graph(ctx: Ctx, pruned_name: *u64) *struc InferenceRegister
 }
 
 fn alloc_unprune_infer_graph(ctx: Ctx, infer: *struc InferenceRegister, pruned_name: u64) none {
-    color_reg_mask: u64 = ctx[].p_infer_graph[].hard_reg_mask
+    color_reg_mask: mask_t = ctx[].p_infer_graph[].hard_reg_mask
     if infer[].linked_hard_mask ~= REGISTER_MASK_FALSE {
         loop i: u64 = 0 while i < ctx[].p_infer_graph[].k .. ++i {
             linked_infer: *struc InferenceRegister = @ctx[].hard_regs[i + ctx[].p_infer_graph[].offset]
