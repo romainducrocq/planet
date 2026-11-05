@@ -1,4 +1,4 @@
-#include <string.h>
+use "string"
 
 m4_include(`optim_tac.plx.m4')m4_dnl
 

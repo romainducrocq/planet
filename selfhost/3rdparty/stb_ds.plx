@@ -1,6 +1,6 @@
 m4_include(`stb_ds.plx.m4')m4_dnl
 
-#include <string.h>
+use "string"
 
 m4_include(`../lib/c_lib.plx.m4')m4_dnl
 
