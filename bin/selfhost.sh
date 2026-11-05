@@ -7,6 +7,7 @@ BUILD_PLX=0
 KERNEL_NAME="$(uname -s)"
 PACKAGE_DIR="$(readlink -f ../wheelcc/bin)"
 PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
+PACKAGE_LIBC="${PACKAGE_DIR}/libc"
 LD="gcc"
 OS_MACRO="__linux__"
 if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
@@ -151,7 +152,7 @@ function build_selfhost () {
     echo "-- Linking executable ..."
     echo "${BUILD_CACHE}/*.o -> ${PROJECT_NAME}"
     # TODO rm CC_FLAGS
-    ${LD} ${OBJECT_FILES} ${CC_FLAGS} -o ${PROJECT_NAME}
+    ${LD} ${OBJECT_FILES} ${CC_FLAGS} -L${PACKAGE_LIBC}/ -lplanet -o ${PROJECT_NAME}
     if [ ${?} -ne 0 ]; then return 1; fi
     echo "OK"
 
