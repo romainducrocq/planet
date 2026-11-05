@@ -3,8 +3,8 @@ m4_define(`_LIB_C_LIB_M4', `')m4_dnl
 
 # extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
 # extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
-m4_define(`FOPEN_MAX', `8')m4_dnl # TODO
-type struc FILE;
+# m4_define(`FOPEN_MAX', `8')m4_dnl # TODO
+# type struc FILE;
 # extrn fn fclose(stream: *struc FILE) i32;
 # extrn fn fflush(stream: *struc FILE) i32;
 # extrn fn fopen(filename: string, mode: string) *struc FILE;
