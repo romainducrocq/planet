@@ -1,6 +1,7 @@
 use "assert"
 use "ctype"
 use "errno"
+use "inttypes"
 use "locale"
 use "math"
 use "signal"

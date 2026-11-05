@@ -126,6 +126,11 @@ function check_libc_bindings () {
     RETURN=${?}
     check_success
 
+    FILE=$(file ${PWD}/test_inttypes.plx)
+    planet -E ${FILE}.plx > /dev/null 2>&1
+    RETURN=${?}
+    check_success
+
     FILE=$(file ${PWD}/test_locale.plx)
     planet -E ${FILE}.plx > /dev/null 2>&1
     RETURN=${?}
