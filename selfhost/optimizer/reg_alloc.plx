@@ -439,7 +439,7 @@ fn infer_init_updated_regs_edges(ctx: Ctx, reg_kinds: *REGISTER_KIND, instr_idx:
         if mask_set_size > ctx[].dfa[].set_size {
             mask_set_size = ctx[].dfa[].set_size
         }
-        loop  while i < mask_set_size .. ++i {
+        loop while i < mask_set_size .. ++i {
             if GET_DFA_INSTR_SET_AT(instr_idx, i) and not (is_mov and i == mov_mask_bit) {
                 pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
                 if is_dbl == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t) {
@@ -512,7 +512,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
     if GET_DFA_INSTR_SET_MASK(instr_idx, 0) ~= MASK_FALSE {
         i: u64 = ctx[].p_infer_graph[].offset
         mask_set_size: u64 = i + ctx[].p_infer_graph[].k
-        loop  while i < mask_set_size .. ++i {
+        loop while i < mask_set_size .. ++i {
             if GET_DFA_INSTR_SET_AT(instr_idx, i) and not (is_mov and i == mov_mask_bit) {
                 reg_kind: REGISTER_KIND = ctx[].hard_regs[i].reg_kind
                 infer_add_reg_edge(ctx, reg_kind, name)
@@ -520,7 +520,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
         }
         i = REGISTER_MASK_SIZE
         mask_set_size = ? ctx[].dfa[].set_size < 64 then ctx[].dfa[].set_size else 64
-        loop  while i < mask_set_size .. ++i {
+        loop while i < mask_set_size .. ++i {
             if GET_DFA_INSTR_SET_AT(instr_idx, i) and not (is_mov and i == mov_mask_bit) {
                 pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
                 if name ~= pseudo_name and is_dbl == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t) {
@@ -539,7 +539,7 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: u64, instr_idx: u64) none {
         if mask_set_size > ctx[].dfa[].set_size {
             mask_set_size = ctx[].dfa[].set_size
         }
-        loop  while i < mask_set_size .. ++i {
+        loop while i < mask_set_size .. ++i {
             if GET_DFA_INSTR_SET_AT(instr_idx, i) and not (is_mov and i == mov_mask_bit) {
                 pseudo_name: u64 = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
                 if name ~= pseudo_name and is_dbl == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t) {
@@ -827,7 +827,7 @@ fn alloc_prune_infer_graph(ctx: Ctx, pruned_name: *u64) *struc InferenceRegister
     }
     if not infer {
         i: u64 = 0
-        loop  while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
+        loop while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
             pruned_name[] = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
             infer = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, pruned_name[])
             if infer[].degree > 0 {
@@ -838,7 +838,7 @@ fn alloc_prune_infer_graph(ctx: Ctx, pruned_name: *u64) *struc InferenceRegister
         }
         THROW_ABORT_IF(not infer)
         min_spill_metric: f64 = (cast<f64>(infer[].spill_cost)) / infer[].degree
-        loop  while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
+        loop while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
             spill_name: u64 = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
             spill_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, spill_name)
             if spill_infer[].degree > 0 {
