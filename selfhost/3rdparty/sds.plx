@@ -21,7 +21,7 @@ m4_define(`SDS_HDR', `cast<*struc sdshdr$1>(($2) - sizeof<struc sdshdr$1>)')m4_d
 m4_define(`SDS_TYPE_5_LEN', `(($1) >> SDS_TYPE_BITS)')m4_dnl
 pub SDS_NOINIT: string = "SDS_NOINIT"
 
-pub fn sdslen(s: string) u64 {
+pub fn sdslen(s: sds) u64 {
     flags: u8 = s[-1]
     match flags & SDS_TYPE_MASK {
         -> SDS_TYPE_5 {
@@ -40,7 +40,7 @@ pub fn sdslen(s: string) u64 {
     return 0
 }
 
-fn sdsavail(s: string) u64 {
+fn sdsavail(s: sds) u64 {
     flags: u8 = s[-1]
     match flags & SDS_TYPE_MASK {
         -> SDS_TYPE_5 {
@@ -62,7 +62,7 @@ fn sdsavail(s: string) u64 {
     return 0
 }
 
-fn sdssetlen(s: string, newlen: u64) none {
+fn sdssetlen(s: sds, newlen: u64) none {
     flags: u8 = s[-1]
     match flags & SDS_TYPE_MASK {
         -> SDS_TYPE_5 {
@@ -85,7 +85,7 @@ fn sdssetlen(s: string, newlen: u64) none {
     }
 }
 
-fn sdssetalloc(s: string, newlen: u64) none {
+fn sdssetalloc(s: sds, newlen: u64) none {
     flags: u8 = s[-1]
     match flags & SDS_TYPE_MASK {
         -> SDS_TYPE_5 {
@@ -137,9 +137,9 @@ fn sdsReqType(string_size: u64) char {
     return SDS_TYPE_64
 }
 
-fn sdsnewlen(init: *any, initlen: u64) string {
+fn sdsnewlen(init: *any, initlen: u64) sds {
     sh: *any;
-    s: string;
+    s: sds;
     stype: char = sdsReqType(initlen)
     if stype == SDS_TYPE_5 and initlen == 0 {
         stype = SDS_TYPE_8
@@ -192,29 +192,29 @@ fn sdsnewlen(init: *any, initlen: u64) string {
     return s
 }
 
-pub fn sdsnew(init: string) string {
+pub fn sdsnew(init: string) sds {
     initlen: u64 = ? (init == 0) then 0 else strlen(init)
     return sdsnewlen(init, initlen)
 }
 
-pub fn sdsdup(s: string) string {
+pub fn sdsdup(s: sds) sds {
     return sdsnewlen(s, sdslen(s))
 }
 
-pub fn sdsfree(s: string) none {
+pub fn sdsfree(s: sds) none {
     if s == 0 {
         return none
     }
     free(cast<string>(s) - sdsHdrSize(s[-1]))
 }
 
-pub fn sdsclear(s: string) none {
+pub fn sdsclear(s: sds) none {
     sdssetlen(s, 0)
     s[0] = 0
 }
 
 m4_define(`SDS_MAX_PREALLOC', `(1024 * 1024)')m4_dnl
-pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
+pub fn sdsMakeRoomFor(s: sds, addlen: u64) sds {
     sh: *any;
     newsh: *any;
     avail: u64 = sdsavail(s)
@@ -262,7 +262,7 @@ pub fn sdsMakeRoomFor(s: string, addlen: u64) string {
     return s
 }
 
-pub fn sdsgrowzero(s: string, len: u64) string {
+pub fn sdsgrowzero(s: sds, len: u64) sds {
     curlen: u64 = sdslen(s)
     if len <= curlen {
         return s
@@ -276,7 +276,7 @@ pub fn sdsgrowzero(s: string, len: u64) string {
     return s
 }
 
-fn sdscatlen(s: string, t: *any, len: u64) string {
+fn sdscatlen(s: sds, t: *any, len: u64) sds {
     curlen: u64 = sdslen(s)
     s = sdsMakeRoomFor(s, len)
     if s == 0 {
@@ -288,12 +288,11 @@ fn sdscatlen(s: string, t: *any, len: u64) string {
     return s
 }
 
-pub fn sdscat(s: string, t: string) string {
+pub fn sdscat(s: sds, t: string) sds {
     return sdscatlen(s, t, strlen(t))
 }
 
 m4_define(`SDS_LLSTR_SIZE', `21')m4_dnl
-
 fn sdsll2str(s: string, value: i64) i32 {
     p: string;
     aux: char;
@@ -353,19 +352,19 @@ fn sdsull2str(s: string, v: u64) i32 {
     return l
 }
 
-pub fn sdsfromlong(value: i64) string {
+pub fn sdsfromlong(value: i64) sds {
     buf: [SDS_LLSTR_SIZE]char;
     len: i32 = sdsll2str(buf, value)
     return sdsnewlen(buf, len)
 }
 
-pub fn sdsfromunsignedlong(value: u64) string {
+pub fn sdsfromunsignedlong(value: u64) sds {
     buf: [SDS_LLSTR_SIZE]char;
     len: i32 = sdsull2str(buf, value)
     return sdsnewlen(buf, len)
 }
 
-pub fn sdsrange(s: string, start: i64, end: i64) none {
+pub fn sdsrange(s: sds, start: i64, end: i64) none {
     newlen: u64;
     len: u64 = sdslen(s)
     if len == 0 {
