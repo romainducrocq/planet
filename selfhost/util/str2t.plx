@@ -1,3 +1,4 @@
+use "inttypes"
 use "stdio"
 use "string"
 
