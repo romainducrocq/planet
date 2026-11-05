@@ -4,7 +4,7 @@ use "stdlib"
 m4_include(`fileio.plx.m4')m4_dnl
 m4_include(`throw.plx.m4')m4_dnl
 
-m4_include(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_define(`Ctx', `*struc ErrorsContext')m4_dnl
 m4_define(`ESC', `27')m4_dnl

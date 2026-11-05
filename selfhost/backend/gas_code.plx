@@ -1,6 +1,6 @@
 m4_include(`gas_code.plx.m4')m4_dnl
 
-m4_include(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../util/fileio.plx.m4')m4_dnl
 m4_include(`../util/throw.plx.m4')m4_dnl

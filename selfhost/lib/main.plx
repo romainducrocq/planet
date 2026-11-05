@@ -1,4 +1,4 @@
-m4_include(`c_std.plx.m4')m4_dnl
+m4_include(`def_std.plx.m4')m4_dnl
 
 use "stdio"
 use "string"
