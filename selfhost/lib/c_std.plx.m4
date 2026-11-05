@@ -6,6 +6,10 @@ m4_include(`../lib/c_lib.plx.m4')m4_dnl
 m4_include(`../3rdparty/sds.plx.m4')m4_dnl
 m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
+# TODO
+extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
+extrn fn sprintf(s: string, format: string, arg1: u32) i32;
+
 m4_define(`error_t', `i32')m4_dnl
 m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
 m4_define(`CATCH_ENTER', `_errval: error_t = 0')m4_dnl
