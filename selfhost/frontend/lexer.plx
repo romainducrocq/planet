@@ -165,9 +165,7 @@ fn match_error(ctx: Ctx) TOKEN_KIND {
 }
 
 fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
-    loop while match_space(ctx) {
-        ;
-    }
+    loop while match_space(ctx);
     if match_char(ctx, '!') {
         match tok_kind {
             -> TOK_import_file {
@@ -182,16 +180,12 @@ fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
                 THROW_ABORT
             }
         }
-        loop while match_space(ctx) {
-            ;
-        }
+        loop while match_space(ctx);
     }
     if match_char(ctx, '"') {
         ctx[].match_at += ctx[].match_size - 1
         ctx[].match_size = 1
-        loop while match_invert(ctx, '"') {
-            ;
-        }
+        loop while match_invert(ctx, '"');
         if get_char(ctx) == '"' {
             ctx[].match_size++
             return tok_kind
@@ -297,16 +291,12 @@ fn match_dbl_exponent(ctx: Ctx) TOKEN_KIND {
     if not match_digit(ctx) {
         return TOK_error
     }
-    loop while match_digit(ctx) {
-        ;
-    }
+    loop while match_digit(ctx);
     return match_const_end(ctx, TOK_dbl_const)
 }
 
 fn match_dbl_fraction(ctx: Ctx) TOKEN_KIND {
-    loop while match_digit(ctx) {
-        ;
-    }
+    loop while match_digit(ctx);
     if match_char(ctx, 'e') {
         return match_dbl_exponent(ctx)
     }
@@ -316,9 +306,7 @@ fn match_dbl_fraction(ctx: Ctx) TOKEN_KIND {
 }
 
 fn match_const(ctx: Ctx) TOKEN_KIND {
-    loop while match_digit(ctx) {
-        ;
-    }
+    loop while match_digit(ctx);
     match get_char(ctx) {
         -> 'l' {
             ctx[].match_size++
@@ -477,9 +465,7 @@ fn match_identifier(ctx: Ctx) TOKEN_KIND {
                 }
             }
             elif match_chars(ctx, "4_", 2) {
-                loop while match_word(ctx) {
-                    ;
-                }
+                loop while match_word(ctx);
                 return TOK_m4_prefix
             }
             break
@@ -593,9 +579,7 @@ fn match_identifier(ctx: Ctx) TOKEN_KIND {
             break
         }
     }
-    loop while match_word(ctx) {
-        ;
-    }
+    loop while match_word(ctx);
     return TOK_identifier
 }
 
@@ -904,7 +888,6 @@ fn tokenize_file(ctx: Ctx) error_t {
             label Lcontinue
             continue
             label Lpass
-            ;
             info_at: u64 = push_token_info(ctx)
             token: struc Token = $(match_kind, match_tok, info_at)
             vec_push_back(ctx[].p_toks[], token)
@@ -915,9 +898,7 @@ fn tokenize_file(ctx: Ctx) error_t {
         }
     }
     FINALLY
-    ;
     str_delete(smatch)
-    ;
     CATCH_EXIT
 }
 
@@ -927,11 +908,9 @@ fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
         str_append(dirname, filename[])
         if find_file(dirname) {
             str_move(dirname, filename[])
-            ;
             return true
         }
         str_delete(dirname)
-        ;
     }
     return false
 }
@@ -1015,12 +994,10 @@ fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error
     match_at = ctx[].match_at
     match_size = ctx[].match_size
     str_copy(vec_back(ctx[].errors[].fopen_lines).filename, fopen_name)
-    ;
     TRY(open_fread(ctx[].fileio, filename))
     {
         fopen_line: struc FileOpenLine = $(1, ctx[].total_linenum + 1, str_new(nil))
         str_move(filename, fopen_line.filename)
-        ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
     TRY(tokenize_file(ctx))
@@ -1028,7 +1005,6 @@ fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error
     {
         fopen_line: struc FileOpenLine = $(linenum + 1, ctx[].total_linenum + 1, str_new(nil))
         str_move(fopen_name, fopen_line.filename)
-        ;
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
     ctx[].line = line
@@ -1036,11 +1012,8 @@ fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error
     ctx[].match_at = match_at
     ctx[].match_size = match_size
     FINALLY
-    ;
     str_delete(filename)
-    ;
     str_delete(fopen_name)
-    ;
     CATCH_EXIT
 }
 
@@ -1063,24 +1036,18 @@ pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs
     {
         fopen_line: struc FileOpenLine = $(1, 1, str_new(nil))
         str_copy(filename, fopen_line.filename)
-        ;
         vec_push_back(ctx.errors[].fopen_lines, fopen_line)
     }
     TRY(tokenize_file(@ctx))
     TRY(close_fread(ctx.fileio, 0))
     set_filename(ctx.fileio, filename)
     FINALLY
-    ;
     set_delete(ctx.includename_set)
     loop i: u64 = 0 while i < vec_size(fileio[].file_reads) .. ++i {
         str_delete(fileio[].file_reads[i].filename)
-        ;
     }
     vec_delete(fileio[].file_reads)
-    ;
     vec_delete(includedirs[])
-    ;
     vec_delete(stdlibdirs[])
-    ;
     CATCH_EXIT
 }
