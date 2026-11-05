@@ -27,7 +27,7 @@ pub fn panic_sigabrt(msg: string) none {
         str_append(stderr_buf, " ")
         str_append(stderr_buf, msg)
         str_append(stderr_buf, "\n")
-        write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
+        fprint(get_stderr(), stderr_buf)
         str_delete(stderr_buf)
     }
     abort()
@@ -48,7 +48,7 @@ pub fn raise_init_error(ctx: Ctx) none {
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
     THROW_ABORT_IF(str_size(stderr_buf) ~= stderr_buf_size)
-    write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
+    fprint(get_stderr(), stderr_buf)
     str_delete(stderr_buf)
 }
 
@@ -77,7 +77,7 @@ pub fn raise_base_error(ctx: Ctx) none {
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
     THROW_ABORT_IF(str_size(stderr_buf) ~= stderr_buf_size)
-    write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
+    fprint(get_stderr(), stderr_buf)
     str_delete(stderr_buf)
 }
 
@@ -189,7 +189,7 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
         str_append(stderr_buf, esc_reset)
         str_append(stderr_buf, "\n")
         THROW_ABORT_IF(str_size(stderr_buf) ~= stderr_buf_size)
-        write(STDERR_FILENO, stderr_buf, str_size(stderr_buf))
+        fprint(get_stderr(), stderr_buf)
         str_delete(pad_tok)
         str_delete(pad_linenum)
         str_delete(strto_linenum)
