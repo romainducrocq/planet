@@ -1,3 +1,5 @@
+#include <string.h>
+
 m4_include(`reg_alloc.plx.m4')m4_dnl
 
 m4_include(`../lib/c_std.plx.m4')m4_dnl

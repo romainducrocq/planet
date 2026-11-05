@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 m4_include(`str2t.plx.m4')m4_dnl
 m4_include(`throw.plx.m4')m4_dnl
 

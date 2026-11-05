@@ -44,6 +44,9 @@ m4_define(`_LIB_STB_DS_M4', `')m4_dnl
 # ------------------------------------------------------------------------------
 #
 
+#include <string.h>
+#include <stdlib.h>
+
 m4_define(`arrlenu', `stbds_arrlenu($1)')m4_dnl
 m4_define(`arrput', `stbds_arrput($1, $2)')m4_dnl
 m4_define(`arrpop', `stbds_arrpop($1)')m4_dnl
