@@ -36,25 +36,16 @@ type struc DataFlowAnalysisO2(data_name_map: vector_t(TIdentifier))
 
 fn free_ControlFlowGraph(self: *unique_ptr_t(ControlFlowGraph)) none {
     uptr_delete(self[])
-    ;
     vec_delete(self[][].entry_succ_ids)
-    ;
     vec_delete(self[][].exit_pred_ids)
-    ;
     vec_delete(self[][].reaching_code)
-    ;
     loop i: u64 = 0 while i < vec_size(self[][].blocks) .. ++i {
         vec_delete(self[][].blocks[i].pred_ids)
-        ;
         vec_delete(self[][].blocks[i].succ_ids)
-        ;
     }
     vec_delete(self[][].blocks)
-    ;
     map_delete(self[][].identifier_id_map)
-    ;
     uptr_free(self[])
-    ;
 }
 
 fn make_ControlFlowGraph(none) unique_ptr_t(ControlFlowGraph) {
@@ -72,17 +63,11 @@ fn make_ControlFlowGraph(none) unique_ptr_t(ControlFlowGraph) {
 
 fn free_DataFlowAnalysis(self: *unique_ptr_t(DataFlowAnalysis)) none {
     uptr_delete(self[])
-    ;
     vec_delete(self[][].open_data_map)
-    ;
     vec_delete(self[][].instr_idx_map)
-    ;
     vec_delete(self[][].blocks_mask_sets)
-    ;
     vec_delete(self[][].instrs_mask_sets)
-    ;
     uptr_free(self[])
-    ;
 }
 
 fn make_DataFlowAnalysis(none) unique_ptr_t(DataFlowAnalysis) {
@@ -102,16 +87,12 @@ fn make_DataFlowAnalysis(none) unique_ptr_t(DataFlowAnalysis) {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn free_DataFlowAnalysisO1(self: *unique_ptr_t(DataFlowAnalysisO1)) none {
     uptr_delete(self[])
-    ;
     vec_delete(self[][].data_idx_map)
-    ;
     loop i: u64 = 0 while i < vec_size(self[][].bak_instrs) .. ++i {
         free_TacInstruction(@(self[])[].bak_instrs[i])
     }
     vec_delete(self[][].bak_instrs)
-    ;
     uptr_free(self[])
-    ;
 }
 
 fn make_DataFlowAnalysisO1(none) unique_ptr_t(DataFlowAnalysisO1) {
@@ -125,11 +106,8 @@ fn make_DataFlowAnalysisO1(none) unique_ptr_t(DataFlowAnalysisO1) {
 ', __OPTIM_LEVEL__, `2', `
 fn free_DataFlowAnalysisO2(self: *unique_ptr_t(DataFlowAnalysisO2)) none {
     uptr_delete(self[])
-    ;
     vec_delete(self[][].data_name_map)
-    ;
     uptr_free(self[])
-    ;
 }
 
 fn make_DataFlowAnalysisO2(none) unique_ptr_t(DataFlowAnalysisO2) {
@@ -143,7 +121,6 @@ fn make_DataFlowAnalysisO2(none) unique_ptr_t(DataFlowAnalysisO2) {
 fn set_instr(ctx: Ctx, instr: unique_ptr_t(AstInstruction), instr_idx: u64) none {
     if instr {
         uptr_move_AstInstruction(instr, GET_INSTR(instr_idx))
-        ;
     }
     else {
         free_AstInstruction(@GET_INSTR(instr_idx))
@@ -410,12 +387,9 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn init_control_flow_graph(ctx: Ctx) none {
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         vec_delete(GET_CFG_BLOCK(block_id).pred_ids)
-        ;
         vec_delete(GET_CFG_BLOCK(block_id).succ_ids)
-        ;
     }
     vec_clear(ctx[].cfg[].blocks)
-    ;
     map_clear(ctx[].cfg[].identifier_id_map)
     {
         instrs_back_idx: u64 = vec_size(ctx[].p_instrs[])
@@ -436,9 +410,7 @@ fn init_control_flow_graph(ctx: Ctx) none {
     ctx[].cfg[].exit_id = vec_size(ctx[].cfg[].blocks)
     ctx[].cfg[].entry_id = ctx[].cfg[].exit_id + 1
     vec_clear(ctx[].cfg[].entry_succ_ids)
-    ;
     vec_clear(ctx[].cfg[].exit_pred_ids)
-    ;
     if not vec_empty(ctx[].cfg[].blocks) {
         cfg_add_pred_edge(ctx, 0, ctx[].cfg[].entry_id)
         loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
@@ -806,7 +778,6 @@ fn dfa_forward_iter_alg(ctx: Ctx) none {
                     }
                     open_data_map_size++
                     label Lelse
-                    ;
                 }
                 else {
                     THROW_ABORT_IF(succ_id ~= ctx[].cfg[].exit_id)
@@ -842,7 +813,6 @@ fn dfa_iter_alg(ctx: Ctx) none {
                     }
                     open_data_map_size++
                     label Lelse
-                    ;
                 }
                 else {
                     THROW_ABORT_IF(pred_id ~= ctx[].cfg[].entry_id)
@@ -1253,7 +1223,6 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
                     ctx[].dfa[].instr_idx_map[instr_idx] = instrs_mask_sets_size
                     instrs_mask_sets_size++
                     label Lcontinue
-                    ;
                 }
             }
         }

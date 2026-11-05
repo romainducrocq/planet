@@ -30,19 +30,13 @@ type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc Fron
 
 fn free_InferenceGraph(self: *unique_ptr_t(InferenceGraph)) none {
     uptr_delete(self[])
-    ;
     vec_delete(self[][].unpruned_hard_mask_bits)
-    ;
     vec_delete(self[][].unpruned_pseudo_names)
-    ;
     loop i: u64 = 0 while i < map_size(self[][].pseudo_reg_map) .. ++i {
         vec_delete(pair_second(self[][].pseudo_reg_map[i]).linked_pseudo_names)
-        ;
     }
     map_delete(self[][].pseudo_reg_map)
-    ;
     uptr_free(self[])
-    ;
 }
 
 fn make_InferenceGraph(is_sse: i32) unique_ptr_t(InferenceGraph) {
@@ -675,17 +669,13 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
     }
     ctx[].callee_saved_reg_mask = REGISTER_MASK_FALSE
     vec_clear(ctx[].infer_graph[].unpruned_pseudo_names)
-    ;
     loop i: u64 = 0 while i < map_size(ctx[].infer_graph[].pseudo_reg_map) .. ++i {
         vec_delete(pair_second(ctx[].infer_graph[].pseudo_reg_map[i]).linked_pseudo_names)
-        ;
     }
     map_clear(ctx[].infer_graph[].pseudo_reg_map)
     vec_clear(ctx[].sse_infer_graph[].unpruned_pseudo_names)
-    ;
     loop i: u64 = 0 while i < map_size(ctx[].sse_infer_graph[].pseudo_reg_map) .. ++i {
         vec_delete(pair_second(ctx[].sse_infer_graph[].pseudo_reg_map[i]).linked_pseudo_names)
-        ;
     }
     map_clear(ctx[].sse_infer_graph[].pseudo_reg_map)
     loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
@@ -712,7 +702,6 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
             vec_clear(ctx[].hard_regs[i].linked_pseudo_names)
-            ;
             ctx[].infer_graph[].unpruned_hard_mask_bits[i] = i
         }
     }
@@ -728,7 +717,6 @@ fn init_inference_graph(ctx: Ctx, fun_name: u64) i32 {
             ctx[].hard_regs[i].spill_cost = 0
             ctx[].hard_regs[i].linked_hard_mask = hard_reg_mask
             vec_clear(ctx[].hard_regs[i].linked_pseudo_names)
-            ;
             ctx[].sse_infer_graph[].unpruned_hard_mask_bits[i - 12] = i
         }
     }
@@ -938,7 +926,6 @@ fn alloc_hard_reg(ctx: Ctx, name: u64) shared_ptr_t(AsmOperand) {
             register_mask_set(@ctx[].callee_saved_reg_mask, reg_kind, true)
             callee_saved_reg: shared_ptr_t(AsmOperand) = sptr_new()
             sptr_copy(AsmOperand, hard_reg, callee_saved_reg)
-            ;
             vec_move_back(ctx[].p_backend_fun[].callee_saved_regs, callee_saved_reg)
         }
         return hard_reg
@@ -1870,7 +1857,6 @@ pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContex
     alloc_program(@ctx, node)
     loop i: u64 = 0 while i < 26 .. ++i {
         vec_delete(ctx.hard_regs[i].linked_pseudo_names)
-        ;
     }
     free_ControlFlowGraph(@ctx.cfg)
     free_DataFlowAnalysis(@ctx.dfa)

@@ -93,7 +93,6 @@ fn fold_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) 
         src: shared_ptr_t(TacValue) = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -218,7 +217,6 @@ fn fold_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none 
         src: shared_ptr_t(TacValue) = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -291,7 +289,6 @@ fn fold_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) 
         src: shared_ptr_t(TacValue) = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -330,7 +327,6 @@ fn fold_dbl_to_signed_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u6
         src: shared_ptr_t(TacValue) = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -367,7 +363,6 @@ fn fold_dbl_to_unsigned_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx:
         src: shared_ptr_t(TacValue) = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -405,7 +400,6 @@ fn fold_signed_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u6
         src: shared_ptr_t(TacValue) = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -443,7 +437,6 @@ fn fold_unsigned_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx:
         src: shared_ptr_t(TacValue) = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -607,7 +600,6 @@ fn fold_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
         src: shared_ptr_t(TacValue) = fold_unary_const(@node[].unop, node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -992,7 +984,6 @@ fn fold_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
         src: shared_ptr_t(TacValue) = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
     }
 }
@@ -1318,9 +1309,7 @@ fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
     GET_CFG_BLOCK(block_id).size = 0
     cfg_rm_empty_block(ctx, block_id, false)
     vec_clear(GET_CFG_BLOCK(block_id).succ_ids)
-    ;
     vec_clear(GET_CFG_BLOCK(block_id).pred_ids)
-    ;
 }
 
 fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
@@ -1800,10 +1789,8 @@ fn set_dfa_bak_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64) none {
     if set_dfa_bak_instr(ctx, instr_idx, @i) {
         src: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].src, src)
-        ;
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
-        ;
         free_TacInstruction(@ctx[].dfa_o1[].bak_instrs[i])
         ctx[].dfa_o1[].bak_instrs[i] = make_TacCopy(@src, @dst)
     }
@@ -1827,7 +1814,6 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].val, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].val)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -1855,7 +1841,6 @@ fn prop_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) 
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -1883,7 +1868,6 @@ fn prop_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none 
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -1911,7 +1895,6 @@ fn prop_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) 
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -1939,7 +1922,6 @@ fn prop_dbl_to_int_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u64) 
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -1967,7 +1949,6 @@ fn prop_dbl_to_uint_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx: u64
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -1995,7 +1976,6 @@ fn prop_int_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u64) 
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2023,7 +2003,6 @@ fn prop_uint_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx: u64
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2052,7 +2031,6 @@ fn prop_call_instr(ctx: Ctx, node: *struc TacFunCall, instr_idx: u64) none {
                         THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                         if is_same_value(node[].args[i], copy[].dst) {
                             sptr_copy(TacValue, copy[].src, node[].args[i])
-                            ;
                             ctx[].is_fixed_point = false
                             jump Lbreak
                         }
@@ -2060,7 +2038,6 @@ fn prop_call_instr(ctx: Ctx, node: *struc TacFunCall, instr_idx: u64) none {
                 }
             }
             label Lbreak
-            ;
         }
     }
 }
@@ -2083,7 +2060,6 @@ fn prop_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2113,7 +2089,6 @@ fn prop_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_src1 and is_same_value(node[].src1, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src1)
-                        ;
                         ctx[].is_fixed_point = false
                         is_src1 = false
                         if not is_src2 {
@@ -2122,7 +2097,6 @@ fn prop_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
                     }
                     if is_src2 and is_same_value(node[].src2, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src2)
-                        ;
                         ctx[].is_fixed_point = false
                         is_src2 = false
                         if not is_src1 {
@@ -2159,7 +2133,6 @@ fn prop_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64
                 elif is_same_value(node[].src, copy[].dst) {
                     set_dfa_bak_copy_instr(ctx, node, instr_idx)
                     sptr_copy(TacValue, copy[].src, node[].src)
-                    ;
                     ctx[].is_fixed_point = false
                     return none
                 }
@@ -2186,7 +2159,6 @@ fn prop_load_instr(ctx: Ctx, node: *struc TacLoad, instr_idx: u64) none {
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src_ptr, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src_ptr)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2214,7 +2186,6 @@ fn prop_store_instr(ctx: Ctx, node: *struc TacStore, instr_idx: u64) none {
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2244,7 +2215,6 @@ fn prop_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr, instr_idx: u64) none {
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_src_ptr and is_same_value(node[].src_ptr, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src_ptr)
-                        ;
                         ctx[].is_fixed_point = false
                         is_src_ptr = false
                         if not is_idx {
@@ -2253,7 +2223,6 @@ fn prop_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr, instr_idx: u64) none {
                     }
                     if is_idx and is_same_value(node[].idx, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].idx)
-                        ;
                         ctx[].is_fixed_point = false
                         is_idx = false
                         if not is_src_ptr {
@@ -2284,7 +2253,6 @@ fn prop_cp_to_offset_instr(ctx: Ctx, node: *struc TacCopyToOffset, instr_idx: u6
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].src, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].src)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2338,7 +2306,6 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].condition)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
@@ -2366,7 +2333,6 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
                         sptr_copy(TacValue, copy[].src, node[].condition)
-                        ;
                         ctx[].is_fixed_point = false
                         return none
                     }
