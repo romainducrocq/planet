@@ -39,8 +39,8 @@ pub fn open_fread(ctx: Ctx, filename: string_t) error_t {
     loop i: u64 = 0 while i < vec_size(ctx[].file_reads) .. ++i {
         if ctx[].file_reads[i].fd {
             n_fopens: u64 = vec_size(ctx[].file_reads) - i
-            THROW_ABORT_IF(n_fopens > FOPEN_MAX - 1)
-            if n_fopens == FOPEN_MAX - 1 {
+            THROW_ABORT_IF(n_fopens > get_FOPEN_MAX() - 1)
+            if n_fopens == get_FOPEN_MAX() - 1 {
                 ctx[].file_reads[i].len = 0
                 free(ctx[].file_reads[i].buf)
                 ctx[].file_reads[i].buf = nil
