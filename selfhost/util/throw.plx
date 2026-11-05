@@ -35,7 +35,7 @@ pub fn panic_sigabrt(msg: string) none {
 
 pub fn raise_init_error(ctx: Ctx) none {
     if ctx[].is_stdout {
-        printf("%s", "\n")
+        print("\n")
         fflush(nil)
     }
     stderr_buf: string_t = str_new("")
@@ -59,7 +59,7 @@ pub fn raise_base_error(ctx: Ctx) none {
         filename = ""
     }
     if ctx[].is_stdout {
-        printf("%s", "\n")
+        print("\n")
         fflush(nil)
     }
     stderr_buf: string_t = str_new("")
@@ -127,7 +127,7 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
         }
     }
     if ctx[].is_stdout {
-        printf("%s", "\n")
+        print("\n")
         fflush(nil)
     }
     {

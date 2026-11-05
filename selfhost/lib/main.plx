@@ -33,7 +33,7 @@ m4_define(`Ctx', `*struc MainContext')m4_dnl
 
 fn verbose(ctx: Ctx, msg: string) none {
     if ctx[].is_verbose {
-        printf("%s", msg)
+        print(msg)
     }
 }
 
