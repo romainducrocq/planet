@@ -1,8 +1,8 @@
 m4_ifdef(`_LIB_C_LIB_M4', `', `
 m4_define(`_LIB_C_LIB_M4', `')m4_dnl
 
-extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
-extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
+# extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
+# extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;
 m4_define(`FOPEN_MAX', `8')m4_dnl # TODO
 type struc FILE;
 # extrn fn fclose(stream: *struc FILE) i32;
@@ -13,7 +13,7 @@ extrn fn printf(format: string, arg1: string) i32;
 extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
 extrn fn sprintf(s: string, format: string, arg1: u32) i32;
 m4_define(`STDERR_FILENO', `2')m4_dnl # TODO
-extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
+# extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 extrn fn write(fildes: i32, buf: *any, nbyte: u64) i64;
 # extrn fn strtod(nptr: string, endptr: *string) f64;
 # extrn fn strtol(nptr: string, endptr: *string, base: i32) i64;
