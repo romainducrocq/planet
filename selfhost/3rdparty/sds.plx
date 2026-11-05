@@ -1,5 +1,10 @@
 m4_include(`sds.plx.m4')m4_dnl
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 m4_include(`../lib/c_lib.plx.m4')m4_dnl
 
 type struc sdshdr5(flags: u8)

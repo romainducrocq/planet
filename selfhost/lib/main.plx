@@ -1,5 +1,8 @@
 m4_include(`c_std.plx.m4')m4_dnl
 
+#include <stdio.h>
+#include <string.h>
+
 m4_include(`../util/fileio.plx.m4')m4_dnl
 m4_include(`../util/throw.plx.m4')m4_dnl
 

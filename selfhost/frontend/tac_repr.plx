@@ -1,3 +1,5 @@
+#include <string.h>
+
 m4_include(`idents.plx.m4')m4_dnl
 m4_include(`tac_repr.plx.m4')m4_dnl
 

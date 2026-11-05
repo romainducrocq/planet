@@ -1,5 +1,7 @@
 m4_include(`stb_ds.plx.m4')m4_dnl
 
+#include <string.h>
+
 m4_include(`../lib/c_lib.plx.m4')m4_dnl
 
 m4_define(`STBDS_SH_DEFAULT', `1')m4_dnl
