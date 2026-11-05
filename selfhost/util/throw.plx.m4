@@ -1,7 +1,7 @@
 m4_ifdef(`_UTIL_THROW_M4', `', `
 m4_define(`_UTIL_THROW_M4', `')m4_dnl
 
-m4_include(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 type struc FileIoContext;
 m4_define(`hash_t', `u64')m4_dnl

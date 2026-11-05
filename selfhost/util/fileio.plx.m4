@@ -3,7 +3,7 @@ m4_define(`_UTIL_FILEIO_M4', `')m4_dnl
 
 use "stdio"
 
-m4_include(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 

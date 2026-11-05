@@ -3,7 +3,7 @@ m4_include(`registers.plx.m4')m4_dnl
 m4_include(`stack_fix.plx.m4')m4_dnl
 m4_include(`symt_cvt.plx.m4')m4_dnl
 
-m4_include(`../lib/c_std.plx.m4')m4_dnl
+m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../util/str2t.plx.m4')m4_dnl
 m4_include(`../util/throw.plx.m4')m4_dnl
