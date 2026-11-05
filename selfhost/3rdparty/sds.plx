@@ -5,8 +5,6 @@ use "stdio"
 use "stdlib"
 use "string"
 
-m4_include(`../lib/c_lib.plx.m4')m4_dnl
-
 type struc sdshdr5(flags: u8)
 
 type struc sdshdr8(len: u8, alloc: u8, flags: u8)
