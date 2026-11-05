@@ -135,7 +135,7 @@ fn hex_string_to_long(str_hex: string) i64 {
 
 fn string_literal_byte_to_hex(value: i8, str_hex: *string_t) none {
     byte_hex: [3]char;
-    sprintf(byte_hex, "%.2x", cast<u32>(value))
+    xtostr(byte_hex, cast<u32>(value), 2)
     str_append(str_hex[], byte_hex)
 }
 
