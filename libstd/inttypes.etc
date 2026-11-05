@@ -1,0 +1,6 @@
+# https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2310.pdf
+# Section 7 and Annex B
+
+# bindings
+extrn fn strtoimax(nptr: string, endptr: *string, base: i32) i64;
+extrn fn strtoumax(nptr: string, endptr: *string, base: i32) u64;

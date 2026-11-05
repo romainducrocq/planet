@@ -50,6 +50,8 @@ extrn fn clearerr(stream: *struc FILE) none;
 extrn fn feof(stream: *struc FILE) i32;
 extrn fn ferror(stream: *struc FILE) i32;
 extrn fn perror(s: string) none;
+# _POSIX_C_SOURCE 200809L
+extrn fn getline(lineptr: *string, n: *u64, stream: *struc FILE) i64;
 
 # bindings with variadics
 # no native support for variadics for printf family
