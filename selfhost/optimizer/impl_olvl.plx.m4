@@ -247,7 +247,7 @@ fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
             cfg_rm_empty_block(ctx, block_id, true)
         }
         elif instr_idx == GET_CFG_BLOCK(block_id).instrs_front_idx {
-            loop  while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+            loop while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     GET_CFG_BLOCK(block_id).instrs_front_idx = instr_idx
                     break
@@ -256,7 +256,7 @@ fn cfg_rm_block_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
         }
         elif instr_idx == GET_CFG_BLOCK(block_id).instrs_back_idx {
             instr_idx++
-            loop  while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
+            loop while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
                 if GET_INSTR(instr_idx) {
                     GET_CFG_BLOCK(block_id).instrs_back_idx = instr_idx
                     break
@@ -657,13 +657,13 @@ fn dfa_after_meet_block(ctx: Ctx, block_id: u64) i32 {
     is_fixed_point: i32 = true
     {
         i: u64 = 0
-        loop  while i < ctx[].dfa[].mask_size .. ++i {
+        loop while i < ctx[].dfa[].mask_size .. ++i {
             if GET_DFA_BLOCK_SET_MASK(block_id, i) ~= GET_DFA_INSTR_SET_MASK(ctx[].dfa[].incoming_idx, i) {
                 is_fixed_point = false
                 break
             }
         }
-        loop  while i < ctx[].dfa[].mask_size .. ++i {
+        loop while i < ctx[].dfa[].mask_size .. ++i {
             GET_DFA_BLOCK_SET_MASK(block_id, i) = GET_DFA_INSTR_SET_MASK(ctx[].dfa[].incoming_idx, i)
         }
     }
@@ -673,7 +673,7 @@ fn dfa_after_meet_block(ctx: Ctx, block_id: u64) i32 {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
     instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx
-    loop  while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+    loop while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
         if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx, false) {
             jump Lelse
         }
@@ -1278,7 +1278,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         mask_true_back: mask_t = MASK_TRUE
         i = ctx[].dfa[].set_size - (ctx[].dfa[].mask_size - 1) * 64
         if i > 0 {
-            loop  while i < 64 .. ++i {
+            loop while i < 64 .. ++i {
                 mask_set(@mask_true_back, i, false)
             }
         }
@@ -1315,7 +1315,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
                 dfa_backward_open_block(ctx, succ_id, @i)
             }
         }
-        loop  while i < vec_size(ctx[].cfg[].blocks) .. ++i {
+        loop while i < vec_size(ctx[].cfg[].blocks) .. ++i {
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
 m4_ifelse(__OPTIM_LEVEL__, `1', `
