@@ -686,7 +686,8 @@ m4_define(`RET_ERR', `ARG_INDEX(0)m4_dnl
 
 pub fn get_fatal_msg(msg: MESSAGE_FATAL, arg1: string, arg2: string, arg3: string) string {
     if msg == MSG_unsupported_os {
-        RET_ERR(1) (MSG_ENO MSG_ARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or " EM_CSTR("MacOS"))
+        RET_ERR(1) (MSG_ENO MSG_ARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or "
+            EM_CSTR("MacOS"))
     }
     else {
         THROW_ABORT
@@ -696,7 +697,17 @@ pub fn get_fatal_msg(msg: MESSAGE_FATAL, arg1: string, arg2: string, arg3: strin
 pub fn get_arg_msg(msg: MESSAGE_ARG, arg1: string, arg2: string, arg3: string) string {
     match msg {
         -> MSG_print_help {
-            RET_ERR(1) (MSG_ENO "Usage: " ARG_SHIFT " [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n" "    [--help]:         print help and exit\n" "    Debug:            print debug info (0..1|251..255)\n" "    OptimL1:          optimization level 1 mask (0..15)\n" "    OptimL2:          optimization level 2 enum (0..2)\n" "    FILE:             source file to compile\n" "    StdlibDir:        standard lib include path\n" "    SourceDir:        source file include path\n" "    [IncludeDir...]:  add a list of paths to include path\n" "see " EM_CSTR("driver.sh"))
+            RET_ERR(1) (MSG_ENO "Usage: " ARG_SHIFT
+                " [--help] Debug OptimL1 OptimL2 FILE StdlibDir SourceDir [IncludeDir...]\n"
+                "    [--help]:         print help and exit\n"
+                "    Debug:            print debug info (0..1|251..255)\n"
+                "    OptimL1:          optimization level 1 mask (0..15)\n"
+                "    OptimL2:          optimization level 2 enum (0..2)\n"
+                "    FILE:             source file to compile\n"
+                "    StdlibDir:        standard lib include path\n"
+                "    SourceDir:        source file include path\n"
+                "    [IncludeDir...]:  add a list of paths to include path\n"
+                "see " EM_CSTR("driver.sh"))
         }
         -> MSG_no_debug_arg {
             RET_ERR(0) (MSG_ENO "no debug code passed in first argument, see " EM_CSTR("--help"))
@@ -708,13 +719,15 @@ pub fn get_arg_msg(msg: MESSAGE_ARG, arg1: string, arg2: string, arg3: string) s
             RET_ERR(0) (MSG_ENO "no level 1 optimization mask passed in second argument, see " EM_CSTR("--help"))
         }
         -> MSG_invalid_optim_1_arg {
-            RET_ERR(1) (MSG_ENO "invalid level 1 optimization mask " MSG_ARG " passed in second argument, see " EM_CSTR("--help"))
+            RET_ERR(1) (MSG_ENO "invalid level 1 optimization mask " MSG_ARG " passed in second argument, see "
+                EM_CSTR("--help"))
         }
         -> MSG_no_optim_2_arg {
             RET_ERR(0) (MSG_ENO "no level 2 optimization code passed in third argument, see " EM_CSTR("--help"))
         }
         -> MSG_invalid_optim_2_arg {
-            RET_ERR(1) (MSG_ENO "invalid level 2 optimization code " MSG_ARG " passed in third argument, see " EM_CSTR("--help"))
+            RET_ERR(1) (MSG_ENO "invalid level 2 optimization code " MSG_ARG " passed in third argument, see "
+                EM_CSTR("--help"))
         }
         -> MSG_no_input_files_arg {
             RET_ERR(0) (MSG_ENO "no input file passed in fourth argument, see " EM_CSTR("--help"))
@@ -772,7 +785,8 @@ pub fn get_lexer_msg(msg: MESSAGE_LEXER, arg1: string, arg2: string, arg3: strin
             RET_ERR(1) (MSG_ENO "cannot search " MSG_ARG " in a line, " EM_CSTR("use") " requires its own line")
         }
         -> MSG_preproc_macro {
-            RET_ERR(1) (MSG_ENO "found m4 macro " MSG_ARG ", preprocess with " EM_CSTR("-E") " or see " EM_CSTR("--help"))
+            RET_ERR(1) (MSG_ENO "found m4 macro " MSG_ARG ", preprocess with " EM_CSTR("-E") " or see "
+                EM_CSTR("--help"))
         }
         -> MSG_unmatched_close {
             RET_ERR(1) (MSG_ENO "found unmatched bracket " MSG_ARG)
@@ -795,46 +809,74 @@ pub fn get_parser_msg(msg: MESSAGE_PARSER, arg1: string, arg2: string, arg3: str
             RET_ERR(1) (MSG_ENO "cannot represent " MSG_ARG " as a 64 bits signed integer constant, very large number")
         }
         -> MSG_overflow_ulong_const {
-            RET_ERR(1) (MSG_ENO "cannot represent " MSG_ARG " as a 64 bits unsigned integer constant, very large number")
+            RET_ERR(1) (MSG_ENO "cannot represent " MSG_ARG
+                " as a 64 bits unsigned integer constant, very large number")
         }
         -> MSG_expect_unop {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected unary operator " EM_CSTR("~") ", " EM_CSTR("-") " or " EM_CSTR("not") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected unary operator " EM_CSTR("~") ", " EM_CSTR("-")
+                " or " EM_CSTR("not") " next")
         }
         -> MSG_expect_binop {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected binary operator " EM_CSTR("=") ", " EM_CSTR("+") ", " EM_CSTR("+=") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", " EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", " EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", " EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("and") ", " EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", " EM_CSTR(">") " or " EM_CSTR(">=") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected binary operator " EM_CSTR("=") ", " EM_CSTR("+")
+                ", " EM_CSTR("+=") ", " EM_CSTR("-") ", " EM_CSTR("-=") ", " EM_CSTR("*") ", " EM_CSTR("*=") ", "
+                EM_CSTR("/") ", " EM_CSTR("/=") ", " EM_CSTR("%") ", " EM_CSTR("%=") ", " EM_CSTR("&") ", "
+                EM_CSTR("&=") ", " EM_CSTR("|") ", " EM_CSTR("|=") ", " EM_CSTR("^") ", " EM_CSTR("^=") ", "
+                EM_CSTR("<<") ", " EM_CSTR("<<=") ", " EM_CSTR(">>") ", " EM_CSTR(">>=") ", " EM_CSTR("and") ", "
+                EM_CSTR("or") ", " EM_CSTR("==") ", " EM_CSTR("~=") ", " EM_CSTR("<") ", " EM_CSTR("<=") ", "
+                EM_CSTR(">") " or " EM_CSTR(">=") " next")
         }
         -> MSG_expect_data_specifier {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected datatype specifier " EM_CSTR("struc") " or " EM_CSTR("union") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected datatype specifier " EM_CSTR("struc") " or "
+                EM_CSTR("union") " next")
         }
         -> MSG_expect_specifier {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected type specifier " EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected type specifier " EM_CSTR("char") ", "
+                EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", "
+                EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", "
+                EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next")
         }
         -> MSG_expect_maybe_type {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected maybe type specifier " EM_CSTR("none") ", " EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", " EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", " EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected maybe type specifier " EM_CSTR("none") ", "
+                EM_CSTR("char") ", " EM_CSTR("string") ", " EM_CSTR("bool") ", " EM_CSTR("i32") ", " EM_CSTR("i64") ", "
+                EM_CSTR("i8") ", " EM_CSTR("f64") ", " EM_CSTR("u32") ", " EM_CSTR("u64") ", " EM_CSTR("u8") ", "
+                EM_CSTR("struc") ", " EM_CSTR("union") ", " EM_CSTR("*") ", " EM_CSTR("*any") " or " EM_CSTR("[")
+                " next")
         }
         -> MSG_expect_open_sizeof {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR(`"("') " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected sizeof " EM_CSTR("<") " or " EM_CSTR(`"("')
+                " next")
         }
         -> MSG_expect_expression {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected expression " EM_CSTR("?") ", " EM_CSTR("~") ", " EM_CSTR("-") ", " EM_CSTR("not") ", " EM_CSTR("++") ", " EM_CSTR("--") ", " EM_CSTR("@") ", " EM_CSTR("sizeof") ", " EM_CSTR("cast") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier" `"("') ", " EM_CSTR(`"("') ", " EM_CSTR("const string") ", " EM_CSTR("const char") ", " EM_CSTR("const i32") ", " EM_CSTR("const i64") ", " EM_CSTR("const u32") ", " EM_CSTR("const u64") ", " EM_CSTR("const f64") ", " EM_CSTR("true") ", " EM_CSTR("false") " or " EM_CSTR("nil") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected expression " EM_CSTR("?") ", " EM_CSTR("~") ", "
+                EM_CSTR("-") ", " EM_CSTR("not") ", " EM_CSTR("++") ", " EM_CSTR("--") ", " EM_CSTR("@") ", "
+                EM_CSTR("sizeof") ", " EM_CSTR("cast") ", " EM_CSTR("identifier") ", " EM_CSTR("identifier" `"("') ", "
+                EM_CSTR(`"("') ", " EM_CSTR("const string") ", " EM_CSTR("const char") ", " EM_CSTR("const i32") ", "
+                EM_CSTR("const i64") ", " EM_CSTR("const u32") ", " EM_CSTR("const u64") ", " EM_CSTR("const f64") ", "
+                EM_CSTR("true") ", " EM_CSTR("false") " or " EM_CSTR("nil") " next")
         }
         -> MSG_expect_assign {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected assignment " EM_CSTR("=") " or " EM_CSTR(";")
+                " next")
         }
         -> MSG_expect_datatype {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected member list " EM_CSTR(`"("') " or " EM_CSTR(";") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected member list " EM_CSTR(`"("') " or " EM_CSTR(";")
+                " next")
         }
         -> MSG_expect_block {
             RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected block " EM_CSTR("{") " or " EM_CSTR(";") " next")
         }
         -> MSG_expect_declaration {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected declaration " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected declaration " EM_CSTR("identifier") ", "
+                EM_CSTR("fn") " or " EM_CSTR("type") " next")
         }
         -> MSG_expect_storage_class {
-            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected storage class " EM_CSTR("pub") ", " EM_CSTR("data") ", " EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or " EM_CSTR("type") " next")
+            RET_ERR(1) (MSG_ENO "found token " MSG_ARG ", but expected storage class " EM_CSTR("pub") ", "
+                EM_CSTR("data") ", " EM_CSTR("extrn") ", " EM_CSTR("identifier") ", " EM_CSTR("fn") " or "
+                EM_CSTR("type") " next")
         }
         -> MSG_incomplete_any {
-            RET_ERR(0) (MSG_ENO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none") " instead")
+            RET_ERR(0) (MSG_ENO "incomplete type " EM_CSTR("any") " requires a pointer, or use " EM_CSTR("none")
+                " instead")
         }
         -> MSG_arr_size_not_int_const {
             RET_ERR(1) (MSG_ENO "illegal array size " MSG_ARG ", requires a constant integer")
@@ -852,7 +894,8 @@ pub fn get_parser_msg(msg: MESSAGE_PARSER, arg1: string, arg2: string, arg3: str
             RET_ERR(0) (MSG_ENO "cannot exit " EM_CSTR("loop") ", infinite loop requires at least one statement")
         }
         -> MSG_loop_decl_not_auto {
-            RET_ERR(1) (MSG_ENO "illegal storage " MSG_ARG ", cannot use storage class in " EM_CSTR("loop") " initialization")
+            RET_ERR(1) (MSG_ENO "illegal storage " MSG_ARG ", cannot use storage class in " EM_CSTR("loop")
+                " initialization")
         }
         -> MSG_list_decl_not_auto {
             RET_ERR(1) (MSG_ENO "illegal storage " MSG_ARG ", cannot use storage class in list declaration")
@@ -905,7 +948,8 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(1) (MSG_ENO "cannot apply conditional " EM_CSTR("then") " on condition operand type " MSG_ARG)
         }
         -> MSG_invalid_ternary_op {
-            RET_ERR(2) (MSG_ENO "cannot apply ternary operator " EM_CSTR("else") " on operand types " MSG_ARG " and " MSG_ARG)
+            RET_ERR(2) (MSG_ENO "cannot apply ternary operator " EM_CSTR("else") " on operand types " MSG_ARG " and "
+                MSG_ARG)
         }
         -> MSG_var_used_as_fun {
             RET_ERR(1) (MSG_ENO "variable " MSG_ARG " used as a function")
@@ -920,46 +964,56 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(0) (MSG_ENO "addresssing " EM_CSTR("@") " requires lvalue operand, but got rvalue")
         }
         -> MSG_invalid_subscript {
-            RET_ERR(2) (MSG_ENO "cannot subscript array with operand types " MSG_ARG " and " MSG_ARG ", requires a complete pointer and an integer types")
+            RET_ERR(2) (MSG_ENO "cannot subscript array with operand types " MSG_ARG " and " MSG_ARG
+                ", requires a complete pointer and an integer types")
         }
         -> MSG_sizeof_incomplete {
             RET_ERR(1) (MSG_ENO "cannot get size with " EM_CSTR("sizeof") " operator on incomplete type " MSG_ARG)
         }
         -> MSG_dot_not_struct {
-            RET_ERR(2) (MSG_ENO "cannot access datatype member " MSG_ARG " with dot operator " EM_CSTR(".") " on non-datatype " MSG_ARG)
+            RET_ERR(2) (MSG_ENO "cannot access datatype member " MSG_ARG " with dot operator " EM_CSTR(".")
+                " on non-datatype " MSG_ARG)
         }
         -> MSG_member_not_in_struct {
             RET_ERR(2) (MSG_ENO "datatype " MSG_ARG " has no member named " MSG_ARG)
         }
         -> MSG_arrow_not_struct_ptr {
-            RET_ERR(2) (MSG_ENO "cannot access datatype member " MSG_ARG " with dereferenced dot operator " EM_CSTR("[].") " on non-pointer-to-datatype " MSG_ARG)
+            RET_ERR(2) (MSG_ENO "cannot access datatype member " MSG_ARG " with dereferenced dot operator "
+                EM_CSTR("[].") " on non-pointer-to-datatype " MSG_ARG)
         }
         -> MSG_arrow_incomplete {
-            RET_ERR(2) (MSG_ENO "cannot access datatype member " MSG_ARG " with dereferenced dot operator " EM_CSTR("[].") " on incomplete datatype " MSG_ARG)
+            RET_ERR(2) (MSG_ENO "cannot access datatype member " MSG_ARG " with dereferenced dot operator "
+                EM_CSTR("[].") " on incomplete datatype " MSG_ARG)
         }
         -> MSG_exp_incomplete {
             RET_ERR(1) (MSG_ENO "incomplete datatype " MSG_ARG " in expression")
         }
         -> MSG_ret_value_in_void_fun {
-            RET_ERR(1) (MSG_ENO "found " EM_CSTR("return") " value in function " MSG_ARG " returning type " EM_CSTR("none"))
+            RET_ERR(1) (MSG_ENO "found " EM_CSTR("return") " value in function " MSG_ARG " returning type "
+                EM_CSTR("none"))
         }
         -> MSG_no_ret_value_in_fun {
-            RET_ERR(2) (MSG_ENO "found " EM_CSTR("return") " with no value in function " MSG_ARG " returning type " MSG_ARG)
+            RET_ERR(2) (MSG_ENO "found " EM_CSTR("return") " with no value in function " MSG_ARG " returning type "
+                MSG_ARG)
         }
         -> MSG_invalid_if {
             RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("if") " statement with condition expression type " MSG_ARG)
         }
         -> MSG_invalid_while {
-            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("loop while") " statement with condition expression type " MSG_ARG)
+            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("loop while") " statement with condition expression type "
+                MSG_ARG)
         }
         -> MSG_invalid_do_while {
-            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type " MSG_ARG)
+            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("loop .. while") " statement with post-condition expression type "
+                MSG_ARG)
         }
         -> MSG_invalid_for {
-            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while") " condition expression type " MSG_ARG)
+            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("loop") " statement with " EM_CSTR("while")
+                " condition expression type " MSG_ARG)
         }
         -> MSG_invalid_switch {
-            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("match") " statement with match expression type " MSG_ARG ", requires an integer type")
+            RET_ERR(1) (MSG_ENO "cannot use " EM_CSTR("match") " statement with match expression type " MSG_ARG
+                ", requires an integer type")
         }
         -> MSG_duplicate_case_value {
             RET_ERR(1) (MSG_ENO "found duplicate " EM_CSTR("->") " value " MSG_ARG " in " EM_CSTR("match") " statement")
@@ -986,19 +1040,23 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(2) (MSG_ENO "function " MSG_ARG " declared with parameter " MSG_ARG " with type " EM_CSTR("none"))
         }
         -> MSG_incomplete_param {
-            RET_ERR(3) (MSG_ENO "function " MSG_ARG " defined with parameter " MSG_ARG " with incomplete datatype " MSG_ARG)
+            RET_ERR(3) (MSG_ENO "function " MSG_ARG " defined with parameter " MSG_ARG " with incomplete datatype "
+                MSG_ARG)
         }
         -> MSG_redecl_fun_conflict {
-            RET_ERR(3) (MSG_ENO "function " MSG_ARG " redeclared with function type " MSG_ARG ", but previous declaration has function type " MSG_ARG)
+            RET_ERR(3) (MSG_ENO "function " MSG_ARG " redeclared with function type " MSG_ARG
+                ", but previous declaration has function type " MSG_ARG)
         }
         -> MSG_redef_fun {
             RET_ERR(2) (MSG_ENO "function " MSG_ARG " already defined with function type " MSG_ARG)
         }
         -> MSG_redecl_static_conflict {
-            RET_ERR(1) (MSG_ENO "function " MSG_ARG " with " EM_CSTR("data") " storage class already declared non-static")
+            RET_ERR(1) (MSG_ENO "function " MSG_ARG " with " EM_CSTR("data")
+                " storage class already declared non-static")
         }
         -> MSG_static_ptr_init_not_int {
-            RET_ERR(2) (MSG_ENO "cannot statically initialize pointer type " MSG_ARG " from constant " MSG_ARG ", requires a constant integer")
+            RET_ERR(2) (MSG_ENO "cannot statically initialize pointer type " MSG_ARG " from constant " MSG_ARG
+                ", requires a constant integer")
         }
         -> MSG_static_ptr_init_not_null {
             RET_ERR(2) (MSG_ENO "cannot statically initialize pointer type " MSG_ARG " from non-zero value " MSG_ARG)
@@ -1010,7 +1068,8 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(1) (MSG_ENO "non-character pointer type " MSG_ARG " statically initialized from string constant")
         }
         -> MSG_static_init_not_const {
-            RET_ERR(1) (MSG_ENO "cannot statically initialize variable from non-constant type " MSG_ARG ", requires a constant")
+            RET_ERR(1) (MSG_ENO "cannot statically initialize variable from non-constant type " MSG_ARG
+                ", requires a constant")
         }
         -> MSG_scalar_init_with_compound {
             RET_ERR(1) (MSG_ENO "cannot initialize scalar type " MSG_ARG " with compound initializer")
@@ -1022,13 +1081,15 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(2) (MSG_ENO "variable " MSG_ARG " declared with incomplete datatype " MSG_ARG)
         }
         -> MSG_redecl_var_conflict {
-            RET_ERR(3) (MSG_ENO "variable " MSG_ARG " redeclared with conflicting type " MSG_ARG ", but previously declared with type " MSG_ARG)
+            RET_ERR(3) (MSG_ENO "variable " MSG_ARG " redeclared with conflicting type " MSG_ARG
+                ", but previously declared with type " MSG_ARG)
         }
         -> MSG_redecl_var_storage {
             RET_ERR(1) (MSG_ENO "variable " MSG_ARG " redeclared with conflicting storage class")
         }
         -> MSG_redef_extern_var {
-            RET_ERR(1) (MSG_ENO "illegal initializer, can only declare variable " MSG_ARG " with " EM_CSTR("extrn") " storage class")
+            RET_ERR(1) (MSG_ENO "illegal initializer, can only declare variable " MSG_ARG " with " EM_CSTR("extrn")
+                " storage class")
         }
         -> MSG_duplicate_member_decl {
             RET_ERR(2) (MSG_ENO "datatype " MSG_ARG " declared with duplicate member name " MSG_ARG)
@@ -1049,16 +1110,19 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(0) (MSG_ENO "found more than one " EM_CSTR("otherwise") " statement in " EM_CSTR("match"))
         }
         -> MSG_break_out_of_loop {
-            RET_ERR(0) (MSG_ENO "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop") " or " EM_CSTR("match"))
+            RET_ERR(0) (MSG_ENO "found " EM_CSTR("break") " statement outside of " EM_CSTR("loop") " or "
+                EM_CSTR("match"))
         }
         -> MSG_continue_out_of_loop {
             RET_ERR(0) (MSG_ENO "found " EM_CSTR("continue") " statement outside of " EM_CSTR("loop"))
         }
         -> MSG_undef_goto_target {
-            RET_ERR(2) (MSG_ENO "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " MSG_ARG " not defined in function " MSG_ARG)
+            RET_ERR(2) (MSG_ENO "found " EM_CSTR("jump") " statement, but " EM_CSTR("label") " with target " MSG_ARG
+                " not defined in function " MSG_ARG)
         }
         -> MSG_redecl_struct_conflict {
-            RET_ERR(2) (MSG_ENO MSG_ARG " conflicts with datatype " MSG_ARG " previously declared or defined in this scope")
+            RET_ERR(2) (MSG_ENO MSG_ARG " conflicts with datatype " MSG_ARG
+                " previously declared or defined in this scope")
         }
         -> MSG_undef_struct_in_scope {
             RET_ERR(1) (MSG_ENO "datatype " MSG_ARG " not defined in this scope")
@@ -1070,7 +1134,8 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(1) (MSG_ENO "function " MSG_ARG " not declared in this scope")
         }
         -> MSG_for_init_decl_not_auto {
-            RET_ERR(2) (MSG_ENO "variable " MSG_ARG " declared with " MSG_ARG " storage class in " EM_CSTR("loop") " initialization")
+            RET_ERR(2) (MSG_ENO "variable " MSG_ARG " declared with " MSG_ARG " storage class in " EM_CSTR("loop")
+                " initialization")
         }
         -> MSG_redef_label_in_scope {
             RET_ERR(1) (MSG_ENO EM_CSTR("label") " with target " MSG_ARG " already defined in this scope")
@@ -1079,10 +1144,12 @@ pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3:
             RET_ERR(1) (MSG_ENO "variable " MSG_ARG " already declared in this scope")
         }
         -> MSG_def_nested_fun {
-            RET_ERR(1) (MSG_ENO "function " MSG_ARG " defined inside another function, but nested function definition are not permitted")
+            RET_ERR(1) (MSG_ENO "function " MSG_ARG
+                " defined inside another function, but nested function definition are not permitted")
         }
         -> MSG_decl_nested_static_fun {
-            RET_ERR(1) (MSG_ENO "cannot declare nested function " MSG_ARG " in another function with " EM_CSTR("data") " storage class")
+            RET_ERR(1) (MSG_ENO "cannot declare nested function " MSG_ARG " in another function with " EM_CSTR("data")
+                " storage class")
         }
         -> MSG_redecl_fun_in_scope {
             RET_ERR(1) (MSG_ENO "function " MSG_ARG " already declared in this scope")
