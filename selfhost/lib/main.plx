@@ -78,7 +78,7 @@ fn compile(ctx: Ctx, errors: *struc ErrorsContext, fileio: *struc FileIoContext)
 m4_ifdef(`__APPLE__', `', `
 m4_ifdef(`__FreeBSD__', `', `
 m4_ifdef(`__linux__', `', `
-    THROW_INIT(GET_FATAL_MSG(1, MSG_unsupported_os, "unknown"))
+    THROW_INIT(GET_FATAL_MSG(MSG_unsupported_os, "unknown"))
 ')m4_dnl
 ')m4_dnl
 ')m4_dnl
@@ -165,36 +165,36 @@ fn arg_parse(ctx: Ctx, argc: i32, argv: *string) error_t {
     CATCH_ENTER
     i: u64 = 0
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
-        THROW_INIT(GET_ARG_MSG(1, MSG_print_help, argv[0]))
+        THROW_INIT(GET_ARG_MSG(MSG_print_help, argv[0]))
     }
     if not argv[++i] {
-        THROW_INIT(GET_ARG_MSG(0, MSG_no_debug_arg))
+        THROW_INIT(GET_ARG_MSG(MSG_no_debug_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
-        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_debug_arg, argv[i]))
+        THROW_INIT(GET_ARG_MSG(MSG_invalid_debug_arg, argv[i]))
     }
     if not argv[++i] {
-        THROW_INIT(GET_ARG_MSG(0, MSG_no_optim_1_arg))
+        THROW_INIT(GET_ARG_MSG(MSG_no_optim_1_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
-        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_optim_1_arg, argv[i]))
+        THROW_INIT(GET_ARG_MSG(MSG_invalid_optim_1_arg, argv[i]))
     }
     if not argv[++i] {
-        THROW_INIT(GET_ARG_MSG(0, MSG_no_optim_2_arg))
+        THROW_INIT(GET_ARG_MSG(MSG_no_optim_2_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
-        THROW_INIT(GET_ARG_MSG(1, MSG_invalid_optim_2_arg, argv[i]))
+        THROW_INIT(GET_ARG_MSG(MSG_invalid_optim_2_arg, argv[i]))
     }
     if not argv[++i] {
-        THROW_INIT(GET_ARG_MSG(0, MSG_no_input_files_arg))
+        THROW_INIT(GET_ARG_MSG(MSG_no_input_files_arg))
     }
     ctx[].filename = str_new(argv[i])
     if not argv[++i] {
-        THROW_INIT(GET_ARG_MSG(0, MSG_no_stdlib_dir_arg))
+        THROW_INIT(GET_ARG_MSG(MSG_no_stdlib_dir_arg))
     }
     vec_push_back(ctx[].stdlibdirs, cast<string>(argv[i]))
     if not argv[++i] {
-        THROW_INIT(GET_ARG_MSG(0, MSG_no_include_dir_arg))
+        THROW_INIT(GET_ARG_MSG(MSG_no_include_dir_arg))
     }
     vec_push_back(ctx[].includedirs, cast<string>(argv[i]))
     FINALLY
