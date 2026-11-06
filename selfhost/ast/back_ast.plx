@@ -183,7 +183,7 @@ pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc As
 
 pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_AsmOperand_t {
             -> AST_AsmImm_t {
                 break
@@ -470,76 +470,76 @@ pub fn make_AsmRet(none) unique_ptr_t(AsmInstruction) {
 
 pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_AsmInstruction_t {
             break
         }
         -> AST_AsmMov_t {
-            free_AssemblyType(@(self[])[].get._AsmMov.asm_type)
+            free_AssemblyType(@self[][].get._AsmMov.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmMov.src)
-        free_AsmOperand(@(self[])[].get._AsmMov.dst)
+        free_AsmOperand(@self[][].get._AsmMov.src)
+        free_AsmOperand(@self[][].get._AsmMov.dst)
         break
         -> AST_AsmMovSx_t {
-            free_AssemblyType(@(self[])[].get._AsmMovSx.asm_type_src)
+            free_AssemblyType(@self[][].get._AsmMovSx.asm_type_src)
         }
-        free_AssemblyType(@(self[])[].get._AsmMovSx.asm_type_dst)
-        free_AsmOperand(@(self[])[].get._AsmMovSx.src)
-        free_AsmOperand(@(self[])[].get._AsmMovSx.dst)
+        free_AssemblyType(@self[][].get._AsmMovSx.asm_type_dst)
+        free_AsmOperand(@self[][].get._AsmMovSx.src)
+        free_AsmOperand(@self[][].get._AsmMovSx.dst)
         break
         -> AST_AsmMovZeroExtend_t {
-            free_AssemblyType(@(self[])[].get._AsmMovZeroExtend.asm_type_src)
+            free_AssemblyType(@self[][].get._AsmMovZeroExtend.asm_type_src)
         }
-        free_AssemblyType(@(self[])[].get._AsmMovZeroExtend.asm_type_dst)
-        free_AsmOperand(@(self[])[].get._AsmMovZeroExtend.src)
-        free_AsmOperand(@(self[])[].get._AsmMovZeroExtend.dst)
+        free_AssemblyType(@self[][].get._AsmMovZeroExtend.asm_type_dst)
+        free_AsmOperand(@self[][].get._AsmMovZeroExtend.src)
+        free_AsmOperand(@self[][].get._AsmMovZeroExtend.dst)
         break
         -> AST_AsmLea_t {
-            free_AsmOperand(@(self[])[].get._AsmLea.src)
+            free_AsmOperand(@self[][].get._AsmLea.src)
         }
-        free_AsmOperand(@(self[])[].get._AsmLea.dst)
+        free_AsmOperand(@self[][].get._AsmLea.dst)
         break
         -> AST_AsmCvttsd2si_t {
-            free_AssemblyType(@(self[])[].get._AsmCvttsd2si.asm_type)
+            free_AssemblyType(@self[][].get._AsmCvttsd2si.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmCvttsd2si.src)
-        free_AsmOperand(@(self[])[].get._AsmCvttsd2si.dst)
+        free_AsmOperand(@self[][].get._AsmCvttsd2si.src)
+        free_AsmOperand(@self[][].get._AsmCvttsd2si.dst)
         break
         -> AST_AsmCvtsi2sd_t {
-            free_AssemblyType(@(self[])[].get._AsmCvtsi2sd.asm_type)
+            free_AssemblyType(@self[][].get._AsmCvtsi2sd.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmCvtsi2sd.src)
-        free_AsmOperand(@(self[])[].get._AsmCvtsi2sd.dst)
+        free_AsmOperand(@self[][].get._AsmCvtsi2sd.src)
+        free_AsmOperand(@self[][].get._AsmCvtsi2sd.dst)
         break
         -> AST_AsmUnary_t {
-            free_AssemblyType(@(self[])[].get._AsmUnary.asm_type)
+            free_AssemblyType(@self[][].get._AsmUnary.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmUnary.dst)
+        free_AsmOperand(@self[][].get._AsmUnary.dst)
         break
         -> AST_AsmBinary_t {
-            free_AssemblyType(@(self[])[].get._AsmBinary.asm_type)
+            free_AssemblyType(@self[][].get._AsmBinary.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmBinary.src)
-        free_AsmOperand(@(self[])[].get._AsmBinary.dst)
+        free_AsmOperand(@self[][].get._AsmBinary.src)
+        free_AsmOperand(@self[][].get._AsmBinary.dst)
         break
         -> AST_AsmCmp_t {
-            free_AssemblyType(@(self[])[].get._AsmCmp.asm_type)
+            free_AssemblyType(@self[][].get._AsmCmp.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmCmp.src)
-        free_AsmOperand(@(self[])[].get._AsmCmp.dst)
+        free_AsmOperand(@self[][].get._AsmCmp.src)
+        free_AsmOperand(@self[][].get._AsmCmp.dst)
         break
         -> AST_AsmIdiv_t {
-            free_AssemblyType(@(self[])[].get._AsmIdiv.asm_type)
+            free_AssemblyType(@self[][].get._AsmIdiv.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmIdiv.src)
+        free_AsmOperand(@self[][].get._AsmIdiv.src)
         break
         -> AST_AsmDiv_t {
-            free_AssemblyType(@(self[])[].get._AsmDiv.asm_type)
+            free_AssemblyType(@self[][].get._AsmDiv.asm_type)
         }
-        free_AsmOperand(@(self[])[].get._AsmDiv.src)
+        free_AsmOperand(@self[][].get._AsmDiv.src)
         break
         -> AST_AsmCdq_t {
-            free_AssemblyType(@(self[])[].get._AsmCdq.asm_type)
+            free_AssemblyType(@self[][].get._AsmCdq.asm_type)
         }
         break
         -> AST_AsmJmp_t {
@@ -549,14 +549,14 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
             break
         }
         -> AST_AsmSetCC_t {
-            free_AsmOperand(@(self[])[].get._AsmSetCC.dst)
+            free_AsmOperand(@self[][].get._AsmSetCC.dst)
         }
         break
         -> AST_AsmLabel_t {
             break
         }
         -> AST_AsmPush_t {
-            free_AsmOperand(@(self[])[].get._AsmPush.src)
+            free_AsmOperand(@self[][].get._AsmPush.src)
         }
         break
         -> AST_AsmPop_t {
@@ -616,26 +616,26 @@ pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: *shared_pt
 
 pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_AsmTopLevel_t {
             break
         }
         -> AST_AsmFunction_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._AsmFunction.instructions) .. ++i {
-                free_AsmInstruction(@(self[])[].get._AsmFunction.instructions[i])
+                free_AsmInstruction(@self[][].get._AsmFunction.instructions[i])
             }
         }
         vec_delete(self[][].get._AsmFunction.instructions)
         break
         -> AST_AsmStaticVariable_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._AsmStaticVariable.static_inits) .. ++i {
-                free_StaticInit(@(self[])[].get._AsmStaticVariable.static_inits[i])
+                free_StaticInit(@self[][].get._AsmStaticVariable.static_inits[i])
             }
         }
         vec_delete(self[][].get._AsmStaticVariable.static_inits)
         break
         -> AST_AsmStaticConstant_t {
-            free_StaticInit(@(self[])[].get._AsmStaticConstant.static_init)
+            free_StaticInit(@self[][].get._AsmStaticConstant.static_init)
         }
         break
         otherwise {
@@ -658,7 +658,7 @@ pub fn make_AsmProgram(static_const_toplvls: *vector_t(unique_ptr_t(AsmTopLevel)
 
 pub fn free_AsmProgram(self: *unique_ptr_t(AsmProgram)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_AsmProgram_t {
             break
         }
@@ -667,11 +667,11 @@ pub fn free_AsmProgram(self: *unique_ptr_t(AsmProgram)) none {
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].static_const_toplvls) .. ++i {
-        free_AsmTopLevel(@(self[])[].static_const_toplvls[i])
+        free_AsmTopLevel(@self[][].static_const_toplvls[i])
     }
     vec_delete(self[][].static_const_toplvls)
     loop i: u64 = 0 while i < vec_size(self[][].top_levels) .. ++i {
-        free_AsmTopLevel(@(self[])[].top_levels[i])
+        free_AsmTopLevel(@self[][].top_levels[i])
     }
     vec_delete(self[][].top_levels)
     uptr_free(self[])

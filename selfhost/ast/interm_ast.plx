@@ -94,12 +94,12 @@ pub fn make_TacVariable(name: u64) shared_ptr_t(TacValue) {
 
 pub fn free_TacValue(self: *shared_ptr_t(TacValue)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_TacValue_t {
             break
         }
         -> AST_TacConstant_t {
-            free_CConst(@(self[])[].get._TacConstant.constant)
+            free_CConst(@self[][].get._TacConstant.constant)
         }
         break
         -> AST_TacVariable_t {
@@ -145,16 +145,16 @@ pub fn make_TacSubObject(base_name: u64, offset: i64) unique_ptr_t(TacExpResult)
 
 pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_TacExpResult_t {
             break
         }
         -> AST_TacPlainOperand_t {
-            free_TacValue(@(self[])[].get._TacPlainOperand.val)
+            free_TacValue(@self[][].get._TacPlainOperand.val)
         }
         break
         -> AST_TacDereferencedPointer_t {
-            free_TacValue(@(self[])[].get._TacDereferencedPointer.val)
+            free_TacValue(@self[][].get._TacDereferencedPointer.val)
         }
         break
         -> AST_TacSubObject_t {
@@ -394,111 +394,111 @@ pub fn make_TacLabel(name: u64) unique_ptr_t(TacInstruction) {
 
 pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_TacInstruction_t {
             break
         }
         -> AST_TacReturn_t {
-            free_TacValue(@(self[])[].get._TacReturn.val)
+            free_TacValue(@self[][].get._TacReturn.val)
         }
         break
         -> AST_TacSignExtend_t {
-            free_TacValue(@(self[])[].get._TacSignExtend.src)
+            free_TacValue(@self[][].get._TacSignExtend.src)
         }
-        free_TacValue(@(self[])[].get._TacSignExtend.dst)
+        free_TacValue(@self[][].get._TacSignExtend.dst)
         break
         -> AST_TacTruncate_t {
-            free_TacValue(@(self[])[].get._TacTruncate.src)
+            free_TacValue(@self[][].get._TacTruncate.src)
         }
-        free_TacValue(@(self[])[].get._TacTruncate.dst)
+        free_TacValue(@self[][].get._TacTruncate.dst)
         break
         -> AST_TacZeroExtend_t {
-            free_TacValue(@(self[])[].get._TacZeroExtend.src)
+            free_TacValue(@self[][].get._TacZeroExtend.src)
         }
-        free_TacValue(@(self[])[].get._TacZeroExtend.dst)
+        free_TacValue(@self[][].get._TacZeroExtend.dst)
         break
         -> AST_TacDoubleToInt_t {
-            free_TacValue(@(self[])[].get._TacDoubleToInt.src)
+            free_TacValue(@self[][].get._TacDoubleToInt.src)
         }
-        free_TacValue(@(self[])[].get._TacDoubleToInt.dst)
+        free_TacValue(@self[][].get._TacDoubleToInt.dst)
         break
         -> AST_TacDoubleToUInt_t {
-            free_TacValue(@(self[])[].get._TacDoubleToUInt.src)
+            free_TacValue(@self[][].get._TacDoubleToUInt.src)
         }
-        free_TacValue(@(self[])[].get._TacDoubleToUInt.dst)
+        free_TacValue(@self[][].get._TacDoubleToUInt.dst)
         break
         -> AST_TacIntToDouble_t {
-            free_TacValue(@(self[])[].get._TacIntToDouble.src)
+            free_TacValue(@self[][].get._TacIntToDouble.src)
         }
-        free_TacValue(@(self[])[].get._TacIntToDouble.dst)
+        free_TacValue(@self[][].get._TacIntToDouble.dst)
         break
         -> AST_TacUIntToDouble_t {
-            free_TacValue(@(self[])[].get._TacUIntToDouble.src)
+            free_TacValue(@self[][].get._TacUIntToDouble.src)
         }
-        free_TacValue(@(self[])[].get._TacUIntToDouble.dst)
+        free_TacValue(@self[][].get._TacUIntToDouble.dst)
         break
         -> AST_TacFunCall_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._TacFunCall.args) .. ++i {
-                free_TacValue(@(self[])[].get._TacFunCall.args[i])
+                free_TacValue(@self[][].get._TacFunCall.args[i])
             }
         }
         vec_delete(self[][].get._TacFunCall.args)
-        free_TacValue(@(self[])[].get._TacFunCall.dst)
+        free_TacValue(@self[][].get._TacFunCall.dst)
         break
         -> AST_TacUnary_t {
-            free_TacValue(@(self[])[].get._TacUnary.src)
+            free_TacValue(@self[][].get._TacUnary.src)
         }
-        free_TacValue(@(self[])[].get._TacUnary.dst)
+        free_TacValue(@self[][].get._TacUnary.dst)
         break
         -> AST_TacBinary_t {
-            free_TacValue(@(self[])[].get._TacBinary.src1)
+            free_TacValue(@self[][].get._TacBinary.src1)
         }
-        free_TacValue(@(self[])[].get._TacBinary.src2)
-        free_TacValue(@(self[])[].get._TacBinary.dst)
+        free_TacValue(@self[][].get._TacBinary.src2)
+        free_TacValue(@self[][].get._TacBinary.dst)
         break
         -> AST_TacCopy_t {
-            free_TacValue(@(self[])[].get._TacCopy.src)
+            free_TacValue(@self[][].get._TacCopy.src)
         }
-        free_TacValue(@(self[])[].get._TacCopy.dst)
+        free_TacValue(@self[][].get._TacCopy.dst)
         break
         -> AST_TacGetAddress_t {
-            free_TacValue(@(self[])[].get._TacGetAddress.src)
+            free_TacValue(@self[][].get._TacGetAddress.src)
         }
-        free_TacValue(@(self[])[].get._TacGetAddress.dst)
+        free_TacValue(@self[][].get._TacGetAddress.dst)
         break
         -> AST_TacLoad_t {
-            free_TacValue(@(self[])[].get._TacLoad.src_ptr)
+            free_TacValue(@self[][].get._TacLoad.src_ptr)
         }
-        free_TacValue(@(self[])[].get._TacLoad.dst)
+        free_TacValue(@self[][].get._TacLoad.dst)
         break
         -> AST_TacStore_t {
-            free_TacValue(@(self[])[].get._TacStore.src)
+            free_TacValue(@self[][].get._TacStore.src)
         }
-        free_TacValue(@(self[])[].get._TacStore.dst_ptr)
+        free_TacValue(@self[][].get._TacStore.dst_ptr)
         break
         -> AST_TacAddPtr_t {
-            free_TacValue(@(self[])[].get._TacAddPtr.src_ptr)
+            free_TacValue(@self[][].get._TacAddPtr.src_ptr)
         }
-        free_TacValue(@(self[])[].get._TacAddPtr.idx)
-        free_TacValue(@(self[])[].get._TacAddPtr.dst)
+        free_TacValue(@self[][].get._TacAddPtr.idx)
+        free_TacValue(@self[][].get._TacAddPtr.dst)
         break
         -> AST_TacCopyToOffset_t {
-            free_TacValue(@(self[])[].get._TacCopyToOffset.src)
+            free_TacValue(@self[][].get._TacCopyToOffset.src)
         }
         break
         -> AST_TacCopyFromOffset_t {
-            free_TacValue(@(self[])[].get._TacCopyFromOffset.dst)
+            free_TacValue(@self[][].get._TacCopyFromOffset.dst)
         }
         break
         -> AST_TacJump_t {
             break
         }
         -> AST_TacJumpIfZero_t {
-            free_TacValue(@(self[])[].get._TacJumpIfZero.condition)
+            free_TacValue(@self[][].get._TacJumpIfZero.condition)
         }
         break
         -> AST_TacJumpIfNotZero_t {
-            free_TacValue(@(self[])[].get._TacJumpIfNotZero.condition)
+            free_TacValue(@self[][].get._TacJumpIfNotZero.condition)
         }
         break
         -> AST_TacLabel_t {
@@ -555,7 +555,7 @@ pub fn make_TacStaticConstant(name: u64, static_init_type: *shared_ptr_t(Type), 
 
 pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_TacTopLevel_t {
             break
         }
@@ -563,22 +563,22 @@ pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none {
             vec_delete(self[][].get._TacFunction.params)
         }
         loop i: u64 = 0 while i < vec_size(self[][].get._TacFunction.body) .. ++i {
-            free_TacInstruction(@(self[])[].get._TacFunction.body[i])
+            free_TacInstruction(@self[][].get._TacFunction.body[i])
         }
         vec_delete(self[][].get._TacFunction.body)
         break
         -> AST_TacStaticVariable_t {
-            free_Type(@(self[])[].get._TacStaticVariable.static_init_type)
+            free_Type(@self[][].get._TacStaticVariable.static_init_type)
         }
         loop i: u64 = 0 while i < vec_size(self[][].get._TacStaticVariable.static_inits) .. ++i {
-            free_StaticInit(@(self[])[].get._TacStaticVariable.static_inits[i])
+            free_StaticInit(@self[][].get._TacStaticVariable.static_inits[i])
         }
         vec_delete(self[][].get._TacStaticVariable.static_inits)
         break
         -> AST_TacStaticConstant_t {
-            free_Type(@(self[])[].get._TacStaticConstant.static_init_type)
+            free_Type(@self[][].get._TacStaticConstant.static_init_type)
         }
-        free_StaticInit(@(self[])[].get._TacStaticConstant.static_init)
+        free_StaticInit(@self[][].get._TacStaticConstant.static_init)
         break
         otherwise {
             THROW_ABORT
@@ -602,7 +602,7 @@ pub fn make_TacProgram(static_const_toplvls: *vector_t(unique_ptr_t(TacTopLevel)
 
 pub fn free_TacProgram(self: *unique_ptr_t(TacProgram)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_TacProgram_t {
             break
         }
@@ -611,15 +611,15 @@ pub fn free_TacProgram(self: *unique_ptr_t(TacProgram)) none {
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].static_const_toplvls) .. ++i {
-        free_TacTopLevel(@(self[])[].static_const_toplvls[i])
+        free_TacTopLevel(@self[][].static_const_toplvls[i])
     }
     vec_delete(self[][].static_const_toplvls)
     loop i: u64 = 0 while i < vec_size(self[][].static_var_toplvls) .. ++i {
-        free_TacTopLevel(@(self[])[].static_var_toplvls[i])
+        free_TacTopLevel(@self[][].static_var_toplvls[i])
     }
     vec_delete(self[][].static_var_toplvls)
     loop i: u64 = 0 while i < vec_size(self[][].fun_toplvls) .. ++i {
-        free_TacTopLevel(@(self[])[].fun_toplvls[i])
+        free_TacTopLevel(@self[][].fun_toplvls[i])
     }
     vec_delete(self[][].fun_toplvls)
     uptr_free(self[])

@@ -110,16 +110,16 @@ pub fn make_CAbstractBase(none) unique_ptr_t(CAbstractDeclarator) {
 
 pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CAbstractDeclarator_t {
             break
         }
         -> AST_CAbstractPointer_t {
-            free_CAbstractDeclarator(@(self[])[].get._CAbstractPointer.abstract_decltor)
+            free_CAbstractDeclarator(@self[][].get._CAbstractPointer.abstract_decltor)
         }
         break
         -> AST_CAbstractArray_t {
-            free_CAbstractDeclarator(@(self[])[].get._CAbstractArray.abstract_decltor)
+            free_CAbstractDeclarator(@self[][].get._CAbstractArray.abstract_decltor)
         }
         break
         -> AST_CAbstractBase_t {
@@ -145,7 +145,7 @@ pub fn make_CParam(decltor: *unique_ptr_t(CDeclarator), param_type: *shared_ptr_
 
 pub fn free_CParam(self: *unique_ptr_t(CParam)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CParam_t {
             break
         }
@@ -153,8 +153,8 @@ pub fn free_CParam(self: *unique_ptr_t(CParam)) none {
             THROW_ABORT
         }
     }
-    free_CDeclarator(@(self[])[].decltor)
-    free_Type(@(self[])[].param_type)
+    free_CDeclarator(@self[][].decltor)
+    free_Type(@self[][].param_type)
     uptr_free(self[])
 }
 
@@ -201,7 +201,7 @@ pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor:
 
 pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CDeclarator_t {
             break
         }
@@ -209,20 +209,20 @@ pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none {
             break
         }
         -> AST_CPointerDeclarator_t {
-            free_CDeclarator(@(self[])[].get._CPointerDeclarator.decltor)
+            free_CDeclarator(@self[][].get._CPointerDeclarator.decltor)
         }
         break
         -> AST_CArrayDeclarator_t {
-            free_CDeclarator(@(self[])[].get._CArrayDeclarator.decltor)
+            free_CDeclarator(@self[][].get._CArrayDeclarator.decltor)
         }
         break
         -> AST_CFunDeclarator_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CFunDeclarator.param_list) .. ++i {
-                free_CParam(@(self[])[].get._CFunDeclarator.param_list[i])
+                free_CParam(@self[][].get._CFunDeclarator.param_list[i])
             }
         }
         vec_delete(self[][].get._CFunDeclarator.param_list)
-        free_CDeclarator(@(self[])[].get._CFunDeclarator.decltor)
+        free_CDeclarator(@self[][].get._CFunDeclarator.decltor)
         break
         otherwise {
             THROW_ABORT
@@ -403,87 +403,87 @@ pub fn make_CArrow(member: u64, pointer: *unique_ptr_t(CExp), info_at: u64) uniq
 
 pub fn free_CExp(self: *unique_ptr_t(CExp)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CExp_t {
             break
         }
         -> AST_CConstant_t {
-            free_CConst(@(self[])[].get._CConstant.constant)
+            free_CConst(@self[][].get._CConstant.constant)
         }
         break
         -> AST_CString_t {
-            free_CStringLiteral(@(self[])[].get._CString.literal)
+            free_CStringLiteral(@self[][].get._CString.literal)
         }
         break
         -> AST_CVar_t {
             break
         }
         -> AST_CCast_t {
-            free_CExp(@(self[])[].get._CCast.exp)
+            free_CExp(@self[][].get._CCast.exp)
         }
-        free_Type(@(self[])[].get._CCast.target_type)
+        free_Type(@self[][].get._CCast.target_type)
         break
         -> AST_CUnary_t {
-            free_CExp(@(self[])[].get._CUnary.exp)
+            free_CExp(@self[][].get._CUnary.exp)
         }
         break
         -> AST_CBinary_t {
-            free_CExp(@(self[])[].get._CBinary.exp_left)
+            free_CExp(@self[][].get._CBinary.exp_left)
         }
-        free_CExp(@(self[])[].get._CBinary.exp_right)
+        free_CExp(@self[][].get._CBinary.exp_right)
         break
         -> AST_CAssignment_t {
-            free_CExp(@(self[])[].get._CAssignment.exp_left)
+            free_CExp(@self[][].get._CAssignment.exp_left)
         }
-        free_CExp(@(self[])[].get._CAssignment.exp_right)
+        free_CExp(@self[][].get._CAssignment.exp_right)
         break
         -> AST_CConditional_t {
-            free_CExp(@(self[])[].get._CConditional.condition)
+            free_CExp(@self[][].get._CConditional.condition)
         }
-        free_CExp(@(self[])[].get._CConditional.exp_middle)
-        free_CExp(@(self[])[].get._CConditional.exp_right)
+        free_CExp(@self[][].get._CConditional.exp_middle)
+        free_CExp(@self[][].get._CConditional.exp_right)
         break
         -> AST_CFunctionCall_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CFunctionCall.args) .. ++i {
-                free_CExp(@(self[])[].get._CFunctionCall.args[i])
+                free_CExp(@self[][].get._CFunctionCall.args[i])
             }
         }
         vec_delete(self[][].get._CFunctionCall.args)
         break
         -> AST_CDereference_t {
-            free_CExp(@(self[])[].get._CDereference.exp)
+            free_CExp(@self[][].get._CDereference.exp)
         }
         break
         -> AST_CAddrOf_t {
-            free_CExp(@(self[])[].get._CAddrOf.exp)
+            free_CExp(@self[][].get._CAddrOf.exp)
         }
         break
         -> AST_CSubscript_t {
-            free_CExp(@(self[])[].get._CSubscript.primary_exp)
+            free_CExp(@self[][].get._CSubscript.primary_exp)
         }
-        free_CExp(@(self[])[].get._CSubscript.subscript_exp)
+        free_CExp(@self[][].get._CSubscript.subscript_exp)
         break
         -> AST_CSizeOf_t {
-            free_CExp(@(self[])[].get._CSizeOf.exp)
+            free_CExp(@self[][].get._CSizeOf.exp)
         }
         break
         -> AST_CSizeOfT_t {
-            free_Type(@(self[])[].get._CSizeOfT.target_type)
+            free_Type(@self[][].get._CSizeOfT.target_type)
         }
         break
         -> AST_CDot_t {
-            free_CExp(@(self[])[].get._CDot.structure)
+            free_CExp(@self[][].get._CDot.structure)
         }
         break
         -> AST_CArrow_t {
-            free_CExp(@(self[])[].get._CArrow.pointer)
+            free_CExp(@self[][].get._CArrow.pointer)
         }
         break
         otherwise {
             THROW_ABORT
         }
     }
-    free_Type(@(self[])[].exp_type)
+    free_Type(@self[][].exp_type)
     uptr_free(self[])
 }
 
@@ -644,68 +644,68 @@ pub fn make_CNull(none) unique_ptr_t(CStatement) {
 
 pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CStatement_t {
             break
         }
         -> AST_CReturn_t {
-            free_CExp(@(self[])[].get._CReturn.exp)
+            free_CExp(@self[][].get._CReturn.exp)
         }
         break
         -> AST_CExpression_t {
-            free_CExp(@(self[])[].get._CExpression.exp)
+            free_CExp(@self[][].get._CExpression.exp)
         }
         break
         -> AST_CIf_t {
-            free_CExp(@(self[])[].get._CIf.condition)
+            free_CExp(@self[][].get._CIf.condition)
         }
-        free_CStatement(@(self[])[].get._CIf.then_fi)
-        free_CStatement(@(self[])[].get._CIf.else_fi)
+        free_CStatement(@self[][].get._CIf.then_fi)
+        free_CStatement(@self[][].get._CIf.else_fi)
         break
         -> AST_CGoto_t {
             break
         }
         -> AST_CLabel_t {
-            free_CStatement(@(self[])[].get._CLabel.jump_to)
+            free_CStatement(@self[][].get._CLabel.jump_to)
         }
         break
         -> AST_CCompound_t {
-            free_CBlock(@(self[])[].get._CCompound.block)
+            free_CBlock(@self[][].get._CCompound.block)
         }
         break
         -> AST_CWhile_t {
-            free_CExp(@(self[])[].get._CWhile.condition)
+            free_CExp(@self[][].get._CWhile.condition)
         }
-        free_CStatement(@(self[])[].get._CWhile.body)
+        free_CStatement(@self[][].get._CWhile.body)
         break
         -> AST_CDoWhile_t {
-            free_CExp(@(self[])[].get._CDoWhile.condition)
+            free_CExp(@self[][].get._CDoWhile.condition)
         }
-        free_CStatement(@(self[])[].get._CDoWhile.body)
+        free_CStatement(@self[][].get._CDoWhile.body)
         break
         -> AST_CFor_t {
-            free_CForInit(@(self[])[].get._CFor.init)
+            free_CForInit(@self[][].get._CFor.init)
         }
-        free_CExp(@(self[])[].get._CFor.condition)
-        free_CExp(@(self[])[].get._CFor.post)
-        free_CStatement(@(self[])[].get._CFor.body)
+        free_CExp(@self[][].get._CFor.condition)
+        free_CExp(@self[][].get._CFor.post)
+        free_CStatement(@self[][].get._CFor.body)
         break
         -> AST_CSwitch_t {
-            free_CExp(@(self[])[].get._CSwitch.lookup)
+            free_CExp(@self[][].get._CSwitch.lookup)
         }
-        free_CStatement(@(self[])[].get._CSwitch.body)
+        free_CStatement(@self[][].get._CSwitch.body)
         loop i: u64 = 0 while i < vec_size(self[][].get._CSwitch.cases) .. ++i {
-            free_CExp(@(self[])[].get._CSwitch.cases[i])
+            free_CExp(@self[][].get._CSwitch.cases[i])
         }
         vec_delete(self[][].get._CSwitch.cases)
         break
         -> AST_CCase_t {
-            free_CExp(@(self[])[].get._CCase.value)
+            free_CExp(@self[][].get._CCase.value)
         }
-        free_CStatement(@(self[])[].get._CCase.jump_to)
+        free_CStatement(@self[][].get._CCase.jump_to)
         break
         -> AST_CDefault_t {
-            free_CStatement(@(self[])[].get._CDefault.jump_to)
+            free_CStatement(@self[][].get._CDefault.jump_to)
         }
         break
         -> AST_CBreak_t {
@@ -749,16 +749,16 @@ pub fn make_CInitExp(init: *unique_ptr_t(CExp)) unique_ptr_t(CForInit) {
 
 pub fn free_CForInit(self: *unique_ptr_t(CForInit)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CForInit_t {
             break
         }
         -> AST_CInitDecl_t {
-            free_CVariableDeclaration(@(self[])[].get._CInitDecl.init)
+            free_CVariableDeclaration(@self[][].get._CInitDecl.init)
         }
         break
         -> AST_CInitExp_t {
-            free_CExp(@(self[])[].get._CInitExp.init)
+            free_CExp(@self[][].get._CInitExp.init)
         }
         break
         otherwise {
@@ -785,13 +785,13 @@ pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) unique_ptr_t(CB
 
 pub fn free_CBlock(self: *unique_ptr_t(CBlock)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CBlock_t {
             break
         }
         -> AST_CB_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CB.block_items) .. ++i {
-                free_CBlockItem(@(self[])[].get._CB.block_items[i])
+                free_CBlockItem(@self[][].get._CB.block_items[i])
             }
         }
         vec_delete(self[][].get._CB.block_items)
@@ -828,16 +828,16 @@ pub fn make_CD(declaration: *unique_ptr_t(CDeclaration)) unique_ptr_t(CBlockItem
 
 pub fn free_CBlockItem(self: *unique_ptr_t(CBlockItem)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CBlockItem_t {
             break
         }
         -> AST_CS_t {
-            free_CStatement(@(self[])[].get._CS.statement)
+            free_CStatement(@self[][].get._CS.statement)
         }
         break
         -> AST_CD_t {
-            free_CDeclaration(@(self[])[].get._CD.declaration)
+            free_CDeclaration(@self[][].get._CD.declaration)
         }
         break
         otherwise {
@@ -891,17 +891,17 @@ pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) u
 
 pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CInitializer_t {
             break
         }
         -> AST_CSingleInit_t {
-            free_CExp(@(self[])[].get._CSingleInit.exp)
+            free_CExp(@self[][].get._CSingleInit.exp)
         }
         break
         -> AST_CCompoundInit_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CCompoundInit.initializers) .. ++i {
-                free_CInitializer(@(self[])[].get._CCompoundInit.initializers[i])
+                free_CInitializer(@self[][].get._CCompoundInit.initializers[i])
             }
         }
         vec_delete(self[][].get._CCompoundInit.initializers)
@@ -910,7 +910,7 @@ pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none {
             THROW_ABORT
         }
     }
-    free_Type(@(self[])[].init_type)
+    free_Type(@self[][].init_type)
     uptr_free(self[])
 }
 
@@ -927,7 +927,7 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: *shared_ptr_t(Type
 
 pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CMemberDeclaration_t {
             break
         }
@@ -935,7 +935,7 @@ pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none {
             THROW_ABORT
         }
     }
-    free_Type(@(self[])[].member_type)
+    free_Type(@self[][].member_type)
     uptr_free(self[])
 }
 
@@ -953,7 +953,7 @@ pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(
 
 pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CStructDeclaration_t {
             break
         }
@@ -962,7 +962,7 @@ pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none {
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].members) .. ++i {
-        free_CMemberDeclaration(@(self[])[].members[i])
+        free_CMemberDeclaration(@self[][].members[i])
     }
     vec_delete(self[][].members)
     uptr_free(self[])
@@ -986,7 +986,7 @@ pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body
 
 pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CFunctionDeclaration_t {
             break
         }
@@ -995,8 +995,8 @@ pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none
         }
     }
     vec_delete(self[][].params)
-    free_CBlock(@(self[])[].body)
-    free_Type(@(self[])[].fun_type)
+    free_CBlock(@self[][].body)
+    free_Type(@self[][].fun_type)
     uptr_free(self[])
 }
 
@@ -1016,7 +1016,7 @@ pub fn make_CVariableDeclaration(name: u64, init: *unique_ptr_t(CInitializer), v
 
 pub fn free_CVariableDeclaration(self: *unique_ptr_t(CVariableDeclaration)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CVariableDeclaration_t {
             break
         }
@@ -1024,8 +1024,8 @@ pub fn free_CVariableDeclaration(self: *unique_ptr_t(CVariableDeclaration)) none
             THROW_ABORT
         }
     }
-    free_CInitializer(@(self[])[].init)
-    free_Type(@(self[])[].var_type)
+    free_CInitializer(@self[][].init)
+    free_Type(@self[][].var_type)
     uptr_free(self[])
 }
 
@@ -1062,20 +1062,20 @@ pub fn make_CStructDecl(struct_decl: *unique_ptr_t(CStructDeclaration)) unique_p
 
 pub fn free_CDeclaration(self: *unique_ptr_t(CDeclaration)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CDeclaration_t {
             break
         }
         -> AST_CFunDecl_t {
-            free_CFunctionDeclaration(@(self[])[].get._CFunDecl.fun_decl)
+            free_CFunctionDeclaration(@self[][].get._CFunDecl.fun_decl)
         }
         break
         -> AST_CVarDecl_t {
-            free_CVariableDeclaration(@(self[])[].get._CVarDecl.var_decl)
+            free_CVariableDeclaration(@self[][].get._CVarDecl.var_decl)
         }
         break
         -> AST_CStructDecl_t {
-            free_CStructDeclaration(@(self[])[].get._CStructDecl.struct_decl)
+            free_CStructDeclaration(@self[][].get._CStructDecl.struct_decl)
         }
         break
         otherwise {
@@ -1096,7 +1096,7 @@ pub fn make_CProgram(declarations: *vector_t(unique_ptr_t(CDeclaration))) unique
 
 pub fn free_CProgram(self: *unique_ptr_t(CProgram)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CProgram_t {
             break
         }
@@ -1105,7 +1105,7 @@ pub fn free_CProgram(self: *unique_ptr_t(CProgram)) none {
         }
     }
     loop i: u64 = 0 while i < vec_size(self[][].declarations) .. ++i {
-        free_CDeclaration(@(self[])[].declarations[i])
+        free_CDeclaration(@self[][].declarations[i])
     }
     vec_delete(self[][].declarations)
     uptr_free(self[])

@@ -62,7 +62,7 @@ pub fn make_CConstUChar(value: u8) shared_ptr_t(CConst) {
 
 pub fn free_CConst(self: *shared_ptr_t(CConst)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CConst_t {
             -> AST_CConstInt_t {
                 -> AST_CConstLong_t {
@@ -98,7 +98,7 @@ pub fn make_CStringLiteral(value: *vector_t(i8)) shared_ptr_t(CStringLiteral) {
 
 pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_CStringLiteral_t {
             break
         }

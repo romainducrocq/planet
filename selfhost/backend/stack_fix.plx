@@ -509,7 +509,7 @@ fn push_fix_instr(ctx: Ctx, instr: unique_ptr_t(AsmInstruction)) none {
 fn swap_fix_instr_back(ctx: Ctx) none {
     swap_instr: unique_ptr_t(AsmInstruction) = uptr_new()
     instr_back_1: *unique_ptr_t(AsmInstruction) = @vec_back(ctx[].p_fix_instrs[])
-    instr_back_2: *unique_ptr_t(AsmInstruction) = @(ctx[].p_fix_instrs[])[vec_size(ctx[].p_fix_instrs[]) - 2]
+    instr_back_2: *unique_ptr_t(AsmInstruction) = @ctx[].p_fix_instrs[][vec_size(ctx[].p_fix_instrs[]) - 2]
     uptr_move(AsmInstruction, instr_back_1[], swap_instr)
     uptr_move(AsmInstruction, instr_back_2[], instr_back_1[])
     uptr_move(AsmInstruction, swap_instr, instr_back_2[])
@@ -521,7 +521,7 @@ fn fix_alloc_stack_bytes(ctx: Ctx, callee_saved_size: i64) none {
     if ctx[].stack_bytes > 0l {
         align_offset_stack_bytes(ctx, 16)
         ctx[].stack_bytes -= callee_saved_bytes
-        (ctx[].p_fix_instrs[])[0] = alloc_stack_bytes(ctx[].stack_bytes)
+        ctx[].p_fix_instrs[][0] = alloc_stack_bytes(ctx[].stack_bytes)
     }
 }
 
@@ -696,7 +696,7 @@ fn zero_extend_as_mov(ctx: Ctx, node: *struc AsmMovZeroExtend) *struc AsmMov {
     instr_back: *unique_ptr_t(AsmInstruction) = @vec_back(ctx[].p_fix_instrs[])
     free_AsmInstruction(instr_back)
     instr_back[] = make_AsmMov(@asm_type, @src, @dst)
-    return @(instr_back[])[].get._AsmMov
+    return @instr_back[][].get._AsmMov
 }
 
 fn zero_extend_to_addr(ctx: Ctx, node: *struc AsmMov) none {

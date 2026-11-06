@@ -31,7 +31,7 @@ fn pop_next(ctx: Ctx) error_t {
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
-    ctx[].next_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
+    ctx[].next_tok = @ctx[].p_toks[][ctx[].pop_idx]
     ctx[].pop_idx++
     FINALLY
     CATCH_EXIT
@@ -42,7 +42,7 @@ fn peek_next(ctx: Ctx) error_t {
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
-    ctx[].peek_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
+    ctx[].peek_tok = @ctx[].p_toks[][ctx[].pop_idx]
     FINALLY
     CATCH_EXIT
 }
@@ -57,7 +57,7 @@ fn peek_next_i(ctx: Ctx, i: u64) error_t {
     if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
-    ctx[].peek_tok_i = @(ctx[].p_toks[])[ctx[].pop_idx + i]
+    ctx[].peek_tok_i = @ctx[].p_toks[][ctx[].pop_idx + i]
     FINALLY
     CATCH_EXIT
 }
