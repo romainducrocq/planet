@@ -83,7 +83,7 @@ m4_define(`stbds_arrput', `{
 m4_define(`stbds_arrpop', `(stbds_header($1)[].length--)')m4_dnl
 m4_define(`stbds_arrlast', `(($1)[stbds_header($1)[].length - 1])')m4_dnl
 m4_define(`stbds_arrfree', `{
-    cast<none>((? ($1) then free(stbds_header($1)) else cast<none>(0)))
+    cast<none>(? ($1) then free(stbds_header($1)) else cast<none>(0))
     ($1) = nil
 }')m4_dnl
 m4_define(`stbds_arrdelswap', `{
