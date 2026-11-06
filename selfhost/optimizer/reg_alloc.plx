@@ -837,12 +837,12 @@ fn alloc_prune_infer_graph(ctx: Ctx, pruned_name: *u64) *struc InferenceRegister
             infer = nil
         }
         THROW_ABORT_IF(not infer)
-        min_spill_metric: f64 = (cast<f64>(infer[].spill_cost)) / infer[].degree
+        min_spill_metric: f64 = cast<f64>(infer[].spill_cost) / infer[].degree
         loop while i < vec_size(ctx[].p_infer_graph[].unpruned_pseudo_names) .. ++i {
             spill_name: u64 = ctx[].p_infer_graph[].unpruned_pseudo_names[i]
             spill_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, spill_name)
             if spill_infer[].degree > 0 {
-                spill_metric: f64 = (cast<f64>(spill_infer[].spill_cost)) / spill_infer[].degree
+                spill_metric: f64 = cast<f64>(spill_infer[].spill_cost) / spill_infer[].degree
                 if spill_metric < min_spill_metric {
                     pruned_idx = i
                     pruned_name[] = spill_name

@@ -2805,11 +2805,11 @@ pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc Fro
     {
         ctx.frontend = frontend
         ctx.is_fixed_point = true
-        ctx.enabled_optims[CONSTANT_FOLDING] = (optim_1_mask & ((cast<u8>(1u)) << 0)) > 0
-        ctx.enabled_optims[COPY_PROPAGATION] = (optim_1_mask & ((cast<u8>(1u)) << 1)) > 0
-        ctx.enabled_optims[UNREACHABLE_CODE_ELIMINATION] = (optim_1_mask & ((cast<u8>(1u)) << 2)) > 0
-        ctx.enabled_optims[DEAD_STORE_ELIMINATION] = (optim_1_mask & ((cast<u8>(1u)) << 3)) > 0
-        ctx.enabled_optims[CONTROL_FLOW_GRAPH] = (optim_1_mask & ~((cast<u8>(1u)) << 0)) > 0
+        ctx.enabled_optims[CONSTANT_FOLDING] = (optim_1_mask & (cast<u8>(1u) << 0)) > 0
+        ctx.enabled_optims[COPY_PROPAGATION] = (optim_1_mask & (cast<u8>(1u) << 1)) > 0
+        ctx.enabled_optims[UNREACHABLE_CODE_ELIMINATION] = (optim_1_mask & (cast<u8>(1u) << 2)) > 0
+        ctx.enabled_optims[DEAD_STORE_ELIMINATION] = (optim_1_mask & (cast<u8>(1u) << 3)) > 0
+        ctx.enabled_optims[CONTROL_FLOW_GRAPH] = (optim_1_mask & ~(cast<u8>(1u) << 0)) > 0
         ctx.cfg = uptr_new()
         ctx.dfa = uptr_new()
         ctx.dfa_o1 = uptr_new()

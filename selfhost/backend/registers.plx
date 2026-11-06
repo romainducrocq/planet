@@ -326,14 +326,14 @@ pub fn register_mask_bit(reg_kind: REGISTER_KIND) u64 {
 }
 
 pub fn register_mask_get(reg_mask: u64, reg_kind: REGISTER_KIND) i32 {
-    return (reg_mask & ((cast<u64>(1ul)) << register_mask_bit(reg_kind))) > 0
+    return (reg_mask & (cast<u64>(1ul) << register_mask_bit(reg_kind))) > 0
 }
 
 pub fn register_mask_set(reg_mask: *u64, reg_kind: REGISTER_KIND, value: i32) none {
     if value {
-        reg_mask[] |= (cast<u64>(1ul)) << register_mask_bit(reg_kind)
+        reg_mask[] |= cast<u64>(1ul) << register_mask_bit(reg_kind)
     }
     else {
-        reg_mask[] &= ~((cast<u64>(1ul)) << register_mask_bit(reg_kind))
+        reg_mask[] &= ~(cast<u64>(1ul) << register_mask_bit(reg_kind))
     }
 }
