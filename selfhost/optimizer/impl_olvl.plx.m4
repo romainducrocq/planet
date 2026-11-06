@@ -423,7 +423,7 @@ fn mask_get(mask: u64, bit: u64) i32 {
     if bit > 63 {
         bit %= 64
     }
-    return (mask & ((cast<u64>(1ul)) << bit)) > 0
+    return (mask & (cast<u64>(1ul) << bit)) > 0
 }
 
 fn mask_set(mask: *u64, bit: u64, value: i32) none {
@@ -431,10 +431,10 @@ fn mask_set(mask: *u64, bit: u64, value: i32) none {
         bit %= 64
     }
     if value {
-        mask[] |= (cast<u64>(1ul)) << bit
+        mask[] |= cast<u64>(1ul) << bit
     }
     else {
-        mask[] &= ~((cast<u64>(1ul)) << bit)
+        mask[] &= ~(cast<u64>(1ul) << bit)
     }
 }
 

@@ -1328,7 +1328,7 @@ fn string_single_init_instr(ctx: Ctx, node: *struc CString, arr_type: *struc Arr
     bytes_copy: u64 = ? arr_type[].size > cast<i64>(vec_size(node[].literal[].value)) then vec_size(node[].literal[].value) else bytes_size
     loop while byte_at < bytes_copy {
         dst_name: u64 = symbol
-        offset: i64 = size + (cast<i64>(byte_at))
+        offset: i64 = size + cast<i64>(byte_at)
 
         src: shared_ptr_t(TacValue) = sptr_new()
         {
@@ -1359,7 +1359,7 @@ fn string_single_init_instr(ctx: Ctx, node: *struc CString, arr_type: *struc Arr
     }
     loop while byte_at < bytes_size {
         dst_name: u64 = symbol
-        offset: i64 = size + (cast<i64>(byte_at))
+        offset: i64 = size + cast<i64>(byte_at)
 
         src: shared_ptr_t(TacValue) = sptr_new()
         {
