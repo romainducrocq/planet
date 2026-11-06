@@ -238,7 +238,7 @@ pub fn string_to_long(ctx: *struc ErrorsContext, str_int: string, info_at: u64, 
     end_ptr: string = nil
     value[] = strtoimax(str_int, @end_ptr, 10)
     if end_ptr == str_int {
-        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(1, MSG_failed_strtoi, str_int))
+        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(MSG_failed_strtoi, str_int))
     }
     FINALLY
     CATCH_EXIT
@@ -249,7 +249,7 @@ pub fn string_to_ulong(ctx: *struc ErrorsContext, str_uint: string, info_at: u64
     end_ptr: string = nil
     value[] = strtoumax(str_uint, @end_ptr, 10)
     if end_ptr == str_uint {
-        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(1, MSG_failed_strtou, str_uint))
+        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(MSG_failed_strtou, str_uint))
     }
     FINALLY
     CATCH_EXIT
@@ -260,7 +260,7 @@ pub fn string_to_dbl(ctx: *struc ErrorsContext, str_dbl: string, info_at: u64, v
     end_ptr: string = nil
     value[] = strtod(str_dbl, @end_ptr)
     if end_ptr == str_dbl {
-        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(1, MSG_failed_strtod, str_dbl))
+        THROW_AT_TOKEN(info_at, GET_UTIL_MSG(MSG_failed_strtod, str_dbl))
     }
     FINALLY
     CATCH_EXIT

@@ -20,7 +20,7 @@ fn expect_next(ctx: Ctx, next_tok: *struc Token, expect_tok: TOKEN_KIND) error_t
     CATCH_ENTER
     if next_tok[].tok_kind ~= expect_tok {
         THROW_AT_TOKEN(next_tok[].info_at,
-            GET_PARSER_MSG(2, MSG_unexpected_next_tok, str_fmt_tok(next_tok), get_tok_kind_fmt(expect_tok)))
+            GET_PARSER_MSG(MSG_unexpected_next_tok, str_fmt_tok(next_tok), get_tok_kind_fmt(expect_tok)))
     }
     FINALLY
     CATCH_EXIT
@@ -29,7 +29,7 @@ fn expect_next(ctx: Ctx, next_tok: *struc Token, expect_tok: TOKEN_KIND) error_t
 fn pop_next(ctx: Ctx) error_t {
     CATCH_ENTER
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
-        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
+        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
     ctx[].next_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
     ctx[].pop_idx++
@@ -40,7 +40,7 @@ fn pop_next(ctx: Ctx) error_t {
 fn peek_next(ctx: Ctx) error_t {
     CATCH_ENTER
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
-        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
+        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
     ctx[].peek_tok = @(ctx[].p_toks[])[ctx[].pop_idx]
     FINALLY
@@ -55,7 +55,7 @@ fn peek_next_i(ctx: Ctx, i: u64) error_t {
         EARLY_EXIT
     }
     if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
-        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(0, MSG_reached_eof))
+        THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
     ctx[].peek_tok_i = @(ctx[].p_toks[])[ctx[].pop_idx + i]
     FINALLY
@@ -149,7 +149,7 @@ fn parse_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     TRY(string_to_long(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 9223372036854775807l {
-        THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_overflow_long_const, strto_value))
+        THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_overflow_long_const, strto_value))
     }
     elif ctx[].next_tok[].tok_kind == TOK_int_const and value <= 2147483647l {
         constant[] = parse_int_const(value)
@@ -169,7 +169,7 @@ fn parse_unsigned_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     TRY(string_to_ulong(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 18446744073709551615ul {
-        THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_overflow_ulong_const, strto_value))
+        THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_overflow_ulong_const, strto_value))
     }
     elif ctx[].next_tok[].tok_kind == TOK_uint_const and value <= 4294967295ul {
         constant[] = parse_uint_const(value)
@@ -198,7 +198,7 @@ fn parse_unop(ctx: Ctx, unop: *struc CUnaryOp) error_t {
             break
         }
         otherwise {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_unop, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_unop, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -306,7 +306,7 @@ fn parse_binop(ctx: Ctx, binop: *struc CBinaryOp) error_t {
             break
         }
         otherwise {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_binop, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -328,7 +328,7 @@ fn parse_datatype_specifier(ctx: Ctx, tag_name: *u64, is_union: *i32) error_t {
         }
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_data_specifier, str_fmt_tok(ctx[].next_tok)))
+                ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_data_specifier, str_fmt_tok(ctx[].next_tok)))
         }
     }
     TRY(peek_next(ctx))
@@ -380,7 +380,7 @@ fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
             break
         }
         -> TOK_key_any {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(0, MSG_incomplete_any))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_incomplete_any))
         }
         -> TOK_key_struc {
             -> TOK_key_union {
@@ -392,7 +392,7 @@ fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
             }
         }
         otherwise {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_specifier, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -426,7 +426,7 @@ fn parse_arr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
         break
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_arr_size_not_int_const, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     TRY(pop_next(ctx))
@@ -544,7 +544,7 @@ fn parse_maybe_type(ctx: Ctx, maybe_type: *shared_ptr_t(Type)) error_t {
         }
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_maybe_type, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_maybe_type, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -843,7 +843,7 @@ fn parse_sizeof_unary_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
         break
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_open_sizeof, str_fmt_tok(ctx[].next_tok)))
+                ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_open_sizeof, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -898,7 +898,7 @@ fn parse_primary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
         break
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_expression, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_expression, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -1214,7 +1214,7 @@ fn parse_exp(ctx: Ctx, min_precedence: i32, exp: *unique_ptr_t(CExp)) error_t {
             }
             break
             otherwise {
-                THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_binop, str_fmt_tok(ctx[].peek_tok)))
+                THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx[].peek_tok)))
             }
         }
     }
@@ -1367,7 +1367,7 @@ fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
             jump Lbreak
         }
         -> TOK_semicolon {
-            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_infinite_loop))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_infinite_loop))
         }
         -> TOK_loop_post {
             TRY(pop_next(ctx))
@@ -1403,7 +1403,7 @@ fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
             -> TOK_key_data {
                 -> TOK_key_extrn {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_loop_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_loop_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
                 }
             }
         }
@@ -1440,7 +1440,7 @@ fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
     if not condition {
         TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_semicolon {
-            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_infinite_loop))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_infinite_loop))
         }
     }
     TRY(parse_compound_statement(ctx, @body))
@@ -1496,7 +1496,7 @@ fn parse_with_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
         break
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_case_value_not_int_const, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     value = make_CConstant(@constant, info_at)
@@ -1634,7 +1634,7 @@ fn parse_block_item(ctx: Ctx, block_item: *unique_ptr_t(CBlockItem)) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
-            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_pub_in_block))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_pub_in_block))
         }
         -> TOK_key_data {
             -> TOK_key_extrn {
@@ -1673,7 +1673,7 @@ fn parse_b_block(ctx: Ctx, block: *unique_ptr_t(CBlock)) error_t {
         TRY(peek_next(ctx))
     }
     if ctx[].peek_tok[].tok_kind == TOK_close_brace {
-        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_empty_block))
+        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_empty_block))
     }
     TRY(parse_block_item(ctx, @block_item))
     vec_move_back(block_items, block_item)
@@ -1714,7 +1714,7 @@ fn parse_block(ctx: Ctx, block: *unique_ptr_t(CBlock)) error_t {
         }
         break
         otherwise {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_block, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_block, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -1741,7 +1741,7 @@ fn parse_compound_init(ctx: Ctx, initializer: *unique_ptr_t(CInitializer)) error
     TRY(expect_next(ctx, ctx[].next_tok, TOK_open_paren))
     TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_close_paren {
-        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_empty_compound_init))
+        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_empty_compound_init))
     }
     TRY(parse_initializer(ctx, initializer))
     vec_move_back(initializers, initializer[])
@@ -1792,7 +1792,7 @@ fn parse_item_decltor(ctx: Ctx, name: *u64, derived_type: *shared_ptr_t(Type)) e
             -> TOK_key_data {
                 -> TOK_key_extrn {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_list_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_list_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
                 }
             }
         }
@@ -1888,7 +1888,7 @@ fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl
         }
         break
         otherwise {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_assign, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_assign, str_fmt_tok(ctx[].next_tok)))
         }
     }
     var_decl[] = make_CVariableDeclaration(name, @initializer, @var_type, storage_class, info_at)
@@ -1948,7 +1948,7 @@ fn parse_type_declaration(ctx: Ctx, struct_decl: *unique_ptr_t(CStructDeclaratio
         }
         break
         otherwise {
-            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_datatype, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_datatype, str_fmt_tok(ctx[].next_tok)))
         }
     }
     struct_decl[] = make_CStructDeclaration(tag_name, is_union, @members, info_at)
@@ -2014,13 +2014,13 @@ fn parse_storage_class(ctx: Ctx, storage_class: *struc CStorageClass) error_t {
         }
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_storage_class, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_type {
-        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_type_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
+        THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_type_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
     }
     FINALLY
     CATCH_EXIT
@@ -2044,7 +2044,7 @@ fn parse_declaration(ctx: Ctx, storage_class: *struc CStorageClass, declaration:
         break
         otherwise {
             THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(1, MSG_expect_declaration, str_fmt_tok(ctx[].peek_tok)))
+                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -2059,7 +2059,7 @@ fn parse_program(ctx: Ctx, c_ast: *unique_ptr_t(CProgram)) error_t {
         storage_class: struc CStorageClass = init_CStatic()
         TRY(peek_next(ctx))
         if ctx[].peek_tok[].tok_kind == TOK_key_data {
-            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(0, MSG_data_at_toplvl))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_data_at_toplvl))
         }
         TRY(parse_declaration(ctx, @storage_class, @declaration))
         vec_move_back(declarations, declaration)

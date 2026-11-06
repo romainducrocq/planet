@@ -209,7 +209,7 @@ fn is_valid_arr(ctx: Ctx, arr_type: *struc Array) error_t {
     CATCH_ENTER
     if not is_type_complete(ctx, arr_type[].elem_type) {
         THROW_AT_TOKEN(
-            ctx[].errors[].info_at_buf, GET_SEMANTIC_MSG(2, MSG_incomplete_arr, str_fmt_arr(arr_type, @type_fmt_1),
+            ctx[].errors[].info_at_buf, GET_SEMANTIC_MSG(MSG_incomplete_arr, str_fmt_arr(arr_type, @type_fmt_1),
                                             str_fmt_type(arr_type[].elem_type, @type_fmt_2)))
     }
     TRY(is_valid_type(ctx, arr_type[].elem_type))
@@ -434,7 +434,7 @@ fn get_joint_ptr_type(ctx: Ctx, node_1: *struc CExp, node_2: *struc CExp, joint_
     }
     else {
         THROW_AT_TOKEN(
-            node_1[].info_at, GET_SEMANTIC_MSG(2, MSG_joint_ptr_mismatch, str_fmt_type(node_1[].exp_type, @type_fmt_1),
+            node_1[].info_at, GET_SEMANTIC_MSG(MSG_joint_ptr_mismatch, str_fmt_type(node_1[].exp_type, @type_fmt_1),
                                   str_fmt_type(node_2[].exp_type, @type_fmt_2)))
     }
     FINALLY
@@ -728,7 +728,7 @@ fn check_var_exp(ctx: Ctx, node: *struc CVar) error_t {
     var_type: *struc Type = map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t
     if var_type[].tag == AST_FunType_t {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_fun_used_as_var, str_fmt_name(node[].name, @name_fmt)))
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_fun_used_as_var, str_fmt_name(node[].name, @name_fmt)))
     }
     sptr_copy(Type, var_type, node[]._base[].exp_type)
     FINALLY
@@ -744,7 +744,7 @@ fn check_cast_exp(ctx: Ctx, node: *struc CCast) error_t {
     TRY(reslv_struct_type(ctx, node[].target_type))
     if node[].target_type[].tag ~= AST_Void_t and ((node[].exp[].exp_type[].tag == AST_Double_t and node[].target_type[].tag == AST_Pointer_t) or (node[].exp[].exp_type[].tag == AST_Pointer_t and node[].target_type[].tag == AST_Double_t) or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type)) {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_illegal_cast, str_fmt_type(node[].exp[].exp_type, @type_fmt_1),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_illegal_cast, str_fmt_type(node[].exp[].exp_type, @type_fmt_1),
                                         str_fmt_type(node[].target_type, @type_fmt_2)))
     }
     TRY(is_valid_type(ctx, node[].target_type))
@@ -776,7 +776,7 @@ fn cast_assign(ctx: Ctx, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)
     }
     else {
         THROW_AT_TOKEN(
-            exp[][].info_at, GET_SEMANTIC_MSG(2, MSG_illegal_cast, str_fmt_type(exp[][].exp_type, @type_fmt_1),
+            exp[][].info_at, GET_SEMANTIC_MSG(MSG_illegal_cast, str_fmt_type(exp[][].exp_type, @type_fmt_1),
                                  str_fmt_type(exp_type[], @type_fmt_2)))
     }
     FINALLY
@@ -799,12 +799,12 @@ fn check_unary_complement_exp(ctx: Ctx, node: *struc CUnary) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
                                                    str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     match node[].exp[].exp_type[].tag {
         -> AST_Double_t {
-            THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+            THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
                                                        str_fmt_type(node[].exp[].exp_type, @type_fmt)))
         }
         -> AST_Char_t {
@@ -829,7 +829,7 @@ fn check_unary_neg_exp(ctx: Ctx, node: *struc CUnary) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
                                                    str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     match node[].exp[].exp_type[].tag {
@@ -855,7 +855,7 @@ fn check_unary_not_exp(ctx: Ctx, node: *struc CUnary) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_scalar(node[].exp[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
                                                    str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     node[]._base[].exp_type = make_Int()
@@ -912,7 +912,7 @@ fn check_binary_add_exp(ctx: Ctx, node: *struc CBinary) error_t {
         EARLY_EXIT
     }
     else {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -954,13 +954,13 @@ fn check_binary_subtract_exp(ctx: Ctx, node: *struc CBinary) error_t {
         }
         else {
             THROW_AT_TOKEN(
-                node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+                node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                             str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                             str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
         }
     }
     else {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -984,7 +984,7 @@ fn check_multiply_divide_exp(ctx: Ctx, node: *struc CBinary) error_t {
     common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -1009,7 +1009,7 @@ fn check_remainder_bitwise_exp(ctx: Ctx, node: *struc CBinary) error_t {
     common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_arithmetic(node[].exp_right[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -1022,7 +1022,7 @@ fn check_remainder_bitwise_exp(ctx: Ctx, node: *struc CBinary) error_t {
     }
     sptr_move(Type, common_type, node[]._base[].exp_type)
     if node[]._base[].exp_type[].tag == AST_Double_t {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[]._base[].exp_type, @type_fmt_1)))
     }
     FINALLY
@@ -1037,7 +1037,7 @@ fn check_binary_bitshift_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_arithmetic(node[].exp_left[].exp_type) or not is_type_int(node[].exp_right[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -1049,7 +1049,7 @@ fn check_binary_bitshift_exp(ctx: Ctx, node: *struc CBinary) error_t {
     }
     sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
     if node[]._base[].exp_type[].tag == AST_Double_t {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_op, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[]._base[].exp_type, @type_fmt_1)))
     }
     FINALLY
@@ -1073,7 +1073,7 @@ fn check_binary_logical_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -1096,7 +1096,7 @@ fn check_binary_equality_exp(ctx: Ctx, node: *struc CBinary) error_t {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
     }
     else {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -1120,7 +1120,7 @@ fn check_binary_relational_exp(ctx: Ctx, node: *struc CBinary) error_t {
     common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_binary_ops, get_binop_fmt(@node[].binop),
                                                    str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
                                                    str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
@@ -1208,11 +1208,11 @@ fn check_assign_exp(ctx: Ctx, node: *struc CAssignment) error_t {
     CATCH_ENTER
     if node[].exp_left {
         if node[].exp_left[].exp_type[].tag == AST_Void_t {
-            THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(0, MSG_assign_to_void))
+            THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_assign_to_void))
         }
         elif not is_exp_lvalue(node[].exp_left) {
             THROW_AT_TOKEN(
-                node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_assign_to_rvalue, get_assign_fmt(nil, @node[].unop)))
+                node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_assign_to_rvalue, get_assign_fmt(nil, @node[].unop)))
         }
         elif not is_same_type(node[].exp_right[].exp_type, node[].exp_left[].exp_type) {
             TRY(cast_assign(ctx, @node[].exp_left[].exp_type, @node[].exp_right))
@@ -1227,7 +1227,7 @@ fn check_assign_exp(ctx: Ctx, node: *struc CAssignment) error_t {
         }
         if not is_exp_lvalue(exp_left) {
             THROW_AT_TOKEN(
-                node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_assign_to_rvalue,
+                node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_assign_to_rvalue,
                                             get_assign_fmt(@node[].exp_right[].get._CBinary.binop, @node[].unop)))
         }
         elif not is_same_type(node[].exp_right[].exp_type, exp_left[].exp_type) {
@@ -1246,7 +1246,7 @@ fn check_conditional_exp(ctx: Ctx, node: *struc CConditional) error_t {
     CATCH_ENTER
     if not is_type_scalar(node[].condition[].exp_type) {
         THROW_AT_TOKEN(node[]._base[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_condition, str_fmt_type(node[].condition[].exp_type, @type_fmt_1)))
+            GET_SEMANTIC_MSG(MSG_invalid_condition, str_fmt_type(node[].condition[].exp_type, @type_fmt_1)))
     }
     elif node[].exp_middle[].exp_type[].tag == AST_Void_t and node[].exp_right[].exp_type[].tag == AST_Void_t {
         sptr_copy(Type, node[].exp_middle[].exp_type, node[]._base[].exp_type)
@@ -1255,7 +1255,7 @@ fn check_conditional_exp(ctx: Ctx, node: *struc CConditional) error_t {
     elif node[].exp_middle[].exp_type[].tag == AST_Structure_t or node[].exp_right[].exp_type[].tag == AST_Structure_t {
         if not is_same_type(node[].exp_middle[].exp_type, node[].exp_right[].exp_type) {
             THROW_AT_TOKEN(node[]._base[].info_at,
-                GET_SEMANTIC_MSG(2, MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
+                GET_SEMANTIC_MSG(MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
                     str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
         }
         sptr_copy(Type, node[].exp_middle[].exp_type, node[]._base[].exp_type)
@@ -1269,7 +1269,7 @@ fn check_conditional_exp(ctx: Ctx, node: *struc CConditional) error_t {
     }
     else {
         THROW_AT_TOKEN(node[]._base[].info_at,
-            GET_SEMANTIC_MSG(2, MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
+            GET_SEMANTIC_MSG(MSG_invalid_ternary_op, str_fmt_type(node[].exp_middle[].exp_type, @type_fmt_1),
                 str_fmt_type(node[].exp_right[].exp_type, @type_fmt_2)))
     }
     if not is_same_type(node[].exp_middle[].exp_type, common_type) {
@@ -1295,12 +1295,12 @@ fn check_call_exp(ctx: Ctx, node: *struc CFunctionCall) error_t {
     fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
     if fun_symbol[].type_t[].tag ~= AST_FunType_t {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_var_used_as_fun, str_fmt_name(node[].name, @name_fmt)))
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_var_used_as_fun, str_fmt_name(node[].name, @name_fmt)))
     }
     elif vec_size(fun_type[].param_types) ~= vec_size(node[].args) {
         strto_fmt_1 = str_to_string(vec_size(node[].args))
         strto_fmt_2 = str_to_string(vec_size(fun_type[].param_types))
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(3, MSG_call_with_wrong_argc,
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_call_with_wrong_argc,
                                                    str_fmt_name(node[].name, @name_fmt), strto_fmt_1, strto_fmt_2))
     }
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
@@ -1321,7 +1321,7 @@ fn check_deref_exp(ctx: Ctx, node: *struc CDereference) error_t {
     CATCH_ENTER
     if node[].exp[].exp_type[].tag ~= AST_Pointer_t {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_deref_not_ptr, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_deref_not_ptr, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     sptr_copy(Type, node[].exp[].exp_type[].get._Pointer.ref_type, node[]._base[].exp_type)
     FINALLY
@@ -1333,7 +1333,7 @@ fn check_addrof_exp(ctx: Ctx, node: *struc CAddrOf) error_t {
     ref_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if not is_exp_lvalue(node[].exp) {
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(0, MSG_addrof_rvalue))
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_addrof_rvalue))
     }
     sptr_copy(Type, node[].exp[].exp_type, ref_type)
     node[]._base[].exp_type = make_Pointer(@ref_type)
@@ -1364,7 +1364,7 @@ fn check_subscript_exp(ctx: Ctx, node: *struc CSubscript) error_t {
     }
     else {
         THROW_AT_TOKEN(node[]._base[].info_at,
-            GET_SEMANTIC_MSG(2, MSG_invalid_subscript, str_fmt_type(node[].primary_exp[].exp_type, @type_fmt_1),
+            GET_SEMANTIC_MSG(MSG_invalid_subscript, str_fmt_type(node[].primary_exp[].exp_type, @type_fmt_1),
                 str_fmt_type(node[].subscript_exp[].exp_type, @type_fmt_2)))
     }
     sptr_move(Type, ref_type, node[]._base[].exp_type)
@@ -1381,7 +1381,7 @@ fn check_sizeof_exp(ctx: Ctx, node: *struc CSizeOf) error_t {
     CATCH_ENTER
     if not is_type_complete(ctx, node[].exp[].exp_type) {
         THROW_AT_TOKEN(node[]._base[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_sizeof_incomplete, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_sizeof_incomplete, str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     node[]._base[].exp_type = make_ULong()
     FINALLY
@@ -1396,7 +1396,7 @@ fn check_sizeoft_exp(ctx: Ctx, node: *struc CSizeOfT) error_t {
     TRY(reslv_struct_type(ctx, node[].target_type))
     if not is_type_complete(ctx, node[].target_type) {
         THROW_AT_TOKEN(node[]._base[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_sizeof_incomplete, str_fmt_type(node[].target_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_sizeof_incomplete, str_fmt_type(node[].target_type, @type_fmt)))
     }
     TRY(is_valid_type(ctx, node[].target_type))
     node[]._base[].exp_type = make_ULong()
@@ -1415,7 +1415,7 @@ fn check_dot_exp(ctx: Ctx, node: *struc CDot) error_t {
     map_it: i64;
     if node[].structure[].exp_type[].tag ~= AST_Structure_t {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_dot_not_struct, str_fmt_name(node[].member, @name_fmt),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_dot_not_struct, str_fmt_name(node[].member, @name_fmt),
                                         str_fmt_type(node[].structure[].exp_type, @type_fmt)))
     }
     struct_type = @node[].structure[].exp_type[].get._Structure
@@ -1423,7 +1423,7 @@ fn check_dot_exp(ctx: Ctx, node: *struc CDot) error_t {
     map_it = map_find(struct_typedef[].members, node[].member)
     if map_it == map_end() {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_member_not_in_struct, str_fmt_struct(struct_type, @type_fmt),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_member_not_in_struct, str_fmt_struct(struct_type, @type_fmt),
                                         str_fmt_name(node[].member, @name_fmt)))
     }
     member_type = pair_second(struct_typedef[].members[map_it])[].member_type
@@ -1445,27 +1445,27 @@ fn check_arrow_exp(ctx: Ctx, node: *struc CArrow) error_t {
     map_it: i64;
     if node[].pointer[].exp_type[].tag ~= AST_Pointer_t {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_arrow_not_struct_ptr, str_fmt_name(node[].member, @name_fmt),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_arrow_not_struct_ptr, str_fmt_name(node[].member, @name_fmt),
                                         str_fmt_type(node[].pointer[].exp_type, @type_fmt)))
     }
     ptr_type = @node[].pointer[].exp_type[].get._Pointer
     if ptr_type[].ref_type[].tag ~= AST_Structure_t {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_arrow_not_struct_ptr, str_fmt_name(node[].member, @name_fmt),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_arrow_not_struct_ptr, str_fmt_name(node[].member, @name_fmt),
                                         str_fmt_type(node[].pointer[].exp_type, @type_fmt)))
     }
     struct_type = @ptr_type[].ref_type[].get._Structure
     map_it = map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     if map_it == map_end() {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_arrow_incomplete, str_fmt_name(node[].member, @name_fmt),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_arrow_incomplete, str_fmt_name(node[].member, @name_fmt),
                                         str_fmt_struct(struct_type, @type_fmt)))
     }
     struct_typedef = pair_second(ctx[].frontend[].struct_typedef_table[map_it])
     map_it = map_find(struct_typedef[].members, node[].member)
     if map_it == map_end() {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_member_not_in_struct, str_fmt_struct(struct_type, @type_fmt),
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_member_not_in_struct, str_fmt_struct(struct_type, @type_fmt),
                                         str_fmt_name(node[].member, @name_fmt)))
     }
     member_type = pair_second(struct_typedef[].members[map_it])[].member_type
@@ -1492,7 +1492,7 @@ fn check_struct_typed_exp(ctx: Ctx, node: *struc CExp) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
     if not is_struct_complete(ctx, @node[].exp_type[].get._Structure) {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_exp_incomplete, str_fmt_type(node[].exp_type, @type_fmt)))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_exp_incomplete, str_fmt_type(node[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1526,13 +1526,13 @@ fn check_ret_statement(ctx: Ctx, node: *struc CReturn) error_t {
     if fun_type[].ret_type[].tag == AST_Void_t {
         if node[].exp {
             THROW_AT_TOKEN(node[].info_at,
-                GET_SEMANTIC_MSG(1, MSG_ret_value_in_void_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt)))
+                GET_SEMANTIC_MSG(MSG_ret_value_in_void_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt)))
         }
         EARLY_EXIT
     }
     elif not node[].exp {
         THROW_AT_TOKEN(
-            node[].info_at, GET_SEMANTIC_MSG(2, MSG_no_ret_value_in_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt),
+            node[].info_at, GET_SEMANTIC_MSG(MSG_no_ret_value_in_fun, str_fmt_name(ctx[].fun_def_name, @name_fmt),
                                 str_fmt_type(fun_type[].ret_type, @type_fmt)))
     }
     elif not is_same_type(node[].exp[].exp_type, fun_type[].ret_type) {
@@ -1550,7 +1550,7 @@ fn check_if_statement(ctx: Ctx, node: *struc CIf) error_t {
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         THROW_AT_TOKEN(node[].condition[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_if, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_invalid_if, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1562,7 +1562,7 @@ fn check_while_statement(ctx: Ctx, node: *struc CWhile) error_t {
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         THROW_AT_TOKEN(node[].condition[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_while, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_invalid_while, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1574,7 +1574,7 @@ fn check_do_while_statement(ctx: Ctx, node: *struc CDoWhile) error_t {
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         THROW_AT_TOKEN(node[].condition[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_do_while, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_invalid_do_while, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1586,7 +1586,7 @@ fn check_for_statement(ctx: Ctx, node: *struc CFor) error_t {
     CATCH_ENTER
     if node[].condition and not is_type_scalar(node[].condition[].exp_type) {
         THROW_AT_TOKEN(node[].condition[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_for, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_invalid_for, str_fmt_type(node[].condition[].exp_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1605,7 +1605,7 @@ fn check_switch_int_cases(ctx: Ctx, node: *struc CSwitch) error_t {
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -1630,7 +1630,7 @@ fn check_switch_long_cases(ctx: Ctx, node: *struc CSwitch) error_t {
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -1655,7 +1655,7 @@ fn check_switch_uint_cases(ctx: Ctx, node: *struc CSwitch) error_t {
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -1680,7 +1680,7 @@ fn check_switch_ulong_cases(ctx: Ctx, node: *struc CSwitch) error_t {
         loop j: u64 = 0 while j < i .. ++j {
             if values[i] == values[j] {
                 strto_fmt = str_to_string(values[i])
-                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(1, MSG_duplicate_case_value, strto_fmt))
+                THROW_AT_TOKEN(node[].cases[i][].info_at, GET_SEMANTIC_MSG(MSG_duplicate_case_value, strto_fmt))
             }
         }
         free_CConst(@esac[].constant)
@@ -1698,7 +1698,7 @@ fn check_switch_statement(ctx: Ctx, node: *struc CSwitch) error_t {
     CATCH_ENTER
     if not is_type_int(node[].lookup[].exp_type) {
         THROW_AT_TOKEN(node[].lookup[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_invalid_switch, str_fmt_type(node[].lookup[].exp_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_invalid_switch, str_fmt_type(node[].lookup[].exp_type, @type_fmt)))
     }
     match node[].lookup[].exp_type[].tag {
         -> AST_Char_t {
@@ -1746,12 +1746,12 @@ fn check_bound_string_init(ctx: Ctx, node: *struc CString, arr_type: *struc Arra
     CATCH_ENTER
     if not is_type_char(arr_type[].elem_type) {
         THROW_AT_TOKEN(
-            node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_string_init_not_char_arr, str_fmt_arr(arr_type, @type_fmt)))
+            node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_string_init_not_char_arr, str_fmt_arr(arr_type, @type_fmt)))
     }
     elif vec_size(node[].literal[].value) > cast<u64>(arr_type[].size) {
         strto_fmt_1 = str_to_string(arr_type[].size)
         strto_fmt_2 = str_to_string(vec_size(node[].literal[].value))
-        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_string_init_overflow, strto_fmt_1, strto_fmt_2))
+        THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_string_init_overflow, strto_fmt_1, strto_fmt_2))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1869,7 +1869,7 @@ fn check_bound_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc A
         strto_fmt_1 = str_to_string(arr_type[].size)
         strto_fmt_2 = str_to_string(vec_size(node[].initializers))
         THROW_AT_TOKEN(get_compound_info_at(node),
-            GET_SEMANTIC_MSG(3, MSG_arr_init_overflow, strto_fmt_1, str_fmt_arr(arr_type, @type_fmt), strto_fmt_2))
+            GET_SEMANTIC_MSG(MSG_arr_init_overflow, strto_fmt_1, str_fmt_arr(arr_type, @type_fmt), strto_fmt_2))
     }
     FINALLY
     str_delete(type_fmt)
@@ -1889,7 +1889,7 @@ fn check_bound_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *s
         strto_fmt_1 = str_to_string(vec_size(node[].initializers))
         strto_fmt_2 = str_to_string(bound)
         THROW_AT_TOKEN(
-            get_compound_info_at(node), GET_SEMANTIC_MSG(3, MSG_struct_init_overflow,
+            get_compound_info_at(node), GET_SEMANTIC_MSG(MSG_struct_init_overflow,
                                             str_fmt_struct(struct_type, @type_fmt), strto_fmt_1, strto_fmt_2))
     }
     FINALLY
@@ -1927,13 +1927,13 @@ fn check_ret_fun_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     TRY(is_valid_type(ctx, fun_type[].ret_type))
     match fun_type[].ret_type[].tag {
         -> AST_Array_t {
-            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_ret_arr, str_fmt_name(node[].name, @name_fmt),
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_ret_arr, str_fmt_name(node[].name, @name_fmt),
                                                str_fmt_type(fun_type[].ret_type, @type_fmt)))
         }
         -> AST_Structure_t {
             if node[].body and not is_struct_complete(ctx, @fun_type[].ret_type[].get._Structure) {
                 THROW_AT_TOKEN(
-                    node[].info_at, GET_SEMANTIC_MSG(2, MSG_ret_incomplete, str_fmt_name(node[].name, @name_fmt),
+                    node[].info_at, GET_SEMANTIC_MSG(MSG_ret_incomplete, str_fmt_name(node[].name, @name_fmt),
                                         str_fmt_type(fun_type[].ret_type, @type_fmt)))
             }
             break
@@ -1968,7 +1968,7 @@ fn check_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
         ctx[].errors[].info_at_buf = node[].info_at
         TRY(reslv_struct_type(ctx, fun_type[].param_types[i]))
         if fun_type[].param_types[i][].tag == AST_Void_t {
-            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_void_param, str_fmt_name(node[].name, @name_fmt_1),
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_void_param, str_fmt_name(node[].name, @name_fmt_1),
                                                str_fmt_name(node[].params[i], @name_fmt_2)))
         }
         TRY(is_valid_type(ctx, fun_type[].param_types[i]))
@@ -1978,7 +1978,7 @@ fn check_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
         if node[].body {
             if fun_type[].param_types[i][].tag == AST_Structure_t and not is_struct_complete(ctx, @fun_type[].param_types[i][].get._Structure) {
                 THROW_AT_TOKEN(node[].info_at,
-                    GET_SEMANTIC_MSG(3, MSG_incomplete_param, str_fmt_name(node[].name, @name_fmt_1),
+                    GET_SEMANTIC_MSG(MSG_incomplete_param, str_fmt_name(node[].name, @name_fmt_1),
                         str_fmt_name(node[].params[i], @name_fmt_2), str_fmt_type(fun_type[].param_types[i], @type_fmt)))
             }
             sptr_copy(Type, fun_type[].param_types[i], param_type)
@@ -2015,17 +2015,17 @@ fn check_fun_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
         if not (fun_symbol[].type_t[].tag == AST_FunType_t and vec_size(fun_type[].param_types) == vec_size(node[].params) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
             THROW_AT_TOKEN(node[].info_at,
-                GET_SEMANTIC_MSG(3, MSG_redecl_fun_conflict, str_fmt_name(node[].name, @name_fmt),
+                GET_SEMANTIC_MSG(MSG_redecl_fun_conflict, str_fmt_name(node[].name, @name_fmt),
                     str_fmt_type(node[].fun_type, @type_fmt_1), str_fmt_type(fun_symbol[].type_t, @type_fmt_2)))
         }
         elif is_def and node[].body {
-            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_redef_fun, str_fmt_name(node[].name, @name_fmt),
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redef_fun, str_fmt_name(node[].name, @name_fmt),
                                                str_fmt_type(node[].fun_type, @type_fmt_1)))
         }
         fun_attrs: *struc FunAttr = @fun_symbol[].attrs[].get._FunAttr
         if not is_glob and fun_attrs[].is_glob {
             THROW_AT_TOKEN(
-                node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_static_conflict, str_fmt_name(node[].name, @name_fmt)))
+                node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_static_conflict, str_fmt_name(node[].name, @name_fmt)))
         }
         is_glob = fun_attrs[].is_glob
         free_Symbol(@fun_symbol)
@@ -2170,7 +2170,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
                     -> AST_CConstDouble_t {
                         -> AST_CConstUChar_t {
                     THROW_AT_TOKEN(node[]._base[].info_at,
-                        GET_SEMANTIC_MSG(2, MSG_static_ptr_init_not_int, str_fmt_type(static_init_type, @type_fmt),
+                        GET_SEMANTIC_MSG(MSG_static_ptr_init_not_int, str_fmt_type(static_init_type, @type_fmt),
                             get_const_fmt(node[].constant)))
                         }
                     }
@@ -2182,7 +2182,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
             value: u64 = get_const_ptr_value(node)
             if value ~= 0ul {
                 strto_fmt = str_to_string(value)
-                THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(2, MSG_static_ptr_init_not_null,
+                THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_static_ptr_init_not_null,
                                                            str_fmt_type(static_init_type, @type_fmt), strto_fmt))
             }
             push_zero_static_init(ctx, 8l)
@@ -2190,7 +2190,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
         }
         otherwise {
             THROW_AT_TOKEN(node[]._base[].info_at,
-                GET_SEMANTIC_MSG(1, MSG_agg_init_with_single, str_fmt_type(static_init_type, @type_fmt)))
+                GET_SEMANTIC_MSG(MSG_agg_init_with_single, str_fmt_type(static_init_type, @type_fmt)))
         }
     }
     FINALLY
@@ -2204,7 +2204,7 @@ fn check_literal_string_init(ctx: Ctx, node: *struc CString, static_ptr_type: *s
     CATCH_ENTER
     if static_ptr_type[].ref_type[].tag ~= AST_Char_t {
         THROW_AT_TOKEN(node[]._base[].info_at,
-            GET_SEMANTIC_MSG(1, MSG_static_ptr_init_string, str_fmt_ptr(static_ptr_type, @type_fmt)))
+            GET_SEMANTIC_MSG(MSG_static_ptr_init_string, str_fmt_ptr(static_ptr_type, @type_fmt)))
     }
     FINALLY
     str_delete(type_fmt)
@@ -2307,7 +2307,7 @@ fn check_single_static_init(ctx: Ctx, node: *struc CSingleInit, static_init_type
         break
         otherwise {
             THROW_AT_TOKEN(node[].exp[].info_at,
-                GET_SEMANTIC_MSG(1, MSG_static_init_not_const, str_fmt_type(static_init_type, @type_fmt)))
+                GET_SEMANTIC_MSG(MSG_static_init_not_const, str_fmt_type(static_init_type, @type_fmt)))
         }
     }
     FINALLY
@@ -2364,7 +2364,7 @@ fn check_static_compound_init(ctx: Ctx, node: *struc CCompoundInit, static_init_
         break
         otherwise {
             THROW_AT_TOKEN(get_compound_info_at(node),
-                GET_SEMANTIC_MSG(1, MSG_scalar_init_with_compound, str_fmt_type(static_init_type, @type_fmt)))
+                GET_SEMANTIC_MSG(MSG_scalar_init_with_compound, str_fmt_type(static_init_type, @type_fmt)))
         }
     }
     FINALLY
@@ -2422,14 +2422,14 @@ fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     ctx[].errors[].info_at_buf = node[].info_at
     TRY(reslv_struct_type(ctx, node[].var_type))
     if node[].var_type[].tag == AST_Void_t {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_void_var_decl, str_fmt_name(node[].name, @name_fmt)))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_void_var_decl, str_fmt_name(node[].name, @name_fmt)))
     }
     TRY(is_valid_type(ctx, node[].var_type))
     is_glob = node[].storage_class.tag ~= AST_CStatic_t
     if node[].init {
         if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
             THROW_AT_TOKEN(
-                node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
+                node[].info_at, GET_SEMANTIC_MSG(MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
                                     str_fmt_type(node[].var_type, @type_fmt_1)))
         }
         TRY(check_initializer(ctx, node[].init, node[].var_type, @init_value))
@@ -2441,7 +2441,7 @@ fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
         else {
             if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
                 THROW_AT_TOKEN(
-                    node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
+                    node[].info_at, GET_SEMANTIC_MSG(MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
                                         str_fmt_type(node[].var_type, @type_fmt_1)))
             }
             init_value = make_Tentative()
@@ -2452,7 +2452,7 @@ fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
         var_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
         if not is_same_type(var_symbol[].type_t, node[].var_type) {
             THROW_AT_TOKEN(node[].info_at,
-                GET_SEMANTIC_MSG(3, MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
+                GET_SEMANTIC_MSG(MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
                     str_fmt_type(node[].var_type, @type_fmt_1), str_fmt_type(var_symbol[].type_t, @type_fmt_2)))
         }
         var_attrs: *struc StaticAttr = @var_symbol[].attrs[].get._StaticAttr
@@ -2461,12 +2461,12 @@ fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
         }
         elif is_glob ~= var_attrs[].is_glob {
             THROW_AT_TOKEN(
-                node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
+                node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
         }
         if var_attrs[].init[].tag == AST_Initial_t {
             if init_value[].tag == AST_Initial_t {
                 THROW_AT_TOKEN(
-                    node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
+                    node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_storage, str_fmt_name(node[].name, @name_fmt)))
             }
             else {
                 sptr_copy(InitialValue, var_attrs[].init, init_value)
@@ -2500,14 +2500,14 @@ fn check_extern_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) erro
     CATCH_ENTER
     map_it: i64;
     if node[].init {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_redef_extern_var, str_fmt_name(node[].name, @name_fmt)))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redef_extern_var, str_fmt_name(node[].name, @name_fmt)))
     }
     map_it = map_find(ctx[].frontend[].symbol_table, node[].name)
     if map_it ~= map_end() {
         var_type: *struc Type = pair_second(ctx[].frontend[].symbol_table[map_it])[].type_t
         if not is_same_type(var_type, node[].var_type) {
             THROW_AT_TOKEN(
-                node[].info_at, GET_SEMANTIC_MSG(3, MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
+                node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_conflict, str_fmt_name(node[].name, @name_fmt),
                                     str_fmt_type(node[].var_type, @type_fmt_1), str_fmt_type(var_type, @type_fmt_2)))
         }
         EARLY_EXIT
@@ -2563,7 +2563,7 @@ fn check_auto_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_
     local_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_incomplete_var_decl, str_fmt_name(node[].name, @name_fmt),
                                            str_fmt_type(node[].var_type, @type_fmt)))
     }
     sptr_copy(Type, node[].var_type, local_var_type)
@@ -2586,7 +2586,7 @@ fn check_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     ctx[].errors[].info_at_buf = node[].info_at
     TRY(reslv_struct_type(ctx, node[].var_type))
     if node[].var_type[].tag == AST_Void_t {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_void_var_decl, str_fmt_name(node[].name, @name_fmt)))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_void_var_decl, str_fmt_name(node[].name, @name_fmt)))
     }
     TRY(is_valid_type(ctx, node[].var_type))
     match node[].storage_class.tag {
@@ -2620,7 +2620,7 @@ fn check_struct_members_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t 
         loop j: u64 = i + 1 while j < vec_size(node[].members) .. ++j {
             if node[].members[i][].member_name == node[].members[j][].member_name {
                 THROW_AT_TOKEN(
-                    node[].members[i][].info_at, GET_SEMANTIC_MSG(2, MSG_duplicate_member_decl,
+                    node[].members[i][].info_at, GET_SEMANTIC_MSG(MSG_duplicate_member_decl,
                                                      str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt),
                                                      str_fmt_name(node[].members[i][].member_name, @name_fmt)))
             }
@@ -2629,7 +2629,7 @@ fn check_struct_members_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t 
         ctx[].errors[].info_at_buf = node[].members[i][].info_at
         TRY(reslv_struct_type(ctx, node[].members[i][].member_type))
         if not is_type_complete(ctx, node[].members[i][].member_type) {
-            THROW_AT_TOKEN(node[].members[i][].info_at, GET_SEMANTIC_MSG(3, MSG_incomplete_member_decl,
+            THROW_AT_TOKEN(node[].members[i][].info_at, GET_SEMANTIC_MSG(MSG_incomplete_member_decl,
                                                             str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt),
                                                             str_fmt_name(node[].members[i][].member_name, @name_fmt),
                                                             str_fmt_type(node[].members[i][].member_type, @type_fmt)))
@@ -2654,7 +2654,7 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     alignment: i32;
     size: i64;
     if map_find(ctx[].frontend[].struct_typedef_table, node[].tag_name) ~= map_end() {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_struct_in_scope,
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_struct_in_scope,
                                            str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt)))
     }
     alignment = 0
@@ -2717,7 +2717,7 @@ fn annotate_goto_label(ctx: Ctx, node: *struc CLabel) error_t {
     CATCH_ENTER
     if set_find(ctx[].label_set, node[].target) ~= set_end() {
         THROW_AT_TOKEN(
-            node[].info_at, GET_SEMANTIC_MSG(1, MSG_redef_label_in_scope, str_fmt_name(node[].target, @name_fmt)))
+            node[].info_at, GET_SEMANTIC_MSG(MSG_redef_label_in_scope, str_fmt_name(node[].target, @name_fmt)))
     }
     set_insert(ctx[].label_set, node[].target)
     FINALLY
@@ -2752,7 +2752,7 @@ fn annotate_switch_lookup(ctx: Ctx, node: *struc CSwitch) none {
 fn annotate_case_jump(ctx: Ctx, node: *struc CCase) error_t {
     CATCH_ENTER
     if not ctx[].p_switch_statement {
-        THROW_AT_TOKEN(node[].value[].info_at, GET_SEMANTIC_MSG(0, MSG_case_out_of_switch))
+        THROW_AT_TOKEN(node[].value[].info_at, GET_SEMANTIC_MSG(MSG_case_out_of_switch))
     }
     node[].target = repr_case_identifier(ctx[].identifiers, ctx[].p_switch_statement[].target, false, vec_size(ctx[].p_switch_statement[].cases))
     FINALLY
@@ -2762,10 +2762,10 @@ fn annotate_case_jump(ctx: Ctx, node: *struc CCase) error_t {
 fn annotate_default_jump(ctx: Ctx, node: *struc CDefault) error_t {
     CATCH_ENTER
     if not ctx[].p_switch_statement {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_default_out_of_switch))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_default_out_of_switch))
     }
     elif ctx[].p_switch_statement[].is_default {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_multiple_default))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_multiple_default))
     }
     node[].target = ctx[].p_switch_statement[].target
     ctx[].p_switch_statement[].is_default = true
@@ -2776,7 +2776,7 @@ fn annotate_default_jump(ctx: Ctx, node: *struc CDefault) error_t {
 fn annotate_break_jump(ctx: Ctx, node: *struc CBreak) error_t {
     CATCH_ENTER
     if vec_empty(ctx[].break_loop_labels) {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_break_out_of_loop))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_break_out_of_loop))
     }
     node[].target = vec_back(ctx[].break_loop_labels)
     FINALLY
@@ -2786,7 +2786,7 @@ fn annotate_break_jump(ctx: Ctx, node: *struc CBreak) error_t {
 fn annotate_continue_jump(ctx: Ctx, node: *struc CContinue) error_t {
     CATCH_ENTER
     if vec_empty(ctx[].continue_loop_labels) {
-        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(0, MSG_continue_out_of_loop))
+        THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_continue_out_of_loop))
     }
     node[].target = vec_back(ctx[].continue_loop_labels)
     FINALLY
@@ -2832,7 +2832,7 @@ fn reslv_label(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     loop i: u64 = 0 while i < map_size(ctx[].goto_map) .. ++i {
         if set_find(ctx[].label_set, pair_first(ctx[].goto_map[i])) == set_end() {
             THROW_AT_TOKEN(map_get(ctx[].errors[].info_at_map, pair_second(ctx[].goto_map[i])),
-                GET_SEMANTIC_MSG(2, MSG_undef_goto_target, str_fmt_name(pair_first(ctx[].goto_map[i]), @name_fmt_1),
+                GET_SEMANTIC_MSG(MSG_undef_goto_target, str_fmt_name(pair_first(ctx[].goto_map[i]), @name_fmt_1),
                     str_fmt_name(node[].name, @name_fmt_2)))
         }
     }
@@ -2874,7 +2874,7 @@ fn reslv_struct(ctx: Ctx, struct_type: *struc Structure) error_t {
             structure: *struc Structure = @pair_second(ctx[].scoped_struct_maps[i][map_it])
             if structure[].is_union ~= struct_type[].is_union {
                 THROW_AT_TOKEN(ctx[].errors[].info_at_buf,
-                    GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict, str_fmt_struct(struct_type, @type_fmt),
+                    GET_SEMANTIC_MSG(MSG_redecl_struct_conflict, str_fmt_struct(struct_type, @type_fmt),
                         str_fmt_struct_name(struct_type[].tag_name, not struct_type[].is_union, @struct_fmt)))
             }
             struct_type[].tag_name = structure[].tag_name
@@ -2882,7 +2882,7 @@ fn reslv_struct(ctx: Ctx, struct_type: *struc Structure) error_t {
         }
     }
     THROW_AT_TOKEN(ctx[].errors[].info_at_buf,
-        GET_SEMANTIC_MSG(1, MSG_undef_struct_in_scope, str_fmt_struct(struct_type, @type_fmt)))
+        GET_SEMANTIC_MSG(MSG_undef_struct_in_scope, str_fmt_struct(struct_type, @type_fmt)))
     FINALLY
     str_delete(struct_fmt)
     str_delete(type_fmt)
@@ -2937,7 +2937,7 @@ fn reslv_var_exp(ctx: Ctx, node: *struc CVar) error_t {
         }
     }
     THROW_AT_TOKEN(
-        node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_undecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
+        node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_undecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
     label Lelse
     TRY(check_var_exp(ctx, node))
     FINALLY
@@ -3002,7 +3002,7 @@ fn reslv_call_exp(ctx: Ctx, node: *struc CFunctionCall) error_t {
         }
     }
     THROW_AT_TOKEN(
-        node[]._base[].info_at, GET_SEMANTIC_MSG(1, MSG_undecl_fun_in_scope, str_fmt_name(node[].name, @name_fmt)))
+        node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_undecl_fun_in_scope, str_fmt_name(node[].name, @name_fmt)))
     label Lelse
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
         TRY(reslv_typed_exp(ctx, @node[].args[i]))
@@ -3161,7 +3161,7 @@ fn reslv_for_init_decl(ctx: Ctx, node: *struc CInitDecl) error_t {
     CATCH_ENTER
     if node[].init[].storage_class.tag ~= AST_CStorageClass_t {
         THROW_AT_TOKEN(node[].init[].info_at,
-            GET_SEMANTIC_MSG(2, MSG_for_init_decl_not_auto, str_fmt_name(node[].init[].name, @name_fmt),
+            GET_SEMANTIC_MSG(MSG_for_init_decl_not_auto, str_fmt_name(node[].init[].name, @name_fmt),
                 get_storage_class_fmt(@node[].init[].storage_class)))
     }
     TRY(reslv_block_var_decl(ctx, node[].init))
@@ -3513,7 +3513,7 @@ fn reslv_compound_init(ctx: Ctx, node: *struc CCompoundInit, init_type: *shared_
         break
         otherwise {
             THROW_AT_TOKEN(get_compound_info_at(node),
-                GET_SEMANTIC_MSG(1, MSG_scalar_init_with_compound, str_fmt_type(init_type[], @type_fmt)))
+                GET_SEMANTIC_MSG(MSG_scalar_init_with_compound, str_fmt_type(init_type[], @type_fmt)))
         }
     }
     FINALLY
@@ -3546,7 +3546,7 @@ fn reslv_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
         if map_find(vec_back(ctx[].scoped_identifier_maps), param) ~= map_end() {
-            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_in_scope, str_fmt_name(param, @name_fmt)))
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_in_scope, str_fmt_name(param, @name_fmt)))
         }
         param = rslv_var_identifier(ctx[].identifiers, param)
         map_add(vec_back(ctx[].scoped_identifier_maps), node[].params[i], param)
@@ -3563,17 +3563,17 @@ fn reslv_fun_declaration(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     CATCH_ENTER
     if not is_file_scope(ctx) {
         if node[].body {
-            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(1, MSG_def_nested_fun, str_fmt_name(node[].name, @name_fmt)))
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_def_nested_fun, str_fmt_name(node[].name, @name_fmt)))
         }
         elif node[].storage_class.tag == AST_CStatic_t {
             THROW_AT_TOKEN(
-                node[].info_at, GET_SEMANTIC_MSG(1, MSG_decl_nested_static_fun, str_fmt_name(node[].name, @name_fmt)))
+                node[].info_at, GET_SEMANTIC_MSG(MSG_decl_nested_static_fun, str_fmt_name(node[].name, @name_fmt)))
         }
     }
     if map_find(ctx[].extern_scope_map, node[].name) == map_end() {
         if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() {
             THROW_AT_TOKEN(
-                node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_fun_in_scope, str_fmt_name(node[].name, @name_fmt)))
+                node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_fun_in_scope, str_fmt_name(node[].name, @name_fmt)))
         }
         map_add(ctx[].extern_scope_map, node[].name, vec_size(ctx[].scoped_identifier_maps))
     }
@@ -3614,7 +3614,7 @@ fn reslv_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     CATCH_ENTER
     if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() and not (map_find(ctx[].extern_scope_map, node[].name) ~= map_end() and node[].storage_class.tag == AST_CExtern_t) {
         THROW_AT_TOKEN(
-            node[].info_at, GET_SEMANTIC_MSG(1, MSG_redecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
+            node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
     }
     elif node[].storage_class.tag == AST_CExtern_t {
         TRY(reslv_file_var_decl(ctx, node))
@@ -3650,13 +3650,13 @@ fn reslv_struct_declaration(ctx: Ctx, node: *struc CStructDeclaration) error_t {
         node[].tag_name = pair_second(vec_back(ctx[].scoped_struct_maps)[map_it]).tag_name
         if node[].is_union {
             if set_find(ctx[].union_def_set, node[].tag_name) == set_end() {
-                THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict,
+                THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_struct_conflict,
                                                    str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt_1),
                                                    str_fmt_struct_name(node[].tag_name, not node[].is_union, @struct_fmt_2)))
             }
         }
         elif set_find(ctx[].struct_def_set, node[].tag_name) == set_end() {
-            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(2, MSG_redecl_struct_conflict,
+            THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_struct_conflict,
                                                str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt_1),
                                                str_fmt_struct_name(node[].tag_name, not node[].is_union, @struct_fmt_2)))
         }

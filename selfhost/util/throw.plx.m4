@@ -27,8 +27,8 @@ pub fn raise_init_error(ctx: *struc ErrorsContext) none;
 pub fn raise_base_error(ctx: *struc ErrorsContext) none;
 pub fn raise_error_at_token(ctx: *struc ErrorsContext, info_at: u64) none;
 m4_define(`ERROR_MSG_BUF', `ctx[].errors[].msg')m4_dnl
-m4_define(`THROW_INIT', `THROW_ERROR(1, raise_init_error(ctx[].errors), $@)')m4_dnl
-m4_define(`THROW_BASE', `THROW_ERROR(1, raise_base_error(ctx[].errors), $@)')m4_dnl
-m4_define(`THROW_AT_TOKEN', `THROW_ERROR(1, raise_error_at_token(ctx[].errors, $1), m4_shift($@))')m4_dnl
+m4_define(`THROW_INIT', `THROW_ERROR(1, raise_init_error(ctx[].errors), $1)')m4_dnl
+m4_define(`THROW_BASE', `THROW_ERROR(1, raise_base_error(ctx[].errors), $1)')m4_dnl
+m4_define(`THROW_AT_TOKEN', `THROW_ERROR(1, raise_error_at_token(ctx[].errors, $1), $2)')m4_dnl
 
 ')m4_dnl

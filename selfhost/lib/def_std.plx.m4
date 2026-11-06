@@ -4,9 +4,6 @@ m4_define(`_LIB_C_STD_M4', `')m4_dnl
 m4_include(`../3rdparty/sds.plx.m4')m4_dnl
 m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
-# TODO
-extrn fn snprintf(s: string, n: u64, format: string, arg1: string, arg2: string, arg3: string, arg4: string) i32;
-
 m4_define(`error_t', `i32')m4_dnl
 m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
 m4_define(`CATCH_ENTER', `_errval: error_t = 0')m4_dnl
@@ -18,9 +15,9 @@ m4_define(`TRY', `{
     if _errval ~= 0 { EARLY_EXIT }
 }')m4_dnl
 m4_define(`THROW_PANIC', `PANIC_FUNC($@)')m4_dnl
-m4_define(`SET_ERROR_MSG', `snprintf(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $@)')m4_dnl
+m4_define(`SET_ERROR_MSG', `snprint(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $1)')m4_dnl
 m4_define(`THROW_ERROR', `{
-    ? SET_ERROR_MSG(m4_shift(m4_shift($@))) > 0 then cast<none>($2) else THROW_ABORT
+    ? SET_ERROR_MSG($3) > 0 then cast<none>($2) else THROW_ABORT
     _errval = ($1)
     EARLY_EXIT
 }')m4_dnl

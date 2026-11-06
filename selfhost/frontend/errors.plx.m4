@@ -44,22 +44,22 @@ m4_define(`str_fmt_ptr', `str_get_fmt(ptr, $1, $2)')m4_dnl
 m4_define(`str_fmt_arr', `str_get_fmt(arr, $1, $2)')m4_dnl
 m4_define(`str_fmt_struct', `str_get_fmt(struct, $1, $2)')m4_dnl
 m4_define(`str_fmt_type', `str_get_fmt(type, $1, $2)')m4_dnl
-pub fn get_fatal_msg(msg: MESSAGE_FATAL) string;
-pub fn get_arg_msg(msg: MESSAGE_ARG) string;
-pub fn get_util_msg(msg: MESSAGE_UTIL) string;
-pub fn get_lexer_msg(msg: MESSAGE_LEXER) string;
-pub fn get_parser_msg(msg: MESSAGE_PARSER) string;
-pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC) string;
-m4_define(`GET_MESSAGE', `get_$1_msg($2), "$2"')m4_dnl
-m4_define(`GET_MESSAGE_0', `GET_MESSAGE($1, $2), "", "", ""')m4_dnl
-m4_define(`GET_MESSAGE_1', `GET_MESSAGE($1, $2), "", "", $3')m4_dnl
-m4_define(`GET_MESSAGE_2', `GET_MESSAGE($1, $2), "", $3, $4')m4_dnl
-m4_define(`GET_MESSAGE_3', `GET_MESSAGE($1, $2), $3, $4, $5')m4_dnl
-m4_define(`GET_FATAL_MSG', `GET_MESSAGE_$1(fatal, m4_shift($@))')m4_dnl
-m4_define(`GET_ARG_MSG', `GET_MESSAGE_$1(arg, m4_shift($@))')m4_dnl
-m4_define(`GET_UTIL_MSG', `GET_MESSAGE_$1(util, m4_shift($@))')m4_dnl
-m4_define(`GET_LEXER_MSG', `GET_MESSAGE_$1(lexer, m4_shift($@))')m4_dnl
-m4_define(`GET_PARSER_MSG', `GET_MESSAGE_$1(parser, m4_shift($@))')m4_dnl
-m4_define(`GET_SEMANTIC_MSG', `GET_MESSAGE_$1(semantic, m4_shift($@))')m4_dnl
+pub fn get_fatal_msg(msg: MESSAGE_FATAL, arg1: string, arg2: string, arg3: string) string;
+pub fn get_arg_msg(msg: MESSAGE_ARG, arg1: string, arg2: string, arg3: string) string;
+pub fn get_util_msg(msg: MESSAGE_UTIL, arg1: string, arg2: string, arg3: string) string;
+pub fn get_lexer_msg(msg: MESSAGE_LEXER, arg1: string, arg2: string, arg3: string) string;
+pub fn get_parser_msg(msg: MESSAGE_PARSER, arg1: string, arg2: string, arg3: string) string;
+pub fn get_semantic_msg(msg: MESSAGE_SEMANTIC, arg1: string, arg2: string, arg3: string) string;
+m4_define(`GET_MESSAGE', `get_$1_msg(m4_shift($@))')m4_dnl
+m4_define(`GET_MESSAGE_1', `GET_MESSAGE($1, $2, "", "", "")')m4_dnl
+m4_define(`GET_MESSAGE_2', `GET_MESSAGE($1, $2, $3, "", "")')m4_dnl
+m4_define(`GET_MESSAGE_3', `GET_MESSAGE($1, $2, $3, $4, "")')m4_dnl
+m4_define(`GET_MESSAGE_4', `GET_MESSAGE($1, $2, $3, $4, $5)')m4_dnl
+m4_define(`GET_FATAL_MSG', `GET_MESSAGE_$#(fatal, $@)')m4_dnl
+m4_define(`GET_ARG_MSG', `GET_MESSAGE_$#(arg, $@)')m4_dnl
+m4_define(`GET_UTIL_MSG', `GET_MESSAGE_$#(util, $@)')m4_dnl
+m4_define(`GET_LEXER_MSG', `GET_MESSAGE_$#(lexer, $@)')m4_dnl
+m4_define(`GET_PARSER_MSG', `GET_MESSAGE_$#(parser, $@)')m4_dnl
+m4_define(`GET_SEMANTIC_MSG', `GET_MESSAGE_$#(semantic, $@)')m4_dnl
 
 ')m4_dnl
