@@ -1289,7 +1289,7 @@ fn get_coalescable_infer_regs(ctx: Ctx, src_infer: **struc InferenceRegister, ds
                 set_p_infer_graph(ctx, is_dbl)
                 src_infer[] = @ctx[].hard_regs[src_idx]
                 dst_infer[] = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, dst_name)
-                return not register_mask_get((dst_infer[])[].linked_hard_mask, (src_infer[])[].reg_kind)
+                return not register_mask_get(dst_infer[][].linked_hard_mask, src_infer[][].reg_kind)
             }
         }
         elif dst_idx < REGISTER_MASK_SIZE {
@@ -1299,7 +1299,7 @@ fn get_coalescable_infer_regs(ctx: Ctx, src_infer: **struc InferenceRegister, ds
                 set_p_infer_graph(ctx, is_dbl)
                 src_infer[] = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, src_name)
                 dst_infer[] = @ctx[].hard_regs[dst_idx]
-                return not register_mask_get((src_infer[])[].linked_hard_mask, (dst_infer[])[].reg_kind)
+                return not register_mask_get(src_infer[][].linked_hard_mask, dst_infer[][].reg_kind)
             }
         }
         else {
@@ -1312,7 +1312,7 @@ fn get_coalescable_infer_regs(ctx: Ctx, src_infer: **struc InferenceRegister, ds
                 set_p_infer_graph(ctx, is_dbl)
                 src_infer[] = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, src_name)
                 dst_infer[] = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, dst_name)
-                return not find_identifier((dst_infer[])[].linked_pseudo_names, src_name)
+                return not find_identifier(dst_infer[][].linked_pseudo_names, src_name)
             }
         }
     }

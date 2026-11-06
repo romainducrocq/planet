@@ -758,10 +758,10 @@ fn check_cast_exp(ctx: Ctx, node: *struc CCast) error_t {
 fn cast_exp(ctx: Ctx, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)) error_t {
     exp_type_cp: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
-    info_at: u64 = (exp[])[].info_at
+    info_at: u64 = exp[][].info_at
     sptr_copy(Type, exp_type[], exp_type_cp)
     exp[] = make_CCast(exp, @exp_type_cp, info_at)
-    TRY(check_cast_exp(ctx, @(exp[])[].get._CCast))
+    TRY(check_cast_exp(ctx, @exp[][].get._CCast))
     FINALLY
     free_Type(@exp_type_cp)
     CATCH_EXIT
@@ -771,7 +771,7 @@ fn cast_assign(ctx: Ctx, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
-    if (is_type_arithmetic((exp[])[].exp_type) and is_type_arithmetic(exp_type[])) or ((exp[])[].tag == AST_CConstant_t and (exp_type[])[].tag == AST_Pointer_t and is_const_null_ptr(@(exp[])[].get._CConstant)) or ((exp_type[])[].tag == AST_Pointer_t and (exp_type[])[].get._Pointer.ref_type[].tag == AST_Void_t and (exp[])[].exp_type[].tag == AST_Pointer_t) or ((exp[])[].exp_type[].tag == AST_Pointer_t and (exp[])[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and (exp_type[])[].tag == AST_Pointer_t) {
+    if (is_type_arithmetic(exp[][].exp_type) and is_type_arithmetic(exp_type[])) or (exp[][].tag == AST_CConstant_t and exp_type[][].tag == AST_Pointer_t and is_const_null_ptr(@exp[][].get._CConstant)) or (exp_type[][].tag == AST_Pointer_t and exp_type[][].get._Pointer.ref_type[].tag == AST_Void_t and exp[][].exp_type[].tag == AST_Pointer_t) or (exp[][].exp_type[].tag == AST_Pointer_t and exp[][].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and exp_type[][].tag == AST_Pointer_t) {
         TRY(cast_exp(ctx, exp_type, exp))
     }
     else {
@@ -1479,13 +1479,13 @@ fn check_arrow_exp(ctx: Ctx, node: *struc CArrow) error_t {
 fn check_arr_typed_exp(addrof: *unique_ptr_t(CExp)) none {
     {
         ref_type: shared_ptr_t(Type) = sptr_new()
-        sptr_copy(Type, (addrof[])[].exp_type[].get._Array.elem_type, ref_type)
-        free_Type(@(addrof[])[].exp_type)
-        (addrof[])[].exp_type = make_Pointer(@ref_type)
+        sptr_copy(Type, addrof[][].exp_type[].get._Array.elem_type, ref_type)
+        free_Type(@addrof[][].exp_type)
+        addrof[][].exp_type = make_Pointer(@ref_type)
     }
-    info_at: u64 = (addrof[])[].info_at
+    info_at: u64 = addrof[][].info_at
     addrof[] = make_CAddrOf(addrof, info_at)
-    sptr_copy(Type, (addrof[])[].get._CAddrOf.exp[].exp_type, (addrof[])[].exp_type)
+    sptr_copy(Type, addrof[][].get._CAddrOf.exp[].exp_type, addrof[][].exp_type)
 }
 
 fn check_struct_typed_exp(ctx: Ctx, node: *struc CExp) error_t {
@@ -1501,7 +1501,7 @@ fn check_struct_typed_exp(ctx: Ctx, node: *struc CExp) error_t {
 
 fn check_typed_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
-    match (exp[])[].exp_type[].tag {
+    match exp[][].exp_type[].tag {
         -> AST_Array_t {
             check_arr_typed_exp(exp)
         }
@@ -3464,7 +3464,7 @@ fn reslv_initializer(ctx: Ctx, node: *struc CInitializer, init_type: *shared_ptr
 
 fn reslv_single_init(ctx: Ctx, node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
-    if node[].exp[].tag == AST_CString_t and (init_type[])[].tag == AST_Array_t {
+    if node[].exp[].tag == AST_CString_t and init_type[][].tag == AST_Array_t {
         TRY(check_bound_string_init(ctx, @node[].exp[].get._CString, @init_type[][].get._Array))
         check_string_init(node, init_type)
     }
@@ -3502,7 +3502,7 @@ fn reslv_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc S
 fn reslv_compound_init(ctx: Ctx, node: *struc CCompoundInit, init_type: *shared_ptr_t(Type)) error_t {
     type_fmt: string_t = str_new(nil)
     CATCH_ENTER
-    match (init_type[])[].tag {
+    match init_type[][].tag {
         -> AST_Array_t {
             TRY(reslv_arr_init(ctx, node, @init_type[][].get._Array, init_type))
         }

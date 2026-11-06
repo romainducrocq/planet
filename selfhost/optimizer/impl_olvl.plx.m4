@@ -89,7 +89,7 @@ fn free_DataFlowAnalysisO1(self: *unique_ptr_t(DataFlowAnalysisO1)) none {
     uptr_delete(self[])
     vec_delete(self[][].data_idx_map)
     loop i: u64 = 0 while i < vec_size(self[][].bak_instrs) .. ++i {
-        free_TacInstruction(@(self[])[].bak_instrs[i])
+        free_TacInstruction(@self[][].bak_instrs[i])
     }
     vec_delete(self[][].bak_instrs)
     uptr_free(self[])
@@ -175,14 +175,14 @@ fn cfg_add_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
 fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64, is_reachable: i32) none {
     if is_reachable {
         loop i: u64 = vec_size(succ_ids[]) while i-- > 0 {
-            if (succ_ids[])[i] == succ_id {
+            if succ_ids[][i] == succ_id {
                 vec_remove_swap(succ_ids[], i)
                 break
             }
         }
     }
     loop i: u64 = vec_size(pred_ids[]) while i-- > 0 {
-        if (pred_ids[])[i] == pred_id {
+        if pred_ids[][i] == pred_id {
             vec_remove_swap(pred_ids[], i)
             break
         }

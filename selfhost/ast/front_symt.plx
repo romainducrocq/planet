@@ -109,7 +109,7 @@ pub fn make_Structure(tag_name: u64, is_union: i32) shared_ptr_t(Type) {
 
 pub fn free_Type(self: *shared_ptr_t(Type)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_Type_t {
             -> AST_Char_t {
                 -> AST_SChar_t {
@@ -133,18 +133,18 @@ pub fn free_Type(self: *shared_ptr_t(Type)) none {
         }
         -> AST_FunType_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._FunType.param_types) .. ++i {
-                free_Type(@(self[])[].get._FunType.param_types[i])
+                free_Type(@self[][].get._FunType.param_types[i])
             }
         }
         vec_delete(self[][].get._FunType.param_types)
-        free_Type(@(self[])[].get._FunType.ret_type)
+        free_Type(@self[][].get._FunType.ret_type)
         break
         -> AST_Pointer_t {
-            free_Type(@(self[])[].get._Pointer.ref_type)
+            free_Type(@self[][].get._Pointer.ref_type)
         }
         break
         -> AST_Array_t {
-            free_Type(@(self[])[].get._Array.elem_type)
+            free_Type(@self[][].get._Array.elem_type)
         }
         break
         -> AST_Structure_t {
@@ -239,7 +239,7 @@ pub fn make_PointerInit(name: u64) shared_ptr_t(StaticInit) {
 
 pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_StaticInit_t {
             -> AST_IntInit_t {
                 -> AST_LongInit_t {
@@ -262,7 +262,7 @@ pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none {
             break
         }
         -> AST_StringInit_t {
-            free_CStringLiteral(@(self[])[].get._StringInit.literal)
+            free_CStringLiteral(@self[][].get._StringInit.literal)
         }
         break
         -> AST_PointerInit_t {
@@ -304,7 +304,7 @@ pub fn make_NoInitializer(none) shared_ptr_t(InitialValue) {
 
 pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none {
     sptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_InitialValue_t {
             -> AST_Tentative_t {
                 break
@@ -312,7 +312,7 @@ pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none {
         }
         -> AST_Initial_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._Initial.static_inits) .. ++i {
-                free_StaticInit(@(self[])[].get._Initial.static_inits[i])
+                free_StaticInit(@self[][].get._Initial.static_inits[i])
             }
         }
         vec_delete(self[][].get._Initial.static_inits)
@@ -367,18 +367,18 @@ pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr) {
 
 pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_IdentifierAttr_t {
             -> AST_FunAttr_t {
                 break
             }
         }
         -> AST_StaticAttr_t {
-            free_InitialValue(@(self[])[].get._StaticAttr.init)
+            free_InitialValue(@self[][].get._StaticAttr.init)
         }
         break
         -> AST_ConstantAttr_t {
-            free_StaticInit(@(self[])[].get._ConstantAttr.static_init)
+            free_StaticInit(@self[][].get._ConstantAttr.static_init)
         }
         break
         -> AST_LocalAttr_t {
@@ -404,7 +404,7 @@ pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierA
 
 pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_Symbol_t {
             break
         }
@@ -412,8 +412,8 @@ pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none {
             THROW_ABORT
         }
     }
-    free_Type(@(self[])[].type_t)
-    free_IdentifierAttr(@(self[])[].attrs)
+    free_Type(@self[][].type_t)
+    free_IdentifierAttr(@self[][].attrs)
     uptr_free(self[])
 }
 
@@ -429,7 +429,7 @@ pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) unique_p
 
 pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_StructMember_t {
             break
         }
@@ -437,7 +437,7 @@ pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
             THROW_ABORT
         }
     }
-    free_Type(@(self[])[].member_type)
+    free_Type(@self[][].member_type)
     uptr_free(self[])
 }
 
@@ -456,7 +456,7 @@ pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TId
 
 pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none {
     uptr_delete(self[])
-    match (self[])[].tag {
+    match self[][].tag {
         -> AST_StructTypedef_t {
             break
         }
