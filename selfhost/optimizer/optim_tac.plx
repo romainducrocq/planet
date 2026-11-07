@@ -28,7 +28,7 @@ m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 fn fold_sign_extend_char_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].value)
+            value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
         -> AST_Long_t {
@@ -124,7 +124,7 @@ fn fold_truncate_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
             }
         }
         -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].value)
+            value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
         -> AST_UChar_t {
@@ -168,7 +168,7 @@ fn fold_truncate_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *stru
             }
         }
         -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].value)
+            value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
         -> AST_UChar_t {
@@ -224,7 +224,7 @@ fn fold_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none 
 fn fold_zero_extend_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].value)
+            value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
         -> AST_Long_t {
@@ -305,7 +305,7 @@ fn fold_dbl_to_signed_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
             }
         }
         -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].get._CConstDouble.value)
+            value: TInt = cast<TInt>(constant[].get._CConstDouble.value)
             fold_constant = make_CConstInt(value)
             break
         }
@@ -443,7 +443,7 @@ fn fold_unsigned_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx:
 
 fn fold_unary_char_const(node: *struc TacUnaryOp, constant: *struc CConstChar) shared_ptr_t(CConst) {
     if node[].tag == AST_TacNot_t {
-        value: i32 = ? not constant[].value then 1 else 0
+        value: TInt = ? not constant[].value then 1 else 0
         return make_CConstInt(value)
     }
     else {
@@ -454,15 +454,15 @@ fn fold_unary_char_const(node: *struc TacUnaryOp, constant: *struc CConstChar) s
 fn fold_unary_int_const(node: *struc TacUnaryOp, constant: *struc CConstInt) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacComplement_t {
-            value: i32 = ~constant[].value
+            value: TInt = ~constant[].value
             return make_CConstInt(value)
         }
         -> AST_TacNegate_t {
-            value: i32 = -constant[].value
+            value: TInt = -constant[].value
             return make_CConstInt(value)
         }
         -> AST_TacNot_t {
-            value: i32 = ? not constant[].value then 1 else 0
+            value: TInt = ? not constant[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -482,7 +482,7 @@ fn fold_unary_long_const(node: *struc TacUnaryOp, constant: *struc CConstLong) s
             return make_CConstLong(value)
         }
         -> AST_TacNot_t {
-            value: i32 = ? not constant[].value then 1 else 0
+            value: TInt = ? not constant[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -498,7 +498,7 @@ fn fold_unary_dbl_const(node: *struc TacUnaryOp, constant: *struc CConstDouble) 
             return make_CConstDouble(value)
         }
         -> AST_TacNot_t {
-            value: i32 = ? not constant[].value then 1 else 0
+            value: TInt = ? not constant[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -509,7 +509,7 @@ fn fold_unary_dbl_const(node: *struc TacUnaryOp, constant: *struc CConstDouble) 
 
 fn fold_unary_uchar_const(node: *struc TacUnaryOp, constant: *struc CConstUChar) shared_ptr_t(CConst) {
     if node[].tag == AST_TacNot_t {
-        value: i32 = ? not constant[].value then 1 else 0
+        value: TInt = ? not constant[].value then 1 else 0
         return make_CConstInt(value)
     }
     else {
@@ -528,7 +528,7 @@ fn fold_unary_uint_const(node: *struc TacUnaryOp, constant: *struc CConstUInt) s
             return make_CConstUInt(value)
         }
         -> AST_TacNot_t {
-            value: i32 = ? not constant[].value then 1 else 0
+            value: TInt = ? not constant[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -548,7 +548,7 @@ fn fold_unary_ulong_const(node: *struc TacUnaryOp, constant: *struc CConstULong)
             return make_CConstULong(value)
         }
         -> AST_TacNot_t {
-            value: i32 = ? not constant[].value then 1 else 0
+            value: TInt = ? not constant[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -607,69 +607,69 @@ fn fold_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
 fn fold_binary_int_const(node: *struc TacBinaryOp, constant_1: *struc CConstInt, constant_2: *struc CConstInt) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
-            value: i32 = constant_1[].value + constant_2[].value
+            value: TInt = constant_1[].value + constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacSubtract_t {
-            value: i32 = constant_1[].value - constant_2[].value
+            value: TInt = constant_1[].value - constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacMultiply_t {
-            value: i32 = constant_1[].value * constant_2[].value
+            value: TInt = constant_1[].value * constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacDivide_t {
-            value: i32 = ? constant_2[].value ~= 0 then constant_1[].value / constant_2[].value else 0
+            value: TInt = ? constant_2[].value ~= 0 then constant_1[].value / constant_2[].value else 0
             return make_CConstInt(value)
         }
         -> AST_TacRemainder_t {
-            value: i32 = ? constant_2[].value ~= 0 then constant_1[].value % constant_2[].value else 0
+            value: TInt = ? constant_2[].value ~= 0 then constant_1[].value % constant_2[].value else 0
             return make_CConstInt(value)
         }
         -> AST_TacBitAnd_t {
-            value: i32 = constant_1[].value & constant_2[].value
+            value: TInt = constant_1[].value & constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacBitOr_t {
-            value: i32 = constant_1[].value | constant_2[].value
+            value: TInt = constant_1[].value | constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacBitXor_t {
-            value: i32 = constant_1[].value ^ constant_2[].value
+            value: TInt = constant_1[].value ^ constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacBitShiftLeft_t {
-            value: i32 = constant_1[].value << constant_2[].value
+            value: TInt = constant_1[].value << constant_2[].value
             return make_CConstInt(value)
         }
         -> AST_TacBitShiftRight_t {
             -> AST_TacBitShrArithmetic_t {
-                value: i32 = constant_1[].value >> constant_2[].value
+                value: TInt = constant_1[].value >> constant_2[].value
                 return make_CConstInt(value)
             }
         }
         -> AST_TacEqual_t {
-            value: i32 = ? constant_1[].value == constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacNotEqual_t {
-            value: i32 = ? constant_1[].value ~= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value ~= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessThan_t {
-            value: i32 = ? constant_1[].value < constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value < constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessOrEqual_t {
-            value: i32 = ? constant_1[].value <= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value <= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterThan_t {
-            value: i32 = ? constant_1[].value > constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value > constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterOrEqual_t {
-            value: i32 = ? constant_1[].value >= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value >= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -723,27 +723,27 @@ fn fold_binary_long_const(node: *struc TacBinaryOp, constant_1: *struc CConstLon
             }
         }
         -> AST_TacEqual_t {
-            value: i32 = ? constant_1[].value == constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacNotEqual_t {
-            value: i32 = ? constant_1[].value ~= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value ~= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessThan_t {
-            value: i32 = ? constant_1[].value < constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value < constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessOrEqual_t {
-            value: i32 = ? constant_1[].value <= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value <= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterThan_t {
-            value: i32 = ? constant_1[].value > constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value > constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterOrEqual_t {
-            value: i32 = ? constant_1[].value >= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value >= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -771,27 +771,27 @@ fn fold_binary_dbl_const(node: *struc TacBinaryOp, constant_1: *struc CConstDoub
             return make_CConstDouble(value)
         }
         -> AST_TacEqual_t {
-            value: i32 = ? constant_1[].value == constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacNotEqual_t {
-            value: i32 = ? constant_1[].value ~= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value ~= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessThan_t {
-            value: i32 = ? constant_1[].value < constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value < constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessOrEqual_t {
-            value: i32 = ? constant_1[].value <= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value <= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterThan_t {
-            value: i32 = ? constant_1[].value > constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value > constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterOrEqual_t {
-            value: i32 = ? constant_1[].value >= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value >= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -845,27 +845,27 @@ fn fold_binary_uint_const(node: *struc TacBinaryOp, constant_1: *struc CConstUIn
             }
         }
         -> AST_TacEqual_t {
-            value: i32 = ? constant_1[].value == constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacNotEqual_t {
-            value: i32 = ? constant_1[].value ~= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value ~= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessThan_t {
-            value: i32 = ? constant_1[].value < constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value < constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessOrEqual_t {
-            value: i32 = ? constant_1[].value <= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value <= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterThan_t {
-            value: i32 = ? constant_1[].value > constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value > constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterOrEqual_t {
-            value: i32 = ? constant_1[].value >= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value >= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -919,27 +919,27 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
             }
         }
         -> AST_TacEqual_t {
-            value: i32 = ? constant_1[].value == constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacNotEqual_t {
-            value: i32 = ? constant_1[].value ~= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value ~= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessThan_t {
-            value: i32 = ? constant_1[].value < constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value < constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacLessOrEqual_t {
-            value: i32 = ? constant_1[].value <= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value <= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterThan_t {
-            value: i32 = ? constant_1[].value > constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value > constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         -> AST_TacGreaterOrEqual_t {
-            value: i32 = ? constant_1[].value >= constant_2[].value then 1 else 0
+            value: TInt = ? constant_1[].value >= constant_2[].value then 1 else 0
             return make_CConstInt(value)
         }
         otherwise {
@@ -1080,7 +1080,7 @@ fn fold_copy_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CC
 fn fold_copy_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
-            value: i32 = cast<i32>(constant[].value)
+            value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
         -> AST_UInt_t {

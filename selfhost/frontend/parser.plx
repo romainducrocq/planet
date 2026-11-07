@@ -87,12 +87,12 @@ fn parse_string_literal(ctx: Ctx, literal: *shared_ptr_t(CStringLiteral)) error_
 }
 
 fn parse_int_const(intmax: i64) shared_ptr_t(CConst) {
-    value: i32 = cast<i32>(intmax)
+    value: TInt = cast<i32>(intmax)
     return make_CConstInt(value)
 }
 
 fn parse_char_const(ctx: Ctx) shared_ptr_t(CConst) {
-    value: i32 = string_to_char_ascii(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok))
+    value: TInt = string_to_char_ascii(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok))
     return make_CConstInt(value)
 }
 

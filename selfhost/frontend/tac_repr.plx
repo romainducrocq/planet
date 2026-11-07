@@ -221,7 +221,7 @@ fn is_type_signed(type_t: *struc Type) i32 {
     }
 }
 
-fn get_scalar_size(type_t: *struc Type) i32 {
+fn get_scalar_size(type_t: *struc Type) TInt {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -304,8 +304,8 @@ fn cast_complete_res_instr(ctx: Ctx, node: *struc CCast) unique_ptr_t(TacExpResu
         }
     }
     else {
-        target_type_size: i32 = get_scalar_size(node[].target_type)
-        inner_type_size: i32 = get_scalar_size(node[].exp[].exp_type)
+        target_type_size: TInt = get_scalar_size(node[].target_type)
+        inner_type_size: TInt = get_scalar_size(node[].exp[].exp_type)
         if target_type_size == inner_type_size {
             push_instr(ctx, make_TacCopy(@src, @dst_cp))
         }
@@ -1341,7 +1341,7 @@ fn string_single_init_instr(ctx: Ctx, node: *struc CString, arr_type: *struc Arr
                     byte_at++
                 }
                 elif bytes_left < 8 {
-                    value: i32 = string_bytes_to_int32(node[].literal[].value, byte_at)
+                    value: TInt = string_bytes_to_int32(node[].literal[].value, byte_at)
                     constant = make_CConstInt(value)
                     byte_at += 4
                 }

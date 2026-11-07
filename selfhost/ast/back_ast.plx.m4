@@ -185,9 +185,9 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none;
 
 type struc AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: vector_t(unique_ptr_t(AsmInstruction)))
 
-type struc AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: vector_t(shared_ptr_t(StaticInit)))
+type struc AsmStaticVariable(name: u64, alignment: TInt, is_glob: i32, static_inits: vector_t(shared_ptr_t(StaticInit)))
 
-type struc AsmStaticConstant(name: u64, alignment: i32, static_init: shared_ptr_t(StaticInit))
+type struc AsmStaticConstant(name: u64, alignment: TInt, static_init: shared_ptr_t(StaticInit))
 
 type union _AsmTopLevel(_AsmFunction: struc AsmFunction, _AsmStaticVariable: struc AsmStaticVariable, _AsmStaticConstant: struc AsmStaticConstant)
 
@@ -195,8 +195,8 @@ type struc AsmTopLevel(unique_ptr_impl(AST_T)
     get: union _AsmTopLevel)
 pub fn make_AsmTopLevel(none) unique_ptr_t(AsmTopLevel);
 pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel);
-pub fn make_AsmStaticVariable(name: u64, alignment: i32, is_glob: i32, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel);
-pub fn make_AsmStaticConstant(name: u64, alignment: i32, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel);
+pub fn make_AsmStaticVariable(name: u64, alignment: TInt, is_glob: i32, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel);
+pub fn make_AsmStaticConstant(name: u64, alignment: TInt, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel);
 pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none;
 
 type struc AsmProgram(unique_ptr_impl(AST_T)

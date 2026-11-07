@@ -1222,7 +1222,7 @@ fn reallocate_registers(ctx: Ctx) none {
     }
 }
 
-fn get_type_size(type_t: *struc Type) i32 {
+fn get_type_size(type_t: *struc Type) TInt {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {

@@ -40,14 +40,14 @@ fn pseudo_mem_memory(ctx: Ctx, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
-fn align_offset_stack_bytes(ctx: Ctx, alignment: i32) none {
+fn align_offset_stack_bytes(ctx: Ctx, alignment: TInt) none {
     offset: i64 = ctx[].stack_bytes % alignment
     if offset ~= 0l {
         ctx[].stack_bytes += alignment - offset
     }
 }
 
-fn align_offset_pseudo(ctx: Ctx, size: i64, alignment: i32) none {
+fn align_offset_pseudo(ctx: Ctx, size: i64, alignment: TInt) none {
     ctx[].stack_bytes += size
     align_offset_stack_bytes(ctx, alignment)
 }

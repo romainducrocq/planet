@@ -289,7 +289,7 @@ fn is_const_null_ptr(node: *struc CConstant) i32 {
     }
 }
 
-fn get_scalar_size(type_t: *struc Type) i32 {
+fn get_scalar_size(type_t: *struc Type) TInt {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -348,18 +348,18 @@ fn get_type_scale(ctx: Ctx, type_t: *struc Type) i64 {
     }
 }
 
-fn get_type_alignment(ctx: Ctx, type_t: *struc Type) i32;
+fn get_type_alignment(ctx: Ctx, type_t: *struc Type) TInt;
 
-fn get_arr_alignment(ctx: Ctx, arr_type: *struc Array) i32 {
+fn get_arr_alignment(ctx: Ctx, arr_type: *struc Array) TInt {
     return get_type_alignment(ctx, arr_type[].elem_type)
 }
 
-fn get_struct_alignment(ctx: Ctx, struct_type: *struc Structure) i32 {
+fn get_struct_alignment(ctx: Ctx, struct_type: *struc Structure) TInt {
     THROW_ABORT_IF(map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) == map_end())
     return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].alignment
 }
 
-fn get_type_alignment(ctx: Ctx, type_t: *struc Type) i32 {
+fn get_type_alignment(ctx: Ctx, type_t: *struc Type) TInt {
     match type_t[].tag {
         -> AST_Array_t {
             return get_arr_alignment(ctx, @type_t[].get._Array)
@@ -396,8 +396,8 @@ fn get_joint_type(node_1: *struc CExp, node_2: *struc CExp) shared_ptr_t(Type) {
         joint_type = make_Double()
     }
     else {
-        type_size_1: i32 = get_scalar_size(node_1[].exp_type)
-        type_size_2: i32 = get_scalar_size(node_2[].exp_type)
+        type_size_1: TInt = get_scalar_size(node_1[].exp_type)
+        type_size_2: TInt = get_scalar_size(node_2[].exp_type)
         if type_size_1 == type_size_2 {
             if is_type_signed(node_1[].exp_type) {
                 sptr_copy(Type, node_2[].exp_type, joint_type)
@@ -472,28 +472,28 @@ fn get_const_char_value(node: *struc CConstant) TChar {
     }
 }
 
-fn get_const_int_value(node: *struc CConstant) i32 {
+fn get_const_int_value(node: *struc CConstant) TInt {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
-            return cast<i32>(node[].constant[].get._CConstChar.value)
+            return cast<TInt>(node[].constant[].get._CConstChar.value)
         }
         -> AST_CConstInt_t {
             return node[].constant[].get._CConstInt.value
         }
         -> AST_CConstLong_t {
-            return cast<i32>(node[].constant[].get._CConstLong.value)
+            return cast<TInt>(node[].constant[].get._CConstLong.value)
         }
         -> AST_CConstDouble_t {
-            return cast<i32>(node[].constant[].get._CConstDouble.value)
+            return cast<TInt>(node[].constant[].get._CConstDouble.value)
         }
         -> AST_CConstUChar_t {
-            return cast<i32>(node[].constant[].get._CConstUChar.value)
+            return cast<TInt>(node[].constant[].get._CConstUChar.value)
         }
         -> AST_CConstUInt_t {
-            return cast<i32>(node[].constant[].get._CConstUInt.value)
+            return cast<TInt>(node[].constant[].get._CConstUInt.value)
         }
         -> AST_CConstULong_t {
-            return cast<i32>(node[].constant[].get._CConstULong.value)
+            return cast<TInt>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
             THROW_ABORT
@@ -1595,7 +1595,7 @@ fn check_for_statement(ctx: Ctx, node: *struc CFor) error_t {
 
 fn check_switch_int_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
-    values: vector_t(i32) = vec_new()
+    values: vector_t(TInt) = vec_new()
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2103,7 +2103,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
             }
         }
         -> AST_Int_t {
-            value: i32 = get_const_int_value(node)
+            value: TInt = get_const_int_value(node)
             if value == 0 {
                 push_zero_static_init(ctx, 4l)
             }
@@ -2651,7 +2651,7 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     member_names: vector_t(TIdentifier) = vec_new()
     members: hashmap_t(``TIdentifier'', ``UPtrStructMember'') = map_new()
     CATCH_ENTER
-    alignment: i32;
+    alignment: TInt;
     size: i64;
     if map_find(ctx[].frontend[].struct_typedef_table, node[].tag_name) ~= map_end() {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_struct_in_scope,
@@ -2665,7 +2665,7 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
             name: u64 = node[].members[i][].member_name
             vec_push_back(member_names, name)
         }
-        member_alignment: i32 = get_type_alignment(ctx, node[].members[i][].member_type)
+        member_alignment: TInt = get_type_alignment(ctx, node[].members[i][].member_type)
         member_size: i64 = get_type_scale(ctx, node[].members[i][].member_type)
         {
             offset: i64 = 0l
