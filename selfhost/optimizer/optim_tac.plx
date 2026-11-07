@@ -371,17 +371,17 @@ fn fold_signed_to_dbl_const(constant: *struc CConst) shared_ptr_t(TacValue) {
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstChar_t {
-            value: f64 = cast<f64>(constant[].get._CConstChar.value)
+            value: TDouble = cast<TDouble>(constant[].get._CConstChar.value)
             fold_constant = make_CConstDouble(value)
             break
         }
         -> AST_CConstInt_t {
-            value: f64 = cast<f64>(constant[].get._CConstInt.value)
+            value: TDouble = cast<TDouble>(constant[].get._CConstInt.value)
             fold_constant = make_CConstDouble(value)
             break
         }
         -> AST_CConstLong_t {
-            value: f64 = cast<f64>(constant[].get._CConstLong.value)
+            value: TDouble = cast<TDouble>(constant[].get._CConstLong.value)
             fold_constant = make_CConstDouble(value)
             break
         }
@@ -408,17 +408,17 @@ fn fold_unsigned_to_dbl_const(constant: *struc CConst) shared_ptr_t(TacValue) {
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant[].tag {
         -> AST_CConstUChar_t {
-            value: f64 = cast<f64>(constant[].get._CConstUChar.value)
+            value: TDouble = cast<TDouble>(constant[].get._CConstUChar.value)
             fold_constant = make_CConstDouble(value)
             break
         }
         -> AST_CConstUInt_t {
-            value: f64 = cast<f64>(constant[].get._CConstUInt.value)
+            value: TDouble = cast<TDouble>(constant[].get._CConstUInt.value)
             fold_constant = make_CConstDouble(value)
             break
         }
         -> AST_CConstULong_t {
-            value: f64 = cast<f64>(constant[].get._CConstULong.value)
+            value: TDouble = cast<TDouble>(constant[].get._CConstULong.value)
             fold_constant = make_CConstDouble(value)
             break
         }
@@ -494,7 +494,7 @@ fn fold_unary_long_const(node: *struc TacUnaryOp, constant: *struc CConstLong) s
 fn fold_unary_dbl_const(node: *struc TacUnaryOp, constant: *struc CConstDouble) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacNegate_t {
-            value: f64 = -constant[].value
+            value: TDouble = -constant[].value
             return make_CConstDouble(value)
         }
         -> AST_TacNot_t {
@@ -755,19 +755,19 @@ fn fold_binary_long_const(node: *struc TacBinaryOp, constant_1: *struc CConstLon
 fn fold_binary_dbl_const(node: *struc TacBinaryOp, constant_1: *struc CConstDouble, constant_2: *struc CConstDouble) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
-            value: f64 = constant_1[].value + constant_2[].value
+            value: TDouble = constant_1[].value + constant_2[].value
             return make_CConstDouble(value)
         }
         -> AST_TacSubtract_t {
-            value: f64 = constant_1[].value - constant_2[].value
+            value: TDouble = constant_1[].value - constant_2[].value
             return make_CConstDouble(value)
         }
         -> AST_TacMultiply_t {
-            value: f64 = constant_1[].value * constant_2[].value
+            value: TDouble = constant_1[].value * constant_2[].value
             return make_CConstDouble(value)
         }
         -> AST_TacDivide_t {
-            value: f64 = constant_1[].value / constant_2[].value
+            value: TDouble = constant_1[].value / constant_2[].value
             return make_CConstDouble(value)
         }
         -> AST_TacEqual_t {
@@ -1028,7 +1028,7 @@ fn fold_copy_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCo
             }
         }
         -> AST_Double_t {
-            value: f64 = cast<f64>(constant[].value)
+            value: TDouble = cast<TDouble>(constant[].value)
             return make_CConstDouble(value)
         }
         -> AST_ULong_t {
@@ -1099,7 +1099,7 @@ fn fold_copy_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CC
             return make_CConstLong(value)
         }
         -> AST_Double_t {
-            value: f64 = cast<f64>(constant[].value)
+            value: TDouble = cast<TDouble>(constant[].value)
             return make_CConstDouble(value)
         }
         -> AST_Pointer_t {

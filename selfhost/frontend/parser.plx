@@ -103,7 +103,7 @@ fn parse_long_const(intmax: i64) shared_ptr_t(CConst) {
 
 fn parse_dbl_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_ENTER
-    value: f64;
+    value: TDouble;
     TRY(string_to_dbl(ctx[].errors, map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), ctx[].next_tok[].info_at, @value))
     constant[] = make_CConstDouble(value)
     FINALLY
