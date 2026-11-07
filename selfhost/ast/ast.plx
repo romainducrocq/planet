@@ -18,7 +18,7 @@ pub fn make_CConstInt(value: TInt) shared_ptr_t(CConst) {
     return self
 }
 
-pub fn make_CConstLong(value: i64) shared_ptr_t(CConst) {
+pub fn make_CConstLong(value: TLong) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstLong_t
     self[].get._CConstLong.value = value

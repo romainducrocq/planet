@@ -93,7 +93,7 @@ pub fn make_CAbstractPointer(abstract_decltor: *unique_ptr_t(CAbstractDeclarator
     return self
 }
 
-pub fn make_CAbstractArray(size: i64, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator) {
+pub fn make_CAbstractArray(size: TLong, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator) {
     self: unique_ptr_t(CAbstractDeclarator) = make_CAbstractDeclarator()
     self[].tag = AST_CAbstractArray_t
     self[].get._CAbstractArray.size = size
@@ -180,7 +180,7 @@ pub fn make_CPointerDeclarator(decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t
     return self
 }
 
-pub fn make_CArrayDeclarator(size: i64, decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator) {
+pub fn make_CArrayDeclarator(size: TLong, decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator) {
     self: unique_ptr_t(CDeclarator) = make_CDeclarator()
     self[].tag = AST_CArrayDeclarator_t
     self[].get._CArrayDeclarator.size = size

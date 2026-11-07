@@ -135,7 +135,7 @@ pub fn make_TacDereferencedPointer(val: *shared_ptr_t(TacValue)) unique_ptr_t(Ta
     return self
 }
 
-pub fn make_TacSubObject(base_name: u64, offset: i64) unique_ptr_t(TacExpResult) {
+pub fn make_TacSubObject(base_name: u64, offset: TLong) unique_ptr_t(TacExpResult) {
     self: unique_ptr_t(TacExpResult) = make_TacExpResult()
     self[].tag = AST_TacSubObject_t
     self[].get._TacSubObject.base_name = base_name
@@ -327,7 +327,7 @@ pub fn make_TacStore(src: *shared_ptr_t(TacValue), dst_ptr: *shared_ptr_t(TacVal
     return self
 }
 
-pub fn make_TacAddPtr(scale: i64, src_ptr: *shared_ptr_t(TacValue), idx: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+pub fn make_TacAddPtr(scale: TLong, src_ptr: *shared_ptr_t(TacValue), idx: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
     self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacAddPtr_t
     self[].get._TacAddPtr.scale = scale
@@ -340,7 +340,7 @@ pub fn make_TacAddPtr(scale: i64, src_ptr: *shared_ptr_t(TacValue), idx: *shared
     return self
 }
 
-pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+pub fn make_TacCopyToOffset(dst_name: u64, offset: TLong, src: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
     self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacCopyToOffset_t
     self[].get._TacCopyToOffset.dst_name = dst_name
@@ -350,7 +350,7 @@ pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: *shared_ptr_t(TacVa
     return self
 }
 
-pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
+pub fn make_TacCopyFromOffset(src_name: u64, offset: TLong, dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction) {
     self: unique_ptr_t(TacInstruction) = make_TacInstruction()
     self[].tag = AST_TacCopyFromOffset_t
     self[].get._TacCopyFromOffset.src_name = src_name

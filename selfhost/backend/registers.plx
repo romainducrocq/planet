@@ -115,12 +115,12 @@ pub fn gen_register(reg_kind: REGISTER_KIND) shared_ptr_t(AsmOperand) {
     return make_AsmRegister(@reg)
 }
 
-pub fn gen_memory(reg_kind: REGISTER_KIND, value: i64) shared_ptr_t(AsmOperand) {
+pub fn gen_memory(reg_kind: REGISTER_KIND, value: TLong) shared_ptr_t(AsmOperand) {
     reg: struc AsmReg = gen_reg(reg_kind)
     return make_AsmMemory(value, @reg)
 }
 
-pub fn gen_indexed(reg_kind_base: REGISTER_KIND, reg_kind_idx: REGISTER_KIND, scale: i64) shared_ptr_t(AsmOperand) {
+pub fn gen_indexed(reg_kind_base: REGISTER_KIND, reg_kind_idx: REGISTER_KIND, scale: TLong) shared_ptr_t(AsmOperand) {
     reg_base: struc AsmReg = gen_reg(reg_kind_base)
     reg_index: struc AsmReg = gen_reg(reg_kind_idx)
     return make_AsmIndexed(scale, @reg_base, @reg_index)

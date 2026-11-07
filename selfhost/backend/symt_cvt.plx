@@ -43,7 +43,7 @@ fn get_scalar_alignment(type_t: *struc Type) TInt {
     }
 }
 
-fn get_arr_alignment(ctx: *struc FrontEndContext, arr_type: *struc Array, size: *i64) TInt {
+fn get_arr_alignment(ctx: *struc FrontEndContext, arr_type: *struc Array, size: *TLong) TInt {
     size[] = arr_type[].size
     loop while arr_type[].elem_type[].tag == AST_Array_t {
         arr_type = @arr_type[].elem_type[].get._Array
@@ -70,7 +70,7 @@ fn get_struct_alignment(ctx: *struc FrontEndContext, struct_type: *struc Structu
 pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) TInt {
     match type_t[].tag {
         -> AST_Array_t {
-            size: i64;
+            size: TLong;
             return get_arr_alignment(ctx, @type_t[].get._Array, @size)
         }
         -> AST_Structure_t {
@@ -83,13 +83,13 @@ pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) TInt
 }
 
 fn arr_asm_type(ctx: *struc FrontEndContext, arr_type: *struc Array) shared_ptr_t(AssemblyType) {
-    size: i64;
+    size: TLong;
     alignment: TInt = get_arr_alignment(ctx, arr_type, @size)
     return make_ByteArray(size, alignment)
 }
 
 fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) shared_ptr_t(AssemblyType) {
-    size: i64;
+    size: TLong;
     alignment: TInt;
     map_it: i64 = map_find(ctx[].struct_typedef_table, struct_type[].tag_name)
     if map_it ~= map_end() {

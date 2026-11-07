@@ -9,9 +9,9 @@ m4_include(`../ast/ast_t.plx.m4')m4_dnl
 m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
-PairKeyValue(``TIdentifier'', i64)
+PairKeyValue(``TIdentifier'', ``TLong'')
 
-type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: i64, pseudo_stack_map: hashmap_t(``TIdentifier'', i64), p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
+type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: TLong, pseudo_stack_map: hashmap_t(``TIdentifier'', ``TLong''), p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
 
 m4_define(`Ctx', `*struc StackFixContext')m4_dnl
 
@@ -23,31 +23,31 @@ fn pseudo_data(node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) non
 
 fn pseudo_mem_data(node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     name: u64 = node[].name
-    offset: i64 = node[].offset
+    offset: TLong = node[].offset
     free_AsmOperand(pseudo_op)
     pseudo_op[] = make_AsmData(name, offset)
 }
 
 fn pseudo_memory(ctx: Ctx, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
-    value: i64 = -1l * map_get(ctx[].pseudo_stack_map, node[].name)
+    value: TLong = -1l * map_get(ctx[].pseudo_stack_map, node[].name)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
 fn pseudo_mem_memory(ctx: Ctx, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
-    value: i64 = -1l * (map_get(ctx[].pseudo_stack_map, node[].name) - node[].offset)
+    value: TLong = -1l * (map_get(ctx[].pseudo_stack_map, node[].name) - node[].offset)
     free_AsmOperand(pseudo_op)
     pseudo_op[] = gen_memory(REG_Bp, value)
 }
 
 fn align_offset_stack_bytes(ctx: Ctx, alignment: TInt) none {
-    offset: i64 = ctx[].stack_bytes % alignment
+    offset: TLong = ctx[].stack_bytes % alignment
     if offset ~= 0l {
         ctx[].stack_bytes += alignment - offset
     }
 }
 
-fn align_offset_pseudo(ctx: Ctx, size: i64, alignment: TInt) none {
+fn align_offset_pseudo(ctx: Ctx, size: TLong, alignment: TInt) none {
     ctx[].stack_bytes += size
     align_offset_stack_bytes(ctx, alignment)
 }
@@ -486,7 +486,7 @@ fn repl_pseudo_regs(ctx: Ctx, node: *struc AsmInstruction) none {
     }
 }
 
-pub fn alloc_stack_bytes(byte: i64) unique_ptr_t(AsmInstruction) {
+pub fn alloc_stack_bytes(byte: TLong) unique_ptr_t(AsmInstruction) {
     binop: struc AsmBinaryOp = init_AsmSub()
     asm_type: shared_ptr_t(AssemblyType) = make_QuadWord()
 
@@ -515,8 +515,8 @@ fn swap_fix_instr_back(ctx: Ctx) none {
     uptr_move(AsmInstruction, swap_instr, instr_back_2[])
 }
 
-fn fix_alloc_stack_bytes(ctx: Ctx, callee_saved_size: i64) none {
-    callee_saved_bytes: i64 = callee_saved_size * 8l
+fn fix_alloc_stack_bytes(ctx: Ctx, callee_saved_size: TLong) none {
+    callee_saved_bytes: TLong = callee_saved_size * 8l
     ctx[].stack_bytes += callee_saved_bytes
     if ctx[].stack_bytes > 0l {
         align_offset_stack_bytes(ctx, 16)
@@ -1132,7 +1132,7 @@ fn fix_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
         pop_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
     }
     {
-        callee_saved_size: i64 = cast<i64>(vec_size(backend_fun[].callee_saved_regs))
+        callee_saved_size: TLong = cast<TLong>(vec_size(backend_fun[].callee_saved_regs))
         fix_alloc_stack_bytes(ctx, callee_saved_size)
     }
     ctx[].p_fix_instrs = nil

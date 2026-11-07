@@ -50,7 +50,7 @@ fn emit_int(ctx: Ctx, value: TInt) none {
     str_delete(strto_value)
 }
 
-fn emit_long(ctx: Ctx, value: i64) none {
+fn emit_long(ctx: Ctx, value: TLong) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
@@ -377,7 +377,7 @@ fn get_type_suffix(node: *struc AssemblyType, is_packed: i32) string {
 fn imm_op(ctx: Ctx, node: *struc AsmImm) none {
     emit(ctx, "$")
     if node[].is_neg {
-        emit_long(ctx, cast<i64>(node[].value))
+        emit_long(ctx, cast<TLong>(node[].value))
     }
     else {
         emit_ulong(ctx, node[].value)

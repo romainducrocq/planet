@@ -73,13 +73,13 @@ type struc AsmRegister(reg: struc AsmReg)
 
 type struc AsmPseudo(name: u64)
 
-type struc AsmMemory(value: i64, reg: struc AsmReg)
+type struc AsmMemory(value: TLong, reg: struc AsmReg)
 
-type struc AsmData(name: u64, offset: i64)
+type struc AsmData(name: u64, offset: TLong)
 
-type struc AsmPseudoMem(name: u64, offset: i64)
+type struc AsmPseudoMem(name: u64, offset: TLong)
 
-type struc AsmIndexed(scale: i64, reg_base: struc AsmReg, reg_index: struc AsmReg)
+type struc AsmIndexed(scale: TLong, reg_base: struc AsmReg, reg_index: struc AsmReg)
 
 type union _AsmOperand(_AsmImm: struc AsmImm, _AsmRegister: struc AsmRegister, _AsmPseudo: struc AsmPseudo, _AsmMemory: struc AsmMemory, _AsmData: struc AsmData, _AsmPseudoMem: struc AsmPseudoMem, _AsmIndexed: struc AsmIndexed)
 
@@ -89,10 +89,10 @@ pub fn make_AsmOperand(none) shared_ptr_t(AsmOperand);
 pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand);
 pub fn make_AsmRegister(reg: *struc AsmReg) shared_ptr_t(AsmOperand);
 pub fn make_AsmPseudo(name: u64) shared_ptr_t(AsmOperand);
-pub fn make_AsmMemory(value: i64, reg: *struc AsmReg) shared_ptr_t(AsmOperand);
-pub fn make_AsmData(name: u64, offset: i64) shared_ptr_t(AsmOperand);
-pub fn make_AsmPseudoMem(name: u64, offset: i64) shared_ptr_t(AsmOperand);
-pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand);
+pub fn make_AsmMemory(value: TLong, reg: *struc AsmReg) shared_ptr_t(AsmOperand);
+pub fn make_AsmData(name: u64, offset: TLong) shared_ptr_t(AsmOperand);
+pub fn make_AsmPseudoMem(name: u64, offset: TLong) shared_ptr_t(AsmOperand);
+pub fn make_AsmIndexed(scale: TLong, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand);
 pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none;
 
 type struc AsmBinaryOp(tagged_def_impl(AST_T))
