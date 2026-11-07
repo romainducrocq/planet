@@ -670,7 +670,7 @@ pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt
     }
 }
 
-m4_define(`ARG_INDEX', `m4_define(`_argi', $1)')m4_dnl
+m4_define(`ARG_INDEX', `m4_define(`_argi', `$1')`'')m4_dnl
 m4_define(`ARG_SHIFT', `ARG_INDEX(m4_incr(_argi))m4_dnl
 "", arg`'_argi, ""')m4_dnl
 m4_define(`EM_CSTR', `"‘" $1 "’"')m4_dnl
