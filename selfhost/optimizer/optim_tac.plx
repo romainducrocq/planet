@@ -42,7 +42,7 @@ fn fold_sign_extend_char_const(ctx: Ctx, node: *struc TacVariable, constant: *st
             return make_CConstUInt(value)
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].value)
+            value: TULong = cast<TULong>(constant[].value)
             return make_CConstULong(value)
         }
         otherwise {
@@ -60,7 +60,7 @@ fn fold_sign_extend_int_const(ctx: Ctx, node: *struc TacVariable, constant: *str
             }
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].value)
+            value: TULong = cast<TULong>(constant[].value)
             return make_CConstULong(value)
         }
         otherwise {
@@ -238,7 +238,7 @@ fn fold_zero_extend_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *s
             return make_CConstUInt(value)
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].value)
+            value: TULong = cast<TULong>(constant[].value)
             return make_CConstULong(value)
         }
         otherwise {
@@ -256,7 +256,7 @@ fn fold_zero_extend_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *st
             }
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].value)
+            value: TULong = cast<TULong>(constant[].value)
             return make_CConstULong(value)
         }
         otherwise {
@@ -346,7 +346,7 @@ fn fold_dbl_to_unsigned_const(ctx: Ctx, node: *struc TacVariable, constant: *str
             break
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].get._CConstDouble.value)
+            value: TULong = cast<TULong>(constant[].get._CConstDouble.value)
             fold_constant = make_CConstULong(value)
             break
         }
@@ -540,11 +540,11 @@ fn fold_unary_uint_const(node: *struc TacUnaryOp, constant: *struc CConstUInt) s
 fn fold_unary_ulong_const(node: *struc TacUnaryOp, constant: *struc CConstULong) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacComplement_t {
-            value: u64 = ~constant[].value
+            value: TULong = ~constant[].value
             return make_CConstULong(value)
         }
         -> AST_TacNegate_t {
-            value: u64 = -constant[].value
+            value: TULong = -constant[].value
             return make_CConstULong(value)
         }
         -> AST_TacNot_t {
@@ -877,44 +877,44 @@ fn fold_binary_uint_const(node: *struc TacBinaryOp, constant_1: *struc CConstUIn
 fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstULong, constant_2: *struc CConstULong) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
-            value: u64 = constant_1[].value + constant_2[].value
+            value: TULong = constant_1[].value + constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacSubtract_t {
-            value: u64 = constant_1[].value - constant_2[].value
+            value: TULong = constant_1[].value - constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacMultiply_t {
-            value: u64 = constant_1[].value * constant_2[].value
+            value: TULong = constant_1[].value * constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacDivide_t {
-            value: u64 = ? constant_2[].value ~= 0ul then constant_1[].value / constant_2[].value else 0ul
+            value: TULong = ? constant_2[].value ~= 0ul then constant_1[].value / constant_2[].value else 0ul
             return make_CConstULong(value)
         }
         -> AST_TacRemainder_t {
-            value: u64 = ? constant_2[].value ~= 0ul then constant_1[].value % constant_2[].value else 0ul
+            value: TULong = ? constant_2[].value ~= 0ul then constant_1[].value % constant_2[].value else 0ul
             return make_CConstULong(value)
         }
         -> AST_TacBitAnd_t {
-            value: u64 = constant_1[].value & constant_2[].value
+            value: TULong = constant_1[].value & constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacBitOr_t {
-            value: u64 = constant_1[].value | constant_2[].value
+            value: TULong = constant_1[].value | constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacBitXor_t {
-            value: u64 = constant_1[].value ^ constant_2[].value
+            value: TULong = constant_1[].value ^ constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacBitShiftLeft_t {
-            value: u64 = constant_1[].value << constant_2[].value
+            value: TULong = constant_1[].value << constant_2[].value
             return make_CConstULong(value)
         }
         -> AST_TacBitShiftRight_t {
             -> AST_TacBitShrArithmetic_t {
-                value: u64 = constant_1[].value >> constant_2[].value
+                value: TULong = constant_1[].value >> constant_2[].value
                 return make_CConstULong(value)
             }
         }
@@ -1032,7 +1032,7 @@ fn fold_copy_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCo
             return make_CConstDouble(value)
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].value)
+            value: TULong = cast<TULong>(constant[].value)
             return make_CConstULong(value)
         }
         otherwise {
@@ -1051,7 +1051,7 @@ fn fold_copy_dbl_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCon
             return sptr_new()
         }
         -> AST_ULong_t {
-            value: u64 = cast<u64>(constant[].value)
+            value: TULong = cast<TULong>(constant[].value)
             return make_CConstULong(value)
         }
         otherwise {

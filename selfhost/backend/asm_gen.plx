@@ -37,20 +37,20 @@ type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc I
 m4_define(`Ctx', `*struc AsmGenContext')m4_dnl
 
 fn char_imm_op(node: *struc CConstChar) shared_ptr_t(AsmOperand) {
-    value: u64 = cast<u64>(node[].value)
+    value: TULong = cast<TULong>(node[].value)
     is_neg: i32 = node[].value < 0
     return make_AsmImm(value, true, false, is_neg)
 }
 
 fn int_imm_op(node: *struc CConstInt) shared_ptr_t(AsmOperand) {
-    value: u64 = cast<u64>(node[].value)
+    value: TULong = cast<TULong>(node[].value)
     is_byte: i32 = node[].value <= 127 and node[].value >= -128
     is_neg: i32 = node[].value < 0
     return make_AsmImm(value, is_byte, false, is_neg)
 }
 
 fn long_imm_op(node: *struc CConstLong) shared_ptr_t(AsmOperand) {
-    value: u64 = cast<u64>(node[].value)
+    value: TULong = cast<TULong>(node[].value)
     is_byte: i32 = node[].value <= 127l and node[].value >= -128l
     is_quad: i32 = node[].value > 2147483647l or node[].value < -2147483648l
     is_neg: i32 = node[].value < 0l
@@ -58,19 +58,19 @@ fn long_imm_op(node: *struc CConstLong) shared_ptr_t(AsmOperand) {
 }
 
 fn uchar_imm(node: *struc CConstUChar) shared_ptr_t(AsmOperand) {
-    value: u64 = cast<u64>(node[].value)
+    value: TULong = cast<TULong>(node[].value)
     return make_AsmImm(value, true, false, false)
 }
 
 fn uint_imm_op(node: *struc CConstUInt) shared_ptr_t(AsmOperand) {
-    value: u64 = cast<u64>(node[].value)
+    value: TULong = cast<TULong>(node[].value)
     is_byte: i32 = node[].value <= 255u
     is_quad: i32 = node[].value > 2147483647u
     return make_AsmImm(value, is_byte, is_quad, false)
 }
 
 fn ulong_imm_op(node: *struc CConstULong) shared_ptr_t(AsmOperand) {
-    value: u64 = node[].value
+    value: TULong = node[].value
     is_byte: i32 = node[].value <= 255ul
     is_quad: i32 = node[].value > 2147483647ul
     return make_AsmImm(value, is_byte, is_quad, false)
@@ -112,12 +112,12 @@ fn repr_asm_label(ctx: Ctx, asm_label_kind: ASM_LABEL_KIND) u64 {
 
 fn dbl_static_const_toplvl(ctx: Ctx, identifier: u64, dbl_const: u64, byte: TInt) none;
 
-fn make_binary_identifier(ctx: Ctx, binary: u64) u64 {
+fn make_binary_identifier(ctx: Ctx, binary: TULong) u64 {
     strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
-fn dbl_static_const_op(ctx: Ctx, binary: u64, byte: TInt) shared_ptr_t(AsmOperand) {
+fn dbl_static_const_op(ctx: Ctx, binary: TULong, byte: TInt) shared_ptr_t(AsmOperand) {
     dbl_const_label: u64;
     {
         dbl_const: u64 = make_binary_identifier(ctx, binary)
@@ -135,7 +135,7 @@ fn dbl_static_const_op(ctx: Ctx, binary: u64, byte: TInt) shared_ptr_t(AsmOperan
 }
 
 fn dbl_const_op(ctx: Ctx, node: *struc CConstDouble) shared_ptr_t(AsmOperand) {
-    binary: u64 = dbl_to_binary(node[].value)
+    binary: TULong = dbl_to_binary(node[].value)
     byte: TInt = ? binary == 9223372036854775808ul then 16 else 8
     return dbl_static_const_op(ctx, binary, byte)
 }
@@ -1270,7 +1270,7 @@ fn dealloc_stack_instr(ctx: Ctx, byte: TLong) none {
 
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
-        value: u64 = cast<u64>(byte)
+        value: TULong = cast<TULong>(byte)
         is_byte: i32 = byte <= 127l and byte >= -128l
         is_quad: i32 = byte > 2147483647l or byte < -2147483648l
         is_neg: i32 = byte < 0l
@@ -2345,7 +2345,7 @@ fn aggr_idx_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr) none {
     {
         src: shared_ptr_t(AsmOperand) = sptr_new()
         {
-            value: u64 = cast<u64>(node[].scale)
+            value: TULong = cast<TULong>(node[].scale)
             is_byte: i32 = node[].scale <= 127l and node[].scale >= -128l
             is_quad: i32 = node[].scale > 2147483647l or node[].scale < -2147483648l
             is_neg: i32 = node[].scale < 0l

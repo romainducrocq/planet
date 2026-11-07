@@ -10,7 +10,7 @@ m4_define(`GET_INSTR', `ctx[].p_instrs[][($1)]')m4_dnl
 m4_define(`GET_CFG_BLOCK', `ctx[].cfg[].blocks[($1)]')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-m4_define(`mask_t', `u64')m4_dnl
+m4_define(`mask_t', `TULong')m4_dnl
 m4_define(`AstInstruction', `TacInstruction')m4_dnl
 m4_define(`Ctx', `*struc OptimTacContext')m4_dnl
 m4_define(`free_AstInstruction', `free_TacInstruction($1)')m4_dnl
@@ -419,22 +419,22 @@ fn init_control_flow_graph(ctx: Ctx) none {
     }
 }
 
-fn mask_get(mask: u64, bit: u64) i32 {
+fn mask_get(mask: TULong, bit: u64) i32 {
     if bit > 63 {
         bit %= 64
     }
-    return (mask & (cast<u64>(1ul) << bit)) > 0
+    return (mask & (cast<TULong>(1ul) << bit)) > 0
 }
 
-fn mask_set(mask: *u64, bit: u64, value: i32) none {
+fn mask_set(mask: *TULong, bit: u64, value: i32) none {
     if bit > 63 {
         bit %= 64
     }
     if value {
-        mask[] |= cast<u64>(1ul) << bit
+        mask[] |= cast<TULong>(1ul) << bit
     }
     else {
-        mask[] &= ~(cast<u64>(1ul) << bit)
+        mask[] &= ~(cast<TULong>(1ul) << bit)
     }
 }
 

@@ -617,25 +617,25 @@ fn get_const_uint_value(node: *struc CConstant) TUInt {
     }
 }
 
-fn get_const_ulong_value(node: *struc CConstant) u64 {
+fn get_const_ulong_value(node: *struc CConstant) TULong {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
-            return cast<u64>(node[].constant[].get._CConstChar.value)
+            return cast<TULong>(node[].constant[].get._CConstChar.value)
         }
         -> AST_CConstInt_t {
-            return cast<u64>(node[].constant[].get._CConstInt.value)
+            return cast<TULong>(node[].constant[].get._CConstInt.value)
         }
         -> AST_CConstLong_t {
-            return cast<u64>(node[].constant[].get._CConstLong.value)
+            return cast<TULong>(node[].constant[].get._CConstLong.value)
         }
         -> AST_CConstDouble_t {
-            return cast<u64>(node[].constant[].get._CConstDouble.value)
+            return cast<TULong>(node[].constant[].get._CConstDouble.value)
         }
         -> AST_CConstUChar_t {
-            return cast<u64>(node[].constant[].get._CConstUChar.value)
+            return cast<TULong>(node[].constant[].get._CConstUChar.value)
         }
         -> AST_CConstUInt_t {
-            return cast<u64>(node[].constant[].get._CConstUInt.value)
+            return cast<TULong>(node[].constant[].get._CConstUInt.value)
         }
         -> AST_CConstULong_t {
             return node[].constant[].get._CConstULong.value
@@ -646,16 +646,16 @@ fn get_const_ulong_value(node: *struc CConstant) u64 {
     }
 }
 
-fn get_const_ptr_value(node: *struc CConstant) u64 {
+fn get_const_ptr_value(node: *struc CConstant) TULong {
     match node[].constant[].tag {
         -> AST_CConstInt_t {
-            return cast<u64>(node[].constant[].get._CConstInt.value)
+            return cast<TULong>(node[].constant[].get._CConstInt.value)
         }
         -> AST_CConstLong_t {
-            return cast<u64>(node[].constant[].get._CConstLong.value)
+            return cast<TULong>(node[].constant[].get._CConstLong.value)
         }
         -> AST_CConstUInt_t {
-            return cast<u64>(node[].constant[].get._CConstUInt.value)
+            return cast<TULong>(node[].constant[].get._CConstUInt.value)
         }
         -> AST_CConstULong_t {
             return node[].constant[].get._CConstULong.value
@@ -1670,7 +1670,7 @@ fn check_switch_uint_cases(ctx: Ctx, node: *struc CSwitch) error_t {
 
 fn check_switch_ulong_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
-    values: vector_t(u64) = vec_new()
+    values: vector_t(TULong) = vec_new()
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2080,7 +2080,7 @@ fn check_no_initializer(ctx: Ctx, static_init_type: *struc Type) shared_ptr_t(In
     return make_Initial(@static_inits)
 }
 
-fn make_binary_identifier(ctx: Ctx, binary: u64) u64 {
+fn make_binary_identifier(ctx: Ctx, binary: TULong) u64 {
     strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
@@ -2124,7 +2124,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
         }
         -> AST_Double_t {
             value: f64 = get_const_dbl_value(node)
-            binary: u64 = dbl_to_binary(value)
+            binary: TULong = dbl_to_binary(value)
             if binary == 0ul {
                 push_zero_static_init(ctx, 8l)
             }
@@ -2155,7 +2155,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
             break
         }
         -> AST_ULong_t {
-            value: u64 = get_const_ulong_value(node)
+            value: TULong = get_const_ulong_value(node)
             if value == 0ul {
                 push_zero_static_init(ctx, 8l)
             }
@@ -2179,7 +2179,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
                     break
                 }
             }
-            value: u64 = get_const_ptr_value(node)
+            value: TULong = get_const_ptr_value(node)
             if value ~= 0ul {
                 strto_fmt = str_to_string(value)
                 THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_static_ptr_init_not_null,

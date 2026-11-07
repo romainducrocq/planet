@@ -31,7 +31,7 @@ type struc Double(_empty: char)
 
 type struc Void(_empty: char)
 
-type struc FunType(param_reg_mask: u64, ret_reg_mask: u64, param_types: vector_t(shared_ptr_t(Type)), ret_type: shared_ptr_t(Type))
+type struc FunType(param_reg_mask: TULong, ret_reg_mask: TULong, param_types: vector_t(shared_ptr_t(Type)), ret_type: shared_ptr_t(Type))
 
 type struc Pointer(ref_type: shared_ptr_t(Type))
 
@@ -65,7 +65,7 @@ type struc LongInit(value: TLong)
 
 type struc UIntInit(value: TUInt)
 
-type struc ULongInit(value: u64)
+type struc ULongInit(value: TULong)
 
 type struc CharInit(value: TChar)
 
@@ -87,7 +87,7 @@ pub fn make_StaticInit(none) shared_ptr_t(StaticInit);
 pub fn make_IntInit(value: TInt) shared_ptr_t(StaticInit);
 pub fn make_LongInit(value: TLong) shared_ptr_t(StaticInit);
 pub fn make_UIntInit(value: TUInt) shared_ptr_t(StaticInit);
-pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit);
+pub fn make_ULongInit(value: TULong) shared_ptr_t(StaticInit);
 pub fn make_CharInit(value: TChar) shared_ptr_t(StaticInit);
 pub fn make_UCharInit(value: TUChar) shared_ptr_t(StaticInit);
 pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit);
