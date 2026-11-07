@@ -17,7 +17,7 @@ type struc QuadWord(_empty: char)
 
 type struc BackendDouble(_empty: char)
 
-type struc ByteArray(size: i64, alignment: i32)
+type struc ByteArray(size: i64, alignment: TInt)
 
 type union _AssemblyType(_Byte: struc Byte, _LongWord: struc LongWord, _QuadWord: struc QuadWord, _BackendDouble: struc BackendDouble, _ByteArray: struc ByteArray)
 
@@ -28,7 +28,7 @@ pub fn make_Byte(none) shared_ptr_t(AssemblyType);
 pub fn make_LongWord(none) shared_ptr_t(AssemblyType);
 pub fn make_QuadWord(none) shared_ptr_t(AssemblyType);
 pub fn make_BackendDouble(none) shared_ptr_t(AssemblyType);
-pub fn make_ByteArray(size: i64, alignment: i32) shared_ptr_t(AssemblyType);
+pub fn make_ByteArray(size: i64, alignment: TInt) shared_ptr_t(AssemblyType);
 pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none;
 
 type struc BackendObj(is_static: i32, is_const: i32, asm_type: shared_ptr_t(AssemblyType))

@@ -11,7 +11,7 @@ pub fn make_CConst(none) shared_ptr_t(CConst) {
     return self
 }
 
-pub fn make_CConstInt(value: i32) shared_ptr_t(CConst) {
+pub fn make_CConstInt(value: TInt) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstInt_t
     self[].get._CConstInt.value = value

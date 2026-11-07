@@ -164,7 +164,7 @@ pub fn make_StaticInit(none) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_IntInit(value: i32) shared_ptr_t(StaticInit) {
+pub fn make_IntInit(value: TInt) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_IntInit_t
     self[].get._IntInit.value = value
@@ -441,7 +441,7 @@ pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef) {
+pub fn make_StructTypedef(alignment: TInt, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef) {
     self: unique_ptr_t(StructTypedef) = uptr_new()
     uptr_alloc(StructTypedef, self)
     self[].tag = AST_StructTypedef_t

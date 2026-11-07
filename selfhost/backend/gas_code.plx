@@ -44,7 +44,7 @@ fn emit_char(ctx: Ctx, value: TChar) none {
     str_delete(strto_value)
 }
 
-fn emit_int(ctx: Ctx, value: i32) none {
+fn emit_int(ctx: Ctx, value: TInt) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
@@ -332,7 +332,7 @@ fn get_cond_code(node: *struc AsmCondCode) string {
     }
 }
 
-fn type_align_bytes(node: *struc AssemblyType) i32 {
+fn type_align_bytes(node: *struc AssemblyType) TInt {
     match node[].tag {
         -> AST_Byte_t {
             return 1
@@ -384,7 +384,7 @@ fn imm_op(ctx: Ctx, node: *struc AsmImm) none {
     }
 }
 
-fn reg_op(ctx: Ctx, node: *struc AsmRegister, byte: i32) none {
+fn reg_op(ctx: Ctx, node: *struc AsmRegister, byte: TInt) none {
     match byte {
         -> 1 {
             emit(ctx, get_reg_1b(@node[].reg))
@@ -439,7 +439,7 @@ fn indexed_op(ctx: Ctx, node: *struc AsmIndexed) none {
     emit(ctx, ")")
 }
 
-fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: i32) none {
+fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: TInt) none {
     match node[].tag {
         -> AST_AsmImm_t {
             imm_op(ctx, @node[].get._AsmImm)
@@ -527,7 +527,7 @@ fn mov_instr(ctx: Ctx, node: *struc AsmMov) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
@@ -541,12 +541,12 @@ fn mov_sx_instr(ctx: Ctx, node: *struc AsmMovSx) none {
     emit(ctx, get_type_suffix(node[].asm_type_dst, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type_src)
+        byte: TInt = type_align_bytes(node[].asm_type_src)
         emit_op(ctx, node[].src, byte)
     }
     emit(ctx, ", ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type_dst)
+        byte: TInt = type_align_bytes(node[].asm_type_dst)
         emit_op(ctx, node[].dst, byte)
     }
     emit(ctx, LF)
@@ -559,7 +559,7 @@ fn zero_extend_instr(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     emit_op(ctx, node[].src, 1)
     emit(ctx, ", ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type_dst)
+        byte: TInt = type_align_bytes(node[].asm_type_dst)
         emit_op(ctx, node[].dst, byte)
     }
     emit(ctx, LF)
@@ -578,7 +578,7 @@ fn cvttsd2si_instr(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
@@ -591,7 +591,7 @@ fn cvtsi2sd_instr(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
@@ -605,7 +605,7 @@ fn unary_instr(ctx: Ctx, node: *struc AsmUnary) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].dst, byte)
     }
     emit(ctx, LF)
@@ -621,7 +621,7 @@ fn binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
     }
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         match node[].binop.tag {
             -> AST_AsmBitShiftLeft_t {
                 -> AST_AsmBitShiftRight_t {
@@ -652,7 +652,7 @@ fn cmp_instr(ctx: Ctx, node: *struc AsmCmp) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
@@ -665,7 +665,7 @@ fn idiv_instr(ctx: Ctx, node: *struc AsmIdiv) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
     }
     emit(ctx, LF)
@@ -676,7 +676,7 @@ fn div_instr(ctx: Ctx, node: *struc AsmDiv) none {
     emit(ctx, get_type_suffix(node[].asm_type, false))
     emit(ctx, " ")
     {
-        byte: i32 = type_align_bytes(node[].asm_type)
+        byte: TInt = type_align_bytes(node[].asm_type)
         emit_op(ctx, node[].src, byte)
     }
     emit(ctx, LF)
@@ -874,7 +874,7 @@ fn static_section_toplvl(ctx: Ctx, node_list: vector_t(shared_ptr_t(StaticInit))
     }
 }
 
-fn align_directive_toplvl(ctx: Ctx, alignment: i32) none {
+fn align_directive_toplvl(ctx: Ctx, alignment: TInt) none {
     if alignment > 1 {
         emit(ctx, TAB ".balign ")
         emit_int(ctx, alignment)

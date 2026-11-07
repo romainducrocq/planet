@@ -110,14 +110,14 @@ fn repr_asm_label(ctx: Ctx, asm_label_kind: ASM_LABEL_KIND) u64 {
     return make_label_identifier(ctx[].identifiers, @name)
 }
 
-fn dbl_static_const_toplvl(ctx: Ctx, identifier: u64, dbl_const: u64, byte: i32) none;
+fn dbl_static_const_toplvl(ctx: Ctx, identifier: u64, dbl_const: u64, byte: TInt) none;
 
 fn make_binary_identifier(ctx: Ctx, binary: u64) u64 {
     strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
 
-fn dbl_static_const_op(ctx: Ctx, binary: u64, byte: i32) shared_ptr_t(AsmOperand) {
+fn dbl_static_const_op(ctx: Ctx, binary: u64, byte: TInt) shared_ptr_t(AsmOperand) {
     dbl_const_label: u64;
     {
         dbl_const: u64 = make_binary_identifier(ctx, binary)
@@ -136,7 +136,7 @@ fn dbl_static_const_op(ctx: Ctx, binary: u64, byte: i32) shared_ptr_t(AsmOperand
 
 fn dbl_const_op(ctx: Ctx, node: *struc CConstDouble) shared_ptr_t(AsmOperand) {
     binary: u64 = dbl_to_binary(node[].value)
-    byte: i32 = ? binary == 9223372036854775808ul then 16 else 8
+    byte: TInt = ? binary == 9223372036854775808ul then 16 else 8
     return dbl_static_const_op(ctx, binary, byte)
 }
 
@@ -2886,7 +2886,7 @@ fn gen_fun_toplvl(ctx: Ctx, node: *struc TacFunction) unique_ptr_t(AsmTopLevel) 
 fn gen_static_var_toplvl(ctx: Ctx, node: *struc TacStaticVariable) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
     is_glob: i32 = node[].is_glob
-    alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
+    alignment: TInt = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     vec_reserve(static_inits, vec_size(node[].static_inits))
     loop i: u64 = 0 while i < vec_size(node[].static_inits) .. ++i {
@@ -2901,16 +2901,16 @@ fn push_static_const_toplvl(ctx: Ctx, static_const_toplvls: unique_ptr_t(AsmTopL
     vec_move_back(ctx[].p_static_consts[], static_const_toplvls)
 }
 
-fn dbl_static_const_toplvl(ctx: Ctx, identifier: u64, dbl_const: u64, byte: i32) none {
+fn dbl_static_const_toplvl(ctx: Ctx, identifier: u64, dbl_const: u64, byte: TInt) none {
     name: u64 = identifier
-    alignment: i32 = byte
+    alignment: TInt = byte
     static_init: shared_ptr_t(StaticInit) = make_DoubleInit(dbl_const)
     push_static_const_toplvl(ctx, make_AsmStaticConstant(name, alignment, @static_init))
 }
 
 fn gen_static_const_toplvl(ctx: Ctx, node: *struc TacStaticConstant) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
-    alignment: i32 = gen_type_alignment(ctx[].frontend, node[].static_init_type)
+    alignment: TInt = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_init: shared_ptr_t(StaticInit) = sptr_new()
     sptr_copy(StaticInit, node[].static_init, static_init)
     return make_AsmStaticConstant(name, alignment, @static_init)

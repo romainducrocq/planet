@@ -59,7 +59,7 @@ pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
 pub fn make_Structure(tag_name: u64, is_union: i32) shared_ptr_t(Type);
 pub fn free_Type(self: *shared_ptr_t(Type)) none;
 
-type struc IntInit(value: i32)
+type struc IntInit(value: TInt)
 
 type struc LongInit(value: i64)
 
@@ -84,7 +84,7 @@ type union _StaticInit(_IntInit: struc IntInit, _LongInit: struc LongInit, _UInt
 type struc StaticInit(shared_ptr_impl(AST_T)
     get: union _StaticInit)
 pub fn make_StaticInit(none) shared_ptr_t(StaticInit);
-pub fn make_IntInit(value: i32) shared_ptr_t(StaticInit);
+pub fn make_IntInit(value: TInt) shared_ptr_t(StaticInit);
 pub fn make_LongInit(value: i64) shared_ptr_t(StaticInit);
 pub fn make_UIntInit(value: u32) shared_ptr_t(StaticInit);
 pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit);
@@ -145,8 +145,8 @@ m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
 PairKeyValue(``TIdentifier'', ``UPtrStructMember'')
 
 type struc StructTypedef(unique_ptr_impl(AST_T)
-    alignment: i32, size: i64, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
-pub fn make_StructTypedef(alignment: i32, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef);
+    alignment: TInt, size: i64, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
+pub fn make_StructTypedef(alignment: TInt, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef);
 pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none;
 
 PairKeyValue(``TIdentifier'', u64)

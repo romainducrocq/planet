@@ -37,7 +37,7 @@ pub fn make_BackendDouble(none) shared_ptr_t(AssemblyType) {
     return self
 }
 
-pub fn make_ByteArray(size: i64, alignment: i32) shared_ptr_t(AssemblyType) {
+pub fn make_ByteArray(size: i64, alignment: TInt) shared_ptr_t(AssemblyType) {
     self: shared_ptr_t(AssemblyType) = make_AssemblyType()
     self[].tag = AST_ByteArray_t
     self[].get._ByteArray.size = size

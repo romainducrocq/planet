@@ -10,7 +10,7 @@ type struc AssemblyType;
 type struc AsmProgram;
 type struc BackEndContext;
 type struc FrontEndContext;
-pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) i32;
+pub fn gen_type_alignment(ctx: *struc FrontEndContext, type_t: *struc Type) TInt;
 pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) shared_ptr_t(AssemblyType);
 pub fn convert_symbol_table(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext) none;
 

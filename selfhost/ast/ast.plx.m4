@@ -8,7 +8,7 @@ m4_include(`../ast/ast_t.plx.m4')m4_dnl
 type struc CConst;
 type struc CStringLiteral;
 
-type struc CConstInt(value: i32)
+type struc CConstInt(value: TInt)
 
 type struc CConstLong(value: i64)
 
@@ -27,7 +27,7 @@ type union _CConst(_CConstInt: struc CConstInt, _CConstLong: struc CConstLong, _
 type struc CConst(shared_ptr_impl(AST_T)
     get: union _CConst)
 pub fn make_CConst(none) shared_ptr_t(CConst);
-pub fn make_CConstInt(value: i32) shared_ptr_t(CConst);
+pub fn make_CConstInt(value: TInt) shared_ptr_t(CConst);
 pub fn make_CConstLong(value: i64) shared_ptr_t(CConst);
 pub fn make_CConstUInt(value: u32) shared_ptr_t(CConst);
 pub fn make_CConstULong(value: u64) shared_ptr_t(CConst);
