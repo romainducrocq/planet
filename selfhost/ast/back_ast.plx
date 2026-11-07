@@ -148,7 +148,7 @@ pub fn make_AsmPseudo(name: u64) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmMemory(value: i64, reg: *struc AsmReg) shared_ptr_t(AsmOperand) {
+pub fn make_AsmMemory(value: TLong, reg: *struc AsmReg) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmMemory_t
     self[].get._AsmMemory.value = value
@@ -156,7 +156,7 @@ pub fn make_AsmMemory(value: i64, reg: *struc AsmReg) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmData(name: u64, offset: i64) shared_ptr_t(AsmOperand) {
+pub fn make_AsmData(name: u64, offset: TLong) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmData_t
     self[].get._AsmData.name = name
@@ -164,7 +164,7 @@ pub fn make_AsmData(name: u64, offset: i64) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmPseudoMem(name: u64, offset: i64) shared_ptr_t(AsmOperand) {
+pub fn make_AsmPseudoMem(name: u64, offset: TLong) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmPseudoMem_t
     self[].get._AsmPseudoMem.name = name
@@ -172,7 +172,7 @@ pub fn make_AsmPseudoMem(name: u64, offset: i64) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmIndexed(scale: i64, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand) {
+pub fn make_AsmIndexed(scale: TLong, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmIndexed_t
     self[].get._AsmIndexed.scale = scale

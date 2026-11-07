@@ -59,7 +59,7 @@ type struc TacPlainOperand(val: shared_ptr_t(TacValue))
 
 type struc TacDereferencedPointer(val: shared_ptr_t(TacValue))
 
-type struc TacSubObject(base_name: u64, offset: i64)
+type struc TacSubObject(base_name: u64, offset: TLong)
 
 type union _TacExpResult(_TacPlainOperand: struc TacPlainOperand, _TacDereferencedPointer: struc TacDereferencedPointer, _TacSubObject: struc TacSubObject)
 
@@ -68,7 +68,7 @@ type struc TacExpResult(unique_ptr_impl(AST_T)
 pub fn make_TacExpResult(none) unique_ptr_t(TacExpResult);
 pub fn make_TacPlainOperand(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacExpResult);
 pub fn make_TacDereferencedPointer(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacExpResult);
-pub fn make_TacSubObject(base_name: u64, offset: i64) unique_ptr_t(TacExpResult);
+pub fn make_TacSubObject(base_name: u64, offset: TLong) unique_ptr_t(TacExpResult);
 pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none;
 
 type struc TacReturn(val: shared_ptr_t(TacValue))
@@ -101,11 +101,11 @@ type struc TacLoad(src_ptr: shared_ptr_t(TacValue), dst: shared_ptr_t(TacValue))
 
 type struc TacStore(src: shared_ptr_t(TacValue), dst_ptr: shared_ptr_t(TacValue))
 
-type struc TacAddPtr(scale: i64, src_ptr: shared_ptr_t(TacValue), idx: shared_ptr_t(TacValue), dst: shared_ptr_t(TacValue))
+type struc TacAddPtr(scale: TLong, src_ptr: shared_ptr_t(TacValue), idx: shared_ptr_t(TacValue), dst: shared_ptr_t(TacValue))
 
-type struc TacCopyToOffset(dst_name: u64, offset: i64, src: shared_ptr_t(TacValue))
+type struc TacCopyToOffset(dst_name: u64, offset: TLong, src: shared_ptr_t(TacValue))
 
-type struc TacCopyFromOffset(src_name: u64, offset: i64, dst: shared_ptr_t(TacValue))
+type struc TacCopyFromOffset(src_name: u64, offset: TLong, dst: shared_ptr_t(TacValue))
 
 type struc TacJump(target: u64)
 
@@ -135,9 +135,9 @@ pub fn make_TacCopy(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) 
 pub fn make_TacGetAddress(src: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
 pub fn make_TacLoad(src_ptr: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
 pub fn make_TacStore(src: *shared_ptr_t(TacValue), dst_ptr: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
-pub fn make_TacAddPtr(scale: i64, src_ptr: *shared_ptr_t(TacValue), idx: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
-pub fn make_TacCopyToOffset(dst_name: u64, offset: i64, src: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
-pub fn make_TacCopyFromOffset(src_name: u64, offset: i64, dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
+pub fn make_TacAddPtr(scale: TLong, src_ptr: *shared_ptr_t(TacValue), idx: *shared_ptr_t(TacValue), dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
+pub fn make_TacCopyToOffset(dst_name: u64, offset: TLong, src: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
+pub fn make_TacCopyFromOffset(src_name: u64, offset: TLong, dst: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
 pub fn make_TacJump(target: u64) unique_ptr_t(TacInstruction);
 pub fn make_TacJumpIfZero(target: u64, condition: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);
 pub fn make_TacJumpIfNotZero(target: u64, condition: *shared_ptr_t(TacValue)) unique_ptr_t(TacInstruction);

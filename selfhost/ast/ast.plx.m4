@@ -10,7 +10,7 @@ type struc CStringLiteral;
 
 type struc CConstInt(value: TInt)
 
-type struc CConstLong(value: i64)
+type struc CConstLong(value: TLong)
 
 type struc CConstUInt(value: TUInt)
 
@@ -28,7 +28,7 @@ type struc CConst(shared_ptr_impl(AST_T)
     get: union _CConst)
 pub fn make_CConst(none) shared_ptr_t(CConst);
 pub fn make_CConstInt(value: TInt) shared_ptr_t(CConst);
-pub fn make_CConstLong(value: i64) shared_ptr_t(CConst);
+pub fn make_CConstLong(value: TLong) shared_ptr_t(CConst);
 pub fn make_CConstUInt(value: TUInt) shared_ptr_t(CConst);
 pub fn make_CConstULong(value: u64) shared_ptr_t(CConst);
 pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst);

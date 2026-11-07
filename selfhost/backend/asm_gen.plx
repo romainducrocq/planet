@@ -524,8 +524,8 @@ fn gen_asm_type(ctx: Ctx, node: *struc TacValue) shared_ptr_t(AssemblyType) {
     }
 }
 
-fn asm_type_8b(ctx: Ctx, struct_type: *struc Structure, offset: i64) shared_ptr_t(AssemblyType) {
-    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size - offset
+fn asm_type_8b(ctx: Ctx, struct_type: *struc Structure, offset: TLong) shared_ptr_t(AssemblyType) {
+    size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size - offset
     if size >= 8l {
         return make_QuadWord()
     }
@@ -578,7 +578,7 @@ fn struct_2_reg_8b_class(ctx: Ctx, struct_type: *struc Structure) none {
         if struct_8b.clss[0] == CLS_integer and struct_8b.clss[1] == CLS_integer {
             break
         }
-        size: i64 = 1l
+        size: TLong = 1l
         member_type: *struc Type = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)[].member_type
         if member_type[].tag == AST_Array_t {
             loop .. while member_type[].tag == AST_Array_t {
@@ -650,7 +650,7 @@ fn struct_2_reg_8b_class(ctx: Ctx, struct_type: *struc Structure) none {
 
 fn struct_8b_class(ctx: Ctx, struct_type: *struc Structure) none {
     if map_find(ctx[].struct_8b_map, struct_type[].tag_name) == map_end() {
-        size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+        size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
         if size > 16l {
             struct_8b: struc Struct8Bytes = $(3, $(CLS_memory, CLS_memory))
             size -= 24l
@@ -722,12 +722,12 @@ fn ret_dbl_instr(ctx: Ctx, node: *struc TacReturn) none {
     ret_1_reg_mask(ctx[].p_fun_type, false)
 }
 
-fn ret_8b_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn ret_8b_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     src_name: u64 = name
     dst: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
     asm_type_src: shared_ptr_t(AssemblyType) = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
     if asm_type_src[].tag == AST_ByteArray_t {
-        size: i64 = offset + 2l
+        size: TLong = offset + 2l
         offset += asm_type_src[].get._ByteArray.size - 1l
         free_AssemblyType(@asm_type_src)
         asm_type_src = make_Byte()
@@ -777,7 +777,7 @@ fn ret_8b_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure,
     else {
         src: shared_ptr_t(AsmOperand) = sptr_new()
         {
-            from_offset: i64 = offset
+            from_offset: TLong = offset
             src = make_AsmPseudoMem(src_name, from_offset)
         }
 
@@ -799,8 +799,8 @@ fn ret_struct_instr(ctx: Ctx, node: *struc TacReturn) none {
             ret_1_reg_mask(ctx[].p_fun_type, true)
         }
         {
-            size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
-            offset: i64 = 0l
+            size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+            offset: TLong = 0l
             loop while size > 0l {
                 src: shared_ptr_t(AsmOperand) = gen_op(ctx, node[].val)
                 THROW_ABORT_IF(src[].tag ~= AST_AsmPseudoMem_t)
@@ -1260,11 +1260,11 @@ fn unsigned_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble) none {
     }
 }
 
-fn alloc_stack_instr(ctx: Ctx, byte: i64) none {
+fn alloc_stack_instr(ctx: Ctx, byte: TLong) none {
     push_instr(ctx, alloc_stack_bytes(byte))
 }
 
-fn dealloc_stack_instr(ctx: Ctx, byte: i64) none {
+fn dealloc_stack_instr(ctx: Ctx, byte: TLong) none {
     binop: struc AsmBinaryOp = init_AsmAdd()
     asm_type: shared_ptr_t(AssemblyType) = make_QuadWord()
 
@@ -1324,26 +1324,26 @@ fn stack_arg_call_instr(ctx: Ctx, node: *struc TacValue) none {
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
-fn reg_8b_arg_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn reg_8b_arg_call_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     ret_8b_instr(ctx, name, offset, struct_type, arg_reg)
 }
 
-fn quad_stack_arg_call_instr(ctx: Ctx, name: u64, offset: i64) none {
+fn quad_stack_arg_call_instr(ctx: Ctx, name: u64, offset: TLong) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         src_name: u64 = name
-        from_offset: i64 = offset
+        from_offset: TLong = offset
         src = make_AsmPseudoMem(src_name, from_offset)
     }
 
     push_instr(ctx, make_AsmPush(@src))
 }
 
-fn long_stack_arg_call_instr(ctx: Ctx, name: u64, offset: i64, asm_type: *shared_ptr_t(AssemblyType)) none {
+fn long_stack_arg_call_instr(ctx: Ctx, name: u64, offset: TLong, asm_type: *shared_ptr_t(AssemblyType)) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         src_name: u64 = name
-        from_offset: i64 = offset
+        from_offset: TLong = offset
         src = make_AsmPseudoMem(src_name, from_offset)
     }
 
@@ -1358,10 +1358,10 @@ fn long_stack_arg_call_instr(ctx: Ctx, name: u64, offset: i64, asm_type: *shared
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
-fn bytearr_stack_arg_call_instr(ctx: Ctx, name: u64, offset: i64, bytearr_type: *struc ByteArray) none {
+fn bytearr_stack_arg_call_instr(ctx: Ctx, name: u64, offset: TLong, bytearr_type: *struc ByteArray) none {
     {
-        to_offset: i64 = 0l
-        size: i64 = bytearr_type[].size
+        to_offset: TLong = 0l
+        size: TLong = bytearr_type[].size
         byte_instrs: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
         loop while size > 0l {
             byte_instr: unique_ptr_t(AsmInstruction) = uptr_new()
@@ -1401,7 +1401,7 @@ fn bytearr_stack_arg_call_instr(ctx: Ctx, name: u64, offset: i64, bytearr_type: 
     }
 }
 
-fn stack_8b_arg_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure) none {
+fn stack_8b_arg_call_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *struc Structure) none {
     asm_type: shared_ptr_t(AssemblyType) = asm_type_8b(ctx, struct_type, offset)
     match asm_type[].tag {
         -> AST_QuadWord_t {
@@ -1420,10 +1420,10 @@ fn stack_8b_arg_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc
     free_AssemblyType(@asm_type)
 }
 
-fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, is_ret_memory: i32) i64 {
+fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, is_ret_memory: i32) TLong {
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
-    stack_padding: i64 = 0l
+    stack_padding: TLong = 0l
     stack_instrs: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     p_instrs: *vector_t(unique_ptr_t(AsmInstruction)) = ctx[].p_instrs
     loop i: u64 = 0 while i < vec_size(node[].args) .. ++i {
@@ -1472,7 +1472,7 @@ fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, i
                 }
             }
             if struct_reg_size + reg_size <= 6 and struct_sse_size + sse_size <= 8 {
-                offset: i64 = 0l
+                offset: TLong = 0l
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
                     if struct_8b[].clss[j] == CLS_sse {
                         reg_8b_arg_call_instr(ctx, name, offset, nil, ctx[].sse_arg_regs[sse_size])
@@ -1486,7 +1486,7 @@ fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, i
                 }
             }
             else {
-                offset: i64 = 0l
+                offset: TLong = 0l
                 ctx[].p_instrs = @stack_instrs
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
                     stack_8b_arg_call_instr(ctx, name, offset, struct_type)
@@ -1518,12 +1518,12 @@ fn ret_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: REGISTER_KIND) none 
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn ret_8b_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn ret_8b_call_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     dst_name: u64 = name
     src: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
     asm_type_dst: shared_ptr_t(AssemblyType) = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
     if asm_type_dst[].tag == AST_ByteArray_t {
-        size: i64 = asm_type_dst[].get._ByteArray.size + offset - 2l
+        size: TLong = asm_type_dst[].get._ByteArray.size + offset - 2l
         free_AssemblyType(@asm_type_dst)
         asm_type_dst = make_Byte()
         src_shr2op: shared_ptr_t(AsmOperand) = make_AsmImm(8ul, true, false, false)
@@ -1572,7 +1572,7 @@ fn ret_8b_call_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Struc
     else {
         dst: shared_ptr_t(AsmOperand) = sptr_new()
         {
-            to_offset: i64 = offset
+            to_offset: TLong = offset
             dst = make_AsmPseudoMem(dst_name, to_offset)
         }
 
@@ -1597,7 +1597,7 @@ fn call_instr(ctx: Ctx, node: *struc TacFunCall) none {
         }
     }
     {
-        stack_padding: i64 = arg_call_instr(ctx, node, fun_type, is_ret_memory)
+        stack_padding: TLong = arg_call_instr(ctx, node, fun_type, is_ret_memory)
         {
             name: u64 = node[].name
             push_instr(ctx, make_AsmCall(name))
@@ -2101,8 +2101,8 @@ fn copy_struct_instr(ctx: Ctx, node: *struc TacCopy) none {
     src_name: u64 = node[].src[].get._TacVariable.name
     dst_name: u64 = node[].dst[].get._TacVariable.name
     struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, src_name)[].type_t[].get._Structure
-    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
-    offset: i64 = 0l
+    size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+    offset: TLong = 0l
     loop while size > 0l {
         src: shared_ptr_t(AsmOperand) = make_AsmPseudoMem(src_name, offset)
         dst: shared_ptr_t(AsmOperand) = make_AsmPseudoMem(dst_name, offset)
@@ -2171,8 +2171,8 @@ fn load_struct_instr(ctx: Ctx, node: *struc TacLoad) none {
     {
         name: u64 = node[].dst[].get._TacVariable.name
         struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
-        size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
-        offset: i64 = 0l
+        size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+        offset: TLong = 0l
         loop while size > 0l {
             src: shared_ptr_t(AsmOperand) = gen_memory(REG_Ax, offset)
             dst: shared_ptr_t(AsmOperand) = make_AsmPseudoMem(name, offset)
@@ -2231,8 +2231,8 @@ fn store_struct_instr(ctx: Ctx, node: *struc TacStore) none {
     {
         name: u64 = node[].src[].get._TacVariable.name
         struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
-        size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
-        offset: i64 = 0l
+        size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+        offset: TLong = 0l
         loop while size > 0l {
             src: shared_ptr_t(AsmOperand) = make_AsmPseudoMem(name, offset)
             dst: shared_ptr_t(AsmOperand) = gen_memory(REG_Ax, offset)
@@ -2399,15 +2399,15 @@ fn add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr) none {
 fn cp_to_offset_struct_instr(ctx: Ctx, node: *struc TacCopyToOffset) none {
     src_name: u64 = node[].src[].get._TacVariable.name
     struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, src_name)[].type_t[].get._Structure
-    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
-    offset: i64 = 0l
+    size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+    offset: TLong = 0l
     loop while size > 0l {
         src: shared_ptr_t(AsmOperand) = make_AsmPseudoMem(src_name, offset)
 
         dst: shared_ptr_t(AsmOperand) = sptr_new()
         {
             dst_name: u64 = node[].dst_name
-            to_offset: i64 = offset + node[].offset
+            to_offset: TLong = offset + node[].offset
             dst = make_AsmPseudoMem(dst_name, to_offset)
         }
         asm_type_src: shared_ptr_t(AssemblyType) = sptr_new()
@@ -2436,7 +2436,7 @@ fn cp_to_offset_scalar_instr(ctx: Ctx, node: *struc TacCopyToOffset) none {
     dst: shared_ptr_t(AsmOperand) = sptr_new()
     {
         dst_name: u64 = node[].dst_name
-        to_offset: i64 = node[].offset
+        to_offset: TLong = node[].offset
         dst = make_AsmPseudoMem(dst_name, to_offset)
     }
     asm_type_src: shared_ptr_t(AssemblyType) = gen_asm_type(ctx, node[].src)
@@ -2455,13 +2455,13 @@ fn cp_to_offset_instr(ctx: Ctx, node: *struc TacCopyToOffset) none {
 fn cp_from_offset_struct_instr(ctx: Ctx, node: *struc TacCopyFromOffset) none {
     dst_name: u64 = node[].dst[].get._TacVariable.name
     struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, dst_name)[].type_t[].get._Structure
-    size: i64 = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
-    offset: i64 = 0l
+    size: TLong = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
+    offset: TLong = 0l
     loop while size > 0l {
         src: shared_ptr_t(AsmOperand) = sptr_new()
         {
             src_name: u64 = node[].src_name
-            from_offset: i64 = offset + node[].offset
+            from_offset: TLong = offset + node[].offset
             src = make_AsmPseudoMem(src_name, from_offset)
         }
         dst: shared_ptr_t(AsmOperand) = make_AsmPseudoMem(dst_name, offset)
@@ -2489,7 +2489,7 @@ fn cp_from_offset_scalar_instr(ctx: Ctx, node: *struc TacCopyFromOffset) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         src_name: u64 = node[].src_name
-        from_offset: i64 = node[].offset
+        from_offset: TLong = node[].offset
         src = make_AsmPseudoMem(src_name, from_offset)
     }
     dst: shared_ptr_t(AsmOperand) = gen_op(ctx, node[].dst)
@@ -2727,7 +2727,7 @@ fn reg_fun_param_instr(ctx: Ctx, name: u64, arg_reg: REGISTER_KIND) none {
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn stack_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: i64) none {
+fn stack_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: TLong) none {
     src: shared_ptr_t(AsmOperand) = gen_memory(REG_Bp, stack_bytes)
 
     dst: shared_ptr_t(AsmOperand) = sptr_new()
@@ -2739,14 +2739,14 @@ fn stack_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: i64) none {
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn reg_8b_fun_param_instr(ctx: Ctx, name: u64, offset: i64, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn reg_8b_fun_param_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
     ret_8b_call_instr(ctx, name, offset, struct_type, arg_reg)
 }
 
-fn stack_8b_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: i64, offset: i64, struct_type: *struc Structure) none {
+fn stack_8b_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: TLong, offset: TLong, struct_type: *struc Structure) none {
     asm_type_dst: shared_ptr_t(AssemblyType) = asm_type_8b(ctx, struct_type, offset)
     if asm_type_dst[].tag == AST_ByteArray_t {
-        size: i64 = asm_type_dst[].get._ByteArray.size
+        size: TLong = asm_type_dst[].get._ByteArray.size
         free_AssemblyType(@asm_type_dst)
         loop while size > 0l {
             src: shared_ptr_t(AsmOperand) = gen_memory(REG_Bp, stack_bytes)
@@ -2772,7 +2772,7 @@ fn stack_8b_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: i64, offset: i64, 
         dst: shared_ptr_t(AsmOperand) = sptr_new()
         {
             dst_name: u64 = name
-            to_offset: i64 = offset
+            to_offset: TLong = offset
             dst = make_AsmPseudoMem(dst_name, to_offset)
         }
 
@@ -2783,7 +2783,7 @@ fn stack_8b_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: i64, offset: i64, 
 fn fun_param_toplvl(ctx: Ctx, node: *struc TacFunction, fun_type: *struc FunType, is_ret_memory: i32) none {
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
-    stack_bytes: i64 = 16l
+    stack_bytes: TLong = 16l
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
         param: u64 = node[].params[i]
         param_type: *struc Type = map_get(ctx[].frontend[].symbol_table, param)[].type_t
@@ -2826,7 +2826,7 @@ fn fun_param_toplvl(ctx: Ctx, node: *struc TacFunction, fun_type: *struc FunType
                 }
             }
             if struct_reg_size + reg_size <= 6 and struct_sse_size + sse_size <= 8 {
-                offset: i64 = 0l
+                offset: TLong = 0l
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
                     if struct_8b[].clss[j] == CLS_sse {
                         reg_8b_fun_param_instr(ctx, param, offset, nil, ctx[].sse_arg_regs[sse_size])
@@ -2840,7 +2840,7 @@ fn fun_param_toplvl(ctx: Ctx, node: *struc TacFunction, fun_type: *struc FunType
                 }
             }
             else {
-                offset: i64 = 0l
+                offset: TLong = 0l
                 loop j: u64 = 0 while j < struct_8b[].size .. ++j {
                     stack_8b_fun_param_instr(ctx, param, stack_bytes, offset, struct_type)
                     stack_bytes += 8l

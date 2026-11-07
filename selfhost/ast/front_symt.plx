@@ -90,7 +90,7 @@ pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) shared_ptr_t(Type) {
     return self
 }
 
-pub fn make_Array(size: i64, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type) {
+pub fn make_Array(size: TLong, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type) {
     self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Array_t
     self[].get._Array.size = size
@@ -171,7 +171,7 @@ pub fn make_IntInit(value: TInt) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_LongInit(value: i64) shared_ptr_t(StaticInit) {
+pub fn make_LongInit(value: TLong) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_LongInit_t
     self[].get._LongInit.value = value
@@ -213,7 +213,7 @@ pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_ZeroInit(byte: i64) shared_ptr_t(StaticInit) {
+pub fn make_ZeroInit(byte: TLong) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_ZeroInit_t
     self[].get._ZeroInit.byte = byte
@@ -417,7 +417,7 @@ pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructMember(offset: i64, member_type: *shared_ptr_t(Type)) unique_ptr_t(StructMember) {
+pub fn make_StructMember(offset: TLong, member_type: *shared_ptr_t(Type)) unique_ptr_t(StructMember) {
     self: unique_ptr_t(StructMember) = uptr_new()
     uptr_alloc(StructMember, self)
     self[].tag = AST_StructMember_t
@@ -441,7 +441,7 @@ pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructTypedef(alignment: TInt, size: i64, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef) {
+pub fn make_StructTypedef(alignment: TInt, size: TLong, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef) {
     self: unique_ptr_t(StructTypedef) = uptr_new()
     uptr_alloc(StructTypedef, self)
     self[].tag = AST_StructTypedef_t

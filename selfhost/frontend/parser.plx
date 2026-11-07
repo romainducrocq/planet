@@ -97,7 +97,7 @@ fn parse_char_const(ctx: Ctx) shared_ptr_t(CConst) {
 }
 
 fn parse_long_const(intmax: i64) shared_ptr_t(CConst) {
-    value: i64 = cast<i64>(intmax)
+    value: TLong = cast<i64>(intmax)
     return make_CConstLong(value)
 }
 
@@ -402,7 +402,7 @@ fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
 fn parse_arr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
     constant: shared_ptr_t(CConst) = sptr_new()
     CATCH_ENTER
-    size: i64 = 0
+    size: TLong = 0
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
@@ -433,7 +433,7 @@ fn parse_arr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
     TRY(expect_next(ctx, ctx[].next_tok, TOK_close_bracket))
     match constant[].tag {
         -> AST_CConstInt_t {
-            size = cast<i64>(constant[].get._CConstInt.value)
+            size = cast<TLong>(constant[].get._CConstInt.value)
             break
         }
         -> AST_CConstLong_t {
@@ -441,11 +441,11 @@ fn parse_arr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
             break
         }
         -> AST_CConstUInt_t {
-            size = cast<i64>(constant[].get._CConstUInt.value)
+            size = cast<TLong>(constant[].get._CConstUInt.value)
             break
         }
         -> AST_CConstULong_t {
-            size = cast<i64>(constant[].get._CConstULong.value)
+            size = cast<TLong>(constant[].get._CConstULong.value)
             break
         }
         otherwise {

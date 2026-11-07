@@ -59,7 +59,7 @@ m4_define(`init_CGreaterOrEqual', `tagged_def_init(AST, CBinaryOp, CGreaterOrEqu
 
 type struc CAbstractPointer(abstract_decltor: unique_ptr_t(CAbstractDeclarator))
 
-type struc CAbstractArray(size: i64, abstract_decltor: unique_ptr_t(CAbstractDeclarator))
+type struc CAbstractArray(size: TLong, abstract_decltor: unique_ptr_t(CAbstractDeclarator))
 
 type struc CAbstractBase(_empty: char)
 
@@ -69,7 +69,7 @@ type struc CAbstractDeclarator(unique_ptr_impl(AST_T)
     get: union _CAbstractDeclarator)
 pub fn make_CAbstractDeclarator(none) unique_ptr_t(CAbstractDeclarator);
 pub fn make_CAbstractPointer(abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator);
-pub fn make_CAbstractArray(size: i64, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator);
+pub fn make_CAbstractArray(size: TLong, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator);
 pub fn make_CAbstractBase(none) unique_ptr_t(CAbstractDeclarator);
 pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none;
 
@@ -82,7 +82,7 @@ type struc CIdent(name: u64)
 
 type struc CPointerDeclarator(decltor: unique_ptr_t(CDeclarator))
 
-type struc CArrayDeclarator(size: i64, decltor: unique_ptr_t(CDeclarator))
+type struc CArrayDeclarator(size: TLong, decltor: unique_ptr_t(CDeclarator))
 
 type struc CFunDeclarator(param_list: vector_t(unique_ptr_t(CParam)), decltor: unique_ptr_t(CDeclarator))
 
@@ -93,7 +93,7 @@ type struc CDeclarator(unique_ptr_impl(AST_T)
 pub fn make_CDeclarator(none) unique_ptr_t(CDeclarator);
 pub fn make_CIdent(name: u64) unique_ptr_t(CDeclarator);
 pub fn make_CPointerDeclarator(decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
-pub fn make_CArrayDeclarator(size: i64, decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
+pub fn make_CArrayDeclarator(size: TLong, decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
 pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
 pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none;
 

@@ -318,10 +318,10 @@ fn get_scalar_size(type_t: *struc Type) TInt {
     }
 }
 
-fn get_type_scale(ctx: Ctx, type_t: *struc Type) i64;
+fn get_type_scale(ctx: Ctx, type_t: *struc Type) TLong;
 
-fn get_arr_scale(ctx: Ctx, arr_type: *struc Array) i64 {
-    size: i64 = arr_type[].size
+fn get_arr_scale(ctx: Ctx, arr_type: *struc Array) TLong {
+    size: TLong = arr_type[].size
     loop while arr_type[].elem_type[].tag == AST_Array_t {
         arr_type = @arr_type[].elem_type[].get._Array
         size *= arr_type[].size
@@ -329,12 +329,12 @@ fn get_arr_scale(ctx: Ctx, arr_type: *struc Array) i64 {
     return get_type_scale(ctx, arr_type[].elem_type) * size
 }
 
-fn get_struct_scale(ctx: Ctx, struct_type: *struc Structure) i64 {
+fn get_struct_scale(ctx: Ctx, struct_type: *struc Structure) TLong {
     THROW_ABORT_IF(map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) == map_end())
     return map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)[].size
 }
 
-fn get_type_scale(ctx: Ctx, type_t: *struc Type) i64 {
+fn get_type_scale(ctx: Ctx, type_t: *struc Type) TLong {
     match type_t[].tag {
         -> AST_Array_t {
             return get_arr_scale(ctx, @type_t[].get._Array)
@@ -501,28 +501,28 @@ fn get_const_int_value(node: *struc CConstant) TInt {
     }
 }
 
-fn get_const_long_value(node: *struc CConstant) i64 {
+fn get_const_long_value(node: *struc CConstant) TLong {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
-            return cast<i64>(node[].constant[].get._CConstChar.value)
+            return cast<TLong>(node[].constant[].get._CConstChar.value)
         }
         -> AST_CConstInt_t {
-            return cast<i64>(node[].constant[].get._CConstInt.value)
+            return cast<TLong>(node[].constant[].get._CConstInt.value)
         }
         -> AST_CConstLong_t {
             return node[].constant[].get._CConstLong.value
         }
         -> AST_CConstDouble_t {
-            return cast<i64>(node[].constant[].get._CConstDouble.value)
+            return cast<TLong>(node[].constant[].get._CConstDouble.value)
         }
         -> AST_CConstUChar_t {
-            return cast<i64>(node[].constant[].get._CConstUChar.value)
+            return cast<TLong>(node[].constant[].get._CConstUChar.value)
         }
         -> AST_CConstUInt_t {
-            return cast<i64>(node[].constant[].get._CConstUInt.value)
+            return cast<TLong>(node[].constant[].get._CConstUInt.value)
         }
         -> AST_CConstULong_t {
-            return cast<i64>(node[].constant[].get._CConstULong.value)
+            return cast<TLong>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
             THROW_ABORT
@@ -717,7 +717,7 @@ fn check_const_exp(node: *struc CConstant) none {
 }
 
 fn check_string_exp(node: *struc CString) none {
-    size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
+    size: TLong = cast<TLong>(vec_size(node[].literal[].value)) + 1l
     elem_type: shared_ptr_t(Type) = make_Char()
     node[]._base[].exp_type = make_Array(size, @elem_type)
 }
@@ -1620,7 +1620,7 @@ fn check_switch_int_cases(ctx: Ctx, node: *struc CSwitch) error_t {
 
 fn check_switch_long_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
-    values: vector_t(i64) = vec_new()
+    values: vector_t(TLong) = vec_new()
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2053,7 +2053,7 @@ fn push_static_init(ctx: Ctx, static_init: shared_ptr_t(StaticInit)) none {
     vec_move_back(ctx[].p_static_inits[], static_init)
 }
 
-fn push_zero_static_init(ctx: Ctx, byte: i64) none {
+fn push_zero_static_init(ctx: Ctx, byte: TLong) none {
     if not vec_empty(ctx[].p_static_inits[]) and vec_back(ctx[].p_static_inits[])[].tag == AST_ZeroInit_t {
         vec_back(ctx[].p_static_inits[])[].get._ZeroInit.byte += byte
     }
@@ -2064,8 +2064,8 @@ fn push_zero_static_init(ctx: Ctx, byte: i64) none {
 
 fn check_static_init(ctx: Ctx, node: *struc CInitializer, static_init_type: *struc Type) error_t;
 
-fn check_static_no_init(ctx: Ctx, static_init_type: *struc Type, size: i64) none {
-    byte: i64 = ? static_init_type == nil then size else get_type_scale(ctx, static_init_type) * size
+fn check_static_no_init(ctx: Ctx, static_init_type: *struc Type, size: TLong) none {
+    byte: TLong = ? static_init_type == nil then size else get_type_scale(ctx, static_init_type) * size
     push_zero_static_init(ctx, byte)
 }
 
@@ -2113,7 +2113,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
             break
         }
         -> AST_Long_t {
-            value: i64 = get_const_long_value(node)
+            value: TLong = get_const_long_value(node)
             if value == 0l {
                 push_zero_static_init(ctx, 8l)
             }
@@ -2230,7 +2230,7 @@ fn check_static_ptr_string_init(ctx: Ctx, node: *struc CString) none {
 
             constant_type: shared_ptr_t(Type) = sptr_new()
             {
-                size: i64 = cast<i64>(vec_size(node[].literal[].value)) + 1l
+                size: TLong = cast<TLong>(vec_size(node[].literal[].value)) + 1l
                 elem_type: shared_ptr_t(Type) = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
@@ -2256,9 +2256,9 @@ fn check_static_ptr_string_init(ctx: Ctx, node: *struc CString) none {
 fn check_static_arr_string_init(ctx: Ctx, node: *struc CString, static_arr_type: *struc Array) error_t {
     literal: shared_ptr_t(CStringLiteral) = sptr_new()
     CATCH_ENTER
-    byte: i64;
+    byte: TLong;
     TRY(check_bound_string_init(ctx, node, static_arr_type))
-    byte = static_arr_type[].size - cast<i64>(vec_size(node[].literal[].value)) - 1l
+    byte = static_arr_type[].size - cast<TLong>(vec_size(node[].literal[].value)) - 1l
     {
         is_null_term: i32 = byte >= 0l
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
@@ -2330,7 +2330,7 @@ fn check_static_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc 
 
 fn check_static_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure) error_t {
     CATCH_ENTER
-    size: i64;
+    size: TLong;
     TRY(check_bound_struct_init(ctx, node, struct_type))
     size = 0l
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -2652,7 +2652,7 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     members: hashmap_t(``TIdentifier'', ``UPtrStructMember'') = map_new()
     CATCH_ENTER
     alignment: TInt;
-    size: i64;
+    size: TLong;
     if map_find(ctx[].frontend[].struct_typedef_table, node[].tag_name) ~= map_end() {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_struct_in_scope,
                                            str_fmt_struct_name(node[].tag_name, node[].is_union, @struct_fmt)))
@@ -2666,9 +2666,9 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
             vec_push_back(member_names, name)
         }
         member_alignment: TInt = get_type_alignment(ctx, node[].members[i][].member_type)
-        member_size: i64 = get_type_scale(ctx, node[].members[i][].member_type)
+        member_size: TLong = get_type_scale(ctx, node[].members[i][].member_type)
         {
-            offset: i64 = 0l
+            offset: TLong = 0l
             if node[].is_union {
                 if size < member_size {
                     size = member_size
@@ -2692,7 +2692,7 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
         }
     }
     {
-        offset: i64 = size % alignment
+        offset: TLong = size % alignment
         if offset ~= 0l {
             size += alignment - offset
         }
