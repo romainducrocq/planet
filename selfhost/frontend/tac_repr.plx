@@ -1336,7 +1336,7 @@ fn string_single_init_instr(ctx: Ctx, node: *struc CString, arr_type: *struc Arr
             {
                 bytes_left: u64 = bytes_size - byte_at
                 if bytes_left < 4 {
-                    value: i8 = string_bytes_to_int8(node[].literal[].value, byte_at)
+                    value: TChar = string_bytes_to_int8(node[].literal[].value, byte_at)
                     constant = make_CConstChar(value)
                     byte_at++
                 }

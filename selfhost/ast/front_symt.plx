@@ -192,7 +192,7 @@ pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_CharInit(value: i8) shared_ptr_t(StaticInit) {
+pub fn make_CharInit(value: TChar) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_CharInit_t
     self[].get._CharInit.value = value

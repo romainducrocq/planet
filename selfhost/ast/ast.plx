@@ -46,7 +46,7 @@ pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst) {
     return self
 }
 
-pub fn make_CConstChar(value: i8) shared_ptr_t(CConst) {
+pub fn make_CConstChar(value: TChar) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstChar_t
     self[].get._CConstChar.value = value
@@ -87,7 +87,7 @@ pub fn free_CConst(self: *shared_ptr_t(CConst)) none {
     sptr_free(self[])
 }
 
-pub fn make_CStringLiteral(value: *vector_t(i8)) shared_ptr_t(CStringLiteral) {
+pub fn make_CStringLiteral(value: *vector_t(TChar)) shared_ptr_t(CStringLiteral) {
     self: shared_ptr_t(CStringLiteral) = sptr_new()
     sptr_alloc(CStringLiteral, self)
     self[].tag = AST_CStringLiteral_t

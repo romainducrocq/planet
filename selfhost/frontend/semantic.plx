@@ -443,28 +443,28 @@ fn get_joint_ptr_type(ctx: Ctx, node_1: *struc CExp, node_2: *struc CExp, joint_
     CATCH_EXIT
 }
 
-fn get_const_char_value(node: *struc CConstant) i8 {
+fn get_const_char_value(node: *struc CConstant) TChar {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
             return node[].constant[].get._CConstChar.value
         }
         -> AST_CConstInt_t {
-            return cast<i8>(node[].constant[].get._CConstInt.value)
+            return cast<TChar>(node[].constant[].get._CConstInt.value)
         }
         -> AST_CConstLong_t {
-            return cast<i8>(node[].constant[].get._CConstLong.value)
+            return cast<TChar>(node[].constant[].get._CConstLong.value)
         }
         -> AST_CConstDouble_t {
-            return cast<i8>(node[].constant[].get._CConstDouble.value)
+            return cast<TChar>(node[].constant[].get._CConstDouble.value)
         }
         -> AST_CConstUChar_t {
-            return cast<i8>(node[].constant[].get._CConstUChar.value)
+            return cast<TChar>(node[].constant[].get._CConstUChar.value)
         }
         -> AST_CConstUInt_t {
-            return cast<i8>(node[].constant[].get._CConstUInt.value)
+            return cast<TChar>(node[].constant[].get._CConstUInt.value)
         }
         -> AST_CConstULong_t {
-            return cast<i8>(node[].constant[].get._CConstULong.value)
+            return cast<TChar>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
             THROW_ABORT
@@ -2092,7 +2092,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
     match static_init_type[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = get_const_char_value(node)
+                value: TChar = get_const_char_value(node)
                 if value == 0 {
                     push_zero_static_init(ctx, 1l)
                 }

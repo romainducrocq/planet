@@ -101,7 +101,7 @@ fn fold_truncate_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc 
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
+                value: TChar = cast<TChar>(constant[].value)
                 return make_CConstChar(value)
             }
         }
@@ -119,7 +119,7 @@ fn fold_truncate_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
+                value: TChar = cast<TChar>(constant[].value)
                 return make_CConstChar(value)
             }
         }
@@ -145,7 +145,7 @@ fn fold_truncate_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
+                value: TChar = cast<TChar>(constant[].value)
                 return make_CConstChar(value)
             }
         }
@@ -163,7 +163,7 @@ fn fold_truncate_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *stru
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
+                value: TChar = cast<TChar>(constant[].value)
                 return make_CConstChar(value)
             }
         }
@@ -299,7 +299,7 @@ fn fold_dbl_to_signed_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].get._CConstDouble.value)
+                value: TChar = cast<TChar>(constant[].get._CConstDouble.value)
                 fold_constant = make_CConstChar(value)
                 break
             }
@@ -1064,7 +1064,7 @@ fn fold_copy_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CC
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
-                value: i8 = cast<i8>(constant[].value)
+                value: TChar = cast<TChar>(constant[].value)
                 return make_CConstChar(value)
             }
         }
