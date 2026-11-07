@@ -38,7 +38,7 @@ fn emit_string(ctx: Ctx, string_const: u64) none {
     emit(ctx, value)
 }
 
-fn emit_char(ctx: Ctx, value: i8) none {
+fn emit_char(ctx: Ctx, value: TChar) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)

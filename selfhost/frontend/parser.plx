@@ -71,7 +71,7 @@ fn parse_identifier(ctx: Ctx, identifier: *u64) error_t {
 }
 
 fn parse_string_literal(ctx: Ctx, literal: *shared_ptr_t(CStringLiteral)) error_t {
-    value: vector_t(i8) = vec_new()
+    value: vector_t(TChar) = vec_new()
     CATCH_ENTER
     string_to_literal(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), @value)
     TRY(peek_next(ctx))

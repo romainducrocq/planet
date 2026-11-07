@@ -4,13 +4,13 @@ m4_define(`_AST_AST_T_M4', `')m4_dnl
 m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_define(`TIdentifier', `u64')m4_dnl # TODO
-m4_define(`TChar', `TODO')m4_dnl
-m4_define(`TInt', `TODO')m4_dnl
-m4_define(`TLong', `TODO')m4_dnl
-m4_define(`TUChar', `TODO')m4_dnl
-m4_define(`TUInt', `TODO')m4_dnl
-m4_define(`TULong', `TODO')m4_dnl
-m4_define(`TDouble', `TODO')m4_dnl
+m4_define(`TChar', `i8')m4_dnl
+m4_define(`TInt', `i32')m4_dnl # TODO
+m4_define(`TLong', `i64')m4_dnl # TODO
+m4_define(`TUChar', `u8')m4_dnl # TODO
+m4_define(`TUInt', `u32')m4_dnl # TODO
+m4_define(`TULong', `u64')m4_dnl # TODO
+m4_define(`TDouble', `f64')m4_dnl # TODO
 m4_define(`AST_T', `i32')m4_dnl
 m4_define(`AST_Type_t', `0')m4_dnl
 m4_define(`AST_Char_t', `1')m4_dnl

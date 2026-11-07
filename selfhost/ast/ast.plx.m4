@@ -18,7 +18,7 @@ type struc CConstULong(value: u64)
 
 type struc CConstDouble(value: f64)
 
-type struc CConstChar(value: i8)
+type struc CConstChar(value: TChar)
 
 type struc CConstUChar(value: u8)
 
@@ -32,13 +32,13 @@ pub fn make_CConstLong(value: i64) shared_ptr_t(CConst);
 pub fn make_CConstUInt(value: u32) shared_ptr_t(CConst);
 pub fn make_CConstULong(value: u64) shared_ptr_t(CConst);
 pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst);
-pub fn make_CConstChar(value: i8) shared_ptr_t(CConst);
+pub fn make_CConstChar(value: TChar) shared_ptr_t(CConst);
 pub fn make_CConstUChar(value: u8) shared_ptr_t(CConst);
 pub fn free_CConst(self: *shared_ptr_t(CConst)) none;
 
 type struc CStringLiteral(shared_ptr_impl(AST_T)
-    value: vector_t(i8))
-pub fn make_CStringLiteral(value: *vector_t(i8)) shared_ptr_t(CStringLiteral);
+    value: vector_t(TChar))
+pub fn make_CStringLiteral(value: *vector_t(TChar)) shared_ptr_t(CStringLiteral);
 pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none;
 
 PairKeyValue(``TIdentifier'', ``string_t'')
