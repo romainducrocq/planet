@@ -530,28 +530,28 @@ fn get_const_long_value(node: *struc CConstant) TLong {
     }
 }
 
-fn get_const_dbl_value(node: *struc CConstant) f64 {
+fn get_const_dbl_value(node: *struc CConstant) TDouble {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
-            return cast<f64>(node[].constant[].get._CConstChar.value)
+            return cast<TDouble>(node[].constant[].get._CConstChar.value)
         }
         -> AST_CConstInt_t {
-            return cast<f64>(node[].constant[].get._CConstInt.value)
+            return cast<TDouble>(node[].constant[].get._CConstInt.value)
         }
         -> AST_CConstLong_t {
-            return cast<f64>(node[].constant[].get._CConstLong.value)
+            return cast<TDouble>(node[].constant[].get._CConstLong.value)
         }
         -> AST_CConstDouble_t {
             return node[].constant[].get._CConstDouble.value
         }
         -> AST_CConstUChar_t {
-            return cast<f64>(node[].constant[].get._CConstUChar.value)
+            return cast<TDouble>(node[].constant[].get._CConstUChar.value)
         }
         -> AST_CConstUInt_t {
-            return cast<f64>(node[].constant[].get._CConstUInt.value)
+            return cast<TDouble>(node[].constant[].get._CConstUInt.value)
         }
         -> AST_CConstULong_t {
-            return cast<f64>(node[].constant[].get._CConstULong.value)
+            return cast<TDouble>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
             THROW_ABORT
@@ -2123,7 +2123,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
             break
         }
         -> AST_Double_t {
-            value: f64 = get_const_dbl_value(node)
+            value: TDouble = get_const_dbl_value(node)
             binary: TULong = dbl_to_binary(value)
             if binary == 0ul {
                 push_zero_static_init(ctx, 8l)

@@ -39,7 +39,7 @@ pub fn make_CConstULong(value: TULong) shared_ptr_t(CConst) {
     return self
 }
 
-pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst) {
+pub fn make_CConstDouble(value: TDouble) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstDouble_t
     self[].get._CConstDouble.value = value
