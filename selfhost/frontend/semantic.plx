@@ -588,28 +588,28 @@ fn get_const_uchar_value(node: *struc CConstant) TUChar {
     }
 }
 
-fn get_const_uint_value(node: *struc CConstant) u32 {
+fn get_const_uint_value(node: *struc CConstant) TUInt {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
-            return cast<u32>(node[].constant[].get._CConstChar.value)
+            return cast<TUInt>(node[].constant[].get._CConstChar.value)
         }
         -> AST_CConstInt_t {
-            return cast<u32>(node[].constant[].get._CConstInt.value)
+            return cast<TUInt>(node[].constant[].get._CConstInt.value)
         }
         -> AST_CConstLong_t {
-            return cast<u32>(node[].constant[].get._CConstLong.value)
+            return cast<TUInt>(node[].constant[].get._CConstLong.value)
         }
         -> AST_CConstDouble_t {
-            return cast<u32>(node[].constant[].get._CConstDouble.value)
+            return cast<TUInt>(node[].constant[].get._CConstDouble.value)
         }
         -> AST_CConstUChar_t {
-            return cast<u32>(node[].constant[].get._CConstUChar.value)
+            return cast<TUInt>(node[].constant[].get._CConstUChar.value)
         }
         -> AST_CConstUInt_t {
             return node[].constant[].get._CConstUInt.value
         }
         -> AST_CConstULong_t {
-            return cast<u32>(node[].constant[].get._CConstULong.value)
+            return cast<TUInt>(node[].constant[].get._CConstULong.value)
         }
         otherwise {
             THROW_ABORT
@@ -1645,7 +1645,7 @@ fn check_switch_long_cases(ctx: Ctx, node: *struc CSwitch) error_t {
 
 fn check_switch_uint_cases(ctx: Ctx, node: *struc CSwitch) error_t {
     strto_fmt: string_t = str_new(nil)
-    values: vector_t(u32) = vec_new()
+    values: vector_t(TUInt) = vec_new()
     CATCH_ENTER
     vec_resize(values, vec_size(node[].cases))
     loop i: u64 = 0 while i < vec_size(values) .. ++i {
@@ -2145,7 +2145,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
             break
         }
         -> AST_UInt_t {
-            value: u32 = get_const_uint_value(node)
+            value: TUInt = get_const_uint_value(node)
             if value == 0u {
                 push_zero_static_init(ctx, 4l)
             }

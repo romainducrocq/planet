@@ -12,7 +12,7 @@ type struc CConstInt(value: TInt)
 
 type struc CConstLong(value: i64)
 
-type struc CConstUInt(value: u32)
+type struc CConstUInt(value: TUInt)
 
 type struc CConstULong(value: u64)
 
@@ -29,7 +29,7 @@ type struc CConst(shared_ptr_impl(AST_T)
 pub fn make_CConst(none) shared_ptr_t(CConst);
 pub fn make_CConstInt(value: TInt) shared_ptr_t(CConst);
 pub fn make_CConstLong(value: i64) shared_ptr_t(CConst);
-pub fn make_CConstUInt(value: u32) shared_ptr_t(CConst);
+pub fn make_CConstUInt(value: TUInt) shared_ptr_t(CConst);
 pub fn make_CConstULong(value: u64) shared_ptr_t(CConst);
 pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst);
 pub fn make_CConstChar(value: TChar) shared_ptr_t(CConst);
