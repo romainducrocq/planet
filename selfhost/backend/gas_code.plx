@@ -67,7 +67,7 @@ fn emit_uchar(ctx: Ctx, value: TUChar) none {
     str_delete(strto_value)
 }
 
-fn emit_uint(ctx: Ctx, value: u32) none {
+fn emit_uint(ctx: Ctx, value: TUInt) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)

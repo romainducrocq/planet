@@ -111,7 +111,7 @@ fn parse_dbl_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
 }
 
 fn parse_uint_const(uintmax: u64) shared_ptr_t(CConst) {
-    value: u32 = cast<u32>(uintmax)
+    value: TUInt = cast<u32>(uintmax)
     return make_CConstUInt(value)
 }
 

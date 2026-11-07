@@ -63,7 +63,7 @@ type struc IntInit(value: TInt)
 
 type struc LongInit(value: i64)
 
-type struc UIntInit(value: u32)
+type struc UIntInit(value: TUInt)
 
 type struc ULongInit(value: u64)
 
@@ -86,7 +86,7 @@ type struc StaticInit(shared_ptr_impl(AST_T)
 pub fn make_StaticInit(none) shared_ptr_t(StaticInit);
 pub fn make_IntInit(value: TInt) shared_ptr_t(StaticInit);
 pub fn make_LongInit(value: i64) shared_ptr_t(StaticInit);
-pub fn make_UIntInit(value: u32) shared_ptr_t(StaticInit);
+pub fn make_UIntInit(value: TUInt) shared_ptr_t(StaticInit);
 pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit);
 pub fn make_CharInit(value: TChar) shared_ptr_t(StaticInit);
 pub fn make_UCharInit(value: TUChar) shared_ptr_t(StaticInit);
