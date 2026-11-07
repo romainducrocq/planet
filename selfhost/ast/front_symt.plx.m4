@@ -69,7 +69,7 @@ type struc ULongInit(value: u64)
 
 type struc CharInit(value: TChar)
 
-type struc UCharInit(value: u8)
+type struc UCharInit(value: TUChar)
 
 type struc DoubleInit(dbl_const: u64)
 
@@ -89,7 +89,7 @@ pub fn make_LongInit(value: i64) shared_ptr_t(StaticInit);
 pub fn make_UIntInit(value: u32) shared_ptr_t(StaticInit);
 pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit);
 pub fn make_CharInit(value: TChar) shared_ptr_t(StaticInit);
-pub fn make_UCharInit(value: u8) shared_ptr_t(StaticInit);
+pub fn make_UCharInit(value: TUChar) shared_ptr_t(StaticInit);
 pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit);
 pub fn make_ZeroInit(byte: i64) shared_ptr_t(StaticInit);
 pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit);

@@ -61,7 +61,7 @@ fn emit_dbl(ctx: Ctx, dbl_const: u64) none {
     emit(ctx, value)
 }
 
-fn emit_uchar(ctx: Ctx, value: u8) none {
+fn emit_uchar(ctx: Ctx, value: TUChar) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)

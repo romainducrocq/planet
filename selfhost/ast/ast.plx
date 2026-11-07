@@ -53,7 +53,7 @@ pub fn make_CConstChar(value: TChar) shared_ptr_t(CConst) {
     return self
 }
 
-pub fn make_CConstUChar(value: u8) shared_ptr_t(CConst) {
+pub fn make_CConstUChar(value: TUChar) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = make_CConst()
     self[].tag = AST_CConstUChar_t
     self[].get._CConstUChar.value = value
