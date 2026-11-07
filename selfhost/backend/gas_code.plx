@@ -73,7 +73,7 @@ fn emit_uint(ctx: Ctx, value: TUInt) none {
     str_delete(strto_value)
 }
 
-fn emit_ulong(ctx: Ctx, value: u64) none {
+fn emit_ulong(ctx: Ctx, value: TULong) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)

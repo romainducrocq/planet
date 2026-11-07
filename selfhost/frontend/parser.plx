@@ -116,7 +116,7 @@ fn parse_uint_const(uintmax: u64) shared_ptr_t(CConst) {
 }
 
 fn parse_ulong_const(uintmax: u64) shared_ptr_t(CConst) {
-    value: u64 = cast<u64>(uintmax)
+    value: TULong = cast<u64>(uintmax)
     return make_CConstULong(value)
 }
 

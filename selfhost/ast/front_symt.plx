@@ -185,7 +185,7 @@ pub fn make_UIntInit(value: TUInt) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_ULongInit(value: u64) shared_ptr_t(StaticInit) {
+pub fn make_ULongInit(value: TULong) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_ULongInit_t
     self[].get._ULongInit.value = value

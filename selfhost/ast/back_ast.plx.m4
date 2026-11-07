@@ -67,7 +67,7 @@ m4_define(`init_AsmB', `tagged_def_init(AST, AsmCondCode, AsmB)')m4_dnl
 m4_define(`init_AsmBE', `tagged_def_init(AST, AsmCondCode, AsmBE)')m4_dnl
 m4_define(`init_AsmP', `tagged_def_init(AST, AsmCondCode, AsmP)')m4_dnl
 
-type struc AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32)
+type struc AsmImm(value: TULong, is_byte: i32, is_quad: i32, is_neg: i32)
 
 type struc AsmRegister(reg: struc AsmReg)
 
@@ -86,7 +86,7 @@ type union _AsmOperand(_AsmImm: struc AsmImm, _AsmRegister: struc AsmRegister, _
 type struc AsmOperand(shared_ptr_impl(AST_T)
     get: union _AsmOperand)
 pub fn make_AsmOperand(none) shared_ptr_t(AsmOperand);
-pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand);
+pub fn make_AsmImm(value: TULong, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand);
 pub fn make_AsmRegister(reg: *struc AsmReg) shared_ptr_t(AsmOperand);
 pub fn make_AsmPseudo(name: u64) shared_ptr_t(AsmOperand);
 pub fn make_AsmMemory(value: TLong, reg: *struc AsmReg) shared_ptr_t(AsmOperand);

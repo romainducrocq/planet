@@ -492,7 +492,7 @@ pub fn alloc_stack_bytes(byte: TLong) unique_ptr_t(AsmInstruction) {
 
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
-        value: u64 = cast<u64>(byte)
+        value: TULong = cast<TULong>(byte)
         is_byte: i32 = byte <= 127l and byte >= -128l
         is_quad: i32 = byte > 2147483647l or byte < -2147483648l
         is_neg: i32 = byte < 0l

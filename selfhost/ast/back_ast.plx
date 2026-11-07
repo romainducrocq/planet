@@ -124,7 +124,7 @@ pub fn make_AsmOperand(none) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmImm(value: u64, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand) {
+pub fn make_AsmImm(value: TULong, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmImm_t
     self[].get._AsmImm.value = value

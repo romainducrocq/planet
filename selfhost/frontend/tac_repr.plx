@@ -851,7 +851,7 @@ fn subscript_res_instr(ctx: Ctx, node: *struc CSubscript) unique_ptr_t(TacExpRes
 fn sizeof_res_instr(ctx: Ctx, node: *struc CSizeOf) unique_ptr_t(TacExpResult) {
     constant: shared_ptr_t(CConst) = sptr_new()
     {
-        value: u64 = cast<u64>(get_type_scale(ctx, node[].exp[].exp_type))
+        value: TULong = cast<TULong>(get_type_scale(ctx, node[].exp[].exp_type))
         constant = make_CConstULong(value)
     }
     val: shared_ptr_t(TacValue) = make_TacConstant(@constant)
@@ -861,7 +861,7 @@ fn sizeof_res_instr(ctx: Ctx, node: *struc CSizeOf) unique_ptr_t(TacExpResult) {
 fn sizeoft_res_instr(ctx: Ctx, node: *struc CSizeOfT) unique_ptr_t(TacExpResult) {
     constant: shared_ptr_t(CConst) = sptr_new()
     {
-        value: u64 = cast<u64>(get_type_scale(ctx, node[].target_type))
+        value: TULong = cast<TULong>(get_type_scale(ctx, node[].target_type))
         constant = make_CConstULong(value)
     }
     val: shared_ptr_t(TacValue) = make_TacConstant(@constant)
