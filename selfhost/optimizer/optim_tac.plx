@@ -106,7 +106,7 @@ fn fold_truncate_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc 
             }
         }
         -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
+            value: TUChar = cast<TUChar>(constant[].value)
             return make_CConstUChar(value)
         }
         otherwise {
@@ -128,7 +128,7 @@ fn fold_truncate_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
             return make_CConstInt(value)
         }
         -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
+            value: TUChar = cast<TUChar>(constant[].value)
             return make_CConstUChar(value)
         }
         -> AST_UInt_t {
@@ -150,7 +150,7 @@ fn fold_truncate_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
             }
         }
         -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
+            value: TUChar = cast<TUChar>(constant[].value)
             return make_CConstUChar(value)
         }
         otherwise {
@@ -172,7 +172,7 @@ fn fold_truncate_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *stru
             return make_CConstInt(value)
         }
         -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
+            value: TUChar = cast<TUChar>(constant[].value)
             return make_CConstUChar(value)
         }
         -> AST_UInt_t {
@@ -336,7 +336,7 @@ fn fold_dbl_to_unsigned_const(ctx: Ctx, node: *struc TacVariable, constant: *str
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].get._CConstDouble.value)
+            value: TUChar = cast<TUChar>(constant[].get._CConstDouble.value)
             fold_constant = make_CConstUChar(value)
             break
         }
@@ -996,7 +996,7 @@ fn fold_copy_char_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCo
             }
         }
         -> AST_UChar_t {
-            value: u8 = cast<u8>(constant[].value)
+            value: TUChar = cast<TUChar>(constant[].value)
             return make_CConstUChar(value)
         }
         otherwise {

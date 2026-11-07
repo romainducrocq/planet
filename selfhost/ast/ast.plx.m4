@@ -20,7 +20,7 @@ type struc CConstDouble(value: f64)
 
 type struc CConstChar(value: TChar)
 
-type struc CConstUChar(value: u8)
+type struc CConstUChar(value: TUChar)
 
 type union _CConst(_CConstInt: struc CConstInt, _CConstLong: struc CConstLong, _CConstUInt: struc CConstUInt, _CConstULong: struc CConstULong, _CConstDouble: struc CConstDouble, _CConstChar: struc CConstChar, _CConstUChar: struc CConstUChar)
 
@@ -33,7 +33,7 @@ pub fn make_CConstUInt(value: u32) shared_ptr_t(CConst);
 pub fn make_CConstULong(value: u64) shared_ptr_t(CConst);
 pub fn make_CConstDouble(value: f64) shared_ptr_t(CConst);
 pub fn make_CConstChar(value: TChar) shared_ptr_t(CConst);
-pub fn make_CConstUChar(value: u8) shared_ptr_t(CConst);
+pub fn make_CConstUChar(value: TUChar) shared_ptr_t(CConst);
 pub fn free_CConst(self: *shared_ptr_t(CConst)) none;
 
 type struc CStringLiteral(shared_ptr_impl(AST_T)

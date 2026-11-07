@@ -7,7 +7,7 @@ m4_define(`TIdentifier', `u64')m4_dnl # TODO
 m4_define(`TChar', `i8')m4_dnl
 m4_define(`TInt', `i32')m4_dnl # TODO
 m4_define(`TLong', `i64')m4_dnl # TODO
-m4_define(`TUChar', `u8')m4_dnl # TODO
+m4_define(`TUChar', `u8')m4_dnl
 m4_define(`TUInt', `u32')m4_dnl # TODO
 m4_define(`TULong', `u64')m4_dnl # TODO
 m4_define(`TDouble', `f64')m4_dnl # TODO
