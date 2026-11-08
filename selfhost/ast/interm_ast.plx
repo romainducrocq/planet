@@ -518,7 +518,7 @@ pub fn make_TacTopLevel(none) unique_ptr_t(TacTopLevel) {
     return self
 }
 
-pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) unique_ptr_t(TacTopLevel) {
+pub fn make_TacFunction(name: u64, is_glob: bool, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) unique_ptr_t(TacTopLevel) {
     self: unique_ptr_t(TacTopLevel) = make_TacTopLevel()
     self[].tag = AST_TacFunction_t
     self[].get._TacFunction.name = name
@@ -530,7 +530,7 @@ pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier),
     return self
 }
 
-pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(TacTopLevel) {
+pub fn make_TacStaticVariable(name: u64, is_glob: bool, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(TacTopLevel) {
     self: unique_ptr_t(TacTopLevel) = make_TacTopLevel()
     self[].tag = AST_TacStaticVariable_t
     self[].get._TacStaticVariable.name = name

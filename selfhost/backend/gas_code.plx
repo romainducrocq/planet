@@ -354,7 +354,7 @@ fn type_align_bytes(node: *struc AssemblyType) TInt {
     }
 }
 
-fn get_type_suffix(node: *struc AssemblyType, is_packed: i32) string {
+fn get_type_suffix(node: *struc AssemblyType, is_packed: bool) string {
     match node[].tag {
         -> AST_Byte_t {
             return "b"
@@ -484,7 +484,7 @@ fn get_unop(node: *struc AsmUnaryOp) string {
     }
 }
 
-fn get_binop(node: *struc AsmBinaryOp, is_dbl: i32) string {
+fn get_binop(node: *struc AsmBinaryOp, is_dbl: bool) string {
     match node[].tag {
         -> AST_AsmAdd_t {
             return "add"
@@ -614,9 +614,9 @@ fn unary_instr(ctx: Ctx, node: *struc AsmUnary) none {
 fn binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
     emit(ctx, TAB TAB)
     {
-        is_dbl: i32 = node[].asm_type[].tag == AST_BackendDouble_t
+        is_dbl: bool = node[].asm_type[].tag == AST_BackendDouble_t
         emit(ctx, get_binop(@node[].binop, is_dbl))
-        is_packed: i32 = node[].binop.tag == AST_AsmBitXor_t and is_dbl
+        is_packed: bool = node[].binop.tag == AST_AsmBitXor_t and is_dbl
         emit(ctx, get_type_suffix(node[].asm_type, is_packed))
     }
     emit(ctx, " ")
@@ -849,7 +849,7 @@ fn emit_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(AsmInstruction))) 
     }
 }
 
-fn glob_directive_toplvl(ctx: Ctx, name: u64, is_glob: i32) none {
+fn glob_directive_toplvl(ctx: Ctx, name: u64, is_glob: bool) none {
     if is_glob {
         emit(ctx, TAB ".globl ")
         emit_identifier(ctx, name)

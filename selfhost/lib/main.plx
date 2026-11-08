@@ -27,7 +27,7 @@ m4_include(`../backend/symt_cvt.plx.m4')m4_dnl
 m4_include(`../optimizer/optim_tac.plx.m4')m4_dnl
 m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
 
-type struc MainContext(errors: *struc ErrorsContext, is_verbose: i32, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t, includedirs: vector_t(string), stdlibdirs: vector_t(string))
+type struc MainContext(errors: *struc ErrorsContext, is_verbose: bool, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t, includedirs: vector_t(string), stdlibdirs: vector_t(string))
 
 m4_define(`Ctx', `*struc MainContext')m4_dnl
 
@@ -155,7 +155,7 @@ m4_ifdef(`__linux__', `', `
     CATCH_EXIT
 }
 
-fn arg_parse_uint8(arg: string, value: *u8) i32 {
+fn arg_parse_uint8(arg: string, value: *u8) bool {
     end_ptr: string = nil
     value[] = cast<u8>(strtol(arg, @end_ptr, 10))
     return end_ptr == arg

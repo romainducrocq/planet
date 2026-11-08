@@ -127,7 +127,7 @@ pub fn repr_loop_identifier(ctx: Ctx, label_kind: LABEL_KIND, target: u64) u64 {
     return make_string_identifier(ctx, @name)
 }
 
-pub fn repr_case_identifier(ctx: Ctx, target: u64, is_label: i32, i: u64) u64 {
+pub fn repr_case_identifier(ctx: Ctx, target: u64, is_label: bool, i: u64) u64 {
     name: string_t = ? is_label then str_new("case_") else str_new("")
     {
         strto_i: string_t = str_to_string(i)

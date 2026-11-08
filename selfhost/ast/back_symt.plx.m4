@@ -31,17 +31,17 @@ pub fn make_BackendDouble(none) shared_ptr_t(AssemblyType);
 pub fn make_ByteArray(size: TLong, alignment: TInt) shared_ptr_t(AssemblyType);
 pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none;
 
-type struc BackendObj(is_static: i32, is_const: i32, asm_type: shared_ptr_t(AssemblyType))
+type struc BackendObj(is_static: bool, is_const: bool, asm_type: shared_ptr_t(AssemblyType))
 
-type struc BackendFun(is_def: i32, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand)))
+type struc BackendFun(is_def: bool, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand)))
 
 type union _BackendSymbol(_BackendObj: struc BackendObj, _BackendFun: struc BackendFun)
 
 type struc BackendSymbol(unique_ptr_impl(AST_T)
     get: union _BackendSymbol)
 pub fn make_BackendSymbol(none) unique_ptr_t(BackendSymbol);
-pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol);
-pub fn make_BackendFun(is_def: i32) unique_ptr_t(BackendSymbol);
+pub fn make_BackendObj(is_static: bool, is_const: bool, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol);
+pub fn make_BackendFun(is_def: bool) unique_ptr_t(BackendSymbol);
 pub fn free_BackendSymbol(self: *unique_ptr_t(BackendSymbol)) none;
 m4_define(`UPtrBackendSymbol', `unique_ptr_t(BackendSymbol)')m4_dnl
 

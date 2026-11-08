@@ -18,21 +18,21 @@ PairKeyValue(``TIdentifier'', ``StStructure'')
 type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
 
 m4_define(`Ctx', `*struc SemanticContext')m4_dnl
-fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32;
+fn is_same_type(type_1: *struc Type, type_2: *struc Type) bool;
 
-fn is_same_ptr(ptr_type_1: *struc Pointer, ptr_type_2: *struc Pointer) i32 {
+fn is_same_ptr(ptr_type_1: *struc Pointer, ptr_type_2: *struc Pointer) bool {
     return is_same_type(ptr_type_1[].ref_type, ptr_type_2[].ref_type)
 }
 
-fn is_same_arr(arr_type_1: *struc Array, arr_type_2: *struc Array) i32 {
+fn is_same_arr(arr_type_1: *struc Array, arr_type_2: *struc Array) bool {
     return arr_type_1[].size == arr_type_2[].size and is_same_type(arr_type_1[].elem_type, arr_type_2[].elem_type)
 }
 
-fn is_same_struct(struct_type_1: *struc Structure, struct_type_2: *struc Structure) i32 {
+fn is_same_struct(struct_type_1: *struc Structure, struct_type_2: *struc Structure) bool {
     return struct_type_1[].tag_name == struct_type_2[].tag_name
 }
 
-fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32 {
+fn is_same_type(type_1: *struc Type, type_2: *struc Type) bool {
     if type_1[].tag == type_2[].tag {
         match type_1[].tag {
             -> AST_Pointer_t {
@@ -55,7 +55,7 @@ fn is_same_type(type_1: *struc Type, type_2: *struc Type) i32 {
     return false
 }
 
-fn is_same_fun_type(fun_type_1: *struc FunType, fun_type_2: *struc FunType) i32 {
+fn is_same_fun_type(fun_type_1: *struc FunType, fun_type_2: *struc FunType) bool {
     if vec_size(fun_type_1[].param_types) ~= vec_size(fun_type_2[].param_types) or not is_same_type(fun_type_1[].ret_type, fun_type_2[].ret_type) {
         return false
     }
@@ -67,7 +67,7 @@ fn is_same_fun_type(fun_type_1: *struc FunType, fun_type_2: *struc FunType) i32 
     return true
 }
 
-fn is_type_signed(type_t: *struc Type) i32 {
+fn is_type_signed(type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -86,7 +86,7 @@ fn is_type_signed(type_t: *struc Type) i32 {
     }
 }
 
-fn is_type_char(type_t: *struc Type) i32 {
+fn is_type_char(type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -101,7 +101,7 @@ fn is_type_char(type_t: *struc Type) i32 {
     }
 }
 
-fn is_type_int(type_t: *struc Type) i32 {
+fn is_type_int(type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -124,7 +124,7 @@ fn is_type_int(type_t: *struc Type) i32 {
     }
 }
 
-fn is_type_arithmetic(type_t: *struc Type) i32 {
+fn is_type_arithmetic(type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -149,7 +149,7 @@ fn is_type_arithmetic(type_t: *struc Type) i32 {
     }
 }
 
-fn is_type_scalar(type_t: *struc Type) i32 {
+fn is_type_scalar(type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -176,11 +176,11 @@ fn is_type_scalar(type_t: *struc Type) i32 {
     }
 }
 
-fn is_struct_complete(ctx: Ctx, struct_type: *struc Structure) i32 {
+fn is_struct_complete(ctx: Ctx, struct_type: *struc Structure) bool {
     return map_find(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name) ~= map_end()
 }
 
-fn is_type_complete(ctx: Ctx, type_t: *struc Type) i32 {
+fn is_type_complete(ctx: Ctx, type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Void_t {
             return false
@@ -241,13 +241,13 @@ fn is_valid_type(ctx: Ctx, type_t: *struc Type) error_t {
     CATCH_EXIT
 }
 
-fn is_exp_lvalue(node: *struc CExp) i32;
+fn is_exp_lvalue(node: *struc CExp) bool;
 
-fn is_dot_exp_lvalue(node: *struc CDot) i32 {
+fn is_dot_exp_lvalue(node: *struc CDot) bool {
     return is_exp_lvalue(node[].structure)
 }
 
-fn is_exp_lvalue(node: *struc CExp) i32 {
+fn is_exp_lvalue(node: *struc CExp) bool {
     match node[].tag {
         -> AST_CString_t {
             -> AST_CVar_t {
@@ -269,7 +269,7 @@ fn is_exp_lvalue(node: *struc CExp) i32 {
     }
 }
 
-fn is_const_null_ptr(node: *struc CConstant) i32 {
+fn is_const_null_ptr(node: *struc CConstant) bool {
     match node[].constant[].tag {
         -> AST_CConstInt_t {
             return node[].constant[].get._CConstInt.value == 0
@@ -2007,8 +2007,8 @@ fn check_fun_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     glob_fun_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     THROW_ABORT_IF(node[].fun_type[].tag == AST_Void_t)
-    is_def: i32 = set_find(ctx[].fun_def_set, node[].name) ~= set_end()
-    is_glob: i32 = node[].storage_class.tag ~= AST_CStatic_t
+    is_def: bool = set_find(ctx[].fun_def_set, node[].name) ~= set_end()
+    is_glob: bool = node[].storage_class.tag ~= AST_CStatic_t
     map_it: i64 = map_find(ctx[].frontend[].symbol_table, node[].name)
     if map_it ~= map_end() {
         fun_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
@@ -2260,7 +2260,7 @@ fn check_static_arr_string_init(ctx: Ctx, node: *struc CString, static_arr_type:
     TRY(check_bound_string_init(ctx, node, static_arr_type))
     byte = static_arr_type[].size - cast<TLong>(vec_size(node[].literal[].value)) - 1l
     {
-        is_null_term: i32 = byte >= 0l
+        is_null_term: bool = byte >= 0l
         string_const: u64 = make_literal_identifier(ctx, node[].literal)
         sptr_copy(CStringLiteral, node[].literal, literal)
         push_static_init(ctx, make_StringInit(string_const, is_null_term, @literal))
@@ -2417,7 +2417,7 @@ fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     init_value: shared_ptr_t(InitialValue) = sptr_new()
     glob_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
-    is_glob: i32;
+    is_glob: bool;
     map_it: i64;
     ctx[].errors[].info_at_buf = node[].info_at
     TRY(reslv_struct_type(ctx, node[].var_type))
@@ -2802,7 +2802,7 @@ fn deannotate_lookup(ctx: Ctx) none {
     vec_pop_back(ctx[].break_loop_labels)
 }
 
-fn is_file_scope(ctx: Ctx) i32 {
+fn is_file_scope(ctx: Ctx) bool {
     return vec_size(ctx[].scoped_identifier_maps) == 1
 }
 

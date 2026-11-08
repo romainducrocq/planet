@@ -189,14 +189,14 @@ fn cvt_fun_type(ctx: Ctx, node: *struc FunAttr, fun_type: *struc FunType) none {
     if fun_type[].ret_reg_mask == NULL_REGISTER_MASK {
         fun_type[].ret_reg_mask = REGISTER_MASK_FALSE
     }
-    is_def: i32 = node[].is_def
+    is_def: bool = node[].is_def
     cvt_backend_symbol(ctx, make_BackendFun(is_def))
 }
 
 fn cvt_obj_type(ctx: Ctx, node: *struc IdentifierAttr) none {
     if node[].tag ~= AST_ConstantAttr_t {
         asm_type: shared_ptr_t(AssemblyType) = cvt_backend_asm_type(ctx[].frontend, ctx[].symbol)
-        is_static: i32 = node[].tag == AST_StaticAttr_t
+        is_static: bool = node[].tag == AST_StaticAttr_t
         cvt_backend_symbol(ctx, make_BackendObj(is_static, false, @asm_type))
     }
 }

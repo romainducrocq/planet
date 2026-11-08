@@ -124,7 +124,7 @@ pub fn make_AsmOperand(none) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmImm(value: TULong, is_byte: i32, is_quad: i32, is_neg: i32) shared_ptr_t(AsmOperand) {
+pub fn make_AsmImm(value: TULong, is_byte: bool, is_quad: bool, is_neg: bool) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmImm_t
     self[].get._AsmImm.value = value
@@ -582,7 +582,7 @@ pub fn make_AsmTopLevel(none) unique_ptr_t(AsmTopLevel) {
     return self
 }
 
-pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel) {
+pub fn make_AsmFunction(name: u64, is_glob: bool, is_ret_memory: bool, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel) {
     self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmFunction_t
     self[].get._AsmFunction.name = name
@@ -593,7 +593,7 @@ pub fn make_AsmFunction(name: u64, is_glob: i32, is_ret_memory: i32, instruction
     return self
 }
 
-pub fn make_AsmStaticVariable(name: u64, alignment: TInt, is_glob: i32, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel) {
+pub fn make_AsmStaticVariable(name: u64, alignment: TInt, is_glob: bool, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel) {
     self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmStaticVariable_t
     self[].get._AsmStaticVariable.name = name

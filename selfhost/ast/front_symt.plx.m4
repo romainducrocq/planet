@@ -37,7 +37,7 @@ type struc Pointer(ref_type: shared_ptr_t(Type))
 
 type struc Array(size: TLong, elem_type: shared_ptr_t(Type))
 
-type struc Structure(tag_name: u64, is_union: i32)
+type struc Structure(tag_name: u64, is_union: bool)
 
 type union _Type(_Char: struc Char, _SChar: struc SChar, _UChar: struc UChar, _Int: struc Int, _Long: struc Long, _UInt: struc UInt, _ULong: struc ULong, _Double: struc Double, _Void: struc Void, _FunType: struc FunType, _Pointer: struc Pointer, _Array: struc Array, _Structure: struc Structure)
 
@@ -56,7 +56,7 @@ pub fn make_Void(none) shared_ptr_t(Type);
 pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
 pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
 pub fn make_Array(size: TLong, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
-pub fn make_Structure(tag_name: u64, is_union: i32) shared_ptr_t(Type);
+pub fn make_Structure(tag_name: u64, is_union: bool) shared_ptr_t(Type);
 pub fn free_Type(self: *shared_ptr_t(Type)) none;
 
 type struc IntInit(value: TInt)
@@ -75,7 +75,7 @@ type struc DoubleInit(dbl_const: u64)
 
 type struc ZeroInit(byte: TLong)
 
-type struc StringInit(string_const: u64, is_null_term: i32, literal: shared_ptr_t(CStringLiteral))
+type struc StringInit(string_const: u64, is_null_term: bool, literal: shared_ptr_t(CStringLiteral))
 
 type struc PointerInit(name: u64)
 
@@ -92,7 +92,7 @@ pub fn make_CharInit(value: TChar) shared_ptr_t(StaticInit);
 pub fn make_UCharInit(value: TUChar) shared_ptr_t(StaticInit);
 pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit);
 pub fn make_ZeroInit(byte: TLong) shared_ptr_t(StaticInit);
-pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit);
+pub fn make_StringInit(string_const: u64, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit);
 pub fn make_PointerInit(name: u64) shared_ptr_t(StaticInit);
 pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none;
 
@@ -112,9 +112,9 @@ pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) shared_pt
 pub fn make_NoInitializer(none) shared_ptr_t(InitialValue);
 pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none;
 
-type struc FunAttr(is_def: i32, is_glob: i32)
+type struc FunAttr(is_def: bool, is_glob: bool)
 
-type struc StaticAttr(is_glob: i32, init: shared_ptr_t(InitialValue))
+type struc StaticAttr(is_glob: bool, init: shared_ptr_t(InitialValue))
 
 type struc ConstantAttr(static_init: shared_ptr_t(StaticInit))
 
@@ -125,8 +125,8 @@ type union _IdentifierAttr(_FunAttr: struc FunAttr, _StaticAttr: struc StaticAtt
 type struc IdentifierAttr(unique_ptr_impl(AST_T)
     get: union _IdentifierAttr)
 pub fn make_IdentifierAttr(none) unique_ptr_t(IdentifierAttr);
-pub fn make_FunAttr(is_def: i32, is_glob: i32) unique_ptr_t(IdentifierAttr);
-pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) unique_ptr_t(IdentifierAttr);
+pub fn make_FunAttr(is_def: bool, is_glob: bool) unique_ptr_t(IdentifierAttr);
+pub fn make_StaticAttr(is_glob: bool, init: *shared_ptr_t(InitialValue)) unique_ptr_t(IdentifierAttr);
 pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(IdentifierAttr);
 pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr);
 pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none;

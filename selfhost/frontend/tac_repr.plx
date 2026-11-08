@@ -104,7 +104,7 @@ fn var_value(node: *struc CVar) shared_ptr_t(TacValue) {
     return make_TacVariable(name)
 }
 
-fn exp_inner_value(ctx: Ctx, node: *struc CExp, is_ptr: i32) shared_ptr_t(TacValue) {
+fn exp_inner_value(ctx: Ctx, node: *struc CExp, is_ptr: bool) shared_ptr_t(TacValue) {
     inner_name: u64 = repr_var_identifier(ctx[].identifiers, node)
     if map_find(ctx[].frontend[].symbol_table, inner_name) == map_end() {
         inner_type: shared_ptr_t(Type) = sptr_new()
@@ -202,7 +202,7 @@ fn var_res_instr(node: *struc CVar) unique_ptr_t(TacExpResult) {
     return make_TacPlainOperand(@val)
 }
 
-fn is_type_signed(type_t: *struc Type) i32 {
+fn is_type_signed(type_t: *struc Type) bool {
     match type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -1538,7 +1538,7 @@ fn repr_block(ctx: Ctx, node: *struc CBlock) none {
 
 fn repr_fun_toplvl(ctx: Ctx, node: *struc CFunctionDeclaration) unique_ptr_t(TacTopLevel) {
     name: u64 = node[].name
-    is_glob: i32 = map_get(ctx[].frontend[].symbol_table, node[].name)[].attrs[].get._FunAttr.is_glob
+    is_glob: bool = map_get(ctx[].frontend[].symbol_table, node[].name)[].attrs[].get._FunAttr.is_glob
     params: vector_t(TIdentifier) = vec_new()
     vec_resize(params, vec_size(node[].params))
     memcpy(params, node[].params, sizeof<u64> * vec_size(node[].params))
@@ -1613,7 +1613,7 @@ fn repr_static_var_toplvl(ctx: Ctx, node: *struc Symbol, symbol: u64) none {
         return none
     }
     name: u64 = symbol
-    is_glob: i32 = static_attr[].is_glob
+    is_glob: bool = static_attr[].is_glob
     static_init_type: shared_ptr_t(Type) = sptr_new()
     sptr_copy(Type, node[].type_t, static_init_type)
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()

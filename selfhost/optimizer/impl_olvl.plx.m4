@@ -130,7 +130,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 ')m4_dnl
 }
 
-fn find_size_t(xs: vector_t(u64), x: u64) i32 {
+fn find_size_t(xs: vector_t(u64), x: u64) bool {
     loop i: u64 = 0 while i < vec_size(xs) .. ++i {
         if xs[i] == x {
             return true
@@ -172,7 +172,7 @@ fn cfg_add_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
     }
 }
 
-fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64, is_reachable: i32) none {
+fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64, is_reachable: bool) none {
     if is_reachable {
         loop i: u64 = vec_size(succ_ids[]) while i-- > 0 {
             if succ_ids[][i] == succ_id {
@@ -189,7 +189,7 @@ fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64,
     }
 }
 
-fn cfg_rm_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64, is_reachable: i32) none {
+fn cfg_rm_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64, is_reachable: bool) none {
     if succ_id < ctx[].cfg[].exit_id {
         cfg_rm_edge(@GET_CFG_BLOCK(block_id).succ_ids, @GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id, is_reachable)
     }
@@ -213,7 +213,7 @@ fn cfg_rm_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
     }
 }
 
-fn cfg_rm_empty_block(ctx: Ctx, block_id: u64, is_reachable: i32) none {
+fn cfg_rm_empty_block(ctx: Ctx, block_id: u64, is_reachable: bool) none {
     loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++i {
         succ_id: u64 = GET_CFG_BLOCK(block_id).succ_ids[i]
         if is_reachable {
@@ -419,14 +419,14 @@ fn init_control_flow_graph(ctx: Ctx) none {
     }
 }
 
-fn mask_get(mask: TULong, bit: u64) i32 {
+fn mask_get(mask: TULong, bit: u64) bool {
     if bit > 63 {
         bit %= 64
     }
     return (mask & (cast<TULong>(1ul) << bit)) > 0
 }
 
-fn mask_set(mask: *TULong, bit: u64, value: i32) none {
+fn mask_set(mask: *TULong, bit: u64, value: bool) none {
     if bit > 63 {
         bit %= 64
     }
@@ -461,9 +461,9 @@ m4_define(`GET_DFA_INSTR', `GET_INSTR(ctx[].dfa_o1[].data_idx_map[($1)])')m4_dnl
 
 fn is_transfer_instr(ctx: Ctx, instr_idx: u64
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-    , is_store_elim: i32
+    , is_store_elim: bool
 ')m4_dnl
-) i32 {
+) bool {
     match GET_INSTR(instr_idx)[].tag {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacSignExtend_t {
@@ -574,7 +574,7 @@ fn get_dfa_bak_instr(ctx: Ctx, i: u64) *struc TacInstruction {
     }
 }
 
-fn set_dfa_bak_instr(ctx: Ctx, instr_idx: u64, i: *u64) i32 {
+fn set_dfa_bak_instr(ctx: Ctx, instr_idx: u64, i: *u64) bool {
     i[] = get_dfa_data_idx(ctx, instr_idx)
     if not ctx[].cfg[].reaching_code[i[]] {
         ctx[].cfg[].reaching_code[i[]] = true
@@ -587,7 +587,7 @@ fn set_dfa_bak_instr(ctx: Ctx, instr_idx: u64, i: *u64) i32 {
 ')m4_dnl
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) i32;
+fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) bool;
 fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none;
 ', __OPTIM_LEVEL__, `2', `
 fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none;
@@ -653,8 +653,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     return instr_idx
 }
 
-fn dfa_after_meet_block(ctx: Ctx, block_id: u64) i32 {
-    is_fixed_point: i32 = true
+fn dfa_after_meet_block(ctx: Ctx, block_id: u64) bool {
+    is_fixed_point: bool = true
     {
         i: u64 = 0
         loop while i < ctx[].dfa[].mask_size .. ++i {
@@ -671,7 +671,7 @@ fn dfa_after_meet_block(ctx: Ctx, block_id: u64) i32 {
 }
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
+fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) bool {
     instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx
     loop while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
         if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx, false) {
@@ -710,7 +710,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) i32 {
 }
 ')m4_dnl
 
-fn dfa_backward_meet_block(ctx: Ctx, block_id: u64) i32 {
+fn dfa_backward_meet_block(ctx: Ctx, block_id: u64) bool {
     instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_back_idx + 1
     loop while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
         if GET_INSTR(instr_idx) and is_transfer_instr(ctx, instr_idx
@@ -760,7 +760,7 @@ fn dfa_forward_iter_alg(ctx: Ctx) none {
         if block_id == ctx[].cfg[].exit_id {
             continue
         }
-        is_fixed_point: i32 = dfa_forward_meet_block(ctx, block_id)
+        is_fixed_point: bool = dfa_forward_meet_block(ctx, block_id)
         if not is_fixed_point {
             loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++j {
                 succ_id: u64 = GET_CFG_BLOCK(block_id).succ_ids[j]
@@ -795,7 +795,7 @@ fn dfa_iter_alg(ctx: Ctx) none {
         if block_id == ctx[].cfg[].exit_id {
             continue
         }
-        is_fixed_point: i32 = dfa_backward_meet_block(ctx, block_id)
+        is_fixed_point: bool = dfa_backward_meet_block(ctx, block_id)
         if not is_fixed_point {
             loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++j {
                 pred_id: u64 = GET_CFG_BLOCK(block_id).pred_ids[j]
@@ -861,7 +861,7 @@ fn dfa_backward_open_block(ctx: Ctx, block_id: u64, i: *u64) none {
     }
 }
 
-fn is_aliased_name(ctx: Ctx, name: u64) i32 {
+fn is_aliased_name(ctx: Ctx, name: u64) bool {
     return map_get(ctx[].frontend[].symbol_table, name)[].attrs[].tag == AST_StaticAttr_t or set_find(ctx[].frontend[].addressed_set, name) ~= set_end()
 }
 
@@ -872,9 +872,9 @@ fn dfa_add_aliased_value(ctx: Ctx, node: *struc TacValue) none {
     }
 }
 
-fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) i32;
+fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) bool;
 
-fn prop_add_data_idx(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64) i32 {
+fn prop_add_data_idx(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64) bool {
     THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     if is_same_value(node[].src, node[].dst) {
         cfg_rm_block_instr(ctx, instr_idx, block_id)
@@ -921,11 +921,11 @@ fn infer_add_data_op(ctx: Ctx, node: *struc AsmOperand) none {
 
 fn init_data_flow_analysis(ctx: Ctx,
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-    is_store_elim: i32, is_addressed_set: i32
+    is_store_elim: bool, is_addressed_set: bool
 ', __OPTIM_LEVEL__, `2', `
     fun_name: u64
 ')m4_dnl
-) i32 {
+) bool {
     ctx[].dfa[].set_size = 0
     ctx[].dfa[].incoming_idx = vec_size(ctx[].p_instrs[])
     if vec_size(ctx[].dfa[].open_data_map) < vec_size(ctx[].cfg[].blocks) {
@@ -945,10 +945,10 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     if vec_size(ctx[].cfg[].reaching_code) < vec_size(ctx[].cfg[].blocks) {
         vec_resize(ctx[].cfg[].reaching_code, vec_size(ctx[].cfg[].blocks))
     }
-    memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * vec_size(ctx[].cfg[].blocks))
+    memset(ctx[].cfg[].reaching_code, false, sizeof<bool> * vec_size(ctx[].cfg[].blocks))
     instrs_mask_sets_size: u64 = 0
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-    is_copy_prop: i32 = not is_store_elim
+    is_copy_prop: bool = not is_store_elim
     if is_store_elim {
 ')m4_dnl
         map_clear(ctx[].cfg[].identifier_id_map)
@@ -1288,7 +1288,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         loop j: u64 = vec_size(ctx[].dfa_o1[].bak_instrs) while j <= ctx[].dfa[].set_size .. ++j {
             vec_push_back(ctx[].dfa_o1[].bak_instrs, uptr_new())
         }
-        memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * ctx[].dfa[].set_size)
+        memset(ctx[].cfg[].reaching_code, false, sizeof<bool> * ctx[].dfa[].set_size)
         if ctx[].dfa[].mask_size > 1 {
             i = 0
             loop .. while i < blocks_mask_sets_size {

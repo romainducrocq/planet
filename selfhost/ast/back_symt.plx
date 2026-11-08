@@ -75,7 +75,7 @@ pub fn make_BackendSymbol(none) unique_ptr_t(BackendSymbol) {
     return self
 }
 
-pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol) {
+pub fn make_BackendObj(is_static: bool, is_const: bool, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol) {
     self: unique_ptr_t(BackendSymbol) = make_BackendSymbol()
     self[].tag = AST_BackendObj_t
     self[].get._BackendObj.is_static = is_static
@@ -85,7 +85,7 @@ pub fn make_BackendObj(is_static: i32, is_const: i32, asm_type: *shared_ptr_t(As
     return self
 }
 
-pub fn make_BackendFun(is_def: i32) unique_ptr_t(BackendSymbol) {
+pub fn make_BackendFun(is_def: bool) unique_ptr_t(BackendSymbol) {
     self: unique_ptr_t(BackendSymbol) = make_BackendSymbol()
     self[].tag = AST_BackendFun_t
     self[].get._BackendFun.is_def = is_def

@@ -315,7 +315,7 @@ fn parse_binop(ctx: Ctx, binop: *struc CBinaryOp) error_t {
 
 fn parse_type_name(ctx: Ctx, type_name: *shared_ptr_t(Type)) error_t;
 
-fn parse_datatype_specifier(ctx: Ctx, tag_name: *u64, is_union: *i32) error_t {
+fn parse_datatype_specifier(ctx: Ctx, tag_name: *u64, is_union: *bool) error_t {
     CATCH_ENTER
     match ctx[].next_tok[].tok_kind {
         -> TOK_key_struc {
@@ -384,7 +384,7 @@ fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
         }
         -> TOK_key_struc {
             -> TOK_key_union {
-                is_union: i32;
+                is_union: bool;
                 tag_name: u64;
                 TRY(parse_datatype_specifier(ctx, @tag_name, @is_union))
                 type_specifier[] = make_Structure(tag_name, is_union)
@@ -1932,7 +1932,7 @@ fn parse_member_list(ctx: Ctx, members: *vector_t(unique_ptr_t(CMemberDeclaratio
 fn parse_type_declaration(ctx: Ctx, struct_decl: *unique_ptr_t(CStructDeclaration)) error_t {
     members: vector_t(unique_ptr_t(CMemberDeclaration)) = vec_new()
     CATCH_ENTER
-    is_union: i32;
+    is_union: bool;
     tag_name: u64;
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(pop_next(ctx))

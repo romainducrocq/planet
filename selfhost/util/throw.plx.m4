@@ -12,7 +12,7 @@ type struc FileOpenLine(linenum: u64, total_linenum: u64, filename: string_t)
 
 type struc TokenInfo(tok_pos: i32, tok_len: i32, total_linenum: u64)
 
-type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: i32, info_at_buf: u64, info_at_map: hashmap_t(``hash_t'', ``hash_t''), fopen_lines: vector_t(struc FileOpenLine), token_infos: vector_t(struc TokenInfo))
+type struc ErrorsContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, msg: [ERROR_MSG_SIZE]char, is_stdout: bool, info_at_buf: u64, info_at_map: hashmap_t(``hash_t'', ``hash_t''), fopen_lines: vector_t(struc FileOpenLine), token_infos: vector_t(struc TokenInfo))
 
 pub fn panic_sigabrt(msg: string) none;
 m4_define(`PANIC_FUNC', `panic_sigabrt($1)')m4_dnl

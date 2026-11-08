@@ -38,22 +38,22 @@ m4_define(`Ctx', `*struc AsmGenContext')m4_dnl
 
 fn char_imm_op(node: *struc CConstChar) shared_ptr_t(AsmOperand) {
     value: TULong = cast<TULong>(node[].value)
-    is_neg: i32 = node[].value < 0
+    is_neg: bool = node[].value < 0
     return make_AsmImm(value, true, false, is_neg)
 }
 
 fn int_imm_op(node: *struc CConstInt) shared_ptr_t(AsmOperand) {
     value: TULong = cast<TULong>(node[].value)
-    is_byte: i32 = node[].value <= 127 and node[].value >= -128
-    is_neg: i32 = node[].value < 0
+    is_byte: bool = node[].value <= 127 and node[].value >= -128
+    is_neg: bool = node[].value < 0
     return make_AsmImm(value, is_byte, false, is_neg)
 }
 
 fn long_imm_op(node: *struc CConstLong) shared_ptr_t(AsmOperand) {
     value: TULong = cast<TULong>(node[].value)
-    is_byte: i32 = node[].value <= 127l and node[].value >= -128l
-    is_quad: i32 = node[].value > 2147483647l or node[].value < -2147483648l
-    is_neg: i32 = node[].value < 0l
+    is_byte: bool = node[].value <= 127l and node[].value >= -128l
+    is_quad: bool = node[].value > 2147483647l or node[].value < -2147483648l
+    is_neg: bool = node[].value < 0l
     return make_AsmImm(value, is_byte, is_quad, is_neg)
 }
 
@@ -64,15 +64,15 @@ fn uchar_imm(node: *struc CConstUChar) shared_ptr_t(AsmOperand) {
 
 fn uint_imm_op(node: *struc CConstUInt) shared_ptr_t(AsmOperand) {
     value: TULong = cast<TULong>(node[].value)
-    is_byte: i32 = node[].value <= 255u
-    is_quad: i32 = node[].value > 2147483647u
+    is_byte: bool = node[].value <= 255u
+    is_quad: bool = node[].value > 2147483647u
     return make_AsmImm(value, is_byte, is_quad, false)
 }
 
 fn ulong_imm_op(node: *struc CConstULong) shared_ptr_t(AsmOperand) {
     value: TULong = node[].value
-    is_byte: i32 = node[].value <= 255ul
-    is_quad: i32 = node[].value > 2147483647ul
+    is_byte: bool = node[].value <= 255ul
+    is_quad: bool = node[].value > 2147483647ul
     return make_AsmImm(value, is_byte, is_quad, false)
 }
 
@@ -310,7 +310,7 @@ fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
     }
 }
 
-fn is_const_signed(node: *struc TacConstant) i32 {
+fn is_const_signed(node: *struc TacConstant) bool {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
             -> AST_CConstInt_t {
@@ -325,7 +325,7 @@ fn is_const_signed(node: *struc TacConstant) i32 {
     }
 }
 
-fn is_var_signed(ctx: Ctx, node: *struc TacVariable) i32 {
+fn is_var_signed(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -344,7 +344,7 @@ fn is_var_signed(ctx: Ctx, node: *struc TacVariable) i32 {
     }
 }
 
-fn is_value_signed(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_value_signed(ctx: Ctx, node: *struc TacValue) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return is_const_signed(@node[].get._TacConstant)
@@ -358,7 +358,7 @@ fn is_value_signed(ctx: Ctx, node: *struc TacValue) i32 {
     }
 }
 
-fn is_const_1b(node: *struc TacConstant) i32 {
+fn is_const_1b(node: *struc TacConstant) bool {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
             -> AST_CConstUChar_t {
@@ -371,7 +371,7 @@ fn is_const_1b(node: *struc TacConstant) i32 {
     }
 }
 
-fn is_var_1b(ctx: Ctx, node: *struc TacVariable) i32 {
+fn is_var_1b(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -386,7 +386,7 @@ fn is_var_1b(ctx: Ctx, node: *struc TacVariable) i32 {
     }
 }
 
-fn is_value_1b(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_value_1b(ctx: Ctx, node: *struc TacValue) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return is_const_1b(@node[].get._TacConstant)
@@ -400,7 +400,7 @@ fn is_value_1b(ctx: Ctx, node: *struc TacValue) i32 {
     }
 }
 
-fn is_const_4b(node: *struc TacConstant) i32 {
+fn is_const_4b(node: *struc TacConstant) bool {
     match node[].constant[].tag {
         -> AST_CConstInt_t {
             -> AST_CConstUInt_t {
@@ -413,7 +413,7 @@ fn is_const_4b(node: *struc TacConstant) i32 {
     }
 }
 
-fn is_var_4b(ctx: Ctx, node: *struc TacVariable) i32 {
+fn is_var_4b(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Int_t {
             -> AST_UInt_t {
@@ -426,7 +426,7 @@ fn is_var_4b(ctx: Ctx, node: *struc TacVariable) i32 {
     }
 }
 
-fn is_value_4b(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_value_4b(ctx: Ctx, node: *struc TacValue) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return is_const_4b(@node[].get._TacConstant)
@@ -440,15 +440,15 @@ fn is_value_4b(ctx: Ctx, node: *struc TacValue) i32 {
     }
 }
 
-fn is_const_dbl(node: *struc TacConstant) i32 {
+fn is_const_dbl(node: *struc TacConstant) bool {
     return node[].constant[].tag == AST_CConstDouble_t
 }
 
-fn is_var_dbl(ctx: Ctx, node: *struc TacVariable) i32 {
+fn is_var_dbl(ctx: Ctx, node: *struc TacVariable) bool {
     return map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag == AST_Double_t
 }
 
-fn is_value_dbl(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_value_dbl(ctx: Ctx, node: *struc TacValue) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return is_const_dbl(@node[].get._TacConstant)
@@ -462,11 +462,11 @@ fn is_value_dbl(ctx: Ctx, node: *struc TacValue) i32 {
     }
 }
 
-fn is_var_struct(ctx: Ctx, node: *struc TacVariable) i32 {
+fn is_var_struct(ctx: Ctx, node: *struc TacVariable) bool {
     return map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag == AST_Structure_t
 }
 
-fn is_value_struct(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_value_struct(ctx: Ctx, node: *struc TacValue) bool {
     match node[].tag {
         -> AST_TacVariable_t {
             return is_var_struct(ctx, @node[].get._TacVariable)
@@ -681,14 +681,14 @@ fn fun_param_reg_mask(ctx: Ctx, fun_type: *struc FunType, reg_size: u64, sse_siz
     }
 }
 
-fn ret_1_reg_mask(fun_type: *struc FunType, reg_size: i32) none {
+fn ret_1_reg_mask(fun_type: *struc FunType, reg_size: bool) none {
     if fun_type[].ret_reg_mask == NULL_REGISTER_MASK {
         fun_type[].ret_reg_mask = REGISTER_MASK_FALSE
         register_mask_set(@fun_type[].ret_reg_mask, ? reg_size then REG_Ax else REG_Xmm0, true)
     }
 }
 
-fn ret_2_reg_mask(fun_type: *struc FunType, reg_size: i32, sse_size: i32) none {
+fn ret_2_reg_mask(fun_type: *struc FunType, reg_size: bool, sse_size: bool) none {
     if fun_type[].ret_reg_mask == NULL_REGISTER_MASK {
         fun_type[].ret_reg_mask = REGISTER_MASK_FALSE
         if reg_size {
@@ -827,7 +827,7 @@ fn ret_struct_instr(ctx: Ctx, node: *struc TacReturn) none {
         }
     }
     else {
-        reg_size: i32 = false
+        reg_size: bool = false
         match struct_8b[].clss[0] {
             -> CLS_integer {
                 ret_8b_instr(ctx, name, 0l, struct_type, REG_Ax)
@@ -843,7 +843,7 @@ fn ret_struct_instr(ctx: Ctx, node: *struc TacReturn) none {
             }
         }
         if struct_8b[].size == 2 {
-            sse_size: i32 = not reg_size
+            sse_size: bool = not reg_size
             match struct_8b[].clss[1] {
                 -> CLS_integer {
                     ret_8b_instr(ctx, name, 8l, struct_type, ? reg_size then REG_Dx else REG_Ax)
@@ -1271,9 +1271,9 @@ fn dealloc_stack_instr(ctx: Ctx, byte: TLong) none {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         value: TULong = cast<TULong>(byte)
-        is_byte: i32 = byte <= 127l and byte >= -128l
-        is_quad: i32 = byte > 2147483647l or byte < -2147483648l
-        is_neg: i32 = byte < 0l
+        is_byte: bool = byte <= 127l and byte >= -128l
+        is_quad: bool = byte > 2147483647l or byte < -2147483648l
+        is_neg: bool = byte < 0l
         src = make_AsmImm(value, is_byte, is_quad, is_neg)
     }
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_Sp)
@@ -1420,7 +1420,7 @@ fn stack_8b_arg_call_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *str
     free_AssemblyType(@asm_type)
 }
 
-fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, is_ret_memory: i32) TLong {
+fn arg_call_instr(ctx: Ctx, node: *struc TacFunCall, fun_type: *struc FunType, is_ret_memory: bool) TLong {
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
     stack_padding: TLong = 0l
@@ -1581,7 +1581,7 @@ fn ret_8b_call_instr(ctx: Ctx, name: u64, offset: TLong, struct_type: *struc Str
 }
 
 fn call_instr(ctx: Ctx, node: *struc TacFunCall) none {
-    is_ret_memory: i32 = false
+    is_ret_memory: bool = false
     fun_type: *struc FunType = @map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].get._FunType
     if node[].dst and is_value_struct(ctx, node[].dst) {
         name: u64 = node[].dst[].get._TacVariable.name
@@ -1621,7 +1621,7 @@ fn call_instr(ctx: Ctx, node: *struc TacFunCall) none {
         ret_1_reg_mask(fun_type, true)
     }
     else {
-        reg_size: i32 = false
+        reg_size: bool = false
         name: u64 = node[].dst[].get._TacVariable.name
         struct_type: *struc Structure = @map_get(ctx[].frontend[].symbol_table, name)[].type_t[].get._Structure
         struct_8b: *struc Struct8Bytes = @map_get(ctx[].struct_8b_map, struct_type[].tag_name)
@@ -1640,7 +1640,7 @@ fn call_instr(ctx: Ctx, node: *struc TacFunCall) none {
             }
         }
         if struct_8b[].size == 2 {
-            sse_size: i32 = not reg_size
+            sse_size: bool = not reg_size
             match struct_8b[].clss[1] {
                 -> CLS_integer {
                     ret_8b_call_instr(ctx, name, 8l, struct_type, ? reg_size then REG_Dx else REG_Ax)
@@ -2346,9 +2346,9 @@ fn aggr_idx_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr) none {
         src: shared_ptr_t(AsmOperand) = sptr_new()
         {
             value: TULong = cast<TULong>(node[].scale)
-            is_byte: i32 = node[].scale <= 127l and node[].scale >= -128l
-            is_quad: i32 = node[].scale > 2147483647l or node[].scale < -2147483648l
-            is_neg: i32 = node[].scale < 0l
+            is_byte: bool = node[].scale <= 127l and node[].scale >= -128l
+            is_quad: bool = node[].scale > 2147483647l or node[].scale < -2147483648l
+            is_neg: bool = node[].scale < 0l
             src = make_AsmImm(value, is_byte, is_quad, is_neg)
         }
         binop: struc AsmBinaryOp = init_AsmMult()
@@ -2780,7 +2780,7 @@ fn stack_8b_fun_param_instr(ctx: Ctx, name: u64, stack_bytes: TLong, offset: TLo
     }
 }
 
-fn fun_param_toplvl(ctx: Ctx, node: *struc TacFunction, fun_type: *struc FunType, is_ret_memory: i32) none {
+fn fun_param_toplvl(ctx: Ctx, node: *struc TacFunction, fun_type: *struc FunType, is_ret_memory: bool) none {
     reg_size: u64 = ? is_ret_memory then 1 else 0
     sse_size: u64 = 0
     stack_bytes: TLong = 16l
@@ -2854,8 +2854,8 @@ fn fun_param_toplvl(ctx: Ctx, node: *struc TacFunction, fun_type: *struc FunType
 
 fn gen_fun_toplvl(ctx: Ctx, node: *struc TacFunction) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
-    is_glob: i32 = node[].is_glob
-    is_ret_memory: i32 = false
+    is_glob: bool = node[].is_glob
+    is_ret_memory: bool = false
     body: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     vec_reserve(body, vec_size(node[].body))
     {
@@ -2885,7 +2885,7 @@ fn gen_fun_toplvl(ctx: Ctx, node: *struc TacFunction) unique_ptr_t(AsmTopLevel) 
 
 fn gen_static_var_toplvl(ctx: Ctx, node: *struc TacStaticVariable) unique_ptr_t(AsmTopLevel) {
     name: u64 = node[].name
-    is_glob: i32 = node[].is_glob
+    is_glob: bool = node[].is_glob
     alignment: TInt = gen_type_alignment(ctx[].frontend, node[].static_init_type)
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     vec_reserve(static_inits, vec_size(node[].static_inits))

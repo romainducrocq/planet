@@ -939,7 +939,7 @@ pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none {
     uptr_free(self[])
 }
 
-pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration) {
+pub fn make_CStructDeclaration(tag_name: u64, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration) {
     self: unique_ptr_t(CStructDeclaration) = uptr_new()
     uptr_alloc(CStructDeclaration, self)
     self[].tag = AST_CStructDeclaration_t
