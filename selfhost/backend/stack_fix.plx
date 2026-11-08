@@ -493,9 +493,9 @@ pub fn alloc_stack_bytes(byte: TLong) unique_ptr_t(AsmInstruction) {
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         value: TULong = cast<TULong>(byte)
-        is_byte: i32 = byte <= 127l and byte >= -128l
-        is_quad: i32 = byte > 2147483647l or byte < -2147483648l
-        is_neg: i32 = byte < 0l
+        is_byte: bool = byte <= 127l and byte >= -128l
+        is_quad: bool = byte > 2147483647l or byte < -2147483648l
+        is_neg: bool = byte < 0l
         src = make_AsmImm(value, is_byte, is_quad, is_neg)
     }
     dst: shared_ptr_t(AsmOperand) = gen_register(REG_Sp)
@@ -567,7 +567,7 @@ fn pop_callee_saved_regs(ctx: Ctx, callee_saved_regs: vector_t(shared_ptr_t(AsmO
     }
 }
 
-fn is_op_addr(node: *struc AsmOperand) i32 {
+fn is_op_addr(node: *struc AsmOperand) bool {
     match node[].tag {
         -> AST_AsmMemory_t {
             -> AST_AsmData_t {
@@ -1114,7 +1114,7 @@ fn fix_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     map_clear(ctx[].pseudo_stack_map)
     ctx[].p_fix_instrs = @node[].instructions
     vec_push_back(ctx[].p_fix_instrs[], uptr_new())
-    is_ret: i32 = false
+    is_ret: bool = false
     push_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
     loop i: u64 = 0 while i < vec_size(instructions) .. ++i {
         if instructions[i] {

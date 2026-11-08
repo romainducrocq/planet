@@ -10,7 +10,7 @@ m4_include(`../frontend/errors.plx.m4')m4_dnl
 m4_define(`Ctx', `*struc FileIoContext')m4_dnl
 m4_define(`WRITE_BUF_SIZE', `4096')m4_dnl
 
-pub fn find_file(filename: string) i32 {
+pub fn find_file(filename: string) bool {
     fd: *struc FILE = fopen(filename, "rb")
     if fd {
         fclose(fd)
@@ -75,7 +75,7 @@ pub fn open_fwrite(ctx: Ctx, filename: string_t) error_t {
     CATCH_EXIT
 }
 
-pub fn read_line(ctx: Ctx, line: *string, line_size: *u64) i32 {
+pub fn read_line(ctx: Ctx, line: *string, line_size: *u64) bool {
     line_ssize: i64 = getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len, vec_back(ctx[].file_reads).fd)
     if line_ssize == -1 {
         line = nil

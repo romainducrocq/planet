@@ -12,7 +12,7 @@ pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: u64) u64;
 pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: u64) u64;
 pub fn repr_label_identifier(ctx: *struc IdentifierContext, label_kind: LABEL_KIND) u64;
 pub fn repr_loop_identifier(ctx: *struc IdentifierContext, label_kind: LABEL_KIND, target: u64) u64;
-pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label: i32, i: u64) u64;
+pub fn repr_case_identifier(ctx: *struc IdentifierContext, target: u64, is_label: bool, i: u64) u64;
 pub fn repr_var_identifier(ctx: *struc IdentifierContext, node: *struc CExp) u64;
 
 ')m4_dnl

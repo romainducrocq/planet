@@ -16,7 +16,7 @@ type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO1;
 
-type struc OptimTacContext(frontend: *struc FrontEndContext, is_fixed_point: i32, enabled_optims: [5]i32, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o1: unique_ptr_t(DataFlowAnalysisO1), p_instrs: *vector_t(unique_ptr_t(TacInstruction)))
+type struc OptimTacContext(frontend: *struc FrontEndContext, is_fixed_point: bool, enabled_optims: [5]bool, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o1: unique_ptr_t(DataFlowAnalysisO1), p_instrs: *vector_t(unique_ptr_t(TacInstruction)))
 
 m4_ifdef(`__OPTIM_LEVEL__', `', `
 m4_define(`__OPTIM_LEVEL__', `1')m4_dnl
@@ -1167,7 +1167,7 @@ fn fold_copy_instr(ctx: Ctx, node: *struc TacCopy) none {
     }
 }
 
-fn is_const_zero(constant: *struc CConst) i32 {
+fn is_const_zero(constant: *struc CConst) bool {
     match constant[].tag {
         -> AST_CConstChar_t {
             return constant[].get._CConstChar.value == 0
@@ -1353,7 +1353,7 @@ fn eliminate_unreachable_code(ctx: Ctx) none {
     if vec_size(ctx[].cfg[].reaching_code) < vec_size(ctx[].cfg[].blocks) {
         vec_resize(ctx[].cfg[].reaching_code, vec_size(ctx[].cfg[].blocks))
     }
-    memset(ctx[].cfg[].reaching_code, false, sizeof<i32> * vec_size(ctx[].cfg[].blocks))
+    memset(ctx[].cfg[].reaching_code, false, sizeof<bool> * vec_size(ctx[].cfg[].blocks))
     loop i: u64 = 0 while i < vec_size(ctx[].cfg[].entry_succ_ids) .. ++i {
         unreach_reachable_block(ctx, ctx[].cfg[].entry_succ_ids[i])
     }
@@ -1396,11 +1396,11 @@ fn eliminate_unreachable_code(ctx: Ctx) none {
     }
 }
 
-fn is_aliased_value(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_aliased_value(ctx: Ctx, node: *struc TacValue) bool {
     return node[].tag == AST_TacVariable_t and is_aliased_name(ctx, node[].get._TacVariable.name)
 }
 
-fn is_const_signed(node: *struc TacConstant) i32 {
+fn is_const_signed(node: *struc TacConstant) bool {
     match node[].constant[].tag {
         -> AST_CConstChar_t {
             -> AST_CConstInt_t {
@@ -1415,7 +1415,7 @@ fn is_const_signed(node: *struc TacConstant) i32 {
     }
 }
 
-fn is_var_signed(ctx: Ctx, node: *struc TacVariable) i32 {
+fn is_var_signed(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
         -> AST_Char_t {
             -> AST_SChar_t {
@@ -1432,7 +1432,7 @@ fn is_var_signed(ctx: Ctx, node: *struc TacVariable) i32 {
     }
 }
 
-fn is_value_signed(ctx: Ctx, node: *struc TacValue) i32 {
+fn is_value_signed(ctx: Ctx, node: *struc TacValue) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return is_const_signed(@node[].get._TacConstant)
@@ -1446,7 +1446,7 @@ fn is_value_signed(ctx: Ctx, node: *struc TacValue) i32 {
     }
 }
 
-fn is_const_null_ptr(node: *struc TacConstant) i32 {
+fn is_const_null_ptr(node: *struc TacConstant) bool {
     match node[].constant[].tag {
         -> AST_CConstInt_t {
             return node[].constant[].get._CConstInt.value == 0
@@ -1466,7 +1466,7 @@ fn is_const_null_ptr(node: *struc TacConstant) i32 {
     }
 }
 
-fn is_dbl_same_const(constant_1: *struc CConstDouble, constant_2: *struc CConstDouble) i32 {
+fn is_dbl_same_const(constant_1: *struc CConstDouble, constant_2: *struc CConstDouble) bool {
     if constant_1[].value == constant_2[].value {
         if constant_1[].value ~= 0.0 {
             return true
@@ -1483,7 +1483,7 @@ fn is_dbl_same_const(constant_1: *struc CConstDouble, constant_2: *struc CConstD
     }
 }
 
-fn is_same_const(node_1: *struc TacConstant, node_2: *struc TacConstant) i32 {
+fn is_same_const(node_1: *struc TacConstant, node_2: *struc TacConstant) bool {
     if node_1[].constant[].tag == node_2[].constant[].tag {
         match node_1[].constant[].tag {
             -> AST_CConstChar_t {
@@ -1515,11 +1515,11 @@ fn is_same_const(node_1: *struc TacConstant, node_2: *struc TacConstant) i32 {
     return false
 }
 
-fn is_same_var(node_1: *struc TacVariable, node_2: *struc TacVariable) i32 {
+fn is_same_var(node_1: *struc TacVariable, node_2: *struc TacVariable) bool {
     return node_1[].name == node_2[].name
 }
 
-fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) i32 {
+fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) bool {
     if node_1[].tag == node_2[].tag {
         match node_1[].tag {
             -> AST_TacConstant_t {
@@ -1536,7 +1536,7 @@ fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) i32 {
     return false
 }
 
-fn is_same_name(node: *struc TacValue, name: u64) i32 {
+fn is_same_name(node: *struc TacValue, name: u64) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return false
@@ -1550,11 +1550,11 @@ fn is_same_name(node: *struc TacValue, name: u64) i32 {
     }
 }
 
-fn is_copy_same_signedness(ctx: Ctx, node: *struc TacCopy) i32 {
+fn is_copy_same_signedness(ctx: Ctx, node: *struc TacCopy) bool {
     return is_value_signed(ctx, node[].src) == is_value_signed(ctx, node[].dst)
 }
 
-fn is_copy_null_ptr(ctx: Ctx, node: *struc TacCopy) i32 {
+fn is_copy_null_ptr(ctx: Ctx, node: *struc TacCopy) bool {
     if node[].src[].tag == AST_TacConstant_t and node[].dst[].tag == AST_TacVariable_t and map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag == AST_Pointer_t {
         return is_const_null_ptr(@node[].src[].get._TacConstant)
     }
@@ -1619,7 +1619,7 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
     }
 }
 
-fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) i32 {
+fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) bool {
     THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
     loop i: u64 = 0 while i < ctx[].dfa[].set_size .. ++i {
         THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
@@ -1701,7 +1701,7 @@ fn prop_transfer_cp_to_offset(ctx: Ctx, node: *struc TacCopyToOffset, next_instr
     }
 }
 
-fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) i32 {
+fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) bool {
     node: *struc TacInstruction = GET_INSTR(instr_idx)
     match node[].tag {
         -> AST_TacSignExtend_t {
@@ -1796,7 +1796,7 @@ fn set_dfa_bak_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64) none {
     }
 }
 
-fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_block: i32) none {
+fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_block: bool) none {
     if node[].val and node[].val[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2070,8 +2070,8 @@ fn prop_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
 }
 
 fn prop_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
-    is_src1: i32 = node[].src1[].tag == AST_TacVariable_t
-    is_src2: i32 = node[].src2[].tag == AST_TacVariable_t
+    is_src1: bool = node[].src1[].tag == AST_TacVariable_t
+    is_src2: bool = node[].src2[].tag == AST_TacVariable_t
     if is_src1 or is_src2 {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2196,8 +2196,8 @@ fn prop_store_instr(ctx: Ctx, node: *struc TacStore, instr_idx: u64) none {
 }
 
 fn prop_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr, instr_idx: u64) none {
-    is_src_ptr: i32 = node[].src_ptr[].tag == AST_TacVariable_t
-    is_idx: i32 = node[].idx[].tag == AST_TacVariable_t
+    is_src_ptr: bool = node[].src_ptr[].tag == AST_TacVariable_t
+    is_idx: bool = node[].idx[].tag == AST_TacVariable_t
     if is_src_ptr or is_idx {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
@@ -2739,7 +2739,7 @@ fn elim_instr(ctx: Ctx, instr_idx: u64) none {
     }
 }
 
-fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: i32) none {
+fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: bool) none {
     if not init_data_flow_analysis(ctx, true, is_addressed_set) {
         return none
     }

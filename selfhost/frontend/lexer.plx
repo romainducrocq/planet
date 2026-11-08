@@ -93,7 +93,7 @@ m4_define(`LEX_LETTER', `M4_CHAR(_);
 m4_define(`LEX_WORD', `LEX_DIGIT;
     -> LEX_LETTER')m4_dnl
 
-fn match_char(ctx: Ctx, c: char) i32 {
+fn match_char(ctx: Ctx, c: char) bool {
     if c == get_char(ctx) {
         ctx[].match_size++
         return true
@@ -103,7 +103,7 @@ fn match_char(ctx: Ctx, c: char) i32 {
     }
 }
 
-fn match_chars(ctx: Ctx, cs: string, n: u64) i32 {
+fn match_chars(ctx: Ctx, cs: string, n: u64) bool {
     loop i: u64 = 0 while i < n .. ++i {
         if not match_char(ctx, cs[i]) {
             return false
@@ -112,7 +112,7 @@ fn match_chars(ctx: Ctx, cs: string, n: u64) i32 {
     return true
 }
 
-fn match_invert(ctx: Ctx, c: char) i32 {
+fn match_invert(ctx: Ctx, c: char) bool {
     inv: char = get_char(ctx)
     if inv ~= 0 and c ~= inv {
         ctx[].match_size++
@@ -123,7 +123,7 @@ fn match_invert(ctx: Ctx, c: char) i32 {
     }
 }
 
-fn match_space(ctx: Ctx) i32 {
+fn match_space(ctx: Ctx) bool {
     match get_char(ctx) {
         -> LEX_SPACE {
             ctx[].match_size++
@@ -135,7 +135,7 @@ fn match_space(ctx: Ctx) i32 {
     }
 }
 
-fn match_digit(ctx: Ctx) i32 {
+fn match_digit(ctx: Ctx) bool {
     match get_char(ctx) {
         -> LEX_DIGIT {
             ctx[].match_size++
@@ -147,7 +147,7 @@ fn match_digit(ctx: Ctx) i32 {
     }
 }
 
-fn match_word(ctx: Ctx) i32 {
+fn match_word(ctx: Ctx) bool {
     match get_char(ctx) {
         -> LEX_WORD {
             ctx[].match_size++
@@ -194,7 +194,7 @@ fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
     return match_error(ctx)
 }
 
-fn match_char_const(ctx: Ctx, is_str: i32) TOKEN_KIND {
+fn match_char_const(ctx: Ctx, is_str: bool) TOKEN_KIND {
     match get_char(ctx) {
         -> '\'' {
             if not is_str {
@@ -800,7 +800,7 @@ fn get_match(ctx: Ctx, match_at: u64, match_size: u64) string_t {
     return smatch
 }
 
-fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error_t;
+fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: bool) error_t;
 
 fn push_token_info(ctx: Ctx) u64 {
     token_info: struc TokenInfo = $(cast<i32>(ctx[].match_at), cast<i32>(ctx[].match_size), ctx[].total_linenum)
@@ -813,7 +813,7 @@ fn tokenize_file(ctx: Ctx) error_t {
     CATCH_ENTER
     loop linenum: u64 = 1 while read_line(ctx[].fileio, @ctx[].line, @ctx[].line_size) .. ++linenum {
         ctx[].total_linenum++
-        is_empty: i32 = true
+        is_empty: bool = true
         loop ctx[].match_at = 0 while ctx[].match_at < ctx[].line_size .. ctx[].match_at += ctx[].match_size {
             match_kind: TOKEN_KIND = match_token(ctx)
             match_tok: u64 = 0
@@ -902,7 +902,7 @@ fn tokenize_file(ctx: Ctx) error_t {
     CATCH_EXIT
 }
 
-fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
+fn find_include(dirnames: vector_t(string), filename: *string_t) bool {
     loop i: u64 = 0 while i < vec_size(dirnames) .. ++i {
         dirname: string_t = str_new(dirnames[i])
         str_append(dirname, filename[])
@@ -915,7 +915,7 @@ fn find_include(dirnames: vector_t(string), filename: *string_t) i32 {
     return false
 }
 
-fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: i32) error_t {
+fn tokenize_include(ctx: Ctx, match_tok: u64, linenum: u64, is_empty: bool) error_t {
     filename: string_t = str_new(nil)
     fopen_name: string_t = str_new(nil)
     CATCH_ENTER

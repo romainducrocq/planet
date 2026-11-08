@@ -144,9 +144,9 @@ pub fn make_TacJumpIfNotZero(target: u64, condition: *shared_ptr_t(TacValue)) un
 pub fn make_TacLabel(name: u64) unique_ptr_t(TacInstruction);
 pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none;
 
-type struc TacFunction(name: u64, is_glob: i32, params: vector_t(TIdentifier), body: vector_t(unique_ptr_t(TacInstruction)))
+type struc TacFunction(name: u64, is_glob: bool, params: vector_t(TIdentifier), body: vector_t(unique_ptr_t(TacInstruction)))
 
-type struc TacStaticVariable(name: u64, is_glob: i32, static_init_type: shared_ptr_t(Type), static_inits: vector_t(shared_ptr_t(StaticInit)))
+type struc TacStaticVariable(name: u64, is_glob: bool, static_init_type: shared_ptr_t(Type), static_inits: vector_t(shared_ptr_t(StaticInit)))
 
 type struc TacStaticConstant(name: u64, static_init_type: shared_ptr_t(Type), static_init: shared_ptr_t(StaticInit))
 
@@ -155,8 +155,8 @@ type union _TacTopLevel(_TacFunction: struc TacFunction, _TacStaticVariable: str
 type struc TacTopLevel(unique_ptr_impl(AST_T)
     get: union _TacTopLevel)
 pub fn make_TacTopLevel(none) unique_ptr_t(TacTopLevel);
-pub fn make_TacFunction(name: u64, is_glob: i32, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) unique_ptr_t(TacTopLevel);
-pub fn make_TacStaticVariable(name: u64, is_glob: i32, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(TacTopLevel);
+pub fn make_TacFunction(name: u64, is_glob: bool, params: *vector_t(TIdentifier), body: *vector_t(unique_ptr_t(TacInstruction))) unique_ptr_t(TacTopLevel);
+pub fn make_TacStaticVariable(name: u64, is_glob: bool, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(TacTopLevel);
 pub fn make_TacStaticConstant(name: u64, static_init_type: *shared_ptr_t(Type), static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(TacTopLevel);
 pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none;
 

@@ -99,7 +99,7 @@ pub fn make_Array(size: TLong, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type
     return self
 }
 
-pub fn make_Structure(tag_name: u64, is_union: i32) shared_ptr_t(Type) {
+pub fn make_Structure(tag_name: u64, is_union: bool) shared_ptr_t(Type) {
     self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Structure_t
     self[].get._Structure.tag_name = tag_name
@@ -220,7 +220,7 @@ pub fn make_ZeroInit(byte: TLong) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_StringInit(string_const: u64, is_null_term: i32, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit) {
+pub fn make_StringInit(string_const: u64, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_StringInit_t
     self[].get._StringInit.string_const = string_const
@@ -334,7 +334,7 @@ pub fn make_IdentifierAttr(none) unique_ptr_t(IdentifierAttr) {
     return self
 }
 
-pub fn make_FunAttr(is_def: i32, is_glob: i32) unique_ptr_t(IdentifierAttr) {
+pub fn make_FunAttr(is_def: bool, is_glob: bool) unique_ptr_t(IdentifierAttr) {
     self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_FunAttr_t
     self[].get._FunAttr.is_def = is_def
@@ -342,7 +342,7 @@ pub fn make_FunAttr(is_def: i32, is_glob: i32) unique_ptr_t(IdentifierAttr) {
     return self
 }
 
-pub fn make_StaticAttr(is_glob: i32, init: *shared_ptr_t(InitialValue)) unique_ptr_t(IdentifierAttr) {
+pub fn make_StaticAttr(is_glob: bool, init: *shared_ptr_t(InitialValue)) unique_ptr_t(IdentifierAttr) {
     self: unique_ptr_t(IdentifierAttr) = make_IdentifierAttr()
     self[].tag = AST_StaticAttr_t
     self[].get._StaticAttr.is_glob = is_glob

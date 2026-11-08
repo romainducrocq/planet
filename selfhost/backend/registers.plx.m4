@@ -14,7 +14,7 @@ pub fn gen_memory(reg_kind: REGISTER_KIND, value: TLong) shared_ptr_t(AsmOperand
 pub fn gen_indexed(reg_kind_base: REGISTER_KIND, reg_kind_idx: REGISTER_KIND, scale: TLong) shared_ptr_t(AsmOperand);
 pub fn register_mask_kind(node: *struc AsmReg) REGISTER_KIND;
 pub fn register_mask_bit(reg_kind: REGISTER_KIND) u64;
-pub fn register_mask_get(reg_mask: TULong, reg_kind: REGISTER_KIND) i32;
-pub fn register_mask_set(reg_mask: *TULong, reg_kind: REGISTER_KIND, value: i32) none;
+pub fn register_mask_get(reg_mask: TULong, reg_kind: REGISTER_KIND) bool;
+pub fn register_mask_set(reg_mask: *TULong, reg_kind: REGISTER_KIND, value: bool) none;
 
 ')m4_dnl

@@ -170,7 +170,7 @@ type struc CDoWhile(target: u64, condition: unique_ptr_t(CExp), body: unique_ptr
 
 type struc CFor(target: u64, init: unique_ptr_t(CForInit), condition: unique_ptr_t(CExp), post: unique_ptr_t(CExp), body: unique_ptr_t(CStatement))
 
-type struc CSwitch(target: u64, is_default: i32, lookup: unique_ptr_t(CExp), body: unique_ptr_t(CStatement), cases: vector_t(unique_ptr_t(CExp)))
+type struc CSwitch(target: u64, is_default: bool, lookup: unique_ptr_t(CExp), body: unique_ptr_t(CStatement), cases: vector_t(unique_ptr_t(CExp)))
 
 type struc CCase(target: u64, value: unique_ptr_t(CExp), jump_to: unique_ptr_t(CStatement))
 
@@ -265,8 +265,8 @@ pub fn make_CMemberDeclaration(member_name: u64, member_type: *shared_ptr_t(Type
 pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none;
 
 type struc CStructDeclaration(unique_ptr_impl(AST_T)
-    tag_name: u64, is_union: i32, members: vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64)
-pub fn make_CStructDeclaration(tag_name: u64, is_union: i32, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration);
+    tag_name: u64, is_union: bool, members: vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64)
+pub fn make_CStructDeclaration(tag_name: u64, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration);
 pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none;
 
 type struc CFunctionDeclaration(unique_ptr_impl(AST_T)
