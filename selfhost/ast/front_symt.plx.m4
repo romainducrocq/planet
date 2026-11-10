@@ -37,7 +37,7 @@ type struc Pointer(ref_type: shared_ptr_t(Type))
 
 type struc Array(size: TLong, elem_type: shared_ptr_t(Type))
 
-type struc Structure(tag_name: u64, is_union: bool)
+type struc Structure(tag_name: TIdentifier, is_union: bool)
 
 type union _Type(_Char: struc Char, _SChar: struc SChar, _UChar: struc UChar, _Int: struc Int, _Long: struc Long, _UInt: struc UInt, _ULong: struc ULong, _Double: struc Double, _Void: struc Void, _FunType: struc FunType, _Pointer: struc Pointer, _Array: struc Array, _Structure: struc Structure)
 
@@ -56,7 +56,7 @@ pub fn make_Void(none) shared_ptr_t(Type);
 pub fn make_FunType(param_types: *vector_t(shared_ptr_t(Type)), ret_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
 pub fn make_Pointer(ref_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
 pub fn make_Array(size: TLong, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type);
-pub fn make_Structure(tag_name: u64, is_union: bool) shared_ptr_t(Type);
+pub fn make_Structure(tag_name: TIdentifier, is_union: bool) shared_ptr_t(Type);
 pub fn free_Type(self: *shared_ptr_t(Type)) none;
 
 type struc IntInit(value: TInt)
@@ -71,13 +71,13 @@ type struc CharInit(value: TChar)
 
 type struc UCharInit(value: TUChar)
 
-type struc DoubleInit(dbl_const: u64)
+type struc DoubleInit(dbl_const: TIdentifier)
 
 type struc ZeroInit(byte: TLong)
 
-type struc StringInit(string_const: u64, is_null_term: bool, literal: shared_ptr_t(CStringLiteral))
+type struc StringInit(string_const: TIdentifier, is_null_term: bool, literal: shared_ptr_t(CStringLiteral))
 
-type struc PointerInit(name: u64)
+type struc PointerInit(name: TIdentifier)
 
 type union _StaticInit(_IntInit: struc IntInit, _LongInit: struc LongInit, _UIntInit: struc UIntInit, _ULongInit: struc ULongInit, _CharInit: struc CharInit, _UCharInit: struc UCharInit, _DoubleInit: struc DoubleInit, _ZeroInit: struc ZeroInit, _StringInit: struc StringInit, _PointerInit: struc PointerInit)
 
@@ -90,10 +90,10 @@ pub fn make_UIntInit(value: TUInt) shared_ptr_t(StaticInit);
 pub fn make_ULongInit(value: TULong) shared_ptr_t(StaticInit);
 pub fn make_CharInit(value: TChar) shared_ptr_t(StaticInit);
 pub fn make_UCharInit(value: TUChar) shared_ptr_t(StaticInit);
-pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit);
+pub fn make_DoubleInit(dbl_const: TIdentifier) shared_ptr_t(StaticInit);
 pub fn make_ZeroInit(byte: TLong) shared_ptr_t(StaticInit);
-pub fn make_StringInit(string_const: u64, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit);
-pub fn make_PointerInit(name: u64) shared_ptr_t(StaticInit);
+pub fn make_StringInit(string_const: TIdentifier, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit);
+pub fn make_PointerInit(name: TIdentifier) shared_ptr_t(StaticInit);
 pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none;
 
 type struc Tentative(_empty: char)
@@ -164,7 +164,7 @@ PairKeyValue(``TIdentifier'', ``UPtrSymbol'')
 ElementKey(``TIdentifier'')
 
 type struc FrontEndContext(string_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_typedef_table: hashmap_t(``TIdentifier'', ``UPtrStructTypedef''), symbol_table: hashmap_t(``TIdentifier'', ``UPtrSymbol''), addressed_set: hashset_t(``TIdentifier''))
-pub fn get_struct_typedef_member(ctx: *struc FrontEndContext, tag_name: u64, member_name: u64) *struc StructMember;
-pub fn get_struct_typedef_back(ctx: *struc FrontEndContext, tag_name: u64) *struc StructMember;
+pub fn get_struct_typedef_member(ctx: *struc FrontEndContext, tag_name: TIdentifier, member_name: TIdentifier) *struc StructMember;
+pub fn get_struct_typedef_back(ctx: *struc FrontEndContext, tag_name: TIdentifier) *struc StructMember;
 
 ')m4_dnl

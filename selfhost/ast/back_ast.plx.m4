@@ -71,13 +71,13 @@ type struc AsmImm(value: TULong, is_byte: bool, is_quad: bool, is_neg: bool)
 
 type struc AsmRegister(reg: struc AsmReg)
 
-type struc AsmPseudo(name: u64)
+type struc AsmPseudo(name: TIdentifier)
 
 type struc AsmMemory(value: TLong, reg: struc AsmReg)
 
-type struc AsmData(name: u64, offset: TLong)
+type struc AsmData(name: TIdentifier, offset: TLong)
 
-type struc AsmPseudoMem(name: u64, offset: TLong)
+type struc AsmPseudoMem(name: TIdentifier, offset: TLong)
 
 type struc AsmIndexed(scale: TLong, reg_base: struc AsmReg, reg_index: struc AsmReg)
 
@@ -88,10 +88,10 @@ type struc AsmOperand(shared_ptr_impl(AST_T)
 pub fn make_AsmOperand(none) shared_ptr_t(AsmOperand);
 pub fn make_AsmImm(value: TULong, is_byte: bool, is_quad: bool, is_neg: bool) shared_ptr_t(AsmOperand);
 pub fn make_AsmRegister(reg: *struc AsmReg) shared_ptr_t(AsmOperand);
-pub fn make_AsmPseudo(name: u64) shared_ptr_t(AsmOperand);
+pub fn make_AsmPseudo(name: TIdentifier) shared_ptr_t(AsmOperand);
 pub fn make_AsmMemory(value: TLong, reg: *struc AsmReg) shared_ptr_t(AsmOperand);
-pub fn make_AsmData(name: u64, offset: TLong) shared_ptr_t(AsmOperand);
-pub fn make_AsmPseudoMem(name: u64, offset: TLong) shared_ptr_t(AsmOperand);
+pub fn make_AsmData(name: TIdentifier, offset: TLong) shared_ptr_t(AsmOperand);
+pub fn make_AsmPseudoMem(name: TIdentifier, offset: TLong) shared_ptr_t(AsmOperand);
 pub fn make_AsmIndexed(scale: TLong, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand);
 pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none;
 
@@ -140,19 +140,19 @@ type struc AsmDiv(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOpe
 
 type struc AsmCdq(asm_type: shared_ptr_t(AssemblyType))
 
-type struc AsmJmp(target: u64)
+type struc AsmJmp(target: TIdentifier)
 
-type struc AsmJmpCC(target: u64, cond_code: struc AsmCondCode)
+type struc AsmJmpCC(target: TIdentifier, cond_code: struc AsmCondCode)
 
 type struc AsmSetCC(cond_code: struc AsmCondCode, dst: shared_ptr_t(AsmOperand))
 
-type struc AsmLabel(name: u64)
+type struc AsmLabel(name: TIdentifier)
 
 type struc AsmPush(src: shared_ptr_t(AsmOperand))
 
 type struc AsmPop(reg: struc AsmReg)
 
-type struc AsmCall(name: u64)
+type struc AsmCall(name: TIdentifier)
 
 type struc AsmRet(_empty: char)
 
@@ -173,30 +173,30 @@ pub fn make_AsmCmp(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(Asm
 pub fn make_AsmIdiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction);
 pub fn make_AsmDiv(asm_type: *shared_ptr_t(AssemblyType), src: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction);
 pub fn make_AsmCdq(asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(AsmInstruction);
-pub fn make_AsmJmp(target: u64) unique_ptr_t(AsmInstruction);
-pub fn make_AsmJmpCC(target: u64, cond_code: *struc AsmCondCode) unique_ptr_t(AsmInstruction);
+pub fn make_AsmJmp(target: TIdentifier) unique_ptr_t(AsmInstruction);
+pub fn make_AsmJmpCC(target: TIdentifier, cond_code: *struc AsmCondCode) unique_ptr_t(AsmInstruction);
 pub fn make_AsmSetCC(cond_code: *struc AsmCondCode, dst: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction);
-pub fn make_AsmLabel(name: u64) unique_ptr_t(AsmInstruction);
+pub fn make_AsmLabel(name: TIdentifier) unique_ptr_t(AsmInstruction);
 pub fn make_AsmPush(src: *shared_ptr_t(AsmOperand)) unique_ptr_t(AsmInstruction);
 pub fn make_AsmPop(reg: *struc AsmReg) unique_ptr_t(AsmInstruction);
-pub fn make_AsmCall(name: u64) unique_ptr_t(AsmInstruction);
+pub fn make_AsmCall(name: TIdentifier) unique_ptr_t(AsmInstruction);
 pub fn make_AsmRet(none) unique_ptr_t(AsmInstruction);
 pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none;
 
-type struc AsmFunction(name: u64, is_glob: bool, is_ret_memory: bool, instructions: vector_t(unique_ptr_t(AsmInstruction)))
+type struc AsmFunction(name: TIdentifier, is_glob: bool, is_ret_memory: bool, instructions: vector_t(unique_ptr_t(AsmInstruction)))
 
-type struc AsmStaticVariable(name: u64, alignment: TInt, is_glob: bool, static_inits: vector_t(shared_ptr_t(StaticInit)))
+type struc AsmStaticVariable(name: TIdentifier, alignment: TInt, is_glob: bool, static_inits: vector_t(shared_ptr_t(StaticInit)))
 
-type struc AsmStaticConstant(name: u64, alignment: TInt, static_init: shared_ptr_t(StaticInit))
+type struc AsmStaticConstant(name: TIdentifier, alignment: TInt, static_init: shared_ptr_t(StaticInit))
 
 type union _AsmTopLevel(_AsmFunction: struc AsmFunction, _AsmStaticVariable: struc AsmStaticVariable, _AsmStaticConstant: struc AsmStaticConstant)
 
 type struc AsmTopLevel(unique_ptr_impl(AST_T)
     get: union _AsmTopLevel)
 pub fn make_AsmTopLevel(none) unique_ptr_t(AsmTopLevel);
-pub fn make_AsmFunction(name: u64, is_glob: bool, is_ret_memory: bool, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel);
-pub fn make_AsmStaticVariable(name: u64, alignment: TInt, is_glob: bool, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel);
-pub fn make_AsmStaticConstant(name: u64, alignment: TInt, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel);
+pub fn make_AsmFunction(name: TIdentifier, is_glob: bool, is_ret_memory: bool, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel);
+pub fn make_AsmStaticVariable(name: TIdentifier, alignment: TInt, is_glob: bool, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel);
+pub fn make_AsmStaticConstant(name: TIdentifier, alignment: TInt, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel);
 pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none;
 
 type struc AsmProgram(unique_ptr_impl(AST_T)

@@ -165,7 +165,7 @@ pub fn make_CDeclarator(none) unique_ptr_t(CDeclarator) {
     return self
 }
 
-pub fn make_CIdent(name: u64) unique_ptr_t(CDeclarator) {
+pub fn make_CIdent(name: TIdentifier) unique_ptr_t(CDeclarator) {
     self: unique_ptr_t(CDeclarator) = make_CDeclarator()
     self[].tag = AST_CIdent_t
     self[].get._CIdent.name = name
@@ -258,7 +258,7 @@ pub fn make_CString(literal: *shared_ptr_t(CStringLiteral), info_at: u64) unique
     return self
 }
 
-pub fn make_CVar(name: u64, info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CVar(name: TIdentifier, info_at: u64) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CVar_t
     self[].get._CVar.name = name
@@ -324,7 +324,7 @@ pub fn make_CConditional(condition: *unique_ptr_t(CExp), exp_middle: *unique_ptr
     return self
 }
 
-pub fn make_CFunctionCall(name: u64, args: *vector_t(unique_ptr_t(CExp)), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CFunctionCall(name: TIdentifier, args: *vector_t(unique_ptr_t(CExp)), info_at: u64) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CFunctionCall_t
     self[].get._CFunctionCall.name = name
@@ -381,7 +381,7 @@ pub fn make_CSizeOfT(target_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_
     return self
 }
 
-pub fn make_CDot(member: u64, structure: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CDot(member: TIdentifier, structure: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CDot_t
     self[].get._CDot.member = member
@@ -391,7 +391,7 @@ pub fn make_CDot(member: u64, structure: *unique_ptr_t(CExp), info_at: u64) uniq
     return self
 }
 
-pub fn make_CArrow(member: u64, pointer: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CArrow(member: TIdentifier, pointer: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CArrow_t
     self[].get._CArrow.member = member
@@ -523,7 +523,7 @@ pub fn make_CIf(condition: *unique_ptr_t(CExp), then_fi: *unique_ptr_t(CStatemen
     return self
 }
 
-pub fn make_CGoto(target: u64, info_at: u64) unique_ptr_t(CStatement) {
+pub fn make_CGoto(target: TIdentifier, info_at: u64) unique_ptr_t(CStatement) {
     self: unique_ptr_t(CStatement) = make_CStatement()
     self[].tag = AST_CGoto_t
     self[].get._CGoto.target = target
@@ -531,7 +531,7 @@ pub fn make_CGoto(target: u64, info_at: u64) unique_ptr_t(CStatement) {
     return self
 }
 
-pub fn make_CLabel(target: u64, jump_to: *unique_ptr_t(CStatement), info_at: u64) unique_ptr_t(CStatement) {
+pub fn make_CLabel(target: TIdentifier, jump_to: *unique_ptr_t(CStatement), info_at: u64) unique_ptr_t(CStatement) {
     self: unique_ptr_t(CStatement) = make_CStatement()
     self[].tag = AST_CLabel_t
     self[].get._CLabel.target = target
@@ -914,7 +914,7 @@ pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none {
     uptr_free(self[])
 }
 
-pub fn make_CMemberDeclaration(member_name: u64, member_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CMemberDeclaration) {
+pub fn make_CMemberDeclaration(member_name: TIdentifier, member_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CMemberDeclaration) {
     self: unique_ptr_t(CMemberDeclaration) = uptr_new()
     uptr_alloc(CMemberDeclaration, self)
     self[].tag = AST_CMemberDeclaration_t
@@ -939,7 +939,7 @@ pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none {
     uptr_free(self[])
 }
 
-pub fn make_CStructDeclaration(tag_name: u64, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration) {
+pub fn make_CStructDeclaration(tag_name: TIdentifier, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration) {
     self: unique_ptr_t(CStructDeclaration) = uptr_new()
     uptr_alloc(CStructDeclaration, self)
     self[].tag = AST_CStructDeclaration_t
@@ -968,7 +968,7 @@ pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none {
     uptr_free(self[])
 }
 
-pub fn make_CFunctionDeclaration(name: u64, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CFunctionDeclaration) {
+pub fn make_CFunctionDeclaration(name: TIdentifier, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CFunctionDeclaration) {
     self: unique_ptr_t(CFunctionDeclaration) = uptr_new()
     uptr_alloc(CFunctionDeclaration, self)
     self[].tag = AST_CFunctionDeclaration_t
@@ -1000,7 +1000,7 @@ pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none
     uptr_free(self[])
 }
 
-pub fn make_CVariableDeclaration(name: u64, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CVariableDeclaration) {
+pub fn make_CVariableDeclaration(name: TIdentifier, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CVariableDeclaration) {
     self: unique_ptr_t(CVariableDeclaration) = uptr_new()
     uptr_alloc(CVariableDeclaration, self)
     self[].tag = AST_CVariableDeclaration_t

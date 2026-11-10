@@ -99,7 +99,7 @@ pub fn make_Array(size: TLong, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type
     return self
 }
 
-pub fn make_Structure(tag_name: u64, is_union: bool) shared_ptr_t(Type) {
+pub fn make_Structure(tag_name: TIdentifier, is_union: bool) shared_ptr_t(Type) {
     self: shared_ptr_t(Type) = make_Type()
     self[].tag = AST_Structure_t
     self[].get._Structure.tag_name = tag_name
@@ -206,7 +206,7 @@ pub fn make_UCharInit(value: TUChar) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_DoubleInit(dbl_const: u64) shared_ptr_t(StaticInit) {
+pub fn make_DoubleInit(dbl_const: TIdentifier) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_DoubleInit_t
     self[].get._DoubleInit.dbl_const = dbl_const
@@ -220,7 +220,7 @@ pub fn make_ZeroInit(byte: TLong) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_StringInit(string_const: u64, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit) {
+pub fn make_StringInit(string_const: TIdentifier, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_StringInit_t
     self[].get._StringInit.string_const = string_const
@@ -230,7 +230,7 @@ pub fn make_StringInit(string_const: u64, is_null_term: bool, literal: *shared_p
     return self
 }
 
-pub fn make_PointerInit(name: u64) shared_ptr_t(StaticInit) {
+pub fn make_PointerInit(name: TIdentifier) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_PointerInit_t
     self[].get._PointerInit.name = name
@@ -474,12 +474,12 @@ pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none {
 
 m4_define(`Ctx', `*struc FrontEndContext')m4_dnl
 
-pub fn get_struct_typedef_member(ctx: Ctx, tag_name: u64, member_name: u64) *struc StructMember {
+pub fn get_struct_typedef_member(ctx: Ctx, tag_name: TIdentifier, member_name: TIdentifier) *struc StructMember {
     struct_typedef: *struc StructTypedef = map_get(ctx[].struct_typedef_table, tag_name)
     return map_get(struct_typedef[].members, struct_typedef[].member_names[member_name])
 }
 
-pub fn get_struct_typedef_back(ctx: Ctx, tag_name: u64) *struc StructMember {
+pub fn get_struct_typedef_back(ctx: Ctx, tag_name: TIdentifier) *struc StructMember {
     struct_typedef: *struc StructTypedef = map_get(ctx[].struct_typedef_table, tag_name)
     return map_get(struct_typedef[].members, vec_back(struct_typedef[].member_names))
 }
