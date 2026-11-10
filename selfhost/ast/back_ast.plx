@@ -141,7 +141,7 @@ pub fn make_AsmRegister(reg: *struc AsmReg) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmPseudo(name: u64) shared_ptr_t(AsmOperand) {
+pub fn make_AsmPseudo(name: TIdentifier) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmPseudo_t
     self[].get._AsmPseudo.name = name
@@ -156,7 +156,7 @@ pub fn make_AsmMemory(value: TLong, reg: *struc AsmReg) shared_ptr_t(AsmOperand)
     return self
 }
 
-pub fn make_AsmData(name: u64, offset: TLong) shared_ptr_t(AsmOperand) {
+pub fn make_AsmData(name: TIdentifier, offset: TLong) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmData_t
     self[].get._AsmData.name = name
@@ -164,7 +164,7 @@ pub fn make_AsmData(name: u64, offset: TLong) shared_ptr_t(AsmOperand) {
     return self
 }
 
-pub fn make_AsmPseudoMem(name: u64, offset: TLong) shared_ptr_t(AsmOperand) {
+pub fn make_AsmPseudoMem(name: TIdentifier, offset: TLong) shared_ptr_t(AsmOperand) {
     self: shared_ptr_t(AsmOperand) = make_AsmOperand()
     self[].tag = AST_AsmPseudoMem_t
     self[].get._AsmPseudoMem.name = name
@@ -409,14 +409,14 @@ pub fn make_AsmCdq(asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(AsmInstru
     return self
 }
 
-pub fn make_AsmJmp(target: u64) unique_ptr_t(AsmInstruction) {
+pub fn make_AsmJmp(target: TIdentifier) unique_ptr_t(AsmInstruction) {
     self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmJmp_t
     self[].get._AsmJmp.target = target
     return self
 }
 
-pub fn make_AsmJmpCC(target: u64, cond_code: *struc AsmCondCode) unique_ptr_t(AsmInstruction) {
+pub fn make_AsmJmpCC(target: TIdentifier, cond_code: *struc AsmCondCode) unique_ptr_t(AsmInstruction) {
     self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmJmpCC_t
     self[].get._AsmJmpCC.target = target
@@ -433,7 +433,7 @@ pub fn make_AsmSetCC(cond_code: *struc AsmCondCode, dst: *shared_ptr_t(AsmOperan
     return self
 }
 
-pub fn make_AsmLabel(name: u64) unique_ptr_t(AsmInstruction) {
+pub fn make_AsmLabel(name: TIdentifier) unique_ptr_t(AsmInstruction) {
     self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmLabel_t
     self[].get._AsmLabel.name = name
@@ -455,7 +455,7 @@ pub fn make_AsmPop(reg: *struc AsmReg) unique_ptr_t(AsmInstruction) {
     return self
 }
 
-pub fn make_AsmCall(name: u64) unique_ptr_t(AsmInstruction) {
+pub fn make_AsmCall(name: TIdentifier) unique_ptr_t(AsmInstruction) {
     self: unique_ptr_t(AsmInstruction) = make_AsmInstruction()
     self[].tag = AST_AsmCall_t
     self[].get._AsmCall.name = name
@@ -582,7 +582,7 @@ pub fn make_AsmTopLevel(none) unique_ptr_t(AsmTopLevel) {
     return self
 }
 
-pub fn make_AsmFunction(name: u64, is_glob: bool, is_ret_memory: bool, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel) {
+pub fn make_AsmFunction(name: TIdentifier, is_glob: bool, is_ret_memory: bool, instructions: *vector_t(unique_ptr_t(AsmInstruction))) unique_ptr_t(AsmTopLevel) {
     self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmFunction_t
     self[].get._AsmFunction.name = name
@@ -593,7 +593,7 @@ pub fn make_AsmFunction(name: u64, is_glob: bool, is_ret_memory: bool, instructi
     return self
 }
 
-pub fn make_AsmStaticVariable(name: u64, alignment: TInt, is_glob: bool, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel) {
+pub fn make_AsmStaticVariable(name: TIdentifier, alignment: TInt, is_glob: bool, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel) {
     self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmStaticVariable_t
     self[].get._AsmStaticVariable.name = name
@@ -604,7 +604,7 @@ pub fn make_AsmStaticVariable(name: u64, alignment: TInt, is_glob: bool, static_
     return self
 }
 
-pub fn make_AsmStaticConstant(name: u64, alignment: TInt, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel) {
+pub fn make_AsmStaticConstant(name: TIdentifier, alignment: TInt, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel) {
     self: unique_ptr_t(AsmTopLevel) = make_AsmTopLevel()
     self[].tag = AST_AsmStaticConstant_t
     self[].get._AsmStaticConstant.name = name
