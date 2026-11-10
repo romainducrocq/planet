@@ -25,7 +25,7 @@ fn emit(ctx: Ctx, code: string) none {
     write_buffer(ctx[].fileio, code)
 }
 
-fn emit_identifier(ctx: Ctx, identifier: u64) none {
+fn emit_identifier(ctx: Ctx, identifier: TIdentifier) none {
 m4_ifdef(`__APPLE__', `
     emit(ctx, "_")
 ')m4_dnl
@@ -33,7 +33,7 @@ m4_ifdef(`__APPLE__', `
     emit(ctx, value)
 }
 
-fn emit_string(ctx: Ctx, string_const: u64) none {
+fn emit_string(ctx: Ctx, string_const: TIdentifier) none {
     value: string = map_get(ctx[].identifiers[].hash_table, string_const)
     emit(ctx, value)
 }
@@ -56,7 +56,7 @@ fn emit_long(ctx: Ctx, value: TLong) none {
     str_delete(strto_value)
 }
 
-fn emit_dbl(ctx: Ctx, dbl_const: u64) none {
+fn emit_dbl(ctx: Ctx, dbl_const: TIdentifier) none {
     value: string = map_get(ctx[].identifiers[].hash_table, dbl_const)
     emit(ctx, value)
 }
@@ -849,7 +849,7 @@ fn emit_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(AsmInstruction))) 
     }
 }
 
-fn glob_directive_toplvl(ctx: Ctx, name: u64, is_glob: bool) none {
+fn glob_directive_toplvl(ctx: Ctx, name: TIdentifier, is_glob: bool) none {
     if is_glob {
         emit(ctx, TAB ".globl ")
         emit_identifier(ctx, name)

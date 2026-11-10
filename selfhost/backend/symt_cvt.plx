@@ -10,7 +10,7 @@ m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, symbol: u64)
+type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, symbol: TIdentifier)
 
 m4_define(`Ctx', `*struc SymtCvtContext')m4_dnl
 
@@ -104,7 +104,7 @@ fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) s
     return make_ByteArray(size, alignment)
 }
 
-pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: u64) shared_ptr_t(AssemblyType) {
+pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: TIdentifier) shared_ptr_t(AssemblyType) {
     symbol_type: *struc Type = map_get(ctx[].symbol_table, name)[].type_t
     match symbol_type[].tag {
         -> AST_Char_t {

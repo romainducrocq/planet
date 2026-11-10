@@ -16,13 +16,13 @@ type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: TLong, p
 m4_define(`Ctx', `*struc StackFixContext')m4_dnl
 
 fn pseudo_data(node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
-    name: u64 = node[].name
+    name: TIdentifier = node[].name
     free_AsmOperand(pseudo_op)
     pseudo_op[] = make_AsmData(name, 0l)
 }
 
 fn pseudo_mem_data(node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
-    name: u64 = node[].name
+    name: TIdentifier = node[].name
     offset: TLong = node[].offset
     free_AsmOperand(pseudo_op)
     pseudo_op[] = make_AsmData(name, offset)
