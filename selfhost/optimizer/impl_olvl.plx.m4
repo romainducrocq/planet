@@ -861,7 +861,7 @@ fn dfa_backward_open_block(ctx: Ctx, block_id: u64, i: *u64) none {
     }
 }
 
-fn is_aliased_name(ctx: Ctx, name: u64) bool {
+fn is_aliased_name(ctx: Ctx, name: TIdentifier) bool {
     return map_get(ctx[].frontend[].symbol_table, name)[].attrs[].tag == AST_StaticAttr_t or set_find(ctx[].frontend[].addressed_set, name) ~= set_end()
 }
 
@@ -892,7 +892,7 @@ fn prop_add_data_idx(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u
     }
 }
 
-fn elim_add_data_name(ctx: Ctx, name: u64) none {
+fn elim_add_data_name(ctx: Ctx, name: TIdentifier) none {
     if map_find(ctx[].cfg[].identifier_id_map, name) == map_end() {
         map_add(ctx[].cfg[].identifier_id_map, name, ctx[].dfa[].set_size)
         ctx[].dfa[].set_size++
@@ -905,7 +905,7 @@ fn elim_add_data_value(ctx: Ctx, node: *struc TacValue) none {
     }
 }
 ', __OPTIM_LEVEL__, `2', `
-fn infer_add_data_name(ctx: Ctx, name: u64) none {
+fn infer_add_data_name(ctx: Ctx, name: TIdentifier) none {
     if not is_aliased_name(ctx, name) and map_find(ctx[].cfg[].identifier_id_map, name) == map_end() {
         map_add(ctx[].cfg[].identifier_id_map, name, REGISTER_MASK_SIZE + ctx[].dfa[].set_size)
         ctx[].dfa[].set_size++
@@ -923,7 +923,7 @@ fn init_data_flow_analysis(ctx: Ctx,
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     is_store_elim: bool, is_addressed_set: bool
 ', __OPTIM_LEVEL__, `2', `
-    fun_name: u64
+    fun_name: TIdentifier
 ')m4_dnl
 ) bool {
     ctx[].dfa[].set_size = 0

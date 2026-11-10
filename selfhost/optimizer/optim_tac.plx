@@ -1199,7 +1199,7 @@ fn is_const_zero(constant: *struc CConst) bool {
 fn fold_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, instr_idx: u64) none {
     if node[].condition[].tag == AST_TacConstant_t {
         if is_const_zero(node[].condition[].get._TacConstant.constant) {
-            target: u64 = node[].target
+            target: TIdentifier = node[].target
             set_instr(ctx, make_TacJump(target), instr_idx)
         }
         else {
@@ -1214,7 +1214,7 @@ fn fold_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, instr_idx: u64) 
             set_instr(ctx, uptr_new(), instr_idx)
         }
         else {
-            target: u64 = node[].target
+            target: TIdentifier = node[].target
             set_instr(ctx, make_TacJump(target), instr_idx)
         }
     }
@@ -1536,7 +1536,7 @@ fn is_same_value(node_1: *struc TacValue, node_2: *struc TacValue) bool {
     return false
 }
 
-fn is_same_name(node: *struc TacValue, name: u64) bool {
+fn is_same_name(node: *struc TacValue, name: TIdentifier) bool {
     match node[].tag {
         -> AST_TacConstant_t {
             return false
@@ -2511,7 +2511,7 @@ fn elim_transfer_aliased(ctx: Ctx, next_instr_idx: u64) none {
     }
 }
 
-fn elim_transfer_src_name(ctx: Ctx, name: u64, next_instr_idx: u64) none {
+fn elim_transfer_src_name(ctx: Ctx, name: TIdentifier, next_instr_idx: u64) none {
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
     SET_DFA_INSTR_SET_AT(next_instr_idx, i, true)
 }
@@ -2658,7 +2658,7 @@ fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none
     }
 }
 
-fn elim_dst_name_instr(ctx: Ctx, name: u64, instr_idx: u64) none {
+fn elim_dst_name_instr(ctx: Ctx, name: TIdentifier, instr_idx: u64) none {
     i: u64 = map_get(ctx[].cfg[].identifier_id_map, name)
     if not GET_DFA_INSTR_SET_AT(instr_idx, i) {
         set_instr(ctx, uptr_new(), instr_idx)
