@@ -31,11 +31,10 @@ fn fold_sign_extend_char_const(ctx: Ctx, node: *struc TacVariable, constant: *st
             value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
-        -> AST_Long_t {
-            -> AST_Pointer_t {
-                value: TLong = cast<TLong>(constant[].value)
-                return make_CConstLong(value)
-            }
+        -> AST_Long_t;
+        -> AST_Pointer_t {
+            value: TLong = cast<TLong>(constant[].value)
+            return make_CConstLong(value)
         }
         -> AST_UInt_t {
             value: TUInt = cast<TUInt>(constant[].value)
@@ -53,11 +52,10 @@ fn fold_sign_extend_char_const(ctx: Ctx, node: *struc TacVariable, constant: *st
 
 fn fold_sign_extend_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Long_t {
-            -> AST_Pointer_t {
-                value: TLong = cast<TLong>(constant[].value)
-                return make_CConstLong(value)
-            }
+        -> AST_Long_t;
+        -> AST_Pointer_t {
+            value: TLong = cast<TLong>(constant[].value)
+            return make_CConstLong(value)
         }
         -> AST_ULong_t {
             value: TULong = cast<TULong>(constant[].value)
@@ -99,11 +97,10 @@ fn fold_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) 
 
 fn fold_truncate_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = cast<TChar>(constant[].value)
-                return make_CConstChar(value)
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = cast<TChar>(constant[].value)
+            return make_CConstChar(value)
         }
         -> AST_UChar_t {
             value: TUChar = cast<TUChar>(constant[].value)
@@ -117,11 +114,10 @@ fn fold_truncate_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc 
 
 fn fold_truncate_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstLong) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = cast<TChar>(constant[].value)
-                return make_CConstChar(value)
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = cast<TChar>(constant[].value)
+            return make_CConstChar(value)
         }
         -> AST_Int_t {
             value: TInt = cast<TInt>(constant[].value)
@@ -143,11 +139,10 @@ fn fold_truncate_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
 
 fn fold_truncate_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = cast<TChar>(constant[].value)
-                return make_CConstChar(value)
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = cast<TChar>(constant[].value)
+            return make_CConstChar(value)
         }
         -> AST_UChar_t {
             value: TUChar = cast<TUChar>(constant[].value)
@@ -161,11 +156,10 @@ fn fold_truncate_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
 
 fn fold_truncate_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstULong) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = cast<TChar>(constant[].value)
-                return make_CConstChar(value)
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = cast<TChar>(constant[].value)
+            return make_CConstChar(value)
         }
         -> AST_Int_t {
             value: TInt = cast<TInt>(constant[].value)
@@ -227,11 +221,10 @@ fn fold_zero_extend_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *s
             value: TInt = cast<TInt>(constant[].value)
             return make_CConstInt(value)
         }
-        -> AST_Long_t {
-            -> AST_Pointer_t {
-                value: TLong = cast<TLong>(constant[].value)
-                return make_CConstLong(value)
-            }
+        -> AST_Long_t;
+        -> AST_Pointer_t {
+            value: TLong = cast<TLong>(constant[].value)
+            return make_CConstLong(value)
         }
         -> AST_UInt_t {
             value: TUInt = cast<TUInt>(constant[].value)
@@ -249,11 +242,10 @@ fn fold_zero_extend_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *s
 
 fn fold_zero_extend_uint_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUInt) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Long_t {
-            -> AST_Pointer_t {
-                value: TLong = cast<TLong>(constant[].value)
-                return make_CConstLong(value)
-            }
+        -> AST_Long_t;
+        -> AST_Pointer_t {
+            value: TLong = cast<TLong>(constant[].value)
+            return make_CConstLong(value)
         }
         -> AST_ULong_t {
             value: TULong = cast<TULong>(constant[].value)
@@ -297,12 +289,11 @@ fn fold_dbl_to_signed_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
     THROW_ABORT_IF(constant[].tag ~= AST_CConstDouble_t)
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = cast<TChar>(constant[].get._CConstDouble.value)
-                fold_constant = make_CConstChar(value)
-                break
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = cast<TChar>(constant[].get._CConstDouble.value)
+            fold_constant = make_CConstChar(value)
+            break
         }
         -> AST_Int_t {
             value: TInt = cast<TInt>(constant[].get._CConstDouble.value)
@@ -642,11 +633,10 @@ fn fold_binary_int_const(node: *struc TacBinaryOp, constant_1: *struc CConstInt,
             value: TInt = constant_1[].value << constant_2[].value
             return make_CConstInt(value)
         }
-        -> AST_TacBitShiftRight_t {
-            -> AST_TacBitShrArithmetic_t {
-                value: TInt = constant_1[].value >> constant_2[].value
-                return make_CConstInt(value)
-            }
+        -> AST_TacBitShiftRight_t;
+        -> AST_TacBitShrArithmetic_t {
+            value: TInt = constant_1[].value >> constant_2[].value
+            return make_CConstInt(value)
         }
         -> AST_TacEqual_t {
             value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
@@ -716,11 +706,10 @@ fn fold_binary_long_const(node: *struc TacBinaryOp, constant_1: *struc CConstLon
             value: TLong = constant_1[].value << constant_2[].value
             return make_CConstLong(value)
         }
-        -> AST_TacBitShiftRight_t {
-            -> AST_TacBitShrArithmetic_t {
-                value: TLong = constant_1[].value >> constant_2[].value
-                return make_CConstLong(value)
-            }
+        -> AST_TacBitShiftRight_t;
+        -> AST_TacBitShrArithmetic_t {
+            value: TLong = constant_1[].value >> constant_2[].value
+            return make_CConstLong(value)
         }
         -> AST_TacEqual_t {
             value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
@@ -838,11 +827,10 @@ fn fold_binary_uint_const(node: *struc TacBinaryOp, constant_1: *struc CConstUIn
             value: TUInt = constant_1[].value << constant_2[].value
             return make_CConstUInt(value)
         }
-        -> AST_TacBitShiftRight_t {
-            -> AST_TacBitShrArithmetic_t {
-                value: TUInt = constant_1[].value >> constant_2[].value
-                return make_CConstUInt(value)
-            }
+        -> AST_TacBitShiftRight_t;
+        -> AST_TacBitShrArithmetic_t {
+            value: TUInt = constant_1[].value >> constant_2[].value
+            return make_CConstUInt(value)
         }
         -> AST_TacEqual_t {
             value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
@@ -912,11 +900,10 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
             value: TULong = constant_1[].value << constant_2[].value
             return make_CConstULong(value)
         }
-        -> AST_TacBitShiftRight_t {
-            -> AST_TacBitShrArithmetic_t {
-                value: TULong = constant_1[].value >> constant_2[].value
-                return make_CConstULong(value)
-            }
+        -> AST_TacBitShiftRight_t;
+        -> AST_TacBitShrArithmetic_t {
+            value: TULong = constant_1[].value >> constant_2[].value
+            return make_CConstULong(value)
         }
         -> AST_TacEqual_t {
             value: TInt = ? constant_1[].value == constant_2[].value then 1 else 0
@@ -990,10 +977,9 @@ fn fold_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
 
 fn fold_copy_char_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                return sptr_new()
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            return sptr_new()
         }
         -> AST_UChar_t {
             value: TUChar = cast<TUChar>(constant[].value)
@@ -1022,10 +1008,9 @@ fn fold_copy_int_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCon
 
 fn fold_copy_long_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstLong) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Long_t {
-            -> AST_Pointer_t {
-                return sptr_new()
-            }
+        -> AST_Long_t;
+        -> AST_Pointer_t {
+            return sptr_new()
         }
         -> AST_Double_t {
             value: TDouble = cast<TDouble>(constant[].value)
@@ -1062,11 +1047,10 @@ fn fold_copy_dbl_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCon
 
 fn fold_copy_uchar_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstUChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = cast<TChar>(constant[].value)
-                return make_CConstChar(value)
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = cast<TChar>(constant[].value)
+            return make_CConstChar(value)
         }
         -> AST_UChar_t {
             return sptr_new()
@@ -1102,10 +1086,9 @@ fn fold_copy_ulong_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CC
             value: TDouble = cast<TDouble>(constant[].value)
             return make_CConstDouble(value)
         }
-        -> AST_Pointer_t {
-            -> AST_ULong_t {
-                return sptr_new()
-            }
+        -> AST_Pointer_t;
+        -> AST_ULong_t {
+            return sptr_new()
         }
         otherwise {
             THROW_ABORT
@@ -1225,52 +1208,52 @@ fn fold_instr(ctx: Ctx, instr_idx: u64) none {
     match node[].tag {
         -> AST_TacSignExtend_t {
             fold_sign_extend_instr(ctx, @node[].get._TacSignExtend, instr_idx)
+            break
         }
-        break
         -> AST_TacTruncate_t {
             fold_truncate_instr(ctx, @node[].get._TacTruncate, instr_idx)
+            break
         }
-        break
         -> AST_TacZeroExtend_t {
             fold_zero_extend_instr(ctx, @node[].get._TacZeroExtend, instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToInt_t {
             fold_dbl_to_signed_instr(ctx, @node[].get._TacDoubleToInt, instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToUInt_t {
             fold_dbl_to_unsigned_instr(ctx, @node[].get._TacDoubleToUInt, instr_idx)
+            break
         }
-        break
         -> AST_TacIntToDouble_t {
             fold_signed_to_dbl_instr(ctx, @node[].get._TacIntToDouble, instr_idx)
+            break
         }
-        break
         -> AST_TacUIntToDouble_t {
             fold_unsigned_to_dbl_instr(ctx, @node[].get._TacUIntToDouble, instr_idx)
+            break
         }
-        break
         -> AST_TacUnary_t {
             fold_unary_instr(ctx, @node[].get._TacUnary, instr_idx)
+            break
         }
-        break
         -> AST_TacBinary_t {
             fold_binary_instr(ctx, @node[].get._TacBinary, instr_idx)
+            break
         }
-        break
         -> AST_TacCopy_t {
             fold_copy_instr(ctx, @node[].get._TacCopy)
+            break
         }
-        break
         -> AST_TacJumpIfZero_t {
             fold_jmp_eq_0_instr(ctx, @node[].get._TacJumpIfZero, instr_idx)
+            break
         }
-        break
         -> AST_TacJumpIfNotZero_t {
             fold_jmp_ne_0_instr(ctx, @node[].get._TacJumpIfNotZero, instr_idx)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -1315,14 +1298,12 @@ fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
 fn unreach_jump_instr(ctx: Ctx, block_id: u64) none {
     node: *struc TacInstruction = GET_INSTR(GET_CFG_BLOCK(block_id).instrs_back_idx)
     match node[].tag {
-        -> AST_TacJump_t {
-            -> AST_TacJumpIfZero_t {
-                -> AST_TacJumpIfNotZero_t {
-                    cfg_rm_block_instr(ctx, GET_CFG_BLOCK(block_id).instrs_back_idx, block_id)
-                }
-            }
+        -> AST_TacJump_t;
+        -> AST_TacJumpIfZero_t;
+        -> AST_TacJumpIfNotZero_t {
+            cfg_rm_block_instr(ctx, GET_CFG_BLOCK(block_id).instrs_back_idx, block_id)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -1402,12 +1383,10 @@ fn is_aliased_value(ctx: Ctx, node: *struc TacValue) bool {
 
 fn is_const_signed(node: *struc TacConstant) bool {
     match node[].constant[].tag {
-        -> AST_CConstChar_t {
-            -> AST_CConstInt_t {
-                -> AST_CConstLong_t {
-                    return true
-                }
-            }
+        -> AST_CConstChar_t;
+        -> AST_CConstInt_t;
+        -> AST_CConstLong_t {
+            return true
         }
         otherwise {
             return false
@@ -1417,14 +1396,11 @@ fn is_const_signed(node: *struc TacConstant) bool {
 
 fn is_var_signed(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        return true
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t {
+            return true
         }
         otherwise {
             return false
@@ -1706,71 +1682,71 @@ fn prop_transfer_reach_copies(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) boo
     match node[].tag {
         -> AST_TacSignExtend_t {
             prop_transfer_dst_value(ctx, node[].get._TacSignExtend.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacTruncate_t {
             prop_transfer_dst_value(ctx, node[].get._TacTruncate.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacZeroExtend_t {
             prop_transfer_dst_value(ctx, node[].get._TacZeroExtend.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToInt_t {
             prop_transfer_dst_value(ctx, node[].get._TacDoubleToInt.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToUInt_t {
             prop_transfer_dst_value(ctx, node[].get._TacDoubleToUInt.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacIntToDouble_t {
             prop_transfer_dst_value(ctx, node[].get._TacIntToDouble.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacUIntToDouble_t {
             prop_transfer_dst_value(ctx, node[].get._TacUIntToDouble.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacFunCall_t {
             prop_transfer_call(ctx, @node[].get._TacFunCall, next_instr_idx)
+            break
         }
-        break
         -> AST_TacUnary_t {
             prop_transfer_dst_value(ctx, node[].get._TacUnary.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacBinary_t {
             prop_transfer_dst_value(ctx, node[].get._TacBinary.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacCopy_t {
             return prop_transfer_copy(ctx, @node[].get._TacCopy, next_instr_idx)
         }
         -> AST_TacGetAddress_t {
             prop_transfer_dst_value(ctx, node[].get._TacGetAddress.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacLoad_t {
             prop_transfer_dst_value(ctx, node[].get._TacLoad.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacStore_t {
             prop_transfer_store(ctx, next_instr_idx)
+            break
         }
-        break
         -> AST_TacAddPtr_t {
             prop_transfer_dst_value(ctx, node[].get._TacAddPtr.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacCopyToOffset_t {
             prop_transfer_cp_to_offset(ctx, @node[].get._TacCopyToOffset, next_instr_idx)
+            break
         }
-        break
         -> AST_TacCopyFromOffset_t {
             prop_transfer_dst_value(ctx, node[].get._TacCopyFromOffset.dst, next_instr_idx)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2347,80 +2323,80 @@ fn prop_instr(ctx: Ctx, instr_idx: u64, copy_instr_idx: u64, block_id: u64) none
     match node[].tag {
         -> AST_TacReturn_t {
             prop_ret_instr(ctx, @node[].get._TacReturn, copy_instr_idx, block_id > 0)
+            break
         }
-        break
         -> AST_TacSignExtend_t {
             prop_sign_extend_instr(ctx, @node[].get._TacSignExtend, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacTruncate_t {
             prop_truncate_instr(ctx, @node[].get._TacTruncate, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacZeroExtend_t {
             prop_zero_extend_instr(ctx, @node[].get._TacZeroExtend, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToInt_t {
             prop_dbl_to_int_instr(ctx, @node[].get._TacDoubleToInt, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToUInt_t {
             prop_dbl_to_uint_instr(ctx, @node[].get._TacDoubleToUInt, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacIntToDouble_t {
             prop_int_to_dbl_instr(ctx, @node[].get._TacIntToDouble, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacUIntToDouble_t {
             prop_uint_to_dbl_instr(ctx, @node[].get._TacUIntToDouble, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacFunCall_t {
             prop_call_instr(ctx, @node[].get._TacFunCall, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacUnary_t {
             prop_unary_instr(ctx, @node[].get._TacUnary, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacBinary_t {
             prop_binary_instr(ctx, @node[].get._TacBinary, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacCopy_t {
             prop_copy_instr(ctx, @node[].get._TacCopy, copy_instr_idx, block_id)
+            break
         }
-        break
         -> AST_TacLoad_t {
             prop_load_instr(ctx, @node[].get._TacLoad, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacStore_t {
             prop_store_instr(ctx, @node[].get._TacStore, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacAddPtr_t {
             prop_add_ptr_instr(ctx, @node[].get._TacAddPtr, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacCopyToOffset_t {
             prop_cp_to_offset_instr(ctx, @node[].get._TacCopyToOffset, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacCopyFromOffset_t {
             prop_cp_from_offset_instr(ctx, @node[].get._TacCopyFromOffset, copy_instr_idx)
+            break
         }
-        break
         -> AST_TacJumpIfZero_t {
             prop_jmp_eq_0_instr(ctx, @node[].get._TacJumpIfZero, copy_instr_idx, block_id > 0)
+            break
         }
-        break
         -> AST_TacJumpIfNotZero_t {
             prop_jmp_ne_0_instr(ctx, @node[].get._TacJumpIfNotZero, copy_instr_idx, block_id > 0)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2439,49 +2415,32 @@ fn propagate_copies(ctx: Ctx) none {
             loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_back_idx + 1 while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
                 if GET_INSTR(instr_idx) {
                     match GET_INSTR(instr_idx)[].tag {
-                        -> AST_TacReturn_t {
-                            -> AST_TacJumpIfZero_t {
-                                -> AST_TacJumpIfNotZero_t {
-                                    prop_instr(ctx, instr_idx, incoming_idx, exit_block)
-                                }
-                            }
+                        -> AST_TacReturn_t;
+                        -> AST_TacJumpIfZero_t;
+                        -> AST_TacJumpIfNotZero_t {
+                            prop_instr(ctx, instr_idx, incoming_idx, exit_block)
+                            break
                         }
-                        break
-                        -> AST_TacSignExtend_t {
-                            -> AST_TacTruncate_t {
-                                -> AST_TacZeroExtend_t {
-                                    -> AST_TacDoubleToInt_t {
-                                        -> AST_TacDoubleToUInt_t {
-                                            -> AST_TacIntToDouble_t {
-                                                -> AST_TacUIntToDouble_t {
-                                                    -> AST_TacFunCall_t {
-                                                        -> AST_TacUnary_t {
-                                                            -> AST_TacBinary_t {
-                                                                -> AST_TacCopy_t {
-                                                                    -> AST_TacLoad_t {
-                                                                        -> AST_TacStore_t {
-                                                                            -> AST_TacAddPtr_t {
-                                                                                -> AST_TacCopyToOffset_t {
-                                                                                    -> AST_TacCopyFromOffset_t {
-                                                                                        prop_instr(ctx, instr_idx, instr_idx, block_id)
-                                                                                        incoming_idx = instr_idx
-                                                                                        exit_block = 0
-                                                                                        break
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        -> AST_TacSignExtend_t;
+                        -> AST_TacTruncate_t;
+                        -> AST_TacZeroExtend_t;
+                        -> AST_TacDoubleToInt_t;
+                        -> AST_TacDoubleToUInt_t;
+                        -> AST_TacIntToDouble_t;
+                        -> AST_TacUIntToDouble_t;
+                        -> AST_TacFunCall_t;
+                        -> AST_TacUnary_t;
+                        -> AST_TacBinary_t;
+                        -> AST_TacCopy_t;
+                        -> AST_TacLoad_t;
+                        -> AST_TacStore_t;
+                        -> AST_TacAddPtr_t;
+                        -> AST_TacCopyToOffset_t;
+                        -> AST_TacCopyFromOffset_t {
+                            prop_instr(ctx, instr_idx, instr_idx, block_id)
+                            incoming_idx = instr_idx
+                            exit_block = 0
+                            break
                         }
                         -> AST_TacGetAddress_t {
                             incoming_idx = instr_idx
@@ -2612,8 +2571,8 @@ fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none
         }
         -> AST_TacGetAddress_t {
             elim_transfer_dst_value(ctx, node[].get._TacGetAddress.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_TacLoad_t {
             p_node: *struc TacLoad = @node[].get._TacLoad
             elim_transfer_dst_value(ctx, p_node[].dst, next_instr_idx)
@@ -2636,8 +2595,8 @@ fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none
         }
         -> AST_TacCopyToOffset_t {
             elim_transfer_src_value(ctx, node[].get._TacCopyToOffset.src, next_instr_idx)
+            break
         }
-        break
         -> AST_TacCopyFromOffset_t {
             p_node: *struc TacCopyFromOffset = @node[].get._TacCopyFromOffset
             elim_transfer_dst_value(ctx, p_node[].dst, next_instr_idx)
@@ -2646,12 +2605,12 @@ fn elim_transfer_live_values(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none
         }
         -> AST_TacJumpIfZero_t {
             elim_transfer_src_value(ctx, node[].get._TacJumpIfZero.condition, next_instr_idx)
+            break
         }
-        break
         -> AST_TacJumpIfNotZero_t {
             elim_transfer_src_value(ctx, node[].get._TacJumpIfNotZero.condition, next_instr_idx)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2675,64 +2634,64 @@ fn elim_instr(ctx: Ctx, instr_idx: u64) none {
     match node[].tag {
         -> AST_TacSignExtend_t {
             elim_dst_value_instr(ctx, node[].get._TacSignExtend.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacTruncate_t {
             elim_dst_value_instr(ctx, node[].get._TacTruncate.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacZeroExtend_t {
             elim_dst_value_instr(ctx, node[].get._TacZeroExtend.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToInt_t {
             elim_dst_value_instr(ctx, node[].get._TacDoubleToInt.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacDoubleToUInt_t {
             elim_dst_value_instr(ctx, node[].get._TacDoubleToUInt.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacIntToDouble_t {
             elim_dst_value_instr(ctx, node[].get._TacIntToDouble.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacUIntToDouble_t {
             elim_dst_value_instr(ctx, node[].get._TacUIntToDouble.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacUnary_t {
             elim_dst_value_instr(ctx, node[].get._TacUnary.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacBinary_t {
             elim_dst_value_instr(ctx, node[].get._TacBinary.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacCopy_t {
             elim_dst_value_instr(ctx, node[].get._TacCopy.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacGetAddress_t {
             elim_dst_value_instr(ctx, node[].get._TacGetAddress.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacLoad_t {
             elim_dst_value_instr(ctx, node[].get._TacLoad.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacAddPtr_t {
             elim_dst_value_instr(ctx, node[].get._TacAddPtr.dst, instr_idx)
+            break
         }
-        break
         -> AST_TacCopyToOffset_t {
             elim_dst_name_instr(ctx, node[].get._TacCopyToOffset.dst_name, instr_idx)
+            break
         }
-        break
         -> AST_TacCopyFromOffset_t {
             elim_dst_value_instr(ctx, node[].get._TacCopyFromOffset.dst, instr_idx)
+            break
         }
-        break
         otherwise {
             break
         }

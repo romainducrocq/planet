@@ -352,35 +352,35 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_AsmRet_t {
 ')m4_dnl
             cfg_add_succ_edge(ctx, block_id, ctx[].cfg[].exit_id)
+            break
         }
-        break
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         -> AST_TacJump_t {
             cfg_init_jump_edges(ctx, @node[].get._TacJump, block_id)
+            break
         }
-        break
         -> AST_TacJumpIfZero_t {
             cfg_init_jmp_eq_0_edges(ctx, @node[].get._TacJumpIfZero, block_id)
+            break
         }
-        break
         -> AST_TacJumpIfNotZero_t {
             cfg_init_jmp_ne_0_edges(ctx, @node[].get._TacJumpIfNotZero, block_id)
+            break
         }
-        break
 ', __OPTIM_LEVEL__, `2', `
         -> AST_AsmJmp_t {
             cfg_init_jmp_edges(ctx, @node[].get._AsmJmp, block_id)
+            break
         }
-        break
         -> AST_AsmJmpCC_t {
             cfg_init_jmp_cc_edges(ctx, @node[].get._AsmJmpCC, block_id)
+            break
         }
-        break
 ')m4_dnl
         otherwise {
             cfg_add_succ_edge(ctx, block_id, block_id + 1)
+            break
         }
-        break
     }
 }
 
@@ -466,79 +466,47 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 ) bool {
     match GET_INSTR(instr_idx)[].tag {
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-        -> AST_TacSignExtend_t {
-            -> AST_TacTruncate_t {
-                -> AST_TacZeroExtend_t {
-                    -> AST_TacDoubleToInt_t {
-                        -> AST_TacDoubleToUInt_t {
-                            -> AST_TacIntToDouble_t {
-                                -> AST_TacUIntToDouble_t {
-                                    -> AST_TacFunCall_t {
-                                        -> AST_TacUnary_t {
-                                            -> AST_TacBinary_t {
-                                                -> AST_TacCopy_t {
-                                                    -> AST_TacGetAddress_t {
-                                                        -> AST_TacLoad_t {
-                                                            -> AST_TacStore_t {
-                                                                -> AST_TacAddPtr_t {
-                                                                    -> AST_TacCopyToOffset_t {
-                                                                        -> AST_TacCopyFromOffset_t {
-                                                                            return true
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_TacSignExtend_t;
+        -> AST_TacTruncate_t;
+        -> AST_TacZeroExtend_t;
+        -> AST_TacDoubleToInt_t;
+        -> AST_TacDoubleToUInt_t;
+        -> AST_TacIntToDouble_t;
+        -> AST_TacUIntToDouble_t;
+        -> AST_TacFunCall_t;
+        -> AST_TacUnary_t;
+        -> AST_TacBinary_t;
+        -> AST_TacCopy_t;
+        -> AST_TacGetAddress_t;
+        -> AST_TacLoad_t;
+        -> AST_TacStore_t;
+        -> AST_TacAddPtr_t;
+        -> AST_TacCopyToOffset_t;
+        -> AST_TacCopyFromOffset_t {
+            return true
         }
-        -> AST_TacReturn_t {
-            -> AST_TacJumpIfZero_t {
-                -> AST_TacJumpIfNotZero_t {
-                    return is_store_elim
-                }
-            }
+        -> AST_TacReturn_t;
+        -> AST_TacJumpIfZero_t;
+        -> AST_TacJumpIfNotZero_t {
+            return is_store_elim
         }
 ', __OPTIM_LEVEL__, `2', `
-        -> AST_AsmMov_t {
-            -> AST_AsmMovSx_t {
-                -> AST_AsmMovZeroExtend_t {
-                    -> AST_AsmLea_t {
-                        -> AST_AsmCvttsd2si_t {
-                            -> AST_AsmCvtsi2sd_t {
-                                -> AST_AsmUnary_t {
-                                    -> AST_AsmBinary_t {
-                                        -> AST_AsmCmp_t {
-                                            -> AST_AsmIdiv_t {
-                                                -> AST_AsmDiv_t {
-                                                    -> AST_AsmCdq_t {
-                                                        -> AST_AsmSetCC_t {
-                                                            -> AST_AsmPush_t {
-                                                                -> AST_AsmCall_t {
-                                                                    return true
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_AsmMov_t;
+        -> AST_AsmMovSx_t;
+        -> AST_AsmMovZeroExtend_t;
+        -> AST_AsmLea_t;
+        -> AST_AsmCvttsd2si_t;
+        -> AST_AsmCvtsi2sd_t;
+        -> AST_AsmUnary_t;
+        -> AST_AsmBinary_t;
+        -> AST_AsmCmp_t;
+        -> AST_AsmIdiv_t;
+        -> AST_AsmDiv_t;
+        -> AST_AsmCdq_t;
+        -> AST_AsmSetCC_t;
+        -> AST_AsmPush_t;
+        -> AST_AsmCall_t {
+            return true
         }
 ')m4_dnl
         otherwise {
@@ -1180,8 +1148,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
                         }
                         -> AST_AsmUnary_t {
                             infer_add_data_op(ctx, node[].get._AsmUnary.dst)
+                            break
                         }
-                        break
                         -> AST_AsmBinary_t {
                             p_node: *struc AsmBinary = @node[].get._AsmBinary
                             infer_add_data_op(ctx, p_node[].src)
@@ -1196,24 +1164,23 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
                         }
                         -> AST_AsmIdiv_t {
                             infer_add_data_op(ctx, node[].get._AsmIdiv.src)
+                            break
                         }
-                        break
                         -> AST_AsmDiv_t {
                             infer_add_data_op(ctx, node[].get._AsmDiv.src)
+                            break
                         }
-                        break
                         -> AST_AsmSetCC_t {
                             infer_add_data_op(ctx, node[].get._AsmSetCC.dst)
+                            break
                         }
-                        break
                         -> AST_AsmPush_t {
                             infer_add_data_op(ctx, node[].get._AsmPush.src)
+                            break
                         }
-                        break
-                        -> AST_AsmCdq_t {
-                            -> AST_AsmCall_t {
-                                break
-                            }
+                        -> AST_AsmCdq_t;
+                        -> AST_AsmCall_t {
+                            break
                         }
 ')m4_dnl
                         otherwise {
