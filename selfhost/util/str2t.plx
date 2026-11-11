@@ -24,48 +24,48 @@ pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) no
             match str_char {
                 -> '\'' {
                     vec_push_back(string_literal[], 39)
+                    break
                 }
-                break
                 -> '"' {
                     vec_push_back(string_literal[], 34)
+                    break
                 }
-                break
                 -> '?' {
                     vec_push_back(string_literal[], 63)
+                    break
                 }
-                break
                 -> '\\' {
                     vec_push_back(string_literal[], 92)
+                    break
                 }
-                break
                 -> 'a' {
                     vec_push_back(string_literal[], 7)
+                    break
                 }
-                break
                 -> 'b' {
                     vec_push_back(string_literal[], 8)
+                    break
                 }
-                break
                 -> 'f' {
                     vec_push_back(string_literal[], 12)
+                    break
                 }
-                break
                 -> 'n' {
                     vec_push_back(string_literal[], 10)
+                    break
                 }
-                break
                 -> 'r' {
                     vec_push_back(string_literal[], 13)
+                    break
                 }
-                break
                 -> 't' {
                     vec_push_back(string_literal[], 9)
+                    break
                 }
-                break
                 -> 'v' {
                     vec_push_back(string_literal[], 11)
+                    break
                 }
-                break
                 otherwise {
                     THROW_ABORT
                 }
@@ -182,48 +182,48 @@ pub fn string_literal_to_const(string_literal: vector_t(i8)) string_t {
         match byte {
             -> 39 {
                 str_append(string_const, "\\047")
+                break
             }
-            break
             -> 34 {
                 str_append(string_const, "\\042")
+                break
             }
-            break
             -> 63 {
                 str_append(string_const, "\\077")
+                break
             }
-            break
             -> 92 {
                 str_append(string_const, "\\134")
+                break
             }
-            break
             -> 7 {
                 str_append(string_const, "\\007")
+                break
             }
-            break
             -> 8 {
                 str_append(string_const, "\\010")
+                break
             }
-            break
             -> 12 {
                 str_append(string_const, "\\014")
+                break
             }
-            break
             -> 10 {
                 str_append(string_const, "\\012")
+                break
             }
-            break
             -> 13 {
                 str_append(string_const, "\\013")
+                break
             }
-            break
             -> 9 {
                 str_append(string_const, "\\011")
+                break
             }
-            break
             -> 11 {
                 str_append(string_const, "\\013")
+                break
             }
-            break
             otherwise {
                 str_push_back(string_const, cast<char>(byte))
             }
