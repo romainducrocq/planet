@@ -92,12 +92,10 @@ m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 
 fn is_bitshift_cl(node: *struc AsmBinary) bool {
     match node[].binop.tag {
-        -> AST_AsmBitShiftLeft_t {
-            -> AST_AsmBitShiftRight_t {
-                -> AST_AsmBitShrArithmetic_t {
-                    return node[].src[].tag ~= AST_AsmImm_t
-                }
-            }
+        -> AST_AsmBitShiftLeft_t;
+        -> AST_AsmBitShiftRight_t;
+        -> AST_AsmBitShrArithmetic_t {
+            return node[].src[].tag ~= AST_AsmImm_t
         }
         otherwise {
             return false
@@ -136,8 +134,8 @@ fn infer_transfer_used_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: u64
         }
         -> AST_AsmPseudo_t {
             infer_transfer_used_name(ctx, node[].get._AsmPseudo.name, next_instr_idx)
+            break
         }
-        break
         -> AST_AsmMemory_t {
             reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmMemory.reg)
             if reg_kind ~= REG_Sp {
@@ -191,8 +189,8 @@ fn infer_transfer_updated_op(ctx: Ctx, node: *struc AsmOperand, next_instr_idx: 
         }
         -> AST_AsmPseudo_t {
             infer_transfer_updated_name(ctx, node[].get._AsmPseudo.name, next_instr_idx)
+            break
         }
-        break
         -> AST_AsmMemory_t {
             reg_kind: REGISTER_KIND = register_mask_kind(@node[].get._AsmMemory.reg)
             if reg_kind ~= REG_Sp {
@@ -250,8 +248,8 @@ fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none 
         }
         -> AST_AsmUnary_t {
             infer_transfer_used_op(ctx, node[].get._AsmUnary.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             p_node: *struc AsmBinary = @node[].get._AsmBinary
             infer_transfer_used_op(ctx, p_node[].src, next_instr_idx)
@@ -269,53 +267,53 @@ fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none 
         }
         -> AST_AsmIdiv_t {
             infer_transfer_used_op(ctx, node[].get._AsmIdiv.src, next_instr_idx)
+            infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
+            infer_transfer_used_reg(ctx, REG_Dx, next_instr_idx)
+            break
         }
-        infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
-        infer_transfer_used_reg(ctx, REG_Dx, next_instr_idx)
-        break
         -> AST_AsmDiv_t {
             infer_transfer_used_op(ctx, node[].get._AsmDiv.src, next_instr_idx)
+            infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
+            break
         }
-        infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
-        break
         -> AST_AsmCdq_t {
             infer_transfer_updated_reg(ctx, REG_Dx, next_instr_idx)
+            infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
+            break
         }
-        infer_transfer_used_reg(ctx, REG_Ax, next_instr_idx)
-        break
         -> AST_AsmSetCC_t {
             infer_transfer_updated_op(ctx, node[].get._AsmSetCC.dst, next_instr_idx)
+            break
         }
-        break
         -> AST_AsmPush_t {
             infer_transfer_used_op(ctx, node[].get._AsmPush.src, next_instr_idx)
+            break
         }
-        break
         -> AST_AsmCall_t {
             infer_transfer_updated_reg(ctx, REG_Ax, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Cx, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Dx, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Di, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Si, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_R8, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_R9, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm0, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm1, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm2, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm3, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm4, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm5, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm6, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm7, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm8, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm9, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm10, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm11, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm12, next_instr_idx)
+            infer_transfer_updated_reg(ctx, REG_Xmm13, next_instr_idx)
+            infer_transfer_used_call(ctx, @node[].get._AsmCall, next_instr_idx)
+            break
         }
-        infer_transfer_updated_reg(ctx, REG_Cx, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Dx, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Di, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Si, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_R8, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_R9, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm0, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm1, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm2, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm3, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm4, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm5, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm6, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm7, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm8, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm9, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm10, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm11, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm12, next_instr_idx)
-        infer_transfer_updated_reg(ctx, REG_Xmm13, next_instr_idx)
-        infer_transfer_used_call(ctx, @node[].get._AsmCall, next_instr_idx)
-        break
         otherwise {
             THROW_ABORT
         }
@@ -562,8 +560,8 @@ fn infer_init_updated_op_edges(ctx: Ctx, node: *struc AsmOperand, instr_idx: u64
         }
         -> AST_AsmPseudo_t {
             infer_init_updated_name_edges(ctx, node[].get._AsmPseudo.name, instr_idx)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -575,32 +573,32 @@ fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
     match node[].tag {
         -> AST_AsmMov_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMov.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmMovSx_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMovSx.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmMovZeroExtend_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmMovZeroExtend.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmLea_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmLea.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmCvttsd2si_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmCvttsd2si.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmCvtsi2sd_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmCvtsi2sd.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmUnary_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmUnary.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             p_node: *struc AsmBinary = @node[].get._AsmBinary
             if is_bitshift_cl(p_node) {
@@ -636,12 +634,12 @@ fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
         }
         -> AST_AsmSetCC_t {
             infer_init_updated_op_edges(ctx, node[].get._AsmSetCC.dst, instr_idx)
+            break
         }
-        break
         -> AST_AsmPush_t {
             infer_init_used_op_edges(ctx, node[].get._AsmPush.src)
+            break
         }
-        break
         -> AST_AsmCall_t {
             {
                 reg_kinds: [7]REGISTER_KIND = $(REG_Ax, REG_Cx, REG_Dx, REG_Di, REG_Si, REG_R8, REG_R9)
@@ -734,16 +732,12 @@ fn init_inference_graph(ctx: Ctx, fun_name: TIdentifier) bool {
 
 fn is_reg_callee_saved(reg_kind: REGISTER_KIND) bool {
     match reg_kind {
-        -> REG_Bx {
-            -> REG_R12 {
-                -> REG_R13 {
-                    -> REG_R14 {
-                        -> REG_R15 {
-                            return true
-                        }
-                    }
-                }
-            }
+        -> REG_Bx;
+        -> REG_R12;
+        -> REG_R13;
+        -> REG_R14;
+        -> REG_R15 {
+            return true
         }
         otherwise {
             return false
@@ -1143,60 +1137,59 @@ fn alloc_instr(ctx: Ctx, instr_idx: u64) none {
     match node[].tag {
         -> AST_AsmMov_t {
             alloc_mov_instr(ctx, @node[].get._AsmMov, instr_idx)
+            break
         }
-        break
         -> AST_AsmMovSx_t {
             alloc_mov_sx_instr(ctx, @node[].get._AsmMovSx)
+            break
         }
-        break
         -> AST_AsmMovZeroExtend_t {
             alloc_zero_extend_instr(ctx, @node[].get._AsmMovZeroExtend)
+            break
         }
-        break
         -> AST_AsmLea_t {
             alloc_lea_instr(ctx, @node[].get._AsmLea)
+            break
         }
-        break
         -> AST_AsmCvttsd2si_t {
             alloc_cvttsd2si_instr(ctx, @node[].get._AsmCvttsd2si)
+            break
         }
-        break
         -> AST_AsmCvtsi2sd_t {
             alloc_cvtsi2sd_instr(ctx, @node[].get._AsmCvtsi2sd)
+            break
         }
-        break
         -> AST_AsmUnary_t {
             alloc_unary_instr(ctx, @node[].get._AsmUnary)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             alloc_binary_instr(ctx, @node[].get._AsmBinary)
+            break
         }
-        break
         -> AST_AsmCmp_t {
             alloc_cmp_instr(ctx, @node[].get._AsmCmp)
+            break
         }
-        break
         -> AST_AsmIdiv_t {
             alloc_idiv_instr(ctx, @node[].get._AsmIdiv)
+            break
         }
-        break
         -> AST_AsmDiv_t {
             alloc_div_instr(ctx, @node[].get._AsmDiv)
+            break
         }
-        break
         -> AST_AsmSetCC_t {
             alloc_set_cc_instr(ctx, @node[].get._AsmSetCC)
+            break
         }
-        break
         -> AST_AsmPush_t {
             alloc_push_instr(ctx, @node[].get._AsmPush)
+            break
         }
-        break
-        -> AST_AsmCdq_t {
-            -> AST_AsmCall_t {
-                break
-            }
+        -> AST_AsmCdq_t;
+        -> AST_AsmCall_t {
+            break
         }
         otherwise {
             break
@@ -1224,26 +1217,20 @@ fn reallocate_registers(ctx: Ctx) none {
 
 fn get_type_size(type_t: *struc Type) TInt {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return 1
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return 1
         }
-        -> AST_Int_t {
-            -> AST_UInt_t {
-                return 4
-            }
+        -> AST_Int_t;
+        -> AST_UInt_t {
+            return 4
         }
-        -> AST_Long_t {
-            -> AST_Double_t {
-                -> AST_ULong_t {
-                    -> AST_Pointer_t {
-                        return 8
-                    }
-                }
-            }
+        -> AST_Long_t;
+        -> AST_Double_t;
+        -> AST_ULong_t;
+        -> AST_Pointer_t {
+            return 8
         }
         otherwise {
             THROW_ABORT
@@ -1674,60 +1661,59 @@ fn coal_instr(ctx: Ctx, instr_idx: u64, block_id: u64) none {
     match node[].tag {
         -> AST_AsmMov_t {
             coal_mov_instr(ctx, @node[].get._AsmMov, instr_idx, block_id)
+            break
         }
-        break
         -> AST_AsmMovSx_t {
             coal_mov_sx_instr(ctx, @node[].get._AsmMovSx)
+            break
         }
-        break
         -> AST_AsmMovZeroExtend_t {
             coal_zero_extend_instr(ctx, @node[].get._AsmMovZeroExtend)
+            break
         }
-        break
         -> AST_AsmLea_t {
             coal_lea_instr(ctx, @node[].get._AsmLea)
+            break
         }
-        break
         -> AST_AsmCvttsd2si_t {
             coal_cvttsd2si_instr(ctx, @node[].get._AsmCvttsd2si)
+            break
         }
-        break
         -> AST_AsmCvtsi2sd_t {
             coal_cvtsi2sd_instr(ctx, @node[].get._AsmCvtsi2sd)
+            break
         }
-        break
         -> AST_AsmUnary_t {
             coal_unary_instr(ctx, @node[].get._AsmUnary)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             coal_binary_instr(ctx, @node[].get._AsmBinary)
+            break
         }
-        break
         -> AST_AsmCmp_t {
             coal_cmp_instr(ctx, @node[].get._AsmCmp)
+            break
         }
-        break
         -> AST_AsmIdiv_t {
             coal_idiv_instr(ctx, @node[].get._AsmIdiv)
+            break
         }
-        break
         -> AST_AsmDiv_t {
             coal_div_instr(ctx, @node[].get._AsmDiv)
+            break
         }
-        break
         -> AST_AsmSetCC_t {
             coal_set_cc_instr(ctx, @node[].get._AsmSetCC)
+            break
         }
-        break
         -> AST_AsmPush_t {
             coal_push_instr(ctx, @node[].get._AsmPush)
+            break
         }
-        break
-        -> AST_AsmCdq_t {
-            -> AST_AsmCall_t {
-                break
-            }
+        -> AST_AsmCdq_t;
+        -> AST_AsmCall_t {
+            break
         }
         otherwise {
             break
@@ -1795,8 +1781,8 @@ fn alloc_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     match node[].tag {
         -> AST_AsmFunction_t {
             alloc_fun_toplvl(ctx, @node[].get._AsmFunction)
+            break
         }
-        break
         -> AST_AsmStaticVariable_t {
             break
         }
