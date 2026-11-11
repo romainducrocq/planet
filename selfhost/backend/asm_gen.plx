@@ -181,10 +181,9 @@ fn pseudo_mem_op(node: *struc TacVariable) shared_ptr_t(AsmOperand) {
 
 fn var_op(ctx: Ctx, node: *struc TacVariable) shared_ptr_t(AsmOperand) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Array_t {
-            -> AST_Structure_t {
-                return pseudo_mem_op(node)
-            }
+        -> AST_Array_t;
+        -> AST_Structure_t {
+            return pseudo_mem_op(node)
         }
         otherwise {
             return pseudo_op(node)
@@ -312,12 +311,10 @@ fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
 
 fn is_const_signed(node: *struc TacConstant) bool {
     match node[].constant[].tag {
-        -> AST_CConstChar_t {
-            -> AST_CConstInt_t {
-                -> AST_CConstLong_t {
-                    return true
-                }
-            }
+        -> AST_CConstChar_t;
+        -> AST_CConstInt_t;
+        -> AST_CConstLong_t {
+            return true
         }
         otherwise {
             return false
@@ -327,16 +324,12 @@ fn is_const_signed(node: *struc TacConstant) bool {
 
 fn is_var_signed(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        -> AST_Double_t {
-                            return true
-                        }
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_Double_t {
+            return true
         }
         otherwise {
             return false
@@ -360,10 +353,9 @@ fn is_value_signed(ctx: Ctx, node: *struc TacValue) bool {
 
 fn is_const_1b(node: *struc TacConstant) bool {
     match node[].constant[].tag {
-        -> AST_CConstChar_t {
-            -> AST_CConstUChar_t {
-                return true
-            }
+        -> AST_CConstChar_t;
+        -> AST_CConstUChar_t {
+            return true
         }
         otherwise {
             return false
@@ -373,12 +365,10 @@ fn is_const_1b(node: *struc TacConstant) bool {
 
 fn is_var_1b(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return true
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return true
         }
         otherwise {
             return false
@@ -402,10 +392,9 @@ fn is_value_1b(ctx: Ctx, node: *struc TacValue) bool {
 
 fn is_const_4b(node: *struc TacConstant) bool {
     match node[].constant[].tag {
-        -> AST_CConstInt_t {
-            -> AST_CConstUInt_t {
-                return true
-            }
+        -> AST_CConstInt_t;
+        -> AST_CConstUInt_t {
+            return true
         }
         otherwise {
             return false
@@ -415,10 +404,9 @@ fn is_const_4b(node: *struc TacConstant) bool {
 
 fn is_var_4b(ctx: Ctx, node: *struc TacVariable) bool {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
-        -> AST_Int_t {
-            -> AST_UInt_t {
-                return true
-            }
+        -> AST_Int_t;
+        -> AST_UInt_t {
+            return true
         }
         otherwise {
             return false
@@ -482,23 +470,20 @@ fn is_value_struct(ctx: Ctx, node: *struc TacValue) bool {
 
 fn const_asm_type(node: *struc TacConstant) shared_ptr_t(AssemblyType) {
     match node[].constant[].tag {
-        -> AST_CConstChar_t {
-            -> AST_CConstUChar_t {
-                return make_Byte()
-            }
+        -> AST_CConstChar_t;
+        -> AST_CConstUChar_t {
+            return make_Byte()
         }
-        -> AST_CConstInt_t {
-            -> AST_CConstUInt_t {
-                return make_LongWord()
-            }
+        -> AST_CConstInt_t;
+        -> AST_CConstUInt_t {
+            return make_LongWord()
         }
         -> AST_CConstDouble_t {
             return make_BackendDouble()
         }
-        -> AST_CConstLong_t {
-            -> AST_CConstULong_t {
-                return make_QuadWord()
-            }
+        -> AST_CConstLong_t;
+        -> AST_CConstULong_t {
+            return make_QuadWord()
         }
         otherwise {
             THROW_ABORT
@@ -836,8 +821,8 @@ fn ret_struct_instr(ctx: Ctx, node: *struc TacReturn) none {
             }
             -> CLS_sse {
                 ret_8b_instr(ctx, name, 0l, nil, REG_Xmm0)
+                break
             }
-            break
             otherwise {
                 THROW_ABORT
             }
@@ -847,8 +832,8 @@ fn ret_struct_instr(ctx: Ctx, node: *struc TacReturn) none {
             match struct_8b[].clss[1] {
                 -> CLS_integer {
                     ret_8b_instr(ctx, name, 8l, struct_type, ? reg_size then REG_Dx else REG_Ax)
+                    break
                 }
-                break
                 -> CLS_sse {
                     ret_8b_instr(ctx, name, 8l, nil, ? sse_size then REG_Xmm1 else REG_Xmm0)
                     sse_size = true
@@ -1290,25 +1275,23 @@ fn reg_arg_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: REGISTER_KIND) n
 fn stack_arg_call_instr(ctx: Ctx, node: *struc TacValue) none {
     src: shared_ptr_t(AsmOperand) = gen_op(ctx, node)
     match src[].tag {
-        -> AST_AsmRegister_t {
-            -> AST_AsmImm_t {
-                push_instr(ctx, make_AsmPush(@src))
-            }
+        -> AST_AsmRegister_t;
+        -> AST_AsmImm_t {
+            push_instr(ctx, make_AsmPush(@src))
+            return none
         }
-        return none
         otherwise {
             break
         }
     }
     asm_type_src: shared_ptr_t(AssemblyType) = gen_asm_type(ctx, node)
     match asm_type_src[].tag {
-        -> AST_QuadWord_t {
-            -> AST_BackendDouble_t {
-                push_instr(ctx, make_AsmPush(@src))
-            }
+        -> AST_QuadWord_t;
+        -> AST_BackendDouble_t {
+            push_instr(ctx, make_AsmPush(@src))
+            free_AssemblyType(@asm_type_src)
+            return none
         }
-        free_AssemblyType(@asm_type_src)
-        return none
         otherwise {
             break
         }
@@ -1406,16 +1389,16 @@ fn stack_8b_arg_call_instr(ctx: Ctx, name: TIdentifier, offset: TLong, struct_ty
     match asm_type[].tag {
         -> AST_QuadWord_t {
             quad_stack_arg_call_instr(ctx, name, offset)
+            break
         }
-        break
         -> AST_ByteArray_t {
             bytearr_stack_arg_call_instr(ctx, name, offset, @asm_type[].get._ByteArray)
+            break
         }
-        break
         otherwise {
             long_stack_arg_call_instr(ctx, name, offset, @asm_type)
+            break
         }
-        break
     }
     free_AssemblyType(@asm_type)
 }
@@ -1633,8 +1616,8 @@ fn call_instr(ctx: Ctx, node: *struc TacFunCall) none {
             }
             -> CLS_sse {
                 ret_8b_call_instr(ctx, name, 0l, nil, REG_Xmm0)
+                break
             }
-            break
             otherwise {
                 THROW_ABORT
             }
@@ -1644,8 +1627,8 @@ fn call_instr(ctx: Ctx, node: *struc TacFunCall) none {
             match struct_8b[].clss[1] {
                 -> CLS_integer {
                     ret_8b_call_instr(ctx, name, 8l, struct_type, ? reg_size then REG_Dx else REG_Ax)
+                    break
                 }
-                break
                 -> CLS_sse {
                     ret_8b_call_instr(ctx, name, 8l, nil, ? sse_size then REG_Xmm1 else REG_Xmm0)
                     sse_size = true
@@ -1785,16 +1768,16 @@ fn unary_instr(ctx: Ctx, node: *struc TacUnary) none {
     match node[].unop.tag {
         -> AST_TacComplement_t {
             unop_int_arithmetic_instr(ctx, node)
+            break
         }
-        break
         -> AST_TacNegate_t {
             unop_neg_instr(ctx, node)
+            break
         }
-        break
         -> AST_TacNot_t {
             unop_conditional_instr(ctx, node)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2049,48 +2032,35 @@ fn binop_conditional_instr(ctx: Ctx, node: *struc TacBinary) none {
 
 fn binary_instr(ctx: Ctx, node: *struc TacBinary) none {
     match node[].binop.tag {
-        -> AST_TacAdd_t {
-            -> AST_TacSubtract_t {
-                -> AST_TacMultiply_t {
-                    -> AST_TacBitAnd_t {
-                        -> AST_TacBitOr_t {
-                            -> AST_TacBitXor_t {
-                                -> AST_TacBitShiftLeft_t {
-                                    -> AST_TacBitShiftRight_t {
-                                        -> AST_TacBitShrArithmetic_t {
-                                            binop_arithmetic_instr(ctx, node)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_TacAdd_t;
+        -> AST_TacSubtract_t;
+        -> AST_TacMultiply_t;
+        -> AST_TacBitAnd_t;
+        -> AST_TacBitOr_t;
+        -> AST_TacBitXor_t;
+        -> AST_TacBitShiftLeft_t;
+        -> AST_TacBitShiftRight_t;
+        -> AST_TacBitShrArithmetic_t {
+            binop_arithmetic_instr(ctx, node)
+            break
         }
-        break
         -> AST_TacDivide_t {
             binop_divide_instr(ctx, node)
+            break
         }
-        break
         -> AST_TacRemainder_t {
             binop_remainder_instr(ctx, node)
+            break
         }
-        break
-        -> AST_TacEqual_t {
-            -> AST_TacNotEqual_t {
-                -> AST_TacLessThan_t {
-                    -> AST_TacLessOrEqual_t {
-                        -> AST_TacGreaterThan_t {
-                            -> AST_TacGreaterOrEqual_t {
-                                binop_conditional_instr(ctx, node)
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_TacEqual_t;
+        -> AST_TacNotEqual_t;
+        -> AST_TacLessThan_t;
+        -> AST_TacLessOrEqual_t;
+        -> AST_TacGreaterThan_t;
+        -> AST_TacGreaterOrEqual_t {
+            binop_conditional_instr(ctx, node)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2363,20 +2333,17 @@ fn aggr_idx_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr) none {
 
 fn var_idx_add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr) none {
     match node[].scale {
-        -> 1l {
-            -> 2l {
-                -> 4l {
-                    -> 8l {
-                        scalar_idx_add_ptr_instr(ctx, node)
-                    }
-                }
-            }
+        -> 1l;
+        -> 2l;
+        -> 4l;
+        -> 8l {
+            scalar_idx_add_ptr_instr(ctx, node)
+            break
         }
-        break
         otherwise {
             aggr_idx_add_ptr_instr(ctx, node)
+            break
         }
-        break
     }
 }
 
@@ -2384,12 +2351,12 @@ fn add_ptr_instr(ctx: Ctx, node: *struc TacAddPtr) none {
     match node[].idx[].tag {
         -> AST_TacConstant_t {
             const_idx_add_ptr_instr(ctx, node)
+            break
         }
-        break
         -> AST_TacVariable_t {
             var_idx_add_ptr_instr(ctx, node)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2615,92 +2582,92 @@ fn gen_instr(ctx: Ctx, node: *struc TacInstruction) none {
     match node[].tag {
         -> AST_TacReturn_t {
             ret_instr(ctx, @node[].get._TacReturn)
+            break
         }
-        break
         -> AST_TacSignExtend_t {
             sign_extend_instr(ctx, @node[].get._TacSignExtend)
+            break
         }
-        break
         -> AST_TacTruncate_t {
             truncate_instr(ctx, @node[].get._TacTruncate)
+            break
         }
-        break
         -> AST_TacZeroExtend_t {
             zero_extend_instr(ctx, @node[].get._TacZeroExtend)
+            break
         }
-        break
         -> AST_TacDoubleToInt_t {
             dbl_to_signed_instr(ctx, @node[].get._TacDoubleToInt)
+            break
         }
-        break
         -> AST_TacDoubleToUInt_t {
             dbl_to_unsigned_instr(ctx, @node[].get._TacDoubleToUInt)
+            break
         }
-        break
         -> AST_TacIntToDouble_t {
             signed_to_dbl_instr(ctx, @node[].get._TacIntToDouble)
+            break
         }
-        break
         -> AST_TacUIntToDouble_t {
             unsigned_to_dbl_instr(ctx, @node[].get._TacUIntToDouble)
+            break
         }
-        break
         -> AST_TacFunCall_t {
             call_instr(ctx, @node[].get._TacFunCall)
+            break
         }
-        break
         -> AST_TacUnary_t {
             unary_instr(ctx, @node[].get._TacUnary)
+            break
         }
-        break
         -> AST_TacBinary_t {
             binary_instr(ctx, @node[].get._TacBinary)
+            break
         }
-        break
         -> AST_TacCopy_t {
             copy_instr(ctx, @node[].get._TacCopy)
+            break
         }
-        break
         -> AST_TacGetAddress_t {
             getaddr_instr(ctx, @node[].get._TacGetAddress)
+            break
         }
-        break
         -> AST_TacLoad_t {
             load_instr(ctx, @node[].get._TacLoad)
+            break
         }
-        break
         -> AST_TacStore_t {
             store_instr(ctx, @node[].get._TacStore)
+            break
         }
-        break
         -> AST_TacAddPtr_t {
             add_ptr_instr(ctx, @node[].get._TacAddPtr)
+            break
         }
-        break
         -> AST_TacCopyToOffset_t {
             cp_to_offset_instr(ctx, @node[].get._TacCopyToOffset)
+            break
         }
-        break
         -> AST_TacCopyFromOffset_t {
             cp_from_offset_instr(ctx, @node[].get._TacCopyFromOffset)
+            break
         }
-        break
         -> AST_TacJump_t {
             jump_instr(ctx, @node[].get._TacJump)
+            break
         }
-        break
         -> AST_TacJumpIfZero_t {
             jmp_eq_0_instr(ctx, @node[].get._TacJumpIfZero)
+            break
         }
-        break
         -> AST_TacJumpIfNotZero_t {
             jmp_ne_0_instr(ctx, @node[].get._TacJumpIfNotZero)
+            break
         }
-        break
         -> AST_TacLabel_t {
             label_instr(ctx, @node[].get._TacLabel)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }

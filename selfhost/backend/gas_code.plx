@@ -340,10 +340,9 @@ fn type_align_bytes(node: *struc AssemblyType) TInt {
         -> AST_LongWord_t {
             return 4
         }
-        -> AST_QuadWord_t {
-            -> AST_BackendDouble_t {
-                return 8
-            }
+        -> AST_QuadWord_t;
+        -> AST_BackendDouble_t {
+            return 8
         }
         -> AST_ByteArray_t {
             return node[].get._ByteArray.alignment
@@ -388,16 +387,16 @@ fn reg_op(ctx: Ctx, node: *struc AsmRegister, byte: TInt) none {
     match byte {
         -> 1 {
             emit(ctx, get_reg_1b(@node[].reg))
+            break
         }
-        break
         -> 4 {
             emit(ctx, get_reg_4b(@node[].reg))
+            break
         }
-        break
         -> 8 {
             emit(ctx, get_reg_8b(@node[].reg))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -443,24 +442,24 @@ fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: TInt) none {
     match node[].tag {
         -> AST_AsmImm_t {
             imm_op(ctx, @node[].get._AsmImm)
+            break
         }
-        break
         -> AST_AsmRegister_t {
             reg_op(ctx, @node[].get._AsmRegister, byte)
+            break
         }
-        break
         -> AST_AsmMemory_t {
             memory_op(ctx, @node[].get._AsmMemory)
+            break
         }
-        break
         -> AST_AsmData_t {
             data_op(ctx, @node[].get._AsmData)
+            break
         }
-        break
         -> AST_AsmIndexed_t {
             indexed_op(ctx, @node[].get._AsmIndexed)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -623,18 +622,16 @@ fn binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
     {
         byte: TInt = type_align_bytes(node[].asm_type)
         match node[].binop.tag {
-            -> AST_AsmBitShiftLeft_t {
-                -> AST_AsmBitShiftRight_t {
-                    -> AST_AsmBitShrArithmetic_t {
-                        emit_op(ctx, node[].src, 1)
-                    }
-                }
+            -> AST_AsmBitShiftLeft_t;
+            -> AST_AsmBitShiftRight_t;
+            -> AST_AsmBitShrArithmetic_t {
+                emit_op(ctx, node[].src, 1)
+                break
             }
-            break
             otherwise {
                 emit_op(ctx, node[].src, byte)
+                break
             }
-            break
         }
         emit(ctx, ", ")
         emit_op(ctx, node[].dst, byte)
@@ -686,12 +683,12 @@ fn cdq_instr(ctx: Ctx, node: *struc AsmCdq) none {
     match node[].asm_type[].tag {
         -> AST_LongWord_t {
             emit(ctx, TAB TAB "cdq" LF)
+            break
         }
-        break
         -> AST_QuadWord_t {
             emit(ctx, TAB TAB "cqo" LF)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -759,84 +756,84 @@ fn emit_instr(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
             mov_instr(ctx, @node[].get._AsmMov)
+            break
         }
-        break
         -> AST_AsmMovSx_t {
             mov_sx_instr(ctx, @node[].get._AsmMovSx)
+            break
         }
-        break
         -> AST_AsmMovZeroExtend_t {
             zero_extend_instr(ctx, @node[].get._AsmMovZeroExtend)
+            break
         }
-        break
         -> AST_AsmLea_t {
             lea_instr(ctx, @node[].get._AsmLea)
+            break
         }
-        break
         -> AST_AsmCvttsd2si_t {
             cvttsd2si_instr(ctx, @node[].get._AsmCvttsd2si)
+            break
         }
-        break
         -> AST_AsmCvtsi2sd_t {
             cvtsi2sd_instr(ctx, @node[].get._AsmCvtsi2sd)
+            break
         }
-        break
         -> AST_AsmUnary_t {
             unary_instr(ctx, @node[].get._AsmUnary)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             binary_instr(ctx, @node[].get._AsmBinary)
+            break
         }
-        break
         -> AST_AsmCmp_t {
             cmp_instr(ctx, @node[].get._AsmCmp)
+            break
         }
-        break
         -> AST_AsmIdiv_t {
             idiv_instr(ctx, @node[].get._AsmIdiv)
+            break
         }
-        break
         -> AST_AsmDiv_t {
             div_instr(ctx, @node[].get._AsmDiv)
+            break
         }
-        break
         -> AST_AsmCdq_t {
             cdq_instr(ctx, @node[].get._AsmCdq)
+            break
         }
-        break
         -> AST_AsmJmp_t {
             jmp_instr(ctx, @node[].get._AsmJmp)
+            break
         }
-        break
         -> AST_AsmJmpCC_t {
             jmp_cc_instr(ctx, @node[].get._AsmJmpCC)
+            break
         }
-        break
         -> AST_AsmSetCC_t {
             set_cc_instr(ctx, @node[].get._AsmSetCC)
+            break
         }
-        break
         -> AST_AsmLabel_t {
             label_instr(ctx, @node[].get._AsmLabel)
+            break
         }
-        break
         -> AST_AsmPush_t {
             push_instr(ctx, @node[].get._AsmPush)
+            break
         }
-        break
         -> AST_AsmPop_t {
             pop_instr(ctx, @node[].get._AsmPop)
+            break
         }
-        break
         -> AST_AsmCall_t {
             call_instr(ctx, @node[].get._AsmCall)
+            break
         }
-        break
         -> AST_AsmRet_t {
             ret_instr(ctx)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -886,69 +883,69 @@ fn static_init_toplvl(ctx: Ctx, node: *struc StaticInit) none {
     match node[].tag {
         -> AST_CharInit_t {
             emit(ctx, TAB TAB ".byte ")
+            emit_char(ctx, node[].get._CharInit.value)
+            emit(ctx, LF)
+            break
         }
-        emit_char(ctx, node[].get._CharInit.value)
-        emit(ctx, LF)
-        break
         -> AST_IntInit_t {
             emit(ctx, TAB TAB ".long ")
+            emit_int(ctx, node[].get._IntInit.value)
+            emit(ctx, LF)
+            break
         }
-        emit_int(ctx, node[].get._IntInit.value)
-        emit(ctx, LF)
-        break
         -> AST_LongInit_t {
             emit(ctx, TAB TAB ".quad ")
+            emit_long(ctx, node[].get._LongInit.value)
+            emit(ctx, LF)
+            break
         }
-        emit_long(ctx, node[].get._LongInit.value)
-        emit(ctx, LF)
-        break
         -> AST_DoubleInit_t {
             emit(ctx, TAB TAB ".quad ")
+            emit_dbl(ctx, node[].get._DoubleInit.dbl_const)
+            emit(ctx, LF)
+            break
         }
-        emit_dbl(ctx, node[].get._DoubleInit.dbl_const)
-        emit(ctx, LF)
-        break
         -> AST_UCharInit_t {
             emit(ctx, TAB TAB ".byte ")
+            emit_uchar(ctx, node[].get._UCharInit.value)
+            emit(ctx, LF)
+            break
         }
-        emit_uchar(ctx, node[].get._UCharInit.value)
-        emit(ctx, LF)
-        break
         -> AST_UIntInit_t {
             emit(ctx, TAB TAB ".long ")
+            emit_uint(ctx, node[].get._UIntInit.value)
+            emit(ctx, LF)
+            break
         }
-        emit_uint(ctx, node[].get._UIntInit.value)
-        emit(ctx, LF)
-        break
         -> AST_ULongInit_t {
             emit(ctx, TAB TAB ".quad ")
+            emit_ulong(ctx, node[].get._ULongInit.value)
+            emit(ctx, LF)
+            break
         }
-        emit_ulong(ctx, node[].get._ULongInit.value)
-        emit(ctx, LF)
-        break
         -> AST_ZeroInit_t {
             emit(ctx, TAB TAB ".zero ")
+            emit_long(ctx, node[].get._ZeroInit.byte)
+            emit(ctx, LF)
+            break
         }
-        emit_long(ctx, node[].get._ZeroInit.byte)
-        emit(ctx, LF)
-        break
         -> AST_StringInit_t {
             emit(ctx, TAB TAB ".asci")
+            {
+                string_init: *struc StringInit = @node[].get._StringInit
+                emit(ctx, ? string_init[].is_null_term then "z" else "i")
+                emit(ctx, " \"")
+                emit_string(ctx, string_init[].string_const)
+            }
+            emit(ctx, "\"" LF)
+            break
         }
-        {
-            string_init: *struc StringInit = @node[].get._StringInit
-            emit(ctx, ? string_init[].is_null_term then "z" else "i")
-            emit(ctx, " \"")
-            emit_string(ctx, string_init[].string_const)
-        }
-        emit(ctx, "\"" LF)
-        break
         -> AST_PointerInit_t {
             emit(ctx, TAB TAB ".quad " LBL)
+            emit_identifier(ctx, node[].get._PointerInit.name)
+            emit(ctx, LF)
+            break
         }
-        emit_identifier(ctx, node[].get._PointerInit.name)
-        emit(ctx, LF)
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1015,16 +1012,16 @@ fn emit_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     match node[].tag {
         -> AST_AsmFunction_t {
             emit_fun_toplvl(ctx, @node[].get._AsmFunction)
+            break
         }
-        break
         -> AST_AsmStaticVariable_t {
             emit_static_var_toplvl(ctx, @node[].get._AsmStaticVariable)
+            break
         }
-        break
         -> AST_AsmStaticConstant_t {
             emit_static_const_toplvl(ctx, @node[].get._AsmStaticConstant)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
