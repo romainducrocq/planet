@@ -3,7 +3,7 @@ m4_define(`_AST_AST_T_M4', `')m4_dnl
 
 m4_include(`../lib/def_std.plx.m4')m4_dnl
 
-m4_define(`TIdentifier', `u64')m4_dnl # TODO
+m4_define(`TIdentifier', `u64')m4_dnl
 m4_define(`TChar', `i8')m4_dnl
 m4_define(`TInt', `i32')m4_dnl
 m4_define(`TLong', `i64')m4_dnl

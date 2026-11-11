@@ -62,7 +62,7 @@ fn peek_next_i(ctx: Ctx, i: u64) error_t {
     CATCH_EXIT
 }
 
-fn parse_identifier(ctx: Ctx, identifier: *u64) error_t {
+fn parse_identifier(ctx: Ctx, identifier: *TIdentifier) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
     identifier[] = ctx[].next_tok[].tok
@@ -315,7 +315,7 @@ fn parse_binop(ctx: Ctx, binop: *struc CBinaryOp) error_t {
 
 fn parse_type_name(ctx: Ctx, type_name: *shared_ptr_t(Type)) error_t;
 
-fn parse_datatype_specifier(ctx: Ctx, tag_name: *u64, is_union: *bool) error_t {
+fn parse_datatype_specifier(ctx: Ctx, tag_name: *TIdentifier, is_union: *bool) error_t {
     CATCH_ENTER
     match ctx[].next_tok[].tok_kind {
         -> TOK_key_struc {
@@ -385,7 +385,7 @@ fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
         -> TOK_key_struc {
             -> TOK_key_union {
                 is_union: bool;
-                tag_name: u64;
+                tag_name: TIdentifier;
                 TRY(parse_datatype_specifier(ctx, @tag_name, @is_union))
                 type_specifier[] = make_Structure(tag_name, is_union)
                 break
@@ -608,7 +608,7 @@ fn parse_string_literal_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
 fn parse_var_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    name: u64;
+    name: TIdentifier;
     TRY(parse_identifier(ctx, @name))
     exp[] = make_CVar(name, info_at)
     FINALLY
@@ -619,7 +619,7 @@ fn parse_call_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     args: vector_t(unique_ptr_t(CExp)) = vec_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    name: u64;
+    name: TIdentifier;
     TRY(parse_identifier(ctx, @name))
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
@@ -680,7 +680,7 @@ fn parse_deref_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
         TRY(pop_next(ctx))
         TRY(peek_next(ctx))
         TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
-        member: u64;
+        member: TIdentifier;
         TRY(parse_identifier(ctx, @member))
         exp[] = make_CArrow(member, exp, info_at)
     }
@@ -724,7 +724,7 @@ fn parse_dot_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
-    member: u64;
+    member: TIdentifier;
     TRY(parse_identifier(ctx, @member))
     exp[] = make_CDot(member, exp, info_at)
     FINALLY
@@ -1310,7 +1310,7 @@ fn parse_jump_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
-    target: u64;
+    target: TIdentifier;
     TRY(parse_identifier(ctx, @target))
     statement[] = make_CGoto(target, info_at)
     FINALLY
@@ -1324,7 +1324,7 @@ fn parse_label_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
-    target: u64;
+    target: TIdentifier;
     TRY(parse_identifier(ctx, @target))
     jump_to = make_CNull()
     statement[] = make_CLabel(target, @jump_to, info_at)
@@ -1774,7 +1774,7 @@ fn parse_initializer(ctx: Ctx, initializer: *unique_ptr_t(CInitializer)) error_t
     CATCH_EXIT
 }
 
-fn parse_decltor(ctx: Ctx, name: *u64, derived_type: *shared_ptr_t(Type)) error_t {
+fn parse_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
     TRY(parse_identifier(ctx, name))
@@ -1785,7 +1785,7 @@ fn parse_decltor(ctx: Ctx, name: *u64, derived_type: *shared_ptr_t(Type)) error_
     CATCH_EXIT
 }
 
-fn parse_item_decltor(ctx: Ctx, name: *u64, derived_type: *shared_ptr_t(Type)) error_t {
+fn parse_item_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_pub {
@@ -1808,7 +1808,7 @@ fn parse_item_decltor(ctx: Ctx, name: *u64, derived_type: *shared_ptr_t(Type)) e
 fn parse_decltor_list(ctx: Ctx, params: *vector_t(TIdentifier), param_types: *vector_t(shared_ptr_t(Type))) error_t {
     param_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
-    param: u64;
+    param: TIdentifier;
     TRY(parse_item_decltor(ctx, @param, @param_type))
     vec_push_back(params[], param)
     vec_move_back(param_types[], param_type)
@@ -1859,7 +1859,7 @@ fn parse_fun_declaration(ctx: Ctx, storage_class: *struc CStorageClass, fun_decl
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
-    name: u64;
+    name: TIdentifier;
     TRY(parse_identifier(ctx, @name))
     TRY(parse_fun_decltor(ctx, @fun_type, @params))
     TRY(parse_block(ctx, @body))
@@ -1876,7 +1876,7 @@ fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl
     var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64 = ctx[].peek_tok[].info_at
-    name: u64;
+    name: TIdentifier;
     TRY(parse_decltor(ctx, @name, @var_type))
     TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
@@ -1902,7 +1902,7 @@ fn parse_member_declaration(ctx: Ctx, member_decl: *unique_ptr_t(CMemberDeclarat
     member_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
     info_at: u64;
-    member_name: u64;
+    member_name: TIdentifier;
     TRY(peek_next(ctx))
     info_at = ctx[].peek_tok[].info_at
     TRY(parse_item_decltor(ctx, @member_name, @member_type))
@@ -1933,7 +1933,7 @@ fn parse_type_declaration(ctx: Ctx, struct_decl: *unique_ptr_t(CStructDeclaratio
     members: vector_t(unique_ptr_t(CMemberDeclaration)) = vec_new()
     CATCH_ENTER
     is_union: bool;
-    tag_name: u64;
+    tag_name: TIdentifier;
     info_at: u64 = ctx[].peek_tok[].info_at
     TRY(pop_next(ctx))
     TRY(pop_next(ctx))
