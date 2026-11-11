@@ -15,7 +15,7 @@ m4_define(`StStructure', `struc Structure')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStructure'')
 
-type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: u64, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
+type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: TIdentifier, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
 
 m4_define(`Ctx', `*struc SemanticContext')m4_dnl
 fn is_same_type(type_1: *struc Type, type_2: *struc Type) bool;
@@ -2080,7 +2080,7 @@ fn check_no_initializer(ctx: Ctx, static_init_type: *struc Type) shared_ptr_t(In
     return make_Initial(@static_inits)
 }
 
-fn make_binary_identifier(ctx: Ctx, binary: TULong) u64 {
+fn make_binary_identifier(ctx: Ctx, binary: TULong) TIdentifier {
     strto_binary: string_t = str_to_string(binary)
     return make_string_identifier(ctx[].identifiers, @strto_binary)
 }
@@ -2129,7 +2129,7 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
                 push_zero_static_init(ctx, 8l)
             }
             else {
-                dbl_const: u64 = make_binary_identifier(ctx, binary)
+                dbl_const: TIdentifier = make_binary_identifier(ctx, binary)
                 push_static_init(ctx, make_DoubleInit(dbl_const))
             }
             break
@@ -2211,15 +2211,15 @@ fn check_literal_string_init(ctx: Ctx, node: *struc CString, static_ptr_type: *s
     CATCH_EXIT
 }
 
-fn make_literal_identifier(ctx: Ctx, node: *struc CStringLiteral) u64 {
+fn make_literal_identifier(ctx: Ctx, node: *struc CStringLiteral) TIdentifier {
     value: string_t = string_literal_to_const(node[].value)
     return make_string_identifier(ctx[].identifiers, @value)
 }
 
 fn check_static_ptr_string_init(ctx: Ctx, node: *struc CString) none {
-    string_const_label: u64;
+    string_const_label: TIdentifier;
     {
-        string_const: u64 = make_literal_identifier(ctx, node[].literal)
+        string_const: TIdentifier = make_literal_identifier(ctx, node[].literal)
         map_it: i64 = map_find(ctx[].frontend[].string_const_table, string_const)
         if map_it ~= map_end() {
             string_const_label = pair_second(ctx[].frontend[].string_const_table[map_it])
@@ -2261,7 +2261,7 @@ fn check_static_arr_string_init(ctx: Ctx, node: *struc CString, static_arr_type:
     byte = static_arr_type[].size - cast<TLong>(vec_size(node[].literal[].value)) - 1l
     {
         is_null_term: bool = byte >= 0l
-        string_const: u64 = make_literal_identifier(ctx, node[].literal)
+        string_const: TIdentifier = make_literal_identifier(ctx, node[].literal)
         sptr_copy(CStringLiteral, node[].literal, literal)
         push_static_init(ctx, make_StringInit(string_const, is_null_term, @literal))
     }
@@ -2662,7 +2662,7 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     vec_reserve(member_names, vec_size(node[].members))
     loop i: u64 = 0 while i < vec_size(node[].members) .. ++i {
         {
-            name: u64 = node[].members[i][].member_name
+            name: TIdentifier = node[].members[i][].member_name
             vec_push_back(member_names, name)
         }
         member_alignment: TInt = get_type_alignment(ctx, node[].members[i][].member_type)
@@ -2813,7 +2813,7 @@ fn enter_scope(ctx: Ctx) none {
 
 fn exit_scope(ctx: Ctx) none {
     loop i: u64 = 0 while i < map_size(vec_back(ctx[].scoped_identifier_maps)) .. ++i {
-        identifier: u64 = pair_first(vec_back(ctx[].scoped_identifier_maps)[i])
+        identifier: TIdentifier = pair_first(vec_back(ctx[].scoped_identifier_maps)[i])
         map_it: i64 = map_find(ctx[].extern_scope_map, identifier)
         if map_it ~= map_end() and pair_second(ctx[].extern_scope_map[map_it]) == vec_size(ctx[].scoped_identifier_maps) {
             map_erase(ctx[].extern_scope_map, identifier)
@@ -3234,7 +3234,7 @@ fn reslv_goto_statement(ctx: Ctx, node: *struc CGoto) none {
         map_add(ctx[].errors[].info_at_map, node[].target, node[].info_at)
     }
     else {
-        target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
+        target: TIdentifier = rslv_label_identifier(ctx[].identifiers, node[].target)
         map_add(ctx[].goto_map, node[].target, target)
         node[].target = target
         map_add(ctx[].errors[].info_at_map, node[].target, node[].info_at)
@@ -3250,7 +3250,7 @@ fn reslv_label_statement(ctx: Ctx, node: *struc CLabel) error_t {
         node[].target = pair_second(ctx[].goto_map[map_it])
     }
     else {
-        target: u64 = rslv_label_identifier(ctx[].identifiers, node[].target)
+        target: TIdentifier = rslv_label_identifier(ctx[].identifiers, node[].target)
         map_add(ctx[].goto_map, node[].target, target)
         node[].target = target
     }
@@ -3544,7 +3544,7 @@ fn reslv_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
     loop i: u64 = 0 while i < vec_size(node[].params) .. ++i {
-        param: u64 = node[].params[i]
+        param: TIdentifier = node[].params[i]
         if map_find(vec_back(ctx[].scoped_identifier_maps), param) ~= map_end() {
             THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_in_scope, str_fmt_name(param, @name_fmt)))
         }
@@ -3621,7 +3621,7 @@ fn reslv_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
         EARLY_EXIT
     }
     {
-        name: u64 = rslv_var_identifier(ctx[].identifiers, node[].name)
+        name: TIdentifier = rslv_var_identifier(ctx[].identifiers, node[].name)
         map_add(vec_back(ctx[].scoped_identifier_maps), node[].name, name)
         node[].name = name
     }
