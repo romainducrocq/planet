@@ -48,18 +48,13 @@ pub fn make_ByteArray(size: TLong, alignment: TInt) shared_ptr_t(AssemblyType) {
 pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_AssemblyType_t {
-            -> AST_Byte_t {
-                -> AST_LongWord_t {
-                    -> AST_QuadWord_t {
-                        -> AST_BackendDouble_t {
-                            -> AST_ByteArray_t {
-                                break
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_AssemblyType_t;
+        -> AST_Byte_t;
+        -> AST_LongWord_t;
+        -> AST_QuadWord_t;
+        -> AST_BackendDouble_t;
+        -> AST_ByteArray_t {
+            break
         }
         otherwise {
             THROW_ABORT
@@ -101,15 +96,15 @@ pub fn free_BackendSymbol(self: *unique_ptr_t(BackendSymbol)) none {
         }
         -> AST_BackendObj_t {
             free_AssemblyType(@self[][].get._BackendObj.asm_type)
+            break
         }
-        break
         -> AST_BackendFun_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._BackendFun.callee_saved_regs) .. ++i {
                 free_AsmOperand(@self[][].get._BackendFun.callee_saved_regs[i])
             }
+            vec_delete(self[][].get._BackendFun.callee_saved_regs)
+            break
         }
-        vec_delete(self[][].get._BackendFun.callee_saved_regs)
-        break
         otherwise {
             THROW_ABORT
         }

@@ -9,18 +9,13 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 pub fn make_CUnaryOp(tagged_def_impl(AST_T)) struc CUnaryOp {
     self: struc CUnaryOp = $(tag)
     match tag {
-        -> AST_CUnaryOp_t {
-            -> AST_CComplement_t {
-                -> AST_CNegate_t {
-                    -> AST_CNot_t {
-                        -> AST_CPrefix_t {
-                            -> AST_CPostfix_t {
-                                return self
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_CUnaryOp_t;
+        -> AST_CComplement_t;
+        -> AST_CNegate_t;
+        -> AST_CNot_t;
+        -> AST_CPrefix_t;
+        -> AST_CPostfix_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -31,46 +26,27 @@ pub fn make_CUnaryOp(tagged_def_impl(AST_T)) struc CUnaryOp {
 pub fn make_CBinaryOp(tagged_def_impl(AST_T)) struc CBinaryOp {
     self: struc CBinaryOp = $(tag)
     match tag {
-        -> AST_CBinaryOp_t {
-            -> AST_CAdd_t {
-                -> AST_CSubtract_t {
-                    -> AST_CMultiply_t {
-                        -> AST_CDivide_t {
-                            -> AST_CRemainder_t {
-                                -> AST_CBitAnd_t {
-                                    -> AST_CBitOr_t {
-                                        -> AST_CBitXor_t {
-                                            -> AST_CBitShiftLeft_t {
-                                                -> AST_CBitShiftRight_t {
-                                                    -> AST_CBitShrArithmetic_t {
-                                                        -> AST_CAnd_t {
-                                                            -> AST_COr_t {
-                                                                -> AST_CEqual_t {
-                                                                    -> AST_CNotEqual_t {
-                                                                        -> AST_CLessThan_t {
-                                                                            -> AST_CLessOrEqual_t {
-                                                                                -> AST_CGreaterThan_t {
-                                                                                    -> AST_CGreaterOrEqual_t {
-                                                                                        return self
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_CBinaryOp_t;
+        -> AST_CAdd_t;
+        -> AST_CSubtract_t;
+        -> AST_CMultiply_t;
+        -> AST_CDivide_t;
+        -> AST_CRemainder_t;
+        -> AST_CBitAnd_t;
+        -> AST_CBitOr_t;
+        -> AST_CBitXor_t;
+        -> AST_CBitShiftLeft_t;
+        -> AST_CBitShiftRight_t;
+        -> AST_CBitShrArithmetic_t;
+        -> AST_CAnd_t;
+        -> AST_COr_t;
+        -> AST_CEqual_t;
+        -> AST_CNotEqual_t;
+        -> AST_CLessThan_t;
+        -> AST_CLessOrEqual_t;
+        -> AST_CGreaterThan_t;
+        -> AST_CGreaterOrEqual_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -116,12 +92,12 @@ pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none {
         }
         -> AST_CAbstractPointer_t {
             free_CAbstractDeclarator(@self[][].get._CAbstractPointer.abstract_decltor)
+            break
         }
-        break
         -> AST_CAbstractArray_t {
             free_CAbstractDeclarator(@self[][].get._CAbstractArray.abstract_decltor)
+            break
         }
-        break
         -> AST_CAbstractBase_t {
             break
         }
@@ -210,20 +186,20 @@ pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none {
         }
         -> AST_CPointerDeclarator_t {
             free_CDeclarator(@self[][].get._CPointerDeclarator.decltor)
+            break
         }
-        break
         -> AST_CArrayDeclarator_t {
             free_CDeclarator(@self[][].get._CArrayDeclarator.decltor)
+            break
         }
-        break
         -> AST_CFunDeclarator_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CFunDeclarator.param_list) .. ++i {
                 free_CParam(@self[][].get._CFunDeclarator.param_list[i])
             }
+            vec_delete(self[][].get._CFunDeclarator.param_list)
+            free_CDeclarator(@self[][].get._CFunDeclarator.decltor)
+            break
         }
-        vec_delete(self[][].get._CFunDeclarator.param_list)
-        free_CDeclarator(@self[][].get._CFunDeclarator.decltor)
-        break
         otherwise {
             THROW_ABORT
         }
@@ -409,76 +385,76 @@ pub fn free_CExp(self: *unique_ptr_t(CExp)) none {
         }
         -> AST_CConstant_t {
             free_CConst(@self[][].get._CConstant.constant)
+            break
         }
-        break
         -> AST_CString_t {
             free_CStringLiteral(@self[][].get._CString.literal)
+            break
         }
-        break
         -> AST_CVar_t {
             break
         }
         -> AST_CCast_t {
             free_CExp(@self[][].get._CCast.exp)
+            free_Type(@self[][].get._CCast.target_type)
+            break
         }
-        free_Type(@self[][].get._CCast.target_type)
-        break
         -> AST_CUnary_t {
             free_CExp(@self[][].get._CUnary.exp)
+            break
         }
-        break
         -> AST_CBinary_t {
             free_CExp(@self[][].get._CBinary.exp_left)
+            free_CExp(@self[][].get._CBinary.exp_right)
+            break
         }
-        free_CExp(@self[][].get._CBinary.exp_right)
-        break
         -> AST_CAssignment_t {
             free_CExp(@self[][].get._CAssignment.exp_left)
+            free_CExp(@self[][].get._CAssignment.exp_right)
+            break
         }
-        free_CExp(@self[][].get._CAssignment.exp_right)
-        break
         -> AST_CConditional_t {
             free_CExp(@self[][].get._CConditional.condition)
+            free_CExp(@self[][].get._CConditional.exp_middle)
+            free_CExp(@self[][].get._CConditional.exp_right)
+            break
         }
-        free_CExp(@self[][].get._CConditional.exp_middle)
-        free_CExp(@self[][].get._CConditional.exp_right)
-        break
         -> AST_CFunctionCall_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CFunctionCall.args) .. ++i {
                 free_CExp(@self[][].get._CFunctionCall.args[i])
             }
+            vec_delete(self[][].get._CFunctionCall.args)
+            break
         }
-        vec_delete(self[][].get._CFunctionCall.args)
-        break
         -> AST_CDereference_t {
             free_CExp(@self[][].get._CDereference.exp)
+            break
         }
-        break
         -> AST_CAddrOf_t {
             free_CExp(@self[][].get._CAddrOf.exp)
+            break
         }
-        break
         -> AST_CSubscript_t {
             free_CExp(@self[][].get._CSubscript.primary_exp)
+            free_CExp(@self[][].get._CSubscript.subscript_exp)
+            break
         }
-        free_CExp(@self[][].get._CSubscript.subscript_exp)
-        break
         -> AST_CSizeOf_t {
             free_CExp(@self[][].get._CSizeOf.exp)
+            break
         }
-        break
         -> AST_CSizeOfT_t {
             free_Type(@self[][].get._CSizeOfT.target_type)
+            break
         }
-        break
         -> AST_CDot_t {
             free_CExp(@self[][].get._CDot.structure)
+            break
         }
-        break
         -> AST_CArrow_t {
             free_CExp(@self[][].get._CArrow.pointer)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -650,64 +626,64 @@ pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none {
         }
         -> AST_CReturn_t {
             free_CExp(@self[][].get._CReturn.exp)
+            break
         }
-        break
         -> AST_CExpression_t {
             free_CExp(@self[][].get._CExpression.exp)
+            break
         }
-        break
         -> AST_CIf_t {
             free_CExp(@self[][].get._CIf.condition)
+            free_CStatement(@self[][].get._CIf.then_fi)
+            free_CStatement(@self[][].get._CIf.else_fi)
+            break
         }
-        free_CStatement(@self[][].get._CIf.then_fi)
-        free_CStatement(@self[][].get._CIf.else_fi)
-        break
         -> AST_CGoto_t {
             break
         }
         -> AST_CLabel_t {
             free_CStatement(@self[][].get._CLabel.jump_to)
+            break
         }
-        break
         -> AST_CCompound_t {
             free_CBlock(@self[][].get._CCompound.block)
+            break
         }
-        break
         -> AST_CWhile_t {
             free_CExp(@self[][].get._CWhile.condition)
+            free_CStatement(@self[][].get._CWhile.body)
+            break
         }
-        free_CStatement(@self[][].get._CWhile.body)
-        break
         -> AST_CDoWhile_t {
             free_CExp(@self[][].get._CDoWhile.condition)
+            free_CStatement(@self[][].get._CDoWhile.body)
+            break
         }
-        free_CStatement(@self[][].get._CDoWhile.body)
-        break
         -> AST_CFor_t {
             free_CForInit(@self[][].get._CFor.init)
+            free_CExp(@self[][].get._CFor.condition)
+            free_CExp(@self[][].get._CFor.post)
+            free_CStatement(@self[][].get._CFor.body)
+            break
         }
-        free_CExp(@self[][].get._CFor.condition)
-        free_CExp(@self[][].get._CFor.post)
-        free_CStatement(@self[][].get._CFor.body)
-        break
         -> AST_CSwitch_t {
             free_CExp(@self[][].get._CSwitch.lookup)
+            free_CStatement(@self[][].get._CSwitch.body)
+            loop i: u64 = 0 while i < vec_size(self[][].get._CSwitch.cases) .. ++i {
+                free_CExp(@self[][].get._CSwitch.cases[i])
+            }
+            vec_delete(self[][].get._CSwitch.cases)
+            break
         }
-        free_CStatement(@self[][].get._CSwitch.body)
-        loop i: u64 = 0 while i < vec_size(self[][].get._CSwitch.cases) .. ++i {
-            free_CExp(@self[][].get._CSwitch.cases[i])
-        }
-        vec_delete(self[][].get._CSwitch.cases)
-        break
         -> AST_CCase_t {
             free_CExp(@self[][].get._CCase.value)
+            free_CStatement(@self[][].get._CCase.jump_to)
+            break
         }
-        free_CStatement(@self[][].get._CCase.jump_to)
-        break
         -> AST_CDefault_t {
             free_CStatement(@self[][].get._CDefault.jump_to)
+            break
         }
-        break
         -> AST_CBreak_t {
             break
         }
@@ -755,12 +731,12 @@ pub fn free_CForInit(self: *unique_ptr_t(CForInit)) none {
         }
         -> AST_CInitDecl_t {
             free_CVariableDeclaration(@self[][].get._CInitDecl.init)
+            break
         }
-        break
         -> AST_CInitExp_t {
             free_CExp(@self[][].get._CInitExp.init)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -793,9 +769,9 @@ pub fn free_CBlock(self: *unique_ptr_t(CBlock)) none {
             loop i: u64 = 0 while i < vec_size(self[][].get._CB.block_items) .. ++i {
                 free_CBlockItem(@self[][].get._CB.block_items[i])
             }
+            vec_delete(self[][].get._CB.block_items)
+            break
         }
-        vec_delete(self[][].get._CB.block_items)
-        break
         otherwise {
             THROW_ABORT
         }
@@ -834,12 +810,12 @@ pub fn free_CBlockItem(self: *unique_ptr_t(CBlockItem)) none {
         }
         -> AST_CS_t {
             free_CStatement(@self[][].get._CS.statement)
+            break
         }
-        break
         -> AST_CD_t {
             free_CDeclaration(@self[][].get._CD.declaration)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -850,12 +826,10 @@ pub fn free_CBlockItem(self: *unique_ptr_t(CBlockItem)) none {
 pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass {
     self: struc CStorageClass = $(tag)
     match tag {
-        -> AST_CStorageClass_t {
-            -> AST_CStatic_t {
-                -> AST_CExtern_t {
-                    return self
-                }
-            }
+        -> AST_CStorageClass_t;
+        -> AST_CStatic_t;
+        -> AST_CExtern_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -897,15 +871,15 @@ pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none {
         }
         -> AST_CSingleInit_t {
             free_CExp(@self[][].get._CSingleInit.exp)
+            break
         }
-        break
         -> AST_CCompoundInit_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._CCompoundInit.initializers) .. ++i {
                 free_CInitializer(@self[][].get._CCompoundInit.initializers[i])
             }
+            vec_delete(self[][].get._CCompoundInit.initializers)
+            break
         }
-        vec_delete(self[][].get._CCompoundInit.initializers)
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1068,16 +1042,16 @@ pub fn free_CDeclaration(self: *unique_ptr_t(CDeclaration)) none {
         }
         -> AST_CFunDecl_t {
             free_CFunctionDeclaration(@self[][].get._CFunDecl.fun_decl)
+            break
         }
-        break
         -> AST_CVarDecl_t {
             free_CVariableDeclaration(@self[][].get._CVarDecl.var_decl)
+            break
         }
-        break
         -> AST_CStructDecl_t {
             free_CStructDeclaration(@self[][].get._CStructDecl.struct_decl)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }

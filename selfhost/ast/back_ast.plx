@@ -10,72 +10,40 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 pub fn make_AsmReg(tagged_def_impl(AST_T)) struc AsmReg {
     self: struc AsmReg = $(tag)
     match tag {
-        -> AST_AsmReg_t {
-            -> AST_AsmAx_t {
-                -> AST_AsmBx_t {
-                    -> AST_AsmCx_t {
-                        -> AST_AsmDx_t {
-                            -> AST_AsmDi_t {
-                                -> AST_AsmSi_t {
-                                    -> AST_AsmR8_t {
-                                        -> AST_AsmR9_t {
-                                            -> AST_AsmR10_t {
-                                                -> AST_AsmR11_t {
-                                                    -> AST_AsmR12_t {
-                                                        -> AST_AsmR13_t {
-                                                            -> AST_AsmR14_t {
-                                                                -> AST_AsmR15_t {
-                                                                    -> AST_AsmSp_t {
-                                                                        -> AST_AsmBp_t {
-                                                                            -> AST_AsmXMM0_t {
-                                                                                -> AST_AsmXMM1_t {
-                                                                                    -> AST_AsmXMM2_t {
-                                                                                        -> AST_AsmXMM3_t {
-                                                                                            -> AST_AsmXMM4_t {
-                                                                                                -> AST_AsmXMM5_t {
-                                                                                                    -> AST_AsmXMM6_t {
-                                                                                                        -> AST_AsmXMM7_t {
-                                                                                                            -> AST_AsmXMM8_t {
-                                                                                                                -> AST_AsmXMM9_t {
-                                                                                                                    -> AST_AsmXMM10_t {
-                                                                                                                        -> AST_AsmXMM11_t {
-                                                                                                                            -> AST_AsmXMM12_t {
-                                                                                                                                -> AST_AsmXMM13_t {
-                                                                                                                                    -> AST_AsmXMM14_t {
-                                                                                                                                        -> AST_AsmXMM15_t {
-                                                                                                                                            return self
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_AsmReg_t;
+        -> AST_AsmAx_t;
+        -> AST_AsmBx_t;
+        -> AST_AsmCx_t;
+        -> AST_AsmDx_t;
+        -> AST_AsmDi_t;
+        -> AST_AsmSi_t;
+        -> AST_AsmR8_t;
+        -> AST_AsmR9_t;
+        -> AST_AsmR10_t;
+        -> AST_AsmR11_t;
+        -> AST_AsmR12_t;
+        -> AST_AsmR13_t;
+        -> AST_AsmR14_t;
+        -> AST_AsmR15_t;
+        -> AST_AsmSp_t;
+        -> AST_AsmBp_t;
+        -> AST_AsmXMM0_t;
+        -> AST_AsmXMM1_t;
+        -> AST_AsmXMM2_t;
+        -> AST_AsmXMM3_t;
+        -> AST_AsmXMM4_t;
+        -> AST_AsmXMM5_t;
+        -> AST_AsmXMM6_t;
+        -> AST_AsmXMM7_t;
+        -> AST_AsmXMM8_t;
+        -> AST_AsmXMM9_t;
+        -> AST_AsmXMM10_t;
+        -> AST_AsmXMM11_t;
+        -> AST_AsmXMM12_t;
+        -> AST_AsmXMM13_t;
+        -> AST_AsmXMM14_t;
+        -> AST_AsmXMM15_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -86,30 +54,19 @@ pub fn make_AsmReg(tagged_def_impl(AST_T)) struc AsmReg {
 pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode {
     self: struc AsmCondCode = $(tag)
     match tag {
-        -> AST_AsmCondCode_t {
-            -> AST_AsmE_t {
-                -> AST_AsmNE_t {
-                    -> AST_AsmG_t {
-                        -> AST_AsmGE_t {
-                            -> AST_AsmL_t {
-                                -> AST_AsmLE_t {
-                                    -> AST_AsmA_t {
-                                        -> AST_AsmAE_t {
-                                            -> AST_AsmB_t {
-                                                -> AST_AsmBE_t {
-                                                    -> AST_AsmP_t {
-                                                        return self
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_AsmCondCode_t;
+        -> AST_AsmE_t;
+        -> AST_AsmNE_t;
+        -> AST_AsmG_t;
+        -> AST_AsmGE_t;
+        -> AST_AsmL_t;
+        -> AST_AsmLE_t;
+        -> AST_AsmA_t;
+        -> AST_AsmAE_t;
+        -> AST_AsmB_t;
+        -> AST_AsmBE_t;
+        -> AST_AsmP_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -184,10 +141,9 @@ pub fn make_AsmIndexed(scale: TLong, reg_base: *struc AsmReg, reg_index: *struc 
 pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_AsmOperand_t {
-            -> AST_AsmImm_t {
-                break
-            }
+        -> AST_AsmOperand_t;
+        -> AST_AsmImm_t {
+            break
         }
         -> AST_AsmRegister_t {
             break
@@ -217,28 +173,18 @@ pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none {
 pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp {
     self: struc AsmBinaryOp = $(tag)
     match tag {
-        -> AST_AsmBinaryOp_t {
-            -> AST_AsmAdd_t {
-                -> AST_AsmSub_t {
-                    -> AST_AsmMult_t {
-                        -> AST_AsmDivDouble_t {
-                            -> AST_AsmBitAnd_t {
-                                -> AST_AsmBitOr_t {
-                                    -> AST_AsmBitXor_t {
-                                        -> AST_AsmBitShiftLeft_t {
-                                            -> AST_AsmBitShiftRight_t {
-                                                -> AST_AsmBitShrArithmetic_t {
-                                                    return self
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_AsmBinaryOp_t;
+        -> AST_AsmAdd_t;
+        -> AST_AsmSub_t;
+        -> AST_AsmMult_t;
+        -> AST_AsmDivDouble_t;
+        -> AST_AsmBitAnd_t;
+        -> AST_AsmBitOr_t;
+        -> AST_AsmBitXor_t;
+        -> AST_AsmBitShiftLeft_t;
+        -> AST_AsmBitShiftRight_t;
+        -> AST_AsmBitShrArithmetic_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -249,14 +195,11 @@ pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp {
 pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp {
     self: struc AsmUnaryOp = $(tag)
     match tag {
-        -> AST_AsmUnaryOp_t {
-            -> AST_AsmNot_t {
-                -> AST_AsmNeg_t {
-                    -> AST_AsmShr_t {
-                        return self
-                    }
-                }
-            }
+        -> AST_AsmUnaryOp_t;
+        -> AST_AsmNot_t;
+        -> AST_AsmNeg_t;
+        -> AST_AsmShr_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -476,72 +419,72 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
         }
         -> AST_AsmMov_t {
             free_AssemblyType(@self[][].get._AsmMov.asm_type)
+            free_AsmOperand(@self[][].get._AsmMov.src)
+            free_AsmOperand(@self[][].get._AsmMov.dst)
+            break    
         }
-        free_AsmOperand(@self[][].get._AsmMov.src)
-        free_AsmOperand(@self[][].get._AsmMov.dst)
-        break
         -> AST_AsmMovSx_t {
             free_AssemblyType(@self[][].get._AsmMovSx.asm_type_src)
+            free_AssemblyType(@self[][].get._AsmMovSx.asm_type_dst)
+            free_AsmOperand(@self[][].get._AsmMovSx.src)
+            free_AsmOperand(@self[][].get._AsmMovSx.dst)
+            break
         }
-        free_AssemblyType(@self[][].get._AsmMovSx.asm_type_dst)
-        free_AsmOperand(@self[][].get._AsmMovSx.src)
-        free_AsmOperand(@self[][].get._AsmMovSx.dst)
-        break
         -> AST_AsmMovZeroExtend_t {
             free_AssemblyType(@self[][].get._AsmMovZeroExtend.asm_type_src)
+            free_AssemblyType(@self[][].get._AsmMovZeroExtend.asm_type_dst)
+            free_AsmOperand(@self[][].get._AsmMovZeroExtend.src)
+            free_AsmOperand(@self[][].get._AsmMovZeroExtend.dst)
+            break
         }
-        free_AssemblyType(@self[][].get._AsmMovZeroExtend.asm_type_dst)
-        free_AsmOperand(@self[][].get._AsmMovZeroExtend.src)
-        free_AsmOperand(@self[][].get._AsmMovZeroExtend.dst)
-        break
         -> AST_AsmLea_t {
             free_AsmOperand(@self[][].get._AsmLea.src)
+            free_AsmOperand(@self[][].get._AsmLea.dst)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmLea.dst)
-        break
         -> AST_AsmCvttsd2si_t {
             free_AssemblyType(@self[][].get._AsmCvttsd2si.asm_type)
+            free_AsmOperand(@self[][].get._AsmCvttsd2si.src)
+            free_AsmOperand(@self[][].get._AsmCvttsd2si.dst)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmCvttsd2si.src)
-        free_AsmOperand(@self[][].get._AsmCvttsd2si.dst)
-        break
         -> AST_AsmCvtsi2sd_t {
             free_AssemblyType(@self[][].get._AsmCvtsi2sd.asm_type)
+            free_AsmOperand(@self[][].get._AsmCvtsi2sd.src)
+            free_AsmOperand(@self[][].get._AsmCvtsi2sd.dst)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmCvtsi2sd.src)
-        free_AsmOperand(@self[][].get._AsmCvtsi2sd.dst)
-        break
         -> AST_AsmUnary_t {
             free_AssemblyType(@self[][].get._AsmUnary.asm_type)
+            free_AsmOperand(@self[][].get._AsmUnary.dst)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmUnary.dst)
-        break
         -> AST_AsmBinary_t {
             free_AssemblyType(@self[][].get._AsmBinary.asm_type)
+            free_AsmOperand(@self[][].get._AsmBinary.src)
+            free_AsmOperand(@self[][].get._AsmBinary.dst)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmBinary.src)
-        free_AsmOperand(@self[][].get._AsmBinary.dst)
-        break
         -> AST_AsmCmp_t {
             free_AssemblyType(@self[][].get._AsmCmp.asm_type)
+            free_AsmOperand(@self[][].get._AsmCmp.src)
+            free_AsmOperand(@self[][].get._AsmCmp.dst)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmCmp.src)
-        free_AsmOperand(@self[][].get._AsmCmp.dst)
-        break
         -> AST_AsmIdiv_t {
             free_AssemblyType(@self[][].get._AsmIdiv.asm_type)
+            free_AsmOperand(@self[][].get._AsmIdiv.src)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmIdiv.src)
-        break
         -> AST_AsmDiv_t {
             free_AssemblyType(@self[][].get._AsmDiv.asm_type)
+            free_AsmOperand(@self[][].get._AsmDiv.src)
+            break
         }
-        free_AsmOperand(@self[][].get._AsmDiv.src)
-        break
         -> AST_AsmCdq_t {
             free_AssemblyType(@self[][].get._AsmCdq.asm_type)
+            break
         }
-        break
         -> AST_AsmJmp_t {
             break
         }
@@ -550,15 +493,15 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
         }
         -> AST_AsmSetCC_t {
             free_AsmOperand(@self[][].get._AsmSetCC.dst)
+            break
         }
-        break
         -> AST_AsmLabel_t {
             break
         }
         -> AST_AsmPush_t {
             free_AsmOperand(@self[][].get._AsmPush.src)
+            break
         }
-        break
         -> AST_AsmPop_t {
             break
         }
@@ -624,20 +567,20 @@ pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none {
             loop i: u64 = 0 while i < vec_size(self[][].get._AsmFunction.instructions) .. ++i {
                 free_AsmInstruction(@self[][].get._AsmFunction.instructions[i])
             }
+            vec_delete(self[][].get._AsmFunction.instructions)
+            break
         }
-        vec_delete(self[][].get._AsmFunction.instructions)
-        break
         -> AST_AsmStaticVariable_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._AsmStaticVariable.static_inits) .. ++i {
                 free_StaticInit(@self[][].get._AsmStaticVariable.static_inits[i])
             }
+            vec_delete(self[][].get._AsmStaticVariable.static_inits)
+            break
         }
-        vec_delete(self[][].get._AsmStaticVariable.static_inits)
-        break
         -> AST_AsmStaticConstant_t {
             free_StaticInit(@self[][].get._AsmStaticConstant.static_init)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
