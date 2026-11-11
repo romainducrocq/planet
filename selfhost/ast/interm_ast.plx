@@ -9,14 +9,11 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp {
     self: struc TacUnaryOp = $(tag)
     match tag {
-        -> AST_TacUnaryOp_t {
-            -> AST_TacComplement_t {
-                -> AST_TacNegate_t {
-                    -> AST_TacNot_t {
-                        return self
-                    }
-                }
-            }
+        -> AST_TacUnaryOp_t;
+        -> AST_TacComplement_t;
+        -> AST_TacNegate_t;
+        -> AST_TacNot_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -27,42 +24,25 @@ pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp {
 pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp {
     self: struc TacBinaryOp = $(tag)
     match tag {
-        -> AST_TacBinaryOp_t {
-            -> AST_TacAdd_t {
-                -> AST_TacSubtract_t {
-                    -> AST_TacMultiply_t {
-                        -> AST_TacDivide_t {
-                            -> AST_TacRemainder_t {
-                                -> AST_TacBitAnd_t {
-                                    -> AST_TacBitOr_t {
-                                        -> AST_TacBitXor_t {
-                                            -> AST_TacBitShiftLeft_t {
-                                                -> AST_TacBitShiftRight_t {
-                                                    -> AST_TacBitShrArithmetic_t {
-                                                        -> AST_TacEqual_t {
-                                                            -> AST_TacNotEqual_t {
-                                                                -> AST_TacLessThan_t {
-                                                                    -> AST_TacLessOrEqual_t {
-                                                                        -> AST_TacGreaterThan_t {
-                                                                            -> AST_TacGreaterOrEqual_t {
-                                                                                return self
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_TacBinaryOp_t;
+        -> AST_TacAdd_t;
+        -> AST_TacSubtract_t;
+        -> AST_TacMultiply_t;
+        -> AST_TacDivide_t;
+        -> AST_TacRemainder_t;
+        -> AST_TacBitAnd_t;
+        -> AST_TacBitOr_t;
+        -> AST_TacBitXor_t;
+        -> AST_TacBitShiftLeft_t;
+        -> AST_TacBitShiftRight_t;
+        -> AST_TacBitShrArithmetic_t;
+        -> AST_TacEqual_t;
+        -> AST_TacNotEqual_t;
+        -> AST_TacLessThan_t;
+        -> AST_TacLessOrEqual_t;
+        -> AST_TacGreaterThan_t;
+        -> AST_TacGreaterOrEqual_t {
+            return self
         }
         otherwise {
             THROW_ABORT
@@ -100,8 +80,8 @@ pub fn free_TacValue(self: *shared_ptr_t(TacValue)) none {
         }
         -> AST_TacConstant_t {
             free_CConst(@self[][].get._TacConstant.constant)
+            break
         }
-        break
         -> AST_TacVariable_t {
             break
         }
@@ -151,12 +131,12 @@ pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none {
         }
         -> AST_TacPlainOperand_t {
             free_TacValue(@self[][].get._TacPlainOperand.val)
+            break
         }
-        break
         -> AST_TacDereferencedPointer_t {
             free_TacValue(@self[][].get._TacDereferencedPointer.val)
+            break
         }
-        break
         -> AST_TacSubObject_t {
             break
         }
@@ -400,107 +380,107 @@ pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none {
         }
         -> AST_TacReturn_t {
             free_TacValue(@self[][].get._TacReturn.val)
+            break
         }
-        break
         -> AST_TacSignExtend_t {
             free_TacValue(@self[][].get._TacSignExtend.src)
+            free_TacValue(@self[][].get._TacSignExtend.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacSignExtend.dst)
-        break
         -> AST_TacTruncate_t {
             free_TacValue(@self[][].get._TacTruncate.src)
+            free_TacValue(@self[][].get._TacTruncate.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacTruncate.dst)
-        break
         -> AST_TacZeroExtend_t {
             free_TacValue(@self[][].get._TacZeroExtend.src)
+            free_TacValue(@self[][].get._TacZeroExtend.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacZeroExtend.dst)
-        break
         -> AST_TacDoubleToInt_t {
             free_TacValue(@self[][].get._TacDoubleToInt.src)
+            free_TacValue(@self[][].get._TacDoubleToInt.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacDoubleToInt.dst)
-        break
         -> AST_TacDoubleToUInt_t {
             free_TacValue(@self[][].get._TacDoubleToUInt.src)
+            free_TacValue(@self[][].get._TacDoubleToUInt.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacDoubleToUInt.dst)
-        break
         -> AST_TacIntToDouble_t {
             free_TacValue(@self[][].get._TacIntToDouble.src)
+            free_TacValue(@self[][].get._TacIntToDouble.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacIntToDouble.dst)
-        break
         -> AST_TacUIntToDouble_t {
             free_TacValue(@self[][].get._TacUIntToDouble.src)
+            free_TacValue(@self[][].get._TacUIntToDouble.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacUIntToDouble.dst)
-        break
         -> AST_TacFunCall_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._TacFunCall.args) .. ++i {
                 free_TacValue(@self[][].get._TacFunCall.args[i])
             }
+            vec_delete(self[][].get._TacFunCall.args)
+            free_TacValue(@self[][].get._TacFunCall.dst)
+            break
         }
-        vec_delete(self[][].get._TacFunCall.args)
-        free_TacValue(@self[][].get._TacFunCall.dst)
-        break
         -> AST_TacUnary_t {
             free_TacValue(@self[][].get._TacUnary.src)
+            free_TacValue(@self[][].get._TacUnary.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacUnary.dst)
-        break
         -> AST_TacBinary_t {
             free_TacValue(@self[][].get._TacBinary.src1)
+            free_TacValue(@self[][].get._TacBinary.src2)
+            free_TacValue(@self[][].get._TacBinary.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacBinary.src2)
-        free_TacValue(@self[][].get._TacBinary.dst)
-        break
         -> AST_TacCopy_t {
             free_TacValue(@self[][].get._TacCopy.src)
+            free_TacValue(@self[][].get._TacCopy.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacCopy.dst)
-        break
         -> AST_TacGetAddress_t {
             free_TacValue(@self[][].get._TacGetAddress.src)
+            free_TacValue(@self[][].get._TacGetAddress.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacGetAddress.dst)
-        break
         -> AST_TacLoad_t {
             free_TacValue(@self[][].get._TacLoad.src_ptr)
+            free_TacValue(@self[][].get._TacLoad.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacLoad.dst)
-        break
         -> AST_TacStore_t {
             free_TacValue(@self[][].get._TacStore.src)
+            free_TacValue(@self[][].get._TacStore.dst_ptr)
+            break
         }
-        free_TacValue(@self[][].get._TacStore.dst_ptr)
-        break
         -> AST_TacAddPtr_t {
             free_TacValue(@self[][].get._TacAddPtr.src_ptr)
+            free_TacValue(@self[][].get._TacAddPtr.idx)
+            free_TacValue(@self[][].get._TacAddPtr.dst)
+            break
         }
-        free_TacValue(@self[][].get._TacAddPtr.idx)
-        free_TacValue(@self[][].get._TacAddPtr.dst)
-        break
         -> AST_TacCopyToOffset_t {
             free_TacValue(@self[][].get._TacCopyToOffset.src)
+            break
         }
-        break
         -> AST_TacCopyFromOffset_t {
             free_TacValue(@self[][].get._TacCopyFromOffset.dst)
+            break
         }
-        break
         -> AST_TacJump_t {
             break
         }
         -> AST_TacJumpIfZero_t {
             free_TacValue(@self[][].get._TacJumpIfZero.condition)
+            break
         }
-        break
         -> AST_TacJumpIfNotZero_t {
             free_TacValue(@self[][].get._TacJumpIfNotZero.condition)
+            break
         }
-        break
         -> AST_TacLabel_t {
             break
         }
@@ -561,25 +541,25 @@ pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none {
         }
         -> AST_TacFunction_t {
             vec_delete(self[][].get._TacFunction.params)
+            loop i: u64 = 0 while i < vec_size(self[][].get._TacFunction.body) .. ++i {
+                free_TacInstruction(@self[][].get._TacFunction.body[i])
+            }
+            vec_delete(self[][].get._TacFunction.body)
+            break
         }
-        loop i: u64 = 0 while i < vec_size(self[][].get._TacFunction.body) .. ++i {
-            free_TacInstruction(@self[][].get._TacFunction.body[i])
-        }
-        vec_delete(self[][].get._TacFunction.body)
-        break
         -> AST_TacStaticVariable_t {
             free_Type(@self[][].get._TacStaticVariable.static_init_type)
+            loop i: u64 = 0 while i < vec_size(self[][].get._TacStaticVariable.static_inits) .. ++i {
+                free_StaticInit(@self[][].get._TacStaticVariable.static_inits[i])
+            }
+            vec_delete(self[][].get._TacStaticVariable.static_inits)
+            break
         }
-        loop i: u64 = 0 while i < vec_size(self[][].get._TacStaticVariable.static_inits) .. ++i {
-            free_StaticInit(@self[][].get._TacStaticVariable.static_inits[i])
-        }
-        vec_delete(self[][].get._TacStaticVariable.static_inits)
-        break
         -> AST_TacStaticConstant_t {
             free_Type(@self[][].get._TacStaticConstant.static_init_type)
+            free_StaticInit(@self[][].get._TacStaticConstant.static_init)
+            break
         }
-        free_StaticInit(@self[][].get._TacStaticConstant.static_init)
-        break
         otherwise {
             THROW_ABORT
         }

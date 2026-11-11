@@ -110,43 +110,34 @@ pub fn make_Structure(tag_name: TIdentifier, is_union: bool) shared_ptr_t(Type) 
 pub fn free_Type(self: *shared_ptr_t(Type)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_Type_t {
-            -> AST_Char_t {
-                -> AST_SChar_t {
-                    -> AST_UChar_t {
-                        -> AST_Int_t {
-                            -> AST_Long_t {
-                                -> AST_UInt_t {
-                                    -> AST_ULong_t {
-                                        -> AST_Double_t {
-                                            -> AST_Void_t {
-                                                break
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_Type_t;
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_UInt_t;
+        -> AST_ULong_t;
+        -> AST_Double_t;
+        -> AST_Void_t {
+            break
         }
         -> AST_FunType_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._FunType.param_types) .. ++i {
                 free_Type(@self[][].get._FunType.param_types[i])
             }
+            vec_delete(self[][].get._FunType.param_types)
+            free_Type(@self[][].get._FunType.ret_type)
+            break
         }
-        vec_delete(self[][].get._FunType.param_types)
-        free_Type(@self[][].get._FunType.ret_type)
-        break
         -> AST_Pointer_t {
             free_Type(@self[][].get._Pointer.ref_type)
+            break
         }
-        break
         -> AST_Array_t {
             free_Type(@self[][].get._Array.elem_type)
+            break
         }
-        break
         -> AST_Structure_t {
             break
         }
@@ -240,20 +231,14 @@ pub fn make_PointerInit(name: TIdentifier) shared_ptr_t(StaticInit) {
 pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_StaticInit_t {
-            -> AST_IntInit_t {
-                -> AST_LongInit_t {
-                    -> AST_UIntInit_t {
-                        -> AST_ULongInit_t {
-                            -> AST_CharInit_t {
-                                -> AST_UCharInit_t {
-                                    break
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_StaticInit_t;
+        -> AST_IntInit_t;
+        -> AST_LongInit_t;
+        -> AST_UIntInit_t;
+        -> AST_ULongInit_t;
+        -> AST_CharInit_t;
+        -> AST_UCharInit_t {
+            break
         }
         -> AST_DoubleInit_t {
             break
@@ -263,8 +248,8 @@ pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none {
         }
         -> AST_StringInit_t {
             free_CStringLiteral(@self[][].get._StringInit.literal)
+            break
         }
-        break
         -> AST_PointerInit_t {
             break
         }
@@ -305,18 +290,17 @@ pub fn make_NoInitializer(none) shared_ptr_t(InitialValue) {
 pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_InitialValue_t {
-            -> AST_Tentative_t {
-                break
-            }
+        -> AST_InitialValue_t;
+        -> AST_Tentative_t {
+            break
         }
         -> AST_Initial_t {
             loop i: u64 = 0 while i < vec_size(self[][].get._Initial.static_inits) .. ++i {
                 free_StaticInit(@self[][].get._Initial.static_inits[i])
             }
+            vec_delete(self[][].get._Initial.static_inits)
+            break
         }
-        vec_delete(self[][].get._Initial.static_inits)
-        break
         -> AST_NoInitializer_t {
             break
         }
@@ -368,19 +352,18 @@ pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr) {
 pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_IdentifierAttr_t {
-            -> AST_FunAttr_t {
-                break
-            }
+        -> AST_IdentifierAttr_t;
+        -> AST_FunAttr_t {
+            break
         }
         -> AST_StaticAttr_t {
             free_InitialValue(@self[][].get._StaticAttr.init)
+            break
         }
-        break
         -> AST_ConstantAttr_t {
             free_StaticInit(@self[][].get._ConstantAttr.static_init)
+            break
         }
-        break
         -> AST_LocalAttr_t {
             break
         }

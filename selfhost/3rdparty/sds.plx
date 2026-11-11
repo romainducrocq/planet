@@ -71,20 +71,20 @@ fn sdssetlen(s: sds, newlen: u64) none {
         -> SDS_TYPE_5 {
             fp: *u8 = (cast<*u8>(s)) - 1
             fp[] = SDS_TYPE_5 | (newlen << SDS_TYPE_BITS)
+            break
         }
-        break
         -> SDS_TYPE_8 {
             SDS_HDR(8, s)[].len = newlen
+            break
         }
-        break
         -> SDS_TYPE_32 {
             SDS_HDR(32, s)[].len = newlen
+            break
         }
-        break
         -> SDS_TYPE_64 {
             SDS_HDR(64, s)[].len = newlen
+            break
         }
-        break
     }
 }
 
@@ -96,16 +96,16 @@ fn sdssetalloc(s: sds, newlen: u64) none {
         }
         -> SDS_TYPE_8 {
             SDS_HDR(8, s)[].alloc = newlen
+            break
         }
-        break
         -> SDS_TYPE_32 {
             SDS_HDR(32, s)[].alloc = newlen
+            break
         }
-        break
         -> SDS_TYPE_64 {
             SDS_HDR(64, s)[].alloc = newlen
+            break
         }
-        break
     }
 }
 

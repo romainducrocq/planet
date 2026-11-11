@@ -527,20 +527,20 @@ pub fn stbds_hmput_key(a: *any, elemsize: u64, key: *any, keysize: u64, mode: i3
             match table[].string_arena.mode {
                 -> STBDS_SH_STRDUP {
                     (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = stbds_strdup(cast<string>(key))
+                    break
                 }
-                break
                 -> STBDS_SH_ARENA {
                     (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = stbds_stralloc(@table[].string_arena, cast<string>(key))
+                    break
                 }
-                break
                 -> STBDS_SH_DEFAULT {
                     (cast<*string>((cast<*struc stbds_array_header>((a)) - 1)[].hash_table)[]) = cast<*string>((cast<string>(a) + elemsize * i))[] = cast<string>(key)
+                    break
                 }
-                break
                 otherwise {
                     memcpy(cast<string>(a) + elemsize * i, key, keysize)
+                    break
                 }
-                break
             }
         }
         return (cast<string>((a)) + (elemsize))

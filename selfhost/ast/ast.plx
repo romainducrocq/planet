@@ -63,22 +63,15 @@ pub fn make_CConstUChar(value: TUChar) shared_ptr_t(CConst) {
 pub fn free_CConst(self: *shared_ptr_t(CConst)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_CConst_t {
-            -> AST_CConstInt_t {
-                -> AST_CConstLong_t {
-                    -> AST_CConstUInt_t {
-                        -> AST_CConstULong_t {
-                            -> AST_CConstDouble_t {
-                                -> AST_CConstChar_t {
-                                    -> AST_CConstUChar_t {
-                                        break
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_CConst_t;
+        -> AST_CConstInt_t;
+        -> AST_CConstLong_t;
+        -> AST_CConstUInt_t;
+        -> AST_CConstULong_t;
+        -> AST_CConstDouble_t;
+        -> AST_CConstChar_t;
+        -> AST_CConstUChar_t {
+            break
         }
         otherwise {
             THROW_ABORT
