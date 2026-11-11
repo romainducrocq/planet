@@ -206,19 +206,15 @@ pub fn register_mask_kind(node: *struc AsmReg) REGISTER_KIND {
         -> AST_AsmXMM13_t {
             return REG_Xmm13
         }
-        -> AST_AsmSp_t {
-            -> AST_AsmBp_t {
-                return REG_Sp
-            }
+        -> AST_AsmSp_t;
+        -> AST_AsmBp_t {
+            return REG_Sp
         }
-        -> AST_AsmR10_t {
-            -> AST_AsmR11_t {
-                -> AST_AsmXMM14_t {
-                    -> AST_AsmXMM15_t {
-                        THROW_ABORT
-                    }
-                }
-            }
+        -> AST_AsmR10_t;
+        -> AST_AsmR11_t;
+        -> AST_AsmXMM14_t;
+        -> AST_AsmXMM15_t {
+            THROW_ABORT
         }
         otherwise {
             THROW_ABORT
@@ -306,18 +302,13 @@ pub fn register_mask_bit(reg_kind: REGISTER_KIND) u64 {
         -> REG_Xmm13 {
             return 25
         }
-        -> REG_R10 {
-            -> REG_R11 {
-                -> REG_Sp {
-                    -> REG_Bp {
-                        -> REG_Xmm14 {
-                            -> REG_Xmm15 {
-                                THROW_ABORT
-                            }
-                        }
-                    }
-                }
-            }
+        -> REG_R10;
+        -> REG_R11;
+        -> REG_Sp;
+        -> REG_Bp;
+        -> REG_Xmm14;
+        -> REG_Xmm15 {
+            THROW_ABORT
         }
         otherwise {
             THROW_ABORT

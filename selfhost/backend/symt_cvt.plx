@@ -16,26 +16,20 @@ m4_define(`Ctx', `*struc SymtCvtContext')m4_dnl
 
 fn get_scalar_alignment(type_t: *struc Type) TInt {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return 1
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return 1
         }
-        -> AST_Int_t {
-            -> AST_UInt_t {
-                return 4
-            }
+        -> AST_Int_t;
+        -> AST_UInt_t {
+            return 4
         }
-        -> AST_Long_t {
-            -> AST_Double_t {
-                -> AST_ULong_t {
-                    -> AST_Pointer_t {
-                        return 8
-                    }
-                }
-            }
+        -> AST_Long_t;
+        -> AST_Double_t;
+        -> AST_ULong_t;
+        -> AST_Pointer_t {
+            return 8
         }
         otherwise {
             THROW_ABORT
@@ -107,24 +101,19 @@ fn struct_asm_type(ctx: *struc FrontEndContext, struct_type: *struc Structure) s
 pub fn cvt_backend_asm_type(ctx: *struc FrontEndContext, name: TIdentifier) shared_ptr_t(AssemblyType) {
     symbol_type: *struc Type = map_get(ctx[].symbol_table, name)[].type_t
     match symbol_type[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return make_Byte()
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return make_Byte()
         }
-        -> AST_Int_t {
-            -> AST_UInt_t {
-                return make_LongWord()
-            }
+        -> AST_Int_t;
+        -> AST_UInt_t {
+            return make_LongWord()
         }
-        -> AST_Long_t {
-            -> AST_ULong_t {
-                -> AST_Pointer_t {
-                    return make_QuadWord()
-                }
-            }
+        -> AST_Long_t;
+        -> AST_ULong_t;
+        -> AST_Pointer_t {
+            return make_QuadWord()
         }
         -> AST_Double_t {
             return make_BackendDouble()
@@ -160,12 +149,12 @@ fn cvt_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
     match node[].static_init[].tag {
         -> AST_DoubleInit_t {
             dbl_static_const(ctx)
+            break
         }
-        break
         -> AST_StringInit_t {
             string_static_const(ctx, @map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].get._Array)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }

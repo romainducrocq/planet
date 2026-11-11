@@ -56,18 +56,17 @@ fn alloc_offset_pseudo(ctx: Ctx, asm_type: *struc AssemblyType) none {
     match asm_type[].tag {
         -> AST_Byte_t {
             align_offset_pseudo(ctx, 1l, 1)
+            break
         }
-        break
         -> AST_LongWord_t {
             align_offset_pseudo(ctx, 4l, 4)
+            break
         }
-        break
-        -> AST_QuadWord_t {
-            -> AST_BackendDouble_t {
-                align_offset_pseudo(ctx, 8l, 8)
-            }
+        -> AST_QuadWord_t;
+        -> AST_BackendDouble_t {
+            align_offset_pseudo(ctx, 8l, 8)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -118,12 +117,12 @@ fn repl_mov_pseudo(ctx: Ctx, node: *struc AsmMov) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -131,12 +130,12 @@ fn repl_mov_pseudo(ctx: Ctx, node: *struc AsmMov) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -147,12 +146,12 @@ fn repl_mov_sx_pseudo(ctx: Ctx, node: *struc AsmMovSx) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -160,12 +159,12 @@ fn repl_mov_sx_pseudo(ctx: Ctx, node: *struc AsmMovSx) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -176,12 +175,12 @@ fn repl_zero_extend_pseudo(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -189,12 +188,12 @@ fn repl_zero_extend_pseudo(ctx: Ctx, node: *struc AsmMovZeroExtend) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -205,12 +204,12 @@ fn repl_lea_pseudo(ctx: Ctx, node: *struc AsmLea) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -218,12 +217,12 @@ fn repl_lea_pseudo(ctx: Ctx, node: *struc AsmLea) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -234,12 +233,12 @@ fn repl_cvttsd2si_pseudo(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -247,12 +246,12 @@ fn repl_cvttsd2si_pseudo(ctx: Ctx, node: *struc AsmCvttsd2si) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -263,12 +262,12 @@ fn repl_cvtsi2sd_pseudo(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -276,12 +275,12 @@ fn repl_cvtsi2sd_pseudo(ctx: Ctx, node: *struc AsmCvtsi2sd) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -292,12 +291,12 @@ fn repl_unary(ctx: Ctx, node: *struc AsmUnary) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -308,12 +307,12 @@ fn repl_binary_pseudo(ctx: Ctx, node: *struc AsmBinary) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -321,12 +320,12 @@ fn repl_binary_pseudo(ctx: Ctx, node: *struc AsmBinary) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -337,12 +336,12 @@ fn repl_cmp_pseudo(ctx: Ctx, node: *struc AsmCmp) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -350,12 +349,12 @@ fn repl_cmp_pseudo(ctx: Ctx, node: *struc AsmCmp) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -366,12 +365,12 @@ fn repl_idiv_pseudo(ctx: Ctx, node: *struc AsmIdiv) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -382,12 +381,12 @@ fn repl_div_pseudo(ctx: Ctx, node: *struc AsmDiv) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -398,12 +397,12 @@ fn repl_set_cc_pseudo(ctx: Ctx, node: *struc AsmSetCC) none {
     match node[].dst[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].dst[].get._AsmPseudo, @node[].dst)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].dst[].get._AsmPseudoMem, @node[].dst)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -414,12 +413,12 @@ fn repl_push_pseudo(ctx: Ctx, node: *struc AsmPush) none {
     match node[].src[].tag {
         -> AST_AsmPseudo_t {
             repl_pseudo_op(ctx, @node[].src[].get._AsmPseudo, @node[].src)
+            break
         }
-        break
         -> AST_AsmPseudoMem_t {
             repl_pseudo_mem_op(ctx, @node[].src[].get._AsmPseudoMem, @node[].src)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -430,56 +429,56 @@ fn repl_pseudo_regs(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
             repl_mov_pseudo(ctx, @node[].get._AsmMov)
+            break
         }
-        break
         -> AST_AsmMovSx_t {
             repl_mov_sx_pseudo(ctx, @node[].get._AsmMovSx)
+            break
         }
-        break
         -> AST_AsmMovZeroExtend_t {
             repl_zero_extend_pseudo(ctx, @node[].get._AsmMovZeroExtend)
+            break
         }
-        break
         -> AST_AsmLea_t {
             repl_lea_pseudo(ctx, @node[].get._AsmLea)
+            break
         }
-        break
         -> AST_AsmCvttsd2si_t {
             repl_cvttsd2si_pseudo(ctx, @node[].get._AsmCvttsd2si)
+            break
         }
-        break
         -> AST_AsmCvtsi2sd_t {
             repl_cvtsi2sd_pseudo(ctx, @node[].get._AsmCvtsi2sd)
+            break
         }
-        break
         -> AST_AsmUnary_t {
             repl_unary(ctx, @node[].get._AsmUnary)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             repl_binary_pseudo(ctx, @node[].get._AsmBinary)
+            break
         }
-        break
         -> AST_AsmCmp_t {
             repl_cmp_pseudo(ctx, @node[].get._AsmCmp)
+            break
         }
-        break
         -> AST_AsmIdiv_t {
             repl_idiv_pseudo(ctx, @node[].get._AsmIdiv)
+            break
         }
-        break
         -> AST_AsmDiv_t {
             repl_div_pseudo(ctx, @node[].get._AsmDiv)
+            break
         }
-        break
         -> AST_AsmSetCC_t {
             repl_set_cc_pseudo(ctx, @node[].get._AsmSetCC)
+            break
         }
-        break
         -> AST_AsmPush_t {
             repl_push_pseudo(ctx, @node[].get._AsmPush)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -569,12 +568,10 @@ fn pop_callee_saved_regs(ctx: Ctx, callee_saved_regs: vector_t(shared_ptr_t(AsmO
 
 fn is_op_addr(node: *struc AsmOperand) bool {
     match node[].tag {
-        -> AST_AsmMemory_t {
-            -> AST_AsmData_t {
-                -> AST_AsmIndexed_t {
-                    return true
-                }
-            }
+        -> AST_AsmMemory_t;
+        -> AST_AsmData_t;
+        -> AST_AsmIndexed_t {
+            return true
         }
         otherwise {
             return false
@@ -867,22 +864,18 @@ fn fix_binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
     }
     else {
         match node[].binop.tag {
-            -> AST_AsmAdd_t {
-                -> AST_AsmSub_t {
-                    -> AST_AsmBitAnd_t {
-                        -> AST_AsmBitOr_t {
-                            -> AST_AsmBitXor_t {
-                                if node[].src[].tag == AST_AsmImm_t and node[].src[].get._AsmImm.is_quad {
-                                    binary_from_quad_imm(ctx, node)
-                                }
-                                if is_op_addr(node[].src) and is_op_addr(node[].dst) {
-                                    binary_from_addr_to_addr(ctx, node)
-                                }
-                                break
-                            }
-                        }
-                    }
+            -> AST_AsmAdd_t;
+            -> AST_AsmSub_t;
+            -> AST_AsmBitAnd_t;
+            -> AST_AsmBitOr_t;
+            -> AST_AsmBitXor_t {
+                if node[].src[].tag == AST_AsmImm_t and node[].src[].get._AsmImm.is_quad {
+                    binary_from_quad_imm(ctx, node)
                 }
+                if is_op_addr(node[].src) and is_op_addr(node[].dst) {
+                    binary_from_addr_to_addr(ctx, node)
+                }
+                break
             }
             -> AST_AsmMult_t {
                 if node[].src[].tag == AST_AsmImm_t and node[].src[].get._AsmImm.is_quad {
@@ -893,18 +886,16 @@ fn fix_binary_instr(ctx: Ctx, node: *struc AsmBinary) none {
                 }
                 break
             }
-            -> AST_AsmBitShiftLeft_t {
-                -> AST_AsmBitShiftRight_t {
-                    -> AST_AsmBitShrArithmetic_t {
-                        if node[].src[].tag == AST_AsmImm_t and node[].src[].get._AsmImm.is_quad {
-                            binary_from_quad_imm(ctx, node)
-                        }
-                        if node[].src[].tag ~= AST_AsmImm_t {
-                            binary_shx_from_not_imm(ctx, node)
-                        }
-                        break
-                    }
+            -> AST_AsmBitShiftLeft_t;
+            -> AST_AsmBitShiftRight_t;
+            -> AST_AsmBitShrArithmetic_t {
+                if node[].src[].tag == AST_AsmImm_t and node[].src[].get._AsmImm.is_quad {
+                    binary_from_quad_imm(ctx, node)
                 }
+                if node[].src[].tag ~= AST_AsmImm_t {
+                    binary_shx_from_not_imm(ctx, node)
+                }
+                break
             }
             otherwise {
                 break
@@ -1056,48 +1047,48 @@ fn fix_instr(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
             fix_mov_instr(ctx, @node[].get._AsmMov)
+            break
         }
-        break
         -> AST_AsmMovSx_t {
             fix_mov_sx_instr(ctx, @node[].get._AsmMovSx)
+            break
         }
-        break
         -> AST_AsmMovZeroExtend_t {
             fix_zero_extend_instr(ctx, @node[].get._AsmMovZeroExtend)
+            break
         }
-        break
         -> AST_AsmLea_t {
             fix_lea_instr(ctx, @node[].get._AsmLea)
+            break
         }
-        break
         -> AST_AsmCvttsd2si_t {
             fix_cvttsd2si_instr(ctx, @node[].get._AsmCvttsd2si)
+            break
         }
-        break
         -> AST_AsmCvtsi2sd_t {
             fix_cvtsi2sd_instr(ctx, @node[].get._AsmCvtsi2sd)
+            break
         }
-        break
         -> AST_AsmBinary_t {
             fix_binary_instr(ctx, @node[].get._AsmBinary)
+            break
         }
-        break
         -> AST_AsmCmp_t {
             fix_cmp_instr(ctx, @node[].get._AsmCmp)
+            break
         }
-        break
         -> AST_AsmIdiv_t {
             fix_idiv_instr(ctx, @node[].get._AsmIdiv)
+            break
         }
-        break
         -> AST_AsmDiv_t {
             fix_div_instr(ctx, @node[].get._AsmDiv)
+            break
         }
-        break
         -> AST_AsmPush_t {
             fix_push_instr(ctx, @node[].get._AsmPush)
+            break
         }
-        break
         otherwise {
             break
         }
@@ -1143,8 +1134,8 @@ fn fix_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     match node[].tag {
         -> AST_AsmFunction_t {
             fix_fun_toplvl(ctx, @node[].get._AsmFunction)
+            break
         }
-        break
         -> AST_AsmStaticVariable_t {
             break
         }
