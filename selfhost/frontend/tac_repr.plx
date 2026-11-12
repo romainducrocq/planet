@@ -13,10 +13,17 @@ m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
-type struc TacReprContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_instrs: *vector_t(unique_ptr_t(TacInstruction)), p_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), p_static_consts: *vector_t(unique_ptr_t(TacTopLevel)))
+type struc TacReprContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
+    # Three address code representation
+    p_instrs: *vector_t(unique_ptr_t(TacInstruction)), p_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), p_static_consts: *vector_t(unique_ptr_t(TacTopLevel)))
+
+########################################################################################################################
+
+# Three address code representation
 
 m4_define(`Ctx', `*struc TacReprContext')m4_dnl
 
+# unary_operator = Complement | Negate | Not
 fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
     match node[].tag {
         -> AST_CComplement_t {
@@ -34,6 +41,9 @@ fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
     }
 }
 
+# binary_operator = Add | Subtract | Multiply | Divide | Remainder | BitAnd | BitOr | BitXor | BitShiftLeft
+#                 | BitShiftRight | BitShrArithmetic | Equal | NotEqual | LessThan | LessOrEqual | GreaterThan |
+#                 GreaterOrEqual
 fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
     match node[].tag {
         -> AST_CAdd_t {
@@ -129,6 +139,7 @@ fn ptr_inner_value(ctx: Ctx, node: *struc CExp) shared_ptr_t(TacValue) {
     return exp_inner_value(ctx, node, true)
 }
 
+# val = Constant(int) | Var(identifier)
 fn repr_value(node: *struc CExp) shared_ptr_t(TacValue) {
     match node[].tag {
         -> AST_CConstant_t {
@@ -1021,6 +1032,7 @@ fn sub_obj_exp_instr(ctx: Ctx, res: *struc TacSubObject, node: *struc CExp) shar
     return dst
 }
 
+# exp_result = PlainOperand(val) | DereferencedPointer(val) | SubObject(val)
 fn repr_exp_instr(ctx: Ctx, node: *struc CExp) shared_ptr_t(TacValue) {
     val: shared_ptr_t(TacValue) = sptr_new()
     res: unique_ptr_t(TacExpResult) = repr_res_instr(ctx, node)
@@ -1498,6 +1510,13 @@ fn declaration_instr(ctx: Ctx, node: *struc CDeclaration) none {
     }
 }
 
+# instruction = Return(val?) | SignExtend(val, val) | Truncate(val, val) | ZeroExtend(val, val)
+#             | DoubleToInt(val, val) | DoubleToUInt(val, val) | IntToDouble(val, val)
+#             | UIntToDouble(val, val) | FunCall(identifier, val*, val?) | Unary(unary_operator, val, val)
+#             | Binary(binary_operator, val, val, val) | Copy(val, val) | GetAddress(val, val) | Load(val, val)
+#             | Store(val, val) | AddPtr(int, val, val, val) | CopyToOffset(identifier, int, val)
+#             | CopyFromOffset(identifier, int, val) | Jump(identifier) | JumpIfZero(val, identifier)
+#             | JumpIfNotZero(val, identifier) | Label(identifier)
 fn repr_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(CBlockItem))) none {
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         match node_list[i][].tag {
@@ -1557,6 +1576,7 @@ fn fun_decl_toplvl(ctx: Ctx, node: *struc CFunDecl) none {
     }
 }
 
+# (function) top_level = Function(identifier, bool, identifier*, instruction*)
 fn declaration_toplvl(ctx: Ctx, node: *struc CDeclaration) none {
     match node[].tag {
         -> AST_CFunDecl_t {
@@ -1634,6 +1654,8 @@ fn repr_static_const_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) 
     push_static_const_toplvl(ctx, make_TacStaticConstant(name, @static_init_type, @static_init))
 }
 
+# (static variable) top_level = StaticVariable(identifier, bool, type, static_init*)
+# (static constant) top_level = StaticConstant(identifier, type, static_init)
 fn symbol_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) none {
     match node[].attrs[].tag {
         -> AST_StaticAttr_t {
@@ -1650,6 +1672,7 @@ fn symbol_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) none {
     }
 }
 
+# AST = Program(top_level*, top_level*, top_level*)
 fn repr_program(ctx: Ctx, node: *struc CProgram) unique_ptr_t(TacProgram) {
     fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
     {
@@ -1675,6 +1698,8 @@ fn repr_program(ctx: Ctx, node: *struc CProgram) unique_ptr_t(TacProgram) {
 
     return make_TacProgram(@static_const_toplvls, @static_var_toplvls, @fun_toplvls)
 }
+
+########################################################################################################################
 
 pub fn represent_three_address_code(c_ast: *unique_ptr_t(CProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(TacProgram) {
     ctx: struc TacReprContext;

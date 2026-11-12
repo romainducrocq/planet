@@ -7,6 +7,11 @@ m4_include(`../frontend/labels.plx.m4')m4_dnl
 
 type struc CExp;
 type struc IdentifierContext;
+
+########################################################################################################################
+
+# Identifiers
+
 pub fn rslv_label_identifier(ctx: *struc IdentifierContext, target: TIdentifier) TIdentifier;
 pub fn rslv_var_identifier(ctx: *struc IdentifierContext, variable: TIdentifier) TIdentifier;
 pub fn rslv_struct_tag(ctx: *struc IdentifierContext, structure: TIdentifier) TIdentifier;

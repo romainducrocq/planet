@@ -10,7 +10,13 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 
 ElementKey(``hash_t'')
 
-type struc LexerContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, line: string, line_size: u64, match_at: u64, match_size: u64, includename_set: hashset_t(``hash_t''), p_includedirs: *vector_t(string), p_stdlibdirs: *vector_t(string), p_toks: *vector_t(struc Token), paren_depth: u64, total_linenum: u64)
+type struc LexerContext(errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext,
+    # Lexer
+    line: string, line_size: u64, match_at: u64, match_size: u64, includename_set: hashset_t(``hash_t''), p_includedirs: *vector_t(string), p_stdlibdirs: *vector_t(string), p_toks: *vector_t(struc Token), paren_depth: u64, total_linenum: u64)
+
+########################################################################################################################
+
+# Lexer
 
 m4_define(`Ctx', `*struc LexerContext')m4_dnl
 
@@ -164,6 +170,7 @@ fn match_error(ctx: Ctx) TOKEN_KIND {
     return TOK_error
 }
 
+# <header-file> ::= ? Path to a ".etc" header file without extension ?
 fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
     loop while match_space(ctx);
     if match_char(ctx, '!') {
@@ -891,6 +898,7 @@ fn find_include(dirnames: vector_t(string), filename: *string_t) bool {
     return false
 }
 
+# <include> ::= ( "import" | "use" ) [ "!" ] "\"" <header-file> "\""
 fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bool) error_t {
     filename: string_t = str_new(nil)
     fopen_name: string_t = str_new(nil)
@@ -986,6 +994,8 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
     str_delete(fopen_name)
     CATCH_EXIT
 }
+
+########################################################################################################################
 
 pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) error_t {
     ctx: struc LexerContext;

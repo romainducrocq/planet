@@ -7,6 +7,10 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Identifiers
+
 m4_define(`Ctx', `*struc IdentifierContext')m4_dnl
 
 pub fn rslv_label_identifier(ctx: Ctx, target: TIdentifier) TIdentifier {
