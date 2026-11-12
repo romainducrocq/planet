@@ -298,22 +298,15 @@ pub fn get_tok_kind_fmt(tok_kind: TOKEN_KIND) string {
 
 pub fn get_tok_fmt(ctx: *struc IdentifierContext, token: *struc Token) string {
     match token[].tok_kind {
-        -> TOK_identifier {
-            -> TOK_string_literal {
-                -> TOK_char_const {
-                    -> TOK_int_const {
-                        -> TOK_long_const {
-                            -> TOK_uint_const {
-                                -> TOK_ulong_const {
-                                    -> TOK_dbl_const {
-                                        return map_get(ctx[].hash_table, token[].tok)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> TOK_identifier;
+        -> TOK_string_literal;
+        -> TOK_char_const;
+        -> TOK_int_const;
+        -> TOK_long_const;
+        -> TOK_uint_const;
+        -> TOK_ulong_const;
+        -> TOK_dbl_const {
+            return map_get(ctx[].hash_table, token[].tok)
         }
         otherwise {
             return get_tok_kind_fmt(token[].tok_kind)

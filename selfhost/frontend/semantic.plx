@@ -69,16 +69,12 @@ fn is_same_fun_type(fun_type_1: *struc FunType, fun_type_2: *struc FunType) bool
 
 fn is_type_signed(type_t: *struc Type) bool {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        -> AST_Double_t {
-                            return true
-                        }
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_Double_t {
+            return true
         }
         otherwise {
             return false
@@ -88,12 +84,10 @@ fn is_type_signed(type_t: *struc Type) bool {
 
 fn is_type_char(type_t: *struc Type) bool {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return true
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return true
         }
         otherwise {
             return false
@@ -103,20 +97,14 @@ fn is_type_char(type_t: *struc Type) bool {
 
 fn is_type_int(type_t: *struc Type) bool {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        -> AST_UChar_t {
-                            -> AST_UInt_t {
-                                -> AST_ULong_t {
-                                    return true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_UChar_t;
+        -> AST_UInt_t;
+        -> AST_ULong_t {
+            return true
         }
         otherwise {
             return false
@@ -126,22 +114,15 @@ fn is_type_int(type_t: *struc Type) bool {
 
 fn is_type_arithmetic(type_t: *struc Type) bool {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        -> AST_Double_t {
-                            -> AST_UChar_t {
-                                -> AST_UInt_t {
-                                    -> AST_ULong_t {
-                                        return true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_Double_t;
+        -> AST_UChar_t;
+        -> AST_UInt_t;
+        -> AST_ULong_t {
+            return true
         }
         otherwise {
             return false
@@ -151,24 +132,16 @@ fn is_type_arithmetic(type_t: *struc Type) bool {
 
 fn is_type_scalar(type_t: *struc Type) bool {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        -> AST_Double_t {
-                            -> AST_UChar_t {
-                                -> AST_UInt_t {
-                                    -> AST_ULong_t {
-                                        -> AST_Pointer_t {
-                                            return true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_Double_t;
+        -> AST_UChar_t;
+        -> AST_UInt_t;
+        -> AST_ULong_t;
+        -> AST_Pointer_t {
+            return true
         }
         otherwise {
             return false
@@ -224,12 +197,12 @@ fn is_valid_type(ctx: Ctx, type_t: *struc Type) error_t {
     match type_t[].tag {
         -> AST_Pointer_t {
             TRY(is_valid_ptr(ctx, @type_t[].get._Pointer))
+            break
         }
-        break
         -> AST_Array_t {
             TRY(is_valid_arr(ctx, @type_t[].get._Array))
+            break
         }
-        break
         -> AST_FunType_t {
             THROW_ABORT
         }
@@ -249,16 +222,12 @@ fn is_dot_exp_lvalue(node: *struc CDot) bool {
 
 fn is_exp_lvalue(node: *struc CExp) bool {
     match node[].tag {
-        -> AST_CString_t {
-            -> AST_CVar_t {
-                -> AST_CDereference_t {
-                    -> AST_CSubscript_t {
-                        -> AST_CArrow_t {
-                            return true
-                        }
-                    }
-                }
-            }
+        -> AST_CString_t;
+        -> AST_CVar_t;
+        -> AST_CDereference_t;
+        -> AST_CSubscript_t;
+        -> AST_CArrow_t {
+            return true
         }
         -> AST_CDot_t {
             return is_dot_exp_lvalue(@node[].get._CDot)
@@ -291,26 +260,20 @@ fn is_const_null_ptr(node: *struc CConstant) bool {
 
 fn get_scalar_size(type_t: *struc Type) TInt {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return 1
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return 1
         }
-        -> AST_Int_t {
-            -> AST_UInt_t {
-                return 4
-            }
+        -> AST_Int_t;
+        -> AST_UInt_t {
+            return 4
         }
-        -> AST_Long_t {
-            -> AST_Double_t {
-                -> AST_ULong_t {
-                    -> AST_Pointer_t {
-                        return 8
-                    }
-                }
-            }
+        -> AST_Long_t;
+        -> AST_Double_t;
+        -> AST_ULong_t;
+        -> AST_Pointer_t {
+            return 8
         }
         otherwise {
             THROW_ABORT
@@ -807,14 +770,12 @@ fn check_unary_complement_exp(ctx: Ctx, node: *struc CUnary) error_t {
             THROW_AT_TOKEN(node[]._base[].info_at, GET_SEMANTIC_MSG(MSG_invalid_unary_op, get_unop_fmt(@node[].unop),
                                                        str_fmt_type(node[].exp[].exp_type, @type_fmt)))
         }
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    TRY(promote_char_to_int(ctx, @node[].exp))
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            TRY(promote_char_to_int(ctx, @node[].exp))
+            break
         }
-        break
         otherwise {
             break
         }
@@ -833,14 +794,12 @@ fn check_unary_neg_exp(ctx: Ctx, node: *struc CUnary) error_t {
                                                    str_fmt_type(node[].exp[].exp_type, @type_fmt)))
     }
     match node[].exp[].exp_type[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    TRY(promote_char_to_int(ctx, @node[].exp))
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            TRY(promote_char_to_int(ctx, @node[].exp))
+            break
         }
-        break
         otherwise {
             break
         }
@@ -869,16 +828,16 @@ fn check_unary_exp(ctx: Ctx, node: *struc CUnary) error_t {
     match node[].unop.tag {
         -> AST_CComplement_t {
             TRY(check_unary_complement_exp(ctx, node))
+            break
         }
-        break
         -> AST_CNegate_t {
             TRY(check_unary_neg_exp(ctx, node))
+            break
         }
-        break
         -> AST_CNot_t {
             TRY(check_unary_not_exp(ctx, node))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1144,58 +1103,49 @@ fn check_binary_exp(ctx: Ctx, node: *struc CBinary) error_t {
     match node[].binop.tag {
         -> AST_CAdd_t {
             TRY(check_binary_add_exp(ctx, node))
+            break
         }
-        break
         -> AST_CSubtract_t {
             TRY(check_binary_subtract_exp(ctx, node))
+            break
         }
-        break
-        -> AST_CMultiply_t {
-            -> AST_CDivide_t {
-                TRY(check_multiply_divide_exp(ctx, node))
-            }
+        -> AST_CMultiply_t;
+        -> AST_CDivide_t {
+            TRY(check_multiply_divide_exp(ctx, node))
+            break
         }
-        break
-        -> AST_CRemainder_t {
-            -> AST_CBitAnd_t {
-                -> AST_CBitOr_t {
-                    -> AST_CBitXor_t {
-                        TRY(check_remainder_bitwise_exp(ctx, node))
-                    }
-                }
-            }
+        -> AST_CRemainder_t;
+        -> AST_CBitAnd_t;
+        -> AST_CBitOr_t;
+        -> AST_CBitXor_t {
+            TRY(check_remainder_bitwise_exp(ctx, node))
+            break
         }
-        break
         -> AST_CBitShiftLeft_t {
             TRY(check_binary_bitshift_exp(ctx, node))
+            break
         }
-        break
         -> AST_CBitShiftRight_t {
             TRY(check_bitshift_right_exp(ctx, node))
+            break
         }
-        break
-        -> AST_CAnd_t {
-            -> AST_COr_t {
-                TRY(check_binary_logical_exp(ctx, node))
-            }
+        -> AST_CAnd_t;
+        -> AST_COr_t {
+            TRY(check_binary_logical_exp(ctx, node))
+            break
         }
-        break
-        -> AST_CEqual_t {
-            -> AST_CNotEqual_t {
-                TRY(check_binary_equality_exp(ctx, node))
-            }
+        -> AST_CEqual_t;
+        -> AST_CNotEqual_t {
+            TRY(check_binary_equality_exp(ctx, node))
+            break
         }
-        break
-        -> AST_CLessThan_t {
-            -> AST_CLessOrEqual_t {
-                -> AST_CGreaterThan_t {
-                    -> AST_CGreaterOrEqual_t {
-                        TRY(check_binary_relational_exp(ctx, node))
-                    }
-                }
-            }
+        -> AST_CLessThan_t;
+        -> AST_CLessOrEqual_t;
+        -> AST_CGreaterThan_t;
+        -> AST_CGreaterOrEqual_t {
+            TRY(check_binary_relational_exp(ctx, node))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1504,12 +1454,12 @@ fn check_typed_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     match exp[][].exp_type[].tag {
         -> AST_Array_t {
             check_arr_typed_exp(exp)
+            break
         }
-        break
         -> AST_Structure_t {
             TRY(check_struct_typed_exp(ctx, exp[]))
+            break
         }
-        break
         otherwise {
             break
         }
@@ -1701,14 +1651,12 @@ fn check_switch_statement(ctx: Ctx, node: *struc CSwitch) error_t {
             GET_SEMANTIC_MSG(MSG_invalid_switch, str_fmt_type(node[].lookup[].exp_type, @type_fmt)))
     }
     match node[].lookup[].exp_type[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    TRY(promote_char_to_int(ctx, @node[].lookup))
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            TRY(promote_char_to_int(ctx, @node[].lookup))
+            break
         }
-        break
         otherwise {
             break
         }
@@ -1716,20 +1664,20 @@ fn check_switch_statement(ctx: Ctx, node: *struc CSwitch) error_t {
     match node[].lookup[].exp_type[].tag {
         -> AST_Int_t {
             TRY(check_switch_int_cases(ctx, node))
+            break
         }
-        break
         -> AST_Long_t {
             TRY(check_switch_long_cases(ctx, node))
+            break
         }
-        break
         -> AST_UInt_t {
             TRY(check_switch_uint_cases(ctx, node))
+            break
         }
-        break
         -> AST_ULong_t {
             TRY(check_switch_ulong_cases(ctx, node))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1781,11 +1729,10 @@ fn check_single_zero_init(elem_type: *struc Type) unique_ptr_t(CInitializer) {
     {
         constant: shared_ptr_t(CConst) = sptr_new()
         match elem_type[].tag {
-            -> AST_Char_t {
-                -> AST_SChar_t {
-                    constant = make_CConstChar(0)
-                    break
-                }
+            -> AST_Char_t;
+            -> AST_SChar_t {
+                constant = make_CConstChar(0)
+                break
             }
             -> AST_Int_t {
                 constant = make_CConstInt(0)
@@ -1807,11 +1754,10 @@ fn check_single_zero_init(elem_type: *struc Type) unique_ptr_t(CInitializer) {
                 constant = make_CConstUInt(0u)
                 break
             }
-            -> AST_ULong_t {
-                -> AST_Pointer_t {
-                    constant = make_CConstULong(0ul)
-                    break
-                }
+            -> AST_ULong_t;
+            -> AST_Pointer_t {
+                constant = make_CConstULong(0ul)
+                break
             }
             otherwise {
                 THROW_ABORT
@@ -2090,17 +2036,16 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
     strto_fmt: string_t = str_new(nil)
     CATCH_ENTER
     match static_init_type[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                value: TChar = get_const_char_value(node)
-                if value == 0 {
-                    push_zero_static_init(ctx, 1l)
-                }
-                else {
-                    push_static_init(ctx, make_CharInit(value))
-                }
-                break
+        -> AST_Char_t;
+        -> AST_SChar_t {
+            value: TChar = get_const_char_value(node)
+            if value == 0 {
+                push_zero_static_init(ctx, 1l)
             }
+            else {
+                push_static_init(ctx, make_CharInit(value))
+            }
+            break
         }
         -> AST_Int_t {
             value: TInt = get_const_int_value(node)
@@ -2166,14 +2111,12 @@ fn check_static_const_init(ctx: Ctx, node: *struc CConstant, static_init_type: *
         }
         -> AST_Pointer_t {
             match node[].constant[].tag {
-                -> AST_CConstChar_t {
-                    -> AST_CConstDouble_t {
-                        -> AST_CConstUChar_t {
+                -> AST_CConstChar_t;
+                -> AST_CConstDouble_t;
+                -> AST_CConstUChar_t {
                     THROW_AT_TOKEN(node[]._base[].info_at,
                         GET_SEMANTIC_MSG(MSG_static_ptr_init_not_int, str_fmt_type(static_init_type, @type_fmt),
                             get_const_fmt(node[].constant)))
-                        }
-                    }
                 }
                 otherwise {
                     break
@@ -2278,13 +2221,13 @@ fn check_static_string_init(ctx: Ctx, node: *struc CString, static_init_type: *s
     match static_init_type[].tag {
         -> AST_Pointer_t {
             TRY(check_literal_string_init(ctx, node, @static_init_type[].get._Pointer))
+            check_static_ptr_string_init(ctx, node)
+            break
         }
-        check_static_ptr_string_init(ctx, node)
-        break
         -> AST_Array_t {
             TRY(check_static_arr_string_init(ctx, node, @static_init_type[].get._Array))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2299,12 +2242,12 @@ fn check_single_static_init(ctx: Ctx, node: *struc CSingleInit, static_init_type
     match node[].exp[].tag {
         -> AST_CConstant_t {
             TRY(check_static_const_init(ctx, @node[].exp[].get._CConstant, static_init_type))
+            break
         }
-        break
         -> AST_CString_t {
             TRY(check_static_string_init(ctx, @node[].exp[].get._CString, static_init_type))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(node[].exp[].info_at,
                 GET_SEMANTIC_MSG(MSG_static_init_not_const, str_fmt_type(static_init_type, @type_fmt)))
@@ -2356,12 +2299,12 @@ fn check_static_compound_init(ctx: Ctx, node: *struc CCompoundInit, static_init_
     match static_init_type[].tag {
         -> AST_Array_t {
             TRY(check_static_arr_init(ctx, node, @static_init_type[].get._Array))
+            break
         }
-        break
         -> AST_Structure_t {
             TRY(check_static_struct_init(ctx, node, @static_init_type[].get._Structure))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(get_compound_info_at(node),
                 GET_SEMANTIC_MSG(MSG_scalar_init_with_compound, str_fmt_type(static_init_type, @type_fmt)))
@@ -2377,12 +2320,12 @@ fn check_static_init(ctx: Ctx, node: *struc CInitializer, static_init_type: *str
     match node[].tag {
         -> AST_CSingleInit_t {
             TRY(check_single_static_init(ctx, @node[].get._CSingleInit, static_init_type))
+            break
         }
-        break
         -> AST_CCompoundInit_t {
             TRY(check_static_compound_init(ctx, @node[].get._CCompoundInit, static_init_type))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2592,16 +2535,16 @@ fn check_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     match node[].storage_class.tag {
         -> AST_CStorageClass_t {
             TRY(check_auto_block_var_decl(ctx, node))
+            break
         }
-        break
         -> AST_CExtern_t {
             TRY(check_extern_block_var_decl(ctx, node))
+            break
         }
-        break
         -> AST_CStatic_t {
             TRY(check_static_block_var_decl(ctx, node))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -2894,16 +2837,16 @@ fn reslv_struct_type(ctx: Ctx, type_t: *struc Type) error_t {
     match type_t[].tag {
         -> AST_Pointer_t {
             TRY(reslv_ptr_struct(ctx, @type_t[].get._Pointer))
+            break
         }
-        break
         -> AST_Array_t {
             TRY(reslv_arr_struct(ctx, @type_t[].get._Array))
+            break
         }
-        break
         -> AST_Structure_t {
             TRY(reslv_struct(ctx, @type_t[].get._Structure))
+            break
         }
-        break
         -> AST_FunType_t {
             THROW_ABORT
         }
@@ -3074,68 +3017,68 @@ fn reslv_exp(ctx: Ctx, node: *struc CExp) error_t {
     match node[].tag {
         -> AST_CConstant_t {
             reslv_const_exp(@node[].get._CConstant)
+            break
         }
-        break
         -> AST_CString_t {
             reslv_string_exp(@node[].get._CString)
+            break
         }
-        break
         -> AST_CVar_t {
             TRY(reslv_var_exp(ctx, @node[].get._CVar))
+            break
         }
-        break
         -> AST_CCast_t {
             TRY(reslv_cast_exp(ctx, @node[].get._CCast))
+            break
         }
-        break
         -> AST_CUnary_t {
             TRY(reslv_unary_exp(ctx, @node[].get._CUnary))
+            break
         }
-        break
         -> AST_CBinary_t {
             TRY(reslv_binary_exp(ctx, @node[].get._CBinary))
+            break
         }
-        break
         -> AST_CAssignment_t {
             TRY(reslv_assign_exp(ctx, @node[].get._CAssignment))
+            break
         }
-        break
         -> AST_CConditional_t {
             TRY(reslv_conditional_exp(ctx, @node[].get._CConditional))
+            break
         }
-        break
         -> AST_CFunctionCall_t {
             TRY(reslv_call_exp(ctx, @node[].get._CFunctionCall))
+            break
         }
-        break
         -> AST_CDereference_t {
             TRY(reslv_deref_exp(ctx, @node[].get._CDereference))
+            break
         }
-        break
         -> AST_CAddrOf_t {
             TRY(reslv_addrof_expr(ctx, @node[].get._CAddrOf))
+            break
         }
-        break
         -> AST_CSubscript_t {
             TRY(reslv_subscript_exp(ctx, @node[].get._CSubscript))
+            break
         }
-        break
         -> AST_CSizeOf_t {
             TRY(reslv_sizeof_exp(ctx, @node[].get._CSizeOf))
+            break
         }
-        break
         -> AST_CSizeOfT_t {
             TRY(reslv_sizeoft_exp(ctx, @node[].get._CSizeOfT))
+            break
         }
-        break
         -> AST_CDot_t {
             TRY(reslv_dot_exp(ctx, @node[].get._CDot))
+            break
         }
-        break
         -> AST_CArrow_t {
             TRY(reslv_arrow_exp(ctx, @node[].get._CArrow))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -3184,8 +3127,8 @@ fn reslv_for_init(ctx: Ctx, node: *struc CForInit) error_t {
     match node[].tag {
         -> AST_CInitDecl_t {
             TRY(reslv_for_init_decl(ctx, @node[].get._CInitDecl))
+            break
         }
-        break
         -> AST_CInitExp_t {
             TRY(reslv_for_init_exp(ctx, @node[].get._CInitExp))
             break
@@ -3364,60 +3307,60 @@ fn reslv_statement(ctx: Ctx, node: *struc CStatement) error_t {
     match node[].tag {
         -> AST_CReturn_t {
             TRY(reslv_ret_statement(ctx, @node[].get._CReturn))
+            break
         }
-        break
         -> AST_CExpression_t {
             TRY(reslv_exp_statement(ctx, @node[].get._CExpression))
+            break
         }
-        break
         -> AST_CIf_t {
             TRY(reslv_if_statement(ctx, @node[].get._CIf))
+            break
         }
-        break
         -> AST_CGoto_t {
             reslv_goto_statement(ctx, @node[].get._CGoto)
+            break
         }
-        break
         -> AST_CLabel_t {
             TRY(reslv_label_statement(ctx, @node[].get._CLabel))
+            break
         }
-        break
         -> AST_CCompound_t {
             TRY(reslv_compound_statement(ctx, @node[].get._CCompound))
+            break
         }
-        break
         -> AST_CWhile_t {
             TRY(reslv_while_statement(ctx, @node[].get._CWhile))
+            break
         }
-        break
         -> AST_CDoWhile_t {
             TRY(reslv_do_while_statement(ctx, @node[].get._CDoWhile))
+            break
         }
-        break
         -> AST_CFor_t {
             TRY(reslv_for_statement(ctx, @node[].get._CFor))
+            break
         }
-        break
         -> AST_CSwitch_t {
             TRY(reslv_switch_statement(ctx, @node[].get._CSwitch))
+            break
         }
-        break
         -> AST_CCase_t {
             TRY(reslv_case_statement(ctx, @node[].get._CCase))
+            break
         }
-        break
         -> AST_CDefault_t {
             TRY(reslv_default_statement(ctx, @node[].get._CDefault))
+            break
         }
-        break
         -> AST_CBreak_t {
             TRY(reslv_break_statement(ctx, @node[].get._CBreak))
+            break
         }
-        break
         -> AST_CContinue_t {
             TRY(reslv_continue_statement(ctx, @node[].get._CContinue))
+            break
         }
-        break
         -> AST_CNull_t {
             break
         }
@@ -3437,12 +3380,12 @@ fn reslv_block_items(ctx: Ctx, node_list: vector_t(unique_ptr_t(CBlockItem))) er
         match node_list[i][].tag {
             -> AST_CS_t {
                 TRY(reslv_statement(ctx, node_list[i][].get._CS.statement))
+                break
             }
-            break
             -> AST_CD_t {
                 TRY(reslv_declaration(ctx, node_list[i][].get._CD.declaration))
+                break
             }
-            break
             otherwise {
                 THROW_ABORT
             }
@@ -3505,12 +3448,12 @@ fn reslv_compound_init(ctx: Ctx, node: *struc CCompoundInit, init_type: *shared_
     match init_type[][].tag {
         -> AST_Array_t {
             TRY(reslv_arr_init(ctx, node, @init_type[][].get._Array, init_type))
+            break
         }
-        break
         -> AST_Structure_t {
             TRY(reslv_struct_init(ctx, node, @init_type[][].get._Structure, init_type))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(get_compound_info_at(node),
                 GET_SEMANTIC_MSG(MSG_scalar_init_with_compound, str_fmt_type(init_type[], @type_fmt)))
@@ -3526,12 +3469,12 @@ fn reslv_initializer(ctx: Ctx, node: *struc CInitializer, init_type: *shared_ptr
     match node[].tag {
         -> AST_CSingleInit_t {
             TRY(reslv_single_init(ctx, @node[].get._CSingleInit, init_type))
+            break
         }
-        break
         -> AST_CCompoundInit_t {
             TRY(reslv_compound_init(ctx, @node[].get._CCompoundInit, init_type))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -3725,16 +3668,16 @@ fn reslv_declaration(ctx: Ctx, node: *struc CDeclaration) error_t {
     match node[].tag {
         -> AST_CFunDecl_t {
             TRY(reslv_fun_decl(ctx, @node[].get._CFunDecl))
+            break
         }
-        break
         -> AST_CVarDecl_t {
             TRY(reslv_var_decl(ctx, @node[].get._CVarDecl))
+            break
         }
-        break
         -> AST_CStructDecl_t {
             TRY(reslv_struct_decl(ctx, @node[].get._CStructDecl))
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }

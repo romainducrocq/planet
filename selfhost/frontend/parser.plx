@@ -140,8 +140,8 @@ fn parse_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
         }
         -> TOK_dbl_const {
             TRY(parse_dbl_const(ctx, constant))
+            EARLY_EXIT
         }
-        EARLY_EXIT
         otherwise {
             break
         }
@@ -209,69 +209,57 @@ fn parse_binop(ctx: Ctx, binop: *struc CBinaryOp) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
     match ctx[].next_tok[].tok_kind {
-        -> TOK_binop_add {
-            -> TOK_assign_add {
-                -> TOK_unop_incr {
-                    binop[] = init_CAdd()
-                    break
-                }
-            }
+        -> TOK_binop_add;
+        -> TOK_assign_add;
+        -> TOK_unop_incr {
+            binop[] = init_CAdd()
+            break
         }
-        -> TOK_unop_neg {
-            -> TOK_assign_subtract {
-                -> TOK_unop_decr {
-                    binop[] = init_CSubtract()
-                    break
-                }
-            }
+        -> TOK_unop_neg;
+        -> TOK_assign_subtract;
+        -> TOK_unop_decr {
+            binop[] = init_CSubtract()
+            break
         }
-        -> TOK_binop_multiply {
-            -> TOK_assign_multiply {
-                binop[] = init_CMultiply()
-                break
-            }
+        -> TOK_binop_multiply;
+        -> TOK_assign_multiply {
+            binop[] = init_CMultiply()
+            break
         }
-        -> TOK_binop_divide {
-            -> TOK_assign_divide {
-                binop[] = init_CDivide()
-                break
-            }
+        -> TOK_binop_divide;
+        -> TOK_assign_divide {
+            binop[] = init_CDivide()
+            break
         }
-        -> TOK_binop_remainder {
-            -> TOK_assign_remainder {
-                binop[] = init_CRemainder()
-                break
-            }
+        -> TOK_binop_remainder;
+        -> TOK_assign_remainder {
+            binop[] = init_CRemainder()
+            break
         }
-        -> TOK_binop_bitand {
-            -> TOK_assign_bitand {
-                binop[] = init_CBitAnd()
-                break
-            }
+        -> TOK_binop_bitand;
+        -> TOK_assign_bitand {
+            binop[] = init_CBitAnd()
+            break
         }
-        -> TOK_binop_bitor {
-            -> TOK_assign_bitor {
-                binop[] = init_CBitOr()
-                break
-            }
+        -> TOK_binop_bitor;
+        -> TOK_assign_bitor {
+            binop[] = init_CBitOr()
+            break
         }
-        -> TOK_binop_xor {
-            -> TOK_assign_xor {
-                binop[] = init_CBitXor()
-                break
-            }
+        -> TOK_binop_xor;
+        -> TOK_assign_xor {
+            binop[] = init_CBitXor()
+            break
         }
-        -> TOK_binop_shiftleft {
-            -> TOK_assign_shiftleft {
-                binop[] = init_CBitShiftLeft()
-                break
-            }
+        -> TOK_binop_shiftleft;
+        -> TOK_assign_shiftleft {
+            binop[] = init_CBitShiftLeft()
+            break
         }
-        -> TOK_binop_shiftright {
-            -> TOK_assign_shiftright {
-                binop[] = init_CBitShiftRight()
-                break
-            }
+        -> TOK_binop_shiftright;
+        -> TOK_assign_shiftright {
+            binop[] = init_CBitShiftRight()
+            break
         }
         -> TOK_binop_and {
             binop[] = init_CAnd()
@@ -382,14 +370,13 @@ fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
         -> TOK_key_any {
             THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_incomplete_any))
         }
-        -> TOK_key_struc {
-            -> TOK_key_union {
-                is_union: bool;
-                tag_name: TIdentifier;
-                TRY(parse_datatype_specifier(ctx, @tag_name, @is_union))
-                type_specifier[] = make_Structure(tag_name, is_union)
-                break
-            }
+        -> TOK_key_struc;
+        -> TOK_key_union {
+            is_union: bool;
+            tag_name: TIdentifier;
+            TRY(parse_datatype_specifier(ctx, @tag_name, @is_union))
+            type_specifier[] = make_Structure(tag_name, is_union)
+            break
         }
         otherwise {
             THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_specifier, str_fmt_tok(ctx[].next_tok)))
@@ -406,24 +393,19 @@ fn parse_arr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_key_true {
-            -> TOK_key_false {
-                -> TOK_int_const {
-                    -> TOK_long_const {
-                        -> TOK_char_const {
-                            TRY(parse_const(ctx, @constant))
-                        }
-                    }
-                }
-            }
+        -> TOK_key_true;
+        -> TOK_key_false;
+        -> TOK_int_const;
+        -> TOK_long_const;
+        -> TOK_char_const {
+            TRY(parse_const(ctx, @constant))
+            break
         }
-        break
-        -> TOK_uint_const {
-            -> TOK_ulong_const {
-                TRY(parse_unsigned_const(ctx, @constant))
-            }
+        -> TOK_uint_const;
+        -> TOK_ulong_const {
+            TRY(parse_unsigned_const(ctx, @constant))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(
                 ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx[].peek_tok)))
@@ -488,16 +470,16 @@ fn parse_type_name(ctx: Ctx, type_name: *shared_ptr_t(Type)) error_t {
     match ctx[].peek_tok[].tok_kind {
         -> TOK_open_bracket {
             TRY(parse_arr_specifier(ctx, type_name))
+            break
         }
-        break
         -> TOK_binop_multiply {
             TRY(parse_ptr_specifier(ctx, type_name))
+            break
         }
-        break
         otherwise {
             TRY(parse_type_specifier(ctx, type_name))
+            break
         }
-        break
     }
     FINALLY
     CATCH_EXIT
@@ -507,36 +489,23 @@ fn parse_maybe_type(ctx: Ctx, maybe_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_key_char {
-            -> TOK_key_string {
-                -> TOK_key_i32 {
-                    -> TOK_key_i64 {
-                        -> TOK_key_i8 {
-                            -> TOK_key_f64 {
-                                -> TOK_key_u32 {
-                                    -> TOK_key_u64 {
-                                        -> TOK_key_u8 {
-                                            -> TOK_key_any {
-                                                -> TOK_key_struc {
-                                                    -> TOK_key_union {
-                                                        -> TOK_open_bracket {
-                                                            -> TOK_binop_multiply {
-                                                                TRY(parse_type_name(ctx, maybe_type))
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> TOK_key_char;
+        -> TOK_key_string;
+        -> TOK_key_i32;
+        -> TOK_key_i64;
+        -> TOK_key_i8;
+        -> TOK_key_f64;
+        -> TOK_key_u32;
+        -> TOK_key_u64;
+        -> TOK_key_u8;
+        -> TOK_key_any;
+        -> TOK_key_struc;
+        -> TOK_key_union;
+        -> TOK_open_bracket;
+        -> TOK_binop_multiply {
+            TRY(parse_type_name(ctx, maybe_type))
+            break
         }
-        break
         -> TOK_key_none {
             TRY(pop_next(ctx))
             maybe_type[] = make_Void()
@@ -835,12 +804,12 @@ fn parse_sizeof_unary_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     match ctx[].next_tok[].tok_kind {
         -> TOK_binop_lt {
             TRY(parse_sizeoft_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_open_paren {
             TRY(parse_sizeof_factor(ctx, exp))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(
                 ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_open_sizeof, str_fmt_tok(ctx[].next_tok)))
@@ -854,34 +823,28 @@ fn parse_primary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_key_true {
-            -> TOK_key_false {
-                -> TOK_int_const {
-                    -> TOK_long_const {
-                        -> TOK_char_const {
-                            -> TOK_dbl_const {
-                                TRY(parse_const_factor(ctx, exp))
-                            }
-                        }
-                    }
-                }
-            }
+        -> TOK_key_true;
+        -> TOK_key_false;
+        -> TOK_int_const;
+        -> TOK_long_const;
+        -> TOK_char_const;
+        -> TOK_dbl_const {
+            TRY(parse_const_factor(ctx, exp))
+            break
         }
-        break
-        -> TOK_uint_const {
-            -> TOK_ulong_const {
-                TRY(parse_unsigned_const_factor(ctx, exp))
-            }
+        -> TOK_uint_const;
+        -> TOK_ulong_const {
+            TRY(parse_unsigned_const_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_string_literal {
             TRY(parse_string_literal_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_key_cast {
             TRY(parse_cast_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_identifier {
             TRY(peek_next_i(ctx, 1))
             if ctx[].peek_tok_i[].tok_kind == TOK_open_paren {
@@ -894,8 +857,8 @@ fn parse_primary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
         }
         -> TOK_open_paren {
             TRY(parse_inner_exp_factor(ctx, exp))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(
                 ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_expression, str_fmt_tok(ctx[].peek_tok)))
@@ -911,18 +874,17 @@ fn parse_postfix_op_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     match ctx[].peek_tok[].tok_kind {
         -> TOK_open_bracket {
             TRY(parse_arr_unary_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_typeop_member {
             TRY(parse_dot_factor(ctx, exp))
+            break
         }
-        break
-        -> TOK_unop_incr {
-            -> TOK_unop_decr {
-                TRY(parse_postfix_incr_factor(ctx, exp))
-            }
+        -> TOK_unop_incr;
+        -> TOK_unop_decr {
+            TRY(parse_postfix_incr_factor(ctx, exp))
+            break
         }
-        break
         otherwise {
             EARLY_EXIT
         }
@@ -937,16 +899,13 @@ fn parse_postfix_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     TRY(parse_primary_exp_factor(ctx, exp))
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_open_bracket {
-            -> TOK_typeop_member {
-                -> TOK_unop_incr {
-                    -> TOK_unop_decr {
-                        TRY(parse_postfix_op_exp_factor(ctx, exp))
-                    }
-                }
-            }
+        -> TOK_open_bracket;
+        -> TOK_typeop_member;
+        -> TOK_unop_incr;
+        -> TOK_unop_decr {
+            TRY(parse_postfix_op_exp_factor(ctx, exp))
+            break
         }
-        break
         otherwise {
             break
         }
@@ -959,32 +918,29 @@ fn parse_unary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_unop_complement {
-            -> TOK_unop_neg {
-                -> TOK_unop_not {
-                    TRY(parse_unary_factor(ctx, exp))
-                }
-            }
+        -> TOK_unop_complement;
+        -> TOK_unop_neg;
+        -> TOK_unop_not {
+            TRY(parse_unary_factor(ctx, exp))
+            break
         }
-        break
-        -> TOK_unop_incr {
-            -> TOK_unop_decr {
-                TRY(parse_incr_factor(ctx, exp))
-            }
+        -> TOK_unop_incr;
+        -> TOK_unop_decr {
+            TRY(parse_incr_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_unop_addrof {
             TRY(parse_addrof_factor(ctx, exp))
+            break
         }
-        break
         -> TOK_key_sizeof {
             TRY(parse_sizeof_unary_factor(ctx, exp))
+            break
         }
-        break
         otherwise {
             TRY(parse_postfix_exp_factor(ctx, exp))
+            break
         }
-        break
     }
     FINALLY
     CATCH_EXIT
@@ -1058,36 +1014,28 @@ fn parse_ternary_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
 
 fn get_tok_precedence(tok_kind: TOKEN_KIND) i32 {
     match tok_kind {
-        -> TOK_binop_multiply {
-            -> TOK_binop_divide {
-                -> TOK_binop_remainder {
-                    return 50
-                }
-            }
+        -> TOK_binop_multiply;
+        -> TOK_binop_divide;
+        -> TOK_binop_remainder {
+            return 50
         }
-        -> TOK_unop_neg {
-            -> TOK_binop_add {
-                return 45
-            }
+        -> TOK_unop_neg;
+        -> TOK_binop_add {
+            return 45
         }
-        -> TOK_binop_shiftleft {
-            -> TOK_binop_shiftright {
-                return 40
-            }
+        -> TOK_binop_shiftleft;
+        -> TOK_binop_shiftright {
+            return 40
         }
-        -> TOK_binop_lt {
-            -> TOK_binop_le {
-                -> TOK_binop_gt {
-                    -> TOK_binop_ge {
-                        return 35
-                    }
-                }
-            }
+        -> TOK_binop_lt;
+        -> TOK_binop_le;
+        -> TOK_binop_gt;
+        -> TOK_binop_ge {
+            return 35
         }
-        -> TOK_binop_eq {
-            -> TOK_binop_ne {
-                return 30
-            }
+        -> TOK_binop_eq;
+        -> TOK_binop_ne {
+            return 30
         }
         -> TOK_binop_bitand {
             return 25
@@ -1104,28 +1052,18 @@ fn get_tok_precedence(tok_kind: TOKEN_KIND) i32 {
         -> TOK_binop_or {
             return 5
         }
-        -> TOK_assign {
-            -> TOK_assign_add {
-                -> TOK_assign_subtract {
-                    -> TOK_assign_multiply {
-                        -> TOK_assign_divide {
-                            -> TOK_assign_remainder {
-                                -> TOK_assign_bitand {
-                                    -> TOK_assign_bitor {
-                                        -> TOK_assign_xor {
-                                            -> TOK_assign_shiftleft {
-                                                -> TOK_assign_shiftright {
-                                                    return 1
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        -> TOK_assign;
+        -> TOK_assign_add;
+        -> TOK_assign_subtract;
+        -> TOK_assign_multiply;
+        -> TOK_assign_divide;
+        -> TOK_assign_remainder;
+        -> TOK_assign_bitand;
+        -> TOK_assign_bitor;
+        -> TOK_assign_xor;
+        -> TOK_assign_shiftleft;
+        -> TOK_assign_shiftright {
+            return 1
         }
         otherwise {
             return -1
@@ -1149,70 +1087,44 @@ fn parse_exp(ctx: Ctx, min_precedence: i32, exp: *unique_ptr_t(CExp)) error_t {
             break
         }
         match ctx[].peek_tok[].tok_kind {
-            -> TOK_binop_add {
-                -> TOK_unop_neg {
-                    -> TOK_binop_multiply {
-                        -> TOK_binop_divide {
-                            -> TOK_binop_remainder {
-                                -> TOK_binop_bitand {
-                                    -> TOK_binop_bitor {
-                                        -> TOK_binop_xor {
-                                            -> TOK_binop_shiftleft {
-                                                -> TOK_binop_shiftright {
-                                                    -> TOK_binop_lt {
-                                                        -> TOK_binop_le {
-                                                            -> TOK_binop_gt {
-                                                                -> TOK_binop_ge {
-                                                                    -> TOK_binop_eq {
-                                                                        -> TOK_binop_ne {
-                                                                            -> TOK_binop_and {
-                                                                                -> TOK_binop_or {
-                                                                                    TRY(parse_binary_exp(ctx, precedence, exp))
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            -> TOK_binop_add;
+            -> TOK_unop_neg;
+            -> TOK_binop_multiply;
+            -> TOK_binop_divide;
+            -> TOK_binop_remainder;
+            -> TOK_binop_bitand;
+            -> TOK_binop_bitor;
+            -> TOK_binop_xor;
+            -> TOK_binop_shiftleft;
+            -> TOK_binop_shiftright;
+            -> TOK_binop_lt;
+            -> TOK_binop_le;
+            -> TOK_binop_gt;
+            -> TOK_binop_ge;
+            -> TOK_binop_eq;
+            -> TOK_binop_ne;
+            -> TOK_binop_and;
+            -> TOK_binop_or {
+                TRY(parse_binary_exp(ctx, precedence, exp))
+                break
             }
-            break
             -> TOK_assign {
                 TRY(parse_assign_exp(ctx, precedence, exp))
+                break
             }
-            break
-            -> TOK_assign_add {
-                -> TOK_assign_subtract {
-                    -> TOK_assign_multiply {
-                        -> TOK_assign_divide {
-                            -> TOK_assign_remainder {
-                                -> TOK_assign_bitand {
-                                    -> TOK_assign_bitor {
-                                        -> TOK_assign_xor {
-                                            -> TOK_assign_shiftleft {
-                                                -> TOK_assign_shiftright {
-                                                    TRY(parse_assign_compound_exp(ctx, precedence, exp))
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            -> TOK_assign_add;
+            -> TOK_assign_subtract;
+            -> TOK_assign_multiply;
+            -> TOK_assign_divide;
+            -> TOK_assign_remainder;
+            -> TOK_assign_bitand;
+            -> TOK_assign_bitor;
+            -> TOK_assign_xor;
+            -> TOK_assign_shiftleft;
+            -> TOK_assign_shiftright {
+                TRY(parse_assign_compound_exp(ctx, precedence, exp))
+                break
             }
-            break
             otherwise {
                 THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_binop, str_fmt_tok(ctx[].peek_tok)))
             }
@@ -1282,15 +1194,15 @@ fn parse_if_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t {
         match ctx[].peek_tok_i[].tok_kind {
             -> TOK_key_elif {
                 TRY(pop_next(ctx))
+                TRY(parse_if_statement(ctx, @else_fi))
+                break
             }
-            TRY(parse_if_statement(ctx, @else_fi))
-            break
             -> TOK_key_else {
                 TRY(pop_next(ctx))
+                TRY(pop_next(ctx))
+                TRY(parse_compound_statement(ctx, @else_fi))
+                break
             }
-            TRY(pop_next(ctx))
-            TRY(parse_compound_statement(ctx, @else_fi))
-            break
             otherwise {
                 break
             }
@@ -1399,13 +1311,11 @@ fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
                 EARLY_EXIT
             }
         }
-        -> TOK_key_pub {
-            -> TOK_key_data {
-                -> TOK_key_extrn {
+        -> TOK_key_pub;
+        -> TOK_key_data;
+        -> TOK_key_extrn {
             THROW_AT_TOKEN(
                 ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_loop_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
-                }
-            }
         }
         -> TOK_identifier {
             TRY(peek_next_i(ctx, 1))
@@ -1419,8 +1329,8 @@ fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
         }
         otherwise {
             TRY(parse_loop_init_exp(ctx, @for_init))
+            break
         }
-        break
     }
     TRY(peek_next(ctx))
     if ctx[].peek_tok[].tok_kind == TOK_key_while {
@@ -1476,24 +1386,19 @@ fn parse_with_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
     TRY(pop_next(ctx))
     TRY(peek_next(ctx))
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_key_true {
-            -> TOK_key_false {
-                -> TOK_int_const {
-                    -> TOK_long_const {
-                        -> TOK_char_const {
-                            TRY(parse_const(ctx, @constant))
-                        }
-                    }
-                }
-            }
+        -> TOK_key_true;
+        -> TOK_key_false;
+        -> TOK_int_const;
+        -> TOK_long_const;
+        -> TOK_char_const {
+            TRY(parse_const(ctx, @constant))
+            break
         }
-        break
-        -> TOK_uint_const {
-            -> TOK_ulong_const {
-                TRY(parse_unsigned_const(ctx, @constant))
-            }
+        -> TOK_uint_const;
+        -> TOK_ulong_const {
+            TRY(parse_unsigned_const(ctx, @constant))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(
                 ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx[].peek_tok)))
@@ -1552,56 +1457,56 @@ fn parse_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t {
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_return {
             TRY(parse_ret_statement(ctx, statement))
+            EARLY_EXIT
         }
-        EARLY_EXIT
         -> TOK_key_if {
             TRY(parse_if_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_jump {
             TRY(parse_jump_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_label {
             TRY(parse_label_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_open_brace {
             TRY(parse_compound_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_loop {
             TRY(parse_loop_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_match {
             TRY(parse_match_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_match_with {
             TRY(parse_with_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_otherwise {
             TRY(parse_otherwise_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_break {
             TRY(parse_break_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_key_continue {
             TRY(parse_continue_statement(ctx, statement))
+            break
         }
-        break
         -> TOK_semicolon {
             TRY(parse_null_statement(ctx, statement))
+            break
         }
-        break
         otherwise {
             TRY(parse_exp_statement(ctx, statement))
+            break
         }
-        break
     }
     FINALLY
     CATCH_EXIT
@@ -1636,16 +1541,13 @@ fn parse_block_item(ctx: Ctx, block_item: *unique_ptr_t(CBlockItem)) error_t {
         -> TOK_key_pub {
             THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_pub_in_block))
         }
-        -> TOK_key_data {
-            -> TOK_key_extrn {
-                -> TOK_key_fn {
-                    -> TOK_key_type {
-                        TRY(parse_d_block_item(ctx, block_item))
-                    }
-                }
-            }
+        -> TOK_key_data;
+        -> TOK_key_extrn;
+        -> TOK_key_fn;
+        -> TOK_key_type {
+            TRY(parse_d_block_item(ctx, block_item))
+            EARLY_EXIT
         }
-        EARLY_EXIT
         -> TOK_identifier {
             TRY(peek_next_i(ctx, 1))
             if ctx[].peek_tok_i[].tok_kind == TOK_assign_type {
@@ -1711,8 +1613,8 @@ fn parse_block(ctx: Ctx, block: *unique_ptr_t(CBlock)) error_t {
         }
         -> TOK_open_brace {
             TRY(parse_b_block(ctx, block))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_block, str_fmt_tok(ctx[].next_tok)))
         }
@@ -1788,13 +1690,11 @@ fn parse_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(Type)
 fn parse_item_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
-        -> TOK_key_pub {
-            -> TOK_key_data {
-                -> TOK_key_extrn {
+        -> TOK_key_pub;
+        -> TOK_key_data;
+        -> TOK_key_extrn {
             THROW_AT_TOKEN(
                 ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_list_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
-                }
-            }
         }
         otherwise {
             break
@@ -1885,8 +1785,8 @@ fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl
         }
         -> TOK_assign {
             TRY(parse_initializer(ctx, @initializer))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_assign, str_fmt_tok(ctx[].next_tok)))
         }
@@ -1945,8 +1845,8 @@ fn parse_type_declaration(ctx: Ctx, struct_decl: *unique_ptr_t(CStructDeclaratio
         }
         -> TOK_open_paren {
             TRY(parse_member_list(ctx, @members))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_datatype, str_fmt_tok(ctx[].next_tok)))
         }
@@ -2005,12 +1905,10 @@ fn parse_storage_class(ctx: Ctx, storage_class: *struc CStorageClass) error_t {
             storage_class[] = init_CExtern()
             break
         }
-        -> TOK_key_fn {
-            -> TOK_identifier {
-                -> TOK_key_type {
-                    EARLY_EXIT
-                }
-            }
+        -> TOK_key_fn;
+        -> TOK_identifier;
+        -> TOK_key_type {
+            EARLY_EXIT
         }
         otherwise {
             THROW_AT_TOKEN(
@@ -2032,16 +1930,16 @@ fn parse_declaration(ctx: Ctx, storage_class: *struc CStorageClass, declaration:
     match ctx[].peek_tok[].tok_kind {
         -> TOK_key_fn {
             TRY(parse_fun_decl(ctx, storage_class, declaration))
+            break
         }
-        break
         -> TOK_identifier {
             TRY(parse_var_decl(ctx, storage_class, declaration))
+            break
         }
-        break
         -> TOK_key_type {
             TRY(parse_type_decl(ctx, declaration))
+            break
         }
-        break
         otherwise {
             THROW_AT_TOKEN(
                 ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx[].peek_tok)))

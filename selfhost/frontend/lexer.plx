@@ -215,28 +215,18 @@ fn match_char_const(ctx: Ctx, is_str: bool) TOKEN_KIND {
         -> '\\' {
             ctx[].match_size++
             match get_char(ctx) {
-                -> '\'' {
-                    -> '"' {
-                        -> '\\' {
-                            -> '?' {
-                                -> 'a' {
-                                    -> 'b' {
-                                        -> 'f' {
-                                            -> 'n' {
-                                                -> 'r' {
-                                                    -> 't' {
-                                                        -> 'v' {
-                                                            break
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                -> '\'';
+                -> '"';
+                -> '\\';
+                -> '?';
+                -> 'a';
+                -> 'b';
+                -> 'f';
+                -> 'n';
+                -> 'r';
+                -> 't';
+                -> 'v' {
+                    break
                 }
                 otherwise {
                     return match_error(ctx)
@@ -278,11 +268,10 @@ fn match_const_end(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
 
 fn match_dbl_exponent(ctx: Ctx) TOKEN_KIND {
     match get_char(ctx) {
-        -> '+' {
-            -> '-' {
-                ctx[].match_size++
-                break
-            }
+        -> '+';
+        -> '-' {
+            ctx[].match_size++
+            break
         }
         otherwise {
             break
@@ -772,18 +761,15 @@ fn match_token(ctx: Ctx) TOKEN_KIND {
         -> LEX_LETTER {
             return match_identifier(ctx)
         }
-        -> '#' {
-            -> '\n' {
-                -> '\r' {
-                    return TOK_line_break
-                }
-            }
+        -> '#';
+        -> '\n';
+        -> '\r' {
+            return TOK_line_break
         }
         -> LEX_SPACE;
-            -> '\f' {
-                -> '\v' {
-                    return TOK_skip
-            }
+        -> '\f';
+        -> '\v' {
+            return TOK_skip
         }
         otherwise {
             return TOK_error
@@ -821,16 +807,13 @@ fn tokenize_file(ctx: Ctx) error_t {
                 -> TOK_skip {
                     jump Lcontinue
                 }
-                -> TOK_import_file {
-                    -> TOK_import_force {
-                        -> TOK_use_file {
-                            -> TOK_use_force {
-                                TRY(tokenize_include(ctx, match_kind, linenum, is_empty))
-                            }
-                        }
-                    }
+                -> TOK_import_file;
+                -> TOK_import_force;
+                -> TOK_use_file;
+                -> TOK_use_force {
+                    TRY(tokenize_include(ctx, match_kind, linenum, is_empty))
+                    jump Lbreak
                 }
-                jump Lbreak
                 -> TOK_line_break {
                     if is_empty or ctx[].paren_depth > 0 {
                         jump Lbreak
@@ -850,24 +833,17 @@ fn tokenize_file(ctx: Ctx) error_t {
                     ctx[].paren_depth--
                     jump Lpass
                 }
-                -> TOK_identifier {
-                    -> TOK_string_literal {
-                        -> TOK_char_const {
-                            -> TOK_int_const {
-                                -> TOK_long_const {
-                                    -> TOK_uint_const {
-                                        -> TOK_ulong_const {
-                                            -> TOK_dbl_const {
-                                                smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
-                                                match_tok = make_string_identifier(ctx[].identifiers, @smatch)
-                                                jump Lpass
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                -> TOK_identifier;
+                -> TOK_string_literal;
+                -> TOK_char_const;
+                -> TOK_int_const;
+                -> TOK_long_const;
+                -> TOK_uint_const;
+                -> TOK_ulong_const;
+                -> TOK_dbl_const {
+                    smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
+                    match_tok = make_string_identifier(ctx[].identifiers, @smatch)
+                    jump Lpass
                 }
                 -> TOK_m4_prefix {
                     smatch = get_match(ctx, ctx[].match_at, ctx[].match_size)
@@ -928,15 +904,13 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
     if not is_empty {
         info_at: u64 = push_token_info(ctx)
         match match_tok {
-            -> TOK_import_file {
-                -> TOK_import_force {
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_import_in_line, filename))
-                }
+            -> TOK_import_file;
+            -> TOK_import_force {
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_import_in_line, filename))
             }
-            -> TOK_use_file {
-                -> TOK_use_force {
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_use_in_line, filename))
-                }
+            -> TOK_use_file;
+            -> TOK_use_force {
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_use_in_line, filename))
             }
             otherwise {
                 THROW_ABORT
@@ -947,15 +921,13 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
         includename: hash_t = str_hash(filename)
         if set_find(ctx[].includename_set, includename) ~= set_end() {
             match match_tok {
-                -> TOK_import_file {
-                    -> TOK_use_file {
-                        EARLY_EXIT
-                    }
+                -> TOK_import_file;
+                -> TOK_use_file {
+                    EARLY_EXIT
                 }
-                -> TOK_import_force {
-                    -> TOK_use_force {
-                        break
-                    }
+                -> TOK_import_force;
+                -> TOK_use_force {
+                    break
                 }
                 otherwise {
                     THROW_ABORT
@@ -967,23 +939,21 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
         }
     }
     match match_tok {
-        -> TOK_import_file {
-            -> TOK_import_force {
-                if not find_include(ctx[].p_includedirs[], @filename) {
-                    info_at: u64 = push_token_info(ctx)
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_import, filename))
-                }
-                break
+        -> TOK_import_file;
+        -> TOK_import_force {
+            if not find_include(ctx[].p_includedirs[], @filename) {
+                info_at: u64 = push_token_info(ctx)
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_import, filename))
             }
+            break
         }
-        -> TOK_use_file {
-            -> TOK_use_force {
-                if not find_include(ctx[].p_stdlibdirs[], @filename) {
-                    info_at: u64 = push_token_info(ctx)
-                    THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_use, filename))
-                }
-                break
+        -> TOK_use_file;
+        -> TOK_use_force {
+            if not find_include(ctx[].p_stdlibdirs[], @filename) {
+                info_at: u64 = push_token_info(ctx)
+                THROW_AT_TOKEN(info_at, GET_LEXER_MSG(MSG_failed_use, filename))
             }
+            break
         }
         otherwise {
             THROW_ABORT
