@@ -1,6 +1,10 @@
 m4_ifdef(`_FRONTEND_MESSAGES_M4', `', `
 m4_define(`_FRONTEND_MESSAGES_M4', `')m4_dnl
 
+########################################################################################################################
+
+# Errors
+
 m4_define(`MESSAGE_FATAL', `i32')m4_dnl
 m4_define(`MSG_unhandled_fatal_error', `0')m4_dnl
 m4_define(`MSG_unsupported_os', `1')m4_dnl

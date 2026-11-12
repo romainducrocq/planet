@@ -9,6 +9,10 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Errors
+
 pub fn get_tok_kind_fmt(tok_kind: TOKEN_KIND) string {
     match tok_kind {
         -> TOK_line_break {
@@ -662,6 +666,8 @@ pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt
         }
     }
 }
+
+########################################################################################################################
 
 m4_define(`ARG_INDEX', `m4_define(`_argi', `$1')`'')m4_dnl
 m4_define(`ARG_SHIFT', `ARG_INDEX(m4_incr(_argi))m4_dnl

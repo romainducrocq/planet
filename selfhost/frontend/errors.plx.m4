@@ -21,6 +21,11 @@ type struc CUnaryOp;
 type struc CBinaryOp;
 type struc CStorageClass;
 type struc IdentifierContext;
+
+########################################################################################################################
+
+# Errors
+
 pub fn get_tok_kind_fmt(tok_kind: TOKEN_KIND) string;
 pub fn get_tok_fmt(ctx: *struc IdentifierContext, token: *struc Token) string;
 pub fn get_const_fmt(node: *struc CConst) string;

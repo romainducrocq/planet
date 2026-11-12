@@ -15,9 +15,24 @@ m4_define(`StStructure', `struc Structure')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStructure'')
 
-type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''), break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier), fun_def_name: TIdentifier, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
+type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
+    # Type checking
+    extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''),
+    # Loop labeling
+    break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier),
+    # Identifier resolution
+    fun_def_name: TIdentifier, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
+
+########################################################################################################################
+
+# Semantic analysis
 
 m4_define(`Ctx', `*struc SemanticContext')m4_dnl
+
+########################################################################################################################
+
+# Type checking
+
 fn is_same_type(type_1: *struc Type, type_2: *struc Type) bool;
 
 fn is_same_ptr(ptr_type_1: *struc Pointer, ptr_type_2: *struc Pointer) bool {
@@ -2655,6 +2670,10 @@ fn check_struct_decl(ctx: Ctx, node: *struc CStructDeclaration) error_t {
     CATCH_EXIT
 }
 
+########################################################################################################################
+
+# Loop labeling
+
 fn annotate_goto_label(ctx: Ctx, node: *struc CLabel) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
@@ -2744,6 +2763,10 @@ fn deannotate_loop(ctx: Ctx) none {
 fn deannotate_lookup(ctx: Ctx) none {
     vec_pop_back(ctx[].break_loop_labels)
 }
+
+########################################################################################################################
+
+# Identifier resolution
 
 fn is_file_scope(ctx: Ctx) bool {
     return vec_size(ctx[].scoped_identifier_maps) == 1
@@ -3695,6 +3718,8 @@ fn resolve_program(ctx: Ctx, node: *struc CProgram) error_t {
     FINALLY
     CATCH_EXIT
 }
+
+########################################################################################################################
 
 pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) error_t {
     ctx: struc SemanticContext;

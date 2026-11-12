@@ -7,6 +7,11 @@ type struc CProgram;
 type struc TacProgram;
 type struc FrontEndContext;
 type struc IdentifierContext;
+
+########################################################################################################################
+
+# Three address code representation
+
 pub fn represent_three_address_code(c_ast: *unique_ptr_t(CProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(TacProgram);
 
 ')m4_dnl

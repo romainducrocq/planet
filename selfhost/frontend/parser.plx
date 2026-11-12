@@ -12,7 +12,13 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, pop_idx: u64, next_tok: *struc Token, peek_tok: *struc Token, peek_tok_i: *struc Token, p_toks: *vector_t(struc Token))
+type struc ParserContext(errors: *struc ErrorsContext, identifiers: *struc IdentifierContext,
+    # Parser
+    pop_idx: u64, next_tok: *struc Token, peek_tok: *struc Token, peek_tok_i: *struc Token, p_toks: *vector_t(struc Token))
+
+########################################################################################################################
+
+# Parser
 
 m4_define(`Ctx', `*struc ParserContext')m4_dnl
 
@@ -62,6 +68,7 @@ fn peek_next_i(ctx: Ctx, i: u64) error_t {
     CATCH_EXIT
 }
 
+# <identifier> ::= ? An identifier token ? => [a-zA-Z_]\w*
 fn parse_identifier(ctx: Ctx, identifier: *TIdentifier) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
@@ -70,6 +77,8 @@ fn parse_identifier(ctx: Ctx, identifier: *TIdentifier) error_t {
     CATCH_EXIT
 }
 
+# <string> ::= ? A string token ? => "([^"\\\n]|\\['"\\?abfnrtv])*"
+# string = StringLiteral(int*)
 fn parse_string_literal(ctx: Ctx, literal: *shared_ptr_t(CStringLiteral)) error_t {
     value: vector_t(TChar) = vec_new()
     CATCH_ENTER
@@ -86,21 +95,26 @@ fn parse_string_literal(ctx: Ctx, literal: *shared_ptr_t(CStringLiteral)) error_
     CATCH_EXIT
 }
 
+# <int> ::= "true" | "false" | "nil" | ? An int token ? => [0-9]+
 fn parse_int_const(intmax: i64) shared_ptr_t(CConst) {
     value: TInt = cast<i32>(intmax)
     return make_CConstInt(value)
 }
 
+# <char> ::= ? A char token ? => '([^'\\\n]|\\['"?\\abfnrtv])'
 fn parse_char_const(ctx: Ctx) shared_ptr_t(CConst) {
     value: TInt = string_to_char_ascii(map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok))
     return make_CConstInt(value)
 }
 
+# <long> ::= ? An int or long token ? => [0-9]+l
 fn parse_long_const(intmax: i64) shared_ptr_t(CConst) {
     value: TLong = cast<i64>(intmax)
     return make_CConstLong(value)
 }
 
+# <double> ::= ? A floating-point constant token ?
+#            => (([0-9]*\.[0-9]+|[0-9]+\.?)e[+\-]?[0-9]+|[0-9]*\.[0-9]+|[0-9]+\.)
 fn parse_dbl_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_ENTER
     value: TDouble;
@@ -110,16 +124,20 @@ fn parse_dbl_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_EXIT
 }
 
+# <uint> ::= ? An unsigned int token ? => [0-9]+u
 fn parse_uint_const(uintmax: u64) shared_ptr_t(CConst) {
     value: TUInt = cast<u32>(uintmax)
     return make_CConstUInt(value)
 }
 
+# <ulong> ::= ? An unsigned int or unsigned long token ? => [0-9]+ul
 fn parse_ulong_const(uintmax: u64) shared_ptr_t(CConst) {
     value: TULong = cast<u64>(uintmax)
     return make_CConstULong(value)
 }
 
+# (signed) <const> ::= <int> | <long> | <double> | <char>
+# (signed) const = ConstInt(int) | ConstLong(long) | ConstDouble(double) | ConstChar(int)
 fn parse_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_ENTER
     value: i64;
@@ -161,6 +179,8 @@ fn parse_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_EXIT
 }
 
+# (unsigned) <const> ::= <uint> | <ulong>
+# (unsigned) const = ConstUInt(uint) | ConstULong(ulong) | ConstUChar(int)
 fn parse_unsigned_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_ENTER
     value: u64;
@@ -181,6 +201,8 @@ fn parse_unsigned_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_EXIT
 }
 
+# <unop> ::= "-" | "~" | "not" | "@" | "++" | "--"
+# unary_operator = Complement | Negate | Not | Prefix | Postfix
 fn parse_unop(ctx: Ctx, unop: *struc CUnaryOp) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
@@ -205,6 +227,12 @@ fn parse_unop(ctx: Ctx, unop: *struc CUnaryOp) error_t {
     CATCH_EXIT
 }
 
+# <binop> ::= "-" | "+" | "*" | "/" | "%" | "&" | "|" | "^" | "<<" | ">>" | "and" | "or" | "=="
+#           | "~=" | "<" | "<=" | ">" | ">=" | "=" | "-=" | "+=" | "*=" | "/=" | "%=" | "&="
+#           | "|=" | "^=" | "<<=" | ">>="
+# binary_operator = Add | Subtract | Multiply | Divide | Remainder | BitAnd | BitOr | BitXor | BitShiftLeft
+#                 | BitShiftRight | BitShrArithmetic | And | Or | Equal | NotEqual | LessThan | LessOrEqual
+#                 | GreaterThan | GreaterOrEqual
 fn parse_binop(ctx: Ctx, binop: *struc CBinaryOp) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
@@ -303,6 +331,7 @@ fn parse_binop(ctx: Ctx, binop: *struc CBinaryOp) error_t {
 
 fn parse_type_name(ctx: Ctx, type_name: *shared_ptr_t(Type)) error_t;
 
+# <datatype-specifier> ::= ( "struc" | "union" ) <identifier>
 fn parse_datatype_specifier(ctx: Ctx, tag_name: *TIdentifier, is_union: *bool) error_t {
     CATCH_ENTER
     match ctx[].next_tok[].tok_kind {
@@ -326,6 +355,8 @@ fn parse_datatype_specifier(ctx: Ctx, tag_name: *TIdentifier, is_union: *bool) e
     CATCH_EXIT
 }
 
+# <type-specifier> ::= "u8" | "i8" | "u32" | "i32" | "u64" | "i64" | "f64" | "bool" | "char"
+#                    | "string" | "*" "any" | <datatype-specifier>
 fn parse_type_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
@@ -464,6 +495,7 @@ fn parse_ptr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
     CATCH_EXIT
 }
 
+# <type-name> ::= ( "*" | "[" <const> "]" ) <type-name> | <type-specifier>
 fn parse_type_name(ctx: Ctx, type_name: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -485,6 +517,7 @@ fn parse_type_name(ctx: Ctx, type_name: *shared_ptr_t(Type)) error_t {
     CATCH_EXIT
 }
 
+# <maybe-type-name> ::= "none" | <type-name>
 fn parse_maybe_type(ctx: Ctx, maybe_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -819,6 +852,8 @@ fn parse_sizeof_unary_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_EXIT
 }
 
+# <primary-exp> ::= <const> | { <string> }+ | "cast" "<" <maybe-type-name> ">" "(" <exp> ")"
+#                 | <identifier> | <identifier> "(" [ <exp> { "," <exp> } ] ")" | "(" <exp> ")"
 fn parse_primary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -868,6 +903,7 @@ fn parse_primary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_EXIT
 }
 
+# <postfix-op> ::= "[" [ <exp> ] "]" | "." <identifier> | "++" | "--"
 fn parse_postfix_op_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -914,6 +950,8 @@ fn parse_postfix_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_EXIT
 }
 
+# <unary-exp> ::= <unop> <unary-exp> | "sizeof" ( "<" <type-name> ">" | "(" <exp> ")" )
+#               | <primary-exp> { <postfix-op> }
 fn parse_unary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -1071,6 +1109,13 @@ fn get_tok_precedence(tok_kind: TOKEN_KIND) i32 {
     }
 }
 
+# <exp> ::= <unary-exp> | <exp> <binop> <exp> | "?" <exp> "then" <exp> "else" <exp>
+# exp = Constant(const, type) | String(string, type) | Var(identifier, type) | Cast(type, exp, type)
+#     | Unary(unary_operator, exp, type) | Binary(binary_operator, exp, exp, type)
+#     | Assignment(unary_operator, exp, exp, type) | Conditional(exp, exp, exp, type)
+#     | FunctionCall(identifier, exp*, type) | Dereference(exp, type) | AddrOf(exp, type)
+#     | Subscript(exp, exp, type) | SizeOf(exp, type) | SizeOfT(type, type) | Dot(exp, identifier, type)
+#     | Arrow(exp, identifier, type)
 fn parse_exp(ctx: Ctx, min_precedence: i32, exp: *unique_ptr_t(CExp)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -1266,6 +1311,8 @@ fn parse_loop_init_exp(ctx: Ctx, for_init: *unique_ptr_t(CForInit)) error_t {
     CATCH_EXIT
 }
 
+# <loop-init> ::= [ <variable-declaration> | <exp> ] [ "while" <exp> ] [ ".." <exp> ]
+# for_init = InitDecl(variable_declaration) | InitExp(exp?)
 fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t {
     for_init: unique_ptr_t(CForInit) = uptr_new()
     condition: unique_ptr_t(CExp) = uptr_new()
@@ -1452,6 +1499,15 @@ fn parse_null_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
     CATCH_EXIT
 }
 
+# <statement> ::=  "return" ( <exp> | "none" ) | "jump" <identifier> | "label" <identifier>
+#               | <block> | "if" <exp> <block> { "\n" "elif" <block> } [ "\n" "else" <block> ]
+#               | "loop" ( <loop-init> | ".." while <exp> ) <block> | "continue" | "break"
+#               | "match" <exp> <block> | "->" <const> <block> | "otherwise" <block> | <exp>
+# statement = Return(exp?) | Expression(exp) | If(exp, statement, statement?) | Goto(identifier)
+#           | Label(identifier, target) | Compound(block) | While(exp, statement, identifier)
+#           | DoWhile(statement, exp, identifier) | For(for_init, exp?, exp?, statement, identifier)
+#           | Switch(identifier, bool, exp, statement, exp*) | Case(identifier, exp, statement)
+#           | Default(identifier, statement) | Break(identifier) | Continue(identifier) | Null
 fn parse_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
@@ -1535,6 +1591,8 @@ fn parse_d_block_item(ctx: Ctx, block_item: *unique_ptr_t(CBlockItem)) error_t {
     CATCH_EXIT
 }
 
+# <block-item> ::= <statement> | <declaration>
+# block_item = S(statement) | D(declaration)
 fn parse_block_item(ctx: Ctx, block_item: *unique_ptr_t(CBlockItem)) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
@@ -1604,6 +1662,8 @@ fn parse_b_block(ctx: Ctx, block: *unique_ptr_t(CBlock)) error_t {
     CATCH_EXIT
 }
 
+# <block> ::= "{" [ "\n" ] <block-item> { "\n" <block-item> } [ "\n" ] "}" | ";"
+# block = B(block_item*)
 fn parse_block(ctx: Ctx, block: *unique_ptr_t(CBlock)) error_t {
     CATCH_ENTER
     TRY(pop_next(ctx))
@@ -1663,6 +1723,8 @@ fn parse_compound_init(ctx: Ctx, initializer: *unique_ptr_t(CInitializer)) error
     CATCH_EXIT
 }
 
+# <initializer> ::= <exp> | "$" "(" <initializer> { "," <initializer> } ")"
+# initializer = SingleInit(exp) | CompoundInit(initializer*)
 fn parse_initializer(ctx: Ctx, initializer: *unique_ptr_t(CInitializer)) error_t {
     CATCH_ENTER
     TRY(peek_next(ctx))
@@ -1676,6 +1738,7 @@ fn parse_initializer(ctx: Ctx, initializer: *unique_ptr_t(CInitializer)) error_t
     CATCH_EXIT
 }
 
+# <declarator> ::= <identifier> ":" <type-name>
 fn parse_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(Type)) error_t {
     CATCH_ENTER
     TRY(expect_next(ctx, ctx[].peek_tok, TOK_identifier))
@@ -1705,6 +1768,7 @@ fn parse_item_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(
     CATCH_EXIT
 }
 
+# <declarator-list> ::= "(" <declarator> { "," <declarator> } ")"
 fn parse_decltor_list(ctx: Ctx, params: *vector_t(TIdentifier), param_types: *vector_t(shared_ptr_t(Type))) error_t {
     param_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
@@ -1726,6 +1790,7 @@ fn parse_decltor_list(ctx: Ctx, params: *vector_t(TIdentifier), param_types: *ve
     CATCH_EXIT
 }
 
+# <function-declarator> ::= ( <declarator-list> | "(" "none" ")" ) <maybe-type-name>
 fn parse_fun_decltor(ctx: Ctx, fun_type: *shared_ptr_t(Type), params: *vector_t(TIdentifier)) error_t {
     param_types: vector_t(shared_ptr_t(Type)) = vec_new()
     CATCH_ENTER
@@ -1750,6 +1815,8 @@ fn parse_fun_decltor(ctx: Ctx, fun_type: *shared_ptr_t(Type), params: *vector_t(
     CATCH_EXIT
 }
 
+# <function-declaration> ::= [ <storage-class> ] "fn" <identifier> <function-declarator> <block>
+# function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
 fn parse_fun_declaration(ctx: Ctx, storage_class: *struc CStorageClass, fun_decl: *unique_ptr_t(CFunctionDeclaration)) error_t {
     body: unique_ptr_t(CBlock) = uptr_new()
     fun_type: shared_ptr_t(Type) = sptr_new()
@@ -1771,6 +1838,8 @@ fn parse_fun_declaration(ctx: Ctx, storage_class: *struc CStorageClass, fun_decl
     CATCH_EXIT
 }
 
+# <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
+# variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
 fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl: *unique_ptr_t(CVariableDeclaration)) error_t {
     initializer: unique_ptr_t(CInitializer) = uptr_new()
     var_type: shared_ptr_t(Type) = sptr_new()
@@ -1798,6 +1867,7 @@ fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl
     CATCH_EXIT
 }
 
+# member_declaration = MemberDeclaration(identifier, type)
 fn parse_member_declaration(ctx: Ctx, member_decl: *unique_ptr_t(CMemberDeclaration)) error_t {
     member_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
@@ -1829,6 +1899,8 @@ fn parse_member_list(ctx: Ctx, members: *vector_t(unique_ptr_t(CMemberDeclaratio
     CATCH_EXIT
 }
 
+# <datatype-declaration> ::= "type" <datatype-specifier> ( <declarator-list> | ";" )
+# struct_declaration = StructDeclaration(identifier, bool, member_declaration*)
 fn parse_type_declaration(ctx: Ctx, struct_decl: *unique_ptr_t(CStructDeclaration)) error_t {
     members: vector_t(unique_ptr_t(CMemberDeclaration)) = vec_new()
     CATCH_ENTER
@@ -1890,6 +1962,8 @@ fn parse_type_decl(ctx: Ctx, declaration: *unique_ptr_t(CDeclaration)) error_t {
     CATCH_EXIT
 }
 
+# <storage-class> ::= "pub" | "extrn" | "data"
+# storage_class = Static | Extern
 fn parse_storage_class(ctx: Ctx, storage_class: *struc CStorageClass) error_t {
     CATCH_ENTER
     match ctx[].peek_tok[].tok_kind {
@@ -1924,6 +1998,8 @@ fn parse_storage_class(ctx: Ctx, storage_class: *struc CStorageClass) error_t {
     CATCH_EXIT
 }
 
+# <declaration> ::= <datatype-declaration> | <variable-declaration> | <function-declaration>
+# declaration = FunDecl(function_declaration) | VarDecl(variable_declaration) | StructDecl(struct_declaration)
 fn parse_declaration(ctx: Ctx, storage_class: *struc CStorageClass, declaration: *unique_ptr_t(CDeclaration)) error_t {
     CATCH_ENTER
     TRY(parse_storage_class(ctx, storage_class))
@@ -1949,6 +2025,8 @@ fn parse_declaration(ctx: Ctx, storage_class: *struc CStorageClass, declaration:
     CATCH_EXIT
 }
 
+# <program> ::= { ( <declaration> | <include> ) "\n" }
+# AST = Program(declaration*)
 fn parse_program(ctx: Ctx, c_ast: *unique_ptr_t(CProgram)) error_t {
     declaration: unique_ptr_t(CDeclaration) = uptr_new()
     declarations: vector_t(unique_ptr_t(CDeclaration)) = vec_new()
@@ -1973,6 +2051,8 @@ fn parse_program(ctx: Ctx, c_ast: *unique_ptr_t(CProgram)) error_t {
     vec_delete(declarations)
     CATCH_EXIT
 }
+
+########################################################################################################################
 
 pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: *unique_ptr_t(CProgram)) error_t {
     ctx: struc ParserContext;

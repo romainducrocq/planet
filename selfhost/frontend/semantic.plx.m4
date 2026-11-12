@@ -7,6 +7,17 @@ type struc CProgram;
 type struc ErrorsContext;
 type struc FrontEndContext;
 type struc IdentifierContext;
+
+########################################################################################################################
+
+# Semantic analysis
+
+########################################################################################################################
+
+# Type checking
+# Loop labeling
+# Identifier resolution
+
 pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) error_t;
 
 ')m4_dnl
