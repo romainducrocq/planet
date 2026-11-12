@@ -204,16 +204,12 @@ fn var_res_instr(node: *struc CVar) unique_ptr_t(TacExpResult) {
 
 fn is_type_signed(type_t: *struc Type) bool {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_Int_t {
-                    -> AST_Long_t {
-                        -> AST_Double_t {
-                            return true
-                        }
-                    }
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_Int_t;
+        -> AST_Long_t;
+        -> AST_Double_t {
+            return true
         }
         otherwise {
             return false
@@ -223,26 +219,20 @@ fn is_type_signed(type_t: *struc Type) bool {
 
 fn get_scalar_size(type_t: *struc Type) TInt {
     match type_t[].tag {
-        -> AST_Char_t {
-            -> AST_SChar_t {
-                -> AST_UChar_t {
-                    return 1
-                }
-            }
+        -> AST_Char_t;
+        -> AST_SChar_t;
+        -> AST_UChar_t {
+            return 1
         }
-        -> AST_Int_t {
-            -> AST_UInt_t {
-                return 4
-            }
+        -> AST_Int_t;
+        -> AST_UInt_t {
+            return 4
         }
-        -> AST_Long_t {
-            -> AST_Double_t {
-                -> AST_ULong_t {
-                    -> AST_Pointer_t {
-                        return 8
-                    }
-                }
-            }
+        -> AST_Long_t;
+        -> AST_Double_t;
+        -> AST_ULong_t;
+        -> AST_Pointer_t {
+            return 8
         }
         otherwise {
             THROW_ABORT
@@ -636,16 +626,16 @@ fn assign_res_instr(ctx: Ctx, node: *struc CAssignment) unique_ptr_t(TacExpResul
                 match res[].tag {
                     -> AST_TacPlainOperand_t {
                         plain_op_postfix_exp_instr(ctx, @res[].get._TacPlainOperand, @dst)
+                        break
                     }
-                    break
                     -> AST_TacDereferencedPointer_t {
                         deref_ptr_postfix_exp_instr(ctx, @res[].get._TacDereferencedPointer, @dst)
+                        break
                     }
-                    break
                     -> AST_TacSubObject_t {
                         sub_obj_postfix_exp_instr(ctx, @res[].get._TacSubObject, @dst)
+                        break
                     }
-                    break
                     otherwise {
                         THROW_ABORT
                     }
@@ -657,16 +647,16 @@ fn assign_res_instr(ctx: Ctx, node: *struc CAssignment) unique_ptr_t(TacExpResul
     match res[].tag {
         -> AST_TacPlainOperand_t {
             plain_op_assign_res_instr(ctx, @res[].get._TacPlainOperand, @src)
+            break
         }
-        break
         -> AST_TacDereferencedPointer_t {
             deref_ptr_assign_res_instr(ctx, @res[].get._TacDereferencedPointer, @src, @res)
+            break
         }
-        break
         -> AST_TacSubObject_t {
             sub_obj_assign_res_instr(ctx, @res[].get._TacSubObject, @src, @res)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -810,16 +800,16 @@ fn addrof_res_instr(ctx: Ctx, node: *struc CAddrOf) unique_ptr_t(TacExpResult) {
     match res[].tag {
         -> AST_TacPlainOperand_t {
             plain_op_addrof_res_instr(ctx, @res[].get._TacPlainOperand, node)
+            break
         }
-        break
         -> AST_TacDereferencedPointer_t {
             deref_ptr_addrof_res_instr(@res[].get._TacDereferencedPointer, @res)
+            break
         }
-        break
         -> AST_TacSubObject_t {
             sub_obj_addrof_res_instr(ctx, @res[].get._TacSubObject, node, @res)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -908,16 +898,16 @@ fn dot_res_instr(ctx: Ctx, node: *struc CDot) unique_ptr_t(TacExpResult) {
     match res[].tag {
         -> AST_TacPlainOperand_t {
             plain_op_dot_res_instr(@res[].get._TacPlainOperand, member_offset, @res)
+            break
         }
-        break
         -> AST_TacDereferencedPointer_t {
             deref_ptr_dot_res_instr(ctx, @res[].get._TacDereferencedPointer, node, member_offset)
+            break
         }
-        break
         -> AST_TacSubObject_t {
             sub_obj_dot_res_instr(@res[].get._TacSubObject, member_offset)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1164,12 +1154,12 @@ fn for_init_statement_instr(ctx: Ctx, node: *struc CForInit) none {
     match node[].tag {
         -> AST_CInitDecl_t {
             for_init_decl_instr(ctx, @node[].get._CInitDecl)
+            break
         }
-        break
         -> AST_CInitExp_t {
             for_init_exp_instr(ctx, @node[].get._CInitExp)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1257,60 +1247,60 @@ fn statement_instr(ctx: Ctx, node: *struc CStatement) none {
     match node[].tag {
         -> AST_CReturn_t {
             ret_statement_instr(ctx, @node[].get._CReturn)
+            break
         }
-        break
         -> AST_CExpression_t {
             exp_statement_instr(ctx, @node[].get._CExpression)
+            break
         }
-        break
         -> AST_CIf_t {
             if_statement_instr(ctx, @node[].get._CIf)
+            break
         }
-        break
         -> AST_CGoto_t {
             goto_statement_instr(ctx, @node[].get._CGoto)
+            break
         }
-        break
         -> AST_CLabel_t {
             label_statement_instr(ctx, @node[].get._CLabel)
+            break
         }
-        break
         -> AST_CCompound_t {
             statement_compound_instr(ctx, @node[].get._CCompound)
+            break
         }
-        break
         -> AST_CWhile_t {
             while_statement_instr(ctx, @node[].get._CWhile)
+            break
         }
-        break
         -> AST_CDoWhile_t {
             do_while_statement_instr(ctx, @node[].get._CDoWhile)
+            break
         }
-        break
         -> AST_CFor_t {
             for_statement_instr(ctx, @node[].get._CFor)
+            break
         }
-        break
         -> AST_CSwitch_t {
             switch_statement_instr(ctx, @node[].get._CSwitch)
+            break
         }
-        break
         -> AST_CCase_t {
             case_statement_instr(ctx, @node[].get._CCase)
+            break
         }
-        break
         -> AST_CDefault_t {
             default_statement_instr(ctx, @node[].get._CDefault)
+            break
         }
-        break
         -> AST_CBreak_t {
             break_statement_instr(ctx, @node[].get._CBreak)
+            break
         }
-        break
         -> AST_CContinue_t {
             continue_statement_instr(ctx, @node[].get._CContinue)
+            break
         }
-        break
         -> AST_CNull_t {
             break
         }
@@ -1440,12 +1430,12 @@ fn aggr_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, init_type: *st
     match init_type[].tag {
         -> AST_Array_t {
             arr_compound_init_instr(ctx, node, @init_type[].get._Array, symbol, size)
+            break
         }
-        break
         -> AST_Structure_t {
             struct_compound_init_instr(ctx, node, @init_type[].get._Structure, symbol, size)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1456,12 +1446,12 @@ fn compound_init_instr(ctx: Ctx, node: *struc CInitializer, init_type: *struc Ty
     match node[].tag {
         -> AST_CSingleInit_t {
             scalar_compound_init_instr(ctx, @node[].get._CSingleInit, init_type, symbol, size[])
+            break
         }
-        break
         -> AST_CCompoundInit_t {
             aggr_compound_init_instr(ctx, @node[].get._CCompoundInit, init_type, symbol, size)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1473,8 +1463,8 @@ fn var_decl_instr(ctx: Ctx, node: *struc CVariableDeclaration) none {
     match node[].init[].tag {
         -> AST_CSingleInit_t {
             single_init_instr(ctx, @node[].init[].get._CSingleInit, init_type, node[].name)
+            break
         }
-        break
         -> AST_CCompoundInit_t {
             size: TLong = 0l
             aggr_compound_init_instr(ctx, @node[].init[].get._CCompoundInit, init_type, node[].name, @size)
@@ -1494,15 +1484,14 @@ fn var_declaration_instr(ctx: Ctx, node: *struc CVarDecl) none {
 
 fn declaration_instr(ctx: Ctx, node: *struc CDeclaration) none {
     match node[].tag {
-        -> AST_CFunDecl_t {
-            -> AST_CStructDecl_t {
-                break
-            }
+        -> AST_CFunDecl_t;
+        -> AST_CStructDecl_t {
+            break
         }
         -> AST_CVarDecl_t {
             var_declaration_instr(ctx, @node[].get._CVarDecl)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1514,12 +1503,12 @@ fn repr_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(CBlockItem))) none
         match node_list[i][].tag {
             -> AST_CS_t {
                 statement_instr(ctx, node_list[i][].get._CS.statement)
+                break
             }
-            break
             -> AST_CD_t {
                 declaration_instr(ctx, node_list[i][].get._CD.declaration)
+                break
             }
-            break
             otherwise {
                 THROW_ABORT
             }
@@ -1572,12 +1561,11 @@ fn declaration_toplvl(ctx: Ctx, node: *struc CDeclaration) none {
     match node[].tag {
         -> AST_CFunDecl_t {
             fun_decl_toplvl(ctx, @node[].get._CFunDecl)
+            break
         }
-        break
-        -> AST_CVarDecl_t {
-            -> AST_CStructDecl_t {
-                break
-            }
+        -> AST_CVarDecl_t;
+        -> AST_CStructDecl_t {
+            break
         }
         otherwise {
             THROW_ABORT
@@ -1620,12 +1608,12 @@ fn repr_static_var_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) no
     match static_attr[].init[].tag {
         -> AST_Tentative_t {
             static_inits = tentative_static_toplvl(ctx, static_init_type)
+            break
         }
-        break
         -> AST_Initial_t {
             static_inits = initial_static_toplvl(@static_attr[].init[].get._Initial)
+            break
         }
-        break
         otherwise {
             THROW_ABORT
         }
@@ -1650,12 +1638,12 @@ fn symbol_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) none {
     match node[].attrs[].tag {
         -> AST_StaticAttr_t {
             repr_static_var_toplvl(ctx, node, symbol)
+            break
         }
-        break
         -> AST_ConstantAttr_t {
             repr_static_const_toplvl(ctx, node, symbol)
+            break
         }
-        break
         otherwise {
             break
         }
