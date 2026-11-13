@@ -114,60 +114,24 @@ fn emit_ulong(ctx: Ctx, value: TULong) none {
 # Reg(XMM15) -> $ %xmm15
 fn get_reg_rsp_sse(node: *struc AsmReg) string {
     match node[].tag {
-        -> AST_AsmSp_t {
-            return "%rsp"
-        }
-        -> AST_AsmBp_t {
-            return "%rbp"
-        }
-        -> AST_AsmXMM0_t {
-            return "%xmm0"
-        }
-        -> AST_AsmXMM1_t {
-            return "%xmm1"
-        }
-        -> AST_AsmXMM2_t {
-            return "%xmm2"
-        }
-        -> AST_AsmXMM3_t {
-            return "%xmm3"
-        }
-        -> AST_AsmXMM4_t {
-            return "%xmm4"
-        }
-        -> AST_AsmXMM5_t {
-            return "%xmm5"
-        }
-        -> AST_AsmXMM6_t {
-            return "%xmm6"
-        }
-        -> AST_AsmXMM7_t {
-            return "%xmm7"
-        }
-        -> AST_AsmXMM8_t {
-            return "%xmm8"
-        }
-        -> AST_AsmXMM9_t {
-            return "%xmm9"
-        }
-        -> AST_AsmXMM10_t {
-            return "%xmm10"
-        }
-        -> AST_AsmXMM11_t {
-            return "%xmm11"
-        }
-        -> AST_AsmXMM12_t {
-            return "%xmm12"
-        }
-        -> AST_AsmXMM13_t {
-            return "%xmm13"
-        }
-        -> AST_AsmXMM14_t {
-            return "%xmm14"
-        }
-        -> AST_AsmXMM15_t {
-            return "%xmm15"
-        }
+        -> AST_AsmSp_t { return "%rsp" }
+        -> AST_AsmBp_t { return "%rbp" }
+        -> AST_AsmXMM0_t { return "%xmm0" }
+        -> AST_AsmXMM1_t { return "%xmm1" }
+        -> AST_AsmXMM2_t { return "%xmm2" }
+        -> AST_AsmXMM3_t { return "%xmm3" }
+        -> AST_AsmXMM4_t { return "%xmm4" }
+        -> AST_AsmXMM5_t { return "%xmm5" }
+        -> AST_AsmXMM6_t { return "%xmm6" }
+        -> AST_AsmXMM7_t { return "%xmm7" }
+        -> AST_AsmXMM8_t { return "%xmm8" }
+        -> AST_AsmXMM9_t { return "%xmm9" }
+        -> AST_AsmXMM10_t { return "%xmm10" }
+        -> AST_AsmXMM11_t { return "%xmm11" }
+        -> AST_AsmXMM12_t { return "%xmm12" }
+        -> AST_AsmXMM13_t { return "%xmm13" }
+        -> AST_AsmXMM14_t { return "%xmm14" }
+        -> AST_AsmXMM15_t { return "%xmm15" }
         otherwise {
             THROW_ABORT
         }
@@ -190,48 +154,20 @@ fn get_reg_rsp_sse(node: *struc AsmReg) string {
 # Reg(R15) -> $ %r15b
 fn get_reg_1b(node: *struc AsmReg) string {
     match node[].tag {
-        -> AST_AsmAx_t {
-            return "%al"
-        }
-        -> AST_AsmBx_t {
-            return "%bl"
-        }
-        -> AST_AsmDx_t {
-            return "%dl"
-        }
-        -> AST_AsmCx_t {
-            return "%cl"
-        }
-        -> AST_AsmDi_t {
-            return "%dil"
-        }
-        -> AST_AsmSi_t {
-            return "%sil"
-        }
-        -> AST_AsmR8_t {
-            return "%r8b"
-        }
-        -> AST_AsmR9_t {
-            return "%r9b"
-        }
-        -> AST_AsmR10_t {
-            return "%r10b"
-        }
-        -> AST_AsmR11_t {
-            return "%r11b"
-        }
-        -> AST_AsmR12_t {
-            return "%r12b"
-        }
-        -> AST_AsmR13_t {
-            return "%r13b"
-        }
-        -> AST_AsmR14_t {
-            return "%r14b"
-        }
-        -> AST_AsmR15_t {
-            return "%r15b"
-        }
+        -> AST_AsmAx_t { return "%al" }
+        -> AST_AsmBx_t { return "%bl" }
+        -> AST_AsmDx_t { return "%dl" }
+        -> AST_AsmCx_t { return "%cl" }
+        -> AST_AsmDi_t { return "%dil" }
+        -> AST_AsmSi_t { return "%sil" }
+        -> AST_AsmR8_t { return "%r8b" }
+        -> AST_AsmR9_t { return "%r9b" }
+        -> AST_AsmR10_t { return "%r10b" }
+        -> AST_AsmR11_t { return "%r11b" }
+        -> AST_AsmR12_t { return "%r12b" }
+        -> AST_AsmR13_t { return "%r13b" }
+        -> AST_AsmR14_t { return "%r14b" }
+        -> AST_AsmR15_t { return "%r15b" }
         otherwise {
             return get_reg_rsp_sse(node)
         }
@@ -254,48 +190,20 @@ fn get_reg_1b(node: *struc AsmReg) string {
 # Reg(R15) -> $ %r15d
 fn get_reg_4b(node: *struc AsmReg) string {
     match node[].tag {
-        -> AST_AsmAx_t {
-            return "%eax"
-        }
-        -> AST_AsmBx_t {
-            return "%ebx"
-        }
-        -> AST_AsmDx_t {
-            return "%edx"
-        }
-        -> AST_AsmCx_t {
-            return "%ecx"
-        }
-        -> AST_AsmDi_t {
-            return "%edi"
-        }
-        -> AST_AsmSi_t {
-            return "%esi"
-        }
-        -> AST_AsmR8_t {
-            return "%r8d"
-        }
-        -> AST_AsmR9_t {
-            return "%r9d"
-        }
-        -> AST_AsmR10_t {
-            return "%r10d"
-        }
-        -> AST_AsmR11_t {
-            return "%r11d"
-        }
-        -> AST_AsmR12_t {
-            return "%r12d"
-        }
-        -> AST_AsmR13_t {
-            return "%r13d"
-        }
-        -> AST_AsmR14_t {
-            return "%r14d"
-        }
-        -> AST_AsmR15_t {
-            return "%r15d"
-        }
+        -> AST_AsmAx_t { return "%eax" }
+        -> AST_AsmBx_t { return "%ebx" }
+        -> AST_AsmDx_t { return "%edx" }
+        -> AST_AsmCx_t { return "%ecx" }
+        -> AST_AsmDi_t { return "%edi" }
+        -> AST_AsmSi_t { return "%esi" }
+        -> AST_AsmR8_t { return "%r8d" }
+        -> AST_AsmR9_t { return "%r9d" }
+        -> AST_AsmR10_t { return "%r10d" }
+        -> AST_AsmR11_t { return "%r11d" }
+        -> AST_AsmR12_t { return "%r12d" }
+        -> AST_AsmR13_t { return "%r13d" }
+        -> AST_AsmR14_t { return "%r14d" }
+        -> AST_AsmR15_t { return "%r15d" }
         otherwise {
             return get_reg_rsp_sse(node)
         }
@@ -318,48 +226,20 @@ fn get_reg_4b(node: *struc AsmReg) string {
 # Reg(R15) -> $ %r15
 fn get_reg_8b(node: *struc AsmReg) string {
     match node[].tag {
-        -> AST_AsmAx_t {
-            return "%rax"
-        }
-        -> AST_AsmBx_t {
-            return "%rbx"
-        }
-        -> AST_AsmDx_t {
-            return "%rdx"
-        }
-        -> AST_AsmCx_t {
-            return "%rcx"
-        }
-        -> AST_AsmDi_t {
-            return "%rdi"
-        }
-        -> AST_AsmSi_t {
-            return "%rsi"
-        }
-        -> AST_AsmR8_t {
-            return "%r8"
-        }
-        -> AST_AsmR9_t {
-            return "%r9"
-        }
-        -> AST_AsmR10_t {
-            return "%r10"
-        }
-        -> AST_AsmR11_t {
-            return "%r11"
-        }
-        -> AST_AsmR12_t {
-            return "%r12"
-        }
-        -> AST_AsmR13_t {
-            return "%r13"
-        }
-        -> AST_AsmR14_t {
-            return "%r14"
-        }
-        -> AST_AsmR15_t {
-            return "%r15"
-        }
+        -> AST_AsmAx_t { return "%rax" }
+        -> AST_AsmBx_t { return "%rbx" }
+        -> AST_AsmDx_t { return "%rdx" }
+        -> AST_AsmCx_t { return "%rcx" }
+        -> AST_AsmDi_t { return "%rdi" }
+        -> AST_AsmSi_t { return "%rsi" }
+        -> AST_AsmR8_t { return "%r8" }
+        -> AST_AsmR9_t { return "%r9" }
+        -> AST_AsmR10_t { return "%r10" }
+        -> AST_AsmR11_t { return "%r11" }
+        -> AST_AsmR12_t { return "%r12" }
+        -> AST_AsmR13_t { return "%r13" }
+        -> AST_AsmR14_t { return "%r14" }
+        -> AST_AsmR15_t { return "%r15" }
         otherwise {
             return get_reg_rsp_sse(node)
         }
@@ -379,39 +259,17 @@ fn get_reg_8b(node: *struc AsmReg) string {
 # P  -> $ p
 fn get_cond_code(node: *struc AsmCondCode) string {
     match node[].tag {
-        -> AST_AsmE_t {
-            return "e"
-        }
-        -> AST_AsmNE_t {
-            return "ne"
-        }
-        -> AST_AsmL_t {
-            return "l"
-        }
-        -> AST_AsmLE_t {
-            return "le"
-        }
-        -> AST_AsmG_t {
-            return "g"
-        }
-        -> AST_AsmGE_t {
-            return "ge"
-        }
-        -> AST_AsmB_t {
-            return "b"
-        }
-        -> AST_AsmBE_t {
-            return "be"
-        }
-        -> AST_AsmA_t {
-            return "a"
-        }
-        -> AST_AsmAE_t {
-            return "ae"
-        }
-        -> AST_AsmP_t {
-            return "p"
-        }
+        -> AST_AsmE_t { return "e" }
+        -> AST_AsmNE_t { return "ne" }
+        -> AST_AsmL_t { return "l" }
+        -> AST_AsmLE_t { return "le" }
+        -> AST_AsmG_t { return "g" }
+        -> AST_AsmGE_t { return "ge" }
+        -> AST_AsmB_t { return "b" }
+        -> AST_AsmBE_t { return "be" }
+        -> AST_AsmA_t { return "a" }
+        -> AST_AsmAE_t { return "ae" }
+        -> AST_AsmP_t { return "p" }
         otherwise {
             THROW_ABORT
         }
@@ -451,15 +309,9 @@ fn type_align_bytes(node: *struc AssemblyType) TInt {
 #             else -> $ sd
 fn get_type_suffix(node: *struc AssemblyType, is_packed: bool) string {
     match node[].tag {
-        -> AST_Byte_t {
-            return "b"
-        }
-        -> AST_LongWord_t {
-            return "l"
-        }
-        -> AST_QuadWord_t {
-            return "q"
-        }
+        -> AST_Byte_t { return "b" }
+        -> AST_LongWord_t { return "l" }
+        -> AST_QuadWord_t { return "q" }
         -> AST_BackendDouble_t {
             return ? is_packed then "pd" else "sd"
         }
@@ -572,15 +424,9 @@ fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: TInt) none {
 # Shr -> $ shr
 fn get_unop(node: *struc AsmUnaryOp) string {
     match node[].tag {
-        -> AST_AsmNeg_t {
-            return "neg"
-        }
-        -> AST_AsmNot_t {
-            return "not"
-        }
-        -> AST_AsmShr_t {
-            return "shr"
-        }
+        -> AST_AsmNeg_t { return "neg" }
+        -> AST_AsmNot_t { return "not" }
+        -> AST_AsmShr_t { return "shr" }
         otherwise {
             THROW_ABORT
         }
@@ -600,35 +446,17 @@ fn get_unop(node: *struc AsmUnaryOp) string {
 # BitShrArithmetic -> $ sar
 fn get_binop(node: *struc AsmBinaryOp, is_dbl: bool) string {
     match node[].tag {
-        -> AST_AsmAdd_t {
-            return "add"
-        }
-        -> AST_AsmSub_t {
-            return "sub"
-        }
+        -> AST_AsmAdd_t { return "add" }
+        -> AST_AsmSub_t { return "sub" }
+        -> AST_AsmDivDouble_t { return "div" }
+        -> AST_AsmBitAnd_t { return "and" }
+        -> AST_AsmBitOr_t { return "or" }
+        -> AST_AsmBitXor_t { return "xor" }
+        -> AST_AsmBitShiftLeft_t { return "shl" }
+        -> AST_AsmBitShiftRight_t { return "shr" }
+        -> AST_AsmBitShrArithmetic_t { return "sar" }
         -> AST_AsmMult_t {
             return ? is_dbl then "mul" else "imul"
-        }
-        -> AST_AsmDivDouble_t {
-            return "div"
-        }
-        -> AST_AsmBitAnd_t {
-            return "and"
-        }
-        -> AST_AsmBitOr_t {
-            return "or"
-        }
-        -> AST_AsmBitXor_t {
-            return "xor"
-        }
-        -> AST_AsmBitShiftLeft_t {
-            return "shl"
-        }
-        -> AST_AsmBitShiftRight_t {
-            return "shr"
-        }
-        -> AST_AsmBitShrArithmetic_t {
-            return "sar"
         }
         otherwise {
             THROW_ABORT

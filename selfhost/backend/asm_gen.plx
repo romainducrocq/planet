@@ -216,24 +216,12 @@ fn gen_op(ctx: Ctx, node: *struc TacValue) shared_ptr_t(AsmOperand) {
 # (signed) cond_code = E | NE | L | LE | G | GE
 fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
-        -> AST_TacEqual_t {
-            return init_AsmE()
-        }
-        -> AST_TacNotEqual_t {
-            return init_AsmNE()
-        }
-        -> AST_TacLessThan_t {
-            return init_AsmL()
-        }
-        -> AST_TacLessOrEqual_t {
-            return init_AsmLE()
-        }
-        -> AST_TacGreaterThan_t {
-            return init_AsmG()
-        }
-        -> AST_TacGreaterOrEqual_t {
-            return init_AsmGE()
-        }
+        -> AST_TacEqual_t { return init_AsmE() }
+        -> AST_TacNotEqual_t { return init_AsmNE() }
+        -> AST_TacLessThan_t { return init_AsmL() }
+        -> AST_TacLessOrEqual_t { return init_AsmLE() }
+        -> AST_TacGreaterThan_t { return init_AsmG() }
+        -> AST_TacGreaterOrEqual_t { return init_AsmGE() }
         otherwise {
             THROW_ABORT
         }
@@ -243,24 +231,12 @@ fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
 # (unsigned) cond_code = E | NE | B | BE | A | AE
 fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
-        -> AST_TacEqual_t {
-            return init_AsmE()
-        }
-        -> AST_TacNotEqual_t {
-            return init_AsmNE()
-        }
-        -> AST_TacLessThan_t {
-            return init_AsmB()
-        }
-        -> AST_TacLessOrEqual_t {
-            return init_AsmBE()
-        }
-        -> AST_TacGreaterThan_t {
-            return init_AsmA()
-        }
-        -> AST_TacGreaterOrEqual_t {
-            return init_AsmAE()
-        }
+        -> AST_TacEqual_t { return init_AsmE() }
+        -> AST_TacNotEqual_t { return init_AsmNE() }
+        -> AST_TacLessThan_t { return init_AsmB() }
+        -> AST_TacLessOrEqual_t { return init_AsmBE() }
+        -> AST_TacGreaterThan_t { return init_AsmA() }
+        -> AST_TacGreaterOrEqual_t { return init_AsmAE() }
         otherwise {
             THROW_ABORT
         }
@@ -270,12 +246,8 @@ fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
 # unary_operator = Not | Neg | Shr
 fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
     match node[].tag {
-        -> AST_TacComplement_t {
-            return init_AsmNot()
-        }
-        -> AST_TacNegate_t {
-            return init_AsmNeg()
-        }
+        -> AST_TacComplement_t { return init_AsmNot() }
+        -> AST_TacNegate_t { return init_AsmNeg() }
         otherwise {
             THROW_ABORT
         }
@@ -286,36 +258,16 @@ fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
 #                 BitShrArithmetic
 fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
     match node[].tag {
-        -> AST_TacAdd_t {
-            return init_AsmAdd()
-        }
-        -> AST_TacSubtract_t {
-            return init_AsmSub()
-        }
-        -> AST_TacMultiply_t {
-            return init_AsmMult()
-        }
-        -> AST_TacDivide_t {
-            return init_AsmDivDouble()
-        }
-        -> AST_TacBitAnd_t {
-            return init_AsmBitAnd()
-        }
-        -> AST_TacBitOr_t {
-            return init_AsmBitOr()
-        }
-        -> AST_TacBitXor_t {
-            return init_AsmBitXor()
-        }
-        -> AST_TacBitShiftLeft_t {
-            return init_AsmBitShiftLeft()
-        }
-        -> AST_TacBitShiftRight_t {
-            return init_AsmBitShiftRight()
-        }
-        -> AST_TacBitShrArithmetic_t {
-            return init_AsmBitShrArithmetic()
-        }
+        -> AST_TacAdd_t { return init_AsmAdd() }
+        -> AST_TacSubtract_t { return init_AsmSub() }
+        -> AST_TacMultiply_t { return init_AsmMult() }
+        -> AST_TacDivide_t { return init_AsmDivDouble() }
+        -> AST_TacBitAnd_t { return init_AsmBitAnd() }
+        -> AST_TacBitOr_t { return init_AsmBitOr() }
+        -> AST_TacBitXor_t { return init_AsmBitXor() }
+        -> AST_TacBitShiftLeft_t { return init_AsmBitShiftLeft() }
+        -> AST_TacBitShiftRight_t { return init_AsmBitShiftRight() }
+        -> AST_TacBitShrArithmetic_t { return init_AsmBitShrArithmetic() }
         otherwise {
             THROW_ABORT
         }
