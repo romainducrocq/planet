@@ -87,39 +87,17 @@ pub fn string_to_char_ascii(str_char: string_t) i32 {
     if c_char == '\\' {
         c_char = cast<char>(str_char[2])
         match c_char {
-            -> '\'' {
-                return 39
-            }
-            -> '"' {
-                return 34
-            }
-            -> '?' {
-                return 63
-            }
-            -> '\\' {
-                return 92
-            }
-            -> 'a' {
-                return 7
-            }
-            -> 'b' {
-                return 8
-            }
-            -> 'f' {
-                return 12
-            }
-            -> 'n' {
-                return 10
-            }
-            -> 'r' {
-                return 13
-            }
-            -> 't' {
-                return 9
-            }
-            -> 'v' {
-                return 11
-            }
+            -> '\'' { return 39 }
+            -> '"' { return 34 }
+            -> '?' { return 63 }
+            -> '\\' { return 92 }
+            -> 'a' { return 7 }
+            -> 'b' { return 8 }
+            -> 'f' { return 12 }
+            -> 'n' { return 10 }
+            -> 'r' { return 13 }
+            -> 't' { return 9 }
+            -> 'v' { return 11 }
             otherwise {
                 THROW_ABORT
             }
