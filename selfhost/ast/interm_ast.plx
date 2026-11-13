@@ -81,14 +81,12 @@ pub fn make_TacVariable(name: TIdentifier) shared_ptr_t(TacValue) {
 pub fn free_TacValue(self: *shared_ptr_t(TacValue)) none {
     sptr_delete(self[])
     match self[][].tag {
-        -> AST_TacValue_t {
+        -> AST_TacValue_t;
+        -> AST_TacVariable_t {
             break
         }
         -> AST_TacConstant_t {
             free_CConst(@self[][].get._TacConstant.constant)
-            break
-        }
-        -> AST_TacVariable_t {
             break
         }
         otherwise {
@@ -132,7 +130,8 @@ pub fn make_TacSubObject(base_name: TIdentifier, offset: TLong) unique_ptr_t(Tac
 pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_TacExpResult_t {
+        -> AST_TacExpResult_t;
+        -> AST_TacSubObject_t {
             break
         }
         -> AST_TacPlainOperand_t {
@@ -141,9 +140,6 @@ pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none {
         }
         -> AST_TacDereferencedPointer_t {
             free_TacValue(@self[][].get._TacDereferencedPointer.val)
-            break
-        }
-        -> AST_TacSubObject_t {
             break
         }
         otherwise {
@@ -381,7 +377,9 @@ pub fn make_TacLabel(name: TIdentifier) unique_ptr_t(TacInstruction) {
 pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_TacInstruction_t {
+        -> AST_TacInstruction_t;
+        -> AST_TacJump_t;
+        -> AST_TacLabel_t {
             break
         }
         -> AST_TacReturn_t {
@@ -476,18 +474,12 @@ pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none {
             free_TacValue(@self[][].get._TacCopyFromOffset.dst)
             break
         }
-        -> AST_TacJump_t {
-            break
-        }
         -> AST_TacJumpIfZero_t {
             free_TacValue(@self[][].get._TacJumpIfZero.condition)
             break
         }
         -> AST_TacJumpIfNotZero_t {
             free_TacValue(@self[][].get._TacJumpIfNotZero.condition)
-            break
-        }
-        -> AST_TacLabel_t {
             break
         }
         otherwise {
