@@ -24,19 +24,21 @@ type struc AsmOperand;
 #               | ByteArray(int, int)
 
 type struc Byte(_empty: char)
-
 type struc LongWord(_empty: char)
-
 type struc QuadWord(_empty: char)
-
 type struc BackendDouble(_empty: char)
-
 type struc ByteArray(size: TLong, alignment: TInt)
-
-type union _AssemblyType(_Byte: struc Byte, _LongWord: struc LongWord, _QuadWord: struc QuadWord, _BackendDouble: struc BackendDouble, _ByteArray: struc ByteArray)
+type union _AssemblyType(
+    _Byte: struc Byte,
+    _LongWord: struc LongWord,
+    _QuadWord: struc QuadWord,
+    _BackendDouble: struc BackendDouble,
+    _ByteArray: struc ByteArray
+)
 
 type struc AssemblyType(shared_ptr_impl(AST_T)
-    get: union _AssemblyType)
+    get: union _AssemblyType
+)
 pub fn make_AssemblyType(none) shared_ptr_t(AssemblyType);
 pub fn make_Byte(none) shared_ptr_t(AssemblyType);
 pub fn make_LongWord(none) shared_ptr_t(AssemblyType);
@@ -51,22 +53,25 @@ pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none;
 #        | Fun(bool, operand*)
 
 type struc BackendObj(is_static: bool, is_const: bool, asm_type: shared_ptr_t(AssemblyType))
-
 type struc BackendFun(is_def: bool, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand)))
-
-type union _BackendSymbol(_BackendObj: struc BackendObj, _BackendFun: struc BackendFun)
+type union _BackendSymbol(
+    _BackendObj: struc BackendObj,
+    _BackendFun: struc BackendFun
+)
 
 type struc BackendSymbol(unique_ptr_impl(AST_T)
-    get: union _BackendSymbol)
+    get: union _BackendSymbol
+)
 pub fn make_BackendSymbol(none) unique_ptr_t(BackendSymbol);
-pub fn make_BackendObj(is_static: bool, is_const: bool, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol);
+pub fn make_BackendObj(
+    is_static: bool, is_const: bool, asm_type: *shared_ptr_t(AssemblyType)
+) unique_ptr_t(BackendSymbol);
 pub fn make_BackendFun(is_def: bool) unique_ptr_t(BackendSymbol);
 pub fn free_BackendSymbol(self: *unique_ptr_t(BackendSymbol)) none;
 
 ########################################################################################################################
 
 m4_define(`UPtrBackendSymbol', `unique_ptr_t(BackendSymbol)')m4_dnl
-
 PairKeyValue(``TIdentifier'', ``UPtrBackendSymbol'')
 
 type struc BackEndContext(symbol_table: hashmap_t(``TIdentifier'', ``UPtrBackendSymbol''))

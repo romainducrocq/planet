@@ -215,7 +215,9 @@ pub fn make_ZeroInit(byte: TLong) shared_ptr_t(StaticInit) {
     return self
 }
 
-pub fn make_StringInit(string_const: TIdentifier, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)) shared_ptr_t(StaticInit) {
+pub fn make_StringInit(
+    string_const: TIdentifier, is_null_term: bool, literal: *shared_ptr_t(CStringLiteral)
+) shared_ptr_t(StaticInit) {
     self: shared_ptr_t(StaticInit) = make_StaticInit()
     self[].tag = AST_StringInit_t
     self[].get._StringInit.string_const = string_const
@@ -418,7 +420,10 @@ pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none {
     uptr_free(self[])
 }
 
-pub fn make_StructTypedef(alignment: TInt, size: TLong, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef) {
+pub fn make_StructTypedef(
+    alignment: TInt, size: TLong, member_names: *vector_t(TIdentifier),
+    members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')
+) unique_ptr_t(StructTypedef) {
     self: unique_ptr_t(StructTypedef) = uptr_new()
     uptr_alloc(StructTypedef, self)
     self[].tag = AST_StructTypedef_t
@@ -448,6 +453,8 @@ pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none {
     map_delete(self[][].members)
     uptr_free(self[])
 }
+
+########################################################################################################################
 
 m4_define(`Ctx', `*struc FrontEndContext')m4_dnl
 
