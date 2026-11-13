@@ -75,7 +75,9 @@ pub fn make_CAbstractPointer(abstract_decltor: *unique_ptr_t(CAbstractDeclarator
     return self
 }
 
-pub fn make_CAbstractArray(size: TLong, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)) unique_ptr_t(CAbstractDeclarator) {
+pub fn make_CAbstractArray(
+    size: TLong, abstract_decltor: *unique_ptr_t(CAbstractDeclarator)
+) unique_ptr_t(CAbstractDeclarator) {
     self: unique_ptr_t(CAbstractDeclarator) = make_CAbstractDeclarator()
     self[].tag = AST_CAbstractArray_t
     self[].get._CAbstractArray.size = size
@@ -169,7 +171,9 @@ pub fn make_CArrayDeclarator(size: TLong, decltor: *unique_ptr_t(CDeclarator)) u
     return self
 }
 
-pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator) {
+pub fn make_CFunDeclarator(
+    param_list: *vector_t(unique_ptr_t(CParam)), decltor: *unique_ptr_t(CDeclarator)
+) unique_ptr_t(CDeclarator) {
     self: unique_ptr_t(CDeclarator) = make_CDeclarator()
     self[].tag = AST_CFunDeclarator_t
     self[].get._CFunDeclarator.param_list = vec_new()
@@ -265,7 +269,9 @@ pub fn make_CUnary(unop: *struc CUnaryOp, exp: *unique_ptr_t(CExp), info_at: u64
     return self
 }
 
-pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CBinary(
+    binop: *struc CBinaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64
+) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CBinary_t
     self[].get._CBinary.binop = binop[]
@@ -277,7 +283,9 @@ pub fn make_CBinary(binop: *struc CBinaryOp, exp_left: *unique_ptr_t(CExp), exp_
     return self
 }
 
-pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CAssignment(
+    unop: *struc CUnaryOp, exp_left: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64
+) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CAssignment_t
     self[].get._CAssignment.unop = unop[]
@@ -289,7 +297,9 @@ pub fn make_CAssignment(unop: *struc CUnaryOp, exp_left: *unique_ptr_t(CExp), ex
     return self
 }
 
-pub fn make_CConditional(condition: *unique_ptr_t(CExp), exp_middle: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CConditional(
+    condition: *unique_ptr_t(CExp), exp_middle: *unique_ptr_t(CExp), exp_right: *unique_ptr_t(CExp), info_at: u64
+) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CConditional_t
     self[].get._CConditional.condition = uptr_new()
@@ -330,7 +340,9 @@ pub fn make_CAddrOf(exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
     return self
 }
 
-pub fn make_CSubscript(primary_exp: *unique_ptr_t(CExp), subscript_exp: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp) {
+pub fn make_CSubscript(
+    primary_exp: *unique_ptr_t(CExp), subscript_exp: *unique_ptr_t(CExp), info_at: u64
+) unique_ptr_t(CExp) {
     self: unique_ptr_t(CExp) = make_CExp(info_at)
     self[].tag = AST_CSubscript_t
     self[].get._CSubscript.primary_exp = uptr_new()
@@ -487,7 +499,9 @@ pub fn make_CExpression(exp: *unique_ptr_t(CExp)) unique_ptr_t(CStatement) {
     return self
 }
 
-pub fn make_CIf(condition: *unique_ptr_t(CExp), then_fi: *unique_ptr_t(CStatement), else_fi: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement) {
+pub fn make_CIf(
+    condition: *unique_ptr_t(CExp), then_fi: *unique_ptr_t(CStatement), else_fi: *unique_ptr_t(CStatement)
+) unique_ptr_t(CStatement) {
     self: unique_ptr_t(CStatement) = make_CStatement()
     self[].tag = AST_CIf_t
     self[].get._CIf.condition = uptr_new()
@@ -547,7 +561,10 @@ pub fn make_CDoWhile(condition: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatem
     return self
 }
 
-pub fn make_CFor(init: *unique_ptr_t(CForInit), condition: *unique_ptr_t(CExp), post: *unique_ptr_t(CExp), body: *unique_ptr_t(CStatement)) unique_ptr_t(CStatement) {
+pub fn make_CFor(
+    init: *unique_ptr_t(CForInit), condition: *unique_ptr_t(CExp), post: *unique_ptr_t(CExp),
+    body: *unique_ptr_t(CStatement)
+) unique_ptr_t(CStatement) {
     self: unique_ptr_t(CStatement) = make_CStatement()
     self[].tag = AST_CFor_t
     self[].get._CFor.target = 0
@@ -880,7 +897,9 @@ pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none {
     uptr_free(self[])
 }
 
-pub fn make_CMemberDeclaration(member_name: TIdentifier, member_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CMemberDeclaration) {
+pub fn make_CMemberDeclaration(
+    member_name: TIdentifier, member_type: *shared_ptr_t(Type), info_at: u64
+) unique_ptr_t(CMemberDeclaration) {
     self: unique_ptr_t(CMemberDeclaration) = uptr_new()
     uptr_alloc(CMemberDeclaration, self)
     self[].tag = AST_CMemberDeclaration_t
@@ -905,7 +924,9 @@ pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none {
     uptr_free(self[])
 }
 
-pub fn make_CStructDeclaration(tag_name: TIdentifier, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration) {
+pub fn make_CStructDeclaration(
+    tag_name: TIdentifier, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64
+) unique_ptr_t(CStructDeclaration) {
     self: unique_ptr_t(CStructDeclaration) = uptr_new()
     uptr_alloc(CStructDeclaration, self)
     self[].tag = AST_CStructDeclaration_t
@@ -934,7 +955,10 @@ pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none {
     uptr_free(self[])
 }
 
-pub fn make_CFunctionDeclaration(name: TIdentifier, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CFunctionDeclaration) {
+pub fn make_CFunctionDeclaration(
+    name: TIdentifier, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type),
+    storage_class: *struc CStorageClass, info_at: u64
+) unique_ptr_t(CFunctionDeclaration) {
     self: unique_ptr_t(CFunctionDeclaration) = uptr_new()
     uptr_alloc(CFunctionDeclaration, self)
     self[].tag = AST_CFunctionDeclaration_t
@@ -966,7 +990,10 @@ pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none
     uptr_free(self[])
 }
 
-pub fn make_CVariableDeclaration(name: TIdentifier, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CVariableDeclaration) {
+pub fn make_CVariableDeclaration(
+    name: TIdentifier, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type),
+    storage_class: *struc CStorageClass, info_at: u64
+) unique_ptr_t(CVariableDeclaration) {
     self: unique_ptr_t(CVariableDeclaration) = uptr_new()
     uptr_alloc(CVariableDeclaration, self)
     self[].tag = AST_CVariableDeclaration_t

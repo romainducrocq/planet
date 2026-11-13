@@ -25,23 +25,25 @@ type struc CStringLiteral;
 #       | ConstUChar(int)
 
 type struc CConstInt(value: TInt)
-
 type struc CConstLong(value: TLong)
-
 type struc CConstUInt(value: TUInt)
-
 type struc CConstULong(value: TULong)
-
 type struc CConstDouble(value: TDouble)
-
 type struc CConstChar(value: TChar)
-
 type struc CConstUChar(value: TUChar)
-
-type union _CConst(_CConstInt: struc CConstInt, _CConstLong: struc CConstLong, _CConstUInt: struc CConstUInt, _CConstULong: struc CConstULong, _CConstDouble: struc CConstDouble, _CConstChar: struc CConstChar, _CConstUChar: struc CConstUChar)
+type union _CConst(
+    _CConstInt: struc CConstInt,
+    _CConstLong: struc CConstLong,
+    _CConstUInt: struc CConstUInt,
+    _CConstULong: struc CConstULong,
+    _CConstDouble: struc CConstDouble,
+    _CConstChar: struc CConstChar,
+    _CConstUChar: struc CConstUChar
+)
 
 type struc CConst(shared_ptr_impl(AST_T)
-    get: union _CConst)
+    get: union _CConst
+)
 pub fn make_CConst(none) shared_ptr_t(CConst);
 pub fn make_CConstInt(value: TInt) shared_ptr_t(CConst);
 pub fn make_CConstLong(value: TLong) shared_ptr_t(CConst);
@@ -57,7 +59,8 @@ pub fn free_CConst(self: *shared_ptr_t(CConst)) none;
 # string = StringLiteral(int*)
 
 type struc CStringLiteral(shared_ptr_impl(AST_T)
-    value: vector_t(TChar))
+    value: vector_t(TChar)
+)
 pub fn make_CStringLiteral(value: *vector_t(TChar)) shared_ptr_t(CStringLiteral);
 pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none;
 
