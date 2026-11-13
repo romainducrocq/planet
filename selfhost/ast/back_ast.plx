@@ -148,24 +148,12 @@ pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none {
     sptr_delete(self[])
     match self[][].tag {
         -> AST_AsmOperand_t;
-        -> AST_AsmImm_t {
-            break
-        }
-        -> AST_AsmRegister_t {
-            break
-        }
-        -> AST_AsmPseudo_t {
-            break
-        }
-        -> AST_AsmMemory_t {
-            break
-        }
-        -> AST_AsmData_t {
-            break
-        }
-        -> AST_AsmPseudoMem_t {
-            break
-        }
+        -> AST_AsmImm_t;
+        -> AST_AsmRegister_t;
+        -> AST_AsmPseudo_t;
+        -> AST_AsmMemory_t;
+        -> AST_AsmData_t;
+        -> AST_AsmPseudoMem_t;
         -> AST_AsmIndexed_t {
             break
         }
@@ -420,7 +408,13 @@ pub fn make_AsmRet(none) unique_ptr_t(AsmInstruction) {
 pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_AsmInstruction_t {
+        -> AST_AsmInstruction_t;
+        -> AST_AsmJmp_t;
+        -> AST_AsmJmpCC_t;
+        -> AST_AsmLabel_t;
+        -> AST_AsmPop_t;
+        -> AST_AsmCall_t;
+        -> AST_AsmRet_t {
             break
         }
         -> AST_AsmMov_t {
@@ -491,30 +485,12 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
             free_AssemblyType(@self[][].get._AsmCdq.asm_type)
             break
         }
-        -> AST_AsmJmp_t {
-            break
-        }
-        -> AST_AsmJmpCC_t {
-            break
-        }
         -> AST_AsmSetCC_t {
             free_AsmOperand(@self[][].get._AsmSetCC.dst)
             break
         }
-        -> AST_AsmLabel_t {
-            break
-        }
         -> AST_AsmPush_t {
             free_AsmOperand(@self[][].get._AsmPush.src)
-            break
-        }
-        -> AST_AsmPop_t {
-            break
-        }
-        -> AST_AsmCall_t {
-            break
-        }
-        -> AST_AsmRet_t {
             break
         }
         otherwise {

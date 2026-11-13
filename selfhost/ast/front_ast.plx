@@ -93,7 +93,8 @@ pub fn make_CAbstractBase(none) unique_ptr_t(CAbstractDeclarator) {
 pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_CAbstractDeclarator_t {
+        -> AST_CAbstractDeclarator_t;
+        -> AST_CAbstractBase_t {
             break
         }
         -> AST_CAbstractPointer_t {
@@ -102,9 +103,6 @@ pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none {
         }
         -> AST_CAbstractArray_t {
             free_CAbstractDeclarator(@self[][].get._CAbstractArray.abstract_decltor)
-            break
-        }
-        -> AST_CAbstractBase_t {
             break
         }
         otherwise {
@@ -184,9 +182,7 @@ pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor:
 pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_CDeclarator_t {
-            break
-        }
+        -> AST_CDeclarator_t;
         -> AST_CIdent_t {
             break
         }
@@ -386,7 +382,8 @@ pub fn make_CArrow(member: TIdentifier, pointer: *unique_ptr_t(CExp), info_at: u
 pub fn free_CExp(self: *unique_ptr_t(CExp)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_CExp_t {
+        -> AST_CExp_t;
+        -> AST_CVar_t {
             break
         }
         -> AST_CConstant_t {
@@ -395,9 +392,6 @@ pub fn free_CExp(self: *unique_ptr_t(CExp)) none {
         }
         -> AST_CString_t {
             free_CStringLiteral(@self[][].get._CString.literal)
-            break
-        }
-        -> AST_CVar_t {
             break
         }
         -> AST_CCast_t {
@@ -627,7 +621,11 @@ pub fn make_CNull(none) unique_ptr_t(CStatement) {
 pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none {
     uptr_delete(self[])
     match self[][].tag {
-        -> AST_CStatement_t {
+        -> AST_CStatement_t;
+        -> AST_CGoto_t;
+        -> AST_CBreak_t;
+        -> AST_CContinue_t;
+        -> AST_CNull_t {
             break
         }
         -> AST_CReturn_t {
@@ -642,9 +640,6 @@ pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none {
             free_CExp(@self[][].get._CIf.condition)
             free_CStatement(@self[][].get._CIf.then_fi)
             free_CStatement(@self[][].get._CIf.else_fi)
-            break
-        }
-        -> AST_CGoto_t {
             break
         }
         -> AST_CLabel_t {
@@ -688,15 +683,6 @@ pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none {
         }
         -> AST_CDefault_t {
             free_CStatement(@self[][].get._CDefault.jump_to)
-            break
-        }
-        -> AST_CBreak_t {
-            break
-        }
-        -> AST_CContinue_t {
-            break
-        }
-        -> AST_CNull_t {
             break
         }
         otherwise {
