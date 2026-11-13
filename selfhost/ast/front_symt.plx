@@ -7,6 +7,12 @@ m4_include(`../util/throw.plx.m4')m4_dnl
 
 m4_include(`../backend/regs.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Frontend symbol table
+
+########################################################################################################################
+
 pub fn make_Type(none) shared_ptr_t(Type) {
     self: shared_ptr_t(Type) = sptr_new()
     sptr_alloc(Type, self)

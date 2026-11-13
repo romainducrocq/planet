@@ -6,6 +6,12 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Intermediate abstract syntax tree
+
+########################################################################################################################
+
 type struc TacUnaryOp;
 type struc TacBinaryOp;
 type struc TacValue;
@@ -14,12 +20,38 @@ type struc TacInstruction;
 type struc TacTopLevel;
 type struc TacProgram;
 
+########################################################################################################################
+
+# unary_operator = Complement
+#                | Negate
+#                | Not
+
 type struc TacUnaryOp(tagged_def_impl(AST_T))
 pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp;
 m4_define(`init_TacUnaryOp', `tagged_def_init(AST, TacUnaryOp, TacUnaryOp)')m4_dnl
 m4_define(`init_TacComplement', `tagged_def_init(AST, TacUnaryOp, TacComplement)')m4_dnl
 m4_define(`init_TacNegate', `tagged_def_init(AST, TacUnaryOp, TacNegate)')m4_dnl
 m4_define(`init_TacNot', `tagged_def_init(AST, TacUnaryOp, TacNot)')m4_dnl
+
+########################################################################################################################
+
+# binary_operator = Add
+#                 | Subtract
+#                 | Multiply
+#                 | Divide
+#                 | Remainder
+#                 | BitAnd
+#                 | BitOr
+#                 | BitXor
+#                 | BitShiftLeft
+#                 | BitShiftRight
+#                 | BitShrArithmetic
+#                 | Equal
+#                 | NotEqual
+#                 | LessThan
+#                 | LessOrEqual
+#                 | GreaterThan
+#                 | GreaterOrEqual
 
 type struc TacBinaryOp(tagged_def_impl(AST_T))
 pub fn make_TacBinaryOp(tagged_def_impl(AST_T)) struc TacBinaryOp;
@@ -42,6 +74,11 @@ m4_define(`init_TacLessOrEqual', `tagged_def_init(AST, TacBinaryOp, TacLessOrEqu
 m4_define(`init_TacGreaterThan', `tagged_def_init(AST, TacBinaryOp, TacGreaterThan)')m4_dnl
 m4_define(`init_TacGreaterOrEqual', `tagged_def_init(AST, TacBinaryOp, TacGreaterOrEqual)')m4_dnl
 
+########################################################################################################################
+
+# val = Constant(int)
+#     | Var(identifier)
+
 type struc TacConstant(constant: shared_ptr_t(CConst))
 
 type struc TacVariable(name: TIdentifier)
@@ -54,6 +91,12 @@ pub fn make_TacValue(none) shared_ptr_t(TacValue);
 pub fn make_TacConstant(constant: *shared_ptr_t(CConst)) shared_ptr_t(TacValue);
 pub fn make_TacVariable(name: TIdentifier) shared_ptr_t(TacValue);
 pub fn free_TacValue(self: *shared_ptr_t(TacValue)) none;
+
+########################################################################################################################
+
+# exp_result = PlainOperand(val)
+#            | DereferencedPointer(val)
+#            | SubObject(identifier, int)
 
 type struc TacPlainOperand(val: shared_ptr_t(TacValue))
 
@@ -70,6 +113,31 @@ pub fn make_TacPlainOperand(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacExpRes
 pub fn make_TacDereferencedPointer(val: *shared_ptr_t(TacValue)) unique_ptr_t(TacExpResult);
 pub fn make_TacSubObject(base_name: TIdentifier, offset: TLong) unique_ptr_t(TacExpResult);
 pub fn free_TacExpResult(self: *unique_ptr_t(TacExpResult)) none;
+
+########################################################################################################################
+
+# instruction = Return(val?)
+#             | SignExtend(val, val)
+#             | Truncate(val, val)
+#             | ZeroExtend(val, val)
+#             | DoubleToInt(val, val)
+#             | DoubleToUInt(val, val)
+#             | IntToDouble(val, val)
+#             | UIntToDouble(val, val)
+#             | FunCall(identifier, val*, val?)
+#             | Unary(unary_operator, val, val)
+#             | Binary(binary_operator, val, val, val)
+#             | Copy(val, val)
+#             | GetAddress(val, val)
+#             | Load(val, val)
+#             | Store(val, val)
+#             | AddPtr(int, val, val, val)
+#             | CopyToOffset(identifier, int, val)
+#             | CopyFromOffset(identifier, int, val)
+#             | Jump(identifier)
+#             | JumpIfZero(val, identifier)
+#             | JumpIfNotZero(val, identifier)
+#             | Label(identifier)
 
 type struc TacReturn(val: shared_ptr_t(TacValue))
 
@@ -144,6 +212,12 @@ pub fn make_TacJumpIfNotZero(target: TIdentifier, condition: *shared_ptr_t(TacVa
 pub fn make_TacLabel(name: TIdentifier) unique_ptr_t(TacInstruction);
 pub fn free_TacInstruction(self: *unique_ptr_t(TacInstruction)) none;
 
+########################################################################################################################
+
+# top_level = Function(identifier, bool, identifier*, instruction*)
+#           | StaticVariable(identifier, bool, type, static_init*)
+#           | StaticConstant(identifier, type, static_init)
+
 type struc TacFunction(name: TIdentifier, is_glob: bool, params: vector_t(TIdentifier), body: vector_t(unique_ptr_t(TacInstruction)))
 
 type struc TacStaticVariable(name: TIdentifier, is_glob: bool, static_init_type: shared_ptr_t(Type), static_inits: vector_t(shared_ptr_t(StaticInit)))
@@ -159,6 +233,10 @@ pub fn make_TacFunction(name: TIdentifier, is_glob: bool, params: *vector_t(TIde
 pub fn make_TacStaticVariable(name: TIdentifier, is_glob: bool, static_init_type: *shared_ptr_t(Type), static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(TacTopLevel);
 pub fn make_TacStaticConstant(name: TIdentifier, static_init_type: *shared_ptr_t(Type), static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(TacTopLevel);
 pub fn free_TacTopLevel(self: *unique_ptr_t(TacTopLevel)) none;
+
+########################################################################################################################
+
+# AST = Program(top_level*, top_level*, top_level*)
 
 type struc TacProgram(unique_ptr_impl(AST_T)
     static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)), static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)), fun_toplvls: vector_t(unique_ptr_t(TacTopLevel)))

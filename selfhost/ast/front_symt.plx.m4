@@ -5,6 +5,12 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../ast/ast.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Frontend symbol table
+
+########################################################################################################################
+
 type struc Type;
 type struc StaticInit;
 type struc InitialValue;
@@ -12,6 +18,22 @@ type struc IdentifierAttr;
 type struc Symbol;
 type struc StructMember;
 type struc StructTypedef;
+
+########################################################################################################################
+
+# type = Char
+#      | SChar
+#      | UChar
+#      | Int
+#      | Long
+#      | UInt
+#      | ULong
+#      | Double
+#      | Void
+#      | FunType(int, int, type*, type)
+#      | Pointer(type)
+#      | Array(int, type)
+#      | Structure(identifier, bool)
 
 type struc Char(_empty: char)
 
@@ -59,6 +81,19 @@ pub fn make_Array(size: TLong, elem_type: *shared_ptr_t(Type)) shared_ptr_t(Type
 pub fn make_Structure(tag_name: TIdentifier, is_union: bool) shared_ptr_t(Type);
 pub fn free_Type(self: *shared_ptr_t(Type)) none;
 
+########################################################################################################################
+
+# static_init = IntInit(int)
+#             | LongInit(int)
+#             | UIntInit(int)
+#             | ULongInit(int)
+#             | CharInit(int)
+#             | UCharInit(int)
+#             | DoubleInit(string)
+#             | ZeroInit(int)
+#             | StringInit(identifier, bool, string)
+#             | PointerInit(identifier)
+
 type struc IntInit(value: TInt)
 
 type struc LongInit(value: TLong)
@@ -96,6 +131,12 @@ pub fn make_StringInit(string_const: TIdentifier, is_null_term: bool, literal: *
 pub fn make_PointerInit(name: TIdentifier) shared_ptr_t(StaticInit);
 pub fn free_StaticInit(self: *shared_ptr_t(StaticInit)) none;
 
+########################################################################################################################
+
+# initial_value = Tentative
+#               | Initial(static_init*)
+#               | NoInitializer
+
 type struc Tentative(_empty: char)
 
 type struc Initial(static_inits: vector_t(shared_ptr_t(StaticInit)))
@@ -111,6 +152,13 @@ pub fn make_Tentative(none) shared_ptr_t(InitialValue);
 pub fn make_Initial(static_inits: *vector_t(shared_ptr_t(StaticInit))) shared_ptr_t(InitialValue);
 pub fn make_NoInitializer(none) shared_ptr_t(InitialValue);
 pub fn free_InitialValue(self: *shared_ptr_t(InitialValue)) none;
+
+########################################################################################################################
+
+# identifier_attrs = FunAttr(bool, bool)
+#                  | StaticAttr(initial_value, bool)
+#                  | ConstantAttr(static_init)
+#                  | LocalAttr
 
 type struc FunAttr(is_def: bool, is_glob: bool)
 
@@ -131,15 +179,28 @@ pub fn make_ConstantAttr(static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(Id
 pub fn make_LocalAttr(none) unique_ptr_t(IdentifierAttr);
 pub fn free_IdentifierAttr(self: *unique_ptr_t(IdentifierAttr)) none;
 
+########################################################################################################################
+
+# symbol = Symbol(type, identifier_attrs)
+
 type struc Symbol(unique_ptr_impl(AST_T)
     type_t: shared_ptr_t(Type), attrs: unique_ptr_t(IdentifierAttr))
 pub fn make_Symbol(type_t: *shared_ptr_t(Type), attrs: *unique_ptr_t(IdentifierAttr)) unique_ptr_t(Symbol);
 pub fn free_Symbol(self: *unique_ptr_t(Symbol)) none;
 
+########################################################################################################################
+
+# struct_member = StructMember(int, type)
+
 type struc StructMember(unique_ptr_impl(AST_T)
     offset: TLong, member_type: shared_ptr_t(Type))
 pub fn make_StructMember(offset: TLong, member_type: *shared_ptr_t(Type)) unique_ptr_t(StructMember);
 pub fn free_StructMember(self: *unique_ptr_t(StructMember)) none;
+
+########################################################################################################################
+
+# struct_typedef(int, int, identifier*, struct_member*)
+
 m4_define(`UPtrStructMember', `unique_ptr_t(StructMember)')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``UPtrStructMember'')
@@ -148,6 +209,8 @@ type struc StructTypedef(unique_ptr_impl(AST_T)
     alignment: TInt, size: TLong, member_names: vector_t(TIdentifier), members: hashmap_t(``TIdentifier'', ``UPtrStructMember''))
 pub fn make_StructTypedef(alignment: TInt, size: TLong, member_names: *vector_t(TIdentifier), members: *hashmap_t(``TIdentifier'', ``UPtrStructMember'')) unique_ptr_t(StructTypedef);
 pub fn free_StructTypedef(self: *unique_ptr_t(StructTypedef)) none;
+
+########################################################################################################################
 
 PairKeyValue(``TIdentifier'', u64)
 

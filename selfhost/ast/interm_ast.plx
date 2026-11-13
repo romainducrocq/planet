@@ -6,6 +6,12 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Intermediate abstract syntax tree
+
+########################################################################################################################
+
 pub fn make_TacUnaryOp(tagged_def_impl(AST_T)) struc TacUnaryOp {
     self: struc TacUnaryOp = $(tag)
     match tag {
