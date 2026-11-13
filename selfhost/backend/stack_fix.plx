@@ -11,9 +11,21 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``TLong'')
 
-type struc StackFixContext(backend: *struc BackEndContext, stack_bytes: TLong, pseudo_stack_map: hashmap_t(``TIdentifier'', ``TLong''), p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
+type struc StackFixContext(backend: *struc BackEndContext,
+    # Pseudo register replacement
+    stack_bytes: TLong, pseudo_stack_map: hashmap_t(``TIdentifier'', ``TLong''),
+    # Instruction fix up
+    p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
+
+########################################################################################################################
+
+# Stack fix
 
 m4_define(`Ctx', `*struc StackFixContext')m4_dnl
+
+########################################################################################################################
+
+# Pseudo register replacement
 
 fn pseudo_data(node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     name: TIdentifier = node[].name
@@ -484,6 +496,10 @@ fn repl_pseudo_regs(ctx: Ctx, node: *struc AsmInstruction) none {
         }
     }
 }
+
+########################################################################################################################
+
+# Instruction fix up
 
 pub fn alloc_stack_bytes(byte: TLong) unique_ptr_t(AsmInstruction) {
     binop: struc AsmBinaryOp = init_AsmSub()
@@ -1150,6 +1166,8 @@ fn fix_program(ctx: Ctx, node: *struc AsmProgram) none {
         fix_toplvl(ctx, node[].top_levels[i])
     }
 }
+
+########################################################################################################################
 
 pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none {
     ctx: struc StackFixContext;

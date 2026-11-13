@@ -9,6 +9,11 @@ m4_include(`../backend/regs.plx.m4')m4_dnl
 
 type struc AsmReg;
 type struc AsmOperand;
+
+########################################################################################################################
+
+# Registers
+
 pub fn gen_register(reg_kind: REGISTER_KIND) shared_ptr_t(AsmOperand);
 pub fn gen_memory(reg_kind: REGISTER_KIND, value: TLong) shared_ptr_t(AsmOperand);
 pub fn gen_indexed(reg_kind_base: REGISTER_KIND, reg_kind_idx: REGISTER_KIND, scale: TLong) shared_ptr_t(AsmOperand);

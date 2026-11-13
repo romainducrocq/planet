@@ -9,7 +9,13 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
-type struc GasCodeContext(backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext)
+type struc GasCodeContext(backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext
+    # Gnu assembler code emission
+)
+
+########################################################################################################################
+
+# Gnu assembler code emission
 
 m4_define(`Ctx', `*struc GasCodeContext')m4_dnl
 m4_define(`LF', `"\n"')m4_dnl
@@ -25,6 +31,7 @@ fn emit(ctx: Ctx, code: string) none {
     write_buffer(ctx[].fileio, code)
 }
 
+# identifier -> $ identifier
 fn emit_identifier(ctx: Ctx, identifier: TIdentifier) none {
 m4_ifdef(`__APPLE__', `
     emit(ctx, "_")
@@ -33,52 +40,78 @@ m4_ifdef(`__APPLE__', `
     emit(ctx, value)
 }
 
+# string -> $ string
 fn emit_string(ctx: Ctx, string_const: TIdentifier) none {
     value: string = map_get(ctx[].identifiers[].hash_table, string_const)
     emit(ctx, value)
 }
 
+# char -> $ char
 fn emit_char(ctx: Ctx, value: TChar) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
+# int -> $ int
 fn emit_int(ctx: Ctx, value: TInt) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
+# long -> $ long
 fn emit_long(ctx: Ctx, value: TLong) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
+# double -> $ double
 fn emit_dbl(ctx: Ctx, dbl_const: TIdentifier) none {
     value: string = map_get(ctx[].identifiers[].hash_table, dbl_const)
     emit(ctx, value)
 }
 
+# uchar -> $ uchar
 fn emit_uchar(ctx: Ctx, value: TUChar) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
+# uint -> $ uint
 fn emit_uint(ctx: Ctx, value: TUInt) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
+# ulong -> $ ulong
 fn emit_ulong(ctx: Ctx, value: TULong) none {
     strto_value: string_t = str_to_string(value)
     emit(ctx, strto_value)
     str_delete(strto_value)
 }
 
+# Reg(SP)    -> $ %rsp
+# Reg(BP)    -> $ %rbp
+# Reg(XMM0)  -> $ %xmm0
+# Reg(XMM1)  -> $ %xmm1
+# Reg(XMM2)  -> $ %xmm2
+# Reg(XMM3)  -> $ %xmm3
+# Reg(XMM4)  -> $ %xmm4
+# Reg(XMM5)  -> $ %xmm5
+# Reg(XMM6)  -> $ %xmm6
+# Reg(XMM7)  -> $ %xmm7
+# Reg(XMM8)  -> $ %xmm8
+# Reg(XMM9)  -> $ %xmm9
+# Reg(XMM10) -> $ %xmm10
+# Reg(XMM11) -> $ %xmm11
+# Reg(XMM12) -> $ %xmm12
+# Reg(XMM13) -> $ %xmm13
+# Reg(XMM14) -> $ %xmm14
+# Reg(XMM15) -> $ %xmm15
 fn get_reg_rsp_sse(node: *struc AsmReg) string {
     match node[].tag {
         -> AST_AsmSp_t {
@@ -141,6 +174,20 @@ fn get_reg_rsp_sse(node: *struc AsmReg) string {
     }
 }
 
+# Reg(AX)  -> $ %al
+# Reg(BX)  -> $ %bl
+# Reg(DX)  -> $ %dl
+# Reg(CX)  -> $ %cl
+# Reg(DI)  -> $ %dil
+# Reg(SI)  -> $ %sil
+# Reg(R8)  -> $ %r8b
+# Reg(R9)  -> $ %r9b
+# Reg(R10) -> $ %r10b
+# Reg(R11) -> $ %r11b
+# Reg(R12) -> $ %r12b
+# Reg(R13) -> $ %r13b
+# Reg(R14) -> $ %r14b
+# Reg(R15) -> $ %r15b
 fn get_reg_1b(node: *struc AsmReg) string {
     match node[].tag {
         -> AST_AsmAx_t {
@@ -191,6 +238,20 @@ fn get_reg_1b(node: *struc AsmReg) string {
     }
 }
 
+# Reg(AX)  -> $ %eax
+# Reg(BX)  -> $ %ebx
+# Reg(DX)  -> $ %edx
+# Reg(CX)  -> $ %ecx
+# Reg(DI)  -> $ %edi
+# Reg(SI)  -> $ %esi
+# Reg(R8)  -> $ %r8d
+# Reg(R9)  -> $ %r9d
+# Reg(R10) -> $ %r10d
+# Reg(R11) -> $ %r11d
+# Reg(R12) -> $ %r12d
+# Reg(R13) -> $ %r13d
+# Reg(R14) -> $ %r14d
+# Reg(R15) -> $ %r15d
 fn get_reg_4b(node: *struc AsmReg) string {
     match node[].tag {
         -> AST_AsmAx_t {
@@ -241,6 +302,20 @@ fn get_reg_4b(node: *struc AsmReg) string {
     }
 }
 
+# Reg(AX)  -> $ %rax
+# Reg(BX)  -> $ %rbx
+# Reg(DX)  -> $ %rdx
+# Reg(CX)  -> $ %rcx
+# Reg(DI)  -> $ %rdi
+# Reg(SI)  -> $ %rsi
+# Reg(R8)  -> $ %r8
+# Reg(R9)  -> $ %r9
+# Reg(R10) -> $ %r10
+# Reg(R11) -> $ %r11
+# Reg(R12) -> $ %r12
+# Reg(R13) -> $ %r13
+# Reg(R14) -> $ %r14
+# Reg(R15) -> $ %r15
 fn get_reg_8b(node: *struc AsmReg) string {
     match node[].tag {
         -> AST_AsmAx_t {
@@ -291,6 +366,17 @@ fn get_reg_8b(node: *struc AsmReg) string {
     }
 }
 
+# E  -> $ e
+# NE -> $ ne
+# L  -> $ l
+# LE -> $ le
+# G  -> $ g
+# GE -> $ ge
+# B  -> $ b
+# BE -> $ be
+# A  -> $ a
+# AE -> $ ae
+# P  -> $ p
 fn get_cond_code(node: *struc AsmCondCode) string {
     match node[].tag {
         -> AST_AsmE_t {
@@ -332,6 +418,11 @@ fn get_cond_code(node: *struc AsmCondCode) string {
     }
 }
 
+# Byte      -> $ 1
+# LongWord  -> $ 4
+# QuadWord  -> $ 8
+# Double    -> $ 8
+# ByteArray -> $ alignment
 fn type_align_bytes(node: *struc AssemblyType) TInt {
     match node[].tag {
         -> AST_Byte_t {
@@ -353,6 +444,11 @@ fn type_align_bytes(node: *struc AssemblyType) TInt {
     }
 }
 
+# Byte             -> $ b
+# LongWord         -> $ l
+# QuadWord         -> $ q
+# Double if packed -> $ pd
+#             else -> $ sd
 fn get_type_suffix(node: *struc AssemblyType, is_packed: bool) string {
     match node[].tag {
         -> AST_Byte_t {
@@ -438,6 +534,11 @@ fn indexed_op(ctx: Ctx, node: *struc AsmIndexed) none {
     emit(ctx, ")")
 }
 
+# Imm(int)                 -> $ $<int>
+# Register(reg)            -> $ %reg
+# Memory(int, reg)         -> $ <int>(<reg>)
+# Data(identifier, int)    -> $ <identifier>+<int>(%rip)
+# Indexed(reg1, reg2, int) -> $ (<reg1>, <reg2>, <int>)
 fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: TInt) none {
     match node[].tag {
         -> AST_AsmImm_t {
@@ -466,6 +567,9 @@ fn emit_op(ctx: Ctx, node: *struc AsmOperand, byte: TInt) none {
     }
 }
 
+# Neg -> $ neg
+# Not -> $ not
+# Shr -> $ shr
 fn get_unop(node: *struc AsmUnaryOp) string {
     match node[].tag {
         -> AST_AsmNeg_t {
@@ -483,6 +587,17 @@ fn get_unop(node: *struc AsmUnaryOp) string {
     }
 }
 
+# Add              -> $ add
+# Sub              -> $ sub
+# Mult<i>          -> $ imul
+# Mult<d>          -> $ mul
+# DivDouble        -> $ div
+# BitAnd           -> $ and
+# BitOr            -> $ or
+# BitXor           -> $ xor
+# BitShiftLeft     -> $ shl
+# BitShiftRight    -> $ shr
+# BitShrArithmetic -> $ sar
 fn get_binop(node: *struc AsmBinaryOp, is_dbl: bool) string {
     match node[].tag {
         -> AST_AsmAdd_t {
@@ -752,6 +867,30 @@ fn ret_instr(ctx: Ctx) none {
     emit(ctx, TAB "movq %rbp, %rsp" LF TAB "popq %rbp" LF TAB "ret" LF)
 }
 
+# Mov(t, src, dst)                      -> $ mov<t> <src>, <dst>
+# Movsx(src_t, dst_t, src, dst)         -> $ movs<src_t><dst_t> <src>, <dst>
+# MovZeroExtend(src_t, dst_t, src, dst) -> $ movz<src_t><dst_t> <src>, <dst>
+# Lea(src, dst)                         -> $ leaq <src>, <dst>
+# Cvttsd2si(t, src, dst)                -> $ cvttsd2si<t> <src>, <dst>
+# Cvtsi2sd(t, src, dst)                 -> $ cvtsi2sd<t> <src>, <dst>
+# Unary(unary_operator, t, operand)     -> $ <unary_operator><t> <operand>
+# Binary(binary_operator, t, src, dst)  -> $ <binary_operator><t> <src>, <dst>
+# Cmp(t, operand, operand)<i>           -> $ cmp<t> <operand>, <operand>
+# Cmp(operand, operand)<d>              -> $ comisd <operand>, <operand>
+# Idiv(t, operand)                      -> $ idiv<t> <operand>
+# Div(t, operand)                       -> $ div<t> <operand>
+# Cdq<l>                                -> $ cdq
+# Cdq<q>                                -> $ cqo
+# Jmp(label)                            -> $ jmp .L<label>
+# JmpCC(cond_code, label)               -> $ j<cond_code> .L<label>
+# SetCC(cond_code, operand)             -> $ set<cond_code> <operand>
+# Label(label)                          -> $ .L<label>:
+# Push(operand)                         -> $ pushq <operand>
+# Pop(reg)                              -> $ popq <reg>
+# Call(label)                           -> $ call <label>@PLT
+# Ret                                   -> $ movq %rbp, %rsp
+#                                          $ popq %rbp
+#                                          $ ret
 fn emit_instr(ctx: Ctx, node: *struc AsmInstruction) none {
     match node[].tag {
         -> AST_AsmMov_t {
@@ -846,6 +985,7 @@ fn emit_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(AsmInstruction))) 
     }
 }
 
+# -> if is_global $ .globl <identifier>
 fn glob_directive_toplvl(ctx: Ctx, name: TIdentifier, is_glob: bool) none {
     if is_glob {
         emit(ctx, TAB ".globl ")
@@ -854,6 +994,12 @@ fn glob_directive_toplvl(ctx: Ctx, name: TIdentifier, is_glob: bool) none {
     }
 }
 
+# Function(name, global, return_memory, instructions) -> $     <global-directive>
+#                                                        $     .text
+#                                                        $ <name>:
+#                                                        $     pushq %rbp
+#                                                        $     movq %rsp, %rbp
+#                                                        $     <instructions>
 fn emit_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     glob_directive_toplvl(ctx, node[].name, node[].is_glob)
     emit(ctx, TAB ".text" LF)
@@ -862,6 +1008,8 @@ fn emit_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     emit_instr_list(ctx, node[].instructions)
 }
 
+# -> if zero initialized $ .bss
+# ->                else $ .data
 fn static_section_toplvl(ctx: Ctx, node_list: vector_t(shared_ptr_t(StaticInit))) none {
     if vec_size(node_list) == 1 and node_list[0][].tag == AST_ZeroInit_t {
         emit(ctx, TAB ".bss" LF)
@@ -871,6 +1019,7 @@ fn static_section_toplvl(ctx: Ctx, node_list: vector_t(shared_ptr_t(StaticInit))
     }
 }
 
+# $ .balign <alignment>
 fn align_directive_toplvl(ctx: Ctx, alignment: TInt) none {
     if alignment > 1 {
         emit(ctx, TAB ".balign ")
@@ -879,6 +1028,16 @@ fn align_directive_toplvl(ctx: Ctx, alignment: TInt) none {
     }
 }
 
+# CharInit(i)                         -> .byte <i>
+# IntInit(i)                          -> .long <i>
+# LongInit(i)                         -> .quad <i>
+# UCharInit(i)                        -> .byte <i>
+# UIntInit(i)                         -> .long <i>
+# ULongInit(i)                        -> .quad <i>
+# ZeroInit(n)                         -> .zero <n>
+# StringInit(s, b) if null terminated -> .asciz "<s>"
+#                                else -> .ascii "<s>"
+# PointerInit(label)                  -> .quad .L<label>
 fn static_init_toplvl(ctx: Ctx, node: *struc StaticInit) none {
     match node[].tag {
         -> AST_CharInit_t {
@@ -952,6 +1111,11 @@ fn static_init_toplvl(ctx: Ctx, node: *struc StaticInit) none {
     }
 }
 
+# StaticVariable(name, global, init*) -> $     <global-directive>
+#                                        $     <data-section>
+#                                        $     <alignment-directive>
+#                                        $ <name>:
+#                                        $     <init_list>
 fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
     glob_directive_toplvl(ctx, node[].name, node[].is_glob)
     static_section_toplvl(ctx, node[].static_inits)
@@ -963,6 +1127,10 @@ fn emit_static_var_toplvl(ctx: Ctx, node: *struc AsmStaticVariable) none {
     }
 }
 
+# StaticConstant(name, align, init) -> $     .section .rodata
+#                                      $     <alignment-directive>
+#                                      $ .L<name>:
+#                                      $     <init>
 fn emit_static_const_toplvl(ctx: Ctx, node: *struc AsmStaticConstant) none {
 m4_ifdef(`__APPLE__', `
     match node[].static_init[].tag {
@@ -1007,6 +1175,9 @@ m4_ifdef(`__APPLE__', `
 ')m4_dnl
 }
 
+# Function(name, global, return_memory, instructions) -> $ <function-top-level-directives>
+# StaticVariable(name, global, align, init*)          -> $ <static-variable-top-level-directives>
+# StaticConstant(name, align, init)                   -> $ <static-constant-top-level-directives>
 fn emit_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     emit(ctx, LF)
     match node[].tag {
@@ -1028,6 +1199,8 @@ fn emit_toplvl(ctx: Ctx, node: *struc AsmTopLevel) none {
     }
 }
 
+# Program(top_level*) -> $ [<top_level>]
+#                        $     .section .note.GNU-stack,"",@progbits
 fn emit_program(ctx: Ctx, node: *struc AsmProgram) none {
     loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         emit_toplvl(ctx, node[].static_const_toplvls[i])
@@ -1039,6 +1212,8 @@ m4_ifdef(`__APPLE__', `', `
     emit(ctx, TAB TAB ".section .note.GNU-stack,\"\",@progbits" LF)
 ')m4_dnl
 }
+
+########################################################################################################################
 
 pub fn emit_gas_code(asm_ast: *unique_ptr_t(AsmProgram), backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none {
     ctx: struc GasCodeContext;
