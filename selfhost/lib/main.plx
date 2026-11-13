@@ -27,7 +27,13 @@ m4_include(`../backend/symt_cvt.plx.m4')m4_dnl
 m4_include(`../optimizer/optim_tac.plx.m4')m4_dnl
 m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
 
-type struc MainContext(errors: *struc ErrorsContext, is_verbose: bool, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t, includedirs: vector_t(string), stdlibdirs: vector_t(string))
+type struc MainContext(errors: *struc ErrorsContext,
+    # Main
+    is_verbose: bool, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t, includedirs: vector_t(string), stdlibdirs: vector_t(string))
+
+########################################################################################################################
+
+# Main
 
 m4_define(`Ctx', `*struc MainContext')m4_dnl
 
@@ -200,6 +206,8 @@ fn arg_parse(ctx: Ctx, argc: i32, argv: *string) error_t {
     FINALLY
     CATCH_EXIT
 }
+
+########################################################################################################################
 
 pub fn main(argc: i32, argv: *string) error_t {
     errors: struc ErrorsContext;
