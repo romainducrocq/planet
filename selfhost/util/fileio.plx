@@ -7,6 +7,10 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../frontend/errors.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# File io
+
 m4_define(`Ctx', `*struc FileIoContext')m4_dnl
 m4_define(`WRITE_BUF_SIZE', `4096')m4_dnl
 

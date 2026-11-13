@@ -6,6 +6,11 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 m4_include(`../util/throw.plx.m4')m4_dnl
 
 type struc ErrorsContext;
+
+########################################################################################################################
+
+# String to type
+
 pub fn dbl_to_binary(decimal: f64) u64;
 pub fn string_to_literal(str_string: string_t, string_literal: *vector_t(i8)) none;
 pub fn string_to_char_ascii(str_char: string_t) i32;
