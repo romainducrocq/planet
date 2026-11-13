@@ -26,7 +26,11 @@ PairKeyValue(``TIdentifier'', ``StInferenceRegister'')
 
 type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: mask_t, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: hashmap_t(``TIdentifier'', ``StInferenceRegister''))
 
-type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, callee_saved_reg_mask: mask_t, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), is_with_coal: bool)
+type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext,
+    # Register allocation
+    callee_saved_reg_mask: mask_t, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)),
+    # Register coalescing
+    is_with_coal: bool)
 
 fn free_InferenceGraph(self: *unique_ptr_t(InferenceGraph)) none {
     uptr_delete(self[])
@@ -83,12 +87,20 @@ fn make_InferenceGraph(is_sse: bool) unique_ptr_t(InferenceGraph) {
     return self
 }
 
+########################################################################################################################
+
+# Register allocation
+
 m4_ifdef(`__OPTIM_LEVEL__', `', `
 m4_define(`__OPTIM_LEVEL__', `2')m4_dnl
 m4_undefine(`_OPTIMIZER_IMPL_OLVL_M4')m4_dnl
 m4_include(`impl_olvl.plx.m4')m4_dnl
 m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 ')m4_dnl
+
+########################################################################################################################
+
+# Inference graph
 
 fn is_bitshift_cl(node: *struc AsmBinary) bool {
     match node[].binop.tag {
@@ -730,6 +742,10 @@ fn init_inference_graph(ctx: Ctx, fun_name: TIdentifier) bool {
     return true
 }
 
+########################################################################################################################
+
+# Register allocation
+
 fn is_reg_callee_saved(reg_kind: REGISTER_KIND) bool {
     match reg_kind {
         -> REG_Bx;
@@ -1214,6 +1230,10 @@ fn reallocate_registers(ctx: Ctx) none {
         }
     }
 }
+
+########################################################################################################################
+
+# Register coalescing
 
 fn get_type_size(type_t: *struc Type) TInt {
     match type_t[].tag {
@@ -1754,6 +1774,8 @@ fn coalesce_registers(ctx: Ctx) bool {
     return true
 }
 
+########################################################################################################################
+
 fn alloc_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     ctx[].p_instrs = @node[].instructions
     init_control_flow_graph(ctx)
@@ -1797,6 +1819,8 @@ fn alloc_program(ctx: Ctx, node: *struc AsmProgram) none {
         alloc_toplvl(ctx, node[].top_levels[i])
     }
 }
+
+########################################################################################################################
 
 pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none {
     ctx: struc RegAllocContext;

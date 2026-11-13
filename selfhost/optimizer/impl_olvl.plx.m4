@@ -29,9 +29,15 @@ type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_
 type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64), instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t))
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
-type struc DataFlowAnalysisO1(data_idx_map: vector_t(u64), bak_instrs: vector_t(unique_ptr_t(TacInstruction)), addressed_idx: u64)
+type struc DataFlowAnalysisO1(
+    # Copy propagation
+    data_idx_map: vector_t(u64), bak_instrs: vector_t(unique_ptr_t(TacInstruction)),
+    # Dead store elimination
+    addressed_idx: u64)
 ', __OPTIM_LEVEL__, `2', `
-type struc DataFlowAnalysisO2(data_name_map: vector_t(TIdentifier))
+type struc DataFlowAnalysisO2(
+    # Register allocation
+    data_name_map: vector_t(TIdentifier))
 ')m4_dnl
 
 fn free_ControlFlowGraph(self: *unique_ptr_t(ControlFlowGraph)) none {
@@ -129,6 +135,10 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     ctx[].is_fixed_point = false
 ')m4_dnl
 }
+
+########################################################################################################################
+
+# Control flow graph
 
 fn find_size_t(xs: vector_t(u64), x: u64) bool {
     loop i: u64 = 0 while i < vec_size(xs) .. ++i {
@@ -418,6 +428,10 @@ fn init_control_flow_graph(ctx: Ctx) none {
         }
     }
 }
+
+########################################################################################################################
+
+# Data flow analysis
 
 fn mask_get(mask: TULong, bit: u64) bool {
     if bit > 63 {

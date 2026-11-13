@@ -6,6 +6,16 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 type struc AsmProgram;
 type struc BackEndContext;
 type struc FrontEndContext;
+
+########################################################################################################################
+
+# Register allocation
+
+########################################################################################################################
+
+# Register allocation
+# Register coalescing
+
 pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none;
 
 ')m4_dnl
