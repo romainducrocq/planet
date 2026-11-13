@@ -15,285 +15,99 @@ m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
 pub fn get_tok_kind_fmt(tok_kind: TOKEN_KIND) string {
     match tok_kind {
-        -> TOK_line_break {
-            return "line break"
-        }
-        -> TOK_open_paren {
-            return "("
-        }
-        -> TOK_close_paren {
-            return ")"
-        }
-        -> TOK_open_brace {
-            return "{"
-        }
-        -> TOK_close_brace {
-            return "}"
-        }
-        -> TOK_open_bracket {
-            return "["
-        }
-        -> TOK_close_bracket {
-            return "]"
-        }
-        -> TOK_comma_separator {
-            return ","
-        }
-        -> TOK_semicolon {
-            return ";"
-        }
-        -> TOK_unop_complement {
-            return "~"
-        }
-        -> TOK_unop_neg {
-            return "-"
-        }
-        -> TOK_unop_not {
-            return "not"
-        }
-        -> TOK_unop_addrof {
-            return "@"
-        }
-        -> TOK_unop_incr {
-            return "++"
-        }
-        -> TOK_unop_decr {
-            return "--"
-        }
-        -> TOK_binop_add {
-            return "+"
-        }
-        -> TOK_binop_multiply {
-            return "*"
-        }
-        -> TOK_binop_divide {
-            return "/"
-        }
-        -> TOK_binop_remainder {
-            return "%"
-        }
-        -> TOK_binop_bitand {
-            return "&"
-        }
-        -> TOK_binop_bitor {
-            return "|"
-        }
-        -> TOK_binop_xor {
-            return "^"
-        }
-        -> TOK_binop_shiftleft {
-            return "<<"
-        }
-        -> TOK_binop_shiftright {
-            return ">>"
-        }
-        -> TOK_binop_and {
-            return "and"
-        }
-        -> TOK_binop_or {
-            return "or"
-        }
-        -> TOK_binop_eq {
-            return "=="
-        }
-        -> TOK_binop_ne {
-            return "~="
-        }
-        -> TOK_binop_lt {
-            return "<"
-        }
-        -> TOK_binop_le {
-            return "<="
-        }
-        -> TOK_binop_gt {
-            return ">"
-        }
-        -> TOK_binop_ge {
-            return ">="
-        }
-        -> TOK_assign {
-            return "="
-        }
-        -> TOK_assign_type {
-            return ":"
-        }
-        -> TOK_assign_add {
-            return "+="
-        }
-        -> TOK_assign_subtract {
-            return "-="
-        }
-        -> TOK_assign_multiply {
-            return "*="
-        }
-        -> TOK_assign_divide {
-            return "/="
-        }
-        -> TOK_assign_remainder {
-            return "%="
-        }
-        -> TOK_assign_bitand {
-            return "&="
-        }
-        -> TOK_assign_bitor {
-            return "|="
-        }
-        -> TOK_assign_xor {
-            return "^="
-        }
-        -> TOK_assign_shiftleft {
-            return "<<="
-        }
-        -> TOK_assign_shiftright {
-            return ">>="
-        }
-        -> TOK_force_exec {
-            return "!"
-        }
-        -> TOK_ternary_if {
-            return "?"
-        }
-        -> TOK_compound_init {
-            return "$"
-        }
-        -> TOK_typeop_member {
-            return "."
-        }
-        -> TOK_loop_post {
-            return ".."
-        }
-        -> TOK_match_with {
-            return "->"
-        }
-        -> TOK_key_char {
-            return "char"
-        }
-        -> TOK_key_string {
-            return "string"
-        }
-        -> TOK_key_i32 {
-            return "i32"
-        }
-        -> TOK_key_i64 {
-            return "i64"
-        }
-        -> TOK_key_i8 {
-            return "i8"
-        }
-        -> TOK_key_f64 {
-            return "f64"
-        }
-        -> TOK_key_u32 {
-            return "u32"
-        }
-        -> TOK_key_u64 {
-            return "u64"
-        }
-        -> TOK_key_u8 {
-            return "u8"
-        }
-        -> TOK_key_any {
-            return "any"
-        }
-        -> TOK_key_none {
-            return "none"
-        }
-        -> TOK_key_fn {
-            return "fn"
-        }
-        -> TOK_key_struc {
-            return "struc"
-        }
-        -> TOK_key_union {
-            return "union"
-        }
-        -> TOK_key_type {
-            return "type"
-        }
-        -> TOK_key_sizeof {
-            return "sizeof"
-        }
-        -> TOK_key_return {
-            return "return"
-        }
-        -> TOK_key_cast {
-            return "cast"
-        }
-        -> TOK_key_if {
-            return "if"
-        }
-        -> TOK_key_elif {
-            return "elif"
-        }
-        -> TOK_key_else {
-            return "else"
-        }
-        -> TOK_key_then {
-            return "then"
-        }
-        -> TOK_key_jump {
-            return "jump"
-        }
-        -> TOK_key_label {
-            return "label"
-        }
-        -> TOK_key_loop {
-            return "loop"
-        }
-        -> TOK_key_while {
-            return "while"
-        }
-        -> TOK_key_match {
-            return "match"
-        }
-        -> TOK_key_otherwise {
-            return "otherwise"
-        }
-        -> TOK_key_break {
-            return "break"
-        }
-        -> TOK_key_continue {
-            return "continue"
-        }
-        -> TOK_key_pub {
-            return "pub"
-        }
-        -> TOK_key_data {
-            return "data"
-        }
-        -> TOK_key_extrn {
-            return "extrn"
-        }
-        -> TOK_key_true {
-            return "true"
-        }
-        -> TOK_key_false {
-            return "false"
-        }
-        -> TOK_identifier {
-            return "identifier"
-        }
-        -> TOK_string_literal {
-            return "const string"
-        }
-        -> TOK_char_const {
-            return "const char"
-        }
-        -> TOK_int_const {
-            return "const i32"
-        }
-        -> TOK_long_const {
-            return "const i64"
-        }
-        -> TOK_uint_const {
-            return "const u32"
-        }
-        -> TOK_ulong_const {
-            return "const u64"
-        }
-        -> TOK_dbl_const {
-            return "const f64"
-        }
+        -> TOK_line_break { return "line break" }
+        -> TOK_open_paren { return "(" }
+        -> TOK_close_paren { return ")" }
+        -> TOK_open_brace { return "{" }
+        -> TOK_close_brace { return "}" }
+        -> TOK_open_bracket { return "[" }
+        -> TOK_close_bracket { return "]" }
+        -> TOK_comma_separator { return "," }
+        -> TOK_semicolon { return ";" }
+        -> TOK_unop_complement { return "~" }
+        -> TOK_unop_neg { return "-" }
+        -> TOK_unop_not { return "not" }
+        -> TOK_unop_addrof { return "@" }
+        -> TOK_unop_incr { return "++" }
+        -> TOK_unop_decr { return "--" }
+        -> TOK_binop_add { return "+" }
+        -> TOK_binop_multiply { return "*" }
+        -> TOK_binop_divide { return "/" }
+        -> TOK_binop_remainder { return "%" }
+        -> TOK_binop_bitand { return "&" }
+        -> TOK_binop_bitor { return "|" }
+        -> TOK_binop_xor { return "^" }
+        -> TOK_binop_shiftleft { return "<<" }
+        -> TOK_binop_shiftright { return ">>" }
+        -> TOK_binop_and { return "and" }
+        -> TOK_binop_or { return "or" }
+        -> TOK_binop_eq { return "==" }
+        -> TOK_binop_ne { return "~=" }
+        -> TOK_binop_lt { return "<" }
+        -> TOK_binop_le { return "<=" }
+        -> TOK_binop_gt { return ">" }
+        -> TOK_binop_ge { return ">=" }
+        -> TOK_assign { return "=" }
+        -> TOK_assign_type { return ":" }
+        -> TOK_assign_add { return "+=" }
+        -> TOK_assign_subtract { return "-=" }
+        -> TOK_assign_multiply { return "*=" }
+        -> TOK_assign_divide { return "/=" }
+        -> TOK_assign_remainder { return "%=" }
+        -> TOK_assign_bitand { return "&=" }
+        -> TOK_assign_bitor { return "|=" }
+        -> TOK_assign_xor { return "^=" }
+        -> TOK_assign_shiftleft { return "<<=" }
+        -> TOK_assign_shiftright { return ">>=" }
+        -> TOK_force_exec { return "!" }
+        -> TOK_ternary_if { return "?" }
+        -> TOK_compound_init { return "$" }
+        -> TOK_typeop_member { return "." }
+        -> TOK_loop_post { return ".." }
+        -> TOK_match_with { return "->" }
+        -> TOK_key_char { return "char" }
+        -> TOK_key_string { return "string" }
+        -> TOK_key_i32 { return "i32" }
+        -> TOK_key_i64 { return "i64" }
+        -> TOK_key_i8 { return "i8" }
+        -> TOK_key_f64 { return "f64" }
+        -> TOK_key_u32 { return "u32" }
+        -> TOK_key_u64 { return "u64" }
+        -> TOK_key_u8 { return "u8" }
+        -> TOK_key_any { return "any" }
+        -> TOK_key_none { return "none" }
+        -> TOK_key_fn { return "fn" }
+        -> TOK_key_struc { return "struc" }
+        -> TOK_key_union { return "union" }
+        -> TOK_key_type { return "type" }
+        -> TOK_key_sizeof { return "sizeof" }
+        -> TOK_key_return { return "return" }
+        -> TOK_key_cast { return "cast" }
+        -> TOK_key_if { return "if" }
+        -> TOK_key_elif { return "elif" }
+        -> TOK_key_else { return "else" }
+        -> TOK_key_then { return "then" }
+        -> TOK_key_jump { return "jump" }
+        -> TOK_key_label { return "label" }
+        -> TOK_key_loop { return "loop" }
+        -> TOK_key_while { return "while" }
+        -> TOK_key_match { return "match" }
+        -> TOK_key_otherwise { return "otherwise" }
+        -> TOK_key_break { return "break" }
+        -> TOK_key_continue { return "continue" }
+        -> TOK_key_pub { return "pub" }
+        -> TOK_key_data { return "data" }
+        -> TOK_key_extrn { return "extrn" }
+        -> TOK_key_true { return "true" }
+        -> TOK_key_false { return "false" }
+        -> TOK_identifier { return "identifier" }
+        -> TOK_string_literal { return "const string" }
+        -> TOK_char_const { return "const char" }
+        -> TOK_int_const { return "const i32" }
+        -> TOK_long_const { return "const i64" }
+        -> TOK_uint_const { return "const u32" }
+        -> TOK_ulong_const { return "const u64" }
+        -> TOK_dbl_const { return "const f64" }
         otherwise {
             THROW_ABORT
         }
@@ -320,27 +134,13 @@ pub fn get_tok_fmt(ctx: *struc IdentifierContext, token: *struc Token) string {
 
 pub fn get_const_fmt(node: *struc CConst) string {
     match node[].tag {
-        -> AST_CConstInt_t {
-            return "i32"
-        }
-        -> AST_CConstLong_t {
-            return "i64"
-        }
-        -> AST_CConstUInt_t {
-            return "u32"
-        }
-        -> AST_CConstULong_t {
-            return "u64"
-        }
-        -> AST_CConstDouble_t {
-            return "f64"
-        }
-        -> AST_CConstChar_t {
-            return "char"
-        }
-        -> AST_CConstUChar_t {
-            return "u8"
-        }
+        -> AST_CConstInt_t { return "i32" }
+        -> AST_CConstLong_t { return "i64" }
+        -> AST_CConstUInt_t { return "u32" }
+        -> AST_CConstULong_t { return "u64" }
+        -> AST_CConstDouble_t { return "f64" }
+        -> AST_CConstChar_t { return "char" }
+        -> AST_CConstUChar_t { return "u8" }
         otherwise {
             THROW_ABORT
         }
@@ -349,12 +149,8 @@ pub fn get_const_fmt(node: *struc CConst) string {
 
 pub fn get_storage_class_fmt(node: *struc CStorageClass) string {
     match node[].tag {
-        -> AST_CStatic_t {
-            return "data"
-        }
-        -> AST_CExtern_t {
-            return "extrn"
-        }
+        -> AST_CStatic_t { return "data" }
+        -> AST_CExtern_t { return "extrn" }
         otherwise {
             THROW_ABORT
         }
@@ -363,15 +159,9 @@ pub fn get_storage_class_fmt(node: *struc CStorageClass) string {
 
 pub fn get_unop_fmt(node: *struc CUnaryOp) string {
     match node[].tag {
-        -> AST_CComplement_t {
-            return "~"
-        }
-        -> AST_CNegate_t {
-            return "-"
-        }
-        -> AST_CNot_t {
-            return "not"
-        }
+        -> AST_CComplement_t { return "~" }
+        -> AST_CNegate_t { return "-" }
+        -> AST_CNot_t { return "not" }
         otherwise {
             THROW_ABORT
         }
@@ -380,63 +170,25 @@ pub fn get_unop_fmt(node: *struc CUnaryOp) string {
 
 pub fn get_binop_fmt(node: *struc CBinaryOp) string {
     match node[].tag {
-        -> AST_CAdd_t {
-            return "+"
-        }
-        -> AST_CSubtract_t {
-            return "-"
-        }
-        -> AST_CMultiply_t {
-            return "*"
-        }
-        -> AST_CDivide_t {
-            return "/"
-        }
-        -> AST_CRemainder_t {
-            return "%"
-        }
-        -> AST_CBitAnd_t {
-            return "&"
-        }
-        -> AST_CBitOr_t {
-            return "|"
-        }
-        -> AST_CBitXor_t {
-            return "^"
-        }
-        -> AST_CBitShiftLeft_t {
-            return "<<"
-        }
-        -> AST_CBitShiftRight_t {
-            return ">>"
-        }
-        -> AST_CBitShrArithmetic_t {
-            return ">>"
-        }
-        -> AST_CAnd_t {
-            return "and"
-        }
-        -> AST_COr_t {
-            return "or"
-        }
-        -> AST_CEqual_t {
-            return "=="
-        }
-        -> AST_CNotEqual_t {
-            return "~="
-        }
-        -> AST_CLessThan_t {
-            return "<"
-        }
-        -> AST_CLessOrEqual_t {
-            return "<="
-        }
-        -> AST_CGreaterThan_t {
-            return ">"
-        }
-        -> AST_CGreaterOrEqual_t {
-            return ">="
-        }
+        -> AST_CAdd_t { return "+" }
+        -> AST_CSubtract_t { return "-" }
+        -> AST_CMultiply_t { return "*" }
+        -> AST_CDivide_t { return "/" }
+        -> AST_CRemainder_t { return "%" }
+        -> AST_CBitAnd_t { return "&" }
+        -> AST_CBitOr_t { return "|" }
+        -> AST_CBitXor_t { return "^" }
+        -> AST_CBitShiftLeft_t { return "<<" }
+        -> AST_CBitShiftRight_t { return ">>" }
+        -> AST_CBitShrArithmetic_t { return ">>" }
+        -> AST_CAnd_t { return "and" }
+        -> AST_COr_t { return "or" }
+        -> AST_CEqual_t { return "==" }
+        -> AST_CNotEqual_t { return "~=" }
+        -> AST_CLessThan_t { return "<" }
+        -> AST_CLessOrEqual_t { return "<=" }
+        -> AST_CGreaterThan_t { return ">" }
+        -> AST_CGreaterOrEqual_t { return ">=" }
         otherwise {
             THROW_ABORT
         }
@@ -453,12 +205,8 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
         }
         -> AST_CPrefix_t {
             match node[].tag {
-                -> AST_CAdd_t {
-                    return "prefix ++"
-                }
-                -> AST_CSubtract_t {
-                    return "prefix --"
-                }
+                -> AST_CAdd_t { return "prefix ++" }
+                -> AST_CSubtract_t { return "prefix --" }
                 otherwise {
                     THROW_ABORT
                 }
@@ -466,12 +214,8 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
         }
         -> AST_CPostfix_t {
             match node[].tag {
-                -> AST_CAdd_t {
-                    return "postfix ++"
-                }
-                -> AST_CSubtract_t {
-                    return "postfix --"
-                }
+                -> AST_CAdd_t { return "postfix ++" }
+                -> AST_CSubtract_t { return "postfix --" }
                 otherwise {
                     THROW_ABORT
                 }
@@ -482,39 +226,17 @@ pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string {
         }
     }
     match node[].tag {
-        -> AST_CAdd_t {
-            return "+="
-        }
-        -> AST_CSubtract_t {
-            return "-="
-        }
-        -> AST_CMultiply_t {
-            return "*="
-        }
-        -> AST_CDivide_t {
-            return "/="
-        }
-        -> AST_CRemainder_t {
-            return "%="
-        }
-        -> AST_CBitAnd_t {
-            return "&="
-        }
-        -> AST_CBitOr_t {
-            return "|="
-        }
-        -> AST_CBitXor_t {
-            return "^="
-        }
-        -> AST_CBitShiftLeft_t {
-            return "<<="
-        }
-        -> AST_CBitShiftRight_t {
-            return ">>="
-        }
-        -> AST_CBitShrArithmetic_t {
-            return ">>="
-        }
+        -> AST_CAdd_t { return "+=" }
+        -> AST_CSubtract_t { return "-=" }
+        -> AST_CMultiply_t { return "*=" }
+        -> AST_CDivide_t { return "/=" }
+        -> AST_CRemainder_t { return "%=" }
+        -> AST_CBitAnd_t { return "&=" }
+        -> AST_CBitOr_t { return "|=" }
+        -> AST_CBitXor_t { return "^=" }
+        -> AST_CBitShiftLeft_t { return "<<=" }
+        -> AST_CBitShiftRight_t { return ">>=" }
+        -> AST_CBitShrArithmetic_t { return ">>=" }
         otherwise {
             THROW_ABORT
         }
@@ -622,33 +344,15 @@ pub fn get_struct_fmt(ctx: *struc IdentifierContext, struct_type: *struc Structu
 
 pub fn get_type_fmt(ctx: *struc IdentifierContext, type_t: *struc Type, type_fmt: *string_t) string {
     match type_t[].tag {
-        -> AST_Char_t {
-            return "char"
-        }
-        -> AST_SChar_t {
-            return "i8"
-        }
-        -> AST_UChar_t {
-            return "u8"
-        }
-        -> AST_Int_t {
-            return "i32"
-        }
-        -> AST_Long_t {
-            return "i64"
-        }
-        -> AST_UInt_t {
-            return "u32"
-        }
-        -> AST_ULong_t {
-            return "u64"
-        }
-        -> AST_Double_t {
-            return "f64"
-        }
-        -> AST_Void_t {
-            return "none"
-        }
+        -> AST_Char_t { return "char" }
+        -> AST_SChar_t { return "i8" }
+        -> AST_UChar_t { return "u8" }
+        -> AST_Int_t { return "i32" }
+        -> AST_Long_t { return "i64" }
+        -> AST_UInt_t { return "u32" }
+        -> AST_ULong_t { return "u64" }
+        -> AST_Double_t { return "f64" }
+        -> AST_Void_t { return "none" }
         -> AST_FunType_t {
             return get_fun_fmt(ctx, @type_t[].get._FunType, type_fmt)
         }

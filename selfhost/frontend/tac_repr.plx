@@ -26,15 +26,9 @@ m4_define(`Ctx', `*struc TacReprContext')m4_dnl
 # unary_operator = Complement | Negate | Not
 fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
     match node[].tag {
-        -> AST_CComplement_t {
-            return init_TacComplement()
-        }
-        -> AST_CNegate_t {
-            return init_TacNegate()
-        }
-        -> AST_CNot_t {
-            return init_TacNot()
-        }
+        -> AST_CComplement_t { return init_TacComplement() }
+        -> AST_CNegate_t { return init_TacNegate() }
+        -> AST_CNot_t { return init_TacNot() }
         otherwise {
             THROW_ABORT
         }
@@ -46,57 +40,23 @@ fn repr_unop(node: *struc CUnaryOp) struc TacUnaryOp {
 #                 GreaterOrEqual
 fn repr_binop(node: *struc CBinaryOp) struc TacBinaryOp {
     match node[].tag {
-        -> AST_CAdd_t {
-            return init_TacAdd()
-        }
-        -> AST_CSubtract_t {
-            return init_TacSubtract()
-        }
-        -> AST_CMultiply_t {
-            return init_TacMultiply()
-        }
-        -> AST_CDivide_t {
-            return init_TacDivide()
-        }
-        -> AST_CRemainder_t {
-            return init_TacRemainder()
-        }
-        -> AST_CBitAnd_t {
-            return init_TacBitAnd()
-        }
-        -> AST_CBitOr_t {
-            return init_TacBitOr()
-        }
-        -> AST_CBitXor_t {
-            return init_TacBitXor()
-        }
-        -> AST_CBitShiftLeft_t {
-            return init_TacBitShiftLeft()
-        }
-        -> AST_CBitShiftRight_t {
-            return init_TacBitShiftRight()
-        }
-        -> AST_CBitShrArithmetic_t {
-            return init_TacBitShrArithmetic()
-        }
-        -> AST_CEqual_t {
-            return init_TacEqual()
-        }
-        -> AST_CNotEqual_t {
-            return init_TacNotEqual()
-        }
-        -> AST_CLessThan_t {
-            return init_TacLessThan()
-        }
-        -> AST_CLessOrEqual_t {
-            return init_TacLessOrEqual()
-        }
-        -> AST_CGreaterThan_t {
-            return init_TacGreaterThan()
-        }
-        -> AST_CGreaterOrEqual_t {
-            return init_TacGreaterOrEqual()
-        }
+        -> AST_CAdd_t { return init_TacAdd() }
+        -> AST_CSubtract_t { return init_TacSubtract() }
+        -> AST_CMultiply_t { return init_TacMultiply() }
+        -> AST_CDivide_t { return init_TacDivide() }
+        -> AST_CRemainder_t { return init_TacRemainder() }
+        -> AST_CBitAnd_t { return init_TacBitAnd() }
+        -> AST_CBitOr_t { return init_TacBitOr() }
+        -> AST_CBitXor_t { return init_TacBitXor() }
+        -> AST_CBitShiftLeft_t { return init_TacBitShiftLeft() }
+        -> AST_CBitShiftRight_t { return init_TacBitShiftRight() }
+        -> AST_CBitShrArithmetic_t { return init_TacBitShrArithmetic() }
+        -> AST_CEqual_t { return init_TacEqual() }
+        -> AST_CNotEqual_t { return init_TacNotEqual() }
+        -> AST_CLessThan_t { return init_TacLessThan() }
+        -> AST_CLessOrEqual_t { return init_TacLessOrEqual() }
+        -> AST_CGreaterThan_t { return init_TacGreaterThan() }
+        -> AST_CGreaterOrEqual_t { return init_TacGreaterOrEqual() }
         otherwise {
             THROW_ABORT
         }

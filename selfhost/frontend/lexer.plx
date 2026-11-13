@@ -582,45 +582,19 @@ fn match_identifier(ctx: Ctx) TOKEN_KIND {
 fn match_token(ctx: Ctx) TOKEN_KIND {
     ctx[].match_size = 1
     match ctx[].line[ctx[].match_at] {
-        -> '(' {
-            return TOK_open_paren
-        }
-        -> ')' {
-            return TOK_close_paren
-        }
-        -> '{' {
-            return TOK_open_brace
-        }
-        -> '}' {
-            return TOK_close_brace
-        }
-        -> '[' {
-            return TOK_open_bracket
-        }
-        -> ']' {
-            return TOK_close_bracket
-        }
-        -> ',' {
-            return TOK_comma_separator
-        }
-        -> ';' {
-            return TOK_semicolon
-        }
-        -> '@' {
-            return TOK_unop_addrof
-        }
-        -> ':' {
-            return TOK_assign_type
-        }
-        -> '!' {
-            return TOK_force_exec
-        }
-        -> '?' {
-            return TOK_ternary_if
-        }
-        -> '$' {
-            return TOK_compound_init
-        }
+        -> '(' { return TOK_open_paren }
+        -> ')' { return TOK_close_paren }
+        -> '{' { return TOK_open_brace }
+        -> '}' { return TOK_close_brace }
+        -> '[' { return TOK_open_bracket }
+        -> ']' { return TOK_close_bracket }
+        -> ',' { return TOK_comma_separator }
+        -> ';' { return TOK_semicolon }
+        -> '@' { return TOK_unop_addrof }
+        -> ':' { return TOK_assign_type }
+        -> '!' { return TOK_force_exec }
+        -> '?' { return TOK_ternary_if }
+        -> '$' { return TOK_compound_init }
         -> '=' {
             if match_char(ctx, '=') {
                 return TOK_binop_eq
