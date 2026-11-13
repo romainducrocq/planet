@@ -15,13 +15,19 @@ m4_define(`StStructure', `struc Structure')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStructure'')
 
-type struc SemanticContext(errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
+type struc SemanticContext(
+    errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
     # Type checking
-    extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''), scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')), scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''),
+    extern_scope_map: hashmap_t(``TIdentifier'', u64), goto_map: hashmap_t(``TIdentifier'', ``TIdentifier''),
+    scoped_identifier_maps: vector_t(hashmap_t(``TIdentifier'', ``TIdentifier'')),
+    scoped_struct_maps: vector_t(hashmap_t(``TIdentifier'', ``StStructure'')), label_set: hashset_t(``TIdentifier''),
     # Loop labeling
     break_loop_labels: vector_t(TIdentifier), continue_loop_labels: vector_t(TIdentifier),
     # Identifier resolution
-    fun_def_name: TIdentifier, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''), struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''), p_static_inits: *vector_t(shared_ptr_t(StaticInit)))
+    fun_def_name: TIdentifier, p_switch_statement: *struc CSwitch, fun_def_set: hashset_t(``TIdentifier''),
+    struct_def_set: hashset_t(``TIdentifier''), union_def_set: hashset_t(``TIdentifier''),
+    p_static_inits: *vector_t(shared_ptr_t(StaticInit))
+)
 
 ########################################################################################################################
 

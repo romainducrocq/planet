@@ -18,19 +18,31 @@ type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO2;
 
-type struc InferenceRegister(color: REGISTER_KIND, reg_kind: REGISTER_KIND, degree: u64, spill_cost: u64, linked_hard_mask: mask_t, linked_pseudo_names: vector_t(TIdentifier))
+type struc InferenceRegister(
+    color: REGISTER_KIND, reg_kind: REGISTER_KIND, degree: u64, spill_cost: u64,
+    linked_hard_mask: mask_t, linked_pseudo_names: vector_t(TIdentifier)
+)
 
 m4_define(`StInferenceRegister', `struc InferenceRegister')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StInferenceRegister'')
 
-type struc InferenceGraph(k: u64, offset: u64, hard_reg_mask: mask_t, unpruned_hard_mask_bits: vector_t(u64), unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: hashmap_t(``TIdentifier'', ``StInferenceRegister''))
+type struc InferenceGraph(
+    k: u64, offset: u64, hard_reg_mask: mask_t, unpruned_hard_mask_bits: vector_t(u64),
+    unpruned_pseudo_names: vector_t(TIdentifier), pseudo_reg_map: hashmap_t(``TIdentifier'', ``StInferenceRegister'')
+)
 
-type struc RegAllocContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext,
+type struc RegAllocContext(
+    backend: *struc BackEndContext, frontend: *struc FrontEndContext,
     # Register allocation
-    callee_saved_reg_mask: mask_t, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph, reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2), infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)),
+    callee_saved_reg_mask: mask_t, p_backend_fun: *struc BackendFun, p_infer_graph: *struc InferenceGraph,
+    reg_color_map: [26]REGISTER_KIND, hard_regs: [26]struc InferenceRegister, cfg: unique_ptr_t(ControlFlowGraph),
+    dfa: unique_ptr_t(DataFlowAnalysis), dfa_o2: unique_ptr_t(DataFlowAnalysisO2),
+    infer_graph: unique_ptr_t(InferenceGraph), sse_infer_graph: unique_ptr_t(InferenceGraph),
+    p_instrs: *vector_t(unique_ptr_t(AsmInstruction)),
     # Register coalescing
-    is_with_coal: bool)
+    is_with_coal: bool
+)
 
 fn free_InferenceGraph(self: *unique_ptr_t(InferenceGraph)) none {
     uptr_delete(self[])

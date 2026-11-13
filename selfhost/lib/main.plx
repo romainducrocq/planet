@@ -27,9 +27,12 @@ m4_include(`../backend/symt_cvt.plx.m4')m4_dnl
 m4_include(`../optimizer/optim_tac.plx.m4')m4_dnl
 m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
 
-type struc MainContext(errors: *struc ErrorsContext,
+type struc MainContext(
+    errors: *struc ErrorsContext,
     # Main
-    is_verbose: bool, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t, includedirs: vector_t(string), stdlibdirs: vector_t(string))
+    is_verbose: bool, debug_code: u8, optim_1_mask: u8, optim_2_code: u8, filename: string_t,
+    includedirs: vector_t(string), stdlibdirs: vector_t(string)
+)
 
 ########################################################################################################################
 

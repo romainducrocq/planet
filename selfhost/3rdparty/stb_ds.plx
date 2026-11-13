@@ -78,12 +78,13 @@ pub fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any {
 }
 
 type struc stbds_string_block(next: *struc stbds_string_block, storage: [8]char)
-
 type struc stbds_string_arena(storage: *struc stbds_string_block, remaining: u64, block: u8, mode: u8)
-
 type struc stbds_hash_bucket(hash: [8]u64, index: [8]i64)
-
-type struc stbds_hash_index(temp_key: string, slot_count: u64, used_count: u64, used_count_threshold: u64, used_count_shrink_threshold: u64, tombstone_count: u64, tombstone_count_threshold: u64, seed: u64, slot_count_log2: u64, string_arena: struc stbds_string_arena, storage: *struc stbds_hash_bucket)
+type struc stbds_hash_index(
+    temp_key: string, slot_count: u64, used_count: u64, used_count_threshold: u64, used_count_shrink_threshold: u64,
+    tombstone_count: u64, tombstone_count_threshold: u64, seed: u64, slot_count_log2: u64,
+    string_arena: struc stbds_string_arena, storage: *struc stbds_hash_bucket
+)
 
 stbds_hash_seed: u64 = 826366246 # 0x31415926
 
