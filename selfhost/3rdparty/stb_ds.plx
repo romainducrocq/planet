@@ -1,3 +1,46 @@
+# stb_ds.h - v0.67 - public domain data structures - Sean Barrett 2019
+#
+# ------------------------------------------------------------------------------
+# This software is available under 2 licenses -- choose whichever you prefer.
+# ------------------------------------------------------------------------------
+# ALTERNATIVE A - MIT License
+# Copyright (c) 2019 Sean Barrett
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+# of the Software, and to permit persons to whom the Software is furnished to do
+# so, subject to the following conditions:
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ------------------------------------------------------------------------------
+# ALTERNATIVE B - Public Domain (www.unlicense.org)
+# This is free and unencumbered software released into the public domain.
+# Anyone is free to copy, modify, publish, use, compile, sell, or distribute this
+# software, either in source code form or as a compiled binary, for any purpose,
+# commercial or non-commercial, and by any means.
+# In jurisdictions that recognize copyright laws, the author or authors of this
+# software dedicate any and all copyright interest in the software to the public
+# domain. We make this dedication for the benefit of the public at large and to
+# the detriment of our heirs and successors. We intend this dedication to be an
+# overt act of relinquishment in perpetuity of all present and future rights to
+# this software under copyright law.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# ------------------------------------------------------------------------------
+#
+
 m4_include(`stb_ds.plx.m4')m4_dnl
 
 use "string"
@@ -42,7 +85,7 @@ type struc stbds_hash_bucket(hash: [8]u64, index: [8]i64)
 
 type struc stbds_hash_index(temp_key: string, slot_count: u64, used_count: u64, used_count_threshold: u64, used_count_shrink_threshold: u64, tombstone_count: u64, tombstone_count_threshold: u64, seed: u64, slot_count_log2: u64, string_arena: struc stbds_string_arena, storage: *struc stbds_hash_bucket)
 
-stbds_hash_seed: u64 = 826366246
+stbds_hash_seed: u64 = 826366246 # 0x31415926
 
 fn stbds_probe_position(hash: u64, slot_count: u64, slot_log2: u64) u64 {
     pos: u64;
@@ -84,16 +127,16 @@ fn stbds_make_hash_index(slot_count: u64, ot: *struc stbds_hash_index) *struc st
         temp: u64;
         memset(@t[].string_arena, 0, sizeof(t[].string_arena))
         t[].seed = stbds_hash_seed
-        temp = 2276503805 ^ 2147001325
+        temp = 2276503805 ^ 2147001325 # 0x87b0b0fd
         temp <<= 16
         temp <<= 16
         temp >>= 16
         temp >>= 16
-        a = 666578662
+        a = 666578662 # 0x27bb2ee6
         a <<= 16
         a <<= 16
         a ^= temp ^ 2147001325
-        temp = 3037000493 ^ 715136305
+        temp = 3037000493 ^ 715136305 # 0xb504f32d
         temp <<= 16
         temp <<= 16
         temp >>= 16
@@ -184,10 +227,10 @@ fn stbds_siphash_bytes(p: *any, len: u64, seed: u64) u64 {
     v2: u64;
     v3: u64;
     dat: u64;
-    v0 = (((cast<u64>(1936682341) << 16) << 16) + 1886610805) ^ seed
-    v1 = (((cast<u64>(1685025377) << 16) << 16) + 1852075885) ^ ~seed
-    v2 = (((cast<u64>(1819895653) << 16) << 16) + 1852142177) ^ seed
-    v3 = (((cast<u64>(1952801890) << 16) << 16) + 2037671283) ^ ~seed
+    v0 = (((cast<u64>(1936682341) << 16) << 16) + 1886610805) ^ seed  # 0x736f6d65, 0x70736575
+    v1 = (((cast<u64>(1685025377) << 16) << 16) + 1852075885) ^ ~seed # 0x646f7261, 0x6e646f6d
+    v2 = (((cast<u64>(1819895653) << 16) << 16) + 1852142177) ^ seed  # 0x6c796765, 0x6e657261
+    v3 = (((cast<u64>(1952801890) << 16) << 16) + 2037671283) ^ ~seed # 0x74656462, 0x79746573
     loop i = 0 while i + sizeof<u64> <= len .. i += sizeof<u64> {
         dat = d[0] | (d[1] << 8) | (d[2] << 16) | (d[3] << 24)
         dat |= cast<u64>((d[4] | (d[5] << 8) | (d[6] << 16) | (d[7] << 24))) << 16 << 16
