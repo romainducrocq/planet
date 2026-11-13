@@ -16,7 +16,16 @@ type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO1;
 
-type struc OptimTacContext(frontend: *struc FrontEndContext, is_fixed_point: bool, enabled_optims: [5]bool, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o1: unique_ptr_t(DataFlowAnalysisO1), p_instrs: *vector_t(unique_ptr_t(TacInstruction)))
+type struc OptimTacContext(frontend: *struc FrontEndContext,
+    # Constant folding
+    # Unreachable code elimination
+    # Copy propagation
+    # Dead store elimination
+    is_fixed_point: bool, enabled_optims: [5]bool, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o1: unique_ptr_t(DataFlowAnalysisO1), p_instrs: *vector_t(unique_ptr_t(TacInstruction)))
+
+########################################################################################################################
+
+# Three address code optimization
 
 m4_ifdef(`__OPTIM_LEVEL__', `', `
 m4_define(`__OPTIM_LEVEL__', `1')m4_dnl
@@ -24,6 +33,10 @@ m4_undefine(`_OPTIMIZER_IMPL_OLVL_M4')m4_dnl
 m4_include(`impl_olvl.plx.m4')m4_dnl
 m4_undefine(`__OPTIM_LEVEL__')m4_dnl
 ')m4_dnl
+
+########################################################################################################################
+
+# Constant folding
 
 fn fold_sign_extend_char_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConstChar) shared_ptr_t(CConst) {
     match map_get(ctx[].frontend[].symbol_table, node[].name)[].type_t[].tag {
@@ -1268,6 +1281,10 @@ fn fold_constants(ctx: Ctx) none {
     }
 }
 
+########################################################################################################################
+
+# Unreachable code elimination
+
 fn unreach_reachable_block(ctx: Ctx, block_id: u64) none;
 
 fn unreach_succ_reachable_blocks(ctx: Ctx, block_id: u64) none {
@@ -1376,6 +1393,10 @@ fn eliminate_unreachable_code(ctx: Ctx) none {
         }
     }
 }
+
+########################################################################################################################
+
+# Copy propagation
 
 fn is_aliased_value(ctx: Ctx, node: *struc TacValue) bool {
     return node[].tag == AST_TacVariable_t and is_aliased_name(ctx, node[].get._TacVariable.name)
@@ -2457,6 +2478,10 @@ fn propagate_copies(ctx: Ctx) none {
     }
 }
 
+########################################################################################################################
+
+# Dead store elimination
+
 fn elim_transfer_addressed(ctx: Ctx, next_instr_idx: u64) none {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         GET_DFA_INSTR_SET_MASK(next_instr_idx, i) |= GET_DFA_INSTR_SET_MASK(ctx[].dfa_o1[].addressed_idx, i)
@@ -2714,6 +2739,8 @@ fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: bool) none {
     }
 }
 
+########################################################################################################################
+
 m4_define(`CONSTANT_FOLDING', `0')m4_dnl
 m4_define(`COPY_PROPAGATION', `1')m4_dnl
 m4_define(`UNREACHABLE_CODE_ELIMINATION', `2')m4_dnl
@@ -2758,6 +2785,8 @@ fn optim_program(ctx: Ctx, node: *struc TacProgram) none {
     }
     set_clear(ctx[].frontend[].addressed_set)
 }
+
+########################################################################################################################
 
 pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc FrontEndContext, optim_1_mask: u8) none {
     ctx: struc OptimTacContext;
