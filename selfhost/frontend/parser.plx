@@ -344,8 +344,8 @@ fn parse_datatype_specifier(ctx: Ctx, tag_name: *TIdentifier, is_union: *bool) e
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_data_specifier, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at,
+                GET_PARSER_MSG(MSG_expect_data_specifier, str_fmt_tok(ctx[].next_tok)))
         }
     }
     TRY(peek_next(ctx))
@@ -438,8 +438,8 @@ fn parse_arr_specifier(ctx: Ctx, type_specifier: *shared_ptr_t(Type)) error_t {
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at,
+                GET_PARSER_MSG(MSG_arr_size_not_int_const, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     TRY(pop_next(ctx))
@@ -545,8 +545,7 @@ fn parse_maybe_type(ctx: Ctx, maybe_type: *shared_ptr_t(Type)) error_t {
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_maybe_type, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_maybe_type, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -844,8 +843,8 @@ fn parse_sizeof_unary_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].next_tok[].info_at, GET_PARSER_MSG(MSG_expect_open_sizeof, str_fmt_tok(ctx[].next_tok)))
+            THROW_AT_TOKEN(ctx[].next_tok[].info_at,
+                GET_PARSER_MSG(MSG_expect_open_sizeof, str_fmt_tok(ctx[].next_tok)))
         }
     }
     FINALLY
@@ -895,8 +894,7 @@ fn parse_primary_exp_factor(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_expression, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_expression, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
@@ -1361,8 +1359,8 @@ fn parse_loop_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
         -> TOK_key_pub;
         -> TOK_key_data;
         -> TOK_key_extrn {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_loop_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at,
+                GET_PARSER_MSG(MSG_loop_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
         }
         -> TOK_identifier {
             TRY(peek_next_i(ctx, 1))
@@ -1447,8 +1445,8 @@ fn parse_with_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t 
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at,
+                GET_PARSER_MSG(MSG_case_value_not_int_const, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     value = make_CConstant(@constant, info_at)
@@ -1756,8 +1754,8 @@ fn parse_item_decltor(ctx: Ctx, name: *TIdentifier, derived_type: *shared_ptr_t(
         -> TOK_key_pub;
         -> TOK_key_data;
         -> TOK_key_extrn {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_list_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at,
+                GET_PARSER_MSG(MSG_list_decl_not_auto, str_fmt_tok(ctx[].peek_tok)))
         }
         otherwise {
             break
@@ -1985,8 +1983,8 @@ fn parse_storage_class(ctx: Ctx, storage_class: *struc CStorageClass) error_t {
             EARLY_EXIT
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at,
+                GET_PARSER_MSG(MSG_expect_storage_class, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     TRY(pop_next(ctx))
@@ -2017,8 +2015,8 @@ fn parse_declaration(ctx: Ctx, storage_class: *struc CStorageClass, declaration:
             break
         }
         otherwise {
-            THROW_AT_TOKEN(
-                ctx[].peek_tok[].info_at, GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx[].peek_tok)))
+            THROW_AT_TOKEN(ctx[].peek_tok[].info_at,
+                GET_PARSER_MSG(MSG_expect_declaration, str_fmt_tok(ctx[].peek_tok)))
         }
     }
     FINALLY
