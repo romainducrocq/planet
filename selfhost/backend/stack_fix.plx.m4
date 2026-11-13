@@ -8,6 +8,16 @@ m4_include(`../ast/ast_t.plx.m4')m4_dnl
 type struc AsmInstruction;
 type struc AsmProgram;
 type struc BackEndContext;
+
+########################################################################################################################
+
+# Stack fix
+
+########################################################################################################################
+
+# Pseudo register replacement
+# Instruction fix up
+
 pub fn alloc_stack_bytes(byte: TLong) unique_ptr_t(AsmInstruction);
 pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none;
 

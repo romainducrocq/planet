@@ -32,7 +32,13 @@ m4_define(`StStruct8Bytes', `struc Struct8Bytes')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStruct8Bytes'')
 
-type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext, p_fun_type: *struc FunType, arg_regs: [6]REGISTER_KIND, sse_arg_regs: [8]REGISTER_KIND, dbl_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_8b_map: hashmap_t(``TIdentifier'', ``StStruct8Bytes''), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
+type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
+    # Assembly generation
+    p_fun_type: *struc FunType, arg_regs: [6]REGISTER_KIND, sse_arg_regs: [8]REGISTER_KIND, dbl_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_8b_map: hashmap_t(``TIdentifier'', ``StStruct8Bytes''), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
+
+########################################################################################################################
+
+# Assembly generation
 
 m4_define(`Ctx', `*struc AsmGenContext')m4_dnl
 
@@ -191,6 +197,8 @@ fn var_op(ctx: Ctx, node: *struc TacVariable) shared_ptr_t(AsmOperand) {
     }
 }
 
+# operand = Imm(int, bool, bool, bool) | Reg(reg) | Pseudo(identifier) | Memory(int, reg) | Data(identifier, int)
+#         | PseudoMem(identifier, int) | Indexed(int, reg, reg)
 fn gen_op(ctx: Ctx, node: *struc TacValue) shared_ptr_t(AsmOperand) {
     match node[].tag {
         -> AST_TacConstant_t {
@@ -205,6 +213,7 @@ fn gen_op(ctx: Ctx, node: *struc TacValue) shared_ptr_t(AsmOperand) {
     }
 }
 
+# (signed) cond_code = E | NE | L | LE | G | GE
 fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
         -> AST_TacEqual_t {
@@ -231,6 +240,7 @@ fn gen_signed_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     }
 }
 
+# (unsigned) cond_code = E | NE | B | BE | A | AE
 fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     match node[].tag {
         -> AST_TacEqual_t {
@@ -257,6 +267,7 @@ fn gen_unsigned_cond_code(node: *struc TacBinaryOp) struc AsmCondCode {
     }
 }
 
+# unary_operator = Not | Neg | Shr
 fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
     match node[].tag {
         -> AST_TacComplement_t {
@@ -271,6 +282,8 @@ fn gen_unop(node: *struc TacUnaryOp) struc AsmUnaryOp {
     }
 }
 
+# binary_operator = Add | Sub | Mult | DivDouble | BitAnd | BitOr | BitXor | BitShiftLeft | BitShiftRight |
+#                 BitShrArithmetic
 fn gen_binop(node: *struc TacBinaryOp) struc AsmBinaryOp {
     match node[].tag {
         -> AST_TacAdd_t {
@@ -2674,6 +2687,13 @@ fn gen_instr(ctx: Ctx, node: *struc TacInstruction) none {
     }
 }
 
+# instruction = Mov(assembly_type, operand, operand) | MovSx(assembly_type, assembly_type, operand, operand)
+#             | MovZeroExtend(assembly_type, assembly_type, operand, operand) | Lea(operand, operand)
+#             | Cvttsd2si(assembly_type, operand, operand) | Cvtsi2sd(assembly_type, operand, operand)
+#             | Unary(unary_operator, assembly_type, operand) | Binary(binary_operator, assembly_type, operand,
+#             operand) | Cmp(assembly_type, operand, operand) | Idiv(assembly_type, operand) | Div(assembly_type,
+#             operand) | Cdq(assembly_type) | Jmp(identifier) | JmpCC(cond_code, identifier) | SetCC(cond_code,
+#             operand) | Label(identifier) | Push(operand) | Pop(reg) | Call(identifier) | Ret
 fn gen_instr_list(ctx: Ctx, node_list: vector_t(unique_ptr_t(TacInstruction))) none {
     loop i: u64 = 0 while i < vec_size(node_list) .. ++i {
         if node_list[i] {
@@ -2883,6 +2903,8 @@ fn gen_static_const_toplvl(ctx: Ctx, node: *struc TacStaticConstant) unique_ptr_
     return make_AsmStaticConstant(name, alignment, @static_init)
 }
 
+# top_level = Function(identifier, bool, bool, instruction*) | StaticVariable(identifier, bool, int, static_init*)
+#           | StaticConstant(identifier, int, static_init)
 fn gen_toplvl(ctx: Ctx, node: *struc TacTopLevel) unique_ptr_t(AsmTopLevel) {
     match node[].tag {
         -> AST_TacFunction_t {
@@ -2900,6 +2922,7 @@ fn gen_toplvl(ctx: Ctx, node: *struc TacTopLevel) unique_ptr_t(AsmTopLevel) {
     }
 }
 
+# AST = Program(top_level*, top_level*)
 fn gen_program(ctx: Ctx, node: *struc TacProgram) unique_ptr_t(AsmProgram) {
     static_const_toplvls: vector_t(unique_ptr_t(AsmTopLevel)) = vec_new()
     vec_reserve(static_const_toplvls, vec_size(node[].static_const_toplvls))
@@ -2923,6 +2946,8 @@ fn gen_program(ctx: Ctx, node: *struc TacProgram) unique_ptr_t(AsmProgram) {
     }
     return make_AsmProgram(@static_const_toplvls, @top_levels)
 }
+
+########################################################################################################################
 
 pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(AsmProgram) {
     ctx: struc AsmGenContext;

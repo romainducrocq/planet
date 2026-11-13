@@ -10,7 +10,13 @@ m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext, symbol: TIdentifier)
+type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext,
+    # Symbol table conversion
+    symbol: TIdentifier)
+
+########################################################################################################################
+
+# Symbol table conversion
 
 m4_define(`Ctx', `*struc SymtCvtContext')m4_dnl
 
@@ -205,6 +211,8 @@ fn cvt_program(ctx: Ctx, node: *struc AsmProgram) none {
         cvt_toplvl(ctx, node[].static_const_toplvls[i])
     }
 }
+
+########################################################################################################################
 
 pub fn convert_symbol_table(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext) none {
     ctx: struc SymtCvtContext;

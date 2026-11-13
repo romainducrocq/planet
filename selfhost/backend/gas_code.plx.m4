@@ -7,6 +7,11 @@ type struc AsmProgram;
 type struc BackEndContext;
 type struc FileIoContext;
 type struc IdentifierContext;
+
+########################################################################################################################
+
+# Gnu assembler code emission
+
 pub fn emit_gas_code(asm_ast: *unique_ptr_t(AsmProgram), backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none;
 
 ')m4_dnl
