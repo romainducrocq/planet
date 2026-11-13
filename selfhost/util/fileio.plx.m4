@@ -14,10 +14,11 @@ type struc ErrorsContext;
 # File io
 
 type struc FileRead(len: u64, buf: string, fd: *struc FILE, filename: string_t)
-
-type struc FileIoContext(errors: *struc ErrorsContext,
+type struc FileIoContext(
+    errors: *struc ErrorsContext,
     # File io
-    fd_write: *struc FILE, write_buf: string_t, filename: string_t, file_reads: vector_t(struc FileRead))
+    fd_write: *struc FILE, write_buf: string_t, filename: string_t, file_reads: vector_t(struc FileRead)
+)
 
 pub fn find_file(filename: string) bool;
 pub fn get_filename(ctx: *struc FileIoContext) string;

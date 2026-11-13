@@ -13,9 +13,12 @@ m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../ast/interm_ast.plx.m4')m4_dnl
 
-type struc TacReprContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
+type struc TacReprContext(
+    frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
     # Three address code representation
-    p_instrs: *vector_t(unique_ptr_t(TacInstruction)), p_toplvls: *vector_t(unique_ptr_t(TacTopLevel)), p_static_consts: *vector_t(unique_ptr_t(TacTopLevel)))
+    p_instrs: *vector_t(unique_ptr_t(TacInstruction)), p_toplvls: *vector_t(unique_ptr_t(TacTopLevel)),
+    p_static_consts: *vector_t(unique_ptr_t(TacTopLevel))
+)
 
 ########################################################################################################################
 

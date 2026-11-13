@@ -16,12 +16,16 @@ type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO1;
 
-type struc OptimTacContext(frontend: *struc FrontEndContext,
+type struc OptimTacContext(
+    frontend: *struc FrontEndContext,
     # Constant folding
     # Unreachable code elimination
     # Copy propagation
     # Dead store elimination
-    is_fixed_point: bool, enabled_optims: [5]bool, cfg: unique_ptr_t(ControlFlowGraph), dfa: unique_ptr_t(DataFlowAnalysis), dfa_o1: unique_ptr_t(DataFlowAnalysisO1), p_instrs: *vector_t(unique_ptr_t(TacInstruction)))
+    is_fixed_point: bool, enabled_optims: [5]bool, cfg: unique_ptr_t(ControlFlowGraph),
+    dfa: unique_ptr_t(DataFlowAnalysis), dfa_o1: unique_ptr_t(DataFlowAnalysisO1),
+    p_instrs: *vector_t(unique_ptr_t(TacInstruction))
+)
 
 ########################################################################################################################
 

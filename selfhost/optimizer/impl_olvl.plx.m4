@@ -22,22 +22,32 @@ m4_define(`free_AstInstruction', `free_AsmInstruction($1)')m4_dnl
 m4_define(`uptr_move_AstInstruction', `uptr_move(AsmInstruction, $1, $2)')m4_dnl
 ')m4_dnl
 
-type struc ControlFlowBlock(size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: vector_t(u64), succ_ids: vector_t(u64))
+type struc ControlFlowBlock(
+    size: u64, instrs_front_idx: u64, instrs_back_idx: u64, pred_ids: vector_t(u64), succ_ids: vector_t(u64)
+)
+type struc ControlFlowGraph(
+    entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64),
+    reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock),
+    identifier_id_map: hashmap_t(``TIdentifier'', u64)
+)
 
-type struc ControlFlowGraph(entry_id: u64, exit_id: u64, entry_succ_ids: vector_t(u64), exit_pred_ids: vector_t(u64), reaching_code: vector_t(bool), blocks: vector_t(struc ControlFlowBlock), identifier_id_map: hashmap_t(``TIdentifier'', u64))
-
-type struc DataFlowAnalysis(set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64), instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t))
+type struc DataFlowAnalysis(
+    set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64),
+    instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t)
+)
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 type struc DataFlowAnalysisO1(
     # Copy propagation
     data_idx_map: vector_t(u64), bak_instrs: vector_t(unique_ptr_t(TacInstruction)),
     # Dead store elimination
-    addressed_idx: u64)
+    addressed_idx: u64
+)
 ', __OPTIM_LEVEL__, `2', `
 type struc DataFlowAnalysisO2(
     # Register allocation
-    data_name_map: vector_t(TIdentifier))
+    data_name_map: vector_t(TIdentifier)
+)
 ')m4_dnl
 
 fn free_ControlFlowGraph(self: *unique_ptr_t(ControlFlowGraph)) none {

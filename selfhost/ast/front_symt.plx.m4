@@ -226,7 +226,11 @@ PairKeyValue(``TIdentifier'', ``UPtrSymbol'')
 
 ElementKey(``TIdentifier'')
 
-type struc FrontEndContext(string_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_typedef_table: hashmap_t(``TIdentifier'', ``UPtrStructTypedef''), symbol_table: hashmap_t(``TIdentifier'', ``UPtrSymbol''), addressed_set: hashset_t(``TIdentifier''))
+type struc FrontEndContext(
+    string_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''),
+    struct_typedef_table: hashmap_t(``TIdentifier'', ``UPtrStructTypedef''),
+    symbol_table: hashmap_t(``TIdentifier'', ``UPtrSymbol''), addressed_set: hashset_t(``TIdentifier'')
+)
 pub fn get_struct_typedef_member(ctx: *struc FrontEndContext, tag_name: TIdentifier, member_name: TIdentifier) *struc StructMember;
 pub fn get_struct_typedef_back(ctx: *struc FrontEndContext, tag_name: TIdentifier) *struc StructMember;
 

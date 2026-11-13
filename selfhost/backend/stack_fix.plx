@@ -11,11 +11,13 @@ m4_include(`../ast/back_symt.plx.m4')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``TLong'')
 
-type struc StackFixContext(backend: *struc BackEndContext,
+type struc StackFixContext(
+    backend: *struc BackEndContext,
     # Pseudo register replacement
     stack_bytes: TLong, pseudo_stack_map: hashmap_t(``TIdentifier'', ``TLong''),
     # Instruction fix up
-    p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction)))
+    p_fix_instrs: *vector_t(unique_ptr_t(AsmInstruction))
+)
 
 ########################################################################################################################
 

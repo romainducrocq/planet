@@ -10,9 +10,11 @@ m4_include(`../ast/back_ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
-type struc SymtCvtContext(backend: *struc BackEndContext, frontend: *struc FrontEndContext,
+type struc SymtCvtContext(
+    backend: *struc BackEndContext, frontend: *struc FrontEndContext,
     # Symbol table conversion
-    symbol: TIdentifier)
+    symbol: TIdentifier
+)
 
 ########################################################################################################################
 

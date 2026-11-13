@@ -65,7 +65,9 @@ pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none;
 
 PairKeyValue(``TIdentifier'', ``string_t'')
 
-type struc IdentifierContext(label_count: u32, var_count: u32, struct_count: u32, hash_table: hashmap_t(``TIdentifier'', ``string_t''))
+type struc IdentifierContext(
+    label_count: u32, var_count: u32, struct_count: u32, hash_table: hashmap_t(``TIdentifier'', ``string_t'')
+)
 
 pub fn make_string_identifier(ctx: *struc IdentifierContext, value: *string_t) TIdentifier;
 pub fn make_label_identifier(ctx: *struc IdentifierContext, name: *string_t) TIdentifier;

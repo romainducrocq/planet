@@ -32,9 +32,14 @@ m4_define(`StStruct8Bytes', `struc Struct8Bytes')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``StStruct8Bytes'')
 
-type struc AsmGenContext(frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
+type struc AsmGenContext(
+    frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext,
     # Assembly generation
-    p_fun_type: *struc FunType, arg_regs: [6]REGISTER_KIND, sse_arg_regs: [8]REGISTER_KIND, dbl_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''), struct_8b_map: hashmap_t(``TIdentifier'', ``StStruct8Bytes''), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)), p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel)))
+    p_fun_type: *struc FunType, arg_regs: [6]REGISTER_KIND, sse_arg_regs: [8]REGISTER_KIND,
+    dbl_const_table: hashmap_t(``TIdentifier'', ``TIdentifier''),
+    struct_8b_map: hashmap_t(``TIdentifier'', ``StStruct8Bytes''), p_instrs: *vector_t(unique_ptr_t(AsmInstruction)),
+    p_static_consts: *vector_t(unique_ptr_t(AsmTopLevel))
+)
 
 ########################################################################################################################
 
