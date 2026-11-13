@@ -5,9 +5,23 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../ast/ast.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Backend symbol table
+
+########################################################################################################################
+
 type struc AssemblyType;
 type struc BackendSymbol;
 type struc AsmOperand;
+
+########################################################################################################################
+
+# assembly_type = Byte
+#               | LongWord
+#               | QuadWord
+#               | BackendDouble
+#               | ByteArray(int, int)
 
 type struc Byte(_empty: char)
 
@@ -31,6 +45,11 @@ pub fn make_BackendDouble(none) shared_ptr_t(AssemblyType);
 pub fn make_ByteArray(size: TLong, alignment: TInt) shared_ptr_t(AssemblyType);
 pub fn free_AssemblyType(self: *shared_ptr_t(AssemblyType)) none;
 
+########################################################################################################################
+
+# symbol = Obj(assembly_type, bool, bool)
+#        | Fun(bool, operand*)
+
 type struc BackendObj(is_static: bool, is_const: bool, asm_type: shared_ptr_t(AssemblyType))
 
 type struc BackendFun(is_def: bool, callee_saved_regs: vector_t(shared_ptr_t(AsmOperand)))
@@ -43,6 +62,9 @@ pub fn make_BackendSymbol(none) unique_ptr_t(BackendSymbol);
 pub fn make_BackendObj(is_static: bool, is_const: bool, asm_type: *shared_ptr_t(AssemblyType)) unique_ptr_t(BackendSymbol);
 pub fn make_BackendFun(is_def: bool) unique_ptr_t(BackendSymbol);
 pub fn free_BackendSymbol(self: *unique_ptr_t(BackendSymbol)) none;
+
+########################################################################################################################
+
 m4_define(`UPtrBackendSymbol', `unique_ptr_t(BackendSymbol)')m4_dnl
 
 PairKeyValue(``TIdentifier'', ``UPtrBackendSymbol'')

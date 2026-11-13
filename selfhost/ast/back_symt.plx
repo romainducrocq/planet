@@ -6,6 +6,12 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Backend symbol table
+
+########################################################################################################################
+
 pub fn make_AssemblyType(none) shared_ptr_t(AssemblyType) {
     self: shared_ptr_t(AssemblyType) = sptr_new()
     sptr_alloc(AssemblyType, self)

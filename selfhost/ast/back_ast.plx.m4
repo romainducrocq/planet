@@ -7,6 +7,12 @@ m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/back_symt.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Backend abstract syntax tree
+
+########################################################################################################################
+
 type struc AsmReg;
 type struc AsmCondCode;
 type struc AsmOperand;
@@ -15,6 +21,41 @@ type struc AsmUnaryOp;
 type struc AsmInstruction;
 type struc AsmTopLevel;
 type struc AsmProgram;
+
+########################################################################################################################
+
+# reg = AX
+#     | BX
+#     | CX
+#     | DX
+#     | DI
+#     | SI
+#     | R8
+#     | R9
+#     | R10
+#     | R11
+#     | R12
+#     | R13
+#     | R14
+#     | R15
+#     | SP
+#     | BP
+#     | XMM0
+#     | XMM1
+#     | XMM2
+#     | XMM3
+#     | XMM4
+#     | XMM5
+#     | XMM6
+#     | XMM7
+#     | XMM8
+#     | XMM9
+#     | XMM10
+#     | XMM11
+#     | XMM12
+#     | XMM13
+#     | XMM14
+#     | XMM15
 
 type struc AsmReg(tagged_def_impl(AST_T))
 pub fn make_AsmReg(tagged_def_impl(AST_T)) struc AsmReg;
@@ -52,6 +93,20 @@ m4_define(`init_AsmXMM13', `tagged_def_init(AST, AsmReg, AsmXMM13)')m4_dnl
 m4_define(`init_AsmXMM14', `tagged_def_init(AST, AsmReg, AsmXMM14)')m4_dnl
 m4_define(`init_AsmXMM15', `tagged_def_init(AST, AsmReg, AsmXMM15)')m4_dnl
 
+########################################################################################################################
+
+# cond_code = E
+#           | NE
+#           | G
+#           | GE
+#           | L
+#           | LE
+#           | A
+#           | AE
+#           | B
+#           | BE
+#           | P
+
 type struc AsmCondCode(tagged_def_impl(AST_T))
 pub fn make_AsmCondCode(tagged_def_impl(AST_T)) struc AsmCondCode;
 m4_define(`init_AsmCondCode', `tagged_def_init(AST, AsmCondCode, AsmCondCode)')m4_dnl
@@ -66,6 +121,16 @@ m4_define(`init_AsmAE', `tagged_def_init(AST, AsmCondCode, AsmAE)')m4_dnl
 m4_define(`init_AsmB', `tagged_def_init(AST, AsmCondCode, AsmB)')m4_dnl
 m4_define(`init_AsmBE', `tagged_def_init(AST, AsmCondCode, AsmBE)')m4_dnl
 m4_define(`init_AsmP', `tagged_def_init(AST, AsmCondCode, AsmP)')m4_dnl
+
+########################################################################################################################
+
+# operand = Imm(int, bool, bool, bool)
+#         | Reg(reg)
+#         | Pseudo(identifier)
+#         | Memory(int, reg)
+#         | Data(identifier, int)
+#         | PseudoMem(identifier, int)
+#         | Indexed(int, reg, reg)
 
 type struc AsmImm(value: TULong, is_byte: bool, is_quad: bool, is_neg: bool)
 
@@ -95,6 +160,19 @@ pub fn make_AsmPseudoMem(name: TIdentifier, offset: TLong) shared_ptr_t(AsmOpera
 pub fn make_AsmIndexed(scale: TLong, reg_base: *struc AsmReg, reg_index: *struc AsmReg) shared_ptr_t(AsmOperand);
 pub fn free_AsmOperand(self: *shared_ptr_t(AsmOperand)) none;
 
+########################################################################################################################
+
+# binary_operator = Add
+#                 | Sub
+#                 | Mult
+#                 | DivDouble
+#                 | BitAnd
+#                 | BitOr
+#                 | BitXor
+#                 | BitShiftLeft
+#                 | BitShiftRight
+#                 | BitShrArithmetic
+
 type struc AsmBinaryOp(tagged_def_impl(AST_T))
 pub fn make_AsmBinaryOp(tagged_def_impl(AST_T)) struc AsmBinaryOp;
 m4_define(`init_AsmBinaryOp', `tagged_def_init(AST, AsmBinaryOp, AsmBinaryOp)')m4_dnl
@@ -109,12 +187,41 @@ m4_define(`init_AsmBitShiftLeft', `tagged_def_init(AST, AsmBinaryOp, AsmBitShift
 m4_define(`init_AsmBitShiftRight', `tagged_def_init(AST, AsmBinaryOp, AsmBitShiftRight)')m4_dnl
 m4_define(`init_AsmBitShrArithmetic', `tagged_def_init(AST, AsmBinaryOp, AsmBitShrArithmetic)')m4_dnl
 
+########################################################################################################################
+
+# unary_operator = Not
+#                | Neg
+#                | Shr
+
 type struc AsmUnaryOp(tagged_def_impl(AST_T))
 pub fn make_AsmUnaryOp(tagged_def_impl(AST_T)) struc AsmUnaryOp;
 m4_define(`init_AsmUnaryOp', `tagged_def_init(AST, AsmUnaryOp, AsmUnaryOp)')m4_dnl
 m4_define(`init_AsmNot', `tagged_def_init(AST, AsmUnaryOp, AsmNot)')m4_dnl
 m4_define(`init_AsmNeg', `tagged_def_init(AST, AsmUnaryOp, AsmNeg)')m4_dnl
 m4_define(`init_AsmShr', `tagged_def_init(AST, AsmUnaryOp, AsmShr)')m4_dnl
+
+########################################################################################################################
+
+# instruction = Mov(assembly_type, operand, operand)
+#             | MovSx(assembly_type, assembly_type, operand, operand)
+#             | MovZeroExtend(assembly_type, assembly_type, operand, operand)
+#             | Lea(operand, operand)
+#             | Cvttsd2si(assembly_type, operand, operand)
+#             | Cvtsi2sd(assembly_type, operand, operand)
+#             | Unary(unary_operator, assembly_type, operand)
+#             | Binary(binary_operator, assembly_type, operand, operand)
+#             | Cmp(assembly_type, operand, operand)
+#             | Idiv(assembly_type, operand)
+#             | Div(assembly_type, operand)
+#             | Cdq(assembly_type)
+#             | Jmp(identifier)
+#             | JmpCC(cond_code, identifier)
+#             | SetCC(cond_code, operand)
+#             | Label(identifier)
+#             | Push(operand)
+#             | Pop(reg)
+#             | Call(identifier)
+#             | Ret
 
 type struc AsmMov(asm_type: shared_ptr_t(AssemblyType), src: shared_ptr_t(AsmOperand), dst: shared_ptr_t(AsmOperand))
 
@@ -183,6 +290,12 @@ pub fn make_AsmCall(name: TIdentifier) unique_ptr_t(AsmInstruction);
 pub fn make_AsmRet(none) unique_ptr_t(AsmInstruction);
 pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none;
 
+########################################################################################################################
+
+# top_level = Function(identifier, bool, bool, instruction*)
+#           | StaticVariable(identifier, bool, int, static_init*)
+#           | StaticConstant(identifier, int, static_init)
+
 type struc AsmFunction(name: TIdentifier, is_glob: bool, is_ret_memory: bool, instructions: vector_t(unique_ptr_t(AsmInstruction)))
 
 type struc AsmStaticVariable(name: TIdentifier, alignment: TInt, is_glob: bool, static_inits: vector_t(shared_ptr_t(StaticInit)))
@@ -198,6 +311,10 @@ pub fn make_AsmFunction(name: TIdentifier, is_glob: bool, is_ret_memory: bool, i
 pub fn make_AsmStaticVariable(name: TIdentifier, alignment: TInt, is_glob: bool, static_inits: *vector_t(shared_ptr_t(StaticInit))) unique_ptr_t(AsmTopLevel);
 pub fn make_AsmStaticConstant(name: TIdentifier, alignment: TInt, static_init: *shared_ptr_t(StaticInit)) unique_ptr_t(AsmTopLevel);
 pub fn free_AsmTopLevel(self: *unique_ptr_t(AsmTopLevel)) none;
+
+########################################################################################################################
+
+# AST = Program(top_level*, top_level*)
 
 type struc AsmProgram(unique_ptr_impl(AST_T)
     static_const_toplvls: vector_t(unique_ptr_t(AsmTopLevel)), top_levels: vector_t(unique_ptr_t(AsmTopLevel)))

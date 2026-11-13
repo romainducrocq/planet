@@ -4,6 +4,13 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Abstract syntax tree
+
+########################################################################################################################
+
+
 pub fn make_CConst(none) shared_ptr_t(CConst) {
     self: shared_ptr_t(CConst) = sptr_new()
     sptr_alloc(CConst, self)
@@ -102,6 +109,10 @@ pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none {
     vec_delete(self[][].value)
     sptr_free(self[])
 }
+
+########################################################################################################################
+
+# Identifiers
 
 m4_define(`Ctx', `*struc IdentifierContext')m4_dnl
 

@@ -6,6 +6,12 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 m4_include(`../ast/ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Frontend abstract syntax tree
+
+########################################################################################################################
+
 type struc CUnaryOp;
 type struc CBinaryOp;
 type struc CAbstractDeclarator;
@@ -25,6 +31,14 @@ type struc CVariableDeclaration;
 type struc CDeclaration;
 type struc CProgram;
 
+########################################################################################################################
+
+# unary_operator = Complement
+#                | Negate
+#                | Not
+#                | Prefix
+#                | Postfix
+
 type struc CUnaryOp(tagged_def_impl(AST_T))
 pub fn make_CUnaryOp(tagged_def_impl(AST_T)) struc CUnaryOp;
 m4_define(`init_CUnaryOp', `tagged_def_init(AST, CUnaryOp, CUnaryOp)')m4_dnl
@@ -33,6 +47,28 @@ m4_define(`init_CNegate', `tagged_def_init(AST, CUnaryOp, CNegate)')m4_dnl
 m4_define(`init_CNot', `tagged_def_init(AST, CUnaryOp, CNot)')m4_dnl
 m4_define(`init_CPrefix', `tagged_def_init(AST, CUnaryOp, CPrefix)')m4_dnl
 m4_define(`init_CPostfix', `tagged_def_init(AST, CUnaryOp, CPostfix)')m4_dnl
+
+########################################################################################################################
+
+# binary_operator = Add
+#                 | Subtract
+#                 | Multiply
+#                 | Divide
+#                 | Remainder
+#                 | BitAnd
+#                 | BitOr
+#                 | BitXor
+#                 | BitShiftLeft
+#                 | BitShiftRight
+#                 | BitShrArithmetic
+#                 | And
+#                 | Or
+#                 | Equal
+#                 | NotEqual
+#                 | LessThan
+#                 | LessOrEqual
+#                 | GreaterThan
+#                 | GreaterOrEqual
 
 type struc CBinaryOp(tagged_def_impl(AST_T))
 pub fn make_CBinaryOp(tagged_def_impl(AST_T)) struc CBinaryOp;
@@ -57,6 +93,12 @@ m4_define(`init_CLessOrEqual', `tagged_def_init(AST, CBinaryOp, CLessOrEqual)')m
 m4_define(`init_CGreaterThan', `tagged_def_init(AST, CBinaryOp, CGreaterThan)')m4_dnl
 m4_define(`init_CGreaterOrEqual', `tagged_def_init(AST, CBinaryOp, CGreaterOrEqual)')m4_dnl
 
+########################################################################################################################
+
+# abstract_declarator = AbstractPointer(abstract_declarator)
+#                     | AbstractArray(int, abstract_declarator)
+#                     | AbstractBase
+
 type struc CAbstractPointer(abstract_decltor: unique_ptr_t(CAbstractDeclarator))
 
 type struc CAbstractArray(size: TLong, abstract_decltor: unique_ptr_t(CAbstractDeclarator))
@@ -73,10 +115,21 @@ pub fn make_CAbstractArray(size: TLong, abstract_decltor: *unique_ptr_t(CAbstrac
 pub fn make_CAbstractBase(none) unique_ptr_t(CAbstractDeclarator);
 pub fn free_CAbstractDeclarator(self: *unique_ptr_t(CAbstractDeclarator)) none;
 
+########################################################################################################################
+
+# param_info = Param(type, declarator)
+
 type struc CParam(unique_ptr_impl(AST_T)
     decltor: unique_ptr_t(CDeclarator), param_type: shared_ptr_t(Type))
 pub fn make_CParam(decltor: *unique_ptr_t(CDeclarator), param_type: *shared_ptr_t(Type)) unique_ptr_t(CParam);
 pub fn free_CParam(self: *unique_ptr_t(CParam)) none;
+
+########################################################################################################################
+
+# declarator = Ident(identifier)
+#            | PointerDeclarator(declarator)
+#            | ArrayDeclarator(int, declarator)
+#            | FunDeclarator(param_info*, declarator)
 
 type struc CIdent(name: TIdentifier)
 
@@ -96,6 +149,25 @@ pub fn make_CPointerDeclarator(decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t
 pub fn make_CArrayDeclarator(size: TLong, decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
 pub fn make_CFunDeclarator(param_list: *vector_t(unique_ptr_t(CParam)), decltor: *unique_ptr_t(CDeclarator)) unique_ptr_t(CDeclarator);
 pub fn free_CDeclarator(self: *unique_ptr_t(CDeclarator)) none;
+
+########################################################################################################################
+
+# exp = Constant(const, type)
+#     | String(string, type)
+#     | Var(identifier, type)
+#     | Cast(type, exp, type)
+#     | Unary(unary_operator, exp, type)
+#     | Binary(binary_operator, exp, exp, type)
+#     | Assignment(unary_operator, exp, exp, type)
+#     | Conditional(exp, exp, exp, type)
+#     | FunctionCall(identifier, exp*, type)
+#     | Dereference(exp, type)
+#     | AddrOf(exp, type)
+#     | Subscript(exp, exp, type)
+#     | SizeOf(exp, type)
+#     | SizeOfT(type, type)
+#     | Dot(exp, identifier, type)
+#     | Arrow(exp, identifier, type)
 
 type struc CConstant(constant: shared_ptr_t(CConst), _base: *struc CExp)
 
@@ -152,6 +224,24 @@ pub fn make_CDot(member: TIdentifier, structure: *unique_ptr_t(CExp), info_at: u
 pub fn make_CArrow(member: TIdentifier, pointer: *unique_ptr_t(CExp), info_at: u64) unique_ptr_t(CExp);
 pub fn free_CExp(self: *unique_ptr_t(CExp)) none;
 
+########################################################################################################################
+
+# statement = Return(exp?)
+#           | Expression(exp)
+#           | If(exp, statement, statement?)
+#           | Goto(identifier)
+#           | Label(identifier, target)
+#           | Compound(block)
+#           | While(exp, statement, identifier)
+#           | DoWhile(statement, exp, identifier)
+#           | For(for_init, exp?, exp?, statement, identifier)
+#           | Switch(identifier, bool, exp, statement, exp*)
+#           | Case(identifier, exp, statement)
+#           | Default(identifier, statement)
+#           | Break(identifier)
+#           | Continue(identifier)
+#           | Null
+
 type struc CReturn(exp: unique_ptr_t(CExp), info_at: u64)
 
 type struc CExpression(exp: unique_ptr_t(CExp))
@@ -204,6 +294,11 @@ pub fn make_CContinue(info_at: u64) unique_ptr_t(CStatement);
 pub fn make_CNull(none) unique_ptr_t(CStatement);
 pub fn free_CStatement(self: *unique_ptr_t(CStatement)) none;
 
+########################################################################################################################
+
+# for_init = InitDecl(variable_declaration)
+#          | InitExp(exp?)
+
 type struc CInitDecl(init: unique_ptr_t(CVariableDeclaration))
 
 type struc CInitExp(init: unique_ptr_t(CExp))
@@ -217,6 +312,10 @@ pub fn make_CInitDecl(init: *unique_ptr_t(CVariableDeclaration)) unique_ptr_t(CF
 pub fn make_CInitExp(init: *unique_ptr_t(CExp)) unique_ptr_t(CForInit);
 pub fn free_CForInit(self: *unique_ptr_t(CForInit)) none;
 
+########################################################################################################################
+
+# block = B(block_item*)
+
 type struc CB(block_items: vector_t(unique_ptr_t(CBlockItem)))
 
 type union _CBlock(_CB: struc CB)
@@ -226,6 +325,11 @@ type struc CBlock(unique_ptr_impl(AST_T)
 pub fn make_CBlock(none) unique_ptr_t(CBlock);
 pub fn make_CB(block_items: *vector_t(unique_ptr_t(CBlockItem))) unique_ptr_t(CBlock);
 pub fn free_CBlock(self: *unique_ptr_t(CBlock)) none;
+
+########################################################################################################################
+
+# block_item = S(statement)
+#            | D(declaration)
 
 type struc CS(statement: unique_ptr_t(CStatement))
 
@@ -240,11 +344,21 @@ pub fn make_CS(statement: *unique_ptr_t(CStatement)) unique_ptr_t(CBlockItem);
 pub fn make_CD(declaration: *unique_ptr_t(CDeclaration)) unique_ptr_t(CBlockItem);
 pub fn free_CBlockItem(self: *unique_ptr_t(CBlockItem)) none;
 
+########################################################################################################################
+
+# storage_class = Static
+#               | Extern
+
 type struc CStorageClass(tagged_def_impl(AST_T))
 pub fn make_CStorageClass(tagged_def_impl(AST_T)) struc CStorageClass;
 m4_define(`init_CStorageClass', `tagged_def_init(AST, CStorageClass, CStorageClass)')m4_dnl
 m4_define(`init_CStatic', `tagged_def_init(AST, CStorageClass, CStatic)')m4_dnl
 m4_define(`init_CExtern', `tagged_def_init(AST, CStorageClass, CExtern)')m4_dnl
+
+########################################################################################################################
+
+# initializer = SingleInit(exp)
+#             | CompoundInit(initializer*)
 
 type struc CSingleInit(exp: unique_ptr_t(CExp), _base: *struc CInitializer)
 
@@ -259,25 +373,47 @@ pub fn make_CSingleInit(exp: *unique_ptr_t(CExp)) unique_ptr_t(CInitializer);
 pub fn make_CCompoundInit(initializers: *vector_t(unique_ptr_t(CInitializer))) unique_ptr_t(CInitializer);
 pub fn free_CInitializer(self: *unique_ptr_t(CInitializer)) none;
 
+########################################################################################################################
+
+# member_declaration = MemberDeclaration(identifier, type)
+
 type struc CMemberDeclaration(unique_ptr_impl(AST_T)
     member_name: TIdentifier, member_type: shared_ptr_t(Type), info_at: u64)
 pub fn make_CMemberDeclaration(member_name: TIdentifier, member_type: *shared_ptr_t(Type), info_at: u64) unique_ptr_t(CMemberDeclaration);
 pub fn free_CMemberDeclaration(self: *unique_ptr_t(CMemberDeclaration)) none;
+
+########################################################################################################################
+
+# struct_declaration = StructDeclaration(identifier, bool, member_declaration*)
 
 type struc CStructDeclaration(unique_ptr_impl(AST_T)
     tag_name: TIdentifier, is_union: bool, members: vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64)
 pub fn make_CStructDeclaration(tag_name: TIdentifier, is_union: bool, members: *vector_t(unique_ptr_t(CMemberDeclaration)), info_at: u64) unique_ptr_t(CStructDeclaration);
 pub fn free_CStructDeclaration(self: *unique_ptr_t(CStructDeclaration)) none;
 
+########################################################################################################################
+
+# function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
+
 type struc CFunctionDeclaration(unique_ptr_impl(AST_T)
     name: TIdentifier, params: vector_t(TIdentifier), body: unique_ptr_t(CBlock), fun_type: shared_ptr_t(Type), storage_class: struc CStorageClass, info_at: u64)
 pub fn make_CFunctionDeclaration(name: TIdentifier, params: *vector_t(TIdentifier), body: *unique_ptr_t(CBlock), fun_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CFunctionDeclaration);
 pub fn free_CFunctionDeclaration(self: *unique_ptr_t(CFunctionDeclaration)) none;
 
+########################################################################################################################
+
+# variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
+
 type struc CVariableDeclaration(unique_ptr_impl(AST_T)
     name: TIdentifier, init: unique_ptr_t(CInitializer), var_type: shared_ptr_t(Type), storage_class: struc CStorageClass, info_at: u64)
 pub fn make_CVariableDeclaration(name: TIdentifier, init: *unique_ptr_t(CInitializer), var_type: *shared_ptr_t(Type), storage_class: *struc CStorageClass, info_at: u64) unique_ptr_t(CVariableDeclaration);
 pub fn free_CVariableDeclaration(self: *unique_ptr_t(CVariableDeclaration)) none;
+
+########################################################################################################################
+
+# declaration = FunDecl(function_declaration)
+#             | VarDecl(variable_declaration)
+#             | StructDecl(struct_declaration)
 
 type struc CFunDecl(fun_decl: unique_ptr_t(CFunctionDeclaration))
 
@@ -294,6 +430,10 @@ pub fn make_CFunDecl(fun_decl: *unique_ptr_t(CFunctionDeclaration)) unique_ptr_t
 pub fn make_CVarDecl(var_decl: *unique_ptr_t(CVariableDeclaration)) unique_ptr_t(CDeclaration);
 pub fn make_CStructDecl(struct_decl: *unique_ptr_t(CStructDeclaration)) unique_ptr_t(CDeclaration);
 pub fn free_CDeclaration(self: *unique_ptr_t(CDeclaration)) none;
+
+########################################################################################################################
+
+# AST = Program(declaration*)
 
 type struc CProgram(unique_ptr_impl(AST_T)
     declarations: vector_t(unique_ptr_t(CDeclaration)))

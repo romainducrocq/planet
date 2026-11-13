@@ -3,6 +3,10 @@ m4_define(`_AST_AST_T_M4', `')m4_dnl
 
 m4_include(`../lib/def_std.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Abstract syntax tree
+
 m4_define(`TIdentifier', `u64')m4_dnl
 m4_define(`TChar', `i8')m4_dnl
 m4_define(`TInt', `i32')m4_dnl
@@ -12,6 +16,7 @@ m4_define(`TUInt', `u32')m4_dnl
 m4_define(`TULong', `u64')m4_dnl
 m4_define(`TDouble', `f64')m4_dnl
 m4_define(`AST_T', `i32')m4_dnl
+# Frontend symbol table
 m4_define(`AST_Type_t', `0')m4_dnl
 m4_define(`AST_Char_t', `1')m4_dnl
 m4_define(`AST_SChar_t', `2')m4_dnl
@@ -49,6 +54,7 @@ m4_define(`AST_LocalAttr_t', `33')m4_dnl
 m4_define(`AST_Symbol_t', `34')m4_dnl
 m4_define(`AST_StructMember_t', `35')m4_dnl
 m4_define(`AST_StructTypedef_t', `36')m4_dnl
+# Backend symbol table
 m4_define(`AST_AssemblyType_t', `37')m4_dnl
 m4_define(`AST_Byte_t', `38')m4_dnl
 m4_define(`AST_LongWord_t', `39')m4_dnl
@@ -58,6 +64,7 @@ m4_define(`AST_ByteArray_t', `42')m4_dnl
 m4_define(`AST_BackendSymbol_t', `43')m4_dnl
 m4_define(`AST_BackendObj_t', `44')m4_dnl
 m4_define(`AST_BackendFun_t', `45')m4_dnl
+# Frontend abstract syntax tree
 m4_define(`AST_CConst_t', `46')m4_dnl
 m4_define(`AST_CConstInt_t', `47')m4_dnl
 m4_define(`AST_CConstLong_t', `48')m4_dnl
@@ -159,6 +166,7 @@ m4_define(`AST_CFunDecl_t', `143')m4_dnl
 m4_define(`AST_CVarDecl_t', `144')m4_dnl
 m4_define(`AST_CStructDecl_t', `145')m4_dnl
 m4_define(`AST_CProgram_t', `146')m4_dnl
+# Intermediate abstract syntax tree
 m4_define(`AST_TacUnaryOp_t', `147')m4_dnl
 m4_define(`AST_TacComplement_t', `148')m4_dnl
 m4_define(`AST_TacNegate_t', `149')m4_dnl
@@ -216,6 +224,7 @@ m4_define(`AST_TacFunction_t', `200')m4_dnl
 m4_define(`AST_TacStaticVariable_t', `201')m4_dnl
 m4_define(`AST_TacStaticConstant_t', `202')m4_dnl
 m4_define(`AST_TacProgram_t', `203')m4_dnl
+# Backend abstract syntax tree
 m4_define(`AST_AsmReg_t', `204')m4_dnl
 m4_define(`AST_AsmAx_t', `205')m4_dnl
 m4_define(`AST_AsmBx_t', `206')m4_dnl

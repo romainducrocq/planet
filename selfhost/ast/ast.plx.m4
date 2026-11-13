@@ -5,8 +5,24 @@ m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../ast/ast_t.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Abstract syntax tree
+
+########################################################################################################################
+
 type struc CConst;
 type struc CStringLiteral;
+
+########################################################################################################################
+
+# const = ConstInt(int)
+#       | ConstLong(int)
+#       | ConstUInt(int)
+#       | ConstULong(int)
+#       | ConstDouble(double)
+#       | ConstChar(int)
+#       | ConstUChar(int)
 
 type struc CConstInt(value: TInt)
 
@@ -36,10 +52,16 @@ pub fn make_CConstChar(value: TChar) shared_ptr_t(CConst);
 pub fn make_CConstUChar(value: TUChar) shared_ptr_t(CConst);
 pub fn free_CConst(self: *shared_ptr_t(CConst)) none;
 
+########################################################################################################################
+
+# string = StringLiteral(int*)
+
 type struc CStringLiteral(shared_ptr_impl(AST_T)
     value: vector_t(TChar))
 pub fn make_CStringLiteral(value: *vector_t(TChar)) shared_ptr_t(CStringLiteral);
 pub fn free_CStringLiteral(self: *shared_ptr_t(CStringLiteral)) none;
+
+########################################################################################################################
 
 PairKeyValue(``TIdentifier'', ``string_t'')
 
