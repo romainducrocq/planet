@@ -4,6 +4,14 @@ m4_define(`_LIB_C_STD_M4', `')m4_dnl
 m4_include(`../3rdparty/sds.plx.m4')m4_dnl
 m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
+########################################################################################################################
+
+# Def std
+
+########################################################################################################################
+
+# Errors
+
 m4_define(`error_t', `i32')m4_dnl
 m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
 m4_define(`CATCH_ENTER', `_errval: error_t = 0')m4_dnl
@@ -21,6 +29,10 @@ m4_define(`THROW_ERROR', `{
     _errval = ($1)
     EARLY_EXIT
 }')m4_dnl
+
+########################################################################################################################
+
+# Memory
 
 m4_define(`tagged_def_t', `$1_$2_t')m4_dnl
 m4_define(`tagged_def_impl', `tag: $1')m4_dnl
@@ -43,6 +55,11 @@ m4_define(`uptr_move', `if ($2) ~= ($3) {
     ($3) = ($2)
     ($2) = uptr_new()
 }')m4_dnl
+
+########################################################################################################################
+
+# Shared pointer
+
 m4_define(`shared_ptr_t', `unique_ptr_t($1)')m4_dnl
 m4_define(`shared_ptr_impl', `_ref_count: u64, unique_ptr_impl($1)')m4_dnl
 m4_define(`sptr_new', `nil')m4_dnl
@@ -63,6 +80,10 @@ m4_define(`sptr_copy', `if ($2) ~= ($3) {
     ($3) = ($2)
     ($3)[]._ref_count++
 }')m4_dnl
+
+########################################################################################################################
+
+# String
 
 m4_define(`string_t', `sds')m4_dnl
 m4_define(`str_new', `? ($1) then sdsnew($1) else nil')m4_dnl
@@ -100,6 +121,10 @@ m4_define(`str_resize', `{
 m4_define(`str_substr', `sdsrange($1, $2, $3)')m4_dnl
 m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
 
+########################################################################################################################
+
+# Vector
+
 m4_define(`vector_t', `*$1')m4_dnl
 m4_define(`vec_new', `nil')m4_dnl
 m4_define(`vec_delete', `if ($1) {
@@ -126,6 +151,10 @@ m4_define(`vec_push_back', `arrput($1, $2)')m4_dnl
 m4_define(`vec_remove_swap', `arrdelswap($1, $2)')m4_dnl
 m4_define(`vec_resize', `arrsetlen($1, $2)')m4_dnl
 m4_define(`vec_reserve', `arrsetcap($1, $2)')m4_dnl
+
+########################################################################################################################
+
+# Hashmap
 
 m4_define(`pair_t', `struc Pair$1$2')m4_dnl
 m4_define(`PairKeyValue', `type pair_t($1, $2)(key: hmarg($1), value: hmarg($2))')m4_dnl
@@ -154,6 +183,10 @@ m4_define(`map_move_add', `{
     map_add($1, $2, $3)
     ($3) = nil
 }')m4_dnl
+
+########################################################################################################################
+
+# Hashset
 
 m4_define(`element_t', `struc Element$1')m4_dnl
 m4_define(`ElementKey', `type element_t($1)(key: hmarg($1), value: char)')m4_dnl
