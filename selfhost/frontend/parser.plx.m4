@@ -14,6 +14,9 @@ type struc IdentifierContext;
 
 # Parser
 
-pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: *unique_ptr_t(CProgram)) error_t;
+pub fn parse_tokens(
+    tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext,
+    c_ast: *unique_ptr_t(CProgram)
+) error_t;
 
 ')m4_dnl

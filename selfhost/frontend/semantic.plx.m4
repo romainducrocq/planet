@@ -18,6 +18,9 @@ type struc IdentifierContext;
 # Loop labeling
 # Identifier resolution
 
-pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) error_t;
+pub fn analyze_semantic(
+    node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext,
+    identifiers: *struc IdentifierContext
+) error_t;
 
 ')m4_dnl

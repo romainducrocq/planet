@@ -19,6 +19,9 @@ type struc IdentifierContext;
 
 type struc Token(tok_kind: TOKEN_KIND, tok: TIdentifier, info_at: u64)
 
-pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) error_t;
+pub fn lex_c_code(
+    filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext,
+    fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)
+) error_t;
 
 ')m4_dnl

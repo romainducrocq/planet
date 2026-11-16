@@ -34,7 +34,9 @@ pub fn get_unop_fmt(node: *struc CUnaryOp) string;
 pub fn get_binop_fmt(node: *struc CBinaryOp) string;
 pub fn get_assign_fmt(node: *struc CBinaryOp, unop: *struc CUnaryOp) string;
 pub fn get_name_fmt(ctx: *struc IdentifierContext, name: TIdentifier, name_fmt: *string_t) string;
-pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: TIdentifier, is_union: bool, struct_fmt: *string_t) string;
+pub fn get_struct_name_fmt(
+    ctx: *struc IdentifierContext, name: TIdentifier, is_union: bool, struct_fmt: *string_t
+) string;
 pub fn get_fun_fmt(ctx: *struc IdentifierContext, fun_type: *struc FunType, fun_fmt: *string_t) string;
 pub fn get_ptr_fmt(ctx: *struc IdentifierContext, ptr_type: *struc Pointer, ptr_fmt: *string_t) string;
 pub fn get_arr_fmt(ctx: *struc IdentifierContext, arr_type: *struc Array, arr_fmt: *string_t) string;
@@ -49,6 +51,7 @@ m4_define(`str_fmt_ptr', `str_get_fmt(ptr, $1, $2)')m4_dnl
 m4_define(`str_fmt_arr', `str_get_fmt(arr, $1, $2)')m4_dnl
 m4_define(`str_fmt_struct', `str_get_fmt(struct, $1, $2)')m4_dnl
 m4_define(`str_fmt_type', `str_get_fmt(type, $1, $2)')m4_dnl
+
 pub fn get_fatal_msg(msg: MESSAGE_FATAL, arg1: string, arg2: string, arg3: string) string;
 pub fn get_arg_msg(msg: MESSAGE_ARG, arg1: string, arg2: string, arg3: string) string;
 pub fn get_util_msg(msg: MESSAGE_UTIL, arg1: string, arg2: string, arg3: string) string;

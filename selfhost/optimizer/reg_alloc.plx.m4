@@ -16,6 +16,8 @@ type struc FrontEndContext;
 # Register allocation
 # Register coalescing
 
-pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none;
+pub fn allocate_registers(
+    node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8
+) none;
 
 ')m4_dnl

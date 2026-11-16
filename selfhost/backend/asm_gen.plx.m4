@@ -12,6 +12,8 @@ type struc IdentifierContext;
 
 # Assembly generation
 
-pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(AsmProgram);
+pub fn generate_assembly(
+    tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext
+) unique_ptr_t(AsmProgram);
 
 ')m4_dnl
