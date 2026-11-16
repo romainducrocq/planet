@@ -44,8 +44,6 @@ m4_define(`_LIB_STB_DS_M4', `')m4_dnl
 # ------------------------------------------------------------------------------
 #
 
-# TODO
-
 use "stdlib"
 use "string"
 
@@ -93,8 +91,8 @@ m4_define(`stbds_arrdelswap', `{
     stbds_header($1)[].length -= 1
 }')m4_dnl
 
-m4_define(`stbds_arrmaybegrow', `
-    (? (not ($1) or stbds_header($1)[].length + ($2) > stbds_header($1)[].capacity) then ((stbds_arrgrow($1, $2, 0)) and 0) else 0)')m4_dnl
+m4_define(`stbds_arrmaybegrow', `(? (not ($1) or stbds_header($1)[].length + ($2) > stbds_header($1)[].capacity)
+    then ((stbds_arrgrow($1, $2, 0)) and 0) else 0)')m4_dnl
 
 m4_define(`stbds_arrgrow', `($1) = stbds_arrgrowf(($1), sizeof(($1)[]), ($2), ($3))')m4_dnl
 
@@ -104,13 +102,15 @@ m4_define(`stbds_hmput', `{
     ($1)[stbds_temp(($1) - 1)].value = ($3)
 }')m4_dnl
 
-m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0))
-    and 0 then 0 else stbds_temp(($1) - 1))')m4_dnl
+m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]),
+        cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0)) and 0
+    then 0 else stbds_temp(($1) - 1))')m4_dnl
 
 m4_define(`stbds_hmgetp', `(? (stbds_hmgeti($1, $2)) and 0 then 0 else @($1)[stbds_temp(($1) - 1)])')m4_dnl
 
-m4_define(`stbds_hmdel', `(? (($1) = stbds_hmdel_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key),
-    STBDS_OFFSETOF(($1), key), 0)) then stbds_temp(($1) - 1) else 0)')m4_dnl
+m4_define(`stbds_hmdel', `(? (($1) = stbds_hmdel_key(($1), sizeof(($1)[]),
+        cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), STBDS_OFFSETOF(($1), key), 0))
+    then stbds_temp(($1) - 1) else 0)')m4_dnl
 
 m4_define(`stbds_hmfree', `{
     cast<none>(? ($1) ~= nil then stbds_hmfree_func(($1) - 1, sizeof(($1)[])) else cast<none>(0))
