@@ -192,7 +192,9 @@ fn cfg_add_pred_edge(ctx: Ctx, block_id: u64, pred_id: u64) none {
     }
 }
 
-fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64, is_reachable: bool) none {
+fn cfg_rm_edge(
+    succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64, pred_id: u64, is_reachable: bool
+) none {
     if is_reachable {
         loop i: u64 = vec_size(succ_ids[]) while i-- > 0 {
             if succ_ids[][i] == succ_id {
@@ -211,7 +213,8 @@ fn cfg_rm_edge(succ_ids: *vector_t(u64), pred_ids: *vector_t(u64), succ_id: u64,
 
 fn cfg_rm_succ_edge(ctx: Ctx, block_id: u64, succ_id: u64, is_reachable: bool) none {
     if succ_id < ctx[].cfg[].exit_id {
-        cfg_rm_edge(@GET_CFG_BLOCK(block_id).succ_ids, @GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id, is_reachable)
+        cfg_rm_edge(@GET_CFG_BLOCK(block_id).succ_ids, @GET_CFG_BLOCK(succ_id).pred_ids, succ_id, block_id,
+            is_reachable)
     }
     elif succ_id == ctx[].cfg[].exit_id {
         cfg_rm_edge(@GET_CFG_BLOCK(block_id).succ_ids, @ctx[].cfg[].exit_pred_ids, succ_id, block_id, is_reachable)
@@ -587,7 +590,8 @@ fn infer_transfer_live_regs(ctx: Ctx, instr_idx: u64, next_instr_idx: u64) none;
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
 fn dfa_forward_transfer_block(ctx: Ctx, instr_idx: u64, block_id: u64) u64 {
-    loop next_instr_idx: u64 = instr_idx + 1 while next_instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++next_instr_idx {
+    loop next_instr_idx: u64 = instr_idx + 1 while (
+        next_instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx) .. ++next_instr_idx {
         if GET_INSTR(next_instr_idx) and is_transfer_instr(ctx, next_instr_idx, false) {
             loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
                 GET_DFA_INSTR_SET_MASK(next_instr_idx, i) = GET_DFA_INSTR_SET_MASK(instr_idx, i)
@@ -854,7 +858,8 @@ fn dfa_backward_open_block(ctx: Ctx, block_id: u64, i: *u64) none {
 }
 
 fn is_aliased_name(ctx: Ctx, name: TIdentifier) bool {
-    return map_get(ctx[].frontend[].symbol_table, name)[].attrs[].tag == AST_StaticAttr_t or set_find(ctx[].frontend[].addressed_set, name) ~= set_end()
+    return (map_get(ctx[].frontend[].symbol_table, name)[].attrs[].tag == AST_StaticAttr_t
+        or set_find(ctx[].frontend[].addressed_set, name) ~= set_end())
 }
 
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -954,7 +959,8 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 ')m4_dnl
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if GET_CFG_BLOCK(block_id).size > 0 {
-            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while (
+                instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx) .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     node: *struc AstInstruction = GET_INSTR(instr_idx)
                     match node[].tag {

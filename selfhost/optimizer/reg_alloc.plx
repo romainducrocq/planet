@@ -416,7 +416,9 @@ fn infer_init_used_op_edges(ctx: Ctx, node: *struc AsmOperand) none {
     }
 }
 
-fn infer_init_updated_regs_edges(ctx: Ctx, reg_kinds: *REGISTER_KIND, instr_idx: u64, reg_kinds_size: u64, is_dbl: bool) none {
+fn infer_init_updated_regs_edges(
+    ctx: Ctx, reg_kinds: *REGISTER_KIND, instr_idx: u64, reg_kinds_size: u64, is_dbl: bool
+) none {
     mov_mask_bit: u64 = ctx[].dfa[].set_size
     is_mov: bool = GET_INSTR(instr_idx)[].tag == AST_AsmMov_t
     if is_mov {
@@ -545,7 +547,9 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: TIdentifier, instr_idx: u64) no
         loop while i < mask_set_size .. ++i {
             if GET_DFA_INSTR_SET_AT(instr_idx, i) and not (is_mov and i == mov_mask_bit) {
                 pseudo_name: TIdentifier = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
-                if name ~= pseudo_name and is_dbl == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t) {
+                if (name ~= pseudo_name
+                    and is_dbl
+                        == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t)) {
                     infer_add_pseudo_edges(ctx, name, pseudo_name)
                 }
             }
@@ -564,7 +568,9 @@ fn infer_init_updated_name_edges(ctx: Ctx, name: TIdentifier, instr_idx: u64) no
         loop while i < mask_set_size .. ++i {
             if GET_DFA_INSTR_SET_AT(instr_idx, i) and not (is_mov and i == mov_mask_bit) {
                 pseudo_name: TIdentifier = ctx[].dfa_o2[].data_name_map[i - REGISTER_MASK_SIZE]
-                if name ~= pseudo_name and is_dbl == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t) {
+                if (name ~= pseudo_name
+                    and is_dbl
+                        == (map_get(ctx[].frontend[].symbol_table, pseudo_name)[].type_t[].tag == AST_Double_t)) {
                     infer_add_pseudo_edges(ctx, name, pseudo_name)
                 }
             }
@@ -670,7 +676,8 @@ fn infer_init_edges(ctx: Ctx, instr_idx: u64) none {
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 7, false)
             }
             {
-                reg_kinds: [14]REGISTER_KIND = $(REG_Xmm0, REG_Xmm1, REG_Xmm2, REG_Xmm3, REG_Xmm4, REG_Xmm5, REG_Xmm6, REG_Xmm7, REG_Xmm8, REG_Xmm9, REG_Xmm10, REG_Xmm11, REG_Xmm12, REG_Xmm13)
+                reg_kinds: [14]REGISTER_KIND = $(REG_Xmm0, REG_Xmm1, REG_Xmm2, REG_Xmm3, REG_Xmm4, REG_Xmm5, REG_Xmm6,
+                    REG_Xmm7, REG_Xmm8, REG_Xmm9, REG_Xmm10, REG_Xmm11, REG_Xmm12, REG_Xmm13)
                 infer_init_updated_regs_edges(ctx, reg_kinds, instr_idx, 14, true)
             }
             break
@@ -744,7 +751,8 @@ fn init_inference_graph(ctx: Ctx, fun_name: TIdentifier) bool {
     }
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if GET_CFG_BLOCK(block_id).size > 0 {
-            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while (
+                instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx) .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     infer_init_edges(ctx, instr_idx)
                 }
@@ -819,7 +827,8 @@ fn alloc_unprune_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, pruned_nam
 fn alloc_color_infer_graph(ctx: Ctx) none;
 
 fn alloc_next_color_infer_graph(ctx: Ctx) none {
-    if not vec_empty(ctx[].p_infer_graph[].unpruned_hard_mask_bits) or not vec_empty(ctx[].p_infer_graph[].unpruned_pseudo_names) {
+    if (not vec_empty(ctx[].p_infer_graph[].unpruned_hard_mask_bits)
+        or not vec_empty(ctx[].p_infer_graph[].unpruned_pseudo_names)) {
         alloc_color_infer_graph(ctx)
     }
 }
@@ -891,7 +900,8 @@ fn alloc_unprune_infer_graph(ctx: Ctx, infer: *struc InferenceRegister, pruned_n
         }
     }
     loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
-        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, infer[].linked_pseudo_names[i])
+        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map,
+            infer[].linked_pseudo_names[i])
         if linked_infer[].color ~= REG_Sp {
             register_mask_set(@color_reg_mask, linked_infer[].color, false)
         }
@@ -1292,15 +1302,19 @@ fn get_coalesced_idx(ctx: Ctx, node: *struc AsmOperand) u64 {
         }
     }
     if coalesced_idx < ctx[].dfa[].set_size {
-        loop while coalesced_idx >= REGISTER_MASK_SIZE and coalesced_idx ~= ctx[].dfa[].open_data_map[coalesced_idx - REGISTER_MASK_SIZE] {
+        loop while (coalesced_idx >= REGISTER_MASK_SIZE
+            and coalesced_idx ~= ctx[].dfa[].open_data_map[coalesced_idx - REGISTER_MASK_SIZE]) {
             coalesced_idx = ctx[].dfa[].open_data_map[coalesced_idx - REGISTER_MASK_SIZE]
         }
     }
     return coalesced_idx
 }
 
-fn get_coalescable_infer_regs(ctx: Ctx, src_infer: **struc InferenceRegister, dst_infer: **struc InferenceRegister, src_idx: u64, dst_idx: u64) bool {
-    if src_idx ~= dst_idx and (src_idx >= REGISTER_MASK_SIZE or dst_idx >= REGISTER_MASK_SIZE) and src_idx < ctx[].dfa[].set_size and dst_idx < ctx[].dfa[].set_size {
+fn get_coalescable_infer_regs(
+    ctx: Ctx, src_infer: **struc InferenceRegister, dst_infer: **struc InferenceRegister, src_idx: u64, dst_idx: u64
+) bool {
+    if (src_idx ~= dst_idx and (src_idx >= REGISTER_MASK_SIZE or dst_idx >= REGISTER_MASK_SIZE)
+        and src_idx < ctx[].dfa[].set_size and dst_idx < ctx[].dfa[].set_size) {
         if src_idx < REGISTER_MASK_SIZE {
             dst_name: TIdentifier = ctx[].dfa_o2[].data_name_map[dst_idx - REGISTER_MASK_SIZE]
             is_dbl: bool = map_get(ctx[].frontend[].symbol_table, dst_name)[].type_t[].tag == AST_Double_t
@@ -1353,7 +1367,8 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
                     degree++
                 }
             }
-            elif register_mask_get(dst_infer[].linked_hard_mask, linked_infer[].reg_kind) and linked_infer[].degree >= ctx[].p_infer_graph[].k {
+            elif (register_mask_get(dst_infer[].linked_hard_mask, linked_infer[].reg_kind)
+                and linked_infer[].degree >= ctx[].p_infer_graph[].k) {
                 degree++
             }
         }
@@ -1367,7 +1382,8 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
     }
     loop i: u64 = 0 while i < vec_size(src_infer[].linked_pseudo_names) .. ++i {
         j: u64 = map_get(ctx[].cfg[].identifier_id_map, src_infer[].linked_pseudo_names[i])
-        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, src_infer[].linked_pseudo_names[i])
+        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map,
+            src_infer[].linked_pseudo_names[i])
         if GET_DFA_INSTR_SET_AT(ctx[].dfa[].incoming_idx, j) {
             if linked_infer[].degree > ctx[].p_infer_graph[].k {
                 degree++
@@ -1381,7 +1397,8 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
     loop i: u64 = 0 while i < vec_size(dst_infer[].linked_pseudo_names) .. ++i {
         j: u64 = map_get(ctx[].cfg[].identifier_id_map, dst_infer[].linked_pseudo_names[i])
         if GET_DFA_INSTR_SET_AT(ctx[].dfa[].incoming_idx, j) {
-            linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, dst_infer[].linked_pseudo_names[i])
+            linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map,
+                dst_infer[].linked_pseudo_names[i])
             if linked_infer[].degree >= ctx[].p_infer_graph[].k {
                 degree++
             }
@@ -1392,8 +1409,10 @@ fn coal_briggs_test(ctx: Ctx, src_infer: *struc InferenceRegister, dst_infer: *s
 
 fn coal_george_test(ctx: Ctx, reg_kind: REGISTER_KIND, infer: *struc InferenceRegister) bool {
     loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
-        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, infer[].linked_pseudo_names[i])
-        if not register_mask_get(linked_infer[].linked_hard_mask, reg_kind) and linked_infer[].degree >= ctx[].p_infer_graph[].k {
+        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map,
+            infer[].linked_pseudo_names[i])
+        if (not register_mask_get(linked_infer[].linked_hard_mask, reg_kind)
+            and linked_infer[].degree >= ctx[].p_infer_graph[].k) {
             return false
         }
     }
@@ -1428,7 +1447,8 @@ fn coal_pseudo_infer_reg(ctx: Ctx, infer: *struc InferenceRegister, merge_idx: u
         }
     }
     loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
-        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, infer[].linked_pseudo_names[i])
+        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map,
+            infer[].linked_pseudo_names[i])
         infer_rm_pseudo_edge(linked_infer, merge_name)
         infer_add_pseudo_edges(ctx, keep_name, infer[].linked_pseudo_names[i])
     }
@@ -1446,7 +1466,8 @@ fn coal_hard_infer_reg(ctx: Ctx, reg_kind: REGISTER_KIND, infer: *struc Inferenc
         }
     }
     loop i: u64 = 0 while i < vec_size(infer[].linked_pseudo_names) .. ++i {
-        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map, infer[].linked_pseudo_names[i])
+        linked_infer: *struc InferenceRegister = @map_get(ctx[].p_infer_graph[].pseudo_reg_map,
+            infer[].linked_pseudo_names[i])
         infer_rm_pseudo_edge(linked_infer, merge_name)
         infer_add_reg_edge(ctx, reg_kind, infer[].linked_pseudo_names[i])
     }
@@ -1458,7 +1479,8 @@ fn coal_infer_regs(ctx: Ctx, node: *struc AsmMov) bool {
     dst_infer: *struc InferenceRegister = nil
     src_idx: u64 = get_coalesced_idx(ctx, node[].src)
     dst_idx: u64 = get_coalesced_idx(ctx, node[].dst)
-    if get_coalescable_infer_regs(ctx, @src_infer, @dst_infer, src_idx, dst_idx) and coal_conservative_tests(ctx, src_infer, dst_infer) {
+    if (get_coalescable_infer_regs(ctx, @src_infer, @dst_infer, src_idx, dst_idx)
+        and coal_conservative_tests(ctx, src_infer, dst_infer)) {
         if src_idx < REGISTER_MASK_SIZE {
             coal_hard_infer_reg(ctx, src_infer[].reg_kind, dst_infer, dst_idx)
             ctx[].dfa[].open_data_map[dst_idx - REGISTER_MASK_SIZE] = src_idx
@@ -1766,7 +1788,8 @@ fn coalesce_registers(ctx: Ctx) bool {
     {
         is_fixed_point: bool = true
         loop instr_idx: u64 = 0 while instr_idx < vec_size(ctx[].p_instrs[]) .. ++instr_idx {
-            if GET_INSTR(instr_idx) and GET_INSTR(instr_idx)[].tag == AST_AsmMov_t and coal_infer_regs(ctx, @GET_INSTR(instr_idx)[].get._AsmMov) {
+            if (GET_INSTR(instr_idx) and GET_INSTR(instr_idx)[].tag == AST_AsmMov_t
+                and coal_infer_regs(ctx, @GET_INSTR(instr_idx)[].get._AsmMov)) {
                 is_fixed_point = false
             }
         }
@@ -1776,7 +1799,8 @@ fn coalesce_registers(ctx: Ctx) bool {
     }
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if GET_CFG_BLOCK(block_id).size > 0 {
-            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while (
+                instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx) .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     coal_instr(ctx, instr_idx, block_id)
                 }
@@ -1794,7 +1818,8 @@ fn alloc_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     label Ldowhile
     if init_inference_graph(ctx, node[].name) {
         if ctx[].is_with_coal and coalesce_registers(ctx) {
-            if vec_empty(ctx[].infer_graph[].unpruned_pseudo_names) and vec_empty(ctx[].sse_infer_graph[].unpruned_pseudo_names) {
+            if (vec_empty(ctx[].infer_graph[].unpruned_pseudo_names)
+                and vec_empty(ctx[].sse_infer_graph[].unpruned_pseudo_names)) {
                 jump Lbreak
             }
             jump Ldowhile
@@ -1834,7 +1859,9 @@ fn alloc_program(ctx: Ctx, node: *struc AsmProgram) none {
 
 ########################################################################################################################
 
-pub fn allocate_registers(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8) none {
+pub fn allocate_registers(
+    node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext, optim_2_code: u8
+) none {
     ctx: struc RegAllocContext;
     {
         ctx.backend = backend

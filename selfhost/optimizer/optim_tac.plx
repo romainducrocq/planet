@@ -105,7 +105,8 @@ fn fold_sign_extend_const(ctx: Ctx, node: *struc TacVariable, constant: *struc C
 fn fold_sign_extend_instr(ctx: Ctx, node: *struc TacSignExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: shared_ptr_t(TacValue) = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_sign_extend_const(ctx, @node[].dst[].get._TacVariable,
+            node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -225,7 +226,8 @@ fn fold_truncate_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CCon
 fn fold_truncate_instr(ctx: Ctx, node: *struc TacTruncate, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: shared_ptr_t(TacValue) = fold_truncate_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_truncate_const(ctx, @node[].dst[].get._TacVariable,
+            node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -295,7 +297,8 @@ fn fold_zero_extend_const(ctx: Ctx, node: *struc TacVariable, constant: *struc C
 fn fold_zero_extend_instr(ctx: Ctx, node: *struc TacZeroExtend, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: shared_ptr_t(TacValue) = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_zero_extend_const(ctx, @node[].dst[].get._TacVariable,
+            node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -332,7 +335,8 @@ fn fold_dbl_to_signed_const(ctx: Ctx, node: *struc TacVariable, constant: *struc
 fn fold_dbl_to_signed_instr(ctx: Ctx, node: *struc TacDoubleToInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: shared_ptr_t(TacValue) = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_dbl_to_signed_const(ctx, @node[].dst[].get._TacVariable,
+            node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -368,7 +372,8 @@ fn fold_dbl_to_unsigned_const(ctx: Ctx, node: *struc TacVariable, constant: *str
 fn fold_dbl_to_unsigned_instr(ctx: Ctx, node: *struc TacDoubleToUInt, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: shared_ptr_t(TacValue) = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_dbl_to_unsigned_const(ctx, @node[].dst[].get._TacVariable,
+            node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -402,9 +407,9 @@ fn fold_signed_to_dbl_const(constant: *struc CConst) shared_ptr_t(TacValue) {
 
 fn fold_signed_to_dbl_instr(ctx: Ctx, node: *struc TacIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        THROW_ABORT_IF(
-            node[].dst[].tag ~= AST_TacVariable_t
-            or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
+        THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t
+            or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag
+                ~= AST_Double_t)
         src: shared_ptr_t(TacValue) = fold_signed_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
@@ -439,9 +444,9 @@ fn fold_unsigned_to_dbl_const(constant: *struc CConst) shared_ptr_t(TacValue) {
 
 fn fold_unsigned_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble, instr_idx: u64) none {
     if node[].src[].tag == AST_TacConstant_t {
-        THROW_ABORT_IF(
-            node[].dst[].tag ~= AST_TacVariable_t
-            or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag ~= AST_Double_t)
+        THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t
+            or map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag
+                ~= AST_Double_t)
         src: shared_ptr_t(TacValue) = fold_unsigned_to_dbl_const(node[].src[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
@@ -612,7 +617,9 @@ fn fold_unary_instr(ctx: Ctx, node: *struc TacUnary, instr_idx: u64) none {
     }
 }
 
-fn fold_binary_int_const(node: *struc TacBinaryOp, constant_1: *struc CConstInt, constant_2: *struc CConstInt) shared_ptr_t(CConst) {
+fn fold_binary_int_const(
+    node: *struc TacBinaryOp, constant_1: *struc CConstInt, constant_2: *struc CConstInt
+) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
             value: TInt = constant_1[].value + constant_2[].value
@@ -685,7 +692,9 @@ fn fold_binary_int_const(node: *struc TacBinaryOp, constant_1: *struc CConstInt,
     }
 }
 
-fn fold_binary_long_const(node: *struc TacBinaryOp, constant_1: *struc CConstLong, constant_2: *struc CConstLong) shared_ptr_t(CConst) {
+fn fold_binary_long_const(
+    node: *struc TacBinaryOp, constant_1: *struc CConstLong, constant_2: *struc CConstLong
+) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
             value: TLong = constant_1[].value + constant_2[].value
@@ -758,7 +767,9 @@ fn fold_binary_long_const(node: *struc TacBinaryOp, constant_1: *struc CConstLon
     }
 }
 
-fn fold_binary_dbl_const(node: *struc TacBinaryOp, constant_1: *struc CConstDouble, constant_2: *struc CConstDouble) shared_ptr_t(CConst) {
+fn fold_binary_dbl_const(
+    node: *struc TacBinaryOp, constant_1: *struc CConstDouble, constant_2: *struc CConstDouble
+) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
             value: TDouble = constant_1[].value + constant_2[].value
@@ -806,7 +817,9 @@ fn fold_binary_dbl_const(node: *struc TacBinaryOp, constant_1: *struc CConstDoub
     }
 }
 
-fn fold_binary_uint_const(node: *struc TacBinaryOp, constant_1: *struc CConstUInt, constant_2: *struc CConstUInt) shared_ptr_t(CConst) {
+fn fold_binary_uint_const(
+    node: *struc TacBinaryOp, constant_1: *struc CConstUInt, constant_2: *struc CConstUInt
+) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
             value: TUInt = constant_1[].value + constant_2[].value
@@ -879,7 +892,9 @@ fn fold_binary_uint_const(node: *struc TacBinaryOp, constant_1: *struc CConstUIn
     }
 }
 
-fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstULong, constant_2: *struc CConstULong) shared_ptr_t(CConst) {
+fn fold_binary_ulong_const(
+    node: *struc TacBinaryOp, constant_1: *struc CConstULong, constant_2: *struc CConstULong
+) shared_ptr_t(CConst) {
     match node[].tag {
         -> AST_TacAdd_t {
             value: TULong = constant_1[].value + constant_2[].value
@@ -952,7 +967,9 @@ fn fold_binary_ulong_const(node: *struc TacBinaryOp, constant_1: *struc CConstUL
     }
 }
 
-fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, constant_2: *struc CConst) shared_ptr_t(TacValue) {
+fn fold_binary_const(
+    node: *struc TacBinaryOp, constant_1: *struc CConst, constant_2: *struc CConst
+) shared_ptr_t(TacValue) {
     THROW_ABORT_IF(constant_1[].tag ~= constant_2[].tag)
     fold_constant: shared_ptr_t(CConst) = sptr_new()
     match constant_1[].tag {
@@ -965,7 +982,8 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
             break
         }
         -> AST_CConstDouble_t {
-            fold_constant = fold_binary_dbl_const(node, @constant_1[].get._CConstDouble, @constant_2[].get._CConstDouble)
+            fold_constant = fold_binary_dbl_const(node, @constant_1[].get._CConstDouble,
+                @constant_2[].get._CConstDouble)
             break
         }
         -> AST_CConstUInt_t {
@@ -973,7 +991,8 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
             break
         }
         -> AST_CConstULong_t {
-            fold_constant = fold_binary_ulong_const(node, @constant_1[].get._CConstULong, @constant_2[].get._CConstULong)
+            fold_constant = fold_binary_ulong_const(node, @constant_1[].get._CConstULong,
+                @constant_2[].get._CConstULong)
             break
         }
         otherwise {
@@ -985,7 +1004,8 @@ fn fold_binary_const(node: *struc TacBinaryOp, constant_1: *struc CConst, consta
 
 fn fold_binary_instr(ctx: Ctx, node: *struc TacBinary, instr_idx: u64) none {
     if node[].src1[].tag == AST_TacConstant_t and node[].src2[].tag == AST_TacConstant_t {
-        src: shared_ptr_t(TacValue) = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant, node[].src2[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_binary_const(@node[].binop, node[].src1[].get._TacConstant.constant,
+            node[].src2[].get._TacConstant.constant)
         dst: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, node[].dst, dst)
         set_instr(ctx, make_TacCopy(@src, @dst), instr_idx)
@@ -1159,7 +1179,8 @@ fn fold_copy_const(ctx: Ctx, node: *struc TacVariable, constant: *struc CConst) 
 fn fold_copy_instr(ctx: Ctx, node: *struc TacCopy) none {
     if node[].src[].tag == AST_TacConstant_t {
         THROW_ABORT_IF(node[].dst[].tag ~= AST_TacVariable_t)
-        src: shared_ptr_t(TacValue) = fold_copy_const(ctx, @node[].dst[].get._TacVariable, node[].src[].get._TacConstant.constant)
+        src: shared_ptr_t(TacValue) = fold_copy_const(ctx, @node[].dst[].get._TacVariable,
+            node[].src[].get._TacConstant.constant)
         if src {
             sptr_move(TacValue, src, node[].src)
             ctx[].is_fixed_point = false
@@ -1305,7 +1326,8 @@ fn unreach_reachable_block(ctx: Ctx, block_id: u64) none {
 }
 
 fn unreach_empty_block(ctx: Ctx, block_id: u64) none {
-    loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+    loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while (
+        instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx) .. ++instr_idx {
         if GET_INSTR(instr_idx) {
             set_instr(ctx, uptr_new(), instr_idx)
         }
@@ -1556,7 +1578,9 @@ fn is_copy_same_signedness(ctx: Ctx, node: *struc TacCopy) bool {
 }
 
 fn is_copy_null_ptr(ctx: Ctx, node: *struc TacCopy) bool {
-    if node[].src[].tag == AST_TacConstant_t and node[].dst[].tag == AST_TacVariable_t and map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag == AST_Pointer_t {
+    if (node[].src[].tag == AST_TacConstant_t and node[].dst[].tag == AST_TacVariable_t
+        and map_get(ctx[].frontend[].symbol_table, node[].dst[].get._TacVariable.name)[].type_t[].tag
+            == AST_Pointer_t) {
         return is_const_null_ptr(@node[].src[].get._TacConstant)
     }
     else {
@@ -1609,7 +1633,9 @@ fn prop_transfer_call(ctx: Ctx, node: *struc TacFunCall, next_instr_idx: u64) no
                 THROW_ABORT_IF(GET_DFA_INSTR(i)[].tag ~= AST_TacCopy_t)
                 copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
-                if is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst) or (node[].dst and (is_same_value(node[].dst, copy[].src) or is_same_value(node[].dst, copy[].dst))) {
+                if (is_aliased_value(ctx, copy[].src) or is_aliased_value(ctx, copy[].dst)
+                    or (node[].dst
+                        and (is_same_value(node[].dst, copy[].src) or is_same_value(node[].dst, copy[].dst)))) {
                     SET_DFA_INSTR_SET_AT(next_instr_idx, i, false)
                     if GET_DFA_INSTR_SET_MASK(next_instr_idx, j) == MASK_FALSE {
                         i = mask_set_size
@@ -1627,7 +1653,8 @@ fn prop_transfer_copy(ctx: Ctx, node: *struc TacCopy, next_instr_idx: u64) bool 
         copy: *struc TacCopy = @GET_DFA_INSTR(i)[].get._TacCopy
         THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
         if is_same_value(node[].dst, copy[].dst) {
-            if (is_copy_same_signedness(ctx, copy) or is_copy_null_ptr(ctx, copy)) and is_same_value(node[].src, copy[].src) {
+            if ((is_copy_same_signedness(ctx, copy) or is_copy_null_ptr(ctx, copy))
+                and is_same_value(node[].src, copy[].src)) {
                 SET_DFA_INSTR_SET_AT(next_instr_idx, i, true)
             }
             else {
@@ -1801,7 +1828,8 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
     if node[].val and node[].val[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE) {
+            if ((exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE)
+                or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE)) {
                 i += 64
                 continue
             }
@@ -1810,7 +1838,8 @@ fn prop_ret_instr(ctx: Ctx, node: *struc TacReturn, incoming_idx: u64, exit_bloc
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop while i < mask_set_size .. ++i {
-                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i))
+                    or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].val, copy[].dst) {
@@ -2126,7 +2155,8 @@ fn prop_copy_instr(ctx: Ctx, node: *struc TacCopy, instr_idx: u64, block_id: u64
             if GET_DFA_INSTR_SET_AT(instr_idx, i) {
                 copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                 THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
-                if ctx[].dfa_o1[].data_idx_map[i] == instr_idx or (is_same_value(node[].src, copy[].dst) and is_same_value(node[].dst, copy[].src)) {
+                if (ctx[].dfa_o1[].data_idx_map[i] == instr_idx
+                    or (is_same_value(node[].src, copy[].dst) and is_same_value(node[].dst, copy[].src))) {
                     set_dfa_bak_copy_instr(ctx, node, instr_idx)
                     cfg_rm_block_instr(ctx, instr_idx, block_id)
                     return none
@@ -2293,7 +2323,8 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE) {
+            if ((exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE)
+                or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE)) {
                 i += 64
                 continue
             }
@@ -2302,7 +2333,8 @@ fn prop_jmp_eq_0_instr(ctx: Ctx, node: *struc TacJumpIfZero, incoming_idx: u64, 
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop while i < mask_set_size .. ++i {
-                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i))
+                    or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
@@ -2320,7 +2352,8 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
     if node[].condition[].tag == AST_TacVariable_t {
         i: u64 = 0
         loop j: u64 = 0 while j < ctx[].dfa[].mask_size .. ++j {
-            if (exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE) or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE) {
+            if ((exit_block and GET_DFA_BLOCK_SET_MASK(incoming_idx, j) == MASK_FALSE)
+                or (not exit_block and GET_DFA_INSTR_SET_MASK(incoming_idx, j) == MASK_FALSE)) {
                 i += 64
                 continue
             }
@@ -2329,7 +2362,8 @@ fn prop_jmp_ne_0_instr(ctx: Ctx, node: *struc TacJumpIfNotZero, incoming_idx: u6
                 mask_set_size = ctx[].dfa[].set_size
             }
             loop while i < mask_set_size .. ++i {
-                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i)) or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
+                if ((exit_block and GET_DFA_BLOCK_SET_AT(incoming_idx, i))
+                    or (not exit_block and GET_DFA_INSTR_SET_AT(incoming_idx, i))) {
                     copy: *struc TacCopy = get_dfa_bak_copy_instr(ctx, i)
                     THROW_ABORT_IF(copy[].dst[].tag ~= AST_TacVariable_t)
                     if is_same_value(node[].condition, copy[].dst) {
@@ -2437,7 +2471,8 @@ fn propagate_copies(ctx: Ctx) none {
         if GET_CFG_BLOCK(block_id).size > 0 {
             incoming_idx: u64 = block_id
             exit_block: u64 = 1
-            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_back_idx + 1 while instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_back_idx + 1 while (
+                instr_idx-- > GET_CFG_BLOCK(block_id).instrs_front_idx) {
                 if GET_INSTR(instr_idx) {
                     match GET_INSTR(instr_idx)[].tag {
                         -> AST_TacReturn_t;
@@ -2734,7 +2769,8 @@ fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: bool) none {
     dfa_iter_alg(ctx)
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if GET_CFG_BLOCK(block_id).size > 0 {
-            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx .. ++instr_idx {
+            loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while (
+                instr_idx <= GET_CFG_BLOCK(block_id).instrs_back_idx) .. ++instr_idx {
                 if GET_INSTR(instr_idx) {
                     elim_instr(ctx, instr_idx)
                 }
