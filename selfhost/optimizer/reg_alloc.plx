@@ -14,6 +14,7 @@ m4_include(`../ast/front_symt.plx.m4')m4_dnl
 m4_include(`../backend/registers.plx.m4')m4_dnl
 
 m4_define(`mask_t', `TULong')m4_dnl
+
 type struc ControlFlowGraph;
 type struc DataFlowAnalysis;
 type struc DataFlowAnalysisO2;
@@ -24,7 +25,6 @@ type struc InferenceRegister(
 )
 
 m4_define(`StInferenceRegister', `struc InferenceRegister')m4_dnl
-
 PairKeyValue(``TIdentifier'', ``StInferenceRegister'')
 
 type struc InferenceGraph(

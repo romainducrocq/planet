@@ -30,7 +30,6 @@ m4_define(`CLS_memory', `2')m4_dnl
 type struc Struct8Bytes(size: u64, clss: [2]STRUCT8B_CLASS)
 
 m4_define(`StStruct8Bytes', `struc Struct8Bytes')m4_dnl
-
 PairKeyValue(``TIdentifier'', ``StStruct8Bytes'')
 
 type struc AsmGenContext(

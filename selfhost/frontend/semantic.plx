@@ -12,7 +12,6 @@ m4_include(`../ast/front_ast.plx.m4')m4_dnl
 m4_include(`../ast/front_symt.plx.m4')m4_dnl
 
 m4_define(`StStructure', `struc Structure')m4_dnl
-
 PairKeyValue(``TIdentifier'', ``StStructure'')
 
 type struc SemanticContext(
