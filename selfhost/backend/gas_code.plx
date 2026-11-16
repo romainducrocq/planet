@@ -19,9 +19,9 @@ type struc GasCodeContext(
 # Gnu assembler code emission
 
 m4_define(`Ctx', `*struc GasCodeContext')m4_dnl
+
 m4_define(`LF', `"\n"')m4_dnl
 m4_define(`TAB', `"    "')m4_dnl
-
 m4_ifdef(`__APPLE__', `
 m4_define(`LBL', `"L"')m4_dnl
 ', `

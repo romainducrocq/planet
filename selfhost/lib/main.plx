@@ -1,7 +1,7 @@
-m4_include(`def_std.plx.m4')m4_dnl
-
 use "stdio"
 use "string"
+
+m4_include(`def_std.plx.m4')m4_dnl
 
 m4_include(`../util/fileio.plx.m4')m4_dnl
 m4_include(`../util/throw.plx.m4')m4_dnl

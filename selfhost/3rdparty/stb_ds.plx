@@ -41,9 +41,9 @@
 # ------------------------------------------------------------------------------
 #
 
-m4_include(`stb_ds.plx.m4')m4_dnl
-
 use "string"
+
+m4_include(`stb_ds.plx.m4')m4_dnl
 
 m4_define(`STBDS_SH_DEFAULT', `1')m4_dnl
 m4_define(`STBDS_SH_STRDUP', `2')m4_dnl

@@ -30,12 +30,12 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-m4_include(`sds.plx.m4')m4_dnl
-
 use "ctype"
 use "stdio"
 use "stdlib"
 use "string"
+
+m4_include(`sds.plx.m4')m4_dnl
 
 # Note: sdshdr5 is never used, we just access the flags byte directly.
 # However is here to document the layout of type 5 SDS strings.
@@ -74,6 +74,7 @@ m4_define(`SDS_TYPE_BITS', `3')m4_dnl
 m4_define(`SDS_HDR_VAR', `sh: *struc sdshdr$1 = cast<*any>(($2) - sizeof<struc sdshdr$1>)')m4_dnl
 m4_define(`SDS_HDR', `cast<*struc sdshdr$1>(($2) - sizeof<struc sdshdr$1>)')m4_dnl
 m4_define(`SDS_TYPE_5_LEN', `(($1) >> SDS_TYPE_BITS)')m4_dnl
+
 pub SDS_NOINIT: string = "SDS_NOINIT"
 
 pub fn sdslen(s: sds) u64 {
