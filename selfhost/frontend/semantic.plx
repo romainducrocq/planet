@@ -1759,6 +1759,7 @@ fn check_string_init(node: *struc CSingleInit, init_type: *shared_ptr_t(Type)) n
     sptr_copy(Type, init_type[], node[].exp[].exp_type)
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
+
 fn check_zero_init(ctx: Ctx, init_type: *struc Type) unique_ptr_t(CInitializer);
 
 fn check_single_zero_init(elem_type: *struc Type) unique_ptr_t(CInitializer) {
@@ -3154,6 +3155,7 @@ fn reslv_typed_exp(ctx: Ctx, exp: *unique_ptr_t(CExp)) error_t {
 
 fn reslv_block(ctx: Ctx, node: *struc CBlock) error_t;
 fn reslv_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t;
+
 fn reslv_statement(ctx: Ctx, node: *struc CStatement) error_t;
 
 fn reslv_for_init_decl(ctx: Ctx, node: *struc CInitDecl) error_t {

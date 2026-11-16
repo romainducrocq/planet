@@ -120,6 +120,7 @@ fn repr_value(node: *struc CExp) shared_ptr_t(TacValue) {
 fn push_instr(ctx: Ctx, instr: unique_ptr_t(TacInstruction)) none {
     vec_move_back(ctx[].p_instrs[], instr)
 }
+
 fn repr_res_instr(ctx: Ctx, node: *struc CExp) unique_ptr_t(TacExpResult);
 fn repr_exp_instr(ctx: Ctx, node: *struc CExp) shared_ptr_t(TacValue);
 
@@ -310,6 +311,7 @@ fn unary_res_instr(ctx: Ctx, node: *struc CUnary) unique_ptr_t(TacExpResult) {
     push_instr(ctx, make_TacUnary(@unop, @src, @dst_cp))
     return make_TacPlainOperand(@dst)
 }
+
 fn binary_any_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResult);
 
 fn binary_add_ptr_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResult) {
@@ -1021,6 +1023,7 @@ fn repr_exp_instr(ctx: Ctx, node: *struc CExp) shared_ptr_t(TacValue) {
 }
 
 fn repr_block(ctx: Ctx, node: *struc CBlock) none;
+
 fn statement_instr(ctx: Ctx, node: *struc CStatement) none;
 fn var_decl_instr(ctx: Ctx, node: *struc CVariableDeclaration) none;
 
