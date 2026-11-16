@@ -7,6 +7,7 @@ m4_define(`_FRONTEND_TOKENS_M4', `')m4_dnl
 
 m4_define(`TOKEN_KIND', `i32')m4_dnl
 m4_define(`TOK_skip', `0')m4_dnl
+
 m4_define(`TOK_line_break', `1')m4_dnl
 m4_define(`TOK_open_paren', `2')m4_dnl
 m4_define(`TOK_close_paren', `3')m4_dnl
@@ -16,12 +17,14 @@ m4_define(`TOK_open_bracket', `6')m4_dnl
 m4_define(`TOK_close_bracket', `7')m4_dnl
 m4_define(`TOK_comma_separator', `8')m4_dnl
 m4_define(`TOK_semicolon', `9')m4_dnl
+
 m4_define(`TOK_unop_complement', `10')m4_dnl
 m4_define(`TOK_unop_neg', `11')m4_dnl
 m4_define(`TOK_unop_not', `12')m4_dnl
 m4_define(`TOK_unop_addrof', `13')m4_dnl
 m4_define(`TOK_unop_incr', `14')m4_dnl
 m4_define(`TOK_unop_decr', `15')m4_dnl
+
 m4_define(`TOK_binop_add', `16')m4_dnl
 m4_define(`TOK_binop_multiply', `17')m4_dnl
 m4_define(`TOK_binop_divide', `18')m4_dnl
@@ -39,6 +42,7 @@ m4_define(`TOK_binop_lt', `29')m4_dnl
 m4_define(`TOK_binop_le', `30')m4_dnl
 m4_define(`TOK_binop_gt', `31')m4_dnl
 m4_define(`TOK_binop_ge', `32')m4_dnl
+
 m4_define(`TOK_assign', `33')m4_dnl
 m4_define(`TOK_assign_type', `34')m4_dnl
 m4_define(`TOK_assign_add', `35')m4_dnl
@@ -51,12 +55,14 @@ m4_define(`TOK_assign_bitor', `41')m4_dnl
 m4_define(`TOK_assign_xor', `42')m4_dnl
 m4_define(`TOK_assign_shiftleft', `43')m4_dnl
 m4_define(`TOK_assign_shiftright', `44')m4_dnl
+
 m4_define(`TOK_force_exec', `45')m4_dnl
 m4_define(`TOK_ternary_if', `46')m4_dnl
 m4_define(`TOK_compound_init', `47')m4_dnl
 m4_define(`TOK_typeop_member', `48')m4_dnl
 m4_define(`TOK_loop_post', `49')m4_dnl
 m4_define(`TOK_match_with', `50')m4_dnl
+
 m4_define(`TOK_key_char', `51')m4_dnl
 m4_define(`TOK_key_string', `52')m4_dnl
 m4_define(`TOK_key_i32', `53')m4_dnl
@@ -92,6 +98,7 @@ m4_define(`TOK_key_data', `82')m4_dnl
 m4_define(`TOK_key_extrn', `83')m4_dnl
 m4_define(`TOK_key_true', `84')m4_dnl
 m4_define(`TOK_key_false', `85')m4_dnl
+
 m4_define(`TOK_identifier', `86')m4_dnl
 m4_define(`TOK_string_literal', `87')m4_dnl
 m4_define(`TOK_char_const', `88')m4_dnl
@@ -100,11 +107,13 @@ m4_define(`TOK_long_const', `90')m4_dnl
 m4_define(`TOK_uint_const', `91')m4_dnl
 m4_define(`TOK_ulong_const', `92')m4_dnl
 m4_define(`TOK_dbl_const', `93')m4_dnl
+
 m4_define(`TOK_m4_prefix', `94')m4_dnl
 m4_define(`TOK_import_file', `95')m4_dnl
 m4_define(`TOK_import_force', `96')m4_dnl
 m4_define(`TOK_use_file', `97')m4_dnl
 m4_define(`TOK_use_force', `98')m4_dnl
+
 m4_define(`TOK_error', `99')m4_dnl
 
 ')m4_dnl

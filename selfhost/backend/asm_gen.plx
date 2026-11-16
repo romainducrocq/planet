@@ -21,6 +21,7 @@ m4_define(`LBL_Lsd2si_after', `2')m4_dnl
 m4_define(`LBL_Lsd2si_out_of_range', `3')m4_dnl
 m4_define(`LBL_Lsi2sd_after', `4')m4_dnl
 m4_define(`LBL_Lsi2sd_out_of_range', `5')m4_dnl
+
 m4_define(`STRUCT8B_CLASS', `i32')m4_dnl
 m4_define(`CLS_integer', `0')m4_dnl
 m4_define(`CLS_sse', `1')m4_dnl
