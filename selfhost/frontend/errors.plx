@@ -255,7 +255,9 @@ pub fn get_name_fmt(ctx: *struc IdentifierContext, name: TIdentifier, name_fmt: 
     return name_fmt[]
 }
 
-pub fn get_struct_name_fmt(ctx: *struc IdentifierContext, name: TIdentifier, is_union: bool, struct_fmt: *string_t) string {
+pub fn get_struct_name_fmt(
+    ctx: *struc IdentifierContext, name: TIdentifier, is_union: bool, struct_fmt: *string_t
+) string {
     struct_fmt[] = ? is_union then str_new("union ") else str_new("struc ")
     {
         name_fmt: string_t = str_new(nil)

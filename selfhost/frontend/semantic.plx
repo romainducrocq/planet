@@ -76,7 +76,8 @@ fn is_same_type(type_1: *struc Type, type_2: *struc Type) bool {
 }
 
 fn is_same_fun_type(fun_type_1: *struc FunType, fun_type_2: *struc FunType) bool {
-    if vec_size(fun_type_1[].param_types) ~= vec_size(fun_type_2[].param_types) or not is_same_type(fun_type_1[].ret_type, fun_type_2[].ret_type) {
+    if (vec_size(fun_type_1[].param_types) ~= vec_size(fun_type_2[].param_types)
+        or not is_same_type(fun_type_1[].ret_type, fun_type_2[].ret_type)) {
         return false
     }
     loop i: u64 = 0 while i < vec_size(fun_type_1[].param_types) .. ++i {
@@ -409,10 +410,13 @@ fn get_joint_ptr_type(ctx: Ctx, node_1: *struc CExp, node_2: *struc CExp, joint_
     elif node_1[].tag == AST_CConstant_t and is_const_null_ptr(@node_1[].get._CConstant) {
         sptr_copy(Type, node_2[].exp_type, joint_type[])
     }
-    elif (node_2[].tag == AST_CConstant_t and is_const_null_ptr(@node_2[].get._CConstant)) or (node_1[].exp_type[].tag == AST_Pointer_t and node_1[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and node_2[].exp_type[].tag == AST_Pointer_t) {
+    elif ((node_2[].tag == AST_CConstant_t and is_const_null_ptr(@node_2[].get._CConstant))
+        or (node_1[].exp_type[].tag == AST_Pointer_t and node_1[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t
+            and node_2[].exp_type[].tag == AST_Pointer_t)) {
         sptr_copy(Type, node_1[].exp_type, joint_type[])
     }
-    elif node_2[].exp_type[].tag == AST_Pointer_t and node_2[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and node_1[].exp_type[].tag == AST_Pointer_t {
+    elif (node_2[].exp_type[].tag == AST_Pointer_t and node_2[].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t
+        and node_1[].exp_type[].tag == AST_Pointer_t) {
         sptr_copy(Type, node_2[].exp_type, joint_type[])
     }
     else {
@@ -725,7 +729,10 @@ fn check_cast_exp(ctx: Ctx, node: *struc CCast) error_t {
     CATCH_ENTER
     ctx[].errors[].info_at_buf = node[]._base[].info_at
     TRY(reslv_struct_type(ctx, node[].target_type))
-    if node[].target_type[].tag ~= AST_Void_t and ((node[].exp[].exp_type[].tag == AST_Double_t and node[].target_type[].tag == AST_Pointer_t) or (node[].exp[].exp_type[].tag == AST_Pointer_t and node[].target_type[].tag == AST_Double_t) or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type)) {
+    if (node[].target_type[].tag ~= AST_Void_t
+        and ((node[].exp[].exp_type[].tag == AST_Double_t and node[].target_type[].tag == AST_Pointer_t)
+            or (node[].exp[].exp_type[].tag == AST_Pointer_t and node[].target_type[].tag == AST_Double_t)
+            or not is_type_scalar(node[].exp[].exp_type) or not is_type_scalar(node[].target_type))) {
         THROW_AT_TOKEN(node[]._base[].info_at,
             GET_SEMANTIC_MSG(MSG_illegal_cast,
                 str_fmt_type(node[].exp[].exp_type, @type_fmt_1), str_fmt_type(node[].target_type, @type_fmt_2)))
@@ -754,7 +761,13 @@ fn cast_assign(ctx: Ctx, exp_type: *shared_ptr_t(Type), exp: *unique_ptr_t(CExp)
     type_fmt_1: string_t = str_new(nil)
     type_fmt_2: string_t = str_new(nil)
     CATCH_ENTER
-    if (is_type_arithmetic(exp[][].exp_type) and is_type_arithmetic(exp_type[])) or (exp[][].tag == AST_CConstant_t and exp_type[][].tag == AST_Pointer_t and is_const_null_ptr(@exp[][].get._CConstant)) or (exp_type[][].tag == AST_Pointer_t and exp_type[][].get._Pointer.ref_type[].tag == AST_Void_t and exp[][].exp_type[].tag == AST_Pointer_t) or (exp[][].exp_type[].tag == AST_Pointer_t and exp[][].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t and exp_type[][].tag == AST_Pointer_t) {
+    if ((is_type_arithmetic(exp[][].exp_type) and is_type_arithmetic(exp_type[]))
+        or (exp[][].tag == AST_CConstant_t and exp_type[][].tag == AST_Pointer_t
+            and is_const_null_ptr(@exp[][].get._CConstant))
+        or (exp_type[][].tag == AST_Pointer_t and exp_type[][].get._Pointer.ref_type[].tag == AST_Void_t
+            and exp[][].exp_type[].tag == AST_Pointer_t)
+        or (exp[][].exp_type[].tag == AST_Pointer_t and exp[][].exp_type[].get._Pointer.ref_type[].tag == AST_Void_t
+            and exp_type[][].tag == AST_Pointer_t)) {
         TRY(cast_exp(ctx, exp_type, exp))
     }
     else {
@@ -878,7 +891,9 @@ fn check_binary_add_exp(ctx: Ctx, node: *struc CBinary) error_t {
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
     }
-    elif node[].exp_left[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type) and is_type_int(node[].exp_right[].exp_type) {
+    elif (node[].exp_left[].exp_type[].tag == AST_Pointer_t
+        and is_type_complete(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type)
+        and is_type_int(node[].exp_right[].exp_type)) {
         common_type = make_Long()
         if not is_same_type(node[].exp_right[].exp_type, common_type) {
             TRY(cast_exp(ctx, @common_type, @node[].exp_right))
@@ -886,7 +901,8 @@ fn check_binary_add_exp(ctx: Ctx, node: *struc CBinary) error_t {
         sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
         EARLY_EXIT
     }
-    elif is_type_int(node[].exp_left[].exp_type) and node[].exp_right[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_right[].exp_type[].get._Pointer.ref_type) {
+    elif (is_type_int(node[].exp_left[].exp_type) and node[].exp_right[].exp_type[].tag == AST_Pointer_t
+        and is_type_complete(ctx, node[].exp_right[].exp_type[].get._Pointer.ref_type)) {
         common_type = make_Long()
         if not is_same_type(node[].exp_left[].exp_type, common_type) {
             TRY(cast_exp(ctx, @common_type, @node[].exp_left))
@@ -922,7 +938,8 @@ fn check_binary_subtract_exp(ctx: Ctx, node: *struc CBinary) error_t {
     if is_type_arithmetic(node[].exp_left[].exp_type) and is_type_arithmetic(node[].exp_right[].exp_type) {
         common_type = get_joint_type(node[].exp_left, node[].exp_right)
     }
-    elif node[].exp_left[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type) {
+    elif (node[].exp_left[].exp_type[].tag == AST_Pointer_t
+        and is_type_complete(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type)) {
         if is_type_int(node[].exp_right[].exp_type) {
             common_type = make_Long()
             if not is_same_type(node[].exp_right[].exp_type, common_type) {
@@ -931,7 +948,9 @@ fn check_binary_subtract_exp(ctx: Ctx, node: *struc CBinary) error_t {
             sptr_copy(Type, node[].exp_left[].exp_type, node[]._base[].exp_type)
             EARLY_EXIT
         }
-        elif is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) and not (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) {
+        elif (is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type)
+            and not (node[].exp_left[].tag == AST_CConstant_t
+                and is_const_null_ptr(@node[].exp_left[].get._CConstant))) {
             common_type = make_Long()
             sptr_move(Type, common_type, node[]._base[].exp_type)
             EARLY_EXIT
@@ -1111,7 +1130,12 @@ fn check_binary_relational_exp(ctx: Ctx, node: *struc CBinary) error_t {
     type_fmt_2: string_t = str_new(nil)
     common_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
-    if not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type) or (node[].exp_left[].exp_type[].tag == AST_Pointer_t and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type) or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant)) or (node[].exp_right[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_right[].get._CConstant)))) {
+    if (not is_type_scalar(node[].exp_left[].exp_type) or not is_type_scalar(node[].exp_right[].exp_type)
+        or (node[].exp_left[].exp_type[].tag == AST_Pointer_t
+            and (not is_same_type(node[].exp_left[].exp_type, node[].exp_right[].exp_type)
+                or (node[].exp_left[].tag == AST_CConstant_t and is_const_null_ptr(@node[].exp_left[].get._CConstant))
+                or (node[].exp_right[].tag == AST_CConstant_t
+                    and is_const_null_ptr(@node[].exp_right[].get._CConstant))))) {
         THROW_AT_TOKEN(node[]._base[].info_at,
             GET_SEMANTIC_MSG(MSG_invalid_binary_ops,
                 get_binop_fmt(@node[].binop), str_fmt_type(node[].exp_left[].exp_type, @type_fmt_1),
@@ -1334,14 +1358,17 @@ fn check_subscript_exp(ctx: Ctx, node: *struc CSubscript) error_t {
     ref_type: shared_ptr_t(Type) = sptr_new()
     subscript_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
-    if node[].primary_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].primary_exp[].exp_type[].get._Pointer.ref_type) and is_type_int(node[].subscript_exp[].exp_type) {
+    if (node[].primary_exp[].exp_type[].tag == AST_Pointer_t
+        and is_type_complete(ctx, node[].primary_exp[].exp_type[].get._Pointer.ref_type)
+        and is_type_int(node[].subscript_exp[].exp_type)) {
         subscript_type = make_Long()
         if not is_same_type(node[].subscript_exp[].exp_type, subscript_type) {
             TRY(cast_exp(ctx, @subscript_type, @node[].subscript_exp))
         }
         sptr_copy(Type, node[].primary_exp[].exp_type[].get._Pointer.ref_type, ref_type)
     }
-    elif is_type_int(node[].primary_exp[].exp_type) and node[].subscript_exp[].exp_type[].tag == AST_Pointer_t and is_type_complete(ctx, node[].subscript_exp[].exp_type[].get._Pointer.ref_type) {
+    elif (is_type_int(node[].primary_exp[].exp_type) and node[].subscript_exp[].exp_type[].tag == AST_Pointer_t
+        and is_type_complete(ctx, node[].subscript_exp[].exp_type[].get._Pointer.ref_type)) {
         subscript_type = make_Long()
         if not is_same_type(node[].primary_exp[].exp_type, subscript_type) {
             TRY(cast_exp(ctx, @subscript_type, @node[].primary_exp))
@@ -1891,7 +1918,9 @@ fn check_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, 
     sptr_copy(Type, init_type[], node[]._base[].init_type)
 }
 
-fn check_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) none {
+fn check_struct_init(
+    ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)
+) none {
     struct_typedef: *struc StructTypedef = map_get(ctx[].frontend[].struct_typedef_table, struct_type[].tag_name)
     loop i: u64 = vec_size(node[].initializers) while i < map_size(struct_typedef[].members) .. ++i {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
@@ -1962,7 +1991,8 @@ fn check_fun_params_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
             check_arr_param_decl(fun_type, i)
         }
         if node[].body {
-            if fun_type[].param_types[i][].tag == AST_Structure_t and not is_struct_complete(ctx, @fun_type[].param_types[i][].get._Structure) {
+            if (fun_type[].param_types[i][].tag == AST_Structure_t
+                and not is_struct_complete(ctx, @fun_type[].param_types[i][].get._Structure)) {
                 THROW_AT_TOKEN(node[].info_at,
                     GET_SEMANTIC_MSG(MSG_incomplete_param,
                         str_fmt_name(node[].name, @name_fmt_1), str_fmt_name(node[].params[i], @name_fmt_2),
@@ -2000,7 +2030,9 @@ fn check_fun_decl(ctx: Ctx, node: *struc CFunctionDeclaration) error_t {
     if map_it ~= map_end() {
         fun_symbol: *struc Symbol = pair_second(ctx[].frontend[].symbol_table[map_it])
         fun_type: *struc FunType = @fun_symbol[].type_t[].get._FunType
-        if not (fun_symbol[].type_t[].tag == AST_FunType_t and vec_size(fun_type[].param_types) == vec_size(node[].params) and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type)) {
+        if (not (fun_symbol[].type_t[].tag == AST_FunType_t
+                and vec_size(fun_type[].param_types) == vec_size(node[].params)
+                and is_same_fun_type(@node[].fun_type[].get._FunType, fun_type))) {
             THROW_AT_TOKEN(node[].info_at,
                 GET_SEMANTIC_MSG(MSG_redecl_fun_conflict,
                     str_fmt_name(node[].name, @name_fmt), str_fmt_type(node[].fun_type, @type_fmt_1),
@@ -2378,7 +2410,9 @@ fn check_static_init(ctx: Ctx, node: *struc CInitializer, static_init_type: *str
     CATCH_EXIT
 }
 
-fn check_initializer(ctx: Ctx, node: *struc CInitializer, static_init_type: *struc Type, init_value: *shared_ptr_t(InitialValue)) error_t {
+fn check_initializer(
+    ctx: Ctx, node: *struc CInitializer, static_init_type: *struc Type, init_value: *shared_ptr_t(InitialValue)
+) error_t {
     static_inits: vector_t(shared_ptr_t(StaticInit)) = vec_new()
     CATCH_ENTER
     {
@@ -2426,7 +2460,8 @@ fn check_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
             init_value = make_NoInitializer()
         }
         else {
-            if node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure) {
+            if (node[].var_type[].tag == AST_Structure_t
+                and not is_struct_complete(ctx, @node[].var_type[].get._Structure)) {
                 THROW_AT_TOKEN(node[].info_at,
                     GET_SEMANTIC_MSG(MSG_incomplete_var_decl,
                         str_fmt_name(node[].name, @name_fmt), str_fmt_type(node[].var_type, @type_fmt_1)))
@@ -2750,7 +2785,8 @@ fn annotate_case_jump(ctx: Ctx, node: *struc CCase) error_t {
     if not ctx[].p_switch_statement {
         THROW_AT_TOKEN(node[].value[].info_at, GET_SEMANTIC_MSG(MSG_case_out_of_switch))
     }
-    node[].target = repr_case_identifier(ctx[].identifiers, ctx[].p_switch_statement[].target, false, vec_size(ctx[].p_switch_statement[].cases))
+    node[].target = repr_case_identifier(
+        ctx[].identifiers, ctx[].p_switch_statement[].target, false, vec_size(ctx[].p_switch_statement[].cases))
     FINALLY
     CATCH_EXIT
 }
@@ -2815,7 +2851,8 @@ fn exit_scope(ctx: Ctx) none {
     loop i: u64 = 0 while i < map_size(vec_back(ctx[].scoped_identifier_maps)) .. ++i {
         identifier: TIdentifier = pair_first(vec_back(ctx[].scoped_identifier_maps)[i])
         map_it: i64 = map_find(ctx[].extern_scope_map, identifier)
-        if map_it ~= map_end() and pair_second(ctx[].extern_scope_map[map_it]) == vec_size(ctx[].scoped_identifier_maps) {
+        if (map_it ~= map_end()
+            and pair_second(ctx[].extern_scope_map[map_it]) == vec_size(ctx[].scoped_identifier_maps)) {
             map_erase(ctx[].extern_scope_map, identifier)
         }
     }
@@ -3478,7 +3515,9 @@ fn reslv_single_init(ctx: Ctx, node: *struc CSingleInit, init_type: *shared_ptr_
     CATCH_EXIT
 }
 
-fn reslv_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_arr_init(
+    ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, init_type: *shared_ptr_t(Type)
+) error_t {
     CATCH_ENTER
     TRY(check_bound_arr_init(ctx, node, arr_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -3489,7 +3528,9 @@ fn reslv_arr_init(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, 
     CATCH_EXIT
 }
 
-fn reslv_struct_init(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)) error_t {
+fn reslv_struct_init(
+    ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, init_type: *shared_ptr_t(Type)
+) error_t {
     CATCH_ENTER
     TRY(check_bound_struct_init(ctx, node, struct_type))
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
@@ -3614,7 +3655,9 @@ fn reslv_file_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
 fn reslv_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) error_t {
     name_fmt: string_t = str_new(nil)
     CATCH_ENTER
-    if map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end() and not (map_find(ctx[].extern_scope_map, node[].name) ~= map_end() and node[].storage_class.tag == AST_CExtern_t) {
+    if (map_find(vec_back(ctx[].scoped_identifier_maps), node[].name) ~= map_end()
+        and not (map_find(ctx[].extern_scope_map, node[].name) ~= map_end()
+            and node[].storage_class.tag == AST_CExtern_t)) {
         THROW_AT_TOKEN(node[].info_at, GET_SEMANTIC_MSG(MSG_redecl_var_in_scope, str_fmt_name(node[].name, @name_fmt)))
     }
     elif node[].storage_class.tag == AST_CExtern_t {
@@ -3758,7 +3801,10 @@ fn resolve_program(ctx: Ctx, node: *struc CProgram) error_t {
 
 ########################################################################################################################
 
-pub fn analyze_semantic(node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) error_t {
+pub fn analyze_semantic(
+    node: *struc CProgram, errors: *struc ErrorsContext, frontend: *struc FrontEndContext,
+    identifiers: *struc IdentifierContext
+) error_t {
     ctx: struc SemanticContext;
     {
         ctx.errors = errors

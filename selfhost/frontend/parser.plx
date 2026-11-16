@@ -121,7 +121,8 @@ fn parse_long_const(intmax: i64) shared_ptr_t(CConst) {
 fn parse_dbl_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     CATCH_ENTER
     value: TDouble;
-    TRY(string_to_dbl(ctx[].errors, map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), ctx[].next_tok[].info_at, @value))
+    TRY(string_to_dbl(ctx[].errors,
+        map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok), ctx[].next_tok[].info_at, @value))
     constant[] = make_CConstDouble(value)
     FINALLY
     CATCH_EXIT
@@ -1181,7 +1182,9 @@ fn parse_exp(ctx: Ctx, min_precedence: i32, exp: *unique_ptr_t(CExp)) error_t {
 }
 
 fn parse_block(ctx: Ctx, block: *unique_ptr_t(CBlock)) error_t;
-fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl: *unique_ptr_t(CVariableDeclaration)) error_t;
+fn parse_var_declaration(
+    ctx: Ctx, storage_class: *struc CStorageClass, var_decl: *unique_ptr_t(CVariableDeclaration)
+) error_t;
 
 fn parse_ret_statement(ctx: Ctx, statement: *unique_ptr_t(CStatement)) error_t {
     exp: unique_ptr_t(CExp) = uptr_new()
@@ -1818,7 +1821,9 @@ fn parse_fun_decltor(ctx: Ctx, fun_type: *shared_ptr_t(Type), params: *vector_t(
 
 # <function-declaration> ::= [ <storage-class> ] "fn" <identifier> <function-declarator> <block>
 # function_declaration = FunctionDeclaration(identifier, identifier*, block?, type, storage_class?)
-fn parse_fun_declaration(ctx: Ctx, storage_class: *struc CStorageClass, fun_decl: *unique_ptr_t(CFunctionDeclaration)) error_t {
+fn parse_fun_declaration(
+    ctx: Ctx, storage_class: *struc CStorageClass, fun_decl: *unique_ptr_t(CFunctionDeclaration)
+) error_t {
     body: unique_ptr_t(CBlock) = uptr_new()
     fun_type: shared_ptr_t(Type) = sptr_new()
     params: vector_t(TIdentifier) = vec_new()
@@ -1841,7 +1846,9 @@ fn parse_fun_declaration(ctx: Ctx, storage_class: *struc CStorageClass, fun_decl
 
 # <variable-declaration> ::= [ <storage-class> ] <declarator> ( [ "=" <initializer> ] | ";" )
 # variable_declaration = VariableDeclaration(identifier, initializer?, type, storage_class?)
-fn parse_var_declaration(ctx: Ctx, storage_class: *struc CStorageClass, var_decl: *unique_ptr_t(CVariableDeclaration)) error_t {
+fn parse_var_declaration(
+    ctx: Ctx, storage_class: *struc CStorageClass, var_decl: *unique_ptr_t(CVariableDeclaration)
+) error_t {
     initializer: unique_ptr_t(CInitializer) = uptr_new()
     var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
@@ -2055,7 +2062,10 @@ fn parse_program(ctx: Ctx, c_ast: *unique_ptr_t(CProgram)) error_t {
 
 ########################################################################################################################
 
-pub fn parse_tokens(tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext, c_ast: *unique_ptr_t(CProgram)) error_t {
+pub fn parse_tokens(
+    tokens: *vector_t(struc Token), errors: *struc ErrorsContext, identifiers: *struc IdentifierContext,
+    c_ast: *unique_ptr_t(CProgram)
+) error_t {
     ctx: struc ParserContext;
     {
         ctx.errors = errors

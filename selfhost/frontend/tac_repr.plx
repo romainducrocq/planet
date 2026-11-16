@@ -535,7 +535,9 @@ fn plain_op_assign_res_instr(ctx: Ctx, res: *struc TacPlainOperand, src: *shared
     push_instr(ctx, make_TacCopy(src, @dst))
 }
 
-fn deref_ptr_assign_res_instr(ctx: Ctx, res: *struc TacDereferencedPointer, src: *shared_ptr_t(TacValue), exp_res: *unique_ptr_t(TacExpResult)) none {
+fn deref_ptr_assign_res_instr(
+    ctx: Ctx, res: *struc TacDereferencedPointer, src: *shared_ptr_t(TacValue), exp_res: *unique_ptr_t(TacExpResult)
+) none {
     src_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, src[], src_cp)
     dst: shared_ptr_t(TacValue) = sptr_new()
@@ -545,7 +547,9 @@ fn deref_ptr_assign_res_instr(ctx: Ctx, res: *struc TacDereferencedPointer, src:
     exp_res[] = make_TacPlainOperand(src)
 }
 
-fn sub_obj_assign_res_instr(ctx: Ctx, res: *struc TacSubObject, src: *shared_ptr_t(TacValue), exp_res: *unique_ptr_t(TacExpResult)) none {
+fn sub_obj_assign_res_instr(
+    ctx: Ctx, res: *struc TacSubObject, src: *shared_ptr_t(TacValue), exp_res: *unique_ptr_t(TacExpResult)
+) none {
     dst_name: TIdentifier = res[].base_name
     offset: TLong = res[].offset
     src_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -743,7 +747,9 @@ fn deref_ptr_addrof_res_instr(res: *struc TacDereferencedPointer, exp_res: *uniq
     exp_res[] = make_TacPlainOperand(@val)
 }
 
-fn sub_obj_addrof_res_instr(ctx: Ctx, res: *struc TacSubObject, node: *struc CAddrOf, exp_res: *unique_ptr_t(TacExpResult)) none {
+fn sub_obj_addrof_res_instr(
+    ctx: Ctx, res: *struc TacSubObject, node: *struc CAddrOf, exp_res: *unique_ptr_t(TacExpResult)
+) none {
     dst: shared_ptr_t(TacValue) = ptr_inner_value(ctx, node[]._base)
     {
         name: TIdentifier = res[].base_name
@@ -834,7 +840,9 @@ fn sizeoft_res_instr(ctx: Ctx, node: *struc CSizeOfT) unique_ptr_t(TacExpResult)
     return make_TacPlainOperand(@val)
 }
 
-fn plain_op_dot_res_instr(res: *struc TacPlainOperand, member_offset: TLong, exp_res: *unique_ptr_t(TacExpResult)) none {
+fn plain_op_dot_res_instr(
+    res: *struc TacPlainOperand, member_offset: TLong, exp_res: *unique_ptr_t(TacExpResult)
+) none {
     THROW_ABORT_IF(res[].val[].tag ~= AST_TacVariable_t)
     base_name: TIdentifier = res[].val[].get._TacVariable.name
     offset: TLong = member_offset
@@ -1288,12 +1296,17 @@ fn statement_instr(ctx: Ctx, node: *struc CStatement) none {
     }
 }
 
-fn compound_init_instr(ctx: Ctx, node: *struc CInitializer, init_type: *struc Type, symbol: TIdentifier, size: *TLong) none;
+fn compound_init_instr(
+    ctx: Ctx, node: *struc CInitializer, init_type: *struc Type, symbol: TIdentifier, size: *TLong
+) none;
 
-fn string_single_init_instr(ctx: Ctx, node: *struc CString, arr_type: *struc Array, symbol: TIdentifier, size: TLong) none {
+fn string_single_init_instr(
+    ctx: Ctx, node: *struc CString, arr_type: *struc Array, symbol: TIdentifier, size: TLong
+) none {
     byte_at: u64 = 0
     bytes_size: u64 = cast<u64>(arr_type[].size)
-    bytes_copy: u64 = ? arr_type[].size > cast<TLong>(vec_size(node[].literal[].value)) then vec_size(node[].literal[].value) else bytes_size
+    bytes_copy: u64 = (? arr_type[].size > cast<TLong>(vec_size(node[].literal[].value))
+        then vec_size(node[].literal[].value) else bytes_size)
     loop while byte_at < bytes_copy {
         dst_name: TIdentifier = symbol
         offset: TLong = size + cast<TLong>(byte_at)
@@ -1374,7 +1387,9 @@ fn single_init_instr(ctx: Ctx, node: *struc CSingleInit, init_type: *struc Type,
     }
 }
 
-fn scalar_compound_init_instr(ctx: Ctx, node: *struc CSingleInit, init_type: *struc Type, symbol: TIdentifier, size: TLong) none {
+fn scalar_compound_init_instr(
+    ctx: Ctx, node: *struc CSingleInit, init_type: *struc Type, symbol: TIdentifier, size: TLong
+) none {
     if node[].exp[].tag == AST_CString_t and init_type[].tag == AST_Array_t {
         string_single_init_instr(ctx, @node[].exp[].get._CString, @init_type[].get._Array, symbol, size)
     }
@@ -1386,7 +1401,9 @@ fn scalar_compound_init_instr(ctx: Ctx, node: *struc CSingleInit, init_type: *st
     }
 }
 
-fn arr_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, symbol: TIdentifier, size: *TLong) none {
+fn arr_compound_init_instr(
+    ctx: Ctx, node: *struc CCompoundInit, arr_type: *struc Array, symbol: TIdentifier, size: *TLong
+) none {
     loop i: u64 = 0 while i < vec_size(node[].initializers) .. ++i {
         compound_init_instr(ctx, node[].initializers[i], arr_type[].elem_type, symbol, size)
         if node[].initializers[i][].tag == AST_CSingleInit_t {
@@ -1395,7 +1412,9 @@ fn arr_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, arr_type: *stru
     }
 }
 
-fn struct_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, symbol: TIdentifier, size: *TLong) none {
+fn struct_compound_init_instr(
+    ctx: Ctx, node: *struc CCompoundInit, struct_type: *struc Structure, symbol: TIdentifier, size: *TLong
+) none {
     loop i: u64 = vec_size(node[].initializers) while i-- > 0 {
         member: *struc StructMember = get_struct_typedef_member(ctx[].frontend, struct_type[].tag_name, i)
         offset: TLong = size[] + member[].offset
@@ -1404,7 +1423,9 @@ fn struct_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, struct_type:
     size[] += get_struct_scale(ctx, struct_type)
 }
 
-fn aggr_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, init_type: *struc Type, symbol: TIdentifier, size: *TLong) none {
+fn aggr_compound_init_instr(
+    ctx: Ctx, node: *struc CCompoundInit, init_type: *struc Type, symbol: TIdentifier, size: *TLong
+) none {
     match init_type[].tag {
         -> AST_Array_t {
             arr_compound_init_instr(ctx, node, @init_type[].get._Array, symbol, size)
@@ -1420,7 +1441,9 @@ fn aggr_compound_init_instr(ctx: Ctx, node: *struc CCompoundInit, init_type: *st
     }
 }
 
-fn compound_init_instr(ctx: Ctx, node: *struc CInitializer, init_type: *struc Type, symbol: TIdentifier, size: *TLong) none {
+fn compound_init_instr(
+    ctx: Ctx, node: *struc CInitializer, init_type: *struc Type, symbol: TIdentifier, size: *TLong
+) none {
     match node[].tag {
         -> AST_CSingleInit_t {
             scalar_compound_init_instr(ctx, @node[].get._CSingleInit, init_type, symbol, size[])
@@ -1455,7 +1478,8 @@ fn var_decl_instr(ctx: Ctx, node: *struc CVariableDeclaration) none {
 }
 
 fn var_declaration_instr(ctx: Ctx, node: *struc CVarDecl) none {
-    if node[].var_decl[].init and map_get(ctx[].frontend[].symbol_table, node[].var_decl[].name)[].attrs[].tag ~= AST_StaticAttr_t {
+    if (node[].var_decl[].init
+        and map_get(ctx[].frontend[].symbol_table, node[].var_decl[].name)[].attrs[].tag ~= AST_StaticAttr_t) {
         var_decl_instr(ctx, node[].var_decl)
     }
 }
@@ -1667,7 +1691,9 @@ fn repr_program(ctx: Ctx, node: *struc CProgram) unique_ptr_t(TacProgram) {
 
 ########################################################################################################################
 
-pub fn represent_three_address_code(c_ast: *unique_ptr_t(CProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(TacProgram) {
+pub fn represent_three_address_code(
+    c_ast: *unique_ptr_t(CProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext
+) unique_ptr_t(TacProgram) {
     ctx: struc TacReprContext;
     {
         ctx.frontend = frontend

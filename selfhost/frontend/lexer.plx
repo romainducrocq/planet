@@ -975,7 +975,10 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
 
 ########################################################################################################################
 
-pub fn lex_c_code(filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)) error_t {
+pub fn lex_c_code(
+    filename: string_t, includedirs: *vector_t(string), stdlibdirs: *vector_t(string), errors: *struc ErrorsContext,
+    fileio: *struc FileIoContext, identifiers: *struc IdentifierContext, tokens: *vector_t(struc Token)
+) error_t {
     ctx: struc LexerContext;
     {
         ctx.errors = errors
