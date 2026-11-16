@@ -682,8 +682,8 @@ fn ret_8b_instr(
 ) none {
     src_name: TIdentifier = name
     dst: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
-    asm_type_src: shared_ptr_t(AssemblyType) = (
-        ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble())
+    asm_type_src: shared_ptr_t(AssemblyType) = (? struct_type
+        then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble())
     if asm_type_src[].tag == AST_ByteArray_t {
         size: TLong = offset + 2l
         offset += asm_type_src[].get._ByteArray.size - 1l
@@ -1485,8 +1485,8 @@ fn ret_8b_call_instr(
 ) none {
     dst_name: TIdentifier = name
     src: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
-    asm_type_dst: shared_ptr_t(AssemblyType) = (
-        ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble())
+    asm_type_dst: shared_ptr_t(AssemblyType) = (? struct_type
+        then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble())
     if asm_type_dst[].tag == AST_ByteArray_t {
         size: TLong = asm_type_dst[].get._ByteArray.size + offset - 2l
         free_AssemblyType(@asm_type_dst)

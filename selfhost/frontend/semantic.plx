@@ -2785,8 +2785,8 @@ fn annotate_case_jump(ctx: Ctx, node: *struc CCase) error_t {
     if not ctx[].p_switch_statement {
         THROW_AT_TOKEN(node[].value[].info_at, GET_SEMANTIC_MSG(MSG_case_out_of_switch))
     }
-    node[].target = repr_case_identifier(
-        ctx[].identifiers, ctx[].p_switch_statement[].target, false, vec_size(ctx[].p_switch_statement[].cases))
+    node[].target = repr_case_identifier(ctx[].identifiers, ctx[].p_switch_statement[].target, false,
+        vec_size(ctx[].p_switch_statement[].cases))
     FINALLY
     CATCH_EXIT
 }
