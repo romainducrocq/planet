@@ -81,7 +81,8 @@ pub fn open_fwrite(ctx: Ctx, filename: string_t) error_t {
 }
 
 pub fn read_line(ctx: Ctx, line: *string, line_size: *u64) bool {
-    line_ssize: i64 = getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len, vec_back(ctx[].file_reads).fd)
+    line_ssize: i64 = getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len,
+        vec_back(ctx[].file_reads).fd)
     if line_ssize == -1 {
         line = nil
         line_size[] = 0
@@ -122,7 +123,8 @@ pub fn close_fread(ctx: Ctx, linenum: u64) error_t {
             THROW_BASE(GET_UTIL_MSG(MSG_failed_fread, vec_back(ctx[].file_reads).filename))
         }
         loop i: u64 = 0 while i < linenum .. ++i {
-            if getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len, vec_back(ctx[].file_reads).fd) == -1 {
+            if (getline(@vec_back(ctx[].file_reads).buf, @vec_back(ctx[].file_reads).len, vec_back(ctx[].file_reads).fd)
+                == -1) {
                 THROW_BASE(GET_UTIL_MSG(MSG_failed_fread, vec_back(ctx[].file_reads).filename))
             }
         }

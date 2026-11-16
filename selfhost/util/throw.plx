@@ -68,7 +68,8 @@ pub fn raise_base_error(ctx: Ctx) none {
         fflush(nil)
     }
     stderr_buf: string_t = str_new("")
-    stderr_buf_size: u64 = strlen(":\nerror: \n") + ESC_BOLD_SIZE + strlen(filename) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg)
+    stderr_buf_size: u64 = (strlen(":\nerror: \n") + ESC_BOLD_SIZE + strlen(filename) + ESC_RESET_SIZE + ESC_RED_SIZE
+        + ESC_RESET_SIZE + strlen(ctx[].msg))
     str_reserve(stderr_buf, stderr_buf_size)
     str_append(stderr_buf, esc_bold)
     str_append(stderr_buf, filename)
@@ -160,7 +161,10 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
             pad_linenum[i] = ' '
         }
         stderr_buf: string_t = str_new("")
-        stderr_buf_size: u64 = strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename) + str_size(strto_linenum) + str_size(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg) + str_size(strto_linenum) + ESC_RED_SIZE + str_size(pad_tok) + str_size(tok_overline) + ESC_RESET_SIZE + str_size(pad_linenum) + ESC_BOLD_SIZE + str_size(line) + ESC_RESET_SIZE
+        stderr_buf_size: u64 = (strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename)
+            + str_size(strto_linenum) + str_size(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE
+            + strlen(ctx[].msg) + str_size(strto_linenum) + ESC_RED_SIZE + str_size(pad_tok) + str_size(tok_overline)
+            + ESC_RESET_SIZE + str_size(pad_linenum) + ESC_BOLD_SIZE + str_size(line) + ESC_RESET_SIZE)
         str_reserve(stderr_buf, stderr_buf_size)
         str_append(stderr_buf, esc_bold)
         str_append(stderr_buf, filename)
