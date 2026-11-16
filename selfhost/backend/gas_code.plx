@@ -1044,7 +1044,10 @@ m4_ifdef(`__APPLE__', `', `
 
 ########################################################################################################################
 
-pub fn emit_gas_code(asm_ast: *unique_ptr_t(AsmProgram), backend: *struc BackEndContext, fileio: *struc FileIoContext, identifiers: *struc IdentifierContext) none {
+pub fn emit_gas_code(
+    asm_ast: *unique_ptr_t(AsmProgram), backend: *struc BackEndContext, fileio: *struc FileIoContext,
+    identifiers: *struc IdentifierContext
+) none {
     ctx: struc GasCodeContext;
     {
         ctx.backend = backend

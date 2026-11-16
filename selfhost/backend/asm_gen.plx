@@ -677,10 +677,13 @@ fn ret_dbl_instr(ctx: Ctx, node: *struc TacReturn) none {
     ret_1_reg_mask(ctx[].p_fun_type, false)
 }
 
-fn ret_8b_instr(ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn ret_8b_instr(
+    ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND
+) none {
     src_name: TIdentifier = name
     dst: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
-    asm_type_src: shared_ptr_t(AssemblyType) = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
+    asm_type_src: shared_ptr_t(AssemblyType) = (
+        ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble())
     if asm_type_src[].tag == AST_ByteArray_t {
         size: TLong = offset + 2l
         offset += asm_type_src[].get._ByteArray.size - 1l
@@ -1009,7 +1012,8 @@ fn dbl_to_ulong_instr(ctx: Ctx, node: *struc TacDoubleToUInt) none {
         binop_out_of_range_sd_sub: struc AsmBinaryOp = init_AsmSub()
         dst_out_of_range_sd_cp: shared_ptr_t(AsmOperand) = sptr_new()
         sptr_copy(AsmOperand, dst_out_of_range_sd, dst_out_of_range_sd_cp)
-        push_instr(ctx, make_AsmBinary(@binop_out_of_range_sd_sub, @asm_type_sd, @upper_bound_sd, @dst_out_of_range_sd_cp))
+        push_instr(ctx,
+            make_AsmBinary(@binop_out_of_range_sd_sub, @asm_type_sd, @upper_bound_sd, @dst_out_of_range_sd_cp))
     }
     {
         dst_cp: shared_ptr_t(AsmOperand) = sptr_new()
@@ -1178,7 +1182,8 @@ fn ulong_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble) none {
         sptr_copy(AsmOperand, dst_out_of_range_si, dst_out_of_range_si_cp)
         asm_type_si_cp: shared_ptr_t(AssemblyType) = sptr_new()
         sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)
-        push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_and, @asm_type_si_cp, @set_bit_si, @dst_out_of_range_si_cp))
+        push_instr(ctx,
+            make_AsmBinary(@binop_out_of_range_si_and, @asm_type_si_cp, @set_bit_si, @dst_out_of_range_si_cp))
     }
     {
         binop_out_of_range_si_or: struc AsmBinaryOp = init_AsmBitOr()
@@ -1186,7 +1191,9 @@ fn ulong_to_dbl_instr(ctx: Ctx, node: *struc TacUIntToDouble) none {
         sptr_copy(AsmOperand, dst_out_of_range_si_shr, dst_out_of_range_si_shr_cp)
         asm_type_si_cp: shared_ptr_t(AssemblyType) = sptr_new()
         sptr_copy(AssemblyType, asm_type_si, asm_type_si_cp)
-        push_instr(ctx, make_AsmBinary(@binop_out_of_range_si_or, @asm_type_si_cp, @dst_out_of_range_si, @dst_out_of_range_si_shr_cp))
+        push_instr(ctx,
+            make_AsmBinary(@binop_out_of_range_si_or, @asm_type_si_cp, @dst_out_of_range_si,
+                @dst_out_of_range_si_shr_cp))
     }
     {
         dst_cp: shared_ptr_t(AsmOperand) = sptr_new()
@@ -1277,7 +1284,9 @@ fn stack_arg_call_instr(ctx: Ctx, node: *struc TacValue) none {
     push_instr(ctx, make_AsmMov(@asm_type_src, @src, @dst))
 }
 
-fn reg_8b_arg_call_instr(ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn reg_8b_arg_call_instr(
+    ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND
+) none {
     ret_8b_instr(ctx, name, offset, struct_type, arg_reg)
 }
 
@@ -1471,10 +1480,13 @@ fn ret_call_instr(ctx: Ctx, node: *struc TacValue, arg_reg: REGISTER_KIND) none 
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn ret_8b_call_instr(ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn ret_8b_call_instr(
+    ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND
+) none {
     dst_name: TIdentifier = name
     src: shared_ptr_t(AsmOperand) = gen_register(arg_reg)
-    asm_type_dst: shared_ptr_t(AssemblyType) = ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble()
+    asm_type_dst: shared_ptr_t(AssemblyType) = (
+        ? struct_type then asm_type_8b(ctx, struct_type, offset) else make_BackendDouble())
     if asm_type_dst[].tag == AST_ByteArray_t {
         size: TLong = asm_type_dst[].get._ByteArray.size + offset - 2l
         free_AssemblyType(@asm_type_dst)
@@ -2089,7 +2101,8 @@ fn getaddr_instr(ctx: Ctx, node: *struc TacGetAddress) none {
             name: TIdentifier = node[].src[].get._TacVariable.name
             set_insert(ctx[].frontend[].addressed_set, name)
             map_it: i64 = map_find(ctx[].frontend[].symbol_table, name)
-            if map_it ~= map_end() and pair_second(ctx[].frontend[].symbol_table[map_it])[].attrs[].tag == AST_ConstantAttr_t {
+            if (map_it ~= map_end()
+                and pair_second(ctx[].frontend[].symbol_table[map_it])[].attrs[].tag == AST_ConstantAttr_t) {
                 src = make_AsmData(name, 0l)
                 jump Lpass
             }
@@ -2683,11 +2696,15 @@ fn stack_fun_param_instr(ctx: Ctx, name: TIdentifier, stack_bytes: TLong) none {
     push_instr(ctx, make_AsmMov(@asm_type_dst, @src, @dst))
 }
 
-fn reg_8b_fun_param_instr(ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND) none {
+fn reg_8b_fun_param_instr(
+    ctx: Ctx, name: TIdentifier, offset: TLong, struct_type: *struc Structure, arg_reg: REGISTER_KIND
+) none {
     ret_8b_call_instr(ctx, name, offset, struct_type, arg_reg)
 }
 
-fn stack_8b_fun_param_instr(ctx: Ctx, name: TIdentifier, stack_bytes: TLong, offset: TLong, struct_type: *struc Structure) none {
+fn stack_8b_fun_param_instr(
+    ctx: Ctx, name: TIdentifier, stack_bytes: TLong, offset: TLong, struct_type: *struc Structure
+) none {
     asm_type_dst: shared_ptr_t(AssemblyType) = asm_type_8b(ctx, struct_type, offset)
     if asm_type_dst[].tag == AST_ByteArray_t {
         size: TLong = asm_type_dst[].get._ByteArray.size
@@ -2906,7 +2923,9 @@ fn gen_program(ctx: Ctx, node: *struc TacProgram) unique_ptr_t(AsmProgram) {
 
 ########################################################################################################################
 
-pub fn generate_assembly(tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext) unique_ptr_t(AsmProgram) {
+pub fn generate_assembly(
+    tac_ast: *unique_ptr_t(TacProgram), frontend: *struc FrontEndContext, identifiers: *struc IdentifierContext
+) unique_ptr_t(AsmProgram) {
     ctx: struc AsmGenContext;
     {
         ctx.frontend = frontend

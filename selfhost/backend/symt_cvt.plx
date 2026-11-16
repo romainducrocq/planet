@@ -203,7 +203,8 @@ fn cvt_program(ctx: Ctx, node: *struc AsmProgram) none {
         symbol: *pair_t(``TIdentifier'', ``UPtrSymbol'') = @ctx[].frontend[].symbol_table[i]
         ctx[].symbol = pair_first(symbol[])
         if pair_second(symbol[])[].type_t[].tag == AST_FunType_t {
-            cvt_fun_type(ctx, @pair_second(symbol[])[].attrs[].get._FunAttr, @pair_second(symbol[])[].type_t[].get._FunType)
+            cvt_fun_type(ctx,
+                @pair_second(symbol[])[].attrs[].get._FunAttr, @pair_second(symbol[])[].type_t[].get._FunType)
         }
         else {
             cvt_obj_type(ctx, pair_second(symbol[])[].attrs)
@@ -216,7 +217,9 @@ fn cvt_program(ctx: Ctx, node: *struc AsmProgram) none {
 
 ########################################################################################################################
 
-pub fn convert_symbol_table(node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext) none {
+pub fn convert_symbol_table(
+    node: *struc AsmProgram, backend: *struc BackEndContext, frontend: *struc FrontEndContext
+) none {
     ctx: struc SymtCvtContext;
     {
         ctx.backend = backend
