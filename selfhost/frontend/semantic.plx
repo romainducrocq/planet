@@ -2558,8 +2558,8 @@ fn check_static_block_var_decl(ctx: Ctx, node: *struc CVariableDeclaration) erro
     init_value: shared_ptr_t(InitialValue) = sptr_new()
     local_var_type: shared_ptr_t(Type) = sptr_new()
     CATCH_ENTER
-    THROW_ABORT_IF(
-        node[].var_type[].tag == AST_Structure_t and not is_struct_complete(ctx, @node[].var_type[].get._Structure))
+    THROW_ABORT_IF(node[].var_type[].tag == AST_Structure_t
+        and not is_struct_complete(ctx, @node[].var_type[].get._Structure))
     if node[].init {
         TRY(check_initializer(ctx, node[].init, node[].var_type, @init_value))
     }
