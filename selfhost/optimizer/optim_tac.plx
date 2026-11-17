@@ -1381,6 +1381,7 @@ fn eliminate_unreachable_code(ctx: Ctx) none {
     loop i: u64 = 0 while i < vec_size(ctx[].cfg[].entry_succ_ids) .. ++i {
         unreach_reachable_block(ctx, ctx[].cfg[].entry_succ_ids[i])
     }
+
     block_id: u64 = vec_size(ctx[].cfg[].blocks)
     next_block_id: u64 = ctx[].cfg[].exit_id
     loop while block_id-- > 0 {
@@ -1401,6 +1402,7 @@ fn eliminate_unreachable_code(ctx: Ctx) none {
             unreach_empty_block(ctx, block_id)
         }
     }
+
     loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
         label_id: u64 = pair_second(ctx[].cfg[].identifier_id_map[i])
         if ctx[].cfg[].reaching_code[label_id] {
@@ -2467,6 +2469,7 @@ fn propagate_copies(ctx: Ctx) none {
         return none
     }
     dfa_forward_iter_alg(ctx)
+
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if GET_CFG_BLOCK(block_id).size > 0 {
             incoming_idx: u64 = block_id
@@ -2767,6 +2770,7 @@ fn eliminate_dead_stores(ctx: Ctx, is_addressed_set: bool) none {
         return none
     }
     dfa_iter_alg(ctx)
+
     loop block_id: u64 = 0 while block_id < vec_size(ctx[].cfg[].blocks) .. ++block_id {
         if GET_CFG_BLOCK(block_id).size > 0 {
             loop instr_idx: u64 = GET_CFG_BLOCK(block_id).instrs_front_idx while (
@@ -2833,24 +2837,28 @@ pub fn optimize_three_address_code(node: *struc TacProgram, frontend: *struc Fro
     {
         ctx.frontend = frontend
         ctx.is_fixed_point = true
+
         ctx.enabled_optims[CONSTANT_FOLDING] = (optim_1_mask & (cast<u8>(1u) << 0)) > 0
         ctx.enabled_optims[COPY_PROPAGATION] = (optim_1_mask & (cast<u8>(1u) << 1)) > 0
         ctx.enabled_optims[UNREACHABLE_CODE_ELIMINATION] = (optim_1_mask & (cast<u8>(1u) << 2)) > 0
         ctx.enabled_optims[DEAD_STORE_ELIMINATION] = (optim_1_mask & (cast<u8>(1u) << 3)) > 0
         ctx.enabled_optims[CONTROL_FLOW_GRAPH] = (optim_1_mask & ~(cast<u8>(1u) << 0)) > 0
+
         ctx.cfg = uptr_new()
         ctx.dfa = uptr_new()
         ctx.dfa_o1 = uptr_new()
+
         if ctx.enabled_optims[CONTROL_FLOW_GRAPH] {
             ctx.cfg = make_ControlFlowGraph()
+
             if ctx.enabled_optims[COPY_PROPAGATION] or ctx.enabled_optims[DEAD_STORE_ELIMINATION] {
                 ctx.dfa = make_DataFlowAnalysis()
                 ctx.dfa_o1 = make_DataFlowAnalysisO1()
             }
         }
     }
-
     optim_program(@ctx, node)
+
     free_ControlFlowGraph(@ctx.cfg)
     free_DataFlowAnalysis(@ctx.dfa)
     free_DataFlowAnalysisO1(@ctx.dfa_o1)

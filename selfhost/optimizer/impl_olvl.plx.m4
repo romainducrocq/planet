@@ -430,6 +430,7 @@ fn init_control_flow_graph(ctx: Ctx) none {
             vec_back(ctx[].cfg[].blocks).instrs_back_idx = instrs_back_idx
         }
     }
+
     ctx[].cfg[].exit_id = vec_size(ctx[].cfg[].blocks)
     ctx[].cfg[].entry_id = ctx[].cfg[].exit_id + 1
     vec_clear(ctx[].cfg[].entry_succ_ids)
@@ -679,6 +680,7 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) bool {
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         GET_DFA_INSTR_SET_MASK(instr_idx, i) = MASK_TRUE
     }
+
     loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++i {
         pred_id: u64 = GET_CFG_BLOCK(block_id).pred_ids[i]
         if pred_id < ctx[].cfg[].exit_id {
@@ -696,12 +698,14 @@ fn dfa_forward_meet_block(ctx: Ctx, block_id: u64) bool {
             THROW_ABORT
         }
     }
+
     if instr_idx < ctx[].dfa[].incoming_idx {
         dfa_forward_transfer_block(ctx, instr_idx, block_id)
     }
     else {
         THROW_ABORT_IF(instr_idx ~= ctx[].dfa[].incoming_idx)
     }
+
     return dfa_after_meet_block(ctx, block_id)
 }
 ')m4_dnl
@@ -722,6 +726,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     loop i: u64 = 0 while i < ctx[].dfa[].mask_size .. ++i {
         GET_DFA_INSTR_SET_MASK(instr_idx, i) = MASK_FALSE
     }
+
     loop i: u64 = 0 while i < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++i {
         succ_id: u64 = GET_CFG_BLOCK(block_id).succ_ids[i]
         if succ_id < ctx[].cfg[].exit_id {
@@ -739,12 +744,14 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             THROW_ABORT
         }
     }
+
     if instr_idx < ctx[].dfa[].incoming_idx {
         dfa_backward_transfer_block(ctx, instr_idx, block_id)
     }
     else {
         THROW_ABORT_IF(instr_idx ~= ctx[].dfa[].incoming_idx)
     }
+
     return dfa_after_meet_block(ctx, block_id)
 }
 
@@ -756,6 +763,7 @@ fn dfa_forward_iter_alg(ctx: Ctx) none {
         if block_id == ctx[].cfg[].exit_id {
             continue
         }
+
         is_fixed_point: bool = dfa_forward_meet_block(ctx, block_id)
         if not is_fixed_point {
             loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).succ_ids) .. ++j {
@@ -791,6 +799,7 @@ fn dfa_iter_alg(ctx: Ctx) none {
         if block_id == ctx[].cfg[].exit_id {
             continue
         }
+
         is_fixed_point: bool = dfa_backward_meet_block(ctx, block_id)
         if not is_fixed_point {
             loop j: u64 = 0 while j < vec_size(GET_CFG_BLOCK(block_id).pred_ids) .. ++j {
@@ -925,6 +934,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
 ) bool {
     ctx[].dfa[].set_size = 0
     ctx[].dfa[].incoming_idx = vec_size(ctx[].p_instrs[])
+
     if vec_size(ctx[].dfa[].open_data_map) < vec_size(ctx[].cfg[].blocks) {
         vec_resize(ctx[].dfa[].open_data_map, vec_size(ctx[].cfg[].blocks))
     }
@@ -943,6 +953,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         vec_resize(ctx[].cfg[].reaching_code, vec_size(ctx[].cfg[].blocks))
     }
     memset(ctx[].cfg[].reaching_code, false, sizeof<bool> * vec_size(ctx[].cfg[].blocks))
+
     instrs_mask_sets_size: u64 = 0
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     is_copy_prop: bool = not is_store_elim
@@ -1230,12 +1241,14 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     if ctx[].dfa[].set_size == 0 {
         return false
     }
+
 m4_ifelse(__OPTIM_LEVEL__, `2', `
     if vec_size(ctx[].dfa_o2[].data_name_map) < ctx[].dfa[].set_size {
         vec_resize(ctx[].dfa_o2[].data_name_map, ctx[].dfa[].set_size)
     }
     ctx[].dfa[].set_size += REGISTER_MASK_SIZE
 ')m4_dnl
+
     ctx[].dfa[].instr_idx_map[ctx[].dfa[].incoming_idx] = instrs_mask_sets_size
     instrs_mask_sets_size++
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -1251,6 +1264,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
     ctx[].dfa[].mask_size = (ctx[].dfa[].set_size + 63) / 64
     instrs_mask_sets_size *= ctx[].dfa[].mask_size
     blocks_mask_sets_size: u64 = ctx[].dfa[].mask_size * vec_size(ctx[].cfg[].blocks)
+
     if vec_size(ctx[].dfa[].blocks_mask_sets) < blocks_mask_sets_size {
         vec_resize(ctx[].dfa[].blocks_mask_sets, blocks_mask_sets_size)
     }
@@ -1260,6 +1274,7 @@ m4_ifelse(__OPTIM_LEVEL__, `2', `
         memset(ctx[].dfa[].instrs_mask_sets, MASK_FALSE, sizeof<mask_t> * instrs_mask_sets_size)
 ')m4_dnl
     }
+
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     if is_copy_prop {
         i: u64 = vec_size(ctx[].cfg[].blocks)
@@ -1272,6 +1287,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         loop while i-- > 0 {
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
+
         mask_true_back: mask_t = MASK_TRUE
         i = ctx[].dfa[].set_size - (ctx[].dfa[].mask_size - 1) * 64
         if i > 0 {
@@ -1279,13 +1295,16 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
                 mask_set(@mask_true_back, i, false)
             }
         }
+
         if vec_size(ctx[].cfg[].reaching_code) < ctx[].dfa[].set_size {
             vec_resize(ctx[].cfg[].reaching_code, ctx[].dfa[].set_size)
         }
         loop j: u64 = vec_size(ctx[].dfa_o1[].bak_instrs) while j <= ctx[].dfa[].set_size .. ++j {
             vec_push_back(ctx[].dfa_o1[].bak_instrs, uptr_new())
         }
+
         memset(ctx[].cfg[].reaching_code, false, sizeof<bool> * ctx[].dfa[].set_size)
+
         if ctx[].dfa[].mask_size > 1 {
             i = 0
             loop .. while i < blocks_mask_sets_size {
@@ -1315,6 +1334,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         loop while i < vec_size(ctx[].cfg[].blocks) .. ++i {
             ctx[].dfa[].open_data_map[i] = ctx[].cfg[].exit_id
         }
+
 m4_ifelse(__OPTIM_LEVEL__, `1', `
         GET_DFA_INSTR_SET_MASK(ctx[].dfa[].static_idx, 0) = MASK_FALSE
         GET_DFA_INSTR_SET_MASK(ctx[].dfa_o1[].addressed_idx, 0) = MASK_FALSE
@@ -1330,6 +1350,7 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
             GET_DFA_INSTR_SET_MASK(ctx[].dfa_o1[].addressed_idx, i) = MASK_FALSE
 ')m4_dnl
         }
+
         loop i: u64 = 0 while i < map_size(ctx[].cfg[].identifier_id_map) .. ++i {
             name_id: *pair_t(``TIdentifier'', u64) = @ctx[].cfg[].identifier_id_map[i]
 m4_ifelse(__OPTIM_LEVEL__, `1', `
@@ -1343,10 +1364,12 @@ m4_ifelse(__OPTIM_LEVEL__, `1', `
         ctx[].dfa_o2[].data_name_map[pair_second(name_id[]) - REGISTER_MASK_SIZE] = pair_first(name_id[])
 ')m4_dnl
         }
+
         memset(ctx[].dfa[].blocks_mask_sets, MASK_FALSE, sizeof<mask_t> * blocks_mask_sets_size)
 m4_ifelse(__OPTIM_LEVEL__, `1', `
     }
 ')m4_dnl
+
     return true
 }
 
