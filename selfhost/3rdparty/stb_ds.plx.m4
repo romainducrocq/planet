@@ -63,51 +63,48 @@ m4_define(`hmfree', `stbds_hmfree($1)')m4_dnl
 m4_define(`STBDS_ADDRESSOF', `@($2)')m4_dnl
 m4_define(`STBDS_OFFSETOF', `(cast<string>(@($1)[].$2) - cast<string>($1))')m4_dnl
 
-m4_define(`stbds_header', `(cast<*struc stbds_array_header>($1) - 1)')m4_dnl
-m4_define(`stbds_temp', `stbds_header($1)[].temp')m4_dnl
-
 m4_define(`stbds_arrsetcap', `(stbds_arrgrow($1, 0, $2))')m4_dnl
 m4_define(`stbds_arrsetlen', `{
     (? stbds_arrcap($1) < cast<u64>($2) then stbds_arrsetcap(($1), cast<u64>($2)) and 0 else 0)
-    ? ($1) then stbds_header($1)[].length = cast<u64>($2) else 0
+    ? ($1) then stbds_header_length($1)[] = cast<u64>($2) else 0
 }')m4_dnl
-m4_define(`stbds_arrcap', `(? ($1) then stbds_header($1)[].capacity else 0)')m4_dnl
-m4_define(`stbds_arrlenu', `(? ($1) then stbds_header($1)[].length else 0)')m4_dnl
+m4_define(`stbds_arrcap', `(? ($1) then stbds_header_capacity($1) else 0)')m4_dnl
+m4_define(`stbds_arrlenu', `(? ($1) then stbds_header_length($1)[] else 0)')m4_dnl
 m4_define(`stbds_arrput', `{
     stbds_arrmaybegrow($1, 1)
-    ($1)[stbds_header($1)[].length++] = ($2)
+    ($1)[stbds_header_length($1)[]++] = ($2)
 }')m4_dnl
-m4_define(`stbds_arrpop', `(stbds_header($1)[].length--)')m4_dnl
-m4_define(`stbds_arrlast', `(($1)[stbds_header($1)[].length - 1])')m4_dnl
+m4_define(`stbds_arrpop', `(stbds_header_length($1)[]--)')m4_dnl
+m4_define(`stbds_arrlast', `(($1)[stbds_header_length($1)[] - 1])')m4_dnl
 m4_define(`stbds_arrfree', `{
     cast<none>(? ($1) then free_stbds_header($1) else cast<none>(0))
     ($1) = nil
 }')m4_dnl
 m4_define(`stbds_arrdelswap', `{
     ($1)[($2)] = stbds_arrlast($1)
-    stbds_header($1)[].length -= 1
+    stbds_header_length($1)[] -= 1
 }')m4_dnl
 
-m4_define(`stbds_arrmaybegrow', `(? (not ($1) or stbds_header($1)[].length + ($2) > stbds_header($1)[].capacity)
+m4_define(`stbds_arrmaybegrow', `(? (not ($1) or stbds_header_length($1)[] + ($2) > stbds_header_capacity($1))
     then ((stbds_arrgrow($1, $2, 0)) and 0) else 0)')m4_dnl
 
 m4_define(`stbds_arrgrow', `($1) = stbds_arrgrowf(($1), sizeof(($1)[]), ($2), ($3))')m4_dnl
 
 m4_define(`stbds_hmput', `{
     ($1) = stbds_hmput_key(($1), sizeof(($1)[]), cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0)
-    ($1)[stbds_temp(($1) - 1)].key = ($2)
-    ($1)[stbds_temp(($1) - 1)].value = ($3)
+    ($1)[stbds_header_temp(($1) - 1)].key = ($2)
+    ($1)[stbds_header_temp(($1) - 1)].value = ($3)
 }')m4_dnl
 
 m4_define(`stbds_hmgeti', `(? (($1) = stbds_hmget_key(($1), sizeof(($1)[]),
         cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), 0)) and 0
-    then 0 else stbds_temp(($1) - 1))')m4_dnl
+    then 0 else stbds_header_temp(($1) - 1))')m4_dnl
 
-m4_define(`stbds_hmgetp', `(? (stbds_hmgeti($1, $2)) and 0 then 0 else @($1)[stbds_temp(($1) - 1)])')m4_dnl
+m4_define(`stbds_hmgetp', `(? (stbds_hmgeti($1, $2)) and 0 then 0 else @($1)[stbds_header_temp(($1) - 1)])')m4_dnl
 
 m4_define(`stbds_hmdel', `(? (($1) = stbds_hmdel_key(($1), sizeof(($1)[]),
         cast<*any>(STBDS_ADDRESSOF(($1)[].key, ($2))), sizeof(($1)[].key), STBDS_OFFSETOF(($1), key), 0))
-    then stbds_temp(($1) - 1) else 0)')m4_dnl
+    then stbds_header_temp(($1) - 1) else 0)')m4_dnl
 
 m4_define(`stbds_hmfree', `{
     cast<none>(? ($1) ~= nil then stbds_hmfree_func(($1) - 1, sizeof(($1)[])) else cast<none>(0))
@@ -115,9 +112,7 @@ m4_define(`stbds_hmfree', `{
 }')m4_dnl
 
 m4_define(`stbds_hmget', `(stbds_hmgetp($1, $2)[].value)')m4_dnl
-m4_define(`stbds_hmlenu', `(? ($1) then stbds_header(($1) - 1)[].length - 1 else 0)')m4_dnl
-
-type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+m4_define(`stbds_hmlenu', `(? ($1) then stbds_header_length(($1) - 1)[] - 1 else 0)')m4_dnl
 
 extrn fn free_stbds_header(a: *any) none;
 extrn fn stbds_header_length(a: *any) *u64;

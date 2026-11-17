@@ -139,7 +139,7 @@ m4_define(`vec_move', `if ($1) ~= ($2) {
 m4_define(`vec_size', `arrlenu($1)')m4_dnl
 m4_define(`vec_back', `($1)[vec_size($1) - 1]')m4_dnl
 m4_define(`vec_clear', `if ($1) {
-    stbds_header($1)[].length = 0
+    stbds_header_length($1)[] = 0
 }')m4_dnl
 m4_define(`vec_empty', `(vec_size($1) == 0)')m4_dnl
 m4_define(`vec_move_back', `{

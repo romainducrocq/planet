@@ -46,8 +46,7 @@ use "string"
 
 m4_include(`stb_ds.plx.m4')m4_dnl
 
-# TODO
-# type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
 
 pub fn free_stbds_header(a: *any) none {
     free(cast<*struc stbds_array_header>((a)) - 1)
