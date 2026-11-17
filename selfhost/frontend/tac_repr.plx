@@ -145,14 +145,12 @@ fn string_res_instr(ctx: Ctx, node: *struc CString) unique_ptr_t(TacExpResult) {
         else {
             string_const_label = repr_label_identifier(ctx[].identifiers, LBL_Lstring)
             map_add(ctx[].frontend[].string_const_table, string_const, string_const_label)
-
             constant_type: shared_ptr_t(Type) = sptr_new()
             {
                 size: TLong = cast<TLong>(vec_size(node[].literal[].value)) + 1l
                 elem_type: shared_ptr_t(Type) = make_Char()
                 constant_type = make_Array(size, @elem_type)
             }
-
             constant_attrs: unique_ptr_t(IdentifierAttr) = uptr_new()
             {
                 static_init: shared_ptr_t(StaticInit) = sptr_new()
@@ -161,7 +159,6 @@ fn string_res_instr(ctx: Ctx, node: *struc CString) unique_ptr_t(TacExpResult) {
                     sptr_copy(CStringLiteral, node[].literal, literal)
                     static_init = make_StringInit(string_const, true, @literal)
                 }
-
                 constant_attrs = make_ConstantAttr(@static_init)
             }
             symbol: unique_ptr_t(Symbol) = make_Symbol(@constant_type, @constant_attrs)
@@ -249,6 +246,7 @@ fn cast_complete_res_instr(ctx: Ctx, node: *struc CCast) unique_ptr_t(TacExpResu
     if node[].target_type[].tag == node[].exp[].exp_type[].tag {
         return make_TacPlainOperand(@src)
     }
+
     dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     dst_cp: shared_ptr_t(TacValue) = sptr_new()
     sptr_copy(TacValue, dst, dst_cp)
@@ -347,7 +345,6 @@ fn binary_add_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResul
 fn binary_sub_to_ptr_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResult) {
     scale: TLong = get_type_scale(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type)
     src_ptr: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
-
     idx: shared_ptr_t(TacValue) = sptr_new()
     {
         idx = repr_exp_instr(ctx, node[].exp_right)
@@ -377,7 +374,6 @@ fn binary_subtract_ptr_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(Ta
         push_instr(ctx, make_TacBinary(@binop, @src_1, @src_2, @dst_cp))
         sptr_move(TacValue, dst, src_1)
     }
-
     src_2: shared_ptr_t(TacValue) = sptr_new()
     {
         value: TLong = get_type_scale(ctx, node[].exp_left[].exp_type[].get._Pointer.ref_type)
@@ -409,13 +405,11 @@ fn binary_subtract_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExp
 fn binary_and_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResult) {
     target_false: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Land_false)
     target_true: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Land_true)
-
     dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     {
         condition_left: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
         push_instr(ctx, make_TacJumpIfZero(target_false, @condition_left))
     }
-
     {
         condition_right: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
         push_instr(ctx, make_TacJumpIfZero(target_false, @condition_right))
@@ -443,13 +437,11 @@ fn binary_and_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResul
 fn binary_or_res_instr(ctx: Ctx, node: *struc CBinary) unique_ptr_t(TacExpResult) {
     target_true: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Lor_true)
     target_false: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Lor_false)
-
     dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     {
         condition_left: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_left)
         push_instr(ctx, make_TacJumpIfNotZero(target_true, @condition_left))
     }
-
     {
         condition_right: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_right)
         push_instr(ctx, make_TacJumpIfNotZero(target_true, @condition_right))
@@ -571,13 +563,17 @@ fn assign_res_instr(ctx: Ctx, node: *struc CAssignment) unique_ptr_t(TacExpResul
         label_count_1: u32 = ctx[].identifiers[].label_count
         var_count_1: u32 = ctx[].identifiers[].var_count
         struct_count_1: u32 = ctx[].identifiers[].struct_count
+
         src = repr_exp_instr(ctx, node[].exp_right)
+
         label_count_2: u32 = ctx[].identifiers[].label_count
         var_count_2: u32 = ctx[].identifiers[].var_count
         struct_count_2: u32 = ctx[].identifiers[].struct_count
+
         ctx[].identifiers[].label_count = label_count_1
         ctx[].identifiers[].var_count = var_count_1
         ctx[].identifiers[].struct_count = struct_count_1
+
         {
             exp_left: *struc CExp = node[].exp_right
             if exp_left[].tag == AST_CCast_t {
@@ -587,6 +583,7 @@ fn assign_res_instr(ctx: Ctx, node: *struc CAssignment) unique_ptr_t(TacExpResul
             if exp_left[].tag == AST_CCast_t {
                 exp_left = exp_left[].get._CCast.exp
             }
+
             {
                 noeval_instrs: vector_t(unique_ptr_t(TacInstruction)) = vec_new()
                 p_instrs: *vector_t(unique_ptr_t(TacInstruction)) = ctx[].p_instrs
@@ -598,9 +595,11 @@ fn assign_res_instr(ctx: Ctx, node: *struc CAssignment) unique_ptr_t(TacExpResul
                 }
                 vec_delete(noeval_instrs)
             }
+
             ctx[].identifiers[].label_count = label_count_2
             ctx[].identifiers[].var_count = var_count_2
             ctx[].identifiers[].struct_count = struct_count_2
+
             if node[].unop.tag == AST_CPostfix_t {
                 dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
                 match res[].tag {
@@ -653,13 +652,11 @@ fn assign_res_instr(ctx: Ctx, node: *struc CAssignment) unique_ptr_t(TacExpResul
 fn conditional_complete_res_instr(ctx: Ctx, node: *struc CConditional) unique_ptr_t(TacExpResult) {
     target_else: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Lternary_else)
     target_false: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Lternary_false)
-
     dst: shared_ptr_t(TacValue) = plain_inner_value(ctx, node[]._base)
     {
         condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_else, @condition))
     }
-
     {
         src_middle: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp_middle)
         dst_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -681,13 +678,11 @@ fn conditional_complete_res_instr(ctx: Ctx, node: *struc CConditional) unique_pt
 fn conditional_void_res_instr(ctx: Ctx, node: *struc CConditional) unique_ptr_t(TacExpResult) {
     target_else: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Lternary_else)
     target_false: TIdentifier = repr_label_identifier(ctx[].identifiers, LBL_Lternary_false)
-
     dst: shared_ptr_t(TacValue) = sptr_new()
     {
         condition: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].condition)
         push_instr(ctx, make_TacJumpIfZero(target_else, @condition))
     }
-
     dst = repr_exp_instr(ctx, node[].exp_middle)
     free_TacValue(@dst)
     push_instr(ctx, make_TacJump(target_false))
@@ -758,11 +753,9 @@ fn sub_obj_addrof_res_instr(
         sptr_copy(TacValue, dst, dst_cp)
         push_instr(ctx, make_TacGetAddress(@src, @dst_cp))
     }
-
     if res[].offset > 0l {
         src_ptr: shared_ptr_t(TacValue) = sptr_new()
         sptr_copy(TacValue, dst, src_ptr)
-
         idx: shared_ptr_t(TacValue) = sptr_new()
         {
             offset: TLong = res[].offset
@@ -854,7 +847,6 @@ fn deref_ptr_dot_res_instr(ctx: Ctx, res: *struc TacDereferencedPointer, node: *
     if member_offset > 0l {
         src_ptr: shared_ptr_t(TacValue) = sptr_new()
         sptr_move(TacValue, res[].val, src_ptr)
-
         idx: shared_ptr_t(TacValue) = sptr_new()
         {
             offset: TLong = member_offset
@@ -1178,7 +1170,6 @@ fn switch_statement_instr(ctx: Ctx, node: *struc CSwitch) none {
         lookup: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].lookup)
         loop i: u64 = 0 while i < vec_size(node[].cases) .. ++i {
             target_case: TIdentifier = repr_case_identifier(ctx[].identifiers, node[].target, true, i)
-
             case_match: shared_ptr_t(TacValue) = sptr_new()
             {
                 lookup_cp: shared_ptr_t(TacValue) = sptr_new()
@@ -1190,7 +1181,6 @@ fn switch_statement_instr(ctx: Ctx, node: *struc CSwitch) none {
                 binop: struc TacBinaryOp = init_TacEqual()
                 push_instr(ctx, make_TacBinary(@binop, @lookup_cp, @esac, @case_match_cp))
             }
-
             push_instr(ctx, make_TacJumpIfNotZero(target_case, @case_match))
         }
         free_TacValue(@lookup)
@@ -1304,13 +1294,14 @@ fn string_single_init_instr(
     ctx: Ctx, node: *struc CString, arr_type: *struc Array, symbol: TIdentifier, size: TLong
 ) none {
     byte_at: u64 = 0
+
     bytes_size: u64 = cast<u64>(arr_type[].size)
     bytes_copy: u64 = (? arr_type[].size > cast<TLong>(vec_size(node[].literal[].value))
         then vec_size(node[].literal[].value) else bytes_size)
+
     loop while byte_at < bytes_copy {
         dst_name: TIdentifier = symbol
         offset: TLong = size + cast<TLong>(byte_at)
-
         src: shared_ptr_t(TacValue) = sptr_new()
         {
             constant: shared_ptr_t(CConst) = sptr_new()
@@ -1332,16 +1323,14 @@ fn string_single_init_instr(
                     byte_at += 8
                 }
             }
-
             src = make_TacConstant(@constant)
         }
-
         push_instr(ctx, make_TacCopyToOffset(dst_name, offset, @src))
     }
+
     loop while byte_at < bytes_size {
         dst_name: TIdentifier = symbol
         offset: TLong = size + cast<TLong>(byte_at)
-
         src: shared_ptr_t(TacValue) = sptr_new()
         {
             constant: shared_ptr_t(CConst) = sptr_new()
@@ -1360,10 +1349,8 @@ fn string_single_init_instr(
                     byte_at += 8
                 }
             }
-
             src = make_TacConstant(@constant)
         }
-
         push_instr(ctx, make_TacCopyToOffset(dst_name, offset, @src))
     }
 }
@@ -1374,7 +1361,6 @@ fn single_init_instr(ctx: Ctx, node: *struc CSingleInit, init_type: *struc Type,
     }
     else {
         src: shared_ptr_t(TacValue) = repr_exp_instr(ctx, node[].exp)
-
         dst: shared_ptr_t(TacValue) = sptr_new()
         {
             name: TIdentifier = symbol
@@ -1382,7 +1368,6 @@ fn single_init_instr(ctx: Ctx, node: *struc CSingleInit, init_type: *struc Type,
             dst = repr_value(exp)
             free_CExp(@exp)
         }
-
         push_instr(ctx, make_TacCopy(@src, @dst))
     }
 }
@@ -1537,6 +1522,7 @@ fn repr_block(ctx: Ctx, node: *struc CBlock) none {
 fn repr_fun_toplvl(ctx: Ctx, node: *struc CFunctionDeclaration) unique_ptr_t(TacTopLevel) {
     name: TIdentifier = node[].name
     is_glob: bool = map_get(ctx[].frontend[].symbol_table, node[].name)[].attrs[].get._FunAttr.is_glob
+
     params: vector_t(TIdentifier) = vec_new()
     vec_resize(params, vec_size(node[].params))
     memcpy(params, node[].params, sizeof<TIdentifier> * vec_size(node[].params))
@@ -1590,7 +1576,6 @@ fn tentative_static_toplvl(ctx: Ctx, static_init_type: *struc Type) vector_t(sha
         static_init: shared_ptr_t(StaticInit) = make_ZeroInit(byte)
         vec_move_back(static_inits, static_init)
     }
-
     return static_inits
 }
 
@@ -1610,6 +1595,7 @@ fn repr_static_var_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) no
     if static_attr[].init[].tag == AST_NoInitializer_t {
         return none
     }
+
     name: TIdentifier = symbol
     is_glob: bool = static_attr[].is_glob
     static_init_type: shared_ptr_t(Type) = sptr_new()
@@ -1628,6 +1614,7 @@ fn repr_static_var_toplvl(ctx: Ctx, node: *struc Symbol, symbol: TIdentifier) no
             THROW_ABORT
         }
     }
+
     push_toplvl(ctx, make_TacStaticVariable(name, is_glob, @static_init_type, @static_inits))
 }
 
@@ -1672,8 +1659,8 @@ fn repr_program(ctx: Ctx, node: *struc CProgram) unique_ptr_t(TacProgram) {
         }
         ctx[].p_toplvls = nil
     }
-    static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
 
+    static_var_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
     static_const_toplvls: vector_t(unique_ptr_t(TacTopLevel)) = vec_new()
     {
         ctx[].p_toplvls = @static_var_toplvls
@@ -1700,6 +1687,7 @@ pub fn represent_three_address_code(
         ctx.identifiers = identifiers
     }
     tac_ast: unique_ptr_t(TacProgram) = repr_program(@ctx, c_ast[])
+
     free_CProgram(c_ast)
     THROW_ABORT_IF(not tac_ast)
     return tac_ast

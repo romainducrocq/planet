@@ -40,6 +40,7 @@ fn pop_next(ctx: Ctx) error_t {
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
+
     ctx[].next_tok = @ctx[].p_toks[][ctx[].pop_idx]
     ctx[].pop_idx++
     FINALLY
@@ -51,6 +52,7 @@ fn peek_next(ctx: Ctx) error_t {
     if ctx[].pop_idx >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
+
     ctx[].peek_tok = @ctx[].p_toks[][ctx[].pop_idx]
     FINALLY
     CATCH_EXIT
@@ -66,6 +68,7 @@ fn peek_next_i(ctx: Ctx, i: u64) error_t {
     if ctx[].pop_idx + i >= vec_size(ctx[].p_toks[]) {
         THROW_AT_TOKEN(vec_back(ctx[].p_toks[]).info_at, GET_PARSER_MSG(MSG_reached_eof))
     }
+
     ctx[].peek_tok_i = @ctx[].p_toks[][ctx[].pop_idx + i]
     FINALLY
     CATCH_EXIT
@@ -168,6 +171,7 @@ fn parse_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
             break
         }
     }
+
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     TRY(string_to_long(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 9223372036854775807l {
@@ -190,6 +194,7 @@ fn parse_unsigned_const(ctx: Ctx, constant: *shared_ptr_t(CConst)) error_t {
     value: u64;
     strto_value: string;
     TRY(pop_next(ctx))
+
     strto_value = map_get(ctx[].identifiers[].hash_table, ctx[].next_tok[].tok)
     TRY(string_to_ulong(ctx[].errors, strto_value, ctx[].next_tok[].info_at, @value))
     if value > 18446744073709551615ul {
@@ -2073,10 +2078,10 @@ pub fn parse_tokens(
         ctx.pop_idx = 0
         ctx.p_toks = tokens
     }
-
     CATCH_ENTER
     TRY(parse_program(@ctx, c_ast))
     THROW_ABORT_IF(ctx.pop_idx ~= vec_size(tokens[]))
+
     THROW_ABORT_IF(not c_ast[])
     FINALLY
     vec_delete(tokens[])

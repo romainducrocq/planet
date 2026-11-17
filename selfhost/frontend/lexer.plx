@@ -177,6 +177,7 @@ fn match_error(ctx: Ctx) TOKEN_KIND {
 # <header-file> ::= ? Path to a ".etc" header file without extension ?
 fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
     loop while match_space(ctx);
+
     if match_char(ctx, '!') {
         match tok_kind {
             -> TOK_import_file {
@@ -191,11 +192,14 @@ fn match_include(ctx: Ctx, tok_kind: TOKEN_KIND) TOKEN_KIND {
                 THROW_ABORT
             }
         }
+
         loop while match_space(ctx);
     }
+
     if match_char(ctx, '"') {
         ctx[].match_at += ctx[].match_size - 1
         ctx[].match_size = 1
+
         loop while match_invert(ctx, '"');
         if get_char(ctx) == '"' {
             ctx[].match_size++
@@ -249,6 +253,7 @@ fn match_char_const(ctx: Ctx, is_str: bool) TOKEN_KIND {
         }
     }
     ctx[].match_size++
+
     if is_str or match_char(ctx, '\'') {
         return TOK_char_const
     }
@@ -288,6 +293,7 @@ fn match_dbl_exponent(ctx: Ctx) TOKEN_KIND {
             break
         }
     }
+
     if not match_digit(ctx) {
         return TOK_error
     }
@@ -297,6 +303,7 @@ fn match_dbl_exponent(ctx: Ctx) TOKEN_KIND {
 
 fn match_dbl_fraction(ctx: Ctx) TOKEN_KIND {
     loop while match_digit(ctx);
+
     if match_char(ctx, 'e') {
         return match_dbl_exponent(ctx)
     }
@@ -307,6 +314,7 @@ fn match_dbl_fraction(ctx: Ctx) TOKEN_KIND {
 
 fn match_const(ctx: Ctx) TOKEN_KIND {
     loop while match_digit(ctx);
+
     match get_char(ctx) {
         -> 'l' {
             ctx[].match_size++
@@ -579,7 +587,9 @@ fn match_identifier(ctx: Ctx) TOKEN_KIND {
             break
         }
     }
+
     loop while match_word(ctx);
+
     return TOK_identifier
 }
 
@@ -785,6 +795,7 @@ fn tokenize_file(ctx: Ctx) error_t {
     loop linenum: u64 = 1 while read_line(ctx[].fileio, @ctx[].line, @ctx[].line_size) .. ++linenum {
         ctx[].total_linenum++
         is_empty: bool = true
+
         loop ctx[].match_at = 0 while ctx[].match_at < ctx[].line_size .. ctx[].match_at += ctx[].match_size {
             match_kind: TOKEN_KIND = match_token(ctx)
             match_tok: TIdentifier = 0
@@ -885,6 +896,7 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
     line_size: u64;
     match_at: u64;
     match_size: u64;
+
     filename = get_match(ctx, ctx[].match_at + 1, ctx[].match_size - 2)
     str_append(filename, ".etc")
     if not is_empty {
@@ -945,10 +957,12 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
             THROW_ABORT
         }
     }
+
     line = ctx[].line
     line_size = ctx[].line_size
     match_at = ctx[].match_at
     match_size = ctx[].match_size
+
     str_copy(vec_back(ctx[].errors[].fopen_lines).filename, fopen_name)
     TRY(open_fread(ctx[].fileio, filename))
     {
@@ -963,6 +977,7 @@ fn tokenize_include(ctx: Ctx, match_tok: TIdentifier, linenum: u64, is_empty: bo
         str_move(fopen_name, fopen_line.filename)
         vec_push_back(ctx[].errors[].fopen_lines, fopen_line)
     }
+
     ctx[].line = line
     ctx[].line_size = line_size
     ctx[].match_at = match_at
@@ -991,7 +1006,6 @@ pub fn lex_c_code(
         ctx.paren_depth = 0
         ctx.total_linenum = 0
     }
-
     CATCH_ENTER
     TRY(open_fread(ctx.fileio, filename))
     {
@@ -1000,10 +1014,12 @@ pub fn lex_c_code(
         vec_push_back(ctx.errors[].fopen_lines, fopen_line)
     }
     TRY(tokenize_file(@ctx))
+
     TRY(close_fread(ctx.fileio, 0))
     set_filename(ctx.fileio, filename)
     FINALLY
     set_delete(ctx.includename_set)
+
     loop i: u64 = 0 while i < vec_size(fileio[].file_reads) .. ++i {
         str_delete(fileio[].file_reads[i].filename)
     }
