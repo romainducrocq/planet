@@ -4,29 +4,29 @@ use "string"
 m4_include(`defsds.plx.m4')m4_dnl
 m4_include(`defstb_ds.plx.m4')m4_dnl
 
-m4_include(`../util/fileio.plx.m4')m4_dnl
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/fileio.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/ast.plx.m4')m4_dnl
-m4_include(`../ast/back_ast.plx.m4')m4_dnl
-m4_include(`../ast/back_symt.plx.m4')m4_dnl
-m4_include(`../ast/front_ast.plx.m4')m4_dnl
-m4_include(`../ast/front_symt.plx.m4')m4_dnl
-m4_include(`../ast/interm_ast.plx.m4')m4_dnl
+m4_include(`ast/ast.plx.m4')m4_dnl
+m4_include(`ast/back_ast.plx.m4')m4_dnl
+m4_include(`ast/back_symt.plx.m4')m4_dnl
+m4_include(`ast/front_ast.plx.m4')m4_dnl
+m4_include(`ast/front_symt.plx.m4')m4_dnl
+m4_include(`ast/interm_ast.plx.m4')m4_dnl
 
-m4_include(`../frontend/errors.plx.m4')m4_dnl
-m4_include(`../frontend/lexer.plx.m4')m4_dnl
-m4_include(`../frontend/parser.plx.m4')m4_dnl
-m4_include(`../frontend/semantic.plx.m4')m4_dnl
-m4_include(`../frontend/tac_repr.plx.m4')m4_dnl
+m4_include(`frontend/errors.plx.m4')m4_dnl
+m4_include(`frontend/lexer.plx.m4')m4_dnl
+m4_include(`frontend/parser.plx.m4')m4_dnl
+m4_include(`frontend/semantic.plx.m4')m4_dnl
+m4_include(`frontend/tac_repr.plx.m4')m4_dnl
 
-m4_include(`../backend/asm_gen.plx.m4')m4_dnl
-m4_include(`../backend/gas_code.plx.m4')m4_dnl
-m4_include(`../backend/stack_fix.plx.m4')m4_dnl
-m4_include(`../backend/symt_cvt.plx.m4')m4_dnl
+m4_include(`backend/asm_gen.plx.m4')m4_dnl
+m4_include(`backend/gas_code.plx.m4')m4_dnl
+m4_include(`backend/stack_fix.plx.m4')m4_dnl
+m4_include(`backend/symt_cvt.plx.m4')m4_dnl
 
-m4_include(`../optimizer/optim_tac.plx.m4')m4_dnl
-m4_include(`../optimizer/reg_alloc.plx.m4')m4_dnl
+m4_include(`optimizer/optim_tac.plx.m4')m4_dnl
+m4_include(`optimizer/reg_alloc.plx.m4')m4_dnl
 
 type struc MainContext(
     errors: *struc ErrorsContext,

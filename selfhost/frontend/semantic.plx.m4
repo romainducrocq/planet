@@ -1,7 +1,7 @@
 m4_ifdef(`_FRONTEND_SEMANTIC_M4', `', `
 m4_define(`_FRONTEND_SEMANTIC_M4', `')m4_dnl
 
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
 type struc CProgram;
 type struc ErrorsContext;

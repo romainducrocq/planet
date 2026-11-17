@@ -4,14 +4,14 @@ m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`reg_alloc.plx.m4')m4_dnl
 
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/ast_t.plx.m4')m4_dnl
-m4_include(`../ast/back_ast.plx.m4')m4_dnl
-m4_include(`../ast/back_symt.plx.m4')m4_dnl
-m4_include(`../ast/front_symt.plx.m4')m4_dnl
+m4_include(`ast/ast_t.plx.m4')m4_dnl
+m4_include(`ast/back_ast.plx.m4')m4_dnl
+m4_include(`ast/back_symt.plx.m4')m4_dnl
+m4_include(`ast/front_symt.plx.m4')m4_dnl
 
-m4_include(`../backend/registers.plx.m4')m4_dnl
+m4_include(`backend/registers.plx.m4')m4_dnl
 
 m4_define(`mask_t', `TULong')m4_dnl
 

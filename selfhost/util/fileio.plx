@@ -6,7 +6,7 @@ m4_include(`defstb_ds.plx.m4')m4_dnl
 m4_include(`fileio.plx.m4')m4_dnl
 m4_include(`throw.plx.m4')m4_dnl
 
-m4_include(`../frontend/errors.plx.m4')m4_dnl
+m4_include(`frontend/errors.plx.m4')m4_dnl
 
 ########################################################################################################################
 

@@ -1,7 +1,7 @@
 m4_ifdef(`_BACKEND_ASM_GEN_M4', `', `
 m4_define(`_BACKEND_ASM_GEN_M4', `')m4_dnl
 
-m4_include(`../ast/ast_t.plx.m4')m4_dnl
+m4_include(`ast/ast_t.plx.m4')m4_dnl
 
 type struc TacProgram;
 type struc AsmProgram;

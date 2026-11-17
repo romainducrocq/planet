@@ -4,11 +4,11 @@ m4_define(`_FRONTEND_LEXER_M4', `')m4_dnl
 m4_include(`defsds.plx.m4')m4_dnl
 m4_include(`defstb_ds.plx.m4')m4_dnl
 
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/ast_t.plx.m4')m4_dnl
+m4_include(`ast/ast_t.plx.m4')m4_dnl
 
-m4_include(`../frontend/tokens.plx.m4')m4_dnl
+m4_include(`frontend/tokens.plx.m4')m4_dnl
 
 type struc ErrorsContext;
 type struc FileIoContext;

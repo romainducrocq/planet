@@ -1,8 +1,8 @@
 m4_include(`registers.plx.m4')m4_dnl
 
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/back_ast.plx.m4')m4_dnl
+m4_include(`ast/back_ast.plx.m4')m4_dnl
 
 ########################################################################################################################
 

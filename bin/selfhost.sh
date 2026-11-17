@@ -116,7 +116,7 @@ function build_selfhost () {
         # if [ ${?} -ne 0 ]; then return 1; fi
 
         if [ ${BUILD_PLX} -eq 0 ]; then
-            planet -O2 -E -D${OS_MACRO} -c ${FILE}
+            planet -O2 -E -D${OS_MACRO} -c -I${SELFHOST_DIR}/ ${FILE}
             if [ ${?} -ne 0 ]; then return 1; fi
             mv ${FILE%.*}.o ${OBJECT}
             if [ ${?} -ne 0 ]; then return 1; fi

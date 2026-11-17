@@ -6,14 +6,14 @@ m4_include(`registers.plx.m4')m4_dnl
 m4_include(`stack_fix.plx.m4')m4_dnl
 m4_include(`symt_cvt.plx.m4')m4_dnl
 
-m4_include(`../util/str2t.plx.m4')m4_dnl
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/str2t.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/ast.plx.m4')m4_dnl
-m4_include(`../ast/back_ast.plx.m4')m4_dnl
-m4_include(`../ast/back_symt.plx.m4')m4_dnl
-m4_include(`../ast/front_symt.plx.m4')m4_dnl
-m4_include(`../ast/interm_ast.plx.m4')m4_dnl
+m4_include(`ast/ast.plx.m4')m4_dnl
+m4_include(`ast/back_ast.plx.m4')m4_dnl
+m4_include(`ast/back_symt.plx.m4')m4_dnl
+m4_include(`ast/front_symt.plx.m4')m4_dnl
+m4_include(`ast/interm_ast.plx.m4')m4_dnl
 
 m4_define(`ASM_LABEL_KIND', `i32')m4_dnl
 m4_define(`LBL_Lcomisd_nan', `0')m4_dnl

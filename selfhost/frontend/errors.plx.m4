@@ -3,10 +3,10 @@ m4_define(`_FRONTEND_ERRORS_M4', `')m4_dnl
 
 m4_include(`defsds.plx.m4')m4_dnl
 
-m4_include(`../ast/ast_t.plx.m4')m4_dnl
+m4_include(`ast/ast_t.plx.m4')m4_dnl
 
-m4_include(`../frontend/messages.plx.m4')m4_dnl
-m4_include(`../frontend/tokens.plx.m4')m4_dnl
+m4_include(`frontend/messages.plx.m4')m4_dnl
+m4_include(`frontend/tokens.plx.m4')m4_dnl
 
 type struc Token;
 type struc FunType;

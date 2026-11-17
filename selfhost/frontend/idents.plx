@@ -3,10 +3,10 @@ m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`idents.plx.m4')m4_dnl
 
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/ast.plx.m4')m4_dnl
-m4_include(`../ast/front_ast.plx.m4')m4_dnl
+m4_include(`ast/ast.plx.m4')m4_dnl
+m4_include(`ast/front_ast.plx.m4')m4_dnl
 
 ########################################################################################################################
 

@@ -5,12 +5,12 @@ m4_include(`errors.plx.m4')m4_dnl
 m4_include(`idents.plx.m4')m4_dnl
 m4_include(`semantic.plx.m4')m4_dnl
 
-m4_include(`../util/str2t.plx.m4')m4_dnl
-m4_include(`../util/throw.plx.m4')m4_dnl
+m4_include(`util/str2t.plx.m4')m4_dnl
+m4_include(`util/throw.plx.m4')m4_dnl
 
-m4_include(`../ast/ast.plx.m4')m4_dnl
-m4_include(`../ast/front_ast.plx.m4')m4_dnl
-m4_include(`../ast/front_symt.plx.m4')m4_dnl
+m4_include(`ast/ast.plx.m4')m4_dnl
+m4_include(`ast/front_ast.plx.m4')m4_dnl
+m4_include(`ast/front_symt.plx.m4')m4_dnl
 
 m4_define(`StStructure', `struc Structure')m4_dnl
 PairKeyValue(``TIdentifier'', ``StStructure'')
