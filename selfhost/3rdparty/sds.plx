@@ -218,6 +218,7 @@ fn sdsnewlen(init: *any, initlen: u64) sds {
     }
     hdrlen: i32 = sdsHdrSize(stype)
     fp: *u8; # flags pointer.
+
     sh = malloc(hdrlen + initlen + 1)
     if sh == 0 {
         return 0
@@ -308,10 +309,12 @@ pub fn sdsMakeRoomFor(s: sds, addlen: u64) sds {
     stype: char;
     oldstype: char = s[-1] & SDS_TYPE_MASK
     hdrlen: i32;
+
     # Return ASAP if there is enough space left.
     if avail >= addlen {
         return s
     }
+
     len = sdslen(s)
     sh = cast<string>(s) - sdsHdrSize(oldstype)
     newlen = (len + addlen)
@@ -321,13 +324,16 @@ pub fn sdsMakeRoomFor(s: sds, addlen: u64) sds {
     else {
         newlen += SDS_MAX_PREALLOC
     }
+
     stype = sdsReqType(newlen)
+
     # Don't use type 5: the user is appending to the string and type 5 is
     # not able to remember empty space, so sdsMakeRoomFor() must be called
     # at every appending operation.
     if stype == SDS_TYPE_5 {
         stype = SDS_TYPE_8
     }
+
     hdrlen = sdsHdrSize(stype)
     # assert(hdrlen + newlen + 1 > (len + addlen)); # Catch unsigned long overflow
     if oldstype == stype {
@@ -361,6 +367,7 @@ pub fn sdsMakeRoomFor(s: sds, addlen: u64) sds {
 # is performed.
 pub fn sdsgrowzero(s: sds, len: u64) sds {
     curlen: u64 = sdslen(s)
+
     if len <= curlen {
         return s
     }
@@ -368,6 +375,7 @@ pub fn sdsgrowzero(s: sds, len: u64) sds {
     if s == 0 {
         return 0
     }
+
     # Make sure added region doesn't contain garbage
     memset(s + curlen, 0, (len - curlen + 1)) # also set trailing \0 byte
     sdssetlen(s, len)
@@ -381,6 +389,7 @@ pub fn sdsgrowzero(s: sds, len: u64) sds {
 # references must be substituted with the new pointer returned by the call.
 fn sdscatlen(s: sds, t: *any, len: u64) sds {
     curlen: u64 = sdslen(s)
+
     s = sdsMakeRoomFor(s, len)
     if s == 0 {
         return 0
@@ -411,6 +420,7 @@ fn sdsll2str(s: string, value: i64) i32 {
     aux: char;
     v: u64;
     l: u64;
+
     # Generate the string representation, this method produces
     # an reversed string.
     if value < 0 {
@@ -426,6 +436,7 @@ fn sdsll2str(s: string, value: i64) i32 {
     else {
         v = value
     }
+
     p = s
     loop .. while v {
         p++[] = '0' + (v % 10)
@@ -434,9 +445,11 @@ fn sdsll2str(s: string, value: i64) i32 {
     if value < 0 {
         p++[] = '-'
     }
+
     # Compute length and add null term.
     l = p - s
     p[] = 0
+
     # Reverse the string.
     p--
     loop while s < p {
@@ -454,6 +467,7 @@ fn sdsull2str(s: string, v: u64) i32 {
     p: string;
     aux: char;
     l: u64;
+
     # Generate the string representation, this method produces
     # an reversed string.
     p = s
@@ -461,9 +475,11 @@ fn sdsull2str(s: string, v: u64) i32 {
         p++[] = '0' + (v % 10)
         v /= 10
     }
+
     # Compute length and add null term.
     l = p - s
     p[] = 0
+
     # Reverse the string.
     p--
     loop while s < p {
@@ -482,12 +498,14 @@ fn sdsull2str(s: string, v: u64) i32 {
 pub fn sdsfromlong(value: i64) sds {
     buf: [SDS_LLSTR_SIZE]char;
     len: i32 = sdsll2str(buf, value)
+
     return sdsnewlen(buf, len)
 }
 
 pub fn sdsfromunsignedlong(value: u64) sds {
     buf: [SDS_LLSTR_SIZE]char;
     len: i32 = sdsull2str(buf, value)
+
     return sdsnewlen(buf, len)
 }
 
@@ -509,6 +527,7 @@ pub fn sdsfromunsignedlong(value: u64) sds {
 pub fn sdsrange(s: sds, start: i64, end: i64) none {
     newlen: u64;
     len: u64 = sdslen(s)
+
     if len == 0 {
         return none
     }
