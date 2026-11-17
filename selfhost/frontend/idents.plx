@@ -1,6 +1,7 @@
-m4_include(`idents.plx.m4')m4_dnl
+m4_include(`../3rdparty/sds.plx.m4')m4_dnl
+m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
-m4_include(`../lib/def_std.plx.m4')m4_dnl
+m4_include(`idents.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 

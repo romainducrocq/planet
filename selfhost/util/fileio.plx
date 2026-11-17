@@ -1,10 +1,10 @@
 use "stdio"
 use "stdlib"
+m4_include(`../3rdparty/sds.plx.m4')m4_dnl
+m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
 m4_include(`fileio.plx.m4')m4_dnl
 m4_include(`throw.plx.m4')m4_dnl
-
-m4_include(`../lib/def_std.plx.m4')m4_dnl
 
 m4_include(`../frontend/errors.plx.m4')m4_dnl
 
