@@ -26,13 +26,16 @@ pub fn panic_sigabrt(msg: string) none {
         stderr_buf: string_t = str_new("")
         stderr_buf_size: u64 = strlen("internal error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(msg)
         str_reserve(stderr_buf, stderr_buf_size)
+
         str_append(stderr_buf, esc_red)
         str_append(stderr_buf, "internal error:")
         str_append(stderr_buf, esc_reset)
         str_append(stderr_buf, " ")
         str_append(stderr_buf, msg)
         str_append(stderr_buf, "\n")
+
         fprint(get_stderr(), stderr_buf)
+
         str_delete(stderr_buf)
     }
     abort()
@@ -43,9 +46,11 @@ pub fn raise_init_error(ctx: Ctx) none {
         print("\n")
         fflush(nil)
     }
+
     stderr_buf: string_t = str_new("")
     stderr_buf_size: u64 = strlen("error: \n") + ESC_RED_SIZE + ESC_RESET_SIZE + strlen(ctx[].msg)
     str_reserve(stderr_buf, stderr_buf_size)
+
     str_append(stderr_buf, esc_red)
     str_append(stderr_buf, "error:")
     str_append(stderr_buf, esc_reset)
@@ -53,7 +58,9 @@ pub fn raise_init_error(ctx: Ctx) none {
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
     THROW_ABORT_IF(str_size(stderr_buf) ~= stderr_buf_size)
+
     fprint(get_stderr(), stderr_buf)
+
     str_delete(stderr_buf)
 }
 
@@ -67,10 +74,12 @@ pub fn raise_base_error(ctx: Ctx) none {
         print("\n")
         fflush(nil)
     }
+
     stderr_buf: string_t = str_new("")
     stderr_buf_size: u64 = (strlen(":\nerror: \n") + ESC_BOLD_SIZE + strlen(filename) + ESC_RESET_SIZE + ESC_RED_SIZE
         + ESC_RESET_SIZE + strlen(ctx[].msg))
     str_reserve(stderr_buf, stderr_buf_size)
+
     str_append(stderr_buf, esc_bold)
     str_append(stderr_buf, filename)
     str_append(stderr_buf, ":")
@@ -83,7 +92,9 @@ pub fn raise_base_error(ctx: Ctx) none {
     str_append(stderr_buf, ctx[].msg)
     str_append(stderr_buf, "\n")
     THROW_ABORT_IF(str_size(stderr_buf) ~= stderr_buf_size)
+
     fprint(get_stderr(), stderr_buf)
+
     str_delete(stderr_buf)
 }
 
@@ -102,6 +113,7 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
     THROW_ABORT_IF(info_at >= vec_size(ctx[].errors[].token_infos))
     token_info: *struc TokenInfo = @ctx[].errors[].token_infos[info_at]
     tok_linenum: u64 = get_token_linenum(ctx, token_info[].total_linenum)
+
     free_fileio(ctx[].fileio)
     filename: string = get_filename(ctx[].fileio)
     line: string_t = str_new(nil)
@@ -138,6 +150,7 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
     }
     {
         tok_overline: string_t = str_new("")
+
         tok_pos: i32 = 1
         if token_info[].tok_pos >= 0 {
             tok_pos += token_info[].tok_pos
@@ -148,10 +161,12 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
                 }
             }
         }
+
         pad_tok: string_t = str_new("")
         pad_linenum: string_t = str_new("")
         strto_pos: string_t = str_to_string(tok_pos)
         strto_linenum: string_t = str_to_string(tok_linenum)
+
         str_resize(pad_tok, tok_pos - 1)
         loop i: u64 = 0 while i < str_size(pad_tok) .. ++i {
             pad_tok[i] = ' '
@@ -160,12 +175,14 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
         loop i: u64 = 0 while i < str_size(pad_linenum) .. ++i {
             pad_linenum[i] = ' '
         }
+
         stderr_buf: string_t = str_new("")
         stderr_buf_size: u64 = (strlen(":::\nerror: \nat line : v\n        | \n") + ESC_BOLD_SIZE + strlen(filename)
             + str_size(strto_linenum) + str_size(strto_pos) + ESC_RESET_SIZE + ESC_RED_SIZE + ESC_RESET_SIZE
             + strlen(ctx[].msg) + str_size(strto_linenum) + ESC_RED_SIZE + str_size(pad_tok) + str_size(tok_overline)
             + ESC_RESET_SIZE + str_size(pad_linenum) + ESC_BOLD_SIZE + str_size(line) + ESC_RESET_SIZE)
         str_reserve(stderr_buf, stderr_buf_size)
+
         str_append(stderr_buf, esc_bold)
         str_append(stderr_buf, filename)
         str_append(stderr_buf, ":")
@@ -198,7 +215,9 @@ pub fn raise_error_at_token(ctx: Ctx, info_at: u64) none {
         str_append(stderr_buf, esc_reset)
         str_append(stderr_buf, "\n")
         THROW_ABORT_IF(str_size(stderr_buf) ~= stderr_buf_size)
+
         fprint(get_stderr(), stderr_buf)
+
         str_delete(pad_tok)
         str_delete(pad_linenum)
         str_delete(strto_linenum)

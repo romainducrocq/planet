@@ -55,6 +55,7 @@ pub fn open_fread(ctx: Ctx, filename: string_t) error_t {
             break
         }
     }
+
     file_read: struc FileRead = $(0, nil, nil, str_new(nil))
     file_read.fd = fopen(filename, "rb")
     if not file_read.fd or str_size(filename) >= 4096 {
@@ -69,11 +70,13 @@ pub fn open_fread(ctx: Ctx, filename: string_t) error_t {
 pub fn open_fwrite(ctx: Ctx, filename: string_t) error_t {
     CATCH_ENTER
     THROW_ABORT_IF(not vec_empty(ctx[].file_reads))
+
     ctx[].fd_write = nil
     ctx[].fd_write = fopen(filename, "wb")
     if not ctx[].fd_write or str_size(filename) >= 4096 {
         THROW_BASE(GET_UTIL_MSG(MSG_failed_fwrite, filename))
     }
+
     ctx[].write_buf = str_new("")
     str_reserve(ctx[].write_buf, WRITE_BUF_SIZE)
     FINALLY
@@ -116,6 +119,7 @@ pub fn close_fread(ctx: Ctx, linenum: u64) error_t {
     vec_back(ctx[].file_reads).fd = nil
     str_delete(vec_back(ctx[].file_reads).filename)
     vec_pop_back(ctx[].file_reads)
+
     if not vec_empty(ctx[].file_reads) and not vec_back(ctx[].file_reads).fd {
         THROW_ABORT_IF(vec_back(ctx[].file_reads).buf or vec_back(ctx[].file_reads).len ~= 0)
         vec_back(ctx[].file_reads).fd = fopen(vec_back(ctx[].file_reads).filename, "rb")
@@ -136,6 +140,7 @@ pub fn close_fread(ctx: Ctx, linenum: u64) error_t {
 pub fn close_fwrite(ctx: Ctx) none {
     write_chunk(ctx, ctx[].write_buf, str_size(ctx[].write_buf))
     str_clear(ctx[].write_buf)
+
     fclose(ctx[].fd_write)
     ctx[].fd_write = nil
 }

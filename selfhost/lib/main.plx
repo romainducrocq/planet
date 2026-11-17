@@ -64,21 +64,23 @@ fn compile(ctx: Ctx, errors: *struc ErrorsContext, fileio: *struc FileIoContext)
     tokens: vector_t(struc Token) = vec_new()
     c_ast: unique_ptr_t(CProgram) = uptr_new()
     tac_ast: unique_ptr_t(TacProgram) = uptr_new()
-
     asm_ast: unique_ptr_t(AsmProgram) = uptr_new()
     {
         if ctx[].debug_code > 0 and ctx[].debug_code <= 127 {
             ctx[].is_verbose = true
             errors[].is_stdout = true
         }
+
         identifiers.label_count = 0u
         identifiers.var_count = 0u
         identifiers.struct_count = 0u
         identifiers.hash_table = map_new()
+
         frontend.string_const_table = map_new()
         frontend.struct_typedef_table = map_new()
         frontend.symbol_table = map_new()
         frontend.addressed_set = set_new()
+
         backend.symbol_table = map_new()
     }
 
@@ -98,18 +100,21 @@ m4_ifdef(`__linux__', `', `
     if ctx[].debug_code == 255 {
         EARLY_EXIT
     }
+
     verbose(ctx, "-- Parsing ... ")
     TRY(parse_tokens(@tokens, errors, @identifiers, @c_ast))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 254 {
         EARLY_EXIT
     }
+
     verbose(ctx, "-- Semantic analysis ... ")
     TRY(analyze_semantic(c_ast, errors, @frontend, @identifiers))
     verbose(ctx, "OK\n")
     if ctx[].debug_code == 253 {
         EARLY_EXIT
     }
+
     verbose(ctx, "-- TAC representation ... ")
     tac_ast = represent_three_address_code(@c_ast, @frontend, @identifiers)
     if ctx[].optim_1_mask > 0 {
@@ -120,6 +125,7 @@ m4_ifdef(`__linux__', `', `
     if ctx[].debug_code == 252 {
         EARLY_EXIT
     }
+
     verbose(ctx, "-- Assembly generation ... ")
     asm_ast = generate_assembly(@tac_ast, @frontend, @identifiers)
     convert_symbol_table(asm_ast, @backend, @frontend)
@@ -132,17 +138,20 @@ m4_ifdef(`__linux__', `', `
     if ctx[].debug_code == 251 {
         EARLY_EXIT
     }
+
     verbose(ctx, "-- Code emission ... ")
     set_filename_ext(ctx, "s")
     TRY(open_fwrite(fileio, ctx[].filename))
     emit_gas_code(@asm_ast, @backend, fileio, @identifiers)
     close_fwrite(fileio)
     verbose(ctx, "OK\n")
+
     FINALLY
     loop i: u64 = 0 while i < map_size(identifiers.hash_table) .. ++i {
         str_delete(pair_second(identifiers.hash_table[i]))
     }
     map_delete(identifiers.hash_table)
+
     map_delete(frontend.string_const_table)
     loop i: u64 = 0 while i < map_size(frontend.struct_typedef_table) .. ++i {
         free_StructTypedef(@pair_second(frontend.struct_typedef_table[i]))
@@ -153,10 +162,12 @@ m4_ifdef(`__linux__', `', `
     }
     map_delete(frontend.symbol_table)
     set_delete(frontend.addressed_set)
+
     loop i: u64 = 0 while i < map_size(backend.symbol_table) .. ++i {
         free_BackendSymbol(@pair_second(backend.symbol_table[i]))
     }
     map_delete(backend.symbol_table)
+
     vec_delete(tokens)
     free_CProgram(@c_ast)
     free_TacProgram(@tac_ast)
@@ -173,35 +184,42 @@ fn arg_parse_uint8(arg: string, value: *u8) bool {
 fn arg_parse(ctx: Ctx, argc: i32, argv: *string) error_t {
     CATCH_ENTER
     i: u64 = 0
+
     if argc == 2 and strcmp(argv[1], "--help") == 0 {
         THROW_INIT(GET_ARG_MSG(MSG_print_help, argv[0]))
     }
+
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_debug_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].debug_code) {
         THROW_INIT(GET_ARG_MSG(MSG_invalid_debug_arg, argv[i]))
     }
+
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_optim_1_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_1_mask) or ctx[].optim_1_mask > 15 {
         THROW_INIT(GET_ARG_MSG(MSG_invalid_optim_1_arg, argv[i]))
     }
+
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_optim_2_arg))
     }
     elif arg_parse_uint8(argv[i], @ctx[].optim_2_code) or ctx[].optim_2_code > 2 {
         THROW_INIT(GET_ARG_MSG(MSG_invalid_optim_2_arg, argv[i]))
     }
+
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_input_files_arg))
     }
     ctx[].filename = str_new(argv[i])
+
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_stdlib_dir_arg))
     }
     vec_push_back(ctx[].stdlibdirs, cast<string>(argv[i]))
+
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_include_dir_arg))
     }
@@ -215,7 +233,6 @@ fn arg_parse(ctx: Ctx, argc: i32, argv: *string) error_t {
 pub fn main(argc: i32, argv: *string) error_t {
     errors: struc ErrorsContext;
     fileio: struc FileIoContext;
-
     ctx: struc MainContext;
     {
         errors.errors = @errors
@@ -224,21 +241,23 @@ pub fn main(argc: i32, argv: *string) error_t {
         errors.info_at_map = map_new()
         errors.fopen_lines = vec_new()
         errors.token_infos = vec_new()
+
         fileio.errors = @errors
         fileio.fd_write = nil
         fileio.write_buf = str_new(nil)
         fileio.filename = str_new(nil)
         fileio.file_reads = vec_new()
+
         ctx.errors = @errors
         ctx.is_verbose = false
         ctx.filename = str_new(nil)
         ctx.includedirs = vec_new()
         ctx.stdlibdirs = vec_new()
     }
-
     CATCH_ENTER
     TRY(arg_parse(@ctx, argc, argv))
     TRY(compile(@ctx, @errors, @fileio))
+
     FINALLY
     map_delete(errors.info_at_map)
     loop i: u64 = 0 while i < vec_size(errors.fopen_lines) .. ++i {
@@ -246,12 +265,14 @@ pub fn main(argc: i32, argv: *string) error_t {
     }
     vec_delete(errors.fopen_lines)
     vec_delete(errors.token_infos)
+
     str_delete(fileio.write_buf)
     str_delete(fileio.filename)
     loop i: u64 = 0 while i < vec_size(fileio.file_reads) .. ++i {
         str_delete(fileio.file_reads[i].filename)
     }
     vec_delete(fileio.file_reads)
+
     str_delete(ctx.filename)
     vec_delete(ctx.includedirs)
     vec_delete(ctx.stdlibdirs)
