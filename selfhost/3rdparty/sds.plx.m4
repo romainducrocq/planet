@@ -1,5 +1,44 @@
-m4_ifdef(`_LIB_SDS_M4', `', `
-m4_define(`_LIB_SDS_M4', `')m4_dnl
+m4_ifdef(`_DEF_SDS_M4', `', `
+m4_define(`_DEF_SDS_M4', `')m4_dnl
+# https://github.com/antirez/sds
+#
+
+# string
+m4_define(`string_t', `sds')m4_dnl
+m4_define(`str_new', `? ($1) then sdsnew($1) else nil')m4_dnl
+m4_define(`str_delete', `if ($1) {
+    sdsfree($1)
+    ($1) = str_new(nil)
+}')m4_dnl
+m4_define(`str_move', `if ($1) ~= ($2) {
+    str_delete($2)
+    ($2) = ($1)
+    ($1) = str_new(nil)
+}')m4_dnl
+m4_define(`str_size', `sdslen($1)')m4_dnl
+m4_define(`str_back', `($1)[str_size($1) - 1]')m4_dnl
+m4_define(`str_append', `{
+    ($1) = sdscat($1, $2)
+}')m4_dnl
+m4_define(`str_clear', `sdsclear($1)')m4_dnl
+m4_define(`str_copy', `if ($1) ~= ($2) {
+    str_delete($2)
+    ($2) = sdsdup($1)
+}')m4_dnl
+m4_define(`str_hash', `stbds_hash_string($1, 42)')m4_dnl
+m4_define(`str_pop_back', `sdsrange($1, 0, -2)')m4_dnl
+m4_define(`str_push_back', `{
+    str_resize($1, str_size($1) + 1)
+    str_back($1) = ($2)
+}')m4_dnl
+m4_define(`str_reserve', `{
+    ($1) = sdsMakeRoomFor($1, $2)
+}')m4_dnl
+m4_define(`str_resize', `{
+    ($1) = sdsgrowzero($1, $2)
+}')m4_dnl
+m4_define(`str_substr', `sdsrange($1, $2, $3)')m4_dnl
+m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
 
 # SDSLib 2.0 -- A C dynamic strings library
 #
