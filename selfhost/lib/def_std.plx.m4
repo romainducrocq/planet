@@ -10,28 +10,6 @@ m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
 
 ########################################################################################################################
 
-# Errors
-
-m4_define(`error_t', `i32')m4_dnl
-m4_define(`ERROR_MSG_SIZE', `1024')m4_dnl
-m4_define(`CATCH_ENTER', `_errval: error_t = 0')m4_dnl
-m4_define(`CATCH_EXIT', `return _errval')m4_dnl
-m4_define(`EARLY_EXIT', `jump _Lfinally')m4_dnl
-m4_define(`FINALLY', `label _Lfinally')m4_dnl
-m4_define(`TRY', `{
-    _errval = ($1)
-    if _errval ~= 0 { EARLY_EXIT }
-}')m4_dnl
-m4_define(`THROW_PANIC', `PANIC_FUNC($@)')m4_dnl
-m4_define(`SET_ERROR_MSG', `snprint(ERROR_MSG_BUF, sizeof<char> * ERROR_MSG_SIZE, $1)')m4_dnl
-m4_define(`THROW_ERROR', `{
-    ? SET_ERROR_MSG($3) > 0 then cast<none>($2) else THROW_ABORT
-    _errval = ($1)
-    EARLY_EXIT
-}')m4_dnl
-
-########################################################################################################################
-
 # Memory
 
 m4_define(`tagged_def_t', `$1_$2_t')m4_dnl
