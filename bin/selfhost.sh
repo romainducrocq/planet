@@ -31,7 +31,7 @@ if [ ${BUILD_PLX} -ne 0 ]; then
     EXT="c"
 fi
 
-SOURCE_FILES="${SELFHOST_DIR}/lib/main.${EXT}"
+SOURCE_FILES="${SELFHOST_DIR}/main.${EXT}"
 SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/ast.${EXT}"
 SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_ast.${EXT}"
 SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_symt.${EXT}"
