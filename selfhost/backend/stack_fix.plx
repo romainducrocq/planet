@@ -1,4 +1,4 @@
-m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
+m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`registers.plx.m4')m4_dnl
 m4_include(`stack_fix.plx.m4')m4_dnl

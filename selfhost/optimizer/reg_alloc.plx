@@ -1,6 +1,6 @@
 use "stdlib"
 use "string"
-m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
+m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`reg_alloc.plx.m4')m4_dnl
 

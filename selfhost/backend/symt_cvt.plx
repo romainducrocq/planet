@@ -1,4 +1,4 @@
-m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
+m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`regs.plx.m4')m4_dnl
 m4_include(`symt_cvt.plx.m4')m4_dnl

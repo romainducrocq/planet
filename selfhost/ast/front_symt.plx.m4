@@ -1,7 +1,7 @@
 m4_ifdef(`_AST_FRONT_SYMT_M4', `', `
 m4_define(`_AST_FRONT_SYMT_M4', `')m4_dnl
 
-m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
+m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`../ast/ast.plx.m4')m4_dnl
 

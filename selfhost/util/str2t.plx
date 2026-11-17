@@ -2,8 +2,8 @@ use "inttypes"
 use "stdio"
 use "stdlib"
 use "string"
-m4_include(`../3rdparty/sds.plx.m4')m4_dnl
-m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
+m4_include(`defsds.plx.m4')m4_dnl
+m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`str2t.plx.m4')m4_dnl
 m4_include(`throw.plx.m4')m4_dnl

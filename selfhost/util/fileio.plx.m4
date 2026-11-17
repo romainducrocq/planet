@@ -2,8 +2,8 @@ m4_ifdef(`_UTIL_FILEIO_M4', `', `
 m4_define(`_UTIL_FILEIO_M4', `')m4_dnl
 
 use "stdio"
-m4_include(`../3rdparty/sds.plx.m4')m4_dnl
-m4_include(`../3rdparty/stb_ds.plx.m4')m4_dnl
+m4_include(`defsds.plx.m4')m4_dnl
+m4_include(`defstb_ds.plx.m4')m4_dnl
 
 m4_include(`../util/throw.plx.m4')m4_dnl
 
