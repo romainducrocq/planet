@@ -1,5 +1,6 @@
 use "inttypes"
 use "stdio"
+use "stdlib"
 use "string"
 
 m4_include(`str2t.plx.m4')m4_dnl

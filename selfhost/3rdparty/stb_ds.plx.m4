@@ -44,9 +44,6 @@ m4_define(`_LIB_STB_DS_M4', `')m4_dnl
 # ------------------------------------------------------------------------------
 #
 
-use "stdlib"
-use "string"
-
 m4_define(`arrlenu', `stbds_arrlenu($1)')m4_dnl
 m4_define(`arrput', `stbds_arrput($1, $2)')m4_dnl
 m4_define(`arrpop', `stbds_arrpop($1)')m4_dnl
@@ -83,7 +80,7 @@ m4_define(`stbds_arrput', `{
 m4_define(`stbds_arrpop', `(stbds_header($1)[].length--)')m4_dnl
 m4_define(`stbds_arrlast', `(($1)[stbds_header($1)[].length - 1])')m4_dnl
 m4_define(`stbds_arrfree', `{
-    cast<none>(? ($1) then free(stbds_header($1)) else cast<none>(0))
+    cast<none>(? ($1) then free_stbds_header($1) else cast<none>(0))
     ($1) = nil
 }')m4_dnl
 m4_define(`stbds_arrdelswap', `{
@@ -121,6 +118,11 @@ m4_define(`stbds_hmget', `(stbds_hmgetp($1, $2)[].value)')m4_dnl
 m4_define(`stbds_hmlenu', `(? ($1) then stbds_header(($1) - 1)[].length - 1 else 0)')m4_dnl
 
 type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+
+extrn fn free_stbds_header(a: *any) none;
+extrn fn stbds_header_length(a: *any) *u64;
+extrn fn stbds_header_capacity(a: *any) u64;
+extrn fn stbds_header_temp(a: *any) i64;
 
 extrn fn stbds_hash_string(str: string, seed: u64) u64;
 extrn fn stbds_arrgrowf(a: *any, elemsize: u64, addlen: u64, min_cap: u64) *any;

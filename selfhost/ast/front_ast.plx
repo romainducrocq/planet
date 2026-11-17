@@ -1,3 +1,5 @@
+use "stdlib"
+
 m4_include(`ast.plx.m4')m4_dnl
 m4_include(`front_ast.plx.m4')m4_dnl
 m4_include(`front_symt.plx.m4')m4_dnl

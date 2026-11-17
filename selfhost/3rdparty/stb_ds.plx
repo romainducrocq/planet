@@ -41,9 +41,29 @@
 # ------------------------------------------------------------------------------
 #
 
+use "stdlib"
 use "string"
 
 m4_include(`stb_ds.plx.m4')m4_dnl
+
+# TODO
+# type struc stbds_array_header(length: u64, capacity: u64, hash_table: *any, temp: i64)
+
+pub fn free_stbds_header(a: *any) none {
+    free(cast<*struc stbds_array_header>((a)) - 1)
+}
+
+pub fn stbds_header_length(a: *any) *u64 {
+    return @(cast<*struc stbds_array_header>((a)) - 1)[].length
+}
+
+pub fn stbds_header_capacity(a: *any) u64 {
+    return (cast<*struc stbds_array_header>((a)) - 1)[].capacity
+}
+
+pub fn stbds_header_temp(a: *any) i64 {
+    return (cast<*struc stbds_array_header>((a)) - 1)[].temp
+}
 
 m4_define(`STBDS_SH_DEFAULT', `1')m4_dnl
 m4_define(`STBDS_SH_STRDUP', `2')m4_dnl

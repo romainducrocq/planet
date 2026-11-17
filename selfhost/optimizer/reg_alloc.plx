@@ -1,3 +1,4 @@
+use "stdlib"
 use "string"
 
 m4_include(`reg_alloc.plx.m4')m4_dnl
