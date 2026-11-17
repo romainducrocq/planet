@@ -25,7 +25,7 @@ m4_define(`str_copy', `if ($1) ~= ($2) {
     str_delete($2)
     ($2) = sdsdup($1)
 }')m4_dnl
-m4_define(`str_hash', `stbds_hash_string($1, 42)')m4_dnl
+m4_define(`str_hash', `stbds_hash_string($1, str_hash_seed)')m4_dnl
 m4_define(`str_pop_back', `sdsrange($1, 0, -2)')m4_dnl
 m4_define(`str_push_back', `{
     str_resize($1, str_size($1) + 1)
@@ -39,6 +39,11 @@ m4_define(`str_resize', `{
 }')m4_dnl
 m4_define(`str_substr', `sdsrange($1, $2, $3)')m4_dnl
 m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) else sdsfromlong(cast<i64>($1))')m4_dnl
+
+m4_ifdef(`str_hash_seed', `', `
+m4_define(`str_hash_seed', `42')m4_dnl
+')m4_dnl
+extrn fn stbds_hash_string(str: string, seed: u64) u64;
 
 # SDSLib 2.0 -- A C dynamic strings library
 #
@@ -74,19 +79,19 @@ m4_define(`str_to_string', `? ($1) > 0 then sdsfromunsignedlong(cast<u64>($1)) e
 
 m4_define(`sds', `string')m4_dnl
 
-pub fn sdslen(s: sds) u64;
-pub fn sdsnew(init: string) sds;
-pub fn sdsdup(s: sds) sds;
-pub fn sdsfree(s: sds) none;
-pub fn sdsgrowzero(s: sds, len: u64) sds;
-pub fn sdscat(s: sds, t: string) sds;
+extrn fn sdslen(s: sds) u64;
+extrn fn sdsnew(init: string) sds;
+extrn fn sdsdup(s: sds) sds;
+extrn fn sdsfree(s: sds) none;
+extrn fn sdsgrowzero(s: sds, len: u64) sds;
+extrn fn sdscat(s: sds, t: string) sds;
 
-pub fn sdsrange(s: sds, start: i64, end: i64) none;
-pub fn sdsclear(s: sds) none;
-pub fn sdsfromlong(value: i64) sds;
-pub fn sdsfromunsignedlong(value: u64) sds;
+extrn fn sdsrange(s: sds, start: i64, end: i64) none;
+extrn fn sdsclear(s: sds) none;
+extrn fn sdsfromlong(value: i64) sds;
+extrn fn sdsfromunsignedlong(value: u64) sds;
 
 # Low level functions exposed to the user API
-pub fn sdsMakeRoomFor(s: sds, addlen: u64) sds;
+extrn fn sdsMakeRoomFor(s: sds, addlen: u64) sds;
 
 ')m4_dnl
