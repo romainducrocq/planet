@@ -107,7 +107,7 @@ type union _CAbstractDeclarator(
     _CAbstractArray: struc CAbstractArray,
     _CAbstractBase: struc CAbstractBase
 )
-    
+
 type struc CAbstractDeclarator(unique_ptr_impl(AST_T)
     get: union _CAbstractDeclarator
 )

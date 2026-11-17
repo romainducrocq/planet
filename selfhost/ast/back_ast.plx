@@ -442,7 +442,7 @@ pub fn free_AsmInstruction(self: *unique_ptr_t(AsmInstruction)) none {
             free_AssemblyType(@self[][].get._AsmMov.asm_type)
             free_AsmOperand(@self[][].get._AsmMov.src)
             free_AsmOperand(@self[][].get._AsmMov.dst)
-            break    
+            break
         }
         -> AST_AsmMovSx_t {
             free_AssemblyType(@self[][].get._AsmMovSx.asm_type_src)
