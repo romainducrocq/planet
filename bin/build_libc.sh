@@ -3,7 +3,6 @@
 KERNEL_NAME="$(uname -s)"
 PACKAGE_BUILD="$(dirname $(readlink -f ${0}))"
 PACKAGE_DIR="$(dirname ${PACKAGE_BUILD})/bin"
-PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
 PACKAGE_LIBC="${PACKAGE_DIR}/libc"
 CC="gcc"
 if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
@@ -44,7 +43,8 @@ function build_lib () {
 
 echo "-- Build libc ..."
 
-build_lib "$(basename "${LIBC_NAME}")" 2 "wrap_defs.c" "wrap_vargs.c"
+build_lib "$(basename "${LIBC_NAME}")" 4 "wrap_defs.c" "wrap_vargs.c" \
+    "3rdparty/sds.c" "3rdparty/stb_ds.c" "-D__GCC_BOOTSTRAP__"
 build_lib "libmath2.so" 1 "wrap_math.c" # "-lm"
 build_lib "libsignal.so" 1 "wrap_fptrs.c" "-DBUILD_SIGNAL"
 build_lib "libat_quick_exit.so" 1 "wrap_fptrs.c" "-DBUILD_AT_QUICK_EXIT"
