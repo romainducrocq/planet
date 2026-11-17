@@ -1054,7 +1054,6 @@ pub fn emit_gas_code(
         ctx.fileio = fileio
         ctx.identifiers = identifiers
     }
-
     emit_program(@ctx, asm_ast[])
     free_AsmProgram(asm_ast)
 }

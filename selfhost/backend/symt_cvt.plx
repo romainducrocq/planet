@@ -210,6 +210,7 @@ fn cvt_program(ctx: Ctx, node: *struc AsmProgram) none {
             cvt_obj_type(ctx, pair_second(symbol[])[].attrs)
         }
     }
+
     loop i: u64 = 0 while i < vec_size(node[].static_const_toplvls) .. ++i {
         cvt_toplvl(ctx, node[].static_const_toplvls[i])
     }
@@ -225,6 +226,5 @@ pub fn convert_symbol_table(
         ctx.backend = backend
         ctx.frontend = frontend
     }
-
     cvt_program(@ctx, node)
 }

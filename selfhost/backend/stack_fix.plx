@@ -99,6 +99,7 @@ fn alloc_offset_pseudo_mem(ctx: Ctx, asm_type: *struc AssemblyType) none {
 
 fn repl_pseudo_op(ctx: Ctx, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
+
         backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
             pseudo_data(node, pseudo_op)
@@ -109,11 +110,13 @@ fn repl_pseudo_op(ctx: Ctx, node: *struc AsmPseudo, pseudo_op: *shared_ptr_t(Asm
             map_add(ctx[].pseudo_stack_map, node[].name, ctx[].stack_bytes)
         }
     }
+
     pseudo_memory(ctx, node, pseudo_op)
 }
 
 fn repl_pseudo_mem_op(ctx: Ctx, node: *struc AsmPseudoMem, pseudo_op: *shared_ptr_t(AsmOperand)) none {
     if map_find(ctx[].pseudo_stack_map, node[].name) == map_end() {
+
         backend_obj: *struc BackendObj = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendObj
         if backend_obj[].is_static {
             pseudo_mem_data(node, pseudo_op)
@@ -124,6 +127,7 @@ fn repl_pseudo_mem_op(ctx: Ctx, node: *struc AsmPseudoMem, pseudo_op: *shared_pt
             map_add(ctx[].pseudo_stack_map, node[].name, ctx[].stack_bytes)
         }
     }
+
     pseudo_mem_memory(ctx, node, pseudo_op)
 }
 
@@ -506,7 +510,6 @@ fn repl_pseudo_regs(ctx: Ctx, node: *struc AsmInstruction) none {
 pub fn alloc_stack_bytes(byte: TLong) unique_ptr_t(AsmInstruction) {
     binop: struc AsmBinaryOp = init_AsmSub()
     asm_type: shared_ptr_t(AssemblyType) = make_QuadWord()
-
     src: shared_ptr_t(AsmOperand) = sptr_new()
     {
         value: TULong = cast<TULong>(byte)
@@ -1020,7 +1023,6 @@ fn fix_div_instr(ctx: Ctx, node: *struc AsmDiv) none {
 fn push_dbl_from_xmm_reg(ctx: Ctx, node: *struc AsmPush) none {
     src_reg: shared_ptr_t(AsmOperand) = sptr_new()
     sptr_move(AsmOperand, node[].src, src_reg)
-
     asm_type_src: shared_ptr_t(AssemblyType) = make_QuadWord()
     {
         binop: struc AsmBinaryOp = init_AsmSub()
@@ -1032,7 +1034,6 @@ fn push_dbl_from_xmm_reg(ctx: Ctx, node: *struc AsmPush) none {
         free_AsmInstruction(instr_back)
         instr_back[] = make_AsmBinary(@binop, @asm_type_src_cp, @src, @dst)
     }
-
     {
         dst: shared_ptr_t(AsmOperand) = gen_memory(REG_Sp, 0l)
         push_fix_instr(ctx, make_AsmMov(@asm_type_src, @src_reg, @dst))
@@ -1117,12 +1118,15 @@ fn fix_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
     instructions: vector_t(unique_ptr_t(AsmInstruction)) = vec_new()
     vec_move(node[].instructions, instructions)
     backend_fun: *struc BackendFun = @map_get(ctx[].backend[].symbol_table, node[].name)[].get._BackendFun
+
     vec_clear(node[].instructions)
     vec_reserve(node[].instructions, vec_size(instructions))
+
     ctx[].stack_bytes = ? node[].is_ret_memory then 8l else 0l
     map_clear(ctx[].pseudo_stack_map)
     ctx[].p_fix_instrs = @node[].instructions
     vec_push_back(ctx[].p_fix_instrs[], uptr_new())
+
     is_ret: bool = false
     push_callee_saved_regs(ctx, backend_fun[].callee_saved_regs)
     loop i: u64 = 0 while i < vec_size(instructions) .. ++i {
@@ -1133,6 +1137,7 @@ fn fix_fun_toplvl(ctx: Ctx, node: *struc AsmFunction) none {
             }
             push_fix_instr(ctx, instructions[i])
             instructions[i] = uptr_new()
+
             repl_pseudo_regs(ctx, vec_back(ctx[].p_fix_instrs[]))
             fix_instr(ctx, vec_back(ctx[].p_fix_instrs[]))
         }
@@ -1178,7 +1183,7 @@ pub fn fix_stack(node: *struc AsmProgram, backend: *struc BackEndContext) none {
         ctx.stack_bytes = 0l
         ctx.pseudo_stack_map = map_new()
     }
-
     fix_program(@ctx, node)
+
     map_delete(ctx.pseudo_stack_map)
 }
