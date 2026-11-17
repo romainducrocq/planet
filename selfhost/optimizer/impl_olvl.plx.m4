@@ -31,6 +31,7 @@ type struc ControlFlowGraph(
     identifier_id_map: hashmap_t(``TIdentifier'', u64)
 )
 
+m4_undefine(`set_size')m4_dnl
 type struc DataFlowAnalysis(
     set_size: u64, mask_size: u64, incoming_idx: u64, static_idx: u64, open_data_map: vector_t(u64),
     instr_idx_map: vector_t(u64), blocks_mask_sets: vector_t(mask_t), instrs_mask_sets: vector_t(mask_t)
