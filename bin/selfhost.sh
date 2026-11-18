@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO review this file
 KERNEL_NAME="$(uname -s)"
 PACKAGE_DIR="$(readlink -f ../wheelcc/bin)"
 PACKAGE_LIBC="${PACKAGE_DIR}/libc"
@@ -48,52 +47,25 @@ function raise_error () {
     exit 1
 }
 
-# TODO check that planet is already built
-# function check_setup () {
-#     case "${LD}" in
-#         "clang"*)
-#             CLANG_MAJOR_VERSION=$(clang -dumpversion | cut -d"." -f1)
-#             if [ ${CLANG_MAJOR_VERSION} -lt 5 ]; then
-#                 raise_error "requires $(em "clang") >= 5.0.0"
-#             fi
-#             ;;
-#         "gcc")
-#             GCC_MAJOR_VERSION=$(gcc -dumpversion | cut -d"." -f1)
-#             if [ ${GCC_MAJOR_VERSION} -lt 8 ]; then
-#                 raise_error "requires $(em "gcc") >= 8.1.0"
-#             elif [ ${GCC_MAJOR_VERSION} -eq 8 ]; then
-#                 GCC_MINOR_VERSION=$(gcc -dumpfullversion | cut -d"." -f2)
-#                 if [ ${GCC_MINOR_VERSION} -eq 0 ]; then
-#                     raise_error "requires $(em "gcc") >= 8.1.0"
-#                 fi
-#             fi
-#             ;;
-#         *)
-#             raise_error "$(em "${LD}") is not a valid linker"
-#     esac
+if [ ! -f "${PROJECT_NAME}" ]; then
+    raise_error "$(em "planet") bootstrap was not built, \
+run $(em "./configure.sh && ./make.sh") first and try again"
+fi
 
-#     as --help > /dev/null 2>&1
-#     if [ ${?} -ne 0 ]; then
-#         raise_error "requires package $(em "binutils")"
-#     fi
-#     return 0
-# }
+planet --help > /dev/null 2>&1
+if [ ${?} -ne 0 ]; then
+    raise_error "$(em "planet") bootstrap was not installed, \
+run $(em "./install.sh") and reload your shell configuration"
+fi
 
-function build_selfhost () {
-    echo "-- Build executable ..."
-    planet -v -O2 -E -D${OS_MACRO} -I${SELFHOST_DIR}/ \
-        -o ${PROJECT_NAME} ${SOURCE_FILES}
-    if [ ${?} -ne 0 ]; then return 1; fi
-    echo "OK"
-    echo "-- Created target ${PROJECT_NAME}"
-    return 0
-}
-
-# check_setup
-# if [ ${?} -ne 0 ]; then raise_error "check setup failed"; fi
-
-build_selfhost
-if [ ${?} -ne 0 ]; then raise_error "build selfhost failed"; fi
+echo "-- Build executable ..."
+planet -v -O2 -E -D${OS_MACRO} -I${SELFHOST_DIR}/ -o ${PROJECT_NAME} \
+    ${SOURCE_FILES}
+if [ ${?} -ne 0 ]; then
+    raise_error "build selfhost failed"
+fi
+echo "OK"
+echo "-- Created target ${PROJECT_NAME}"
 
 echo -e "selfhosting was successful, \
 see usage with command $(em "planet --help")"
