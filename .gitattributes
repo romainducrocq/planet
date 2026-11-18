@@ -4,4 +4,6 @@
 *.i linguist-language=Python
 libstd/* linguist-vendored
 libstd/** linguist-vendored
+selfhost/* linguist-vendored
+selfhost/** linguist-vendored
 test/tests/** linguist-vendored
