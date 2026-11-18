@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
-# TODO rm
-BUILD_PLX=0
-
 # TODO review this file
 KERNEL_NAME="$(uname -s)"
 PACKAGE_DIR="$(readlink -f ../wheelcc/bin)"
-PACKAGE_NAME="$(cat ${PACKAGE_DIR}/pkgname.cfg)"
 PACKAGE_LIBC="${PACKAGE_DIR}/libc"
+PACKAGE_NAME="planet"
 LD="gcc"
 OS_MACRO="__linux__"
 if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
@@ -17,43 +14,33 @@ elif [[ "${KERNEL_NAME}" == "FreeBSD"* ]]; then
     LD="clang"
     OS_MACRO="__FreeBSD__"
 fi
-# TODO rm
-CC_FLAGS="-Wall -Wextra -Wpedantic -D__GCC_BOOTSTRAP__"
-CC_FLAGS_RELEASE="-O3 -DNDEBUG -Werror -pedantic-errors"
-CC_FLAGS="-std=c17 ${CC_FLAGS} ${CC_FLAGS_RELEASE}"
 
 BUILD_DIR="$(dirname ${PACKAGE_DIR})/build"
 SELFHOST_DIR="$(readlink -f ../selfhost)"
-# TODO rm
-EXT="plx"
-if [ ${BUILD_PLX} -ne 0 ]; then
-    SELFHOST_DIR="$(readlink -f ../selfhost/wheelcc)"
-    EXT="c"
-fi
 
-SOURCE_FILES="${SELFHOST_DIR}/main.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/ast.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_ast.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_symt.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_ast.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_symt.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/interm_ast.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/asm_gen.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/gas_code.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/registers.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/stack_fix.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/symt_cvt.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/errors.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/idents.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/lexer.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/parser.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/semantic.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/tac_repr.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/optim_tac.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/reg_alloc.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/fileio.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/str2t.${EXT}"
-SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/throw.${EXT}"
+SOURCE_FILES="${SELFHOST_DIR}/main.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/ast.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_ast.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/back_symt.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_ast.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/front_symt.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/ast/interm_ast.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/asm_gen.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/gas_code.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/registers.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/stack_fix.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/backend/symt_cvt.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/errors.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/idents.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/lexer.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/parser.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/semantic.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/frontend/tac_repr.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/optim_tac.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/optimizer/reg_alloc.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/fileio.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/str2t.plx"
+SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/throw.plx"
 
 function em() {
     echo "\033[1m‘${1}’\033[0m"
@@ -112,32 +99,10 @@ function build_selfhost () {
         OBJECT_FILES="${OBJECT_FILES} ${OBJECT}"
         echo "${FILE} -> ${OBJECT}"
 
-        # ${LD} -c ${FILE} ${CC_FLAGS} -o ${OBJECT}
-        # if [ ${?} -ne 0 ]; then return 1; fi
-
-        if [ ${BUILD_PLX} -eq 0 ]; then
-            planet -O2 -E -D${OS_MACRO} -c -I${SELFHOST_DIR}/ ${FILE}
-            if [ ${?} -ne 0 ]; then return 1; fi
-            mv ${FILE%.*}.o ${OBJECT}
-            if [ ${?} -ne 0 ]; then return 1; fi
-        else
-            wheelcc -O2 -E -c ${FILE}
-            if [ ${?} -ne 0 ]; then return 1; fi
-            mv ${FILE%.*}.o ${OBJECT}
-            if [ ${?} -ne 0 ]; then return 1; fi
-        fi
-
-        # "wheelcc")
-        #     bash ${WHEELCC_DIR}/bin/driver.sh -O2 -E -c ${FILE}
-        #     if [ ${?} -ne 0 ]; then return 1; fi
-        #     mv ${FILE%.*}.o ${OBJECT}
-        #     if [ ${?} -ne 0 ]; then return 1; fi
-        #     ;;
-
-        # ${WACC_LINK} -O2 -E -c ${FILE}
-        # if [ ${?} -ne 0 ]; then return 1; fi
-        # mv ${FILE%.*}.o ${OBJECT}
-        # if [ ${?} -ne 0 ]; then return 1; fi
+        planet -O2 -E -D${OS_MACRO} -c -I${SELFHOST_DIR}/ ${FILE}
+        if [ ${?} -ne 0 ]; then return 1; fi
+        mv ${FILE%.*}.o ${OBJECT}
+        if [ ${?} -ne 0 ]; then return 1; fi
     done
     echo "OK"
 
@@ -149,8 +114,7 @@ function build_selfhost () {
 
     echo "-- Linking executable ..."
     echo "${BUILD_CACHE}/*.o -> ${PROJECT_NAME}"
-    # TODO rm CC_FLAGS
-    ${LD} ${OBJECT_FILES} ${CC_FLAGS} -L${PACKAGE_LIBC}/ -lplanet -o ${PROJECT_NAME}
+    ${LD} ${OBJECT_FILES} -L${PACKAGE_LIBC}/ -l${PACKAGE_NAME} -o ${PROJECT_NAME}
     if [ ${?} -ne 0 ]; then return 1; fi
     echo "OK"
 
