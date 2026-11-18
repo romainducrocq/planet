@@ -4,18 +4,14 @@
 KERNEL_NAME="$(uname -s)"
 PACKAGE_DIR="$(readlink -f ../wheelcc/bin)"
 PACKAGE_LIBC="${PACKAGE_DIR}/libc"
-PACKAGE_NAME="planet"
-LD="gcc"
 OS_MACRO="__linux__"
 if [[ "${KERNEL_NAME}" == "Darwin"* ]]; then
-    LD="clang -arch x86_64"
     OS_MACRO="__APPLE__"
 elif [[ "${KERNEL_NAME}" == "FreeBSD"* ]]; then
-    LD="clang"
     OS_MACRO="__FreeBSD__"
 fi
 
-BUILD_DIR="$(dirname ${PACKAGE_DIR})/build"
+PROJECT_NAME="${PACKAGE_DIR}/planet"
 SELFHOST_DIR="$(readlink -f ../selfhost)"
 
 SOURCE_FILES="${SELFHOST_DIR}/main.plx"
@@ -84,40 +80,11 @@ function raise_error () {
 # }
 
 function build_selfhost () {
-    BUILD_CACHE="${BUILD_DIR}/build_cache"
-    if [ -d "${BUILD_CACHE}/" ]; then
-        rm -r ${BUILD_CACHE}/
-        if [ ${?} -ne 0 ]; then return 1; fi
-    fi
-    mkdir ${BUILD_CACHE}/
-    if [ ${?} -ne 0 ]; then return 1; fi
-
-    OBJECT_FILES=""
-    echo "-- Build objects ..."
-    for FILE in ${SOURCE_FILES}; do
-        OBJECT="${BUILD_CACHE}/$(basename ${FILE%.*}).o"
-        OBJECT_FILES="${OBJECT_FILES} ${OBJECT}"
-        echo "${FILE} -> ${OBJECT}"
-
-        planet -O2 -E -D${OS_MACRO} -c -I${SELFHOST_DIR}/ ${FILE}
-        if [ ${?} -ne 0 ]; then return 1; fi
-        mv ${FILE%.*}.o ${OBJECT}
-        if [ ${?} -ne 0 ]; then return 1; fi
-    done
-    echo "OK"
-
-    PROJECT_NAME="${PACKAGE_DIR}/${PACKAGE_NAME}"
-    if [ -f "${PROJECT_NAME}" ]; then
-        rm ${PROJECT_NAME}
-        if [ ${?} -ne 0 ]; then return 1; fi
-    fi
-
-    echo "-- Linking executable ..."
-    echo "${BUILD_CACHE}/*.o -> ${PROJECT_NAME}"
-    ${LD} ${OBJECT_FILES} -L${PACKAGE_LIBC}/ -l${PACKAGE_NAME} -o ${PROJECT_NAME}
+    echo "-- Build executable ..."
+    planet -v -O2 -E -D${OS_MACRO} -I${SELFHOST_DIR}/ \
+        -o ${PROJECT_NAME} ${SOURCE_FILES}
     if [ ${?} -ne 0 ]; then return 1; fi
     echo "OK"
-
     echo "-- Created target ${PROJECT_NAME}"
     return 0
 }
@@ -129,5 +96,5 @@ build_selfhost
 if [ ${?} -ne 0 ]; then raise_error "build selfhost failed"; fi
 
 echo -e "selfhosting was successful, \
-see usage with command $(em "${PACKAGE_NAME} --help")"
+see usage with command $(em "planet --help")"
 exit 0
