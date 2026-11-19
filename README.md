@@ -7,7 +7,7 @@
 
 <!---->
 
-Advent of code 2025 with `planet`: https://github.com/romainducrocq/planet-aoc2025  
+Advent of code with `planet`: https://github.com/romainducrocq/planet-aoc  
 Port of the Kilo text editor to `planet`: https://github.com/romainducrocq/planet-kilo  
 
 ****
@@ -16,7 +16,7 @@ Port of the Kilo text editor to `planet`: https://github.com/romainducrocq/plane
 
 <!---->
 
-A huge thanks to _Tsoding_ for [Porth](https://gitlab.com/tsoding/porth) and _Nora Sandler_ for [Writing a C Compiler](https://nostarch.com/writing-c-compiler), who sparked my deep interest in compilers and inspired me to make my own programming language.  
+A huge thanks to _Tsoding_ for [Porth](https://gitlab.com/tsoding/porth) and _Nora Sandler_ for [Writing a C Compiler](https://nostarch.com/writing-c-compiler), who inspired me to build compilers and make my own programming language.  
 
 ### Quick install
 
@@ -34,7 +34,6 @@ $ . ~/.bashrc # or . ~/.zshrc or . ~/.shrc
 
 You can also setup syntax highlighting for your text editor with:  
 ```
-$ cd editors/
 $ ./set_editors.sh {--nano | --neovim | --vim | --vscode}
 ```
 Or by following the instructions in the syntax files manually.  
