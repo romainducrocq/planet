@@ -393,8 +393,8 @@ m4_define(`RET_ERR', `ARG_INDEX(0)m4_dnl
 
 pub fn get_fatal_msg(msg: MESSAGE_FATAL, arg1: string, arg2: string, arg3: string) string {
     if msg == MSG_unsupported_os {
-        RET_ERR(1) (MSG_ENO MSG_ARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64) or "
-            EM_CSTR("MacOS"))
+        RET_ERR(1) (MSG_ENO MSG_ARG " operating system is not supported, requires " EM_CSTR("GNU/Linux") " (x86_64), "
+            EM_CSTR("FreeBSD") " (x86_64) or " EM_CSTR("MacOS") " (aarch64, x86_64)")
     }
     else {
         THROW_ABORT
