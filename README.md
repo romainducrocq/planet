@@ -2,8 +2,7 @@
 
 > **THIS LANGUAGE IS A WORK IN PROGRESS! ANYTHING CAN CHANGE AT ANY MOMENT WITHOUT ANY NOTICE! USE THIS LANGUAGE AT YOUR OWN RISK!**
 
-- [x] The core language and the tooling are done. **See below for progress ...**
-- [ ] Not a lot is documented yet, more documentation is coming in version `0.1.1`.
+- The core language is done, more is coming in version `0.2.0`. **See below for progress and TBD ...**
 
 <!---->
 
@@ -126,7 +125,11 @@ Naming is arguably the hardest open problem in Computer Science after P=NP, but 
 - [x] support m4 preprocessor
 - [x] glibc standard library bindings
 - [x] support multiple text editors
-- [ ] readme + documentation (TBD in `0.1.1`)
+
+### TBD in 0.2.0
+
+- Readme with documentation and examples
+- Selfhosted implementation of the compiler in `planet`
 
 ****
 
