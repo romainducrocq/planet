@@ -2,13 +2,27 @@
 
 NANO_RC="${HOME}/.nanorc"
 NANO_RUNTIME="${HOME}/.nano"
-
 VIM_RC="${HOME}/.vimrc"
 VIM_RUNTIME="${HOME}/.vim"
-
 NEOVIM_RUNTIME="${HOME}/.config/nvim"
-
 VSCODE_RUNTIME="${HOME}/.vscode"
+
+EDITOR="${1}"
+
+function help () {
+    echo "Usage: ./set_editors.sh {--nano | --neovim | --vim | --vscode}"
+    exit 0
+}
+
+function em() {
+    echo "\033[1m‘${1}’\033[0m"
+}
+
+function raise_error () {
+    ERROR_MESSAGE="${1}"
+    echo -e "set_editors: \033[0;31merror:\033[0m ${ERROR_MESSAGE}" 1>&2
+    exit 1
+}
 
 function setup_nano () {
     mkdir -p ${NANO_RUNTIME}/
@@ -52,34 +66,41 @@ function setup_vscode () {
     if [ ${?} -ne 0 ]; then return 1; fi
 }
 
-cd ../editors/
-SET_STATUS=0
-case "${1}" in
-    "--nano")
-        setup_nano
-        SET_STATUS=${?}
-        ;;
-    "--neovim")
-        setup_neovim
-        SET_STATUS=${?}
-        ;;
-    "--vim")
-        setup_vim
-        SET_STATUS=${?}
-        ;;
-    "--vscode")
-        setup_vscode
-        SET_STATUS=${?}
-        ;;
-    *)
-        echo "Usage: ${0} {--nano | --neovim | --vim | --vscode}"
-        exit 0
-esac
+function set_editor () {
+    cd ../editors/
+    case "${EDITOR}" in
+        "--nano")
+            setup_nano
+            return ${?}
+            ;;
+        "--neovim")
+            setup_neovim
+            return ${?}
+            ;;
+        "--vim")
+            setup_vim
+            return ${?}
+            ;;
+        "--vscode")
+            setup_vscode
+            return ${?}
+            ;;
+        *)
+            return 1
+    esac
+}
 
-if [ ${SET_STATUS} -ne 0 ]; then
-    echo -e "\033[0;31merror:\033[0m setup editor failed for \033[1m‘${1}’\033[0m" 1>&2
+if [ "${1}" = "--help" ]; then
+    help
+elif [ ${#} -ne 1 ]; then
+    help
+fi
+
+set_editor
+if [ ${?} -ne 0 ]; then
+    raise_error "setup editor failed for $(em "${EDITOR}")"
     exit 1
 fi
 
-echo -e "setup editor was successful for \033[1m‘${1}’\033[0m"
+echo -e "setup editor was successful for $(em "${EDITOR}")"
 exit 0

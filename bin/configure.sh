@@ -5,6 +5,12 @@ PACKAGE_PATH="$(readlink -f ..)"
 PACKAGE_NAME="planet"
 FILENAME_EXT="plx"
 
+function raise_error () {
+    ERROR_MESSAGE="${1}"
+    echo -e "configure: \033[0;31merror:\033[0m ${ERROR_MESSAGE}" 1>&2
+    exit 1
+}
+
 function config_backend () {
     # bin
     find . -type l -delete
@@ -59,7 +65,7 @@ function config_backend () {
 
 config_backend
 if [ ${?} -ne 0 ]; then
-    echo -e "\033[0;31merror:\033[0m configuration failed" 1>&2
+    raise_error "configuration failed"
     exit 1
 fi
 
