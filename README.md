@@ -1,4 +1,4 @@
-# planet - a C-like programming language
+# planet - a C-like PL and selfhosted compiler
 
 > **THIS LANGUAGE IS A WORK IN PROGRESS! ANYTHING CAN CHANGE AT ANY MOMENT WITHOUT ANY NOTICE! USE THIS LANGUAGE AT YOUR OWN RISK!**
 
