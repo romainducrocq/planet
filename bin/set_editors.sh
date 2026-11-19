@@ -52,6 +52,7 @@ function setup_vscode () {
     if [ ${?} -ne 0 ]; then return 1; fi
 }
 
+cd ../editors/
 SET_STATUS=0
 case "${1}" in
     "--nano")
