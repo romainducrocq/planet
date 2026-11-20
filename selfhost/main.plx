@@ -224,7 +224,9 @@ fn arg_parse(ctx: Ctx, argc: i32, argv: *string) error_t {
     if not argv[++i] {
         THROW_INIT(GET_ARG_MSG(MSG_no_include_dir_arg))
     }
-    vec_push_back(ctx[].includedirs, cast<string>(argv[i]))
+    loop .. while argv[++i] {
+        vec_push_back(ctx[].includedirs, cast<string>(argv[i]))
+    }
     FINALLY
     CATCH_EXIT
 }
