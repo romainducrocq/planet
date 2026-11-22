@@ -44,12 +44,12 @@ function config_backend () {
     cp ../frontend/* ${BACKEND_PATH}/src/frontend/parser/
     if [ ${?} -ne 0 ]; then return 1; fi
 
-    # libstd
+    # stdlib
     if [ ! -d "${BACKEND_PATH}/bin/libc/" ]; then
         mkdir -p ${BACKEND_PATH}/bin/libc/
         if [ ${?} -ne 0 ]; then return 1; fi
     fi
-    cp -r ../libstd/* ${BACKEND_PATH}/bin/libc/
+    cp -r ../stdlib/* ${BACKEND_PATH}/bin/libc/
     if [ ${?} -ne 0 ]; then return 1; fi
     cp build_libc.sh ${BACKEND_PATH}/build/
     if [ ${?} -ne 0 ]; then return 1; fi
