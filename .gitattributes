@@ -2,8 +2,8 @@
 *.etc linguist-language=Python
 *.plx.m4 linguist-language=Python
 *.i linguist-language=Python
-libstd/* linguist-vendored
-libstd/** linguist-vendored
+stdlib/* linguist-vendored
+stdlib/** linguist-vendored
 selfhost/* linguist-vendored
 selfhost/** linguist-vendored
 test/tests/** linguist-vendored
