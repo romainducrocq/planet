@@ -37,7 +37,7 @@ SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/fileio.plx"
 SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/str2t.plx"
 SOURCE_FILES="${SOURCE_FILES} ${SELFHOST_DIR}/util/throw.plx"
 
-function em() {
+function em () {
     echo "\033[1m‘${1}’\033[0m"
 }
 
@@ -61,20 +61,17 @@ fi
 cp ${PROJECT_NAME} ${PROJECT_NAME}.old
 
 echo "-- Build executable ..."
-planet -v -O2 -E -D${OS_MACRO} -I${SELFHOST_DIR}/ -o ${PROJECT_NAME} \
-    ${SOURCE_FILES}
+planet -v -O2 -E -D${OS_MACRO} -I${SELFHOST_DIR}/ -o ${PROJECT_NAME} ${SOURCE_FILES}
 if [ ${?} -ne 0 ]; then
-    raise_error "build selfhost failed"
+    raise_error "failed to build $(em "planet") selfhost"
 fi
 echo "OK"
 echo "-- Created target ${PROJECT_NAME}"
 
 cmp -s ${PROJECT_NAME} ${PROJECT_NAME}.old
 if [ ${?} -eq 0 ]; then
-    echo "-- Fixed point reached: \
-bootstrap and selfhost are byte-identical"
+    echo "-- Fixed point reached: bootstrap and selfhost are byte-identical"
 fi
 
-echo -e "selfhosting was successful, \
-see usage with command $(em "planet --help")"
+echo -e "selfhosting was successful, see usage with command $(em "planet --help")"
 exit 0

@@ -65,8 +65,7 @@ function config_backend () {
 
 config_backend
 if [ ${?} -ne 0 ]; then
-    raise_error "configuration failed"
-    exit 1
+    raise_error "failed to configure backend"
 fi
 
 ${BACKEND_PATH}/bin/configure.sh "${PACKAGE_NAME}"

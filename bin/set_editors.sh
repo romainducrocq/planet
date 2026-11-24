@@ -14,13 +14,13 @@ function help () {
     exit 0
 }
 
-function em() {
+function em () {
     echo "\033[1m‘${1}’\033[0m"
 }
 
 function raise_error () {
     ERROR_MESSAGE="${1}"
-    echo -e "set_editors: \033[0;31merror:\033[0m ${ERROR_MESSAGE}" 1>&2
+    echo -e "set_editors: \033[0;31merror:\033[0m ${ERROR_MESSAGE}, see $(em "--help")" 1>&2
     exit 1
 }
 
@@ -98,9 +98,8 @@ fi
 
 set_editor
 if [ ${?} -ne 0 ]; then
-    raise_error "setup editor failed for $(em "${EDITOR}")"
-    exit 1
+    raise_error "failed to setup editor for $(em "${EDITOR}")"
 fi
 
-echo -e "setup editor was successful for $(em "${EDITOR}")"
+echo -e "setting up editor was successful for $(em "${EDITOR}")"
 exit 0
