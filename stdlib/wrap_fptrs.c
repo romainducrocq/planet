@@ -43,7 +43,7 @@ static int bsearch_fptr(const void* a, const void* b) {
 }
 
 void* bsearch_f(const void* key, const void* base, unsigned long nmemb, unsigned long size) {
-    return bsearch(key, base, nmemb, size, bsearch_fptr);
+    return (void*)bsearch(key, base, nmemb, size, bsearch_fptr);
 }
 #endif
 

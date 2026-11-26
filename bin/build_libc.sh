@@ -11,6 +11,7 @@ elif [[ "${KERNEL_NAME}" == "FreeBSD"* ]]; then
     CC="clang"
 fi
 
+CC="${CC} -std=c17"
 CC_FLAGS="-O3 -Wall -Wextra -Wpedantic -pedantic-errors"
 LIBC_NAME="${PACKAGE_LIBC}/libplanet.so"
 
