@@ -66,7 +66,7 @@ pub fn main(none) i32 {
     }
 
     if not complex_expression() {
-        return 5
+        return 6
     }
 
     return 0
